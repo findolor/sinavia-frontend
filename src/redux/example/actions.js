@@ -3,5 +3,8 @@ export const exampleTypes = {
 }
 
 export const someAction = () => {
-    return 'Return some value'
+    return {
+        type: exampleTypes.SOME_TYPE,
+        payload: 'Some return value'
+    }
 }
