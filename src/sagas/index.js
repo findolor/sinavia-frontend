@@ -1,5 +1,5 @@
 import { takeLatest, all } from 'redux-saga/effects'
-import { exampleTypes } from 'App/Stores/Example/Actions'
+import { exampleTypes } from '../redux/example/actions'
 import { exampleSaga } from './exampleSaga'
 
 export default function* root() {

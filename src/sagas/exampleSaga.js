@@ -1,6 +1,6 @@
 import { put, call } from 'redux-saga/effects'
-import { exampleTypes, someAction } from 'src/redux/example/actions'
-import { exampleService } from 'src/services/apiServices/exampleService'
+import { exampleTypes, someAction } from '../redux/example/actions'
+import { exampleService } from '../services/apiServices/exampleService'
 
 export function* exampleSaga() {
     yield put(exampleTypes.SOME_TYPE, someAction) // This is a redux action. We use put function

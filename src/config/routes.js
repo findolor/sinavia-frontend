@@ -1,6 +1,7 @@
+import React from 'react'
 import { Scene, Router } from 'react-native-router-flux'
 
-const Router = () => {
+const RouterComp = () => {
     return (
         <Router>
             <Scene />
@@ -8,4 +9,4 @@ const Router = () => {
     )
 }
 
-export default Router
+export default RouterComp
