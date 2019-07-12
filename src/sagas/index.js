@@ -4,7 +4,7 @@ import { exampleSaga } from './exampleSaga'
 
 export default function* root() {
     yield all([
-        takeLatest(exampleTypes.SOME_TYPE, exampleSaga)
+        takeLatest(exampleTypes.SOME_TYPE_REQUEST, exampleSaga)
         // We fill this function with all of our sagas
     ])
 }
