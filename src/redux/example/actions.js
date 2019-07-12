@@ -1,10 +1,8 @@
-export const exampleTypes = {
-    SOME_TYPE: 'some_type'
-}
+export const SAVE_TEXT = 'save_text';
 
-export const someAction = () => {
+export const saveText = (text) => {
     return {
-        type: exampleTypes.SOME_TYPE,
-        payload: 'Some return value'
+        type: SAVE_TEXT,
+        payload: text
     }
 }

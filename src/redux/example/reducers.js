@@ -1,11 +1,11 @@
 import { INITIAL_STATE } from './initialState'
-import { exampleTypes } from './actions'
+import { SAVE_TEXT } from './actions'
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case exampleTypes.SOME_TYPE:
+        case SAVE_TEXT:
             return {
-                ...state
+                ...state, text: action.payload
             }
         default:
             return state

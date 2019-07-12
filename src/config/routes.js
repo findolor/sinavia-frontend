@@ -1,14 +1,13 @@
 import React from 'react'
 import { Scene, Router } from 'react-native-router-flux'
-import mainScreen from "./containers"
+import mainScreen, {Example as ExampleScreen} from "./containers"
 
 const RouterComp = () => {
     return (
         <Router>
-            <Scene key='main'
-                   component={mainScreen}
-                   title='Ana Sayfa'
-            />
+            <Scene key="root" hideNavBar={true}>
+                <Scene key="main" component={mainScreen} />
+            </Scene>
         </Router>
     )
 }
