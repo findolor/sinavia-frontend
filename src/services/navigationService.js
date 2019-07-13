@@ -7,3 +7,11 @@ export const navigationReplace = sceneKey => {
 export const navigationReset = sceneKey => {
     Actions.reset(sceneKey)
 }
+
+export const navigationPush = () => {
+    Actions.push()
+}
+
+export const navigationPop = () => {
+    Actions.pop()
+}
