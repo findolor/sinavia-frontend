@@ -1,13 +1,15 @@
 import axios from 'axios'
 
-export const getUser = userEmail => {
-    axios
-        .get('http://localhost:4000/api/users/' + userEmail)
-        .then(response => {
-            return response
+export const getUser = async userToken => {
+    try {
+        const response = await axios.get('http://localhost:4000/api/users/', {
+            headers: {
+                Authorization: 'Bearer ' + userToken
+            }
         })
-        .catch(err => {
-            console.log(err)
-            return null
-        })
+        return response.data.data
+    } catch (err) {
+        console.log(err)
+        return err.response
+    }
 }

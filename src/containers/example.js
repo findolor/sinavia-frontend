@@ -1,8 +1,9 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, Button } from 'react-native'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 import { someAction } from '../redux/example/actions'
+import { sceneKeys, navigationPush } from '../services/navigationService'
 
 class Example extends React.Component {
     componentDidMount() {
@@ -23,6 +24,12 @@ class Example extends React.Component {
                 <Text>Hello</Text>
                 <Text>{this.props.temp3}</Text>
                 <Text>{this.props.temp4}</Text>
+                <Button
+                    onPress={() => {
+                        navigationPush(sceneKeys.user)
+                    }}
+                    title="go create"
+                />
             </View>
         )
     }

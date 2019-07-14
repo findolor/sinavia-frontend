@@ -1,4 +1,5 @@
 import { Actions } from 'react-native-router-flux'
+import { sceneKeys } from '../config/routes'
 
 export const navigationReplace = sceneKey => {
     Actions.replace(sceneKey)
@@ -8,10 +9,12 @@ export const navigationReset = sceneKey => {
     Actions.reset(sceneKey)
 }
 
-export const navigationPush = () => {
-    Actions.push()
+export const navigationPush = sceneKey => {
+    Actions.push(sceneKey)
 }
 
-export const navigationPop = () => {
-    Actions.pop()
+export const navigationPop = sceneKey => {
+    Actions.pop(sceneKey)
 }
+
+export { sceneKeys }

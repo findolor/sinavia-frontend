@@ -1,3 +1,4 @@
-import example from '../containers/example'
+import Example from '../containers/example'
+import User from '../containers/user'
 
-export { example as Example }
+export { Example, User }
