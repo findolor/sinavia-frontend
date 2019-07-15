@@ -1,19 +1,22 @@
 import React from 'react'
 import { Scene, Router } from 'react-native-router-flux'
-import { Example as ExampleScreen } from './containers'
-import { User as UserScreen } from './containers'
+import { Opening  } from './containers'
+import { Login  } from './containers'
+import { Register  } from './containers'
 
 const sceneKeys = {
-    example: 'example',
-    user: 'user'
+    opening: 'opening',
+    login: 'login',
+    register: 'register'
 }
 
 const RouterComp = () => {
     return (
         <Router>
             <Scene key="root" hideNavBar={true}>
-                <Scene key="example" component={ExampleScreen} />
-                <Scene key="user" component={UserScreen} />
+                <Scene key="opening" component={Opening} />
+                <Scene key="login" component={Login} />
+                <Scene key="register" component={Register} />
             </Scene>
         </Router>
     )

@@ -1,4 +1,5 @@
-import Example from '../containers/example'
-import User from '../containers/user'
+import Opening from '../containers/opening'
+import Login from '../containers/login'
+import Register from '../containers/register'
 
-export { Example, User }
+export { Opening, Login, Register }
