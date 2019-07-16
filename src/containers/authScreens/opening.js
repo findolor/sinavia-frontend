@@ -1,8 +1,8 @@
 import React from 'react';
 import {StyleSheet, Image, View, Text } from 'react-native';
-import { sceneKeys, navigationPush } from '../services/navigationService'
+import { sceneKeys, navigationPush } from '../../services/navigationService'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {AuthButton} from '../components/authScreen/authButton'
+import {AuthButton} from '../../components/authScreen/authButton'
 
 export default class Opening extends React.Component {
 
@@ -11,10 +11,11 @@ export default class Opening extends React.Component {
             <View style={styles.container}>
                 <View style={styles.imageContainer}>
                     <Image
-                        source = {require('../assets/sinavia_logo_cut.png')}
+                        source = {require('../../assets/sinavia_logo_cut.png')}
                         style = {{
                             height: hp(40),
                             resizeMode: 'contain',
+                            marginTop: hp(3)
                         }}/>
                     <Text style={styles.sinaviaText}>Sınavia</Text>
                 </View>
@@ -62,10 +63,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     sinaviaText: {
+        fontFamily: 'Intelligent Design - Averta-ExtraBoldItalic',
         fontSize: hp(10),
         resizeMode: 'contain',
-        fontStyle: 'italic',
-        color: '#00D9EF'
+        color: '#00D9EF',
     },
     separatorContainer: {
         alignItems: 'center',
@@ -82,6 +83,7 @@ const styles = StyleSheet.create({
         borderColor: '#9B9FA4'
     },
     separatorOr: {
+        fontFamily: 'Intelligent Design - Averta-Semibold',
         color: '#9B9FA4',
         marginHorizontal: 8
     }

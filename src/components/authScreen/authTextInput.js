@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     textInput: {
+        fontFamily: 'Intelligent Design - Averta-Regular',
         marginLeft: wp(4),
         fontSize: hp(2)
     }

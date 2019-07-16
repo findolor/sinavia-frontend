@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* SinaviaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SinaviaTests.m */; };
 		065A2F050128DE729C6B19B2 /* libPods-Sinavia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D51408837E05BED04C16191 /* libPods-Sinavia.a */; };
@@ -20,6 +19,22 @@
 		5481360601B11200B049728F /* libPods-Sinavia-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E95D2D973A55D8ED4F3DA93E /* libPods-Sinavia-tvOS.a */; };
 		CE7F38A072FCA84C37825743 /* libPods-Sinavia-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A66DE66C276C03BB2AA790B4 /* libPods-Sinavia-tvOSTests.a */; };
 		D8997BD324DCD234A88746CB /* libPods-SinaviaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C419ACD11AFC9960C0C81C77 /* libPods-SinaviaTests.a */; };
+		E6744C4C76A84C318B3839F2 /* Intelligent Design - Averta Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 60FE7F89EBF94AC0B7F23C7D /* Intelligent Design - Averta Black.otf */; };
+		78338C06BB07411698D64DF4 /* Intelligent Design - Averta-BlackItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7D36E4064BFB4BC19D4EF79E /* Intelligent Design - Averta-BlackItalic.otf */; };
+		85C99BFF0ED440C6A9E025A1 /* Intelligent Design - Averta-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F6638D8FFA7A4D4FAC11C3BE /* Intelligent Design - Averta-Bold.otf */; };
+		7BC3E1CC74804BEF9C17119E /* Intelligent Design - Averta-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2592E62F1B1D41CAA14EFB98 /* Intelligent Design - Averta-BoldItalic.otf */; };
+		94018E07C7D642C8B4BCAD75 /* Intelligent Design - Averta-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 847F6BEA2D6745F2A8E6683C /* Intelligent Design - Averta-ExtraBold.otf */; };
+		8B27414A5DDA4C0DB2AFFD51 /* Intelligent Design - Averta-ExtraBoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FF43D257D49F4DF2AE3099A0 /* Intelligent Design - Averta-ExtraBoldItalic.otf */; };
+		B0E3EE58FE594CC094C81935 /* Intelligent Design - Averta-Extrathin.otf in Resources */ = {isa = PBXBuildFile; fileRef = F3F5E39EE2AA4060A35EE6A4 /* Intelligent Design - Averta-Extrathin.otf */; };
+		4FB1C34DD3E1400EBDAA63A7 /* Intelligent Design - Averta-ExtrathinItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4747490C04AE4E00B1112BB5 /* Intelligent Design - Averta-ExtrathinItalic.otf */; };
+		7B127D54B6DC4F70991EC650 /* Intelligent Design - Averta-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = A0C20A95940B4C3189B5B0A0 /* Intelligent Design - Averta-Light.otf */; };
+		E58D79678E8747EA98D01CAA /* Intelligent Design - Averta-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = C4AAC53B8EBB4592B5483269 /* Intelligent Design - Averta-LightItalic.otf */; };
+		82AA96DD638E4113B7A99554 /* Intelligent Design - Averta-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = E6A12249C84647A98DE3AC6F /* Intelligent Design - Averta-Regular.otf */; };
+		49A0AE8463F4443EBE043363 /* Intelligent Design - Averta-RegularItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5C07446467684C6B90EBCC89 /* Intelligent Design - Averta-RegularItalic.otf */; };
+		420ECC7564D84765B5DD18F7 /* Intelligent Design - Averta-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = BA6C91A5F8254022BABB5F02 /* Intelligent Design - Averta-Semibold.otf */; };
+		96E4E7F22826476796EC3437 /* Intelligent Design - Averta-SemiboldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1D686AEF096A452BA8ECECD2 /* Intelligent Design - Averta-SemiboldItalic.otf */; };
+		A2FF357CD2204CA9A780D261 /* Intelligent Design - Averta-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1AA2171B56F84CEB8F83ABC8 /* Intelligent Design - Averta-Thin.otf */; };
+		51FE293B85CE40AFAC407AB2 /* Intelligent Design - Averta-ThinItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = B6C9DD235A03433694715BE0 /* Intelligent Design - Averta-ThinItalic.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +82,22 @@
 		E95D2D973A55D8ED4F3DA93E /* libPods-Sinavia-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sinavia-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		60FE7F89EBF94AC0B7F23C7D /* Intelligent Design - Averta Black.otf */ = {isa = PBXFileReference; name = "Intelligent Design - Averta Black.otf"; path = "../src/assets/fonts/Intelligent Design - Averta Black.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		7D36E4064BFB4BC19D4EF79E /* Intelligent Design - Averta-BlackItalic.otf */ = {isa = PBXFileReference; name = "Intelligent Design - Averta-BlackItalic.otf"; path = "../src/assets/fonts/Intelligent Design - Averta-BlackItalic.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F6638D8FFA7A4D4FAC11C3BE /* Intelligent Design - Averta-Bold.otf */ = {isa = PBXFileReference; name = "Intelligent Design - Averta-Bold.otf"; path = "../src/assets/fonts/Intelligent Design - Averta-Bold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		2592E62F1B1D41CAA14EFB98 /* Intelligent Design - Averta-BoldItalic.otf */ = {isa = PBXFileReference; name = "Intelligent Design - Averta-BoldItalic.otf"; path = "../src/assets/fonts/Intelligent Design - Averta-BoldItalic.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		847F6BEA2D6745F2A8E6683C /* Intelligent Design - Averta-ExtraBold.otf */ = {isa = PBXFileReference; name = "Intelligent Design - Averta-ExtraBold.otf"; path = "../src/assets/fonts/Intelligent Design - Averta-ExtraBold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FF43D257D49F4DF2AE3099A0 /* Intelligent Design - Averta-ExtraBoldItalic.otf */ = {isa = PBXFileReference; name = "Intelligent Design - Averta-ExtraBoldItalic.otf"; path = "../src/assets/fonts/Intelligent Design - Averta-ExtraBoldItalic.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F3F5E39EE2AA4060A35EE6A4 /* Intelligent Design - Averta-Extrathin.otf */ = {isa = PBXFileReference; name = "Intelligent Design - Averta-Extrathin.otf"; path = "../src/assets/fonts/Intelligent Design - Averta-Extrathin.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		4747490C04AE4E00B1112BB5 /* Intelligent Design - Averta-ExtrathinItalic.otf */ = {isa = PBXFileReference; name = "Intelligent Design - Averta-ExtrathinItalic.otf"; path = "../src/assets/fonts/Intelligent Design - Averta-ExtrathinItalic.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A0C20A95940B4C3189B5B0A0 /* Intelligent Design - Averta-Light.otf */ = {isa = PBXFileReference; name = "Intelligent Design - Averta-Light.otf"; path = "../src/assets/fonts/Intelligent Design - Averta-Light.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		C4AAC53B8EBB4592B5483269 /* Intelligent Design - Averta-LightItalic.otf */ = {isa = PBXFileReference; name = "Intelligent Design - Averta-LightItalic.otf"; path = "../src/assets/fonts/Intelligent Design - Averta-LightItalic.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E6A12249C84647A98DE3AC6F /* Intelligent Design - Averta-Regular.otf */ = {isa = PBXFileReference; name = "Intelligent Design - Averta-Regular.otf"; path = "../src/assets/fonts/Intelligent Design - Averta-Regular.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		5C07446467684C6B90EBCC89 /* Intelligent Design - Averta-RegularItalic.otf */ = {isa = PBXFileReference; name = "Intelligent Design - Averta-RegularItalic.otf"; path = "../src/assets/fonts/Intelligent Design - Averta-RegularItalic.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		BA6C91A5F8254022BABB5F02 /* Intelligent Design - Averta-Semibold.otf */ = {isa = PBXFileReference; name = "Intelligent Design - Averta-Semibold.otf"; path = "../src/assets/fonts/Intelligent Design - Averta-Semibold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		1D686AEF096A452BA8ECECD2 /* Intelligent Design - Averta-SemiboldItalic.otf */ = {isa = PBXFileReference; name = "Intelligent Design - Averta-SemiboldItalic.otf"; path = "../src/assets/fonts/Intelligent Design - Averta-SemiboldItalic.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		1AA2171B56F84CEB8F83ABC8 /* Intelligent Design - Averta-Thin.otf */ = {isa = PBXFileReference; name = "Intelligent Design - Averta-Thin.otf"; path = "../src/assets/fonts/Intelligent Design - Averta-Thin.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		B6C9DD235A03433694715BE0 /* Intelligent Design - Averta-ThinItalic.otf */ = {isa = PBXFileReference; name = "Intelligent Design - Averta-ThinItalic.otf"; path = "../src/assets/fonts/Intelligent Design - Averta-ThinItalic.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +212,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				476961472FEA9FE3760CA56B /* Pods */,
+				B9A73CBF403E42A69C24E93B /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -197,6 +229,30 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
+		};
+		B9A73CBF403E42A69C24E93B /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				60FE7F89EBF94AC0B7F23C7D /* Intelligent Design - Averta Black.otf */,
+				7D36E4064BFB4BC19D4EF79E /* Intelligent Design - Averta-BlackItalic.otf */,
+				F6638D8FFA7A4D4FAC11C3BE /* Intelligent Design - Averta-Bold.otf */,
+				2592E62F1B1D41CAA14EFB98 /* Intelligent Design - Averta-BoldItalic.otf */,
+				847F6BEA2D6745F2A8E6683C /* Intelligent Design - Averta-ExtraBold.otf */,
+				FF43D257D49F4DF2AE3099A0 /* Intelligent Design - Averta-ExtraBoldItalic.otf */,
+				F3F5E39EE2AA4060A35EE6A4 /* Intelligent Design - Averta-Extrathin.otf */,
+				4747490C04AE4E00B1112BB5 /* Intelligent Design - Averta-ExtrathinItalic.otf */,
+				A0C20A95940B4C3189B5B0A0 /* Intelligent Design - Averta-Light.otf */,
+				C4AAC53B8EBB4592B5483269 /* Intelligent Design - Averta-LightItalic.otf */,
+				E6A12249C84647A98DE3AC6F /* Intelligent Design - Averta-Regular.otf */,
+				5C07446467684C6B90EBCC89 /* Intelligent Design - Averta-RegularItalic.otf */,
+				BA6C91A5F8254022BABB5F02 /* Intelligent Design - Averta-Semibold.otf */,
+				1D686AEF096A452BA8ECECD2 /* Intelligent Design - Averta-SemiboldItalic.otf */,
+				1AA2171B56F84CEB8F83ABC8 /* Intelligent Design - Averta-Thin.otf */,
+				B6C9DD235A03433694715BE0 /* Intelligent Design - Averta-ThinItalic.otf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -285,7 +341,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 940;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -338,6 +394,22 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				E6744C4C76A84C318B3839F2 /* Intelligent Design - Averta Black.otf in Resources */,
+				78338C06BB07411698D64DF4 /* Intelligent Design - Averta-BlackItalic.otf in Resources */,
+				85C99BFF0ED440C6A9E025A1 /* Intelligent Design - Averta-Bold.otf in Resources */,
+				7BC3E1CC74804BEF9C17119E /* Intelligent Design - Averta-BoldItalic.otf in Resources */,
+				94018E07C7D642C8B4BCAD75 /* Intelligent Design - Averta-ExtraBold.otf in Resources */,
+				8B27414A5DDA4C0DB2AFFD51 /* Intelligent Design - Averta-ExtraBoldItalic.otf in Resources */,
+				B0E3EE58FE594CC094C81935 /* Intelligent Design - Averta-Extrathin.otf in Resources */,
+				4FB1C34DD3E1400EBDAA63A7 /* Intelligent Design - Averta-ExtrathinItalic.otf in Resources */,
+				7B127D54B6DC4F70991EC650 /* Intelligent Design - Averta-Light.otf in Resources */,
+				E58D79678E8747EA98D01CAA /* Intelligent Design - Averta-LightItalic.otf in Resources */,
+				82AA96DD638E4113B7A99554 /* Intelligent Design - Averta-Regular.otf in Resources */,
+				49A0AE8463F4443EBE043363 /* Intelligent Design - Averta-RegularItalic.otf in Resources */,
+				420ECC7564D84765B5DD18F7 /* Intelligent Design - Averta-Semibold.otf in Resources */,
+				96E4E7F22826476796EC3437 /* Intelligent Design - Averta-SemiboldItalic.otf in Resources */,
+				A2FF357CD2204CA9A780D261 /* Intelligent Design - Averta-Thin.otf in Resources */,
+				51FE293B85CE40AFAC407AB2 /* Intelligent Design - Averta-ThinItalic.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

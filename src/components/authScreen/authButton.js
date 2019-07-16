@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     buttonText: {
+        fontFamily: 'Intelligent Design - Averta-Semibold',
         color: '#FFFFFF',
         letterSpacing: wp(0.1),
         fontSize: hp(2.5)

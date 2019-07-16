@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Image, View, Text, TextInput, TouchableOpacity } from 'react-native'
-import { sceneKeys, navigationPush } from '../services/navigationService'
+import { sceneKeys, navigationPush } from '../../services/navigationService'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {AuthButton} from '../components/authScreen/authButton'
-import {AuthTextInput} from '../components/authScreen/authTextInput'
+import {AuthButton} from '../../components/authScreen/authButton'
+import {AuthTextInput} from '../../components/authScreen/authTextInput'
 
 export default class Opening extends React.Component {
 
@@ -12,7 +12,7 @@ export default class Opening extends React.Component {
             <View style={styles.container}>
                 <View style={styles.imageContainer}>
                     <Image
-                        source = {require('../assets/sinavia_logo_cut.png')}
+                        source = {require('../../assets/sinavia_logo_cut.png')}
                         style = {{
                             height: hp(40),
                             resizeMode: 'contain',
@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
         fontSize: hp(2)
     },
     forgetPasswordText: {
+        fontFamily: 'Intelligent Design - Averta-Bold',
         color: '#00D9EF',
         fontSize: hp(2),
         marginTop: hp(1.85),

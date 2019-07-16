@@ -38,7 +38,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -53,5 +53,24 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Intelligent Design - Averta Black.otf</string>
+		<string>Intelligent Design - Averta-BlackItalic.otf</string>
+		<string>Intelligent Design - Averta-Bold.otf</string>
+		<string>Intelligent Design - Averta-BoldItalic.otf</string>
+		<string>Intelligent Design - Averta-ExtraBold.otf</string>
+		<string>Intelligent Design - Averta-ExtraBoldItalic.otf</string>
+		<string>Intelligent Design - Averta-Extrathin.otf</string>
+		<string>Intelligent Design - Averta-ExtrathinItalic.otf</string>
+		<string>Intelligent Design - Averta-Light.otf</string>
+		<string>Intelligent Design - Averta-LightItalic.otf</string>
+		<string>Intelligent Design - Averta-Regular.otf</string>
+		<string>Intelligent Design - Averta-RegularItalic.otf</string>
+		<string>Intelligent Design - Averta-Semibold.otf</string>
+		<string>Intelligent Design - Averta-SemiboldItalic.otf</string>
+		<string>Intelligent Design - Averta-Thin.otf</string>
+		<string>Intelligent Design - Averta-ThinItalic.otf</string>
+	</array>
 </dict>
 </plist>
