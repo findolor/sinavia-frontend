@@ -1,6 +1,6 @@
-import Opening from '../containers/authScreens/opening'
-import Login from '../containers/authScreens/login'
-import Register from '../containers/authScreens/register'
-import ResetPassword from '../containers/authScreens/resetPassword'
+import Opening from '../containers/opening'
+import Login from '../containers/login'
+import Register from '../containers/register'
+import ResetPassword from '../containers/resetPassword'
 
 export { Opening, Login, Register, ResetPassword }

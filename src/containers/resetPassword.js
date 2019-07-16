@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet, Image, View, Text} from 'react-native'
-import { sceneKeys, navigationPush } from '../../services/navigationService'
+import { StyleSheet, Image, View, Text, TextInput, TouchableOpacity } from 'react-native'
+import { sceneKeys, navigationPush } from '../services/navigationService'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {AuthButton} from '../../components/authScreen/authButton'
-import {AuthTextInput} from '../../components/authScreen/authTextInput'
+import {AuthButton} from '../components/authScreen/authButton'
+import {AuthTextInput} from '../components/authScreen/authTextInput'
 
 export default class Opening extends React.Component {
 
@@ -12,7 +12,7 @@ export default class Opening extends React.Component {
             <View style={styles.container}>
                 <View style={styles.imageContainer}>
                     <Image
-                        source = {require('../../assets/sinavia_logo_cut.png')}
+                        source = {require('../assets/sinavia_logo_cut.png')}
                         style = {{
                             height: hp(45),
                             resizeMode: 'contain',
@@ -20,7 +20,7 @@ export default class Opening extends React.Component {
                         }}/>
                 </View>
                 <View style={styles.textInputsContainer}>
-                    <AuthTextInput placeholder='Kullanıcı Adı veya E-posta   '/>
+                    <AuthTextInput placeholder='Kullanıcı Adı veya E-Posta'/>
                 </View>
                 <View style={styles.textContainer}>
                     <Text style={styles.textStyle}>Uygulamada kullanmakta olduğun e-posta'nı gir, biz de sana şifreni yenilemen için bir link gönderelim.</Text>
@@ -70,7 +70,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     textStyle: {
-        fontFamily: 'Intelligent Design - Averta-Regular',
         color: '#8A8888',
         fontSize: hp(2),
         marginLeft: wp(8),

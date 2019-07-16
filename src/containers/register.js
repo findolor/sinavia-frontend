@@ -1,9 +1,9 @@
 import React from 'react';
 import {StyleSheet, Image, View, Text, TouchableOpacity, Switch} from 'react-native';
-import { sceneKeys, navigationPush } from '../../services/navigationService';
+import { sceneKeys, navigationPush } from '../services/navigationService';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {AuthButton} from '../../components/authScreen/authButton'
-import {AuthTextInput} from '../../components/authScreen/authTextInput'
+import {AuthButton} from '../components/authScreen/authButton'
+import {AuthTextInput} from '../components/authScreen/authTextInput'
 
 export default class Register extends React.Component {
     constructor (props){
@@ -22,34 +22,34 @@ export default class Register extends React.Component {
             <View style={styles.container}>
                 <View style={styles.imageContainer}>
                     <Image
-                        source = {require('../../assets/sinavia_logo_cut.png')}
+                        source = {require('../assets/sinavia_logo_cut.png')}
                         style = {{
-                            height: hp(15),
+                            height: hp(12),
                             resizeMode: 'contain',
                             marginTop: hp(2.5)
                         }}/>
                 </View>
                 <View style={styles.allTextInputsContainer}>
                     <View style={styles.textInputBorderContainer}>
-                        <AuthTextInput placeholder='Kullanıcı Adı '/>
+                        <AuthTextInput placeholder='Kullanıcı Adı'/>
                     </View>
                     <View style={styles.textInputBorderContainer}>
-                        <AuthTextInput placeholder='Ad Soyad '/>
+                        <AuthTextInput placeholder='Ad Soyad'/>
                     </View>
                     <View style={styles.textInputBorderContainer}>
-                        <AuthTextInput placeholder='Doğum Tarihi '/>
+                        <AuthTextInput placeholder='Doğum Tarihi'/>
                     </View>
                     <View style={styles.textInputBorderContainer}>
-                        <AuthTextInput placeholder='Şehir '/>
+                        <AuthTextInput placeholder='Şehir'/>
                     </View>
                     <View style={styles.textInputBorderContainer}>
-                        <AuthTextInput placeholder='E-Posta '/>
+                        <AuthTextInput placeholder='E-Posta'/>
                     </View>
                     <View style={styles.textInputBorderContainer}>
-                        <AuthTextInput placeholder='Şifre '/>
+                        <AuthTextInput placeholder='Şifre'/>
                     </View>
                     <View style={styles.textInputBorderContainer}>
-                        <AuthTextInput placeholder='Şifre (Tekrar)'/>
+                        <AuthTextInput placeholder='Şifreeeee'/>
                     </View>
                 </View>
                 <View style={styles.toggleContainer}>
@@ -61,9 +61,7 @@ export default class Register extends React.Component {
                         thumbTintColor="#00D9EF"
                         tintColor="#efefef"
                     />
-                    <View style={styles.licenseTextContainer}>
-                        <Text style={styles.toggleText}>Kullanıcı sözleşmesini okudum ve kabul ediyorum.</Text>
-                    </View>
+                    <Text style={styles.toggleText}>Kullanıcı sözleşmesini okudum ve kabul ediyorum.</Text>
                 </View>
                 <AuthButton color='#00D9EF' underlayColor='#1a5d63' buttonText='Kayıt Ol' onPress={() => {}}/>
                 <View style={styles.gotoLoginContainer}>
@@ -88,20 +86,20 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     imageContainer: {
-        height: hp(21),
+        height: hp(15),
         backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',
     },
     allTextInputsContainer: {
-        height: hp(57),
+        height: hp(63),
         width: wp(100),
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'flex-start'
     },
     textInputBorderContainer: {
-        height: hp(8.14),
+        height: hp(9),
         width: wp(100),
         backgroundColor: 'white',
         alignItems: 'center',
@@ -123,29 +121,20 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     toggleText: {
-        fontFamily: 'Intelligent Design - Averta-Regular',
+        marginTop: wp(2.2),
         fontSize: hp(1.7),
         color: '#7A7878'
     },
     gotoLoginText1: {
-        fontFamily: 'Intelligent Design - Averta-Regular',
         color: '#7A7878',
         fontSize: hp(2),
         marginTop: hp(1),
         marginRight: wp(1),
     },
     gotoLoginText2: {
-        fontFamily: 'Intelligent Design - Averta-Regular',
         color: '#00D9EF',
         fontSize: hp(2),
         marginTop: hp(1),
         marginRight: wp(1),
-    },
-    licenseTextContainer: {
-        backgroundColor: 'white',
-        height: hp(5),
-        width: wp(72),
-        justifyContent: 'center',
-        alignItems: 'center'
     }
 });
