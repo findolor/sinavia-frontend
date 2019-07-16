@@ -1,7 +1,8 @@
 import React from 'react';
-import {StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native';
+import {StyleSheet, Image, View, Text } from 'react-native';
 import { sceneKeys, navigationPush } from '../services/navigationService'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {AuthButton} from '../components/authScreen/authButton'
 
 export default class Opening extends React.Component {
 
@@ -15,44 +16,24 @@ export default class Opening extends React.Component {
                             height: hp(40),
                             resizeMode: 'contain',
                         }}/>
-                        <Text style={styles.sinaviaText}>Sınavia</Text>
+                    <Text style={styles.sinaviaText}>Sınavia</Text>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity onPress={() => {
+                    <AuthButton color='#00D9EF' underlayColor='#1a5d63' buttonText='Giriş Yap' onPress={() => {
                         navigationPush(sceneKeys.login)
-                    }}>
-                            <View style={styles.button}
-                                backgroundColor={"#00D9EF"}>
-                                <Text style={styles.buttonText}>Giriş Yap</Text>
-                            </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {
+                    }}/>
+                    <AuthButton color='#00D9EF' underlayColor='#1a5d63' buttonText='Kayıt Ol' onPress={() => {
                         navigationPush(sceneKeys.register)
-                    }}>
-                        <View style={styles.button}
-                            backgroundColor={"#00D9EF"}>
-                            <Text style={styles.buttonText}>Kayıt Ol</Text>
-                        </View>
-                    </TouchableOpacity>
+                    }}/>
                 </View>
-                    <View style={styles.separatorContainer} animation={'zoomIn'} delay={700} duration={400}>
-                        <View style={styles.separatorLine} />
-                        <Text style={styles.separatorOr}>{'veya'}</Text>
-                        <View style={styles.separatorLine} />
-                    </View>
+                <View style={styles.separatorContainer} animation={'zoomIn'} delay={700} duration={400}>
+                    <View style={styles.separatorLine} />
+                    <Text style={styles.separatorOr}>{'veya'}</Text>
+                    <View style={styles.separatorLine} />
+                </View>
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity>
-                        <View style={styles.button}
-                              backgroundColor={"#4267B2"}>
-                            <Text style={styles.buttonText}>Facebook ile Bağlan</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <View style={styles.button}
-                              backgroundColor={"#0F9D58"}>
-                            <Text style={styles.buttonText}>Google ile Bağlan</Text>
-                        </View>
-                    </TouchableOpacity>
+                    <AuthButton color='#4267B2' underlayColor='#170c5a' buttonText='Facebook ile Bağlan'/>
+                    <AuthButton color='#0F9D58' underlayColor='#144012' buttonText='Google ile Bağlan'/>
                 </View>
             </View>
         );
@@ -86,13 +67,6 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
         color: '#00D9EF'
     },
-    button: {
-        width: wp(85),
-        height: hp(7),
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
     separatorContainer: {
         alignItems: 'center',
         flexDirection: 'row',
@@ -110,10 +84,5 @@ const styles = StyleSheet.create({
     separatorOr: {
         color: '#9B9FA4',
         marginHorizontal: 8
-    },
-    buttonText: {
-        color: '#FFFFFF',
-        letterSpacing: wp(0.1),
-        fontSize: hp(2.5)
-    },
+    }
 });
