@@ -30,13 +30,27 @@ export default class Register extends React.Component {
                         }}/>
                 </View>
                 <View style={styles.allTextInputsContainer}>
-                    <AuthTextInput placeholder='Kullanıcı Adı'/>
-                    <AuthTextInput placeholder='Ad Soyad'/>
-                    <AuthTextInput placeholder='Doğum Tarihi'/>
-                    <AuthTextInput placeholder='Şehir'/>
-                    <AuthTextInput placeholder='E-Posta'/>
-                    <AuthTextInput placeholder='Şifre'/>
-                    <AuthTextInput placeholder='Şifre Tekrar'/>
+                    <View style={styles.textInputBorderContainer}>
+                        <AuthTextInput placeholder='Kullanıcı Adı'/>
+                    </View>
+                    <View style={styles.textInputBorderContainer}>
+                        <AuthTextInput placeholder='Ad Soyad'/>
+                    </View>
+                    <View style={styles.textInputBorderContainer}>
+                        <AuthTextInput placeholder='Doğum Tarihi'/>
+                    </View>
+                    <View style={styles.textInputBorderContainer}>
+                        <AuthTextInput placeholder='Şehir'/>
+                    </View>
+                    <View style={styles.textInputBorderContainer}>
+                        <AuthTextInput placeholder='E-Posta'/>
+                    </View>
+                    <View style={styles.textInputBorderContainer}>
+                        <AuthTextInput placeholder='Şifre'/>
+                    </View>
+                    <View style={styles.textInputBorderContainer}>
+                        <AuthTextInput placeholder='Şifreeeee'/>
+                    </View>
                 </View>
                 <View style={styles.toggleContainer}>
                     <Switch
@@ -52,7 +66,9 @@ export default class Register extends React.Component {
                 <AuthButton color='#00D9EF' underlayColor='#1a5d63' buttonText='Kayıt Ol' onPress={() => {}}/>
                 <View style={styles.gotoLoginContainer}>
                     <Text style={styles.gotoLoginText1}>Zaten bir hesabın var mı?</Text>
-                    <TouchableOpacity onPress={() => {}}>
+                    <TouchableOpacity onPress={() => {
+                        navigationPush(sceneKeys.login)
+                    }}>
                         <Text style={styles.gotoLoginText2}>Giriş Yap</Text>
                     </TouchableOpacity>
                 </View>
@@ -81,6 +97,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'flex-start'
+    },
+    textInputBorderContainer: {
+        height: hp(9),
+        width: wp(100),
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     toggleContainer: {
         height: hp(5),

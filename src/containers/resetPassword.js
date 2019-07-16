@@ -14,24 +14,16 @@ export default class Opening extends React.Component {
                     <Image
                         source = {require('../assets/sinavia_logo_cut.png')}
                         style = {{
-                            height: hp(40),
+                            height: hp(45),
                             resizeMode: 'contain',
-                            marginTop: hp(10)
+                            marginTop: hp(7)
                         }}/>
                 </View>
                 <View style={styles.textInputsContainer}>
                     <AuthTextInput placeholder='Kullanıcı Adı veya E-Posta'/>
-                    <View style={styles.textInputContainer}>
-                        <TextInput style={styles.textInput}
-                                   placeholder='Şifre'
-                                   placeholderTextColor={'#8A8888'}
-                        />
-                        <TouchableOpacity onPress={() => {
-                            navigationPush(sceneKeys.resetPassword)
-                        }}>
-                            <Text style={styles.forgetPasswordText}>Şifremi Unuttum</Text>
-                        </TouchableOpacity>
-                    </View>
+                </View>
+                <View style={styles.textContainer}>
+                    <Text style={styles.textStyle}>Uygulamada kullanmakta olduğun e-posta'nı gir, biz de sana şifreni yenilemen için bir link gönderelim.</Text>
                 </View>
                 <View style={styles.buttonContainer}>
                     <AuthButton marginBottom={hp(6)} color='#00D9EF' underlayColor='#1a5d63' buttonText='Giriş Yap'/>
@@ -47,7 +39,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: '#efefef',
+        backgroundColor: 'white',
     },
     imageContainer: {
         height: hp(55),
@@ -57,36 +49,29 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     textInputsContainer: {
-        height: hp(20),
-        width: wp(100),
-        backgroundColor: 'white',
-        justifyContent: 'space-around',
-        alignItems: 'center'
-    },
-    buttonContainer: {
-        height: hp(22),
+        height: hp(10),
         width: wp(100),
         backgroundColor: 'white',
         justifyContent: 'space-around',
         alignItems: 'center',
     },
-    textInputContainer: {
-        height: hp(7),
-        width: wp(85),
-        borderWidth: 1,
-        borderRadius: 10,
-        borderColor: '#989696',
+    buttonContainer: {
+        height: hp(16),
+        width: wp(100),
         backgroundColor: 'white',
-        flexDirection: 'row'
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    textInput: {
-        marginLeft: wp(4),
-        fontSize: hp(2)
+    textContainer: {
+        height: hp(7),
+        width: wp(100),
+        backgroundColor: 'white',
+        justifyContent: 'space-around',
+        alignItems: 'center',
     },
-    forgetPasswordText: {
-        color: '#00D9EF',
+    textStyle: {
+        color: '#8A8888',
         fontSize: hp(2),
-        marginTop: hp(1.85),
-        marginLeft: wp(40),
+        marginLeft: wp(8),
     }
 });
