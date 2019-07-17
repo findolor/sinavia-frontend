@@ -52,7 +52,7 @@ export default StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'center',
         marginRight: wp(4.5),
-        marginBottom: wp(0.4)
+        marginBottom: wp(5)
     },
     eyeContainer: {
         backgroundColor: '#fcfcfc',

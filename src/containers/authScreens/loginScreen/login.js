@@ -22,8 +22,16 @@ import styles from './loginStyle'
 export default class Opening extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { showForgotPasswordText: true }
-        this.state = { showPasswordEye: false }
+        this.state = {
+            showForgotPasswordText: true,
+            showPasswordEye: false,
+            hidePassword: true
+        }
+    }
+
+    managePasswordVisibility = () =>
+    {
+        this.setState({ hidePassword: false });
     }
 
     render() {
@@ -48,6 +56,7 @@ export default class Opening extends React.Component {
                     <View style={styles.textInputContainer}>
                         <TextInput
                             style={styles.textInput}
+                            secureTextEntry = { this.state.hidePassword }
                             placeholder="Şifre                                              "
                             placeholderTextColor={'#8A8888'}
                             onChangeText={text => {
@@ -79,7 +88,7 @@ export default class Opening extends React.Component {
                         )}
                         {this.state.showPasswordEye && (
                             <View style={styles.eyeContainer}>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress = { this.managePasswordVisibility }>
                                     <Image
                                         source={eye}
                                         style={{
