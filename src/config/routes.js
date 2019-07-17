@@ -16,10 +16,10 @@ const RouterComp = () => {
     return (
         <Router>
             <Scene key="root" hideNavBar={true}>
-                <Scene key="opening" component={Opening} />
-                <Scene key="login" component={Login} />
-                <Scene key="register" component={Register} />
-                <Scene key={'resetPassword'} component={ResetPassword} />
+                <Scene key={sceneKeys.opening}  component={Opening} />
+                <Scene key={sceneKeys.login} component={Login} />
+                <Scene key={sceneKeys.register} component={Register} />
+                <Scene key={sceneKeys.resetPassword} component={ResetPassword} />
             </Scene>
         </Router>
     )
