@@ -32,21 +32,40 @@ export default StyleSheet.create({
     textInputContainer: {
         height: hp(7),
         width: wp(85),
-        borderWidth: 1,
+        borderWidth: wp(0.3),
         borderRadius: 10,
         borderColor: '#989696',
         backgroundColor: '#fcfcfc',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
     textInput: {
         marginLeft: wp(4),
         fontSize: hp(2)
     },
+    forgetPasswordContainer: {
+        backgroundColor: '#fcfcfc',
+        height: hp(6),
+        width: wp(27),
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        marginRight: wp(4.5),
+        marginBottom: wp(0.4)
+    },
+    eyeContainer: {
+        backgroundColor: '#fcfcfc',
+        height: hp(6),
+        width: wp(15),
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: wp(1),
+        marginBottom: wp(0.4)
+    },
     forgetPasswordText: {
         fontFamily: 'Averta-Bold',
         color: '#00D9EF',
         fontSize: hp(2),
-        marginTop: hp(1.85),
-        marginLeft: wp(40)
     }
 })

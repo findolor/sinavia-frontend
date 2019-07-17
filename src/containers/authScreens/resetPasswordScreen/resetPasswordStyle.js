@@ -30,16 +30,15 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     textContainer: {
-        height: hp(7),
-        width: wp(100),
+        height: hp(8),
+        width: wp(85),
         backgroundColor: '#fcfcfc',
-        justifyContent: 'space-around',
-        alignItems: 'center'
+        justifyContent: 'center',
+        alignItems: 'flex-start',
     },
     textStyle: {
         fontFamily: 'Averta-Regular',
         color: '#8A8888',
         fontSize: hp(2),
-        marginLeft: wp(8)
     }
 })

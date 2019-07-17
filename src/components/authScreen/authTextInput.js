@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     textInputContainer: {
         height: hp(7),
         width: wp(85),
-        borderWidth: 1,
+        borderWidth: wp(0.3),
         borderRadius: 10,
         borderColor: '#989696',
         backgroundColor: 'white',

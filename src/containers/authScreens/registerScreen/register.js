@@ -6,7 +6,7 @@ import {
     StatusBar,
     Text,
     TouchableOpacity,
-    Switch
+    Switch, TextInput
 } from 'react-native'
 import { sceneKeys, navigationPush } from '../../../services/navigationService'
 import {
@@ -17,12 +17,15 @@ import { AuthButton } from '../../../components/authScreen/authButton'
 import { AuthTextInput } from '../../../components/authScreen/authTextInput'
 import sinaviaLogo from '../../../assets/sinavia_logo_cut.png'
 import styles from './registerStyle'
+import eye from '../../../assets/eye.png'
 
 export default class Register extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            switchValue: false
+            switchValue: false,
+            showPasswordEye1: false,
+            showPasswordEye2: false
         }
     }
 
@@ -76,16 +79,70 @@ export default class Register extends React.Component {
                         />
                     </View>
                     <View style={styles.textInputBorderContainer}>
-                        <AuthTextInput
-                            placeholder="Şifre "
-                            placeholderTextColor="#8A8888"
-                        />
+                        <View style={styles.textInputContainer}>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder="Şifre                                              "
+                                placeholderTextColor={'#8A8888'}
+                                onChangeText={text => {
+                                    if (text === '') {
+                                        this.setState({
+                                            showPasswordEye1: false
+                                        })
+                                    } else {
+                                        this.setState({
+                                            showPasswordEye1: true
+                                        })
+                                    }
+                                }}
+                            />
+                            {this.state.showPasswordEye1 && (
+                                <View style={styles.eyeContainer}>
+                                    <TouchableOpacity>
+                                        <Image
+                                            source={eye}
+                                            style={{
+                                                height: hp(3),
+                                                width: wp(9)
+                                            }}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                            )}
+                        </View>
                     </View>
                     <View style={styles.textInputBorderContainer}>
-                        <AuthTextInput
-                            placeholder="Şifre (Tekrar)"
-                            placeholderTextColor="#8A8888"
-                        />
+                        <View style={styles.textInputContainer}>
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder="Şifre (Tekrar)                                             "
+                                placeholderTextColor={'#8A8888'}
+                                onChangeText={text => {
+                                    if (text === '') {
+                                        this.setState({
+                                            showPasswordEye2: false
+                                        })
+                                    } else {
+                                        this.setState({
+                                            showPasswordEye2: true
+                                        })
+                                    }
+                                }}
+                            />
+                            {this.state.showPasswordEye2 && (
+                                <View style={styles.eyeContainer}>
+                                    <TouchableOpacity>
+                                        <Image
+                                            source={eye}
+                                            style={{
+                                                height: hp(3),
+                                                width: wp(9)
+                                            }}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                            )}
+                        </View>
                     </View>
                 </View>
                 <View style={styles.toggleContainer}>

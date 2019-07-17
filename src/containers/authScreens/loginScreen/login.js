@@ -16,9 +16,16 @@ import {
 import { AuthButton } from '../../../components/authScreen/authButton'
 import { AuthTextInput } from '../../../components/authScreen/authTextInput'
 import sinaviaLogo from '../../../assets/sinavia_logo_cut.png'
+import eye from '../../../assets/eye.png'
 import styles from './loginStyle'
 
 export default class Opening extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = { showForgotPasswordText: true }
+        this.state = { showPasswordEye: false }
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -35,24 +42,54 @@ export default class Opening extends React.Component {
                 </View>
                 <View style={styles.textInputsContainer}>
                     <AuthTextInput
-                        placeholder="Kullanıcı Adı veya E-Posta"
+                        placeholder="Kullanıcı Adı veya E-Posta                             "
                         placeholderTextColor="#8A8888"
                     />
                     <View style={styles.textInputContainer}>
                         <TextInput
                             style={styles.textInput}
-                            placeholder="Şifre"
+                            placeholder="Şifre                                              "
                             placeholderTextColor={'#8A8888'}
-                        />
-                        <TouchableOpacity
-                            onPress={() => {
-                                navigationPush(sceneKeys.resetPassword)
+                            onChangeText={text => {
+                                if (text === '') {
+                                    this.setState({
+                                        showForgotPasswordText: true,
+                                        showPasswordEye: false
+                                    })
+                                } else {
+                                    this.setState({
+                                        showForgotPasswordText: false,
+                                        showPasswordEye: true
+                                    })
+                                }
                             }}
-                        >
-                            <Text style={styles.forgetPasswordText}>
-                                Şifremi Unuttum
-                            </Text>
-                        </TouchableOpacity>
+                        />
+                        {this.state.showForgotPasswordText && (
+                            <View style={styles.forgetPasswordContainer}>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        navigationPush(sceneKeys.resetPassword)
+                                    }}
+                                >
+                                    <Text style={styles.forgetPasswordText}>
+                                        Şifremi Unuttum
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        )}
+                        {this.state.showPasswordEye && (
+                            <View style={styles.eyeContainer}>
+                                <TouchableOpacity>
+                                    <Image
+                                        source={eye}
+                                        style={{
+                                            height: hp(3),
+                                            width: wp(9)
+                                        }}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                        )}
                     </View>
                 </View>
                 <View style={styles.buttonContainer}>

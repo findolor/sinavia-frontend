@@ -43,6 +43,17 @@ export default StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row'
     },
+    textInputContainer: {
+        height: hp(7),
+        width: wp(85),
+        borderWidth: wp(0.3),
+        borderRadius: 10,
+        borderColor: '#989696',
+        backgroundColor: '#fcfcfc',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
     toggleText: {
         fontFamily: 'Averta-Regular',
         fontSize: hp(1.7),
@@ -68,5 +79,19 @@ export default StyleSheet.create({
         width: wp(72),
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    eyeContainer: {
+        backgroundColor: '#fcfcfc',
+        height: hp(6),
+        width: wp(15),
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: wp(1),
+        marginBottom: wp(0.4)
+    },
+    textInput: {
+        fontFamily: 'Averta-Regular',
+        marginLeft: wp(4),
+        fontSize: hp(2)
     }
 })
