@@ -1,18 +1,19 @@
 import React from 'react';
-import { StyleSheet, Image, View, Text, TextInput, TouchableOpacity } from 'react-native'
-import { sceneKeys, navigationPush } from '../services/navigationService'
+import { StyleSheet, Image, View, StatusBar, Text} from 'react-native'
+import { sceneKeys, navigationPush } from '../../services/navigationService'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {AuthButton} from '../components/authScreen/authButton'
-import {AuthTextInput} from '../components/authScreen/authTextInput'
+import {AuthButton} from '../../components/authScreen/authButton'
+import {AuthTextInput} from '../../components/authScreen/authTextInput'
 
 export default class Opening extends React.Component {
 
     render() {
         return (
             <View style={styles.container}>
+                <StatusBar hidden />
                 <View style={styles.imageContainer}>
                     <Image
-                        source = {require('../assets/sinavia_logo_cut.png')}
+                        source = {require('../../assets/sinavia_logo_cut.png')}
                         style = {{
                             height: hp(45),
                             resizeMode: 'contain',
@@ -20,7 +21,7 @@ export default class Opening extends React.Component {
                         }}/>
                 </View>
                 <View style={styles.textInputsContainer}>
-                    <AuthTextInput placeholder='Kullanıcı Adı veya E-Posta'/>
+                    <AuthTextInput placeholder='Kullanıcı Adı veya E-posta   '/>
                 </View>
                 <View style={styles.textContainer}>
                     <Text style={styles.textStyle}>Uygulamada kullanmakta olduğun e-posta'nı gir, biz de sana şifreni yenilemen için bir link gönderelim.</Text>
@@ -39,37 +40,38 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: 'white',
+        backgroundColor: '#fcfcfc',
     },
     imageContainer: {
         height: hp(55),
         width: wp(100),
-        backgroundColor: 'white',
+        backgroundColor: '#fcfcfc',
         justifyContent: 'center',
         alignItems: 'center'
     },
     textInputsContainer: {
         height: hp(10),
         width: wp(100),
-        backgroundColor: 'white',
+        backgroundColor: '#fcfcfc',
         justifyContent: 'space-around',
         alignItems: 'center',
     },
     buttonContainer: {
         height: hp(16),
         width: wp(100),
-        backgroundColor: 'white',
+        backgroundColor: '#fcfcfc',
         justifyContent: 'center',
         alignItems: 'center',
     },
     textContainer: {
         height: hp(7),
         width: wp(100),
-        backgroundColor: 'white',
+        backgroundColor: '#fcfcfc',
         justifyContent: 'space-around',
         alignItems: 'center',
     },
     textStyle: {
+        fontFamily: 'Averta-Regular',
         color: '#8A8888',
         fontSize: hp(2),
         marginLeft: wp(8),

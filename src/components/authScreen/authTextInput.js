@@ -4,14 +4,14 @@ import React from "react";
 
 const AuthTextInput = ({ placeholder, onChangeText, value, text }) => {
     return (
-            <View style={styles.textInputContainer}>
-                <TextInput style={styles.textInput}
-                           placeholder={placeholder}
-                           placeholderTextColor={'#8A8888'}
-                           onChangeText={onChangeText}
-                           value={value}
-                />
-            </View>
+        <View style={styles.textInputContainer}>
+            <TextInput style={styles.textInput}
+                       placeholder={placeholder}
+                       placeholderTextColor={'#8A8888'}
+                       onChangeText={onChangeText}
+                       value={value}
+            />
+        </View>
     );
 }
 
@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     textInput: {
+        fontFamily: 'Averta-Regular',
         marginLeft: wp(4),
         fontSize: hp(2)
     }

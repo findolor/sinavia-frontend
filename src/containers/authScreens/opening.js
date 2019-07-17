@@ -1,20 +1,22 @@
 import React from 'react';
-import {StyleSheet, Image, View, Text } from 'react-native';
-import { sceneKeys, navigationPush } from '../services/navigationService'
+import {StyleSheet, Image, StatusBar, View, Text } from 'react-native';
+import { sceneKeys, navigationPush } from '../../services/navigationService'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {AuthButton} from '../components/authScreen/authButton'
+import {AuthButton} from '../../components/authScreen/authButton'
 
 export default class Opening extends React.Component {
 
     render() {
         return (
             <View style={styles.container}>
+                <StatusBar hidden />
                 <View style={styles.imageContainer}>
                     <Image
-                        source = {require('../assets/sinavia_logo_cut.png')}
+                        source = {require('../../assets/sinavia_logo_cut.png')}
                         style = {{
                             height: hp(40),
                             resizeMode: 'contain',
+                            marginTop: hp(3)
                         }}/>
                     <Text style={styles.sinaviaText}>Sınavia</Text>
                 </View>
@@ -46,32 +48,32 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: '#efefef',
+        backgroundColor: '#fcfcfc',
     },
     imageContainer: {
         height: hp(55),
-        backgroundColor: '#efefef',
+        backgroundColor: '#fcfcfc',
         justifyContent: 'center',
         alignItems: 'center',
     },
     buttonContainer: {
         height: hp(18),
         width: wp(100),
-        backgroundColor: '#efefef',
+        backgroundColor: '#fcfcfc',
         justifyContent: 'space-evenly',
         alignItems: 'center',
     },
     sinaviaText: {
+        fontFamily: 'Averta-ExtraBoldItalic',
         fontSize: hp(10),
         resizeMode: 'contain',
-        fontStyle: 'italic',
-        color: '#00D9EF'
+        color: '#00D9EF',
     },
     separatorContainer: {
         alignItems: 'center',
         flexDirection: 'row',
         marginVertical: hp(0),
-        backgroundColor: '#efefef',
+        backgroundColor: '#fcfcfc',
         height: hp(3),
         width: wp(85)
     },
@@ -82,6 +84,7 @@ const styles = StyleSheet.create({
         borderColor: '#9B9FA4'
     },
     separatorOr: {
+        fontFamily: 'Averta-Semibold',
         color: '#9B9FA4',
         marginHorizontal: 8
     }

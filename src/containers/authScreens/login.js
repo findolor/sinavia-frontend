@@ -1,18 +1,19 @@
 import React from 'react';
-import { StyleSheet, Image, View, Text, TextInput, TouchableOpacity } from 'react-native'
-import { sceneKeys, navigationPush } from '../services/navigationService'
+import { StyleSheet, Image, View, StatusBar, Text, TextInput, TouchableOpacity } from 'react-native'
+import { sceneKeys, navigationPush } from '../../services/navigationService'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {AuthButton} from '../components/authScreen/authButton'
-import {AuthTextInput} from '../components/authScreen/authTextInput'
+import {AuthButton} from '../../components/authScreen/authButton'
+import {AuthTextInput} from '../../components/authScreen/authTextInput'
 
 export default class Opening extends React.Component {
 
     render() {
         return (
             <View style={styles.container}>
+                <StatusBar hidden />
                 <View style={styles.imageContainer}>
                     <Image
-                        source = {require('../assets/sinavia_logo_cut.png')}
+                        source = {require('../../assets/sinavia_logo_cut.png')}
                         style = {{
                             height: hp(40),
                             resizeMode: 'contain',
@@ -47,26 +48,26 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: '#efefef',
+        backgroundColor: '#fcfcfc',
     },
     imageContainer: {
         height: hp(55),
         width: wp(100),
-        backgroundColor: 'white',
+        backgroundColor: '#fcfcfc',
         justifyContent: 'center',
         alignItems: 'center'
     },
     textInputsContainer: {
         height: hp(20),
         width: wp(100),
-        backgroundColor: 'white',
+        backgroundColor: '#fcfcfc',
         justifyContent: 'space-around',
         alignItems: 'center'
     },
     buttonContainer: {
         height: hp(22),
         width: wp(100),
-        backgroundColor: 'white',
+        backgroundColor: '#fcfcfc',
         justifyContent: 'space-around',
         alignItems: 'center',
     },
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 10,
         borderColor: '#989696',
-        backgroundColor: 'white',
+        backgroundColor: '#fcfcfc',
         flexDirection: 'row'
     },
     textInput: {
@@ -84,6 +85,7 @@ const styles = StyleSheet.create({
         fontSize: hp(2)
     },
     forgetPasswordText: {
+        fontFamily: 'Averta-Bold',
         color: '#00D9EF',
         fontSize: hp(2),
         marginTop: hp(1.85),
