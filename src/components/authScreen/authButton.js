@@ -1,15 +1,33 @@
-import React from 'react';
-import {StyleSheet, TouchableHighlight, Text } from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import React from 'react'
+import { StyleSheet, TouchableHighlight, Text } from 'react-native'
+import {
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp
+} from 'react-native-responsive-screen'
 
-const AuthButton = ({ color, onPressedColor, underlayColor, buttonText, onPress, marginTop, marginBottom }) => {
+const AuthButton = ({
+    color,
+    onPressedColor,
+    underlayColor,
+    buttonText,
+    onPress,
+    marginTop,
+    marginBottom
+}) => {
     return (
-        <TouchableHighlight style={[styles.button, {backgroundColor: color}, {marginTop: marginTop}, {marginBottom: marginBottom}]}
-                            underlayColor={underlayColor}
-                            onPress={onPress}>
+        <TouchableHighlight
+            style={[
+                styles.button,
+                { backgroundColor: color },
+                { marginTop: marginTop },
+                { marginBottom: marginBottom }
+            ]}
+            underlayColor={underlayColor}
+            onPress={onPress}
+        >
             <Text style={styles.buttonText}>{buttonText}</Text>
         </TouchableHighlight>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -18,21 +36,21 @@ const styles = StyleSheet.create({
         width: wp(100),
         backgroundColor: '#efefef',
         justifyContent: 'space-evenly',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     button: {
         width: wp(85),
         height: hp(7),
         borderRadius: 10,
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     buttonText: {
         fontFamily: 'Averta-Semibold',
         color: '#FFFFFF',
         letterSpacing: wp(0.1),
         fontSize: hp(2.5)
-    },
-});
+    }
+})
 
-export { AuthButton };
+export { AuthButton }

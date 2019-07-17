@@ -1,18 +1,28 @@
-import {StyleSheet, Text, TextInput, View} from "react-native";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import React from "react";
+import { StyleSheet, Text, TextInput, View } from 'react-native'
+import {
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp
+} from 'react-native-responsive-screen'
+import React from 'react'
 
-const AuthTextInput = ({ placeholder, onChangeText, value, text }) => {
+const AuthTextInput = ({
+    placeholder,
+    placeholderTextColor,
+    onChangeText,
+    value,
+    text
+}) => {
     return (
         <View style={styles.textInputContainer}>
-            <TextInput style={styles.textInput}
-                       placeholder={placeholder}
-                       placeholderTextColor={'#8A8888'}
-                       onChangeText={onChangeText}
-                       value={value}
+            <TextInput
+                style={styles.textInput}
+                placeholder={placeholder}
+                placeholderTextColor={placeholderTextColor}
+                onChangeText={onChangeText}
+                value={value}
             />
         </View>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -31,13 +41,13 @@ const styles = StyleSheet.create({
         borderColor: '#989696',
         backgroundColor: 'white',
         alignItems: 'flex-start',
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     textInput: {
         fontFamily: 'Averta-Regular',
         marginLeft: wp(4),
         fontSize: hp(2)
     }
-});
+})
 
-export { AuthTextInput };
+export { AuthTextInput }
