@@ -47,21 +47,23 @@ export default StyleSheet.create({
     forgetPasswordContainer: {
         backgroundColor: '#fcfcfc',
         height: hp(6),
-        width: wp(27),
+        width: wp(50),
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        marginRight: wp(4.5),
-        marginBottom: wp(5)
+        marginLeft: wp(30),
+        marginBottom: wp(0.4),
+        position: 'absolute'
     },
     eyeContainer: {
         backgroundColor: '#fcfcfc',
-        height: hp(6),
-        width: wp(15),
+        height: hp(6.5),
+        width: wp(18),
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: wp(1),
-        marginBottom: wp(0.4)
+        marginLeft: wp(63),
+        marginBottom: wp(0.4),
+        position: 'absolute'
     },
     forgetPasswordText: {
         fontFamily: 'Averta-Bold',
