@@ -18,11 +18,16 @@ import { AuthTextInput } from '../../../components/authScreen/authTextInput'
 import sinaviaLogo from '../../../assets/sinavia_logo_cut.png'
 import styles from './registerStyle'
 import eye from '../../../assets/eye.png'
+import DateTimePicker from "react-native-modal-datetime-picker";
+import moment from "moment";
 
 export default class Register extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            birthDate: '',
+            birthDateUI: 'Doğum Tarihi  ',
+            isDateTimePickerVisible: false,
             switchValue: false,
             showPasswordEye1: false,
             showPasswordEye2: false,
@@ -41,6 +46,22 @@ export default class Register extends React.Component {
 
     toggleSwitch = value => {
         this.setState({ switchValue: value })
+    }
+
+    showDateTimePicker = () => {
+        this.setState({ isDateTimePickerVisible: true });
+    }
+
+    hideDateTimePicker = () => {
+        this.setState({ isDateTimePickerVisible: false });
+    }
+
+    handleDatePicked = date => {
+        this.hideDateTimePicker();
+        this.setState({
+            birthDate:  date.toISOString(),
+            birthDateUI: moment(new Date(date.toString().substr(0, 16))).format('DD-MM-YYYY')
+        });
     }
 
     render() {
@@ -71,9 +92,16 @@ export default class Register extends React.Component {
                         />
                     </View>
                     <View style={styles.textInputBorderContainer}>
+                        <TouchableOpacity onPress={this.showDateTimePicker}>
                         <AuthTextInput
-                            placeholder="Doğum Tarihi "
+                            placeholder={'Doğum Tarihi:' && this.state.birthDateUI}
                             placeholderTextColor="#8A8888"
+                        />
+                        </TouchableOpacity>
+                        <DateTimePicker
+                            isVisible={this.state.isDateTimePickerVisible}
+                            onConfirm={this.handleDatePicked}
+                            onCancel={this.hideDateTimePicker}
                         />
                     </View>
                     <View style={styles.textInputBorderContainer}>
