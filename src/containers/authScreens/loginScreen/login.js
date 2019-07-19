@@ -49,15 +49,15 @@ export default class Opening extends React.Component {
                 </View>
                 <View style={styles.textInputsContainer}>
                     <AuthTextInput
-                        placeholder="Kullanıcı Adı veya E-Posta                             "
-                        placeholderTextColor="#8A8888"
+                        placeholder='Kullanıcı Adı veya E-Posta                                                                 '
+                        placeholderTextColor='#8A8888'
                     />
                     <View style={styles.textInputContainer}>
                         <TextInput
                             style={styles.textInput}
                             secureTextEntry={this.state.hidePassword}
-                            placeholder="Şifre                                              "
-                            placeholderTextColor={'#8A8888'}
+                            placeholder='Şifre                                                                                  '
+                            placeholderTextColor='#8A8888'
                             onChangeText={text => {
                                 if (text === '') {
                                     this.setState({

@@ -81,22 +81,23 @@ export default class Register extends React.Component {
                 <View style={styles.allTextInputsContainer}>
                     <View style={styles.textInputBorderContainer}>
                         <AuthTextInput
-                            placeholder="Kullanıcı Adı "
+                            placeholder="Kullanıcı Adı                                                                          "
                             placeholderTextColor="#8A8888"
                         />
                     </View>
                     <View style={styles.textInputBorderContainer}>
                         <AuthTextInput
-                            placeholder="Ad Soyad "
+                            placeholder="Ad Soyad                                                                               "
                             placeholderTextColor="#8A8888"
                         />
                     </View>
                     <View style={styles.textInputBorderContainer}>
                         <TouchableOpacity onPress={this.showDateTimePicker}>
-                        <AuthTextInput
-                            placeholder={'Doğum Tarihi:' && this.state.birthDateUI}
-                            placeholderTextColor="#8A8888"
-                        />
+                            <View style={styles.textInputContainer}>
+                                <Text style={styles.textInput}>
+                                    {this.state.birthDateUI}
+                                </Text>
+                            </View>
                         </TouchableOpacity>
                         <DateTimePicker
                             isVisible={this.state.isDateTimePickerVisible}
@@ -106,13 +107,13 @@ export default class Register extends React.Component {
                     </View>
                     <View style={styles.textInputBorderContainer}>
                         <AuthTextInput
-                            placeholder="Şehir "
+                            placeholder="Şehir                                                                                  "
                             placeholderTextColor="#8A8888"
                         />
                     </View>
                     <View style={styles.textInputBorderContainer}>
                         <AuthTextInput
-                            placeholder="E-Posta "
+                            placeholder="E-Posta                                                                                "
                             placeholderTextColor="#8A8888"
                         />
                     </View>
@@ -121,7 +122,7 @@ export default class Register extends React.Component {
                             <TextInput
                                 style={styles.textInput}
                                 secureTextEntry={this.state.hidePassword}
-                                placeholder="Şifre                                              "
+                                placeholder='Şifre                                                                              '
                                 placeholderTextColor={'#8A8888'}
                                 onChangeText={text => {
                                     if (text === '') {
@@ -157,7 +158,7 @@ export default class Register extends React.Component {
                             <TextInput
                                 style={styles.textInput}
                                 secureTextEntry={this.state.hidePassword2}
-                                placeholder="Şifre (Tekrar)                                             "
+                                placeholder='Şifre (Tekrar)                                                                     '
                                 placeholderTextColor={'#8A8888'}
                                 onChangeText={text => {
                                     if (text === '') {
