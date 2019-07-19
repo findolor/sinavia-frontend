@@ -30,7 +30,7 @@ export default class Opening extends React.Component {
     }
 
     managePasswordVisibility = () => {
-        this.setState({ hidePassword: false })
+        this.setState({ hidePassword: !this.state.hidePassword })
     }
 
     render() {

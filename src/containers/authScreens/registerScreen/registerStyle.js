@@ -82,12 +82,13 @@ export default StyleSheet.create({
     },
     eyeContainer: {
         backgroundColor: '#fcfcfc',
-        height: hp(6),
+        height: hp(6.5),
         width: wp(15),
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: wp(1),
-        marginBottom: wp(0.4)
+        marginLeft: wp(66),
+        marginBottom: wp(0.4),
+        position: 'absolute'
     },
     textInput: {
         fontFamily: 'Averta-Regular',

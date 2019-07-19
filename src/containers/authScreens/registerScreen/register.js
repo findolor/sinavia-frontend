@@ -25,8 +25,18 @@ export default class Register extends React.Component {
         this.state = {
             switchValue: false,
             showPasswordEye1: false,
-            showPasswordEye2: false
+            showPasswordEye2: false,
+            hidePassword: true,
+            hidePassword2: true
         }
+    }
+
+    managePasswordVisibility = () => {
+        this.setState({ hidePassword: !this.state.hidePassword })
+    }
+
+    managePasswordVisibility2 = () => {
+        this.setState({ hidePassword2: !this.state.hidePassword2 })
     }
 
     toggleSwitch = value => {
@@ -82,6 +92,7 @@ export default class Register extends React.Component {
                         <View style={styles.textInputContainer}>
                             <TextInput
                                 style={styles.textInput}
+                                secureTextEntry={this.state.hidePassword}
                                 placeholder="Şifre                                              "
                                 placeholderTextColor={'#8A8888'}
                                 onChangeText={text => {
@@ -98,7 +109,9 @@ export default class Register extends React.Component {
                             />
                             {this.state.showPasswordEye1 && (
                                 <View style={styles.eyeContainer}>
-                                    <TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={this.managePasswordVisibility}
+                                    >
                                         <Image
                                             source={eye}
                                             style={{
@@ -115,6 +128,7 @@ export default class Register extends React.Component {
                         <View style={styles.textInputContainer}>
                             <TextInput
                                 style={styles.textInput}
+                                secureTextEntry={this.state.hidePassword2}
                                 placeholder="Şifre (Tekrar)                                             "
                                 placeholderTextColor={'#8A8888'}
                                 onChangeText={text => {
@@ -131,7 +145,9 @@ export default class Register extends React.Component {
                             />
                             {this.state.showPasswordEye2 && (
                                 <View style={styles.eyeContainer}>
-                                    <TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={this.managePasswordVisibility2}
+                                    >
                                         <Image
                                             source={eye}
                                             style={{
