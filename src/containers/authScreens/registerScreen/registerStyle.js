@@ -10,6 +10,7 @@ export default StyleSheet.create({
     },
     imageContainer: {
         height: hp(21),
+        width: wp(100),
         backgroundColor: '#fcfcfc',
         justifyContent: 'center',
         alignItems: 'center'
