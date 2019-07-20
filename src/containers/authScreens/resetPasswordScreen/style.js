@@ -1,10 +1,13 @@
 import { StyleSheet } from 'react-native'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen"
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
 
 export default StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#fcfcfc'
     },
@@ -34,11 +37,11 @@ export default StyleSheet.create({
         width: wp(85),
         backgroundColor: '#fcfcfc',
         justifyContent: 'center',
-        alignItems: 'flex-start',
+        alignItems: 'flex-start'
     },
     textStyle: {
         fontFamily: 'Averta-Regular',
         color: '#8A8888',
-        fontSize: hp(2),
+        fontSize: hp(2)
     }
 })

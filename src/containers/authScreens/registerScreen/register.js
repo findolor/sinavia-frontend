@@ -6,7 +6,9 @@ import {
     Text,
     TouchableOpacity,
     Switch,
-    TextInput
+    TextInput,
+    Animated,
+    Keyboard
 } from 'react-native'
 import { sceneKeys, navigationPush } from '../../../services/navigationService'
 import {
@@ -33,6 +35,42 @@ export default class Register extends React.Component {
             hidePassword: true,
             hidePassword2: true
         }
+
+        this.keyboardHeight = new Animated.Value(0)
+    }
+
+    componentWillMount() {
+        this.keyboardWillShowSub = Keyboard.addListener(
+            'keyboardWillShow',
+            this.keyboardWillShow
+        )
+        this.keyboardWillHideSub = Keyboard.addListener(
+            'keyboardWillHide',
+            this.keyboardWillHide
+        )
+    }
+
+    componentWillUnmount() {
+        this.keyboardWillShowSub.remove()
+        this.keyboardWillHideSub.remove()
+    }
+
+    keyboardWillShow = event => {
+        Animated.parallel([
+            Animated.timing(this.keyboardHeight, {
+                duration: event.duration,
+                toValue: event.endCoordinates.height
+            })
+        ]).start()
+    }
+
+    keyboardWillHide = event => {
+        Animated.parallel([
+            Animated.timing(this.keyboardHeight, {
+                duration: event.duration,
+                toValue: 0
+            })
+        ]).start()
     }
 
     managePasswordVisibility = () => {
@@ -67,7 +105,12 @@ export default class Register extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <Animated.View
+                style={[
+                    styles.container,
+                    { paddingBottom: this.keyboardHeight }
+                ]}
+            >
                 <StatusBar hidden />
                 <View style={styles.imageContainer}>
                     <Image
@@ -223,7 +266,7 @@ export default class Register extends React.Component {
                         <Text style={styles.gotoLoginText2}>Giriş Yap</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </Animated.View>
         )
     }
 }

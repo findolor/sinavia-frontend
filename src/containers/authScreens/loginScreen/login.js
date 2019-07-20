@@ -5,7 +5,9 @@ import {
     StatusBar,
     Text,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    Keyboard,
+    Animated
 } from 'react-native'
 import { sceneKeys, navigationPush } from '../../../services/navigationService'
 import {
@@ -17,6 +19,9 @@ import sinaviaLogo from '../../../assets/sinavia_logo_cut.png'
 import eye from '../../../assets/eye.png'
 import styles from './style'
 
+const IMAGE_HEIGHT = hp(40)
+const IMAGE_HEIGHT_SMALL = hp(30)
+
 export default class Opening extends React.Component {
     constructor(props) {
         super(props)
@@ -25,6 +30,51 @@ export default class Opening extends React.Component {
             showPasswordEye: false,
             hidePassword: true
         }
+
+        this.keyboardHeight = new Animated.Value(0)
+        this.imageHeight = new Animated.Value(IMAGE_HEIGHT)
+    }
+
+    componentWillMount() {
+        this.keyboardWillShowSub = Keyboard.addListener(
+            'keyboardWillShow',
+            this.keyboardWillShow
+        )
+        this.keyboardWillHideSub = Keyboard.addListener(
+            'keyboardWillHide',
+            this.keyboardWillHide
+        )
+    }
+
+    componentWillUnmount() {
+        this.keyboardWillShowSub.remove()
+        this.keyboardWillHideSub.remove()
+    }
+
+    keyboardWillShow = event => {
+        Animated.parallel([
+            Animated.timing(this.keyboardHeight, {
+                duration: event.duration,
+                toValue: event.endCoordinates.height - hp(10)
+            }),
+            Animated.timing(this.imageHeight, {
+                duration: event.duration,
+                toValue: IMAGE_HEIGHT_SMALL
+            })
+        ]).start()
+    }
+
+    keyboardWillHide = event => {
+        Animated.parallel([
+            Animated.timing(this.keyboardHeight, {
+                duration: event.duration,
+                toValue: 0
+            }),
+            Animated.timing(this.imageHeight, {
+                duration: event.duration,
+                toValue: IMAGE_HEIGHT
+            })
+        ]).start()
     }
 
     managePasswordVisibility = () => {
@@ -33,16 +83,24 @@ export default class Opening extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <Animated.View
+                style={[
+                    styles.container,
+                    { paddingBottom: this.keyboardHeight }
+                ]}
+            >
                 <StatusBar hidden />
                 <View style={styles.imageContainer}>
-                    <Image
+                    <Animated.Image
                         source={sinaviaLogo}
-                        style={{
-                            height: hp(40),
-                            resizeMode: 'contain',
-                            marginTop: hp(10)
-                        }}
+                        style={[
+                            {
+                                height: hp(45),
+                                resizeMode: 'contain',
+                                marginTop: hp(7)
+                            },
+                            { height: this.imageHeight }
+                        ]}
                     />
                 </View>
                 <View style={styles.textInputsContainer}>
@@ -108,7 +166,7 @@ export default class Opening extends React.Component {
                         buttonText="Giriş Yap"
                     />
                 </View>
-            </View>
+            </Animated.View>
         )
     }
 }

@@ -7,7 +7,7 @@ import {
 export default StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#fcfcfc'
     },
