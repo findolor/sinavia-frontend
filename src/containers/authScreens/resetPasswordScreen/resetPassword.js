@@ -39,7 +39,7 @@ export default class Opening extends React.Component {
         Animated.parallel([
             Animated.timing(this.keyboardHeight, {
                 duration: event.duration,
-                toValue: event.endCoordinates.height - hp(10)
+                toValue: event.endCoordinates.height - hp(20)
             }),
             Animated.timing(this.imageHeight, {
                 duration: event.duration,
