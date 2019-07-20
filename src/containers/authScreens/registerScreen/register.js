@@ -26,14 +26,23 @@ export default class Register extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            birthDate: '',
+            // Register related stuff
             birthDateUI: 'Doğum Tarihi  ',
             isDateTimePickerVisible: false,
             switchValue: false,
             showPasswordEyeFirst: false,
             showPasswordEyeSecond: false,
             hidePasswordFirst: true,
-            hidePasswordSecond: true
+            hidePasswordSecond: true,
+            dateColor: '#7A7878',
+            // User Information
+            username: '',
+            name: '',
+            lastname: '',
+            city: '',
+            email: '',
+            password: '',
+            birthDate: ''
         }
 
         this.keyboardHeight = new Animated.Value(0)
@@ -99,8 +108,28 @@ export default class Register extends React.Component {
             birthDate: date.toISOString(),
             birthDateUI: moment(new Date(date.toString().substr(0, 16))).format(
                 'DD-MM-YYYY'
-            )
+            ),
+            dateColor: '#000'
         })
+    }
+
+    usernameOnChange = text => {
+        this.setState({ username: text })
+    }
+
+    nameLastameOnChange = text => {
+        let splittedText = text.split(/[ ,]+/)
+        let name = splittedText[0]
+        let lastname = splittedText[1]
+        this.setState({ name: name, lastname: lastname })
+    }
+
+    cityOnChange = text => {
+        this.setState({ city: text })
+    }
+
+    emailOnChange = text => {
+        this.setState({ email: text })
     }
 
     render() {
@@ -140,7 +169,12 @@ export default class Register extends React.Component {
                     <View style={styles.textInputBorderContainer}>
                         <TouchableOpacity onPress={this.showDateTimePicker}>
                             <View style={styles.textInputContainer}>
-                                <Text style={styles.textInput}>
+                                <Text
+                                    style={[
+                                        styles.textInput,
+                                        { color: this.state.dateColor }
+                                    ]}
+                                >
                                     {this.state.birthDateUI}
                                 </Text>
                             </View>
@@ -258,7 +292,17 @@ export default class Register extends React.Component {
                     color="#00D9EF"
                     underlayColor="#1a5d63"
                     buttonText="Kayıt Ol"
-                    onPress={() => {}}
+                    onPress={() => {
+                        console.log(
+                            this.state.username,
+                            this.state.name,
+                            this.state.lastname,
+                            this.state.city,
+                            this.state.email,
+                            this.state.birthDate,
+                            this.state.password
+                        )
+                    }}
                 />
                 <View style={styles.gotoLoginContainer}>
                     <Text style={styles.gotoLoginTextFirst}>
