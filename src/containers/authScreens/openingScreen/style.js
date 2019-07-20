@@ -1,5 +1,8 @@
 import { StyleSheet } from 'react-native'
-import { heightPercentageToDP as hp,widthPercentageToDP as wp } from "react-native-responsive-screen"
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
 
 export default StyleSheet.create({
     container: {
@@ -24,7 +27,6 @@ export default StyleSheet.create({
     sinaviaText: {
         fontFamily: 'Averta-ExtraBoldItalic',
         fontSize: hp(10),
-        resizeMode: 'contain',
         color: '#00D9EF'
     },
     separatorContainer: {

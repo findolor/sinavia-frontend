@@ -5,4 +5,9 @@ import {
     ResetPassword
 } from '../containers/authScreens'
 
-export const authScreens = { Opening, Login, Register, ResetPassword }
+export const authScreens = {
+    opening: Opening,
+    login: Login,
+    register: Register,
+    resetPassword: ResetPassword
+}

@@ -13,22 +13,22 @@ const RouterComp = () => {
     return (
         <Router>
             <Scene key="root" hideNavBar={true}>
-                <Scene key="auth">
+                <Scene key="auth" hideNavBar={true}>
                     <Scene
                         key={sceneKeys.opening}
-                        component={authScreens.Opening}
+                        component={authScreens.opening}
                     />
                     <Scene
                         key={sceneKeys.login}
-                        component={authScreens.Login}
+                        component={authScreens.login}
                     />
                     <Scene
                         key={sceneKeys.register}
-                        component={authScreens.Register}
+                        component={authScreens.register}
                     />
                     <Scene
                         key={sceneKeys.resetPassword}
-                        component={authScreens.ResetPassword}
+                        component={authScreens.resetPassword}
                     />
                 </Scene>
             </Scene>

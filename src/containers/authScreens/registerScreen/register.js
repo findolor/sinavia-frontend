@@ -196,9 +196,8 @@ export default class Register extends React.Component {
                         style={{ marginLeft: wp(7.5) }}
                         onValueChange={this.toggleSwitch}
                         value={this.state.switchValue}
-                        onTintColor="#00D9EF"
-                        thumbTintColor="#00D9EF"
-                        tintColor="#efefef"
+                        trackColor="#00D9EF"
+                        thumbColor="#00D9EF"
                     />
                     <View style={styles.licenseTextContainer}>
                         <Text style={styles.toggleText}>

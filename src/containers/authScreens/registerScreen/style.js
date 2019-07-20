@@ -1,5 +1,8 @@
 import { StyleSheet } from 'react-native'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen"
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
 
 export default StyleSheet.create({
     container: {
@@ -94,6 +97,7 @@ export default StyleSheet.create({
     textInput: {
         fontFamily: 'Averta-Regular',
         marginLeft: wp(4),
-        fontSize: hp(2)
+        fontSize: hp(2),
+        color: '#7A7878'
     }
 })
