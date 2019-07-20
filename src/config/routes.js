@@ -1,9 +1,6 @@
 import React from 'react'
 import { Scene, Router } from 'react-native-router-flux'
-import { Opening } from './containers'
-import { Login } from './containers'
-import { Register } from './containers'
-import { ResetPassword } from './containers'
+import { authScreens } from './containers'
 
 const sceneKeys = {
     opening: 'opening',
@@ -16,10 +13,24 @@ const RouterComp = () => {
     return (
         <Router>
             <Scene key="root" hideNavBar={true}>
-                <Scene key={sceneKeys.opening}  component={Opening} />
-                <Scene key={sceneKeys.login} component={Login} />
-                <Scene key={sceneKeys.register} component={Register} />
-                <Scene key={sceneKeys.resetPassword} component={ResetPassword} />
+                <Scene key="auth">
+                    <Scene
+                        key={sceneKeys.opening}
+                        component={authScreens.Opening}
+                    />
+                    <Scene
+                        key={sceneKeys.login}
+                        component={authScreens.Login}
+                    />
+                    <Scene
+                        key={sceneKeys.register}
+                        component={authScreens.Register}
+                    />
+                    <Scene
+                        key={sceneKeys.resetPassword}
+                        component={authScreens.ResetPassword}
+                    />
+                </Scene>
             </Scene>
         </Router>
     )

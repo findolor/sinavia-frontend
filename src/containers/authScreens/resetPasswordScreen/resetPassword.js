@@ -1,14 +1,13 @@
 import React from 'react'
-import { StyleSheet, Image, View, StatusBar, Text } from 'react-native'
+import { Image, View, StatusBar, Text } from 'react-native'
 import { sceneKeys, navigationPush } from '../../../services/navigationService'
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
-import { AuthButton } from '../../../components/authScreen/authButton'
-import { AuthTextInput } from '../../../components/authScreen/authTextInput'
+import { AuthButton, AuthTextInput } from '../../../components/authScreen'
 import sinaviaLogo from '../../../assets/sinavia_logo_cut.png'
-import styles from './resetPasswordStyle'
+import styles from './style'
 
 export default class Opening extends React.Component {
     render() {

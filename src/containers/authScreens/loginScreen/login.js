@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-    StyleSheet,
     Image,
     View,
     StatusBar,
@@ -13,11 +12,10 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
-import { AuthButton } from '../../../components/authScreen/authButton'
-import { AuthTextInput } from '../../../components/authScreen/authTextInput'
+import { AuthButton, AuthTextInput } from '../../../components/authScreen'
 import sinaviaLogo from '../../../assets/sinavia_logo_cut.png'
 import eye from '../../../assets/eye.png'
-import styles from './loginStyle'
+import styles from './style'
 
 export default class Opening extends React.Component {
     constructor(props) {
@@ -49,15 +47,15 @@ export default class Opening extends React.Component {
                 </View>
                 <View style={styles.textInputsContainer}>
                     <AuthTextInput
-                        placeholder='Kullanıcı Adı veya E-Posta                                                                 '
-                        placeholderTextColor='#8A8888'
+                        placeholder="Kullanıcı Adı veya E-Posta                                                                 "
+                        placeholderTextColor="#8A8888"
                     />
                     <View style={styles.textInputContainer}>
                         <TextInput
                             style={styles.textInput}
                             secureTextEntry={this.state.hidePassword}
-                            placeholder='Şifre                                                                                  '
-                            placeholderTextColor='#8A8888'
+                            placeholder="Şifre                                                                                  "
+                            placeholderTextColor="#8A8888"
                             onChangeText={text => {
                                 if (text === '') {
                                     this.setState({

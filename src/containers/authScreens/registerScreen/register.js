@@ -1,25 +1,24 @@
 import React from 'react'
 import {
-    StyleSheet,
     Image,
     View,
     StatusBar,
     Text,
     TouchableOpacity,
-    Switch, TextInput
+    Switch,
+    TextInput
 } from 'react-native'
 import { sceneKeys, navigationPush } from '../../../services/navigationService'
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
-import { AuthButton } from '../../../components/authScreen/authButton'
-import { AuthTextInput } from '../../../components/authScreen/authTextInput'
+import { AuthButton, AuthTextInput } from '../../../components/authScreen'
 import sinaviaLogo from '../../../assets/sinavia_logo_cut.png'
-import styles from './registerStyle'
+import styles from './style'
 import eye from '../../../assets/eye.png'
-import DateTimePicker from "react-native-modal-datetime-picker";
-import moment from "moment";
+import DateTimePicker from 'react-native-modal-datetime-picker'
+import moment from 'moment'
 
 export default class Register extends React.Component {
     constructor(props) {
@@ -49,19 +48,21 @@ export default class Register extends React.Component {
     }
 
     showDateTimePicker = () => {
-        this.setState({ isDateTimePickerVisible: true });
+        this.setState({ isDateTimePickerVisible: true })
     }
 
     hideDateTimePicker = () => {
-        this.setState({ isDateTimePickerVisible: false });
+        this.setState({ isDateTimePickerVisible: false })
     }
 
     handleDatePicked = date => {
-        this.hideDateTimePicker();
+        this.hideDateTimePicker()
         this.setState({
-            birthDate:  date.toISOString(),
-            birthDateUI: moment(new Date(date.toString().substr(0, 16))).format('DD-MM-YYYY')
-        });
+            birthDate: date.toISOString(),
+            birthDateUI: moment(new Date(date.toString().substr(0, 16))).format(
+                'DD-MM-YYYY'
+            )
+        })
     }
 
     render() {
@@ -122,7 +123,7 @@ export default class Register extends React.Component {
                             <TextInput
                                 style={styles.textInput}
                                 secureTextEntry={this.state.hidePassword}
-                                placeholder='Şifre                                                                              '
+                                placeholder="Şifre                                                                              "
                                 placeholderTextColor={'#8A8888'}
                                 onChangeText={text => {
                                     if (text === '') {
@@ -158,7 +159,7 @@ export default class Register extends React.Component {
                             <TextInput
                                 style={styles.textInput}
                                 secureTextEntry={this.state.hidePassword2}
-                                placeholder='Şifre (Tekrar)                                                                     '
+                                placeholder="Şifre (Tekrar)                                                                     "
                                 placeholderTextColor={'#8A8888'}
                                 onChangeText={text => {
                                     if (text === '') {
