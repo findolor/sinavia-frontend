@@ -35,7 +35,7 @@ export default class Opening extends React.Component {
         this.imageHeight = new Animated.Value(IMAGE_HEIGHT)
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.keyboardWillShowSub = Keyboard.addListener(
             'keyboardWillShow',
             this.keyboardWillShow

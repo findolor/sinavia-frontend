@@ -39,7 +39,7 @@ export default class Register extends React.Component {
         this.keyboardHeight = new Animated.Value(0)
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.keyboardWillShowSub = Keyboard.addListener(
             'keyboardWillShow',
             this.keyboardWillShow

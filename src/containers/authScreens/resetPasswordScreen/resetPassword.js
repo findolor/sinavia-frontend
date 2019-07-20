@@ -19,7 +19,7 @@ export default class Opening extends React.Component {
         this.imageHeight = new Animated.Value(IMAGE_HEIGHT)
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.keyboardWillShowSub = Keyboard.addListener(
             'keyboardWillShow',
             this.keyboardWillShow
@@ -39,7 +39,7 @@ export default class Opening extends React.Component {
         Animated.parallel([
             Animated.timing(this.keyboardHeight, {
                 duration: event.duration,
-                toValue: event.endCoordinates.height
+                toValue: event.endCoordinates.height - hp(10)
             }),
             Animated.timing(this.imageHeight, {
                 duration: event.duration,
