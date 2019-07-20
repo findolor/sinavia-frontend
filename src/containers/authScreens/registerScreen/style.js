@@ -63,14 +63,14 @@ export default StyleSheet.create({
         fontSize: hp(1.7),
         color: '#7A7878'
     },
-    gotoLoginText1: {
+    gotoLoginTextFirst: {
         fontFamily: 'Averta-Regular',
         color: '#7A7878',
         fontSize: hp(2),
         marginTop: hp(1),
         marginRight: wp(1)
     },
-    gotoLoginText2: {
+    gotoLoginTextSecond: {
         fontFamily: 'Averta-Regular',
         color: '#00D9EF',
         fontSize: hp(2),

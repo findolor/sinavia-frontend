@@ -30,10 +30,10 @@ export default class Register extends React.Component {
             birthDateUI: 'Doğum Tarihi  ',
             isDateTimePickerVisible: false,
             switchValue: false,
-            showPasswordEye1: false,
-            showPasswordEye2: false,
-            hidePassword: true,
-            hidePassword2: true
+            showPasswordEyeFirst: false,
+            showPasswordEyeSecond: false,
+            hidePasswordFirst: true,
+            hidePasswordSecond: true
         }
 
         this.keyboardHeight = new Animated.Value(0)
@@ -59,7 +59,7 @@ export default class Register extends React.Component {
         Animated.parallel([
             Animated.timing(this.keyboardHeight, {
                 duration: event.duration,
-                toValue: event.endCoordinates.height
+                toValue: event.endCoordinates.height - hp(3)
             })
         ]).start()
     }
@@ -74,11 +74,11 @@ export default class Register extends React.Component {
     }
 
     managePasswordVisibility = () => {
-        this.setState({ hidePassword: !this.state.hidePassword })
+        this.setState({ hidePasswordFirst: !this.state.hidePasswordFirst })
     }
 
     managePasswordVisibility2 = () => {
-        this.setState({ hidePassword2: !this.state.hidePassword2 })
+        this.setState({ hidePasswordSecond: !this.state.hidePasswordSecond })
     }
 
     toggleSwitch = value => {
@@ -127,12 +127,14 @@ export default class Register extends React.Component {
                         <AuthTextInput
                             placeholder="Kullanıcı Adı                                                                          "
                             placeholderTextColor="#8A8888"
+                            onChangeText={this.usernameOnChange}
                         />
                     </View>
                     <View style={styles.textInputBorderContainer}>
                         <AuthTextInput
                             placeholder="Ad Soyad                                                                               "
                             placeholderTextColor="#8A8888"
+                            onChangeText={this.nameLastameOnChange}
                         />
                     </View>
                     <View style={styles.textInputBorderContainer}>
@@ -153,34 +155,37 @@ export default class Register extends React.Component {
                         <AuthTextInput
                             placeholder="Şehir                                                                                  "
                             placeholderTextColor="#8A8888"
+                            onChangeText={this.cityOnChange}
                         />
                     </View>
                     <View style={styles.textInputBorderContainer}>
                         <AuthTextInput
                             placeholder="E-Posta                                                                                "
                             placeholderTextColor="#8A8888"
+                            onChangeText={this.emailOnChange}
                         />
                     </View>
                     <View style={styles.textInputBorderContainer}>
                         <View style={styles.textInputContainer}>
                             <TextInput
                                 style={styles.textInput}
-                                secureTextEntry={this.state.hidePassword}
+                                secureTextEntry={this.state.hidePasswordFirst}
                                 placeholder="Şifre                                                                              "
                                 placeholderTextColor={'#8A8888'}
                                 onChangeText={text => {
                                     if (text === '') {
                                         this.setState({
-                                            showPasswordEye1: false
+                                            showPasswordEyeFirst: false
                                         })
                                     } else {
                                         this.setState({
-                                            showPasswordEye1: true
+                                            showPasswordEyeFirst: true,
+                                            password: text
                                         })
                                     }
                                 }}
                             />
-                            {this.state.showPasswordEye1 && (
+                            {this.state.showPasswordEyeFirst && (
                                 <View style={styles.eyeContainer}>
                                     <TouchableOpacity
                                         onPress={this.managePasswordVisibility}
@@ -201,22 +206,23 @@ export default class Register extends React.Component {
                         <View style={styles.textInputContainer}>
                             <TextInput
                                 style={styles.textInput}
-                                secureTextEntry={this.state.hidePassword2}
+                                secureTextEntry={this.state.hidePasswordSecond}
                                 placeholder="Şifre (Tekrar)                                                                     "
                                 placeholderTextColor={'#8A8888'}
                                 onChangeText={text => {
                                     if (text === '') {
                                         this.setState({
-                                            showPasswordEye2: false
+                                            showPasswordEyeSecond: false
                                         })
                                     } else {
                                         this.setState({
-                                            showPasswordEye2: true
+                                            showPasswordEyeSecond: true,
+                                            secondPassword: text
                                         })
                                     }
                                 }}
                             />
-                            {this.state.showPasswordEye2 && (
+                            {this.state.showPasswordEyeSecond && (
                                 <View style={styles.eyeContainer}>
                                     <TouchableOpacity
                                         onPress={this.managePasswordVisibility2}
@@ -255,7 +261,7 @@ export default class Register extends React.Component {
                     onPress={() => {}}
                 />
                 <View style={styles.gotoLoginContainer}>
-                    <Text style={styles.gotoLoginText1}>
+                    <Text style={styles.gotoLoginTextFirst}>
                         Zaten bir hesabın var mı?
                     </Text>
                     <TouchableOpacity
@@ -263,7 +269,9 @@ export default class Register extends React.Component {
                             navigationPush(sceneKeys.login)
                         }}
                     >
-                        <Text style={styles.gotoLoginText2}>Giriş Yap</Text>
+                        <Text style={styles.gotoLoginTextSecond}>
+                            Giriş Yap
+                        </Text>
                     </TouchableOpacity>
                 </View>
             </Animated.View>

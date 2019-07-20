@@ -11,6 +11,7 @@ import styles from './style'
 
 const IMAGE_HEIGHT = hp(45)
 const IMAGE_HEIGHT_SMALL = hp(35)
+
 export default class Opening extends React.Component {
     constructor(props) {
         super(props)
