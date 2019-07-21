@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const getUserToken = async userInformation => {
+export const getToken = async userInformation => {
     try {
         const response = await axios.post(
             'http://localhost:4000/api/token',
