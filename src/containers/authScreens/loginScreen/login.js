@@ -24,7 +24,7 @@ const IMAGE_HEIGHT = hp(40)
 const IMAGE_HEIGHT_SMALL = hp(25)
 const ANIMATION_DURATION = 100
 
-export default class Opening extends React.Component {
+export default class Login extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
