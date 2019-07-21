@@ -8,6 +8,6 @@ export const getUserToken = async userInformation => {
         )
         return response.data.data.token
     } catch (err) {
-        return err
+        throw new Error(err)
     }
 }

@@ -7,23 +7,29 @@ export const userTypes = {
     GET_USER_TOKEN_SUCCESS: 'get_user_token_success'
 }
 
-export const createUser = userInformation => {
+const createUser = userInformation => {
     return {
         type: userTypes.CREATE_USER,
         payload: userInformation
     }
 }
 
-export const fetchUser = userToken => {
+const fetchUser = userToken => {
     return {
         type: userTypes.FETCH_USER,
         payload: userToken
     }
 }
 
-export const getToken = userInformation => {
+const getUserToken = userInformation => {
     return {
         type: userTypes.GET_USER_TOKEN,
         payload: userInformation
     }
+}
+
+export const userActions = {
+    createUser: createUser,
+    fetchUser: fetchUser,
+    getUserToken: getUserToken
 }
