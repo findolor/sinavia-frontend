@@ -21,7 +21,7 @@ export const fetchUser = userToken => {
     }
 }
 
-export const getToken = userInformation => {
+export const getUserToken = userInformation => {
     return {
         type: userTypes.GET_USER_TOKEN,
         payload: userInformation
