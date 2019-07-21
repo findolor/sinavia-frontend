@@ -1,4 +1,13 @@
-import Example from '../containers/example'
-import User from '../containers/user'
+import {
+    Opening,
+    Login,
+    Register,
+    ResetPassword
+} from '../containers/authScreens'
 
-export { Example, User }
+export const authScreens = {
+    opening: Opening,
+    login: Login,
+    register: Register,
+    resetPassword: ResetPassword
+}

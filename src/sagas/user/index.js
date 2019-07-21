@@ -1,6 +1,6 @@
-import { createUser } from './postUser'
-import { fetchUser } from './getUser'
-import { fetchUserToken } from './getUserToken'
+import { createUser } from './createUser'
+import { fetchUser } from './fetchUser'
+import { fetchUserToken } from './fetchUserToken'
 
 export const userSagas = {
     createUser: createUser,
