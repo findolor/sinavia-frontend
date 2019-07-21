@@ -7,7 +7,8 @@ import {
     TextInput,
     TouchableOpacity,
     Keyboard,
-    Animated
+    Animated,
+    Platform
 } from 'react-native'
 import { sceneKeys, navigationPush } from '../../../services/navigationService'
 import {
@@ -20,7 +21,7 @@ import eye from '../../../assets/eye.png'
 import styles from './style'
 
 const IMAGE_HEIGHT = hp(40)
-const IMAGE_HEIGHT_SMALL = hp(30)
+const IMAGE_HEIGHT_SMALL = hp(28)
 
 export default class Opening extends React.Component {
     constructor(props) {
@@ -36,26 +37,31 @@ export default class Opening extends React.Component {
     }
 
     componentDidMount() {
-        this.keyboardWillShowSub = Keyboard.addListener(
-            'keyboardWillShow',
-            this.keyboardWillShow
+        let keyboardShowEvent =
+            Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow'
+        let keyboardHideEvent =
+            Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide'
+
+        this.keyboardShowSub = Keyboard.addListener(
+            keyboardShowEvent,
+            this.keyboardShow
         )
-        this.keyboardWillHideSub = Keyboard.addListener(
-            'keyboardWillHide',
-            this.keyboardWillHide
+        this.keyboardHideSub = Keyboard.addListener(
+            keyboardHideEvent,
+            this.keyboardHide
         )
     }
 
     componentWillUnmount() {
-        this.keyboardWillShowSub.remove()
-        this.keyboardWillHideSub.remove()
+        this.keyboardShowSub.remove()
+        this.keyboardHideSub.remove()
     }
 
-    keyboardWillShow = event => {
+    keyboardShow = event => {
         Animated.parallel([
             Animated.timing(this.keyboardHeight, {
                 duration: event.duration,
-                toValue: event.endCoordinates.height - hp(20)
+                toValue: event.endCoordinates.height - hp(12)
             }),
             Animated.timing(this.imageHeight, {
                 duration: event.duration,
@@ -64,7 +70,7 @@ export default class Opening extends React.Component {
         ]).start()
     }
 
-    keyboardWillHide = event => {
+    keyboardHide = event => {
         Animated.parallel([
             Animated.timing(this.keyboardHeight, {
                 duration: event.duration,

@@ -8,6 +8,7 @@ export default function* root() {
     yield all([
         takeLatest(exampleTypes.SOME_TYPE_REQUEST, exampleSaga),
         // We fill this function with all of our sagas
+        // User Sagas
         takeLatest(userTypes.CREATE_USER, userSagas.createUser),
         takeLatest(userTypes.FETCH_USER, userSagas.fetchUser),
         takeLatest(userTypes.GET_USER_TOKEN, userSagas.fetchUserToken)
