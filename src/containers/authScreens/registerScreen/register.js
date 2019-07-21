@@ -23,6 +23,8 @@ import eye from '../../../assets/eye.png'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import moment from 'moment'
 
+const ANIMATION_DURATION = 100
+
 export default class Register extends React.Component {
     constructor(props) {
         super(props)
@@ -73,7 +75,7 @@ export default class Register extends React.Component {
     keyboardShow = event => {
         Animated.parallel([
             Animated.timing(this.keyboardHeight, {
-                duration: event.duration,
+                duration: ANIMATION_DURATION,
                 toValue: event.endCoordinates.height - hp(3)
             })
         ]).start()
@@ -82,7 +84,7 @@ export default class Register extends React.Component {
     keyboardHide = event => {
         Animated.parallel([
             Animated.timing(this.keyboardHeight, {
-                duration: event.duration,
+                duration: ANIMATION_DURATION,
                 toValue: 0
             })
         ]).start()
