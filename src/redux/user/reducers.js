@@ -13,14 +13,6 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 temp: action.payload
             }
-        case userTypes.GET_USER_TOKEN_SUCCESS:
-            return {
-                ...state,
-                userToken: action.payload,
-                temp: {
-                    token: action.payload
-                }
-            }
         default:
             return state
     }
