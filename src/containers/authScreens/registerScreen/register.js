@@ -338,10 +338,10 @@ class Register extends React.Component {
 
 const mapStateToProps = state => {}
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = dispatch => ({
     createUser: userInformation =>
         dispatch(userActions.createUser(userInformation))
-}
+})
 
 export default connect(
     null,
