@@ -18,6 +18,7 @@ import styles from './style'
 
 const IMAGE_HEIGHT = hp(45)
 const IMAGE_HEIGHT_SMALL = hp(35)
+const ANIMATION_DURATION = 100
 
 export default class Opening extends React.Component {
     constructor(props) {
@@ -51,11 +52,11 @@ export default class Opening extends React.Component {
     keyboardShow = event => {
         Animated.parallel([
             Animated.timing(this.keyboardHeight, {
-                duration: event.duration,
-                toValue: event.endCoordinates.height - hp(18)
+                duration: ANIMATION_DURATION,
+                toValue: event.endCoordinates.height - hp(15)
             }),
             Animated.timing(this.imageHeight, {
-                duration: event.duration,
+                duration: ANIMATION_DURATION,
                 toValue: IMAGE_HEIGHT_SMALL
             })
         ]).start()
@@ -64,11 +65,11 @@ export default class Opening extends React.Component {
     keyboardHide = event => {
         Animated.parallel([
             Animated.timing(this.keyboardHeight, {
-                duration: event.duration,
+                duration: ANIMATION_DURATION,
                 toValue: 0
             }),
             Animated.timing(this.imageHeight, {
-                duration: event.duration,
+                duration: ANIMATION_DURATION,
                 toValue: IMAGE_HEIGHT
             })
         ]).start()
