@@ -12,6 +12,8 @@ import {
     Platform
 } from 'react-native'
 import { sceneKeys, navigationPush } from '../../../services/navigationService'
+import { connect } from 'react-redux'
+import { userActions } from '../../../redux/user/actions'
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp
@@ -25,7 +27,7 @@ import moment from 'moment'
 
 const ANIMATION_DURATION = 100
 
-export default class Register extends React.Component {
+class Register extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -138,6 +140,19 @@ export default class Register extends React.Component {
 
     emailOnChange = text => {
         this.setState({ email: text })
+    }
+
+    registerOnPress = () => {
+        let userInformation = {
+            username: this.state.username,
+            name: this.state.name,
+            lastname: this.state.lastname,
+            email: this.state.email,
+            city: this.state.city,
+            birthDate: this.state.birthDate,
+            password: this.state.password
+        }
+        this.props.createUser(userInformation)
     }
 
     render() {
@@ -300,17 +315,7 @@ export default class Register extends React.Component {
                     color="#00D9EF"
                     underlayColor="#1a5d63"
                     buttonText="Kayıt Ol"
-                    onPress={() => {
-                        console.log(
-                            this.state.username,
-                            this.state.name,
-                            this.state.lastname,
-                            this.state.city,
-                            this.state.email,
-                            this.state.birthDate,
-                            this.state.password
-                        )
-                    }}
+                    onPress={this.registerOnPress}
                 />
                 <View style={styles.gotoLoginContainer}>
                     <Text style={styles.gotoLoginTextFirst}>
@@ -330,3 +335,15 @@ export default class Register extends React.Component {
         )
     }
 }
+
+const mapStateToProps = state => {}
+
+const mapDispatchToProps = dispatch => {
+    createUser: userInformation =>
+        dispatch(userActions.createUser(userInformation))
+}
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(Register)
