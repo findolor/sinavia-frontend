@@ -20,7 +20,7 @@ const IMAGE_HEIGHT = hp(45)
 const IMAGE_HEIGHT_SMALL = hp(35)
 const ANIMATION_DURATION = 100
 
-export default class Opening extends React.Component {
+export default class ResetPassword extends React.Component {
     constructor(props) {
         super(props)
 

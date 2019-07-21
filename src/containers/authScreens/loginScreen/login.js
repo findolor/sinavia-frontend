@@ -10,7 +10,7 @@ import {
     Animated,
     Platform
 } from 'react-native'
-import { sceneKeys, navigationPush } from '../../../services/navigationService'
+import { sceneKeys, navigationPush, navigationReplace, navigationReset } from '../../../services/navigationService'
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp
@@ -24,7 +24,7 @@ const IMAGE_HEIGHT = hp(40)
 const IMAGE_HEIGHT_SMALL = hp(25)
 const ANIMATION_DURATION = 100
 
-export default class Opening extends React.Component {
+export default class Login extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -171,6 +171,9 @@ export default class Opening extends React.Component {
                         color="#00D9EF"
                         underlayColor="#1a5d63"
                         buttonText="Giriş Yap"
+                        onPress={() => {
+                            navigationReset("main")
+                        }}
                     />
                 </View>
             </Animated.View>
