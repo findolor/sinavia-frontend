@@ -1,12 +1,13 @@
 import React from 'react'
 import { Scene, Router } from 'react-native-router-flux'
-import { authScreens } from './containers'
+import { authScreens, gameScreens } from './containers'
 
 const sceneKeys = {
     opening: 'opening',
     login: 'login',
     register: 'register',
-    resetPassword: 'resetPassword'
+    resetPassword: 'resetPassword',
+    rankedGame: 'rankedGame'
 }
 
 const RouterComp = () => {
@@ -14,6 +15,10 @@ const RouterComp = () => {
         <Router>
             <Scene key="root" hideNavBar={true}>
                 <Scene key="auth" hideNavBar={true}>
+                    <Scene
+                        key={sceneKeys.rankedGame}
+                        component={gameScreens.rankedGame}
+                    />
                     <Scene
                         key={sceneKeys.opening}
                         component={authScreens.opening}
