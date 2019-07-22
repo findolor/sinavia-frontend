@@ -13,14 +13,20 @@ import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
-import { AuthButton, AuthTextInput } from '../../../components/authScreen'
+
 
 export default class Home extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            currentIndex: 0
+        };
+    }
     render() {
         return (
             <View style={styles.container}>
                 <View style={{ height: hp(60), marginTop: hp(30) }}>
-                    <ScrollView style={styles.cardsScrollView}>
+                    <ScrollView style={styles.cardsScrollView} showsVerticalScrollIndicator={false} >
                         <View style={styles.card}>
                             <Text style={styles.cardText}>
                                 Paragrafta Anlam
@@ -75,8 +81,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     cardText: {
-        fontFamily: 'Averta-Regular',
+        fontFamily: 'Averta-BoldItalic',
         color: '#00D9EF',
-        fontSize: hp(3)
+        fontSize: hp(3.3)
     }
 })
