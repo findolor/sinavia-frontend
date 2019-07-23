@@ -37,7 +37,7 @@ import {
     yksKimya,
     yksBiyo
 } from '../../../components/mainScreen/carousel/static/subjects'
-import ModalDropdown from 'react-native-modal-dropdown'
+import DropDown from '../../../components/mainScreen/dropdown/dropdown'
 
 const IS_ANDROID = Platform.OS === 'android'
 const SLIDER_1_FIRST_ITEM = 0
@@ -154,7 +154,7 @@ export default class Home extends React.Component {
                 <StatusBar hidden />
                 <View style={{ height: hp(60), marginTop: hp(0) }}>
                     <View style={styles.pickerContainer}>
-                        <ModalDropdown
+                        <DropDown
                             style={styles.picker}
                             textStyle={styles.pickerText}
                             dropdownStyle={styles.pickerDropdown}
