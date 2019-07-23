@@ -5,7 +5,28 @@ import styles from './style'
 class RankedGame extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = {
+            // Player buttons
+            playerOneButton: 0,
+            playerTwoButton: 0,
+            // Question number
+            questionNumber: -1,
+            // Player answers
+            playerOneCorrect: 0,
+            playerOneIncorrect: 0,
+            playerOneUnanswered: 0,
+            playerTwoCorrect: 0,
+            playerTwoIncorrect: 0,
+            playerTwoUnanswered: 0,
+            // Countdown running variable
+            isCountdownRunning: false,
+            // Round starter variable
+            start: false,
+            // Match finish variable
+            isMatchOver: false,
+            // Question image link
+            questionLink: ''
+        }
     }
 
     render() {
