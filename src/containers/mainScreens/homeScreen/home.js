@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+    Image,
     Platform,
     ScrollView,
     StatusBar,
@@ -38,6 +39,7 @@ import {
     yksBiyo
 } from '../../../components/mainScreen/carousel/static/subjects'
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
+import homeDolu from '../../../assets/mainScreens/home_dolu.png'
 
 const IS_ANDROID = Platform.OS === 'android'
 const SLIDER_1_FIRST_ITEM = 0
@@ -195,7 +197,16 @@ export default class Home extends React.Component {
                         {card}
                     </ScrollView>
                 </View>
-                <View style={styles.bottomBar} />
+                <View style={styles.bottomBar}>
+                    <Image
+                        source={homeDolu}
+                        style={{
+                            resize: 'contain',
+                            height: hp(4),
+                            width: hp(4)
+                        }}
+                    />
+                </View>
             </View>
         )
     }
@@ -214,9 +225,10 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 20,
         borderTopLeftRadius: 20,
         backgroundColor: '#00D9EF',
-        alignItems: 'flex-start',
-        justifyContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'space-around',
         marginTop: hp(91),
+        flexDirection: 'row',
         position: 'absolute'
     },
     scrollViewContainer: {
