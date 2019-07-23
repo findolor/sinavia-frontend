@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
-import styles from './style'
+import styles, { countdownProps } from './style'
 import CountDown from 'react-native-countdown-component'
 
 class RankedGame extends React.Component {
@@ -20,7 +20,7 @@ class RankedGame extends React.Component {
             playerTwoIncorrect: 0,
             playerTwoUnanswered: 0,
             // Countdown running variable
-            isCountDownRunning: false,
+            isCountDownRunning: true,
             // Round starter variable
             start: false,
             // Match finish variable
@@ -62,19 +62,19 @@ class RankedGame extends React.Component {
             case 1:
                 this.setState({ buttonOneBorderColor: '#00d9ef' })
                 return
-            case 1:
+            case 2:
                 this.setState({ buttonTwoBorderColor: '#00d9ef' })
                 return
-            case 1:
+            case 3:
                 this.setState({ buttonThreeBorderColor: '#00d9ef' })
                 return
-            case 1:
+            case 4:
                 this.setState({ buttonFourBorderColor: '#00d9ef' })
                 return
-            case 1:
+            case 5:
                 this.setState({ buttonFiveBorderColor: '#00d9ef' })
                 return
-            case 1:
+            case 6:
                 this.setState({ buttonSixBorderColor: '#00d9ef' })
                 return
         }
@@ -103,7 +103,7 @@ class RankedGame extends React.Component {
                             <View style={styles.countdownInnerContainer}>
                                 <CountDown
                                     until={60}
-                                    size={15}
+                                    size={countdownProps.size}
                                     digitStyle={{ backgroundColor: '#3FC8D9' }}
                                     digitTxtStyle={styles.countdownText}
                                     timeToShow={['M', 'S']}
@@ -159,7 +159,7 @@ class RankedGame extends React.Component {
                 </View>
                 <View style={styles.buttonContainer}>
                     <View style={styles.topButtonRowContainer}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.buttonOnPress(1)}>
                             <View
                                 style={[
                                     styles.button,
@@ -172,7 +172,7 @@ class RankedGame extends React.Component {
                                 <Text style={styles.buttonText}>A</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.buttonOnPress(2)}>
                             <View
                                 style={[
                                     styles.button,
@@ -185,7 +185,7 @@ class RankedGame extends React.Component {
                                 <Text style={styles.buttonText}>B</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.buttonOnPress(3)}>
                             <View
                                 style={[
                                     styles.button,
@@ -200,7 +200,7 @@ class RankedGame extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.bottomButtonRowContainer}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.buttonOnPress(4)}>
                             <View
                                 style={[
                                     styles.button,
@@ -213,7 +213,7 @@ class RankedGame extends React.Component {
                                 <Text style={styles.buttonText}>D</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.buttonOnPress(5)}>
                             <View
                                 style={[
                                     styles.button,
@@ -226,7 +226,7 @@ class RankedGame extends React.Component {
                                 <Text style={styles.buttonText}>E</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.buttonOnPress(6)}>
                             <View
                                 style={[
                                     styles.button,

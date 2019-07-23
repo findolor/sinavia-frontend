@@ -88,7 +88,7 @@ export default StyleSheet.create({
         height: hp(6),
         width: hp(6),
         backgroundColor: '#f4f6fb',
-        borderRadius: hp(6) / 2
+        borderRadius: 100
     },
     questionStyle: {
         resizeMode: 'contain',
@@ -105,7 +105,7 @@ export default StyleSheet.create({
         resizeMode: 'contain',
         height: hp(6),
         width: hp(6),
-        borderRadius: hp(6) / 2
+        borderRadius: 100
     },
     usernameContainer: {
         justifyContent: 'center',
@@ -131,7 +131,7 @@ export default StyleSheet.create({
         height: hp(9),
         width: hp(9),
         backgroundColor: '#fff',
-        borderRadius: hp(9) / 2,
+        borderRadius: 100,
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: hp(1)
@@ -140,7 +140,7 @@ export default StyleSheet.create({
         height: hp(7.5),
         width: hp(7.5),
         backgroundColor: '#3FC8D9',
-        borderRadius: hp(7.5) / 2,
+        borderRadius: 100,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -170,3 +170,7 @@ export default StyleSheet.create({
         paddingTop: hp(66.3)
     }
 })
+
+export const countdownProps = {
+    size: wp(4)
+}
