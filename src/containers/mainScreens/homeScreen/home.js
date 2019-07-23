@@ -39,7 +39,12 @@ import {
     yksBiyo
 } from '../../../components/mainScreen/carousel/static/subjects'
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
+import homeBos from '../../../assets/mainScreens/home.png'
 import homeDolu from '../../../assets/mainScreens/home_dolu.png'
+import trophyBos from '../../../assets/mainScreens/trophy.png'
+import trophyDolu from '../../../assets/mainScreens/trophy_Dolu.png'
+import jokerBos from '../../../assets/mainScreens/joker.png'
+import jokerDolu from '../../../assets/mainScreens/joker_dolu.png'
 
 const IS_ANDROID = Platform.OS === 'android'
 const SLIDER_1_FIRST_ITEM = 0
@@ -159,6 +164,8 @@ export default class Home extends React.Component {
                         <DropDown
                             style={styles.picker}
                             textStyle={styles.pickerText}
+                            dropdownTextStyle={styles.pickerDropdownText}
+                            renderRow={styles.pickerDropdownRow}
                             dropdownStyle={styles.pickerDropdown}
                             options={exams}
                             defaultValue={this.state.exam}
@@ -199,11 +206,27 @@ export default class Home extends React.Component {
                 </View>
                 <View style={styles.bottomBar}>
                     <Image
+                        source={trophyBos}
+                        style={{
+                            resize: 'contain',
+                            height: hp(5),
+                            width: hp(5)
+                        }}
+                    />
+                    <Image
                         source={homeDolu}
                         style={{
                             resize: 'contain',
-                            height: hp(4),
-                            width: hp(4)
+                            height: hp(5),
+                            width: hp(5)
+                        }}
+                    />
+                    <Image
+                        source={jokerBos}
+                        style={{
+                            resize: 'contain',
+                            height: hp(5),
+                            width: hp(5)
                         }}
                     />
                 </View>
@@ -256,7 +279,7 @@ const styles = StyleSheet.create({
     },
     cardText: {
         fontFamily: 'Averta-SemiboldItalic',
-        color: '#00D9EF',
+        color: '#F7941E',
         fontSize: hp(3.3)
     },
     carouselContainer: {
@@ -287,7 +310,17 @@ const styles = StyleSheet.create({
         marginLeft: wp(1),
         marginRight: wp(1),
         fontSize: hp(2),
-        color: '#00D9EF',
+        color: '#F7941E',
+        textAlign: 'center',
+        textAlignVertical: 'center'
+    },
+    pickerDropdownText: {
+        marginTop: hp(1.3),
+        marginBottom: hp(1),
+        marginLeft: wp(1),
+        marginRight: wp(1),
+        fontSize: hp(2),
+        color: '#F7941E',
         textAlign: 'center',
         textAlignVertical: 'center'
     },
@@ -296,6 +329,7 @@ const styles = StyleSheet.create({
         width: wp(30),
         borderColor: '#00D9EF',
         borderWidth: wp(2),
-        borderRadius: 20
-    }
+        borderRadius: 20,
+        marginLeft: wp(-0.5)
+    },
 })
