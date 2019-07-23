@@ -60,8 +60,7 @@ export default StyleSheet.create({
         height: hp(5.5),
         borderRadius: 10,
         justifyContent: 'center',
-        alignItems: 'center',
-        borderColor: '#C3C3C3'
+        alignItems: 'center'
     },
     buttonText: {
         color: '#000',

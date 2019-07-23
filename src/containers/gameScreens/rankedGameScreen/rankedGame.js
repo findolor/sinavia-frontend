@@ -20,13 +20,63 @@ class RankedGame extends React.Component {
             playerTwoIncorrect: 0,
             playerTwoUnanswered: 0,
             // Countdown running variable
-            isCountdownRunning: false,
+            isCountDownRunning: false,
             // Round starter variable
             start: false,
             // Match finish variable
             isMatchOver: false,
             // Question image link
-            questionLink: ''
+            questionLink: '',
+            // Button border colors
+            buttonOneBorderColor: '#C3C3C3',
+            buttonTwoBorderColor: '#C3C3C3',
+            buttonThreeBorderColor: '#C3C3C3',
+            buttonFourBorderColor: '#C3C3C3',
+            buttonFiveBorderColor: '#C3C3C3',
+            buttonSixBorderColor: '#C3C3C3'
+        }
+    }
+
+    // Sends the button action and question finished action
+    buttonOnPress = buttonNumber => {
+        let that = this
+        this.setState({
+            isCountDownRunning: false,
+            playerOneButton: buttonNumber
+        })
+        this.highlightButton(buttonNumber)
+        /* this.room.send({
+            action: 'button-press',
+            button: buttonNumber
+        }) */
+        // After setting the button and sending 'button-press' action, we send 'finished' action for round end
+        /* setTimeout(() => {
+            that.room.send({
+                action: 'finished'
+            })
+        }, 2000) */
+    }
+
+    highlightButton = buttonNumber => {
+        switch (buttonNumber) {
+            case 1:
+                this.setState({ buttonOneBorderColor: '#00d9ef' })
+                return
+            case 1:
+                this.setState({ buttonTwoBorderColor: '#00d9ef' })
+                return
+            case 1:
+                this.setState({ buttonThreeBorderColor: '#00d9ef' })
+                return
+            case 1:
+                this.setState({ buttonFourBorderColor: '#00d9ef' })
+                return
+            case 1:
+                this.setState({ buttonFiveBorderColor: '#00d9ef' })
+                return
+            case 1:
+                this.setState({ buttonSixBorderColor: '#00d9ef' })
+                return
         }
     }
 
@@ -60,6 +110,7 @@ class RankedGame extends React.Component {
                                     timeLabels={{ s: null }}
                                     separatorStyle={{ color: '#fff' }}
                                     showSeparator
+                                    running={this.state.isCountDownRunning}
                                 />
                             </View>
                         </View>
@@ -109,7 +160,15 @@ class RankedGame extends React.Component {
                 <View style={styles.buttonContainer}>
                     <View style={styles.topButtonRowContainer}>
                         <TouchableOpacity>
-                            <View style={styles.button}>
+                            <View
+                                style={[
+                                    styles.button,
+                                    {
+                                        borderColor: this.state
+                                            .buttonOneBorderColor
+                                    }
+                                ]}
+                            >
                                 <Text style={styles.buttonText}>A</Text>
                             </View>
                         </TouchableOpacity>
@@ -117,31 +176,66 @@ class RankedGame extends React.Component {
                             <View
                                 style={[
                                     styles.button,
-                                    { borderColor: '#00d9ef' }
+                                    {
+                                        borderColor: this.state
+                                            .buttonTwoBorderColor
+                                    }
                                 ]}
                             >
                                 <Text style={styles.buttonText}>B</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity>
-                            <View style={styles.button}>
+                            <View
+                                style={[
+                                    styles.button,
+                                    {
+                                        borderColor: this.state
+                                            .buttonThreeBorderColor
+                                    }
+                                ]}
+                            >
                                 <Text style={styles.buttonText}>C</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.bottomButtonRowContainer}>
                         <TouchableOpacity>
-                            <View style={styles.button}>
+                            <View
+                                style={[
+                                    styles.button,
+                                    {
+                                        borderColor: this.state
+                                            .buttonFourBorderColor
+                                    }
+                                ]}
+                            >
                                 <Text style={styles.buttonText}>D</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity>
-                            <View style={styles.button}>
+                            <View
+                                style={[
+                                    styles.button,
+                                    {
+                                        borderColor: this.state
+                                            .buttonFiveBorderColor
+                                    }
+                                ]}
+                            >
                                 <Text style={styles.buttonText}>E</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity>
-                            <View style={styles.button}>
+                            <View
+                                style={[
+                                    styles.button,
+                                    {
+                                        borderColor: this.state
+                                            .buttonSixBorderColor
+                                    }
+                                ]}
+                            >
                                 <Text style={styles.buttonText}>Boş</Text>
                             </View>
                         </TouchableOpacity>
