@@ -42,8 +42,7 @@ export default StyleSheet.create({
         fontWeight: '700'
     },
     buttonContainer: {
-        height: hp(18),
-        backgroundColor: '#ee00ee'
+        height: hp(18)
     },
     topButtonRowContainer: {
         flexDirection: 'row',
@@ -146,7 +145,7 @@ export default StyleSheet.create({
     },
     countdownText: {
         fontFamily: 'Averta-Bold',
-        fontSize: wp(8),
+        fontSize: wp(7),
         color: '#fff',
         fontWeight: '800'
     },
@@ -168,6 +167,10 @@ export default StyleSheet.create({
         position: 'absolute',
         paddingLeft: wp(84),
         paddingTop: hp(66.3)
+    },
+    dummyButtonContainer: {
+        height: hp(18),
+        width: wp(100)
     }
 })
 
