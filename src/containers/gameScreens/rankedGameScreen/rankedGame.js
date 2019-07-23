@@ -33,17 +33,23 @@ class RankedGame extends React.Component {
             buttonThreeBorderColor: '#C3C3C3',
             buttonFourBorderColor: '#C3C3C3',
             buttonFiveBorderColor: '#C3C3C3',
-            buttonSixBorderColor: '#C3C3C3'
+            buttonSixBorderColor: '#C3C3C3',
+            // Button disable variables
+            isButtonOneDisabled: false,
+            isButtonTwoDisabled: false,
+            isButtonThreeDisabled: false,
+            isButtonFourDisabled: false,
+            isButtonFiveDisabled: false,
+            isButtonSixDisabled: false,
+            // Variable to know if the client has answered question
+            isQuestionAnswered: false
         }
     }
 
     // Sends the button action and question finished action
     buttonOnPress = buttonNumber => {
         let that = this
-        this.setState({
-            isCountDownRunning: false,
-            playerOneButton: buttonNumber
-        })
+        this.setState({ playerOneButton: buttonNumber })
         this.highlightButton(buttonNumber)
         /* this.room.send({
             action: 'button-press',
@@ -58,6 +64,15 @@ class RankedGame extends React.Component {
     }
 
     highlightButton = buttonNumber => {
+        this.setState({
+            isButtonOneDisabled: true,
+            isButtonTwoDisabled: true,
+            isButtonThreeDisabled: true,
+            isButtonFourDisabled: true,
+            isButtonFiveDisabled: true,
+            isButtonSixDisabled: true,
+            isQuestionAnswered: true
+        })
         switch (buttonNumber) {
             case 1:
                 this.setState({ buttonOneBorderColor: '#00d9ef' })
@@ -81,6 +96,7 @@ class RankedGame extends React.Component {
     }
 
     countdownOnFinish = () => {
+        if (this.state.isQuestionAnswered) return
         // We send the same response as 'leave empty' option
         this.buttonOnPress(6)
     }
@@ -165,7 +181,10 @@ class RankedGame extends React.Component {
                 </View>
                 <View style={styles.buttonContainer}>
                     <View style={styles.topButtonRowContainer}>
-                        <TouchableOpacity onPress={() => this.buttonOnPress(1)}>
+                        <TouchableOpacity
+                            onPress={() => this.buttonOnPress(1)}
+                            disabled={this.state.isButtonOneDisabled}
+                        >
                             <View
                                 style={[
                                     styles.button,
@@ -178,7 +197,10 @@ class RankedGame extends React.Component {
                                 <Text style={styles.buttonText}>A</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.buttonOnPress(2)}>
+                        <TouchableOpacity
+                            onPress={() => this.buttonOnPress(2)}
+                            disabled={this.state.isButtonTwoDisabled}
+                        >
                             <View
                                 style={[
                                     styles.button,
@@ -191,7 +213,10 @@ class RankedGame extends React.Component {
                                 <Text style={styles.buttonText}>B</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.buttonOnPress(3)}>
+                        <TouchableOpacity
+                            onPress={() => this.buttonOnPress(3)}
+                            disabled={this.state.isButtonThreeDisabled}
+                        >
                             <View
                                 style={[
                                     styles.button,
@@ -206,7 +231,10 @@ class RankedGame extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.bottomButtonRowContainer}>
-                        <TouchableOpacity onPress={() => this.buttonOnPress(4)}>
+                        <TouchableOpacity
+                            onPress={() => this.buttonOnPress(4)}
+                            disabled={this.state.isButtonFourDisabled}
+                        >
                             <View
                                 style={[
                                     styles.button,
@@ -219,7 +247,10 @@ class RankedGame extends React.Component {
                                 <Text style={styles.buttonText}>D</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.buttonOnPress(5)}>
+                        <TouchableOpacity
+                            onPress={() => this.buttonOnPress(5)}
+                            disabled={this.state.isButtonFiveDisabled}
+                        >
                             <View
                                 style={[
                                     styles.button,
@@ -232,7 +263,10 @@ class RankedGame extends React.Component {
                                 <Text style={styles.buttonText}>E</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.buttonOnPress(6)}>
+                        <TouchableOpacity
+                            onPress={() => this.buttonOnPress(6)}
+                            disabled={this.state.isButtonSixDisabled}
+                        >
                             <View
                                 style={[
                                     styles.button,
