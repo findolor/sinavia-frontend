@@ -79,17 +79,16 @@ export default StyleSheet.create({
         paddingBottom: hp(1.5)
     },
     jokerContainer: {
-        backgroundColor: '#F4F6FB',
+        backgroundColor: '#fff',
         width: wp(100),
         flex: 1,
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        paddingTop: hp(1)
+        justifyContent: 'space-evenly'
     },
     joker: {
         height: hp(6),
         width: hp(6),
-        backgroundColor: '#D8D8D8',
+        backgroundColor: '#f4f6fb',
         borderRadius: hp(6) / 2
     },
     questionStyle: {

@@ -3,6 +3,11 @@ import { View, Text, Image, TouchableOpacity } from 'react-native'
 import styles from './style'
 
 class RankedGame extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {}
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -72,34 +77,55 @@ class RankedGame extends React.Component {
                 </View>
                 <View style={styles.buttonContainer}>
                     <View style={styles.topButtonRowContainer}>
-                        <View style={styles.button}>
-                            <Text style={styles.buttonText}>A</Text>
-                        </View>
-                        <View
-                            style={[styles.button, { borderColor: '#00d9ef' }]}
-                        >
-                            <Text style={styles.buttonText}>B</Text>
-                        </View>
-                        <View style={styles.button}>
-                            <Text style={styles.buttonText}>C</Text>
-                        </View>
+                        <TouchableOpacity>
+                            <View style={styles.button}>
+                                <Text style={styles.buttonText}>A</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <View
+                                style={[
+                                    styles.button,
+                                    { borderColor: '#00d9ef' }
+                                ]}
+                            >
+                                <Text style={styles.buttonText}>B</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <View style={styles.button}>
+                                <Text style={styles.buttonText}>C</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.bottomButtonRowContainer}>
-                        <View style={styles.button}>
-                            <Text style={styles.buttonText}>D</Text>
-                        </View>
-                        <View style={styles.button}>
-                            <Text style={styles.buttonText}>E</Text>
-                        </View>
-                        <View style={styles.button}>
-                            <Text style={styles.buttonText}>Bos</Text>
-                        </View>
+                        <TouchableOpacity>
+                            <View style={styles.button}>
+                                <Text style={styles.buttonText}>D</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <View style={styles.button}>
+                                <Text style={styles.buttonText}>E</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <View style={styles.button}>
+                                <Text style={styles.buttonText}>Boş</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View style={styles.jokerContainer}>
-                    <View style={styles.joker} />
-                    <View style={styles.joker} />
-                    <View style={styles.joker} />
+                    <TouchableOpacity>
+                        <View style={styles.joker} />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <View style={styles.joker} />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <View style={styles.joker} />
+                    </TouchableOpacity>
                 </View>
             </View>
         )
