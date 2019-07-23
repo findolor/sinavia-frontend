@@ -182,6 +182,22 @@ export default class Home extends React.Component {
                             alignItems: 'center'
                         }}
                     >
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.setState({ isModalVisible: false })
+                            }}
+                        >
+                            <Image
+                                source={homeDolu}
+                                style={{
+                                    resize: 'contain',
+                                    height: hp(5),
+                                    width: hp(5),
+                                    marginTop: hp(5),
+                                    marginLeft: wp(77)
+                                }}
+                            />
+                        </TouchableOpacity>
                         <View style={styles.modalView}>
                             <Text style={styles.modalSubjectText}>
                                 Paragrafta Anlam
@@ -191,27 +207,45 @@ export default class Home extends React.Component {
                             </View>
                             <View style={styles.gameModesContainer}>
                                 <View style={styles.gameModeContainer}>
-                                    <View style={styles.gameModeLogoContainer}>
-
-                                    </View>
-                                    <View style={styles.gameModeContextContainer}>
-                                        <Text style={styles.gameModeContextText}>Rastgele bir kullanıcı ile yarış</Text>
-                                    </View>
-                                </View>
-                                <View style={styles.gameModeContainer}>
-                                    <View style={styles.gameModeLogoContainer}>
-
-                                    </View>
-                                    <View style={styles.gameModeContextContainer}>
-                                        <Text style={styles.gameModeContextText}>Arkadaşın ile yarış</Text>
+                                    <View
+                                        style={styles.gameModeLogoContainer}
+                                    />
+                                    <View
+                                        style={styles.gameModeContextContainer}
+                                    >
+                                        <Text
+                                            style={styles.gameModeContextText}
+                                        >
+                                            Rastgele bir kullanıcı ile yarış
+                                        </Text>
                                     </View>
                                 </View>
                                 <View style={styles.gameModeContainer}>
-                                    <View style={styles.gameModeLogoContainer}>
-
+                                    <View
+                                        style={styles.gameModeLogoContainer}
+                                    />
+                                    <View
+                                        style={styles.gameModeContextContainer}
+                                    >
+                                        <Text
+                                            style={styles.gameModeContextText}
+                                        >
+                                            Arkadaşın ile yarış
+                                        </Text>
                                     </View>
-                                    <View style={styles.gameModeContextContainer}>
-                                        <Text style={styles.gameModeContextText}>Arkadaş grubun ile yarış</Text>
+                                </View>
+                                <View style={styles.gameModeContainer}>
+                                    <View
+                                        style={styles.gameModeLogoContainer}
+                                    />
+                                    <View
+                                        style={styles.gameModeContextContainer}
+                                    >
+                                        <Text
+                                            style={styles.gameModeContextText}
+                                        >
+                                            Arkadaş grubun ile yarış
+                                        </Text>
                                     </View>
                                 </View>
                             </View>
@@ -404,7 +438,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         height: hp(44),
         width: wp(87.5),
-        marginTop: hp(20),
+        marginTop: hp(15),
         borderColor: '#27AAE1',
         borderWidth: 3,
         borderRadius: 10,
@@ -421,7 +455,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: '#fcfcfc',
         height: hp(3),
-        width: wp(65)
+        width: wp(75)
     },
     separatorLine: {
         flex: 1,
@@ -431,21 +465,21 @@ const styles = StyleSheet.create({
     },
     gameModesContainer: {
         height: hp(30),
-        width: wp(65),
+        width: wp(75),
         backgroundColor: 'red'
     },
     gameModeContainer: {
         height: hp(10),
-        width: wp(65),
-        backgroundColor: 'green',
+        width: wp(75),
+        backgroundColor: 'white',
         flexDirection: 'row'
     },
     gameModeLogoContainer: {
         height: hp(10),
-        width: wp(23),
-        backgroundColor: 'blue'
+        width: wp(33),
+        backgroundColor: 'white'
     },
-    gameModeContextContainer:{
+    gameModeContextContainer: {
         height: hp(10),
         width: wp(42),
         backgroundColor: 'white',
