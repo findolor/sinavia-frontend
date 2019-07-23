@@ -7,7 +7,8 @@ const sceneKeys = {
     login: 'login',
     register: 'register',
     resetPassword: 'resetPassword',
-    rankedGame: 'rankedGame'
+    rankedGame: 'rankedGame',
+    loading: 'loading'
 }
 
 const RouterComp = () => {
@@ -15,6 +16,10 @@ const RouterComp = () => {
         <Router>
             <Scene key="root" hideNavBar={true}>
                 <Scene key="auth" hideNavBar={true}>
+                    <Scene
+                        key={sceneKeys.loading}
+                        component={gameScreens.loading}
+                    />
                     <Scene
                         key={sceneKeys.rankedGame}
                         component={gameScreens.rankedGame}

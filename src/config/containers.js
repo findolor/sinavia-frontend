@@ -5,9 +5,7 @@ import {
     ResetPassword
 } from '../containers/authScreens'
 
-import {
-    RankedGame
-} from '../containers/gameScreens'
+import { RankedGame, LoadingScreen } from '../containers/gameScreens'
 
 export const authScreens = {
     opening: Opening,
@@ -17,5 +15,6 @@ export const authScreens = {
 }
 
 export const gameScreens = {
-    rankedGame: RankedGame
+    rankedGame: RankedGame,
+    loading: LoadingScreen
 }
