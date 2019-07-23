@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import styles from './style'
+import CountDown from 'react-native-countdown-component'
 
 class RankedGame extends React.Component {
     constructor(props) {
@@ -50,7 +51,16 @@ class RankedGame extends React.Component {
                         </View>
                         <View style={styles.countdownContainer}>
                             <View style={styles.countdownInnerContainer}>
-                                <Text style={styles.countdownText}>09</Text>
+                                <CountDown
+                                    until={60}
+                                    size={15}
+                                    digitStyle={{ backgroundColor: '#3FC8D9' }}
+                                    digitTxtStyle={styles.countdownText}
+                                    timeToShow={['M', 'S']}
+                                    timeLabels={{ s: null }}
+                                    separatorStyle={{ color: '#fff' }}
+                                    showSeparator
+                                />
                             </View>
                         </View>
                         <View style={styles.userContainer}>
