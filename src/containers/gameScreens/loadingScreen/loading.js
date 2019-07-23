@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, Image } from 'react-native'
 import styles from './style'
+import NotchView from '../../../components/notchView'
 
 class LoadingScreen extends React.Component {
     constructor(props) {
@@ -17,7 +18,7 @@ class LoadingScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>Aaaa</Text>
+                <NotchView />
             </View>
         )
     }
