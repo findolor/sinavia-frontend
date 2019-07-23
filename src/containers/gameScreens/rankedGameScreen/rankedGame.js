@@ -80,6 +80,11 @@ class RankedGame extends React.Component {
         }
     }
 
+    countdownOnFinish = () => {
+        // We send the same response as 'leave empty' option
+        this.buttonOnPress(6)
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -111,6 +116,7 @@ class RankedGame extends React.Component {
                                     separatorStyle={{ color: '#fff' }}
                                     showSeparator
                                     running={this.state.isCountDownRunning}
+                                    onFinish={this.countdownOnFinish}
                                 />
                             </View>
                         </View>
