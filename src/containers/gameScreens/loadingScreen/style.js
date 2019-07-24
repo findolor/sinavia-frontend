@@ -7,6 +7,6 @@ import {
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#000'
+        backgroundColor: '#fff'
     }
 })

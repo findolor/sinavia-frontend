@@ -100,7 +100,9 @@ export default StyleSheet.create({
         resizeMode: 'contain'
     },
     jokerAndTextContainer: {
-        alignItems: 'center',
+        alignItems: 'center'
+    },
+    touchableJokerContainer: {
         flex: 1
     },
     jokerText: {

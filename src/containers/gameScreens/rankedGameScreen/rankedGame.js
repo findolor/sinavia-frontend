@@ -7,33 +7,18 @@ global.Buffer = Buffer
 import * as Colyseus from 'colyseus.js'
 import CountDown from 'react-native-countdown-component'
 import NotchView from '../../../components/notchView'
+import { navigationPop } from '../../../services/navigationService'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
+const OPPONENT_ANSWER_COLOR = '#f5bc14'
+const CORRECT_ANSWER_COLOR = '#14e31f'
+const INCORRECT_ANSWER_COLOR = '#eb2b0e'
 
 class RankedGame extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            // Registered room name
-            roomName: 'rankedRoom',
-            // Dummy player info
-            playerOne: {
-                create: true,
-                userLevel: 4,
-                username: 'arda',
-                examName: 'LGS',
-                courseName: 'Matematik',
-                subjectName: 'Sayilar'
-            },
-            playerTwo: {
-                create: true,
-                userLevel: 4,
-                username: 'deli',
-                examName: 'LGS',
-                courseName: 'Matematik',
-                subjectName: 'Sayilar'
-            },
             // Player buttons
             playerOneButton: 0,
             playerTwoButton: 0,
@@ -74,45 +59,33 @@ class RankedGame extends React.Component {
             // Variable to know if the client has answered question
             isQuestionAnswered: false,
             // Our countdown timer's time
-            countDownTime: 60
+            countDownTime: 60,
+            // playerProps state
+            playerProps: {},
+            // Opponent clientId
+            opponentId: ''
         }
     }
 
+    // We get the room in props
     componentDidMount() {
-        this.client = new Colyseus.Client('http://localhost:5000')
-        this.client.onOpen.add(() => {
-            this.joinRoom()
+        this.props.room.send({
+            action: 'ready'
         })
-    }
-
-    // Client sends a ready signal when they join a room successfully
-    joinRoom = () => {
-        this.room = this.client.join(this.state.roomName, this.state.playerOne)
-        this.room.onJoin.add(() =>
-            setTimeout(() => {
-                this.room.send({
-                    action: 'ready'
-                })
-            }, 2000)
-        )
-        this.room.onError.add(err => console.log(err))
-        this.room.onStateChange.add(state => {
+        this.props.room.onStateChange.add(state => {
             // We update the UI after state changes
-            this.updateUIState(state.rankedState)
+            this.chooseStateAction(state.rankedState)
         })
+        this.props.room.onError.add(err => console.log(err))
     }
 
-    updateUIState = rankedState => {
-        // First we decide which one is the player
-        if (this.client.id === rankedState.playerOneId) {
-            this.chooseStateAction(rankedState, true)
-        } else {
-            this.chooseStateAction(rankedState, false)
-        }
+    componentWillUnmount() {
+        clearTimeout(this.startTimeout)
+        clearTimeout(this.updateTimeout)
+        clearTimeout(this.finishedTimeout)
     }
 
-    // if isThisPlayerOne is true, we are the player one. Otherwise player two
-    chooseStateAction = (rankedState, isThisPlayerOne) => {
+    chooseStateAction = rankedState => {
         console.log(rankedState.stateInformation)
         // We check the action that happened
         switch (rankedState.stateInformation) {
@@ -121,14 +94,15 @@ class RankedGame extends React.Component {
                 // We only do these once
                 if (rankedState.questionNumber === 0) {
                     this.setState({ questionList: rankedState.questionList })
-                    if (rankedState.playerOneId === this.client.id) {
+                    if (rankedState.playerOneId === this.props.client.id) {
                         this.setState({
                             playerOneUsername:
                                 rankedState.playerProps[rankedState.playerOneId]
                                     .username,
                             playerTwoUsername:
                                 rankedState.playerProps[rankedState.playerTwoId]
-                                    .username
+                                    .username,
+                            opponentId: rankedState.playerTwoId
                         })
                     } else {
                         this.setState({
@@ -137,7 +111,8 @@ class RankedGame extends React.Component {
                                     .username,
                             playerTwoUsername:
                                 rankedState.playerProps[rankedState.playerOneId]
-                                    .username
+                                    .username,
+                            opponentId: rankedState.playerOneId
                         })
                     }
                 }
@@ -149,7 +124,7 @@ class RankedGame extends React.Component {
                     countDownTime: 60,
                     isCountDownRunning: false
                 })
-                setTimeout(() => {
+                this.startTimeout = setTimeout(() => {
                     this.setState({
                         playerOneButton: 0,
                         playerTwoButton: 0,
@@ -158,18 +133,21 @@ class RankedGame extends React.Component {
                     })
                 }, 5000)
                 return
-            // Player one answered the question
-            case 'results-one':
-                this.updateAnswerResult(rankedState, true, isThisPlayerOne)
+            case 'result':
+                this.setState({ playerProps: rankedState.playerProps })
                 return
-            // Player two answered the question
-            case 'results-two':
-                this.updateAnswerResult(rankedState, false, isThisPlayerOne)
-                return
-            case 'reset-round':
+            case 'show-results':
                 this.setState({
-                    countDownTime: 4
+                    countDownTime: 8
                 })
+                this.highlightOpponentButton(
+                    rankedState.playerProps[this.state.opponentId].answers[
+                        this.state.questionNumber
+                    ].answer
+                )
+                this.updateTimeout = setTimeout(() => {
+                    this.updatePlayerResults()
+                }, 2500)
                 return
             case 'match-finished':
                 this.setState({ isCountDownRunning: false })
@@ -177,66 +155,134 @@ class RankedGame extends React.Component {
         }
     }
 
-    updateAnswerResult = (rankedState, isPlayerOneAnswer, isThisPlayerOne) => {
-        console.log(rankedState, isPlayerOneAnswer, isThisPlayerOne)
-        let answers
-        let unanswered
-        let correct
-        let incorrect
-        // Check if we are the player one and the answer is from player one, or we are two and the answer is from two
-        if (isPlayerOneAnswer === isThisPlayerOne) {
-            answers = rankedState.playerProps[this.client.id].answers
-            unanswered = this.state.playerOneUnanswered
-            correct = this.state.playerOneCorrect
-            incorrect = this.state.playerOneIncorrect
-        } else {
-            if (isThisPlayerOne) {
-                answers =
-                    rankedState.playerProps[rankedState.playerTwoId].answers
-                unanswered = this.state.playerTwoUnanswered
-                correct = this.state.playerTwoCorrect
-                incorrect = this.state.playerTwoIncorrect
-            } else {
-                answers =
-                    rankedState.playerProps[rankedState.playerOneId].answers
-                unanswered = this.state.playerTwoUnanswered
-                correct = this.state.playerTwoCorrect
-                incorrect = this.state.playerTwoIncorrect
-            }
-        }
-        // The same player and player answer checks
-        switch (answers[rankedState.questionNumber].result) {
+    updatePlayerResults = () => {
+        const answers = this.state.playerProps[this.props.client.id].answers
+        const answersOpponent = this.state.playerProps[this.state.opponentId]
+            .answers
+
+        // Switch statement for the user
+        this.updateAnswers(answers, true)
+        // Switch statement for the opponent
+        this.updateAnswers(answersOpponent, false)
+    }
+
+    updateAnswers = (answers, isClient) => {
+        switch (answers[this.state.questionNumber].result) {
             // If the answer is unanswered
             case null:
-                if (isPlayerOneAnswer === isThisPlayerOne)
+                if (isClient) {
                     this.setState({
-                        playerOneUnanswered: unanswered + 1
+                        playerOneUnanswered: this.state.playerOneUnanswered + 1
                     })
-                else
+                    this.updateButtons(
+                        answers[this.state.questionNumber].correctAnswer,
+                        true
+                    )
+                } else
                     this.setState({
-                        playerTwoUnanswered: unanswered + 1
+                        playerTwoUnanswered: this.state.playerTwoUnanswered + 1
                     })
                 return
             // If the answer is correct
             case true:
-                if (isPlayerOneAnswer === isThisPlayerOne)
+                if (isClient) {
                     this.setState({
-                        playerOneCorrect: correct + 1
+                        playerOneCorrect: this.state.playerOneCorrect + 1
                     })
-                else
+                    this.updateButtons(
+                        answers[this.state.questionNumber].answer,
+                        true
+                    )
+                } else
                     this.setState({
-                        playerTwoCorrect: correct + 1
+                        playerTwoCorrect: this.state.playerTwoCorrect + 1
                     })
                 return
             // If the answer is incorrect
             case false:
-                if (isPlayerOneAnswer === isThisPlayerOne)
+                if (isClient) {
                     this.setState({
-                        playerOneIncorrect: incorrect + 1
+                        playerOneIncorrect: this.state.playerOneIncorrect + 1
+                    })
+                    this.updateButtons(
+                        answers[this.state.questionNumber].answer,
+                        false
+                    )
+                    this.updateButtons(
+                        answers[this.state.questionNumber].correctAnswer,
+                        true
+                    )
+                } else
+                    this.setState({
+                        playerTwoIncorrect: this.state.playerTwoIncorrect + 1
+                    })
+                return
+        }
+    }
+
+    updateButtons = (buttonNumber, isCorrect) => {
+        switch (buttonNumber) {
+            case 1:
+                if (isCorrect)
+                    this.setState({
+                        buttonOneBorderColor: CORRECT_ANSWER_COLOR
                     })
                 else
                     this.setState({
-                        playerTwoIncorrect: incorrect + 1
+                        buttonOneBorderColor: INCORRECT_ANSWER_COLOR
+                    })
+                return
+            case 2:
+        }
+        switch (buttonNumber) {
+            case 1:
+                if (isCorrect)
+                    this.setState({
+                        buttonOneBorderColor: CORRECT_ANSWER_COLOR
+                    })
+                else
+                    this.setState({
+                        buttonOneBorderColor: INCORRECT_ANSWER_COLOR
+                    })
+                return
+            case 2:
+                if (isCorrect)
+                    this.setState({
+                        buttonTwoBorderColor: CORRECT_ANSWER_COLOR
+                    })
+                else
+                    this.setState({
+                        buttonTwoBorderColor: INCORRECT_ANSWER_COLOR
+                    })
+                return
+            case 3:
+                if (isCorrect)
+                    this.setState({
+                        buttonThreeBorderColor: CORRECT_ANSWER_COLOR
+                    })
+                else
+                    this.setState({
+                        buttonThreeBorderColor: INCORRECT_ANSWER_COLOR
+                    })
+                return
+            case 4:
+                if (isCorrect)
+                    this.setState({
+                        buttonFourBorderColor: CORRECT_ANSWER_COLOR
+                    })
+                else
+                    this.setState({
+                        buttonFourBorderColor: INCORRECT_ANSWER_COLOR
+                    })
+                return
+            case 5:
+                if (isCorrect)
+                    this.setState({
+                        buttonFiveBorderColor: CORRECT_ANSWER_COLOR
+                    })
+                else
+                    this.setState({
+                        buttonFiveBorderColor: INCORRECT_ANSWER_COLOR
                     })
                 return
         }
@@ -247,13 +293,13 @@ class RankedGame extends React.Component {
         let that = this
         this.setState({ playerOneButton: buttonNumber })
         this.highlightButton(buttonNumber)
-        this.room.send({
+        this.props.room.send({
             action: 'button-press',
             button: buttonNumber
         })
         // After setting the button and sending 'button-press' action, we send 'finished' action for round end
-        setTimeout(() => {
-            that.room.send({
+        this.finishedTimeout = setTimeout(() => {
+            that.props.room.send({
                 action: 'finished'
             })
         }, 1000)
@@ -284,6 +330,29 @@ class RankedGame extends React.Component {
         }
     }
 
+    highlightOpponentButton = buttonNumber => {
+        switch (buttonNumber) {
+            case 1:
+                this.setState({ buttonOneBorderColor: OPPONENT_ANSWER_COLOR })
+                return
+            case 2:
+                this.setState({ buttonTwoBorderColor: OPPONENT_ANSWER_COLOR })
+                return
+            case 3:
+                this.setState({ buttonThreeBorderColor: OPPONENT_ANSWER_COLOR })
+                return
+            case 4:
+                this.setState({ buttonFourBorderColor: OPPONENT_ANSWER_COLOR })
+                return
+            case 5:
+                this.setState({ buttonFiveBorderColor: OPPONENT_ANSWER_COLOR })
+                return
+            case 6:
+                this.setState({ buttonSixBorderColor: OPPONENT_ANSWER_COLOR })
+                return
+        }
+    }
+
     disableButtons = () => {
         this.setState({
             isButtonOneDisabled: true,
@@ -308,7 +377,9 @@ class RankedGame extends React.Component {
             buttonThreeBorderColor: NORMAL_BUTTON_COLOR,
             buttonFourBorderColor: NORMAL_BUTTON_COLOR,
             buttonFiveBorderColor: NORMAL_BUTTON_COLOR,
-            buttonSixBorderColor: NORMAL_BUTTON_COLOR
+            buttonSixBorderColor: NORMAL_BUTTON_COLOR,
+            playerOneButton: 0,
+            playerTwoButton: 0
         })
     }
 
@@ -316,6 +387,12 @@ class RankedGame extends React.Component {
         if (this.state.isQuestionAnswered) return
         // We send the same response as 'leave empty' option
         this.buttonOnPress(6)
+    }
+
+    backButtonOnPress = () => {
+        this.props.room.removeAllListeners()
+        this.props.room.leave()
+        navigationPop()
     }
 
     render() {
@@ -424,7 +501,7 @@ class RankedGame extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.backButtonContainer}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={this.backButtonOnPress}>
                             <Image
                                 source={require('../../../assets/Back.png')}
                                 style={styles.backButton}
@@ -541,34 +618,42 @@ class RankedGame extends React.Component {
                     )}
                 </View>
                 <View style={styles.jokerContainer}>
-                    <View style={styles.jokerAndTextContainer}>
+                    <View style={styles.touchableJokerContainer}>
                         <TouchableOpacity>
-                            <Image
-                                source={require('../../../assets/Rakip.png')}
-                                style={styles.joker}
-                            />
+                            <View style={styles.jokerAndTextContainer}>
+                                <Image
+                                    source={require('../../../assets/Rakip.png')}
+                                    style={styles.joker}
+                                />
+                                <Text style={styles.jokerText}>
+                                    Rakibin şıkkını gör
+                                </Text>
+                            </View>
                         </TouchableOpacity>
-                        <Text style={styles.jokerText}>
-                            Rakibin şıkkını gör
-                        </Text>
                     </View>
-                    <View style={styles.jokerAndTextContainer}>
+                    <View style={styles.touchableJokerContainer}>
                         <TouchableOpacity>
-                            <Image
-                                source={require('../../../assets/Sikeleme.png')}
-                                style={styles.joker}
-                            />
+                            <View style={styles.jokerAndTextContainer}>
+                                <Image
+                                    source={require('../../../assets/Sikeleme.png')}
+                                    style={styles.joker}
+                                />
+                                <Text style={styles.jokerText}>Şık Ele</Text>
+                            </View>
                         </TouchableOpacity>
-                        <Text style={styles.jokerText}>Şık Ele</Text>
                     </View>
-                    <View style={styles.jokerAndTextContainer}>
+                    <View style={styles.touchableJokerContainer}>
                         <TouchableOpacity>
-                            <Image
-                                source={require('../../../assets/2hak.png')}
-                                style={styles.joker}
-                            />
+                            <View style={styles.jokerAndTextContainer}>
+                                <Image
+                                    source={require('../../../assets/2hak.png')}
+                                    style={styles.joker}
+                                />
+                                <Text style={styles.jokerText}>
+                                    İkinci Şans
+                                </Text>
+                            </View>
                         </TouchableOpacity>
-                        <Text style={styles.jokerText}>İkinci Şans</Text>
                     </View>
                 </View>
             </View>

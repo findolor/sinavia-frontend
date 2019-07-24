@@ -13,8 +13,8 @@ export const navigationPush = (sceneKey, params) => {
     Actions.push(sceneKey, params)
 }
 
-export const navigationPop = (sceneKey, params) => {
-    Actions.pop(sceneKey, params)
+export const navigationPop = () => {
+    Actions.pop()
 }
 
 export { SCENE_KEYS }
