@@ -1,6 +1,9 @@
-import React from 'react';
+import React from 'react'
 import Home from './homeScreen/home'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { navigationPush } from '../../services/navigationService'
 import trophyDolu from '../../assets/mainScreens/trophy_Dolu.png'
@@ -9,10 +12,11 @@ import homeDolu from '../../assets/mainScreens/home_dolu.png'
 import homeBos from '../../assets/mainScreens/home.png'
 import jokerDolu from '../../assets/mainScreens/joker_dolu.png'
 import jokerBos from '../../assets/mainScreens/joker.png'
+import NotchView from '../../components/notchView'
 
 export default class Main extends React.Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             visibleForm: 'HOME',
             homeIconSelected: true,
@@ -21,28 +25,31 @@ export default class Main extends React.Component {
         }
     }
 
-    setVisibleForm = (visibleForm) => {
-        this.setState({visibleForm: visibleForm})
-    };
+    setVisibleForm = visibleForm => {
+        this.setState({ visibleForm: visibleForm })
+    }
 
     render() {
-        const visibleForm = this.state.visibleForm;
+        const visibleForm = this.state.visibleForm
         return (
             <View style={styles.container}>
-                {(visibleForm === 'HOME') && (
-                    <Home
-                    />
-                )}
+                <NotchView color={'#fcfcfc'} />
+                {visibleForm === 'HOME' && <Home />}
                 <View style={styles.bottomBar}>
                     <TouchableOpacity
-                        onPress = {() => {
-                            this.setState({ trophyIconSelected: true, homeIconSelected: false, jokerIconSelected: false })
-                        }}>
+                        onPress={() => {
+                            this.setState({
+                                trophyIconSelected: true,
+                                homeIconSelected: false,
+                                jokerIconSelected: false
+                            })
+                        }}
+                    >
                         <Image
                             source={
                                 this.state.trophyIconSelected === true
-                                    ?  trophyDolu
-                                    :  trophyBos
+                                    ? trophyDolu
+                                    : trophyBos
                             }
                             style={{
                                 resize: 'contain',
@@ -53,15 +60,19 @@ export default class Main extends React.Component {
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => {
-                            this.setState({ trophyIconSelected: false, homeIconSelected: true, jokerIconSelected: false })
-                            this.setVisibleForm('HOME');
+                            this.setState({
+                                trophyIconSelected: false,
+                                homeIconSelected: true,
+                                jokerIconSelected: false
+                            })
+                            this.setVisibleForm('HOME')
                         }}
                     >
                         <Image
                             source={
                                 this.state.homeIconSelected === true
-                                    ?  homeDolu
-                                    :  homeBos
+                                    ? homeDolu
+                                    : homeBos
                             }
                             style={{
                                 resize: 'contain',
@@ -72,13 +83,18 @@ export default class Main extends React.Component {
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => {
-                            this.setState({ trophyIconSelected: false, homeIconSelected: false, jokerIconSelected: true })
-                        }}>
+                            this.setState({
+                                trophyIconSelected: false,
+                                homeIconSelected: false,
+                                jokerIconSelected: true
+                            })
+                        }}
+                    >
                         <Image
                             source={
                                 this.state.jokerIconSelected === true
-                                    ?  jokerDolu
-                                    :  jokerBos
+                                    ? jokerDolu
+                                    : jokerBos
                             }
                             style={{
                                 resize: 'contain',
@@ -89,7 +105,7 @@ export default class Main extends React.Component {
                     </TouchableOpacity>
                 </View>
             </View>
-        );
+        )
     }
 }
 
