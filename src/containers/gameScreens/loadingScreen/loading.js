@@ -64,6 +64,7 @@ class LoadingScreen extends React.Component {
             navigationPush(SCENE_KEYS.gameScreens.rankedGame, {
                 room: this.room,
                 client: this.client,
+                playerUsername: this.state.player.playerOne.username,
                 opponentUsername: opponentUsername,
                 opponentId: opponentId
             })

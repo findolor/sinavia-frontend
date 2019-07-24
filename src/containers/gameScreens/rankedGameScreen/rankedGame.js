@@ -19,9 +19,6 @@ class RankedGame extends React.Component {
             // Player buttons
             playerOneButton: 0,
             playerTwoButton: 0,
-            // Players usernames
-            playerOneUsername: '',
-            playerTwoUsername: '',
             // Question number
             questionNumber: 0,
             // Player answers
@@ -60,7 +57,7 @@ class RankedGame extends React.Component {
             // playerProps state
             playerProps: {},
             // Opponent clientId
-            opponentId: '',
+            opponentId: this.props.opponentId,
             // modal visibility variable
             isQuestionModalVisible: false
         }
@@ -68,6 +65,7 @@ class RankedGame extends React.Component {
 
     // We get the room in props
     componentDidMount() {
+        this.setState({})
         this.props.room.send({
             action: 'ready'
         })
@@ -91,30 +89,8 @@ class RankedGame extends React.Component {
             // Setting up question number and resetting the buttons
             case 'question':
                 // We only do these once
-                if (rankedState.questionNumber === 0) {
+                if (rankedState.questionNumber === 0)
                     this.setState({ questionList: rankedState.questionList })
-                    if (rankedState.playerOneId === this.props.client.id) {
-                        this.setState({
-                            playerOneUsername:
-                                rankedState.playerProps[rankedState.playerOneId]
-                                    .username,
-                            playerTwoUsername:
-                                rankedState.playerProps[rankedState.playerTwoId]
-                                    .username,
-                            opponentId: rankedState.playerTwoId
-                        })
-                    } else {
-                        this.setState({
-                            playerOneUsername:
-                                rankedState.playerProps[rankedState.playerTwoId]
-                                    .username,
-                            playerTwoUsername:
-                                rankedState.playerProps[rankedState.playerOneId]
-                                    .username,
-                            opponentId: rankedState.playerOneId
-                        })
-                    }
-                }
                 this.resetButtons()
                 this.setState({
                     start: false,
@@ -415,7 +391,7 @@ class RankedGame extends React.Component {
                             />
                             <View style={styles.usernameContainer}>
                                 <Text style={styles.usernameText}>
-                                    {this.state.playerOneUsername}
+                                    {this.props.playerUsername}
                                 </Text>
                             </View>
                             <View style={styles.answersContainer}>
@@ -461,7 +437,7 @@ class RankedGame extends React.Component {
                             />
                             <View style={styles.usernameContainer}>
                                 <Text style={styles.usernameText}>
-                                    {this.state.playerTwoUsername}
+                                    {this.props.opponentUsername}
                                 </Text>
                             </View>
                             <View style={styles.answersContainer}>
