@@ -12,14 +12,17 @@ export default StyleSheet.create({
     },
     topContainer: {
         backgroundColor: '#3FC8D9',
-        height: hp(72),
+        height: hp(70),
         width: wp(100),
         borderBottomLeftRadius: 30,
-        borderBottomRightRadius: 30
+        borderBottomRightRadius: 30,
+        shadowOpacity: 1,
+        shadowColor: '#adadad',
+        shadowOffset: { width: wp(0), height: hp(0.5) },
+        marginBottom: hp(1)
     },
     headerContainer: {
-        height: hp(12),
-        marginTop: hp(3.7),
+        height: hp(13),
         flexDirection: 'row',
         justifyContent: 'space-evenly'
     },
@@ -41,8 +44,10 @@ export default StyleSheet.create({
         fontSize: wp(4),
         fontWeight: '700'
     },
-    buttonContainer: {
-        height: hp(18)
+    dummyButtonContainer: {
+        height: hp(17),
+        width: wp(100),
+        marginBottom: hp(-1)
     },
     topButtonRowContainer: {
         flexDirection: 'row',
@@ -51,7 +56,7 @@ export default StyleSheet.create({
         width: wp(100),
         height: hp(9),
         alignItems: 'center',
-        paddingTop: hp(1)
+        marginBottom: hp(-1)
     },
     button: {
         borderWidth: 3,
@@ -77,17 +82,32 @@ export default StyleSheet.create({
         paddingBottom: hp(1.5)
     },
     jokerContainer: {
-        backgroundColor: '#fff',
+        backgroundColor: '#F4F6FB',
         width: wp(100),
         flex: 1,
         flexDirection: 'row',
-        justifyContent: 'space-evenly'
+        justifyContent: 'space-evenly',
+        marginTop: hp(1),
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        shadowOpacity: 1,
+        shadowColor: '#adadad',
+        paddingTop: hp(1)
     },
     joker: {
-        height: hp(6),
-        width: hp(6),
-        backgroundColor: '#f4f6fb',
-        borderRadius: 100
+        height: hp(3),
+        width: hp(3),
+        resizeMode: 'contain'
+    },
+    jokerAndTextContainer: {
+        alignItems: 'center',
+        flex: 1
+    },
+    jokerText: {
+        color: '#000',
+        fontFamily: 'Averta-Regular',
+        fontSize: wp(3),
+        fontWeight: '600'
     },
     questionStyle: {
         resizeMode: 'contain',
@@ -155,8 +175,7 @@ export default StyleSheet.create({
     },
     backButtonContainer: {
         position: 'absolute',
-        paddingLeft: wp(4),
-        paddingTop: hp(3)
+        paddingLeft: wp(4)
     },
     zoomButton: {
         resizeMode: 'contain',
@@ -166,11 +185,7 @@ export default StyleSheet.create({
     zoomButtonContainer: {
         position: 'absolute',
         paddingLeft: wp(84),
-        paddingTop: hp(66.3)
-    },
-    dummyButtonContainer: {
-        height: hp(18),
-        width: wp(100)
+        paddingTop: hp(64)
     }
 })
 

@@ -5,8 +5,8 @@ import {
     heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
 
-export default (NotchView = () => {
-    return <View style={styles.notchContainer} />
+export default (NotchView = ({ color }) => {
+    return <View style={[styles.notchContainer, { backgroundColor: color }]} />
 })
 
 const styles = StyleSheet.create({

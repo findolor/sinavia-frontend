@@ -6,6 +6,7 @@ window.localStorage = AsyncStorage
 global.Buffer = Buffer
 import * as Colyseus from 'colyseus.js'
 import CountDown from 'react-native-countdown-component'
+import NotchView from '../../../components/notchView'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
@@ -121,13 +122,21 @@ class RankedGame extends React.Component {
                     this.setState({ questionList: rankedState.questionList })
                     if (rankedState.playerOneId === this.client.id) {
                         this.setState({
-                            playerOneUsername: rankedState.playerProps[rankedState.playerOneId].username,
-                            playerTwoUsername: rankedState.playerProps[rankedState.playerTwoId].username
+                            playerOneUsername:
+                                rankedState.playerProps[rankedState.playerOneId]
+                                    .username,
+                            playerTwoUsername:
+                                rankedState.playerProps[rankedState.playerTwoId]
+                                    .username
                         })
                     } else {
                         this.setState({
-                            playerOneUsername: rankedState.playerProps[rankedState.playerTwoId].username,
-                            playerTwoUsername: rankedState.playerProps[rankedState.playerOneId].username
+                            playerOneUsername:
+                                rankedState.playerProps[rankedState.playerTwoId]
+                                    .username,
+                            playerTwoUsername:
+                                rankedState.playerProps[rankedState.playerOneId]
+                                    .username
                         })
                     }
                 }
@@ -311,6 +320,7 @@ class RankedGame extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                <NotchView color={styles.topContainer.backgroundColor} />
                 <View style={styles.topContainer}>
                     <View style={styles.headerContainer}>
                         <View style={styles.userContainer}>
@@ -400,7 +410,8 @@ class RankedGame extends React.Component {
                     </View>
                     <View style={styles.questionInformation}>
                         <Text style={styles.questionInformationText}>
-                            Soru {this.state.questionNumber + 1}
+                            Soru {this.state.questionNumber + 1} /{' '}
+                            {Object.keys(this.state.questionList).length}
                         </Text>
                     </View>
                     <View style={styles.zoomButtonContainer}>
@@ -422,7 +433,7 @@ class RankedGame extends React.Component {
                 </View>
                 <View style={styles.dummyButtonContainer}>
                     {this.state.start && (
-                        <View style={styles.buttonContainer}>
+                        <View>
                             <View style={styles.topButtonRowContainer}>
                                 <TouchableOpacity
                                     onPress={() => this.buttonOnPress(1)}
@@ -529,15 +540,35 @@ class RankedGame extends React.Component {
                     )}
                 </View>
                 <View style={styles.jokerContainer}>
-                    <TouchableOpacity>
-                        <View style={styles.joker} />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <View style={styles.joker} />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <View style={styles.joker} />
-                    </TouchableOpacity>
+                    <View style={styles.jokerAndTextContainer}>
+                        <TouchableOpacity>
+                            <Image
+                                source={require('../../../assets/Rakip.png')}
+                                style={styles.joker}
+                            />
+                        </TouchableOpacity>
+                        <Text style={styles.jokerText}>
+                            Rakibin şıkkını gör
+                        </Text>
+                    </View>
+                    <View style={styles.jokerAndTextContainer}>
+                        <TouchableOpacity>
+                            <Image
+                                source={require('../../../assets/Sikeleme.png')}
+                                style={styles.joker}
+                            />
+                        </TouchableOpacity>
+                        <Text style={styles.jokerText}>Şık Ele</Text>
+                    </View>
+                    <View style={styles.jokerAndTextContainer}>
+                        <TouchableOpacity>
+                            <Image
+                                source={require('../../../assets/2hak.png')}
+                                style={styles.joker}
+                            />
+                        </TouchableOpacity>
+                        <Text style={styles.jokerText}>İkinci Şans</Text>
+                    </View>
                 </View>
             </View>
         )
