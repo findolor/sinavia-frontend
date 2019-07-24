@@ -1,10 +1,7 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, AsyncStorage } from 'react-native'
+import { View, Text, Image, TouchableOpacity, Modal } from 'react-native'
 import styles, { countdownProps } from './style'
 import { Buffer } from 'buffer'
-window.localStorage = AsyncStorage
-global.Buffer = Buffer
-import * as Colyseus from 'colyseus.js'
 import CountDown from 'react-native-countdown-component'
 import NotchView from '../../../components/notchView'
 import { navigationPop } from '../../../services/navigationService'
@@ -63,7 +60,9 @@ class RankedGame extends React.Component {
             // playerProps state
             playerProps: {},
             // Opponent clientId
-            opponentId: ''
+            opponentId: '',
+            // modal visibility variable
+            isQuestionModalVisible: false
         }
     }
 
@@ -395,6 +394,14 @@ class RankedGame extends React.Component {
         navigationPop()
     }
 
+    zoomButtonOnPress = () => {
+        this.setState({ isQuestionModalVisible: true })
+    }
+
+    questionModalCloseOnPress = () => {
+        this.setState({ isQuestionModalVisible: false })
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -486,6 +493,30 @@ class RankedGame extends React.Component {
                             style={styles.questionStyle}
                         />
                     </View>
+                    <Modal
+                        visible={this.state.isQuestionModalVisible}
+                        transparent={true}
+                        animationType={'fade'}
+                    >
+                        <View style={styles.questionModalContainer}>
+                            <View style={styles.questionImageModalContainer}>
+                                <Image
+                                    source={require('../../../assets/soru.jpg')}
+                                    style={styles.questionModalStyle}
+                                />
+                            </View>
+                            <View style={styles.closeModalContainer}>
+                                <TouchableOpacity
+                                    onPress={this.questionModalCloseOnPress}
+                                >
+                                    <Image
+                                        source={require('../../../assets/x.png')}
+                                        style={styles.closeModal}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
                     <View style={styles.questionInformation}>
                         <Text style={styles.questionInformationText}>
                             Soru {this.state.questionNumber + 1} /{' '}
@@ -493,7 +524,7 @@ class RankedGame extends React.Component {
                         </Text>
                     </View>
                     <View style={styles.zoomButtonContainer}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={this.zoomButtonOnPress}>
                             <Image
                                 source={require('../../../assets/zoom.png')}
                                 style={styles.zoomButton}

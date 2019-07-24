@@ -188,6 +188,29 @@ export default StyleSheet.create({
         position: 'absolute',
         paddingLeft: wp(84),
         paddingTop: hp(64)
+    },
+    questionModalContainer: {
+        backgroundColor: '#000000d0',
+        flex: 1
+    },
+    questionModalImageContainer: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    questionModalStyle: {
+        resizeMode: 'contain',
+        height: hp(100),
+        width: wp(100)
+    },
+    closeModalContainer: {
+        position: 'absolute',
+        paddingLeft: wp(85),
+        paddingTop: hp(3)
+    },
+    closeModal: {
+        height: hp(7),
+        width: wp(7),
+        resizeMode: 'contain'
     }
 })
 

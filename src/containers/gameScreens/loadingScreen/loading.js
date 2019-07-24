@@ -40,7 +40,6 @@ class LoadingScreen extends React.Component {
     componentDidMount() {
         this.client = new Colyseus.Client('http://localhost:5000')
         this.client.onOpen.add(() => {
-            console.log('inside')
             this.setState({ isDisabled: false })
         })
     }
@@ -51,12 +50,24 @@ class LoadingScreen extends React.Component {
             this.state.gameMode.ranked,
             this.state.player.playerOne
         )
-        this.room.onJoin.add(() =>
-            navigationPush(SCENE_KEYS.gameScreens.rankedGame, {
-                client: this.client,
-                room: this.room
+        let opponentUsername
+        let opponentId
+        this.room.onMessage.add(message => {
+            const playerIds = Object.keys(message)
+
+            playerIds.forEach(element => {
+                if (this.client.id !== element) {
+                    opponentUsername = message[element].username
+                    opponentId = element
+                }
             })
-        )
+            navigationPush(SCENE_KEYS.gameScreens.rankedGame, {
+                room: this.room,
+                client: this.client,
+                opponentUsername: opponentUsername,
+                opponentId: opponentId
+            })
+        })
     }
 
     play = () => {
