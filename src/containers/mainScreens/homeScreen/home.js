@@ -40,13 +40,8 @@ import {
 } from '../../../components/mainScreen/carousel/static/subjects'
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
 import AuthButton from '../../../components/authScreen/authButton'
-import homeBos from '../../../assets/mainScreens/home.png'
 import homeDolu from '../../../assets/mainScreens/home_dolu.png'
-import trophyBos from '../../../assets/mainScreens/trophy.png'
-import trophyDolu from '../../../assets/mainScreens/trophy_Dolu.png'
-import jokerBos from '../../../assets/mainScreens/joker.png'
-import jokerDolu from '../../../assets/mainScreens/joker_dolu.png'
-import { navigationPush, sceneKeys } from '../../../services/navigationService'
+import { navigationPush, navigationReset, sceneKeys } from '../../../services/navigationService'
 
 const IS_ANDROID = Platform.OS === 'android'
 const SLIDER_1_FIRST_ITEM = 0
@@ -74,10 +69,7 @@ export default class Home extends React.Component {
         this.state = {
             exam: 'YKS',
             slider1ActiveSlide: SLIDER_1_FIRST_ITEM,
-            isModalVisible: false,
-            homeIconSelected: true,
-            trophyIconSelected: false,
-            jokerIconSelected: false
+            isModalVisible: false
         }
     }
 
@@ -305,60 +297,6 @@ export default class Home extends React.Component {
                     >
                         {card}
                     </ScrollView>
-                </View>
-                <View style={styles.bottomBar}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            this.setState({ trophyIconSelected: true, homeIconSelected: false, jokerIconSelected: false })
-                        }}>
-                        <Image
-                            source={
-                                this.state.trophyIconSelected === true
-                                    ?  trophyDolu
-                                    :  trophyBos
-                            }
-                            style={{
-                                resize: 'contain',
-                                height: hp(5),
-                                width: hp(5)
-                            }}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => {
-                            this.setState({ trophyIconSelected: false, homeIconSelected: true, jokerIconSelected: false })
-                        }}
-                    >
-                        <Image
-                            source={
-                                this.state.homeIconSelected === true
-                                    ?  homeDolu
-                                    :  homeBos
-                            }
-                            style={{
-                                resize: 'contain',
-                                height: hp(5),
-                                width: hp(5)
-                            }}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => {
-                            this.setState({ trophyIconSelected: false, homeIconSelected: false, jokerIconSelected: true })
-                        }}>
-                        <Image
-                            source={
-                                this.state.jokerIconSelected === true
-                                    ?  jokerDolu
-                                    :  jokerBos
-                            }
-                            style={{
-                                resize: 'contain',
-                                height: hp(5),
-                                width: hp(5)
-                            }}
-                        />
-                    </TouchableOpacity>
                 </View>
             </View>
         )

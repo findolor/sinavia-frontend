@@ -7,7 +7,7 @@ const sceneKeys = {
     login: 'login',
     register: 'register',
     resetPassword: 'resetPassword',
-    home: 'home'
+    main: 'main'
 }
 
 const RouterComp = () => {
@@ -34,8 +34,8 @@ const RouterComp = () => {
                 </Scene>
                 <Scene key="main" hideNavBar={true}>
                     <Scene
-                        key={sceneKeys.home}
-                        component={mainScreens.home}
+                        key={sceneKeys.main}
+                        component={mainScreens.main}
                     />
                 </Scene>
             </Scene>

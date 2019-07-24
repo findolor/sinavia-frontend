@@ -5,9 +5,7 @@ import {
     ResetPassword
 } from '../containers/authScreens'
 
-import {
-    Home,
-} from '../containers/mainScreens'
+import Main from '../containers/mainScreens'
 
 export const authScreens = {
     opening: Opening,
@@ -17,5 +15,5 @@ export const authScreens = {
 }
 
 export const mainScreens = {
-    home: Home
+    main: Main,
 }
