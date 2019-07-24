@@ -73,6 +73,7 @@ class RankedGame extends React.Component {
             isButtonSixDisabled: false,
             // Variable to know if the client has answered question
             isQuestionAnswered: false,
+            // Our countdown timer's time
             countDownTime: 60
         }
     }
