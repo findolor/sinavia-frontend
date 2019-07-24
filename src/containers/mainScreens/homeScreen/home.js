@@ -21,9 +21,7 @@ import {
     itemWidth
 } from '../../../components/mainScreen/carousel/styles/SliderEntry.style'
 import SliderEntry from '../../../components/mainScreen/carousel/components/SliderEntry'
-import styles1, {
-    colors
-} from '../../../components/mainScreen/carousel/styles/index.style'
+import carouselStyle from '../../../components/mainScreen/carousel/styles/index.style'
 import { LGS, YKS } from '../../../components/mainScreen/carousel/static/exams'
 import {
     lgsTurkce,
@@ -64,6 +62,7 @@ const exams = [
     'EUS',
     'Ehliyet Sınavları'
 ]
+
 const examList = {
     YKS: YKS,
     LGS: LGS
@@ -75,7 +74,10 @@ export default class Home extends React.Component {
         this.state = {
             exam: 'YKS',
             slider1ActiveSlide: SLIDER_1_FIRST_ITEM,
-            isModalVisible: false
+            isModalVisible: false,
+            homeIconSelected: true,
+            trophyIconSelected: false,
+            jokerIconSelected: false
         }
     }
 
@@ -287,9 +289,9 @@ export default class Home extends React.Component {
                             inactiveSlideScale={0.8}
                             inactiveSlideOpacity={0.65}
                             // inactiveSlideShift={20}
-                            containerCustomStyle={styles1.slider}
+                            containerCustomStyle={carouselStyle.slider}
                             contentContainerCustomStyle={
-                                styles1.sliderContentContainer
+                                carouselStyle.sliderContentContainer
                             }
                             loop={false}
                             onSnapToItem={index =>
@@ -305,9 +307,16 @@ export default class Home extends React.Component {
                     </ScrollView>
                 </View>
                 <View style={styles.bottomBar}>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.setState({ trophyIconSelected: true, homeIconSelected: false, jokerIconSelected: false })
+                        }}>
                         <Image
-                            source={trophyBos}
+                            source={
+                                this.state.trophyIconSelected === true
+                                    ?  trophyDolu
+                                    :  trophyBos
+                            }
                             style={{
                                 resize: 'contain',
                                 height: hp(5),
@@ -315,22 +324,41 @@ export default class Home extends React.Component {
                             }}
                         />
                     </TouchableOpacity>
-                    <Image
-                        source={homeDolu}
-                        style={{
-                            resize: 'contain',
-                            height: hp(5),
-                            width: hp(5)
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.setState({ trophyIconSelected: false, homeIconSelected: true, jokerIconSelected: false })
                         }}
-                    />
-                    <Image
-                        source={jokerBos}
-                        style={{
-                            resize: 'contain',
-                            height: hp(5),
-                            width: hp(5)
-                        }}
-                    />
+                    >
+                        <Image
+                            source={
+                                this.state.homeIconSelected === true
+                                    ?  homeDolu
+                                    :  homeBos
+                            }
+                            style={{
+                                resize: 'contain',
+                                height: hp(5),
+                                width: hp(5)
+                            }}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.setState({ trophyIconSelected: false, homeIconSelected: false, jokerIconSelected: true })
+                        }}>
+                        <Image
+                            source={
+                                this.state.jokerIconSelected === true
+                                    ?  jokerDolu
+                                    :  jokerBos
+                            }
+                            style={{
+                                resize: 'contain',
+                                height: hp(5),
+                                width: hp(5)
+                            }}
+                        />
+                    </TouchableOpacity>
                 </View>
             </View>
         )
@@ -430,8 +458,9 @@ const styles = StyleSheet.create({
         height: hp(50.5),
         width: wp(30),
         borderColor: '#00D9EF',
-        borderWidth: wp(1),
-        borderRadius: 20,
+        borderWidth: wp(0.5),
+        borderRadius: 10,
+        marginTop: hp(0.5),
         marginLeft: wp(-0.5)
     },
     modalView: {
