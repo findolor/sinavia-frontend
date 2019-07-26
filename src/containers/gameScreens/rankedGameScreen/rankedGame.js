@@ -80,7 +80,7 @@ class RankedGame extends React.Component {
 
     // We get the room in props
     componentDidMount() {
-        this.setState({})
+        // We send ready signal when game screen is loaded
         this.props.room.send({
             action: 'ready'
         })
@@ -88,6 +88,7 @@ class RankedGame extends React.Component {
             // We update the UI after state changes
             this.chooseStateAction(state.rankedState)
         })
+        // Joker messages come through here
         this.props.room.onMessage.add(message => {
             this.chooseMessageAction(message)
         })
@@ -95,6 +96,7 @@ class RankedGame extends React.Component {
     }
 
     componentWillUnmount() {
+        // We clear the timeouts on quitting
         clearTimeout(this.startTimeout)
         clearTimeout(this.updateTimeout)
         clearTimeout(this.finishedTimeout)
@@ -102,24 +104,32 @@ class RankedGame extends React.Component {
 
     chooseMessageAction = message => {
         switch (message.action) {
+            // Which options to remove comes from the server
             case 'remove-options-joker':
                 this.removeOptions(message.optionsToRemove)
                 return
+            // Question answer comes from the server
             case 'second-chance-joker':
                 this.setState({ questionAnswer: message.questionAnswer })
                 return
         }
     }
 
+    // TODO Move these actions to their functions
     chooseStateAction = rankedState => {
         // We check the action that happened
         switch (rankedState.stateInformation) {
             // Setting up question number and resetting the buttons
             case 'question':
-                // We only do these once
+                // We set the questionList once when the game starts
                 if (rankedState.questionNumber === 0)
                     this.setState({ questionList: rankedState.questionList })
+                // If the second chance joker is active when the round starts, we deactivate it
+                if (this.state.isSeeOpponentAnswerJokerActive)
+                    this.setState({ isSeeOpponentAnswerJokerActive: false })
+                // We reset the questions every time a round starts
                 this.resetButtons()
+                // Necessary settings
                 this.setState({
                     start: false,
                     questionNumber: rankedState.questionNumber,
@@ -127,6 +137,7 @@ class RankedGame extends React.Component {
                     countDownTime: 60,
                     isCountDownRunning: false
                 })
+                // 5s is the question reading time
                 this.startTimeout = setTimeout(() => {
                     this.setState({
                         playerOneButton: 0,
@@ -136,9 +147,17 @@ class RankedGame extends React.Component {
                     })
                 }, 5000)
                 return
+            // As soon as someone answers, a result event is fired
             case 'result':
-                if (this.state.isSeeOpponentAnswerJokerActive) {
+                if (
+                    this.state.isSeeOpponentAnswerJokerActive &&
+                    // We check if the answer is from the opponent, if not we don't proceed
+                    rankedState.playerProps[this.props.client.id].answers[
+                        this.state.questionNumber
+                    ] === undefined
+                ) {
                     this.setState({ isSeeOpponentAnswerJokerActive: false })
+                    // We show the opponent answer here
                     this.highlightOpponentButton(
                         rankedState.playerProps[this.state.opponentId].answers[
                             this.state.questionNumber
@@ -148,6 +167,7 @@ class RankedGame extends React.Component {
                 this.setState({ playerProps: rankedState.playerProps })
                 return
             case 'show-results':
+                // 8 second countdown time for the results
                 this.setState({
                     countDownTime: 8
                 })
@@ -157,6 +177,7 @@ class RankedGame extends React.Component {
                     ].answer
                 )
                 this.updateTimeout = setTimeout(() => {
+                    // We wait 2.5 seconds for the reveal
                     this.updatePlayerResults()
                 }, 2500)
                 return
@@ -167,6 +188,7 @@ class RankedGame extends React.Component {
     }
 
     updatePlayerResults = () => {
+        // Player answers to the question
         const answers = this.state.playerProps[this.props.client.id].answers
         const answersOpponent = this.state.playerProps[this.state.opponentId]
             .answers
@@ -301,6 +323,7 @@ class RankedGame extends React.Component {
 
     // Sends the button action and question finished action
     buttonOnPress = buttonNumber => {
+        // If buttonNumber is same as the answer we deactivate the joker and continue
         if (this.state.isSecondChanceJokerActive) {
             this.setState({
                 isSecondChanceJokerActive: false
@@ -310,14 +333,18 @@ class RankedGame extends React.Component {
                 return
             }
         }
+
         let that = this
+
         this.setState({ playerOneButton: buttonNumber })
         this.highlightButton(buttonNumber)
+
         this.props.room.send({
             action: 'button-press',
             button: buttonNumber
         })
         // After setting the button and sending 'button-press' action, we send 'finished' action for round end
+        // There is a timeout because there needs to be a delay between the events
         this.finishedTimeout = setTimeout(() => {
             that.props.room.send({
                 action: 'finished'
@@ -328,6 +355,7 @@ class RankedGame extends React.Component {
     highlightButton = buttonNumber => {
         this.disableButtons()
         this.setState({ isQuestionAnswered: true })
+
         switch (buttonNumber) {
             case 1:
                 this.setState({ buttonOneBorderColor: SELECTED_BUTTON_COLOR })
@@ -410,6 +438,7 @@ class RankedGame extends React.Component {
     }
 
     countdownOnFinish = () => {
+        // If the question is answered we do nothing
         if (this.state.isQuestionAnswered) return
         // We send the same response as 'leave empty' option
         this.buttonOnPress(6)
@@ -432,6 +461,7 @@ class RankedGame extends React.Component {
     removeOptionJokerOnPressed = () => {
         this.setState({ isRemoveOptionJokerDisabled: true })
 
+        // This is used for not selecting the already disabled button to remove
         let alreadyDisabledButton = 0
 
         if (this.state.isButtonOneDisabled) alreadyDisabledButton = 1
@@ -440,6 +470,7 @@ class RankedGame extends React.Component {
         if (this.state.isButtonFourDisabled) alreadyDisabledButton = 4
         if (this.state.isButtonFiveDisabled) alreadyDisabledButton = 5
 
+        // If there is a disabled button we send it, if not we don't do anything
         if (alreadyDisabledButton === 0)
             this.props.room.send({
                 action: 'remove-options-joker',
@@ -499,9 +530,10 @@ class RankedGame extends React.Component {
             isSeeOpponentAnswerJokerActive: true
         })
 
+        // If the user answered the question before we used the joker, we show the answer immediately
         const playerProp = this.state.playerProps[this.state.opponentId]
         let answers
-
+        // Necessary checks for any undefined variables
         if (playerProp !== undefined) {
             answers = playerProp.answers[this.state.questionNumber]
 
