@@ -59,7 +59,14 @@ class RankedGame extends React.Component {
             // Opponent clientId
             opponentId: this.props.opponentId,
             // modal visibility variable
-            isQuestionModalVisible: false
+            isQuestionModalVisible: false,
+            // Question option names
+            buttonOneName: 'A',
+            buttonTwoName: 'B',
+            buttonThreeName: 'C',
+            buttonFourName: 'D',
+            buttonFiveName: 'E',
+            buttonSixName: 'Boş'
         }
     }
 
@@ -73,6 +80,9 @@ class RankedGame extends React.Component {
             // We update the UI after state changes
             this.chooseStateAction(state.rankedState)
         })
+        this.props.room.onMessage.add(message => {
+            this.chooseMessageAction(message)
+        })
         this.props.room.onError.add(err => console.log(err))
     }
 
@@ -82,8 +92,15 @@ class RankedGame extends React.Component {
         clearTimeout(this.finishedTimeout)
     }
 
+    chooseMessageAction = message => {
+        switch (message.action) {
+            case 'remove-options-joker':
+                this.removeOptions(message.optionsToRemove)
+                return
+        }
+    }
+
     chooseStateAction = rankedState => {
-        console.log(rankedState.stateInformation)
         // We check the action that happened
         switch (rankedState.stateInformation) {
             // Setting up question number and resetting the buttons
@@ -354,7 +371,13 @@ class RankedGame extends React.Component {
             buttonFiveBorderColor: NORMAL_BUTTON_COLOR,
             buttonSixBorderColor: NORMAL_BUTTON_COLOR,
             playerOneButton: 0,
-            playerTwoButton: 0
+            playerTwoButton: 0,
+            buttonOneName: 'A',
+            buttonTwoName: 'B',
+            buttonThreeName: 'C',
+            buttonFourName: 'D',
+            buttonFiveName: 'E',
+            buttonSixName: 'Boş'
         })
     }
 
@@ -376,6 +399,49 @@ class RankedGame extends React.Component {
 
     questionModalCloseOnPress = () => {
         this.setState({ isQuestionModalVisible: false })
+    }
+
+    removeOptionJokerOnPressed = () => {
+        this.props.room.send({
+            action: 'remove-options-joker'
+        })
+    }
+
+    removeOptions = optionsToRemove => {
+        optionsToRemove.forEach(element => {
+            switch (element) {
+                case 1:
+                    this.setState({
+                        buttonOneName: '',
+                        isButtonOneDisabled: true
+                    })
+                    return
+                case 2:
+                    this.setState({
+                        buttonTwoName: '',
+                        isButtonTwoDisabled: true
+                    })
+                    return
+                case 3:
+                    this.setState({
+                        buttonThreeName: '',
+                        isButtonThreeDisabled: true
+                    })
+                    return
+                case 4:
+                    this.setState({
+                        buttonFourName: '',
+                        isButtonFourDisabled: true
+                    })
+                    return
+                case 5:
+                    this.setState({
+                        buttonFiveName: '',
+                        isButtonFiveDisabled: true
+                    })
+                    return
+            }
+        })
     }
 
     render() {
@@ -533,7 +599,9 @@ class RankedGame extends React.Component {
                                             }
                                         ]}
                                     >
-                                        <Text style={styles.buttonText}>A</Text>
+                                        <Text style={styles.buttonText}>
+                                            {this.state.buttonOneName}
+                                        </Text>
                                     </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
@@ -549,7 +617,9 @@ class RankedGame extends React.Component {
                                             }
                                         ]}
                                     >
-                                        <Text style={styles.buttonText}>B</Text>
+                                        <Text style={styles.buttonText}>
+                                            {this.state.buttonTwoName}
+                                        </Text>
                                     </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
@@ -565,7 +635,9 @@ class RankedGame extends React.Component {
                                             }
                                         ]}
                                     >
-                                        <Text style={styles.buttonText}>C</Text>
+                                        <Text style={styles.buttonText}>
+                                            {this.state.buttonThreeName}
+                                        </Text>
                                     </View>
                                 </TouchableOpacity>
                             </View>
@@ -583,7 +655,9 @@ class RankedGame extends React.Component {
                                             }
                                         ]}
                                     >
-                                        <Text style={styles.buttonText}>D</Text>
+                                        <Text style={styles.buttonText}>
+                                            {this.state.buttonFourName}
+                                        </Text>
                                     </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
@@ -599,7 +673,9 @@ class RankedGame extends React.Component {
                                             }
                                         ]}
                                     >
-                                        <Text style={styles.buttonText}>E</Text>
+                                        <Text style={styles.buttonText}>
+                                            {this.state.buttonFiveName}
+                                        </Text>
                                     </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
@@ -616,7 +692,7 @@ class RankedGame extends React.Component {
                                         ]}
                                     >
                                         <Text style={styles.buttonText}>
-                                            Boş
+                                            {this.state.buttonSixName}
                                         </Text>
                                     </View>
                                 </TouchableOpacity>
@@ -639,7 +715,9 @@ class RankedGame extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.touchableJokerContainer}>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={this.removeOptionJokerOnPressed}
+                        >
                             <View style={styles.jokerAndTextContainer}>
                                 <Image
                                     source={require('../../../assets/Sikeleme.png')}

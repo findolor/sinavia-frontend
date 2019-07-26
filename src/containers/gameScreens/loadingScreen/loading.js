@@ -46,10 +46,9 @@ class LoadingScreen extends React.Component {
 
     // Client sends a ready signal when they join a room successfully
     joinRoom = () => {
-        this.room = this.client.join(
-            this.state.gameMode.ranked,
-            this.state.player.playerOne
-        )
+        const selectedPlayer = this.state.player.playerTwo
+
+        this.room = this.client.join(this.state.gameMode.ranked, selectedPlayer)
         let opponentUsername
         let opponentId
         this.room.onMessage.add(message => {
@@ -61,10 +60,11 @@ class LoadingScreen extends React.Component {
                     opponentId = element
                 }
             })
+            this.room.removeAllListeners()
             navigationPush(SCENE_KEYS.gameScreens.rankedGame, {
                 room: this.room,
                 client: this.client,
-                playerUsername: this.state.player.playerOne.username,
+                playerUsername: selectedPlayer.username,
                 opponentUsername: opponentUsername,
                 opponentId: opponentId
             })
