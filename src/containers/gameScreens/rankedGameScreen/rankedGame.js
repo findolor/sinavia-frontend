@@ -1,7 +1,6 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity, Modal } from 'react-native'
 import styles, { countdownProps } from './style'
-import { Buffer } from 'buffer'
 import CountDown from 'react-native-countdown-component'
 import NotchView from '../../../components/notchView'
 import { navigationPop } from '../../../services/navigationService'
@@ -66,7 +65,16 @@ class RankedGame extends React.Component {
             buttonThreeName: 'C',
             buttonFourName: 'D',
             buttonFiveName: 'E',
-            buttonSixName: 'Boş'
+            buttonSixName: 'Boş',
+            // Joker disable variables
+            isRemoveOptionJokerDisabled: false,
+            isSeeOpponentAnswerJokerDisabled: false,
+            isSecondChanceJokerDisabled: false,
+            // Joker active variables
+            isSeeOpponentAnswerJokerActive: false,
+            isSecondChanceJokerActive: false,
+            // Current question answer for second chance
+            questionAnswer: 0
         }
     }
 
@@ -97,6 +105,9 @@ class RankedGame extends React.Component {
             case 'remove-options-joker':
                 this.removeOptions(message.optionsToRemove)
                 return
+            case 'second-chance-joker':
+                this.setState({ questionAnswer: message.questionAnswer })
+                return
         }
     }
 
@@ -126,6 +137,14 @@ class RankedGame extends React.Component {
                 }, 5000)
                 return
             case 'result':
+                if (this.state.isSeeOpponentAnswerJokerActive) {
+                    this.setState({ isSeeOpponentAnswerJokerActive: false })
+                    this.highlightOpponentButton(
+                        rankedState.playerProps[this.state.opponentId].answers[
+                            this.state.questionNumber
+                        ].answer
+                    )
+                }
                 this.setState({ playerProps: rankedState.playerProps })
                 return
             case 'show-results':
@@ -282,6 +301,15 @@ class RankedGame extends React.Component {
 
     // Sends the button action and question finished action
     buttonOnPress = buttonNumber => {
+        if (this.state.isSecondChanceJokerActive) {
+            this.setState({
+                isSecondChanceJokerActive: false
+            })
+            if (buttonNumber !== this.state.questionAnswer) {
+                this.removeOption(buttonNumber)
+                return
+            }
+        }
         let that = this
         this.setState({ playerOneButton: buttonNumber })
         this.highlightButton(buttonNumber)
@@ -402,45 +430,95 @@ class RankedGame extends React.Component {
     }
 
     removeOptionJokerOnPressed = () => {
-        this.props.room.send({
-            action: 'remove-options-joker'
-        })
+        this.setState({ isRemoveOptionJokerDisabled: true })
+
+        let alreadyDisabledButton = 0
+
+        if (this.state.isButtonOneDisabled) alreadyDisabledButton = 1
+        if (this.state.isButtonTwoDisabled) alreadyDisabledButton = 2
+        if (this.state.isButtonThreeDisabled) alreadyDisabledButton = 3
+        if (this.state.isButtonFourDisabled) alreadyDisabledButton = 4
+        if (this.state.isButtonFiveDisabled) alreadyDisabledButton = 5
+
+        if (alreadyDisabledButton === 0)
+            this.props.room.send({
+                action: 'remove-options-joker',
+                disabledButton: false
+            })
+        else
+            this.props.room.send({
+                action: 'remove-options-joker',
+                disabled: alreadyDisabledButton
+            })
     }
 
     removeOptions = optionsToRemove => {
         optionsToRemove.forEach(element => {
-            switch (element) {
-                case 1:
-                    this.setState({
-                        buttonOneName: '',
-                        isButtonOneDisabled: true
-                    })
-                    return
-                case 2:
-                    this.setState({
-                        buttonTwoName: '',
-                        isButtonTwoDisabled: true
-                    })
-                    return
-                case 3:
-                    this.setState({
-                        buttonThreeName: '',
-                        isButtonThreeDisabled: true
-                    })
-                    return
-                case 4:
-                    this.setState({
-                        buttonFourName: '',
-                        isButtonFourDisabled: true
-                    })
-                    return
-                case 5:
-                    this.setState({
-                        buttonFiveName: '',
-                        isButtonFiveDisabled: true
-                    })
-                    return
+            this.removeOption(element)
+        })
+    }
+
+    removeOption = buttonNumber => {
+        switch (buttonNumber) {
+            case 1:
+                this.setState({
+                    buttonOneName: '',
+                    isButtonOneDisabled: true
+                })
+                return
+            case 2:
+                this.setState({
+                    buttonTwoName: '',
+                    isButtonTwoDisabled: true
+                })
+                return
+            case 3:
+                this.setState({
+                    buttonThreeName: '',
+                    isButtonThreeDisabled: true
+                })
+                return
+            case 4:
+                this.setState({
+                    buttonFourName: '',
+                    isButtonFourDisabled: true
+                })
+                return
+            case 5:
+                this.setState({
+                    buttonFiveName: '',
+                    isButtonFiveDisabled: true
+                })
+                return
+        }
+    }
+
+    seeOpponentAnswerJokerOnPressed = () => {
+        this.setState({
+            isSeeOpponentAnswerJokerDisabled: true,
+            isSeeOpponentAnswerJokerActive: true
+        })
+
+        const playerProp = this.state.playerProps[this.state.opponentId]
+        let answers
+
+        if (playerProp !== undefined) {
+            answers = playerProp.answers[this.state.questionNumber]
+
+            if (answers !== undefined) {
+                this.setState({ isSeeOpponentAnswerJokerActive: false })
+                this.highlightOpponentButton(answers.answer)
             }
+        }
+    }
+
+    secondChangeJokerOnPressed = () => {
+        this.setState({
+            isSecondChanceJokerDisabled: true,
+            isSecondChanceJokerActive: true
+        })
+        this.props.room.send({
+            action: 'second-chance-joker'
         })
     }
 
@@ -702,7 +780,12 @@ class RankedGame extends React.Component {
                 </View>
                 <View style={styles.jokerContainer}>
                     <View style={styles.touchableJokerContainer}>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={this.seeOpponentAnswerJokerOnPressed}
+                            disabled={
+                                this.state.isSeeOpponentAnswerJokerDisabled
+                            }
+                        >
                             <View style={styles.jokerAndTextContainer}>
                                 <Image
                                     source={require('../../../assets/Rakip.png')}
@@ -717,6 +800,7 @@ class RankedGame extends React.Component {
                     <View style={styles.touchableJokerContainer}>
                         <TouchableOpacity
                             onPress={this.removeOptionJokerOnPressed}
+                            disabled={this.state.isRemoveOptionJokerDisabled}
                         >
                             <View style={styles.jokerAndTextContainer}>
                                 <Image
@@ -728,7 +812,10 @@ class RankedGame extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.touchableJokerContainer}>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={this.secondChangeJokerOnPressed}
+                            disabled={this.state.isSecondChanceJokerDisabled}
+                        >
                             <View style={styles.jokerAndTextContainer}>
                                 <Image
                                     source={require('../../../assets/2hak.png')}
