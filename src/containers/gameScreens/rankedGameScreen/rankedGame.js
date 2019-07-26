@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, Modal } from 'react-native'
+import { View, Text, Image, TouchableOpacity, Modal, Alert } from 'react-native'
 import styles, { countdownProps } from './style'
 import CountDown from 'react-native-countdown-component'
 import NotchView from '../../../components/notchView'
@@ -95,11 +95,19 @@ class RankedGame extends React.Component {
         this.props.room.onError.add(err => console.log(err))
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() {}
+
+    shutdownGame = () => {
         // We clear the timeouts on quitting
         clearTimeout(this.startTimeout)
         clearTimeout(this.updateTimeout)
         clearTimeout(this.finishedTimeout)
+
+        // Clear room listeners
+        this.props.room.removeAllListeners()
+
+        // Clear other game related things
+        this.setState({ isCountDownRunning: false })
     }
 
     chooseMessageAction = message => {
@@ -111,6 +119,14 @@ class RankedGame extends React.Component {
             // Question answer comes from the server
             case 'second-chance-joker':
                 this.setState({ questionAnswer: message.questionAnswer })
+                return
+            case 'client-leaving':
+                // TODO navigate to the game-stats screen
+                Alert.alert(this.state.opponentId, 'oyuncu oyundan ayrildi.')
+
+                // Do a shutdown routine
+                this.shutdownGame()
+
                 return
         }
     }

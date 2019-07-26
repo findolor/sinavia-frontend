@@ -60,7 +60,9 @@ class LoadingScreen extends React.Component {
                     opponentId = element
                 }
             })
+
             this.room.removeAllListeners()
+
             navigationPush(SCENE_KEYS.gameScreens.rankedGame, {
                 room: this.room,
                 client: this.client,
