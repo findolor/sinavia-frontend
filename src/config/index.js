@@ -5,11 +5,19 @@ const config = {
         host: env.SERVER_ENDPOINT
     },
     scene_keys: {
-        opening: 'opening',
-        login: 'login',
-        register: 'register',
-        resetPassword: 'resetPassword',
-        main: 'main'
+        authScreens: {
+            opening: 'opening',
+            login: 'login',
+            register: 'register',
+            resetPassword: 'resetPassword'
+        },
+        gameScreens: {
+            rankedGame: 'rankedGame',
+            loading: 'loading'
+        },
+        mainScreens: {
+            main: 'main'
+        }
     }
 }
 
