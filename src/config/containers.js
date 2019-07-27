@@ -15,5 +15,5 @@ export const authScreens = {
 }
 
 export const mainScreens = {
-    main: Main,
+    main: Main
 }

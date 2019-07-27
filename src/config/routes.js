@@ -33,10 +33,7 @@ const RouterComp = () => {
                     />
                 </Scene>
                 <Scene key="main" hideNavBar={true}>
-                    <Scene
-                        key={sceneKeys.main}
-                        component={mainScreens.main}
-                    />
+                    <Scene key={sceneKeys.main} component={mainScreens.main} />
                 </Scene>
             </Scene>
         </Router>

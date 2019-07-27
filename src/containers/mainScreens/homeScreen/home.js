@@ -47,7 +47,6 @@ import {
     sceneKeys
 } from '../../../services/navigationService'
 
-
 const SLIDER_1_FIRST_ITEM = 0
 const exams = [
     'YKS',
@@ -73,7 +72,7 @@ export default class Home extends React.Component {
             exam: 'YKS',
             subject: '',
             slider1ActiveSlide: SLIDER_1_FIRST_ITEM,
-            isModalVisible: false,
+            isModalVisible: false
         }
     }
 
@@ -152,9 +151,11 @@ export default class Home extends React.Component {
 
         for (let i = 0; i < choosenSubject.length; i++) {
             cardList.push(
-                <TouchableOpacity onPress={() => {
-                    this.onPressCard(choosenSubject[i])
-                }}>
+                <TouchableOpacity
+                    onPress={() => {
+                        this.onPressCard(choosenSubject[i])
+                    }}
+                >
                     <View style={styles.card}>
                         <Text style={styles.cardText}>{choosenSubject[i]}</Text>
                     </View>
@@ -206,25 +207,43 @@ export default class Home extends React.Component {
                             </View>
                             <View style={styles.gameModesContainer}>
                                 <View style={styles.gameModeContainer}>
-                                    <View style={styles.gameModeLogoContainer} />
-                                    <View style={styles.gameModeContextContainer}>
-                                        <Text style={styles.gameModeContextText}>
+                                    <View
+                                        style={styles.gameModeLogoContainer}
+                                    />
+                                    <View
+                                        style={styles.gameModeContextContainer}
+                                    >
+                                        <Text
+                                            style={styles.gameModeContextText}
+                                        >
                                             Rastgele bir kullanıcı ile yarış
                                         </Text>
                                     </View>
                                 </View>
                                 <View style={styles.gameModeContainer}>
-                                    <View style={styles.gameModeLogoContainer} />
-                                    <View style={styles.gameModeContextContainer}>
-                                        <Text style={styles.gameModeContextText}>
+                                    <View
+                                        style={styles.gameModeLogoContainer}
+                                    />
+                                    <View
+                                        style={styles.gameModeContextContainer}
+                                    >
+                                        <Text
+                                            style={styles.gameModeContextText}
+                                        >
                                             Arkadaşın ile yarış
                                         </Text>
                                     </View>
                                 </View>
                                 <View style={styles.gameModeContainer}>
-                                    <View style={styles.gameModeLogoContainer} />
-                                    <View style={styles.gameModeContextContainer}>
-                                        <Text style={styles.gameModeContextText}>
+                                    <View
+                                        style={styles.gameModeLogoContainer}
+                                    />
+                                    <View
+                                        style={styles.gameModeContextContainer}
+                                    >
+                                        <Text
+                                            style={styles.gameModeContextText}
+                                        >
                                             Arkadaş grubun ile yarış
                                         </Text>
                                     </View>
