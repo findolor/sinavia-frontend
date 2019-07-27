@@ -34,7 +34,7 @@ export default class Opening extends React.Component {
                         underlayColor="#1a5d63"
                         buttonText="Giriş Yap"
                         onPress={() => {
-                            navigationPush(SCENE_KEYS.login)
+                            navigationPush(SCENE_KEYS.authScreens.login)
                         }}
                     />
                     <AuthButton
@@ -44,7 +44,7 @@ export default class Opening extends React.Component {
                         underlayColor="#1a5d63"
                         buttonText="Kayıt Ol"
                         onPress={() => {
-                            navigationPush(SCENE_KEYS.register)
+                            navigationPush(SCENE_KEYS.authScreens.register)
                         }}
                     />
                 </View>

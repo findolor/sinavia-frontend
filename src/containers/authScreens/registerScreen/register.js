@@ -326,7 +326,7 @@ class Register extends React.Component {
                     </Text>
                     <TouchableOpacity
                         onPress={() => {
-                            navigationPush(SCENE_KEYS.login)
+                            navigationPush(SCENE_KEYS.authScreens.login)
                         }}
                     >
                         <Text style={styles.gotoLoginTextSecond}>

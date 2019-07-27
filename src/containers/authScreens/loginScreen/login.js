@@ -143,7 +143,9 @@ export default class Login extends React.Component {
                             <View style={styles.forgetPasswordContainer}>
                                 <TouchableOpacity
                                     onPress={() => {
-                                        navigationPush(SCENE_KEYS.resetPassword)
+                                        navigationPush(
+                                            SCENE_KEYS.authScreens.resetPassword
+                                        )
                                     }}
                                 >
                                     <Text style={styles.forgetPasswordText}>
