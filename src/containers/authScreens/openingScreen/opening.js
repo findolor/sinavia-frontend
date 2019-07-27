@@ -27,6 +27,8 @@ export default class Opening extends React.Component {
                 </View>
                 <View style={styles.buttonContainer}>
                     <AuthButton
+                        height={hp(7)}
+                        width= {wp(85)}
                         color="#00D9EF"
                         underlayColor="#1a5d63"
                         buttonText="Giriş Yap"
@@ -35,6 +37,8 @@ export default class Opening extends React.Component {
                         }}
                     />
                     <AuthButton
+                        height={hp(7)}
+                        width= {wp(85)}
                         color="#00D9EF"
                         underlayColor="#1a5d63"
                         buttonText="Kayıt Ol"
@@ -50,11 +54,15 @@ export default class Opening extends React.Component {
                 </View>
                 <View style={styles.buttonContainer}>
                     <AuthButton
+                        height={hp(7)}
+                        width= {wp(85)}
                         color="#4267B2"
                         underlayColor="#170c5a"
                         buttonText="Facebook ile Bağlan"
                     />
                     <AuthButton
+                        height={hp(7)}
+                        width= {wp(85)}
                         color="#0F9D58"
                         underlayColor="#144012"
                         buttonText="Google ile Bağlan"

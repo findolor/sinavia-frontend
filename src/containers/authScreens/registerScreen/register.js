@@ -312,6 +312,8 @@ class Register extends React.Component {
                     </View>
                 </View>
                 <AuthButton
+                    height={hp(7)}
+                    width= {wp(85)}
                     color="#00D9EF"
                     underlayColor="#1a5d63"
                     buttonText="Kayıt Ol"

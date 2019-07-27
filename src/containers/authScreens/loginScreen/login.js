@@ -10,7 +10,7 @@ import {
     Animated,
     Platform
 } from 'react-native'
-import { sceneKeys, navigationPush } from '../../../services/navigationService'
+import { sceneKeys, navigationPush, navigationReplace, navigationReset } from '../../../services/navigationService'
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp
@@ -167,10 +167,15 @@ export default class Login extends React.Component {
                 </View>
                 <View style={styles.buttonContainer}>
                     <AuthButton
+                        height={hp(7)}
+                        width= {wp(85)}
                         marginBottom={hp(6)}
                         color="#00D9EF"
                         underlayColor="#1a5d63"
                         buttonText="Giriş Yap"
+                        onPress={() => {
+                            navigationReset("main")
+                        }}
                     />
                 </View>
             </Animated.View>

@@ -29,6 +29,9 @@ const RouterComp = () => {
                         component={authScreens.resetPassword}
                     />
                 </Scene>
+                <Scene key="main" hideNavBar={true}>
+                    <Scene key={sceneKeys.main} component={mainScreens.main} />
+                </Scene>
             </Scene>
         </Router>
     )

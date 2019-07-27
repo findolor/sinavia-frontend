@@ -6,6 +6,8 @@ import {
 } from 'react-native-responsive-screen'
 
 export default (AuthButton = ({
+    height,
+    width,
     color,
     onPressedColor,
     underlayColor,
@@ -20,7 +22,9 @@ export default (AuthButton = ({
                 styles.button,
                 { backgroundColor: color },
                 { marginTop: marginTop },
-                { marginBottom: marginBottom }
+                { marginBottom: marginBottom },
+                { height: height },
+                { width: width }
             ]}
             underlayColor={underlayColor}
             onPress={onPress}
