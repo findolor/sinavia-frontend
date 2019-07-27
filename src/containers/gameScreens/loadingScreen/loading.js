@@ -22,7 +22,8 @@ class LoadingScreen extends React.Component {
                     username: 'arda',
                     examName: 'LGS',
                     courseName: 'Matematik',
-                    subjectName: 'Sayilar'
+                    subjectName: 'Sayilar',
+                    databaseId: 'dsds'
                 },
                 playerTwo: {
                     create: true,
@@ -30,7 +31,8 @@ class LoadingScreen extends React.Component {
                     username: 'deli',
                     examName: 'LGS',
                     courseName: 'Matematik',
-                    subjectName: 'Sayilar'
+                    subjectName: 'Sayilar',
+                    databaseId: '1122'
                 }
             },
             isDisabled: true
@@ -46,7 +48,7 @@ class LoadingScreen extends React.Component {
 
     // Client sends a ready signal when they join a room successfully
     joinRoom = () => {
-        const selectedPlayer = this.state.player.playerTwo
+        const selectedPlayer = this.state.player.playerOne
 
         this.room = this.client.join(this.state.gameMode.ranked, selectedPlayer)
         let opponentUsername

@@ -8,14 +8,14 @@ const RouterComp = () => {
         <Router>
             <Scene key="root" hideNavBar={true}>
                 <Scene key="auth" hideNavBar={true}>
-                    {/* <Scene
+                    <Scene
                         key={SCENE_KEYS.gameScreens.loading}
                         component={gameScreens.loading}
                     />
                     <Scene
                         key={SCENE_KEYS.gameScreens.rankedGame}
                         component={gameScreens.rankedGame}
-                    />  */}
+                    />
                     <Scene
                         key={SCENE_KEYS.authScreens.opening}
                         component={authScreens.opening}
