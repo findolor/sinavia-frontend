@@ -25,9 +25,9 @@ export default StyleSheet.create({
     },
     resultTextImg: {
         resizeMode: 'contain',
-        marginBottom: hp(3),
+        marginBottom: hp(5),
         height: hp(10),
-        width: wp(60)
+        width: hp(40)
     },
     resultsContainer: {
         height: hp(58),
@@ -110,15 +110,14 @@ export default StyleSheet.create({
     },
     results1Container: {
         height: hp(21),
-        width: hp(45),
+        width: wp(87.8),
         marginTop: hp(1.5),
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#F2FEFF'
     },
     results2Container: {
         height: hp(31),
-        width: hp(44),
+        width: wp(80),
         marginTop: hp(1.4),
         backgroundColor: '#00D9EF',
         borderRadius: 20,
@@ -126,27 +125,24 @@ export default StyleSheet.create({
     },
     user1Container: {
         height: hp(21),
-        width: hp(18),
-        backgroundColor: '#F2FEFF',
+        width: wp(35),
         alignItems: 'center'
     },
     user2Container: {
         height: hp(21),
-        width: hp(18),
-        backgroundColor: '#F2FEFF',
+        width: wp(35),
         alignItems: 'center'
     },
     answersContainer: {
         height: hp(12),
-        width: hp(9),
+        width: wp(17.8),
         marginBottom: hp(4),
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: '#F2FEFF'
     },
     answerImg: {
-        height: hp(2),
-        width: hp(2)
+        height: hp(2.5),
+        width: hp(2.5)
     },
     profilePic: {
         height: hp(14),
@@ -163,7 +159,7 @@ export default StyleSheet.create({
     },
     dividedAnswer: {
         height: hp(4),
-        width: wp(14),
+        width: wp(17.8),
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center'
