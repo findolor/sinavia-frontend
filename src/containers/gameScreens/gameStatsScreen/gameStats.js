@@ -73,7 +73,31 @@ class GameStatsScreen extends React.Component {
                                 </Text>
                             </View>
                         </View>
-                        <View style={styles.results2Container} />
+                        <View style={styles.results2Container}>
+                            <View style={styles.allScoresContainer}>
+                                <View style={styles.scoreContainer}>
+                                    <Text style={styles.scoresText}>
+                                        Oyunu Bitirdin
+                                    </Text>
+                                    <Text style={styles.scoresText}>20</Text>
+                                </View>
+                                <View style={styles.scoreContainer}>
+                                    <Text style={styles.scoresText}>Doğru Cevap x 3</Text>
+                                    <Text style={styles.scoresText}>60</Text>
+                                </View>
+                                <View style={styles.scoreContainer}>
+                                    <Text style={styles.scoresText}>Kazandın</Text>
+                                    <Text style={styles.scoresText}>100</Text>
+                                </View>
+                            </View>
+                            <View style={styles.separatorContainer}>
+                            <View style={styles.separatorLine} />
+                            </View>
+                            <View style={styles.sinaviaScoreContainer}>
+                                <Text style={styles.sinaviaScoreText}>Sınavia Puanı</Text>
+                                <Text style={styles.sinaviaScoreText}>180</Text>
+                            </View>
+                        </View>
                     </View>
                     <View style={styles.buttonsContainer}>
                         <TouchableOpacity>

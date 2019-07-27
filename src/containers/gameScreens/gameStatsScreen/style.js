@@ -37,7 +37,7 @@ export default StyleSheet.create({
         marginLeft: wp(6.4),
         borderRadius: 20,
         position: 'absolute',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     replayButton: {
         height: hp(7),
@@ -110,7 +110,7 @@ export default StyleSheet.create({
     },
     results1Container: {
         height: hp(21),
-        width: hp(42),
+        width: hp(45),
         marginTop: hp(1.5),
         flexDirection: 'row',
         alignItems: 'center',
@@ -118,26 +118,27 @@ export default StyleSheet.create({
     },
     results2Container: {
         height: hp(31),
-        width: hp(40),
+        width: hp(44),
         marginTop: hp(1.4),
         backgroundColor: '#00D9EF',
-        borderRadius: 20
+        borderRadius: 20,
+        alignItems: 'center'
     },
     user1Container: {
         height: hp(21),
-        width: hp(17),
+        width: hp(18),
         backgroundColor: '#F2FEFF',
         alignItems: 'center'
     },
     user2Container: {
         height: hp(21),
-        width: hp(17),
+        width: hp(18),
         backgroundColor: '#F2FEFF',
         alignItems: 'center'
     },
     answersContainer: {
         height: hp(12),
-        width: hp(8),
+        width: hp(9),
         marginBottom: hp(4),
         justifyContent: 'space-around',
         alignItems: 'center',
@@ -179,4 +180,46 @@ export default StyleSheet.create({
         backgroundColor: '#00D9EF',
         alignItems: 'center'
     },
+    allScoresContainer: {
+        height: hp(22.5),
+        width: wp(70)
+    },
+    scoreContainer: {
+        height: hp(7.5),
+        width: wp(70),
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    scoresText: {
+        fontFamily: 'Averta-Semibold',
+        color: '#FFFFFF',
+        letterSpacing: wp(0.1),
+        fontSize: hp(2.5)
+    },
+    separatorContainer: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        height: hp(0.1),
+        width: wp(70)
+    },
+    separatorLine: {
+        flex: 1,
+        borderWidth: wp(0.2),
+        height: hp(0.1),
+        borderColor: '#D9D9D9'
+    },
+    sinaviaScoreContainer: {
+        height: hp(8),
+        width: wp(70),
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    sinaviaScoreText: {
+        fontFamily: 'Averta-BoldItalic',
+        color: '#EB6300',
+        letterSpacing: wp(0.1),
+        fontSize: hp(4)
+    }
 })
