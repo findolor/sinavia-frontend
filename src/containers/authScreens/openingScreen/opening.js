@@ -1,6 +1,7 @@
 import React from 'react'
-import { StyleSheet, Image, StatusBar, View, Text } from 'react-native'
-import { sceneKeys, navigationPush } from '../../../services/navigationService'
+import { Image, StatusBar, View, Text } from 'react-native'
+import { navigationPush } from '../../../services/navigationService'
+import { SCENE_KEYS } from '../../../config/index'
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp
@@ -28,22 +29,22 @@ export default class Opening extends React.Component {
                 <View style={styles.buttonContainer}>
                     <AuthButton
                         height={hp(7)}
-                        width= {wp(85)}
+                        width={wp(85)}
                         color="#00D9EF"
                         underlayColor="#1a5d63"
                         buttonText="Giriş Yap"
                         onPress={() => {
-                            navigationPush(sceneKeys.login)
+                            navigationPush(SCENE_KEYS.login)
                         }}
                     />
                     <AuthButton
                         height={hp(7)}
-                        width= {wp(85)}
+                        width={wp(85)}
                         color="#00D9EF"
                         underlayColor="#1a5d63"
                         buttonText="Kayıt Ol"
                         onPress={() => {
-                            navigationPush(sceneKeys.register)
+                            navigationPush(SCENE_KEYS.register)
                         }}
                     />
                 </View>
@@ -55,14 +56,14 @@ export default class Opening extends React.Component {
                 <View style={styles.buttonContainer}>
                     <AuthButton
                         height={hp(7)}
-                        width= {wp(85)}
+                        width={wp(85)}
                         color="#4267B2"
                         underlayColor="#170c5a"
                         buttonText="Facebook ile Bağlan"
                     />
                     <AuthButton
                         height={hp(7)}
-                        width= {wp(85)}
+                        width={wp(85)}
                         color="#0F9D58"
                         underlayColor="#144012"
                         buttonText="Google ile Bağlan"

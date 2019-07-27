@@ -9,7 +9,7 @@ const config = {
         login: 'login',
         register: 'register',
         resetPassword: 'resetPassword',
-        rankedGame: 'rankedGame'
+        main: 'main'
     }
 }
 

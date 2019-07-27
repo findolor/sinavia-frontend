@@ -7,7 +7,6 @@ import {
     Animated,
     Platform
 } from 'react-native'
-import { sceneKeys, navigationPush } from '../../../services/navigationService'
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp
@@ -112,7 +111,7 @@ export default class ResetPassword extends React.Component {
                 <View style={styles.buttonContainer}>
                     <AuthButton
                         height={hp(7)}
-                        width= {wp(85)}
+                        width={wp(85)}
                         marginBottom={hp(6)}
                         color="#00D9EF"
                         underlayColor="#1a5d63"

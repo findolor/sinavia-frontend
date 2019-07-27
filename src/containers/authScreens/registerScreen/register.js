@@ -11,7 +11,8 @@ import {
     Keyboard,
     Platform
 } from 'react-native'
-import { sceneKeys, navigationPush } from '../../../services/navigationService'
+import { navigationPush } from '../../../services/navigationService'
+import { SCENE_KEYS } from '../../../config/index'
 import { connect } from 'react-redux'
 import { userActions } from '../../../redux/user/actions'
 import {
@@ -313,7 +314,7 @@ class Register extends React.Component {
                 </View>
                 <AuthButton
                     height={hp(7)}
-                    width= {wp(85)}
+                    width={wp(85)}
                     color="#00D9EF"
                     underlayColor="#1a5d63"
                     buttonText="Kayıt Ol"
@@ -325,7 +326,7 @@ class Register extends React.Component {
                     </Text>
                     <TouchableOpacity
                         onPress={() => {
-                            navigationPush(sceneKeys.login)
+                            navigationPush(SCENE_KEYS.login)
                         }}
                     >
                         <Text style={styles.gotoLoginTextSecond}>

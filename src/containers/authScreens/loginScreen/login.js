@@ -10,7 +10,11 @@ import {
     Animated,
     Platform
 } from 'react-native'
-import { sceneKeys, navigationPush, navigationReplace, navigationReset } from '../../../services/navigationService'
+import {
+    navigationPush,
+    navigationReset
+} from '../../../services/navigationService'
+import { SCENE_KEYS } from '../../../config/index'
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp
@@ -139,7 +143,7 @@ export default class Login extends React.Component {
                             <View style={styles.forgetPasswordContainer}>
                                 <TouchableOpacity
                                     onPress={() => {
-                                        navigationPush(sceneKeys.resetPassword)
+                                        navigationPush(SCENE_KEYS.resetPassword)
                                     }}
                                 >
                                     <Text style={styles.forgetPasswordText}>
@@ -168,13 +172,13 @@ export default class Login extends React.Component {
                 <View style={styles.buttonContainer}>
                     <AuthButton
                         height={hp(7)}
-                        width= {wp(85)}
+                        width={wp(85)}
                         marginBottom={hp(6)}
                         color="#00D9EF"
                         underlayColor="#1a5d63"
                         buttonText="Giriş Yap"
                         onPress={() => {
-                            navigationReset("main")
+                            navigationReset('main')
                         }}
                     />
                 </View>
