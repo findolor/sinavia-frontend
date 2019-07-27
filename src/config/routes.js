@@ -8,6 +8,10 @@ const RouterComp = () => {
         <Router>
             <Scene key="root" hideNavBar={true}>
                 <Scene key="auth" hideNavBar={true}>
+                    <Scene
+                        key={SCENE_KEYS.gameScreens.gameStats}
+                        component={gameScreens.gameStats}
+                    />
                     {/* <Scene
                         key={SCENE_KEYS.gameScreens.loading}
                         component={gameScreens.loading}
