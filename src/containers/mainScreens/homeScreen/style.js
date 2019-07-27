@@ -133,8 +133,7 @@ export default StyleSheet.create({
     },
     gameModesContainer: {
         height: hp(30),
-        width: wp(75),
-        backgroundColor: 'red'
+        width: wp(75)
     },
     gameModeContainer: {
         height: hp(10),

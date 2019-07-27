@@ -42,7 +42,9 @@ class LoadingScreen extends React.Component {
     componentDidMount() {
         this.client = new Colyseus.Client('http://localhost:5000')
         this.client.onOpen.add(() => {
-            this.setState({ isDisabled: false })
+            setTimeout(() => {
+                this.joinRoom()
+            }, 3000)
         })
     }
 
@@ -82,7 +84,7 @@ class LoadingScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <NotchView color={'#ee00ee'} />
+                <NotchView color={'#fffs'} />
                 <View
                     style={{
                         flex: 1,
@@ -90,13 +92,14 @@ class LoadingScreen extends React.Component {
                         alignItems: 'center'
                     }}
                 >
-                    <Button
+                    {/* <Button
                         title="play"
                         onPress={this.play}
                         disabled={this.state.isDisabled}
                     >
                         Play
-                    </Button>
+                    </Button> */}
+                    <Text>Yukleniyor</Text>
                 </View>
             </View>
         )

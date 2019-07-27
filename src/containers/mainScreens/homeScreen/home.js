@@ -161,6 +161,7 @@ export default class Home extends React.Component {
                     onPress={() => {
                         this.onPressCard(choosenSubject[i])
                     }}
+                    key={i}
                 >
                     <View style={styles.card}>
                         <Text style={styles.cardText}>{choosenSubject[i]}</Text>
@@ -231,6 +232,10 @@ export default class Home extends React.Component {
 
     modeButtonOnPress = selectedMode => {
         this.updateModeButtonUI(selectedMode)
+    }
+
+    playButtonOnPress = () => {
+        navigationReset('game')
     }
 
     render() {
@@ -361,6 +366,7 @@ export default class Home extends React.Component {
                             color="#00D9EF"
                             underlayColor="#1a5d63"
                             buttonText="Başla"
+                            onPress={this.playButtonOnPress}
                         />
                     </View>
                 </Modal>
