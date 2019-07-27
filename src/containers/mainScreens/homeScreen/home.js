@@ -25,7 +25,7 @@ import * as courses from '../../../components/mainScreen/carousel/static/courses
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
 import AuthButton from '../../../components/authScreen/authButton'
 import profilePic from '../../../assets/profile2.jpg'
-import x from '../../../assets/x.png'
+import closeButton from '../../../assets/x.png'
 import notificationLogo from '../../../assets/mainScreens/notification.png'
 import {
     navigationPush,
@@ -51,6 +51,16 @@ const examList = {
     LGS: LGS
 }
 
+const SELECTED_MODE_COLOR = '#00D9EF'
+const EMPTY_MODE_COLOR = '#fcfcfc'
+
+const RANKED_SELECTED_IMAGE = require('../../../assets/mainScreens/tek_beyaz.png')
+const RANKED_EMPTY_IMAGE = require('../../../assets/mainScreens/tek.png')
+const FRIENDS_SELECTED_IMAGE = require('../../../assets/mainScreens/arkadas.png')
+const FRIENDS_EMPTY_IMAGE = require('../../../assets/mainScreens/arkadas_siyah.png')
+const GROUP_SELECTED_IMAGE = require('../../../assets/mainScreens/group.png')
+const GROUP_EMPTY_IMAGE = require('../../../assets/mainScreens/group_siyah.png')
+
 export default class Home extends React.Component {
     constructor(props) {
         super(props)
@@ -58,7 +68,17 @@ export default class Home extends React.Component {
             exam: 'YKS',
             subject: '',
             slider1ActiveSlide: SLIDER_1_FIRST_ITEM,
-            isModalVisible: false
+            isModalVisible: false,
+            // Mode button variables
+            rankedModeButtonBackground: EMPTY_MODE_COLOR,
+            friendsModeButtonBackground: EMPTY_MODE_COLOR,
+            groupModeButtonBackground: EMPTY_MODE_COLOR,
+            // Mode images
+            rankedImage: RANKED_EMPTY_IMAGE,
+            friendsImage: FRIENDS_EMPTY_IMAGE,
+            groupImage: GROUP_EMPTY_IMAGE,
+            // Selected game mode
+            selectedGameMode: ''
         }
     }
 
@@ -151,6 +171,68 @@ export default class Home extends React.Component {
         return cardList
     }
 
+    updateModeButtonUI = gameMode => {
+        switch (gameMode) {
+            case 'ranked':
+                this.state.rankedImage === RANKED_EMPTY_IMAGE
+                    ? this.setState({
+                          rankedImage: RANKED_SELECTED_IMAGE,
+                          rankedModeButtonBackground: SELECTED_MODE_COLOR
+                      })
+                    : this.setState({
+                          rankedImage: RANKED_EMPTY_IMAGE,
+                          rankedModeButtonBackground: EMPTY_MODE_COLOR
+                      })
+                this.setState({
+                    friendsImage: FRIENDS_EMPTY_IMAGE,
+                    friendsModeButtonBackground: EMPTY_MODE_COLOR,
+                    groupImage: GROUP_EMPTY_IMAGE,
+                    groupModeButtonBackground: EMPTY_MODE_COLOR,
+                    selectedGameMode: gameMode
+                })
+                return
+            case 'friend':
+                this.state.friendsImage === FRIENDS_EMPTY_IMAGE
+                    ? this.setState({
+                          friendsImage: FRIENDS_SELECTED_IMAGE,
+                          friendsModeButtonBackground: SELECTED_MODE_COLOR
+                      })
+                    : this.setState({
+                          friendsImage: FRIENDS_EMPTY_IMAGE,
+                          friendsModeButtonBackground: EMPTY_MODE_COLOR
+                      })
+                this.setState({
+                    rankedImage: RANKED_EMPTY_IMAGE,
+                    rankedModeButtonBackground: EMPTY_MODE_COLOR,
+                    groupImage: GROUP_EMPTY_IMAGE,
+                    groupModeButtonBackground: EMPTY_MODE_COLOR,
+                    selectedGameMode: gameMode
+                })
+                return
+            case 'group':
+                this.state.groupImage === GROUP_EMPTY_IMAGE
+                    ? this.setState({
+                          groupImage: GROUP_SELECTED_IMAGE,
+                          groupModeButtonBackground: SELECTED_MODE_COLOR
+                      })
+                    : this.setState({
+                          groupImage: GROUP_EMPTY_IMAGE,
+                          groupModeButtonBackground: EMPTY_MODE_COLOR
+                      })
+                this.setState({
+                    friendsImage: FRIENDS_EMPTY_IMAGE,
+                    friendsModeButtonBackground: EMPTY_MODE_COLOR,
+                    rankedImage: RANKED_EMPTY_IMAGE,
+                    rankedModeButtonBackground: EMPTY_MODE_COLOR,
+                    selectedGameMode: gameMode
+                })
+        }
+    }
+
+    modeButtonOnPress = selectedMode => {
+        this.updateModeButtonUI(selectedMode)
+    }
+
     render() {
         const card = this.cards(this.state.exam, this.state.slider1ActiveSlide)
         return (
@@ -161,18 +243,13 @@ export default class Home extends React.Component {
                     transparent={true}
                     animationType={'fade'}
                 >
-                    <View
-                        style={styles.modal}
-                    >
+                    <View style={styles.modal}>
                         <TouchableOpacity
                             onPress={() => {
                                 this.setState({ isModalVisible: false })
                             }}
                         >
-                            <Image
-                                source={x}
-                                style={styles.xLogo}
-                            />
+                            <Image source={closeButton} style={styles.xLogo} />
                         </TouchableOpacity>
                         <View style={styles.modalView}>
                             <Text style={styles.modalSubjectText}>
@@ -183,9 +260,26 @@ export default class Home extends React.Component {
                             </View>
                             <View style={styles.gameModesContainer}>
                                 <View style={styles.gameModeContainer}>
-                                    <View
-                                        style={styles.gameModeLogoContainer}
-                                    />
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            this.modeButtonOnPress('ranked')
+                                        }
+                                    >
+                                        <View
+                                            style={[
+                                                styles.gameModeLogoContainer,
+                                                {
+                                                    backgroundColor: this.state
+                                                        .rankedModeButtonBackground
+                                                }
+                                            ]}
+                                        >
+                                            <Image
+                                                source={this.state.rankedImage}
+                                                style={styles.rankedModeImage}
+                                            />
+                                        </View>
+                                    </TouchableOpacity>
                                     <View
                                         style={styles.gameModeContextContainer}
                                     >
@@ -197,9 +291,26 @@ export default class Home extends React.Component {
                                     </View>
                                 </View>
                                 <View style={styles.gameModeContainer}>
-                                    <View
-                                        style={styles.gameModeLogoContainer}
-                                    />
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            this.modeButtonOnPress('friend')
+                                        }
+                                    >
+                                        <View
+                                            style={[
+                                                styles.gameModeLogoContainer,
+                                                {
+                                                    backgroundColor: this.state
+                                                        .friendsModeButtonBackground
+                                                }
+                                            ]}
+                                        >
+                                            <Image
+                                                source={this.state.friendsImage}
+                                                style={styles.friendsModeImage}
+                                            />
+                                        </View>
+                                    </TouchableOpacity>
                                     <View
                                         style={styles.gameModeContextContainer}
                                     >
@@ -211,9 +322,26 @@ export default class Home extends React.Component {
                                     </View>
                                 </View>
                                 <View style={styles.gameModeContainer}>
-                                    <View
-                                        style={styles.gameModeLogoContainer}
-                                    />
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            this.modeButtonOnPress('group')
+                                        }
+                                    >
+                                        <View
+                                            style={[
+                                                styles.gameModeLogoContainer,
+                                                {
+                                                    backgroundColor: this.state
+                                                        .groupModeButtonBackground
+                                                }
+                                            ]}
+                                        >
+                                            <Image
+                                                source={this.state.groupImage}
+                                                style={styles.groupModeImage}
+                                            />
+                                        </View>
+                                    </TouchableOpacity>
                                     <View
                                         style={styles.gameModeContextContainer}
                                     >
