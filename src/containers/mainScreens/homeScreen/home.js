@@ -21,21 +21,7 @@ import SliderEntry from '../../../components/mainScreen/carousel/components/Slid
 import carouselStyle from '../../../components/mainScreen/carousel/styles/index.style'
 import styles from './style'
 import { LGS, YKS } from '../../../components/mainScreen/carousel/static/exams'
-import {
-    lgsTurkce,
-    lgsMat,
-    lgsTarih,
-    lgsFen,
-    lgsIng,
-    lgsDin,
-    yksTurkce,
-    yksCog,
-    yksTarih,
-    yksMat,
-    yksFizik,
-    yksKimya,
-    yksBiyo
-} from '../../../components/mainScreen/carousel/static/courses'
+import * as courses from '../../../components/mainScreen/carousel/static/courses'
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
 import AuthButton from '../../../components/authScreen/authButton'
 import profilePic from '../../../assets/profile2.jpg'
@@ -102,49 +88,49 @@ export default class Home extends React.Component {
         if (sinav === 'LGS') {
             switch (index) {
                 case 0:
-                    choosenSubject = lgsTurkce
+                    choosenSubject = courses.lgsTurkce
                     break
                 case 1:
-                    choosenSubject = lgsMat
+                    choosenSubject = courses.lgsMat
                     break
                 case 2:
-                    choosenSubject = lgsTarih
+                    choosenSubject = courses.lgsTarih
                     break
                 case 3:
-                    choosenSubject = lgsFen
+                    choosenSubject = courses.lgsFen
                     break
                 case 4:
-                    choosenSubject = lgsIng
+                    choosenSubject = courses.lgsIng
                     break
                 case 5:
-                    choosenSubject = lgsDin
+                    choosenSubject = courses.lgsDin
                     break
                 default:
-                    choosenSubject = lgsTurkce
+                    choosenSubject = courses.lgsTurkce
                     break
             }
         } else if (sinav === 'YKS') {
             switch (index) {
                 case 0:
-                    choosenSubject = yksTurkce
+                    choosenSubject = courses.yksTurkce
                     break
                 case 1:
-                    choosenSubject = yksCog
+                    choosenSubject = courses.yksCog
                     break
                 case 2:
-                    choosenSubject = yksTarih
+                    choosenSubject = courses.yksTarih
                     break
                 case 3:
-                    choosenSubject = yksMat
+                    choosenSubject = courses.yksMat
                     break
                 case 4:
-                    choosenSubject = yksFizik
+                    choosenSubject = courses.yksFizik
                     break
                 case 5:
-                    choosenSubject = yksKimya
+                    choosenSubject = courses.yksKimya
                     break
                 default:
-                    choosenSubject = yksBiyo
+                    choosenSubject = courses.yksBiyo
                     break
             }
         }
@@ -176,11 +162,7 @@ export default class Home extends React.Component {
                     animationType={'fade'}
                 >
                     <View
-                        style={{
-                            flex: 1,
-                            backgroundColor: '#000000DE',
-                            alignItems: 'center'
-                        }}
+                        style={styles.modal}
                     >
                         <TouchableOpacity
                             onPress={() => {
@@ -189,13 +171,7 @@ export default class Home extends React.Component {
                         >
                             <Image
                                 source={x}
-                                style={{
-                                    resize: 'contain',
-                                    height: hp(5),
-                                    width: hp(5),
-                                    marginTop: hp(5),
-                                    marginLeft: wp(77)
-                                }}
+                                style={styles.xLogo}
                             />
                         </TouchableOpacity>
                         <View style={styles.modalView}>

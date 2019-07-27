@@ -190,5 +190,16 @@ export default StyleSheet.create({
         backgroundColor: '#fcfcfc',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    xLogo: {
+        height: hp(5),
+        width: hp(5),
+        marginTop: hp(5),
+        marginLeft: wp(77)
+    },
+    modal: {
+        flex: 1,
+        backgroundColor: '#000000DE',
+        alignItems: 'center'
     }
 })
