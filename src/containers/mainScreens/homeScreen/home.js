@@ -32,8 +32,7 @@ import {
     navigationReset,
     sceneKeys
 } from '../../../services/navigationService'
-
-const SLIDER_1_FIRST_ITEM = 0
+const carouselFirstItem = 0
 const exams = [
     'YKS',
     'LGS',
@@ -57,7 +56,7 @@ export default class Home extends React.Component {
         this.state = {
             exam: 'YKS',
             subject: '',
-            slider1ActiveSlide: SLIDER_1_FIRST_ITEM,
+            carouselActiveSlide: carouselFirstItem,
             isModalVisible: false
         }
     }
@@ -152,7 +151,7 @@ export default class Home extends React.Component {
     }
 
     render() {
-        const card = this.cards(this.state.exam, this.state.slider1ActiveSlide)
+        const card = this.cards(this.state.exam, this.state.carouselActiveSlide)
         return (
             <View style={styles.container}>
                 <StatusBar hidden />
@@ -277,7 +276,7 @@ export default class Home extends React.Component {
                             sliderWidth={sliderWidth}
                             itemWidth={itemWidth}
                             hasParallaxImages={true}
-                            firstItem={SLIDER_1_FIRST_ITEM}
+                            firstItem={carouselFirstItem}
                             inactiveSlideScale={0.8}
                             inactiveSlideOpacity={0.65}
                             // inactiveSlideShift={20}
@@ -287,7 +286,7 @@ export default class Home extends React.Component {
                             }
                             loop={false}
                             onSnapToItem={index =>
-                                this.setState({ slider1ActiveSlide: index })
+                                this.setState({ carouselActiveSlide: index })
                             }
                         />
                     </View>
