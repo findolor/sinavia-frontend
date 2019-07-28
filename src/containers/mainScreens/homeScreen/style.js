@@ -140,12 +140,18 @@ export default StyleSheet.create({
         height: hp(10),
         width: wp(75),
         backgroundColor: 'white',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     gameModeLogoContainer: {
-        height: hp(10),
-        width: wp(33),
-        backgroundColor: 'white'
+        height: hp(7.5),
+        width: wp(30),
+        borderColor: '#A8A8A8',
+        borderWidth: 2,
+        borderRadius: wp(3),
+        marginRight: wp(5),
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     gameModeContextContainer: {
         height: hp(10),
@@ -201,5 +207,20 @@ export default StyleSheet.create({
         flex: 1,
         backgroundColor: '#000000DE',
         alignItems: 'center'
+    },
+    rankedModeImage: {
+        resizeMode: 'contain',
+        height: hp(6),
+        width: wp(6)
+    },
+    friendsModeImage: {
+        resizeMode: 'contain',
+        height: hp(9),
+        width: wp(9)
+    },
+    groupModeImage: {
+        resizeMode: 'contain',
+        height: hp(9),
+        width: wp(9)
     }
 })
