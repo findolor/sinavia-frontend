@@ -6,11 +6,11 @@ import {
 
 export default StyleSheet.create({
     scrollView: {
-        flex: 1,
+        flex: 1
     },
     container: {
         flex: 1,
-        flexDirection: 'column',
+        flexDirection: 'column'
     },
     background: {
         height: hp(100),
@@ -37,7 +37,7 @@ export default StyleSheet.create({
         marginLeft: wp(6.4),
         borderRadius: 20,
         position: 'absolute',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     replayButton: {
         height: hp(7),
@@ -113,7 +113,7 @@ export default StyleSheet.create({
         width: wp(87.8),
         marginTop: hp(1.5),
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     results2Container: {
         height: hp(31),
@@ -138,7 +138,7 @@ export default StyleSheet.create({
         width: wp(17.8),
         marginBottom: hp(4),
         justifyContent: 'space-around',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     answerImg: {
         height: hp(2.5),
@@ -148,7 +148,7 @@ export default StyleSheet.create({
         height: hp(14),
         width: hp(14),
         marginTop: hp(1.5),
-        borderRadius: 100,
+        borderRadius: 100
     },
     usernameText: {
         fontFamily: 'Averta-Semibold',
@@ -286,6 +286,7 @@ export default StyleSheet.create({
         fontSize: hp(1.8)
     },
     favIcon: {
+        resizeMode: 'contain',
         height: hp(7),
         width: hp(7),
         marginBottom: hp(1)

@@ -206,7 +206,8 @@ class RankedGame extends React.Component {
                 navigationPush(SCENE_KEYS.gameScreens.gameStats, {
                     playerProps: this.state.playerProps,
                     room: this.props.room,
-                    client: this.props.client
+                    client: this.props.client,
+                    questionList: this.state.questionList
                 })
                 return
         }

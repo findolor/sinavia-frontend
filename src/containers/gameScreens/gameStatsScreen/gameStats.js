@@ -5,7 +5,8 @@ import {
     ScrollView,
     Text,
     TouchableOpacity,
-    View
+    View,
+    Dimensions
 } from 'react-native'
 import styles from './style'
 import background from '../../../assets/gameScreens/gameStatsBackground.jpg'
@@ -13,18 +14,17 @@ import slideUp from '../../../assets/gameScreens/slideUp.png'
 import correct from '../../../assets/gameScreens/correct.png'
 import incorrect from '../../../assets/gameScreens/incorrect.png'
 import unanswered from '../../../assets/gameScreens/unanswered.png'
-import question from '../../../assets/soru.jpg'
 import selectedFav from '../../../assets/favori.png'
 import unselectedFav from '../../../assets/favori_bos.png'
 
 import YOU_WIN_LOGO from '../../../assets/gameScreens/win.png'
+import YOU_LOSE_LOGO from '../../../assets/gameScreens/lose.png'
+import DRAW_LOGO from '../../../assets/gameScreens/draw.png'
 
 class GameStatsScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            // If we are the winner, isClientWinner is true
-            isClientWinner: true,
             // Client match results
             correctAnswerNumber: 0,
             incorrectAnswerNumber: 0,
@@ -38,83 +38,156 @@ class GameStatsScreen extends React.Component {
             opponentUsername: '',
             // Match point variables
             finishedGamePoint: 20,
-            correctAnswerPoint: 60,
-            winOrLosePoint: 100,
-            // Match win or lose text
-            winOrLoseText: 'Kazandın',
+            correctAnswerPoint: 0,
+            matchResultPoint: 0,
+            // Match result text
+            matchResultText: '',
             // Total earned points
             totalEarnedPoints: 180,
             // Player profile pictures
             clientProfilePicture: '',
             opponentProfilePicture: '',
+            // Match result logo
+            matchResultLogo: '',
+            // Question position
+            questionPosition: 1,
 
             isQuestionModalVisible: false,
             favIconSelected: false
         }
     }
 
-    componentDidMount() {
-        const playerProps = this.props.playerProps
-        const playerIds = Object.keys(playerProps)
+    async componentDidMount() {
+        await this.loadScreen()
+    }
 
-        let opponentCorrect = 0
-        let opponentIncorrect = 0
-        let opponentUnanswered = 0
-        let opponentUsername = ''
-        let opponentProfilePicture = ''
+    loadScreen() {
+        new Promise(resolve => {
+            const playerProps = this.props.playerProps
+            const playerIds = Object.keys(playerProps)
 
-        let playerCorrect = 0
-        let playerIncorrect = 0
-        let playerUnanswered = 0
-        let playerUsername = ''
-        let playerProfilePicture = ''
+            let opponentCorrect = 0
+            let opponentIncorrect = 0
+            let opponentUnanswered = 0
+            let opponentUsername = ''
+            let opponentProfilePicture = ''
 
-        playerIds.forEach(element => {
-            if (this.props.client.id !== element) {
-                opponentUsername = playerProps[element].username
-                opponentProfilePicture = playerProps[element].profilePicture
-                playerProps[element].answers.forEach(result => {
-                    switch (result.result) {
-                        case null:
-                            opponentUnanswered++
-                            return
-                        case true:
-                            opponentCorrect++
-                            return
-                        case false:
-                            opponentIncorrect++
-                    }
+            let playerCorrect = 0
+            let playerIncorrect = 0
+            let playerUnanswered = 0
+            let playerUsername = ''
+            let playerProfilePicture = ''
+
+            let totalEarnedPoints = 20
+
+            playerIds.forEach(element => {
+                if (this.props.client.id !== element) {
+                    opponentUsername = playerProps[element].username
+                    opponentProfilePicture = playerProps[element].profilePicture
+                    playerProps[element].answers.forEach(result => {
+                        switch (result.result) {
+                            case null:
+                                opponentUnanswered++
+                                return
+                            case true:
+                                opponentCorrect++
+                                return
+                            case false:
+                                opponentIncorrect++
+                        }
+                    })
+                } else {
+                    playerUsername = playerProps[element].username
+                    playerProfilePicture = playerProps[element].profilePicture
+                    playerProps[element].answers.forEach(result => {
+                        switch (result.result) {
+                            case null:
+                                playerUnanswered++
+                                return
+                            case true:
+                                playerCorrect++
+                                return
+                            case false:
+                                playerIncorrect++
+                        }
+                    })
+                }
+            })
+
+            if (playerCorrect < opponentCorrect) {
+                this.setState({
+                    matchResultLogo: YOU_LOSE_LOGO,
+                    matchResultText: 'Kaybettin',
+                    matchResultPoint: 0
                 })
+            } else if (playerCorrect === opponentCorrect) {
+                this.setState({
+                    matchResultLogo: DRAW_LOGO,
+                    matchResultText: 'Berabere',
+                    matchResultPoint: 50
+                })
+                totalEarnedPoints += 50
             } else {
-                playerUsername = playerProps[element].username
-                playerProfilePicture = playerProps[element].profilePicture
-                playerProps[element].answers.forEach(result => {
-                    switch (result.result) {
-                        case null:
-                            playerUnanswered++
-                            return
-                        case true:
-                            playerCorrect++
-                            return
-                        case false:
-                            playerIncorrect++
-                    }
+                this.setState({
+                    matchResultLogo: YOU_WIN_LOGO,
+                    matchResultText: 'Kazandın',
+                    matchResultPoint: 100
                 })
+                totalEarnedPoints += 100
             }
-        })
 
-        this.setState({
-            correctAnswerNumber: playerCorrect,
-            incorrectAnswerNumber: playerIncorrect,
-            unansweredAnswerNumber: playerUnanswered,
-            opponentCorrectAnswerNumber: opponentCorrect,
-            opponentInorrectAnswerNumber: opponentIncorrect,
-            opponentUnansweredAnswerNumber: opponentUnanswered,
-            clientProfilePicture: playerProfilePicture,
-            opponentProfilePicture: opponentProfilePicture,
-            clientUsername: playerUsername,
-            opponentUsername: opponentUsername
+            totalEarnedPoints += playerCorrect * 20
+
+            this.setState({
+                correctAnswerNumber: playerCorrect,
+                incorrectAnswerNumber: playerIncorrect,
+                unansweredAnswerNumber: playerUnanswered,
+                opponentCorrectAnswerNumber: opponentCorrect,
+                opponentInorrectAnswerNumber: opponentIncorrect,
+                opponentUnansweredAnswerNumber: opponentUnanswered,
+                clientProfilePicture: playerProfilePicture,
+                opponentProfilePicture: opponentProfilePicture,
+                clientUsername: playerUsername,
+                opponentUsername: opponentUsername,
+                correctAnswerPoint: playerCorrect * 20,
+                totalEarnedPoints: totalEarnedPoints
+            })
+            resolve(true)
         })
+    }
+
+    handleScroll = event => {
+        this.scrollX = event.nativeEvent.contentOffset.x
+        this.setState({
+            questionPosition: Math.min(
+                Math.max(
+                    Math.floor(
+                        this.scrollX /
+                            Math.round(Dimensions.get('window').width) +
+                            0.5
+                    ) + 1,
+                    0
+                ),
+                Object.keys(this.props.questionList).length /*Image count*/
+            )
+        })
+    }
+
+    answerSwitcher(buttonNumber) {
+        switch (buttonNumber) {
+            case 1:
+                return 'A'
+            case 2:
+                return 'B'
+            case 3:
+                return 'C'
+            case 4:
+                return 'D'
+            case 5:
+                return 'E'
+            case 6:
+                return 'Boş'
+        }
     }
 
     render() {
@@ -127,7 +200,7 @@ class GameStatsScreen extends React.Component {
                     <Image source={background} style={styles.background} />
                     <View style={styles.resultTextContainer}>
                         <Image
-                            source={YOU_WIN_LOGO}
+                            source={this.state.matchResultLogo}
                             style={styles.resultTextImg}
                         />
                     </View>
@@ -221,10 +294,10 @@ class GameStatsScreen extends React.Component {
                                 </View>
                                 <View style={styles.scoreContainer}>
                                     <Text style={styles.scoresText}>
-                                        {this.state.winOrLoseText}
+                                        {this.state.matchResultText}
                                     </Text>
                                     <Text style={styles.scoresText}>
-                                        {this.state.winOrLosePoint}
+                                        {this.state.matchResultPoint}
                                     </Text>
                                 </View>
                             </View>
@@ -274,17 +347,25 @@ class GameStatsScreen extends React.Component {
                 </View>
                 <View style={styles.secondScreenView}>
                     <View style={styles.questionNumberContainer}>
-                        <Text style={styles.questionNumberText}>1/5</Text>
+                        <Text style={styles.questionNumberText}>
+                            {this.state.questionPosition}/5
+                        </Text>
                     </View>
                     <ScrollView
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                         pagingEnabled={true}
+                        onScroll={this.handleScroll}
+                        scrollEventThrottle={8}
                     >
                         <View style={styles.scrollQuestionContainer}>
                             <View style={styles.questionContainer}>
                                 <Image
-                                    source={question}
+                                    source={{
+                                        uri: this.props.questionList[
+                                            this.state.questionPosition - 1
+                                        ]
+                                    }}
                                     style={styles.questionStyle}
                                 />
                             </View>
@@ -292,7 +373,11 @@ class GameStatsScreen extends React.Component {
                         <View style={styles.scrollQuestionContainer}>
                             <View style={styles.questionContainer}>
                                 <Image
-                                    source={question}
+                                    source={{
+                                        uri: this.props.questionList[
+                                            this.state.questionPosition - 1
+                                        ]
+                                    }}
                                     style={styles.questionStyle}
                                 />
                             </View>
@@ -300,7 +385,11 @@ class GameStatsScreen extends React.Component {
                         <View style={styles.scrollQuestionContainer}>
                             <View style={styles.questionContainer}>
                                 <Image
-                                    source={question}
+                                    source={{
+                                        uri: this.props.questionList[
+                                            this.state.questionPosition - 1
+                                        ]
+                                    }}
                                     style={styles.questionStyle}
                                 />
                             </View>
@@ -308,7 +397,23 @@ class GameStatsScreen extends React.Component {
                         <View style={styles.scrollQuestionContainer}>
                             <View style={styles.questionContainer}>
                                 <Image
-                                    source={question}
+                                    source={{
+                                        uri: this.props.questionList[
+                                            this.state.questionPosition - 1
+                                        ]
+                                    }}
+                                    style={styles.questionStyle}
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.scrollQuestionContainer}>
+                            <View style={styles.questionContainer}>
+                                <Image
+                                    source={{
+                                        uri: this.props.questionList[
+                                            this.state.questionPosition - 1
+                                        ]
+                                    }}
                                     style={styles.questionStyle}
                                 />
                             </View>
@@ -317,7 +422,15 @@ class GameStatsScreen extends React.Component {
                     <View style={styles.favAndAnswerContainer}>
                         <View style={styles.answerContainer}>
                             <View style={styles.correctAnswer}>
-                                <Text style={styles.optionText}>C</Text>
+                                <Text style={styles.optionText}>
+                                    {this.answerSwitcher(
+                                        this.props.playerProps[
+                                            this.props.client.id
+                                        ].answers[
+                                            this.state.questionPosition - 1
+                                        ].correctAnswer
+                                    )}
+                                </Text>
                             </View>
                             <Text style={styles.answerText}>Doğru Cevap</Text>
                         </View>
@@ -341,7 +454,15 @@ class GameStatsScreen extends React.Component {
                         </View>
                         <View style={styles.answerContainer}>
                             <View style={styles.correctAnswer}>
-                                <Text style={styles.optionText}>C</Text>
+                                <Text style={styles.optionText}>
+                                    {this.answerSwitcher(
+                                        this.props.playerProps[
+                                            this.props.client.id
+                                        ].answers[
+                                            this.state.questionPosition - 1
+                                        ].answer
+                                    )}
+                                </Text>
                             </View>
                             <Text style={styles.answerText}>Senin Cevabın</Text>
                         </View>
