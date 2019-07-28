@@ -24,8 +24,8 @@ import styles from './style'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import moment from 'moment'
 
-import sinaviaLogo from '../../../assets/sinavia_logo_cut.png'
-import eye from '../../../assets/eye.png'
+import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
+import EYE from '../../../assets/eye.png'
 
 const ANIMATION_DURATION = 100
 
@@ -168,7 +168,7 @@ class Register extends React.Component {
                 <StatusBar hidden />
                 <View style={styles.imageContainer}>
                     <Image
-                        source={sinaviaLogo}
+                        source={SINAVIA_LOGO}
                         style={{
                             height: hp(15),
                             resizeMode: 'contain',
@@ -250,7 +250,7 @@ class Register extends React.Component {
                                         onPress={this.managePasswordVisibility}
                                     >
                                         <Image
-                                            source={eye}
+                                            source={EYE}
                                             style={{
                                                 height: hp(3),
                                                 width: wp(9)

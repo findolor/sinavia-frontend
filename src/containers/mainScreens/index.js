@@ -8,13 +8,12 @@ import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
 import NotchView from '../../components/notchView'
 import { navigationPush } from '../../services/navigationService'
 
-import trophyDolu from '../../assets/mainScreens/trophy_Dolu.png'
-import trophyBos from '../../assets/mainScreens/trophy.png'
-import homeDolu from '../../assets/mainScreens/home_dolu.png'
-import homeBos from '../../assets/mainScreens/home.png'
-import jokerDolu from '../../assets/mainScreens/joker_dolu.png'
-import jokerBos from '../../assets/mainScreens/joker.png'
-
+import SELECTED_TROPHY from '../../assets/mainScreens/trophy_Dolu.png'
+import UNSELECTED_TROPHY from '../../assets/mainScreens/trophy.png'
+import SELECTED_HOME from '../../assets/mainScreens/home_dolu.png'
+import UNSELECTED_HOME from '../../assets/mainScreens/home.png'
+import SELECTED_JOKER from '../../assets/mainScreens/joker_dolu.png'
+import UNSELECTED_JOKER from '../../assets/mainScreens/joker.png'
 
 export default class Main extends React.Component {
     constructor(props) {
@@ -50,8 +49,8 @@ export default class Main extends React.Component {
                         <Image
                             source={
                                 this.state.trophyIconSelected === true
-                                    ? trophyDolu
-                                    : trophyBos
+                                    ? SELECTED_TROPHY
+                                    : UNSELECTED_JOKER
                             }
                             style={{
                                 resize: 'contain',
@@ -73,8 +72,8 @@ export default class Main extends React.Component {
                         <Image
                             source={
                                 this.state.homeIconSelected === true
-                                    ? homeDolu
-                                    : homeBos
+                                    ? SELECTED_HOME
+                                    : UNSELECTED_HOME
                             }
                             style={{
                                 resize: 'contain',
@@ -95,8 +94,8 @@ export default class Main extends React.Component {
                         <Image
                             source={
                                 this.state.jokerIconSelected === true
-                                    ? jokerDolu
-                                    : jokerBos
+                                    ? SELECTED_JOKER
+                                    : UNSELECTED_JOKER
                             }
                             style={{
                                 resize: 'contain',

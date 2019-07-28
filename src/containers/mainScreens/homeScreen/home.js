@@ -25,9 +25,9 @@ import * as courses from '../../../components/mainScreen/carousel/static/courses
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
 import AuthButton from '../../../components/authScreen/authButton'
 
-import profilePic from '../../../assets/profile2.jpg'
-import closeButton from '../../../assets/closeButton.png'
-import notificationLogo from '../../../assets/mainScreens/notification.png'
+import PROFILE_PIC from '../../../assets/profile2.jpg'
+import CLOSE_BUTTON from '../../../assets/closeButton.png'
+import NOTIFICATION_LOGO from '../../../assets/mainScreens/notification.png'
 
 import {
     navigationPush,
@@ -163,18 +163,13 @@ export default class Home extends React.Component {
                     transparent={true}
                     animationType={'fade'}
                 >
-                    <View
-                        style={styles.modal}
-                    >
+                    <View style={styles.modal}>
                         <TouchableOpacity
                             onPress={() => {
                                 this.setState({ isModalVisible: false })
                             }}
                         >
-                            <Image
-                                source={closeButton}
-                                style={styles.xLogo}
-                            />
+                            <Image source={CLOSE_BUTTON} style={styles.xLogo} />
                         </TouchableOpacity>
                         <View style={styles.modalView}>
                             <Text style={styles.modalSubjectText}>
@@ -243,7 +238,7 @@ export default class Home extends React.Component {
                         <View style={styles.profilePicContainer}>
                             <TouchableOpacity>
                                 <Image
-                                    source={profilePic}
+                                    source={PROFILE_PIC}
                                     style={styles.profilePic}
                                 />
                             </TouchableOpacity>
@@ -264,7 +259,7 @@ export default class Home extends React.Component {
                         <View style={styles.notificationLogoContainer}>
                             <TouchableOpacity>
                                 <Image
-                                    source={notificationLogo}
+                                    source={NOTIFICATION_LOGO}
                                     style={styles.notificationLogo}
                                 />
                             </TouchableOpacity>

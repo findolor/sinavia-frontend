@@ -22,9 +22,8 @@ import {
 import { AuthButton, AuthTextInput } from '../../../components/authScreen'
 import styles from './style'
 
-import sinaviaLogo from '../../../assets/sinavia_logo_cut.png'
-import eye from '../../../assets/eye.png'
-
+import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
+import EYE from '../../../assets/eye.png'
 
 const IMAGE_HEIGHT = hp(40)
 const IMAGE_HEIGHT_SMALL = hp(25)
@@ -105,7 +104,7 @@ export default class Login extends React.Component {
                 <StatusBar hidden />
                 <View style={styles.imageContainer}>
                     <Animated.Image
-                        source={sinaviaLogo}
+                        source={SINAVIA_LOGO}
                         style={[
                             {
                                 height: hp(45),
@@ -162,7 +161,7 @@ export default class Login extends React.Component {
                                     onPress={this.managePasswordVisibility}
                                 >
                                     <Image
-                                        source={eye}
+                                        source={EYE}
                                         style={{
                                             height: hp(3),
                                             width: wp(9)
