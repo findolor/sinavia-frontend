@@ -7,8 +7,9 @@ import {
     heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
 import { AuthButton } from '../../../components/authScreen'
-import sinaviaLogo from '../../../assets/sinavia_logo_cut.png'
 import styles from './style'
+
+import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
 
 export default class Opening extends React.Component {
     render() {
@@ -17,7 +18,7 @@ export default class Opening extends React.Component {
                 <StatusBar hidden />
                 <View style={styles.imageContainer}>
                     <Image
-                        source={sinaviaLogo}
+                        source={SINAVIA_LOGO}
                         style={{
                             height: hp(40),
                             resizeMode: 'contain',
