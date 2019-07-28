@@ -6,12 +6,12 @@ import {
 } from 'react-native-responsive-screen'
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { navigationPush } from '../../services/navigationService'
-import trophyDolu from '../../assets/mainScreens/trophy_Dolu.png'
-import trophyBos from '../../assets/mainScreens/trophy.png'
-import homeDolu from '../../assets/mainScreens/home_dolu.png'
-import homeBos from '../../assets/mainScreens/home.png'
-import jokerDolu from '../../assets/mainScreens/joker_dolu.png'
-import jokerBos from '../../assets/mainScreens/joker.png'
+import selectedTrophyIcon from '../../assets/mainScreens/trophy_Dolu.png'
+import emptyTrophyIcon from '../../assets/mainScreens/trophy.png'
+import selectedHomeIcon from '../../assets/mainScreens/home_dolu.png'
+import emptyHomeIcon from '../../assets/mainScreens/home.png'
+import selectedJokerIcon from '../../assets/mainScreens/joker_dolu.png'
+import emptyJokerIcon from '../../assets/mainScreens/joker.png'
 import NotchView from '../../components/notchView'
 
 export default class Main extends React.Component {
@@ -48,8 +48,8 @@ export default class Main extends React.Component {
                         <Image
                             source={
                                 this.state.trophyIconSelected === true
-                                    ? trophyDolu
-                                    : trophyBos
+                                    ? selectedTrophyIcon
+                                    : emptyTrophyIcon
                             }
                             style={{
                                 resize: 'contain',
@@ -71,8 +71,8 @@ export default class Main extends React.Component {
                         <Image
                             source={
                                 this.state.homeIconSelected === true
-                                    ? homeDolu
-                                    : homeBos
+                                    ? selectedHomeIcon
+                                    : emptyHomeIcon
                             }
                             style={{
                                 resize: 'contain',
@@ -93,8 +93,8 @@ export default class Main extends React.Component {
                         <Image
                             source={
                                 this.state.jokerIconSelected === true
-                                    ? jokerDolu
-                                    : jokerBos
+                                    ? selectedJokerIcon
+                                    : emptyJokerIcon
                             }
                             style={{
                                 resize: 'contain',
