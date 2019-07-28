@@ -6,7 +6,6 @@ import slideUp from '../../../assets/gameScreens/slideUp.png'
 import correct from '../../../assets/gameScreens/correct.png'
 import incorrect from '../../../assets/gameScreens/incorrect.png'
 import unanswered from '../../../assets/gameScreens/unanswered.png'
-import profilePic from '../../../assets/profile2.jpg'
 
 const YOU_WIN_LOGO = require('../../../assets/gameScreens/win.png')
 
@@ -42,7 +41,67 @@ class GameStatsScreen extends React.Component {
     }
 
     componentDidMount() {
-        // TODO logic for filling the screen with results
+        const playerProps = this.props.playerProps
+        const playerIds = Object.keys(playerProps)
+
+        let opponentCorrect = 0
+        let opponentIncorrect = 0
+        let opponentUnanswered = 0
+        let opponentUsername = ''
+        let opponentProfilePicture = ''
+
+        let playerCorrect = 0
+        let playerIncorrect = 0
+        let playerUnanswered = 0
+        let playerUsername = ''
+        let playerProfilePicture = ''
+
+        playerIds.forEach(element => {
+            if (this.props.client.id !== element) {
+                opponentUsername = playerProps[element].username
+                opponentProfilePicture = playerProps[element].profilePicture
+                playerProps[element].answers.forEach(result => {
+                    switch (result.result) {
+                        case null:
+                            opponentUnanswered++
+                            return
+                        case true:
+                            opponentCorrect++
+                            return
+                        case false:
+                            opponentIncorrect++
+                    }
+                })
+            } else {
+                playerUsername = playerProps[element].username
+                playerProfilePicture = playerProps[element].profilePicture
+                playerProps[element].answers.forEach(result => {
+                    switch (result.result) {
+                        case null:
+                            playerUnanswered++
+                            return
+                        case true:
+                            playerCorrect++
+                            return
+                        case false:
+                            playerIncorrect++
+                    }
+                })
+            }
+        })
+
+        this.setState({
+            correctAnswerNumber: playerCorrect,
+            incorrectAnswerNumber: playerIncorrect,
+            unansweredAnswerNumber: playerUnanswered,
+            opponentCorrectAnswerNumber: opponentCorrect,
+            opponentInorrectAnswerNumber: opponentIncorrect,
+            opponentUnansweredAnswerNumber: opponentUnanswered,
+            clientProfilePicture: playerProfilePicture,
+            opponentProfilePicture: opponentProfilePicture,
+            clientUsername: playerUsername,
+            opponentUsername: opponentUsername
+        })
     }
 
     render() {
@@ -63,7 +122,9 @@ class GameStatsScreen extends React.Component {
                         <View style={styles.results1Container}>
                             <View style={styles.user1Container}>
                                 <Image
-                                    source={profilePic}
+                                    source={{
+                                        uri: this.state.clientProfilePicture
+                                    }}
                                     style={styles.profilePic}
                                 />
                                 <Text style={styles.usernameText}>
@@ -116,7 +177,9 @@ class GameStatsScreen extends React.Component {
                             </View>
                             <View style={styles.user2Container}>
                                 <Image
-                                    source={profilePic}
+                                    source={{
+                                        uri: this.state.opponentProfilePicture
+                                    }}
                                     style={styles.profilePic}
                                 />
                                 <Text style={styles.usernameText}>

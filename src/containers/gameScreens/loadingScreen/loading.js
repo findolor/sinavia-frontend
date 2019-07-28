@@ -48,7 +48,7 @@ class LoadingScreen extends React.Component {
 
     // Client sends a ready signal when they join a room successfully
     joinRoom = () => {
-        const selectedPlayer = this.state.player.playerOne
+        const selectedPlayer = this.state.player.playerTwo
 
         this.room = this.client.join(this.state.gameMode.ranked, selectedPlayer)
         // Opponent information

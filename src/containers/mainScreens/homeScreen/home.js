@@ -66,7 +66,6 @@ export default class Home extends React.Component {
         this.state = {
             exam: 'YKS',
             subject: '',
-            slider1ActiveSlide: SLIDER_1_FIRST_ITEM,
             isModalVisible: false,
             // Mode button variables
             rankedModeButtonBackground: EMPTY_MODE_COLOR,

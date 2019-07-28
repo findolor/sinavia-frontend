@@ -3,7 +3,11 @@ import { View, Text, Image, TouchableOpacity, Modal, Alert } from 'react-native'
 import styles, { countdownProps } from './style'
 import CountDown from 'react-native-countdown-component'
 import NotchView from '../../../components/notchView'
-import { navigationPop } from '../../../services/navigationService'
+import { SCENE_KEYS } from '../../../config/'
+import {
+    navigationPop,
+    navigationPush
+} from '../../../services/navigationService'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
@@ -198,7 +202,12 @@ class RankedGame extends React.Component {
                 }, 2500)
                 return
             case 'match-finished':
-                this.setState({ isCountDownRunning: false })
+                this.shutdownGame()
+                navigationPush(SCENE_KEYS.gameScreens.gameStats, {
+                    playerProps: this.state.playerProps,
+                    room: this.props.room,
+                    client: this.props.client
+                })
                 return
         }
     }
