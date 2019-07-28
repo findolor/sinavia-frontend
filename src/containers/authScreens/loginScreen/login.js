@@ -101,7 +101,6 @@ export default class Login extends React.Component {
                     { paddingBottom: this.keyboardHeight }
                 ]}
             >
-                <StatusBar hidden />
                 <NotchView color={'#fcfcfc'} />
                 <View style={styles.imageContainer}>
                     <Animated.Image

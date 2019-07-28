@@ -15,7 +15,6 @@ export default class Opening extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <StatusBar hidden />
                 <NotchView color={'#fcfcfc'} />
                 <View style={styles.imageContainer}>
                     <Image

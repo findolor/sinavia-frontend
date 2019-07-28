@@ -165,7 +165,6 @@ class Register extends React.Component {
                     { paddingBottom: this.keyboardHeight }
                 ]}
             >
-                <StatusBar hidden />
                 <NotchView color={'#fcfcfc'} />
                 <View style={styles.imageContainer}>
                     <Image
