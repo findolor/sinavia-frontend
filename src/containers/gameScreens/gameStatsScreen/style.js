@@ -99,14 +99,14 @@ export default StyleSheet.create({
     slideViewText: {
         fontFamily: 'Averta-Semibold',
         color: '#FFFFFF',
-        marginTop: hp(2),
+        marginTop: hp(1.5),
         letterSpacing: wp(0.1),
         fontSize: hp(2)
     },
     slideUpImg: {
         height: hp(2),
         width: hp(2),
-        marginTop: hp(2.3)
+        marginTop: hp(1.8)
     },
     results1Container: {
         height: hp(21),
@@ -171,7 +171,7 @@ export default StyleSheet.create({
         fontSize: hp(3)
     },
     secondScreenView: {
-        height: hp(77),
+        height: hp(78),
         width: wp(100),
         backgroundColor: '#00D9EF',
         alignItems: 'center'
@@ -217,5 +217,83 @@ export default StyleSheet.create({
         color: '#EB6300',
         letterSpacing: wp(0.1),
         fontSize: hp(4)
+    },
+    scrollQuestionContainer: {
+        height: hp(58),
+        width: wp(100),
+        backgroundColor: '#00D9EF',
+        alignItems: 'center'
+    },
+    questionContainer: {
+        backgroundColor: '#fff',
+        height: hp(58),
+        width: wp(90),
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    questionStyle: {
+        resizeMode: 'contain',
+        height: hp(90),
+        width: wp(90),
+        flex: 1
+    },
+    questionNumberContainer: {
+        height: hp(5),
+        width: wp(100),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    questionNumberText: {
+        fontFamily: 'Averta-Semibold',
+        color: '#FFFFFF',
+        letterSpacing: wp(0.1),
+        fontSize: hp(4)
+    },
+    favAndAnswerContainer: {
+        height: hp(13),
+        width: wp(66),
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: hp(1)
+    },
+    answerContainer: {
+        height: hp(13),
+        width: wp(30),
+        alignItems: 'center',
+        justifyContent: 'space-around'
+    },
+    favIconContainer: {
+        height: hp(13),
+        width: wp(22),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    correctAnswer: {
+        height: hp(6.5),
+        width: hp(6.5),
+        borderRadius: 100,
+        marginTop: hp(1),
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    answerText: {
+        fontFamily: 'Averta-Semibold',
+        color: '#FFFFFF',
+        letterSpacing: wp(0.1),
+        marginBottom: hp(1.3),
+        fontSize: hp(1.8)
+    },
+    favIcon: {
+        height: hp(7),
+        width: hp(7),
+        marginBottom: hp(1)
+    },
+    optionText: {
+        fontFamily: 'Averta-Semibold',
+        color: '#00D9EF',
+        letterSpacing: wp(0.1),
+        fontSize: hp(3.5)
     }
 })
