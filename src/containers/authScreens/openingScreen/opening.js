@@ -9,12 +9,13 @@ import {
 import { AuthButton } from '../../../components/authScreen'
 import sinaviaLogo from '../../../assets/sinavia_logo_cut.png'
 import styles from './style'
+import NotchView from '../../../components/notchView'
 
 export default class Opening extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <StatusBar hidden />
+                <NotchView color={'#fcfcfc'} />
                 <View style={styles.imageContainer}>
                     <Image
                         source={sinaviaLogo}

@@ -23,6 +23,7 @@ import { AuthButton, AuthTextInput } from '../../../components/authScreen'
 import sinaviaLogo from '../../../assets/sinavia_logo_cut.png'
 import eye from '../../../assets/eye.png'
 import styles from './style'
+import NotchView from '../../../components/notchView'
 
 const IMAGE_HEIGHT = hp(40)
 const IMAGE_HEIGHT_SMALL = hp(25)
@@ -100,7 +101,7 @@ export default class Login extends React.Component {
                     { paddingBottom: this.keyboardHeight }
                 ]}
             >
-                <StatusBar hidden />
+                <NotchView color={'#fcfcfc'} />
                 <View style={styles.imageContainer}>
                     <Animated.Image
                         source={sinaviaLogo}
@@ -108,7 +109,7 @@ export default class Login extends React.Component {
                             {
                                 height: hp(45),
                                 resizeMode: 'contain',
-                                marginTop: hp(7)
+                                marginTop: hp(3)
                             },
                             { height: this.imageHeight }
                         ]}
