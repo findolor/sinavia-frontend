@@ -1,13 +1,23 @@
 import React from 'react'
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import {
+    Image,
+    Modal,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View
+} from 'react-native'
 import styles from './style'
 import background from '../../../assets/gameScreens/gameStatsBackground.jpg'
 import slideUp from '../../../assets/gameScreens/slideUp.png'
 import correct from '../../../assets/gameScreens/correct.png'
 import incorrect from '../../../assets/gameScreens/incorrect.png'
 import unanswered from '../../../assets/gameScreens/unanswered.png'
+import question from '../../../assets/soru.jpg'
+import selectedFav from '../../../assets/favori.png'
+import unselectedFav from '../../../assets/favori_bos.png'
 
-const YOU_WIN_LOGO = require('../../../assets/gameScreens/win.png')
+import YOU_WIN_LOGO from '../../../assets/gameScreens/win.png'
 
 class GameStatsScreen extends React.Component {
     constructor(props) {
@@ -36,7 +46,10 @@ class GameStatsScreen extends React.Component {
             totalEarnedPoints: 180,
             // Player profile pictures
             clientProfilePicture: '',
-            opponentProfilePicture: ''
+            opponentProfilePicture: '',
+
+            isQuestionModalVisible: false,
+            favIconSelected: false
         }
     }
 
@@ -259,7 +272,81 @@ class GameStatsScreen extends React.Component {
                         </View>
                     </View>
                 </View>
-                <View style={styles.secondScreenView} />
+                <View style={styles.secondScreenView}>
+                    <View style={styles.questionNumberContainer}>
+                        <Text style={styles.questionNumberText}>1/5</Text>
+                    </View>
+                    <ScrollView
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                        pagingEnabled={true}
+                    >
+                        <View style={styles.scrollQuestionContainer}>
+                            <View style={styles.questionContainer}>
+                                <Image
+                                    source={question}
+                                    style={styles.questionStyle}
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.scrollQuestionContainer}>
+                            <View style={styles.questionContainer}>
+                                <Image
+                                    source={question}
+                                    style={styles.questionStyle}
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.scrollQuestionContainer}>
+                            <View style={styles.questionContainer}>
+                                <Image
+                                    source={question}
+                                    style={styles.questionStyle}
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.scrollQuestionContainer}>
+                            <View style={styles.questionContainer}>
+                                <Image
+                                    source={question}
+                                    style={styles.questionStyle}
+                                />
+                            </View>
+                        </View>
+                    </ScrollView>
+                    <View style={styles.favAndAnswerContainer}>
+                        <View style={styles.answerContainer}>
+                            <View style={styles.correctAnswer}>
+                                <Text style={styles.optionText}>C</Text>
+                            </View>
+                            <Text style={styles.answerText}>Doğru Cevap</Text>
+                        </View>
+                        <View style={styles.favIconContainer}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.setState({
+                                        favIconSelected: true
+                                    })
+                                }}
+                            >
+                                <Image
+                                    source={
+                                        this.state.favIconSelected === true
+                                            ? selectedFav
+                                            : unselectedFav
+                                    }
+                                    style={styles.favIcon}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.answerContainer}>
+                            <View style={styles.correctAnswer}>
+                                <Text style={styles.optionText}>C</Text>
+                            </View>
+                            <Text style={styles.answerText}>Senin Cevabın</Text>
+                        </View>
+                    </View>
+                </View>
             </ScrollView>
         )
     }
