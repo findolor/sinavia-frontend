@@ -7,23 +7,23 @@ import {
 export default StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fcfcfc'
+        backgroundColor: '#fcfcfc',
+        flexDirection: 'column'
     },
     imageContainer: {
-        height: hp(21),
+        height: hp(18),
         width: wp(100),
         backgroundColor: '#fcfcfc',
         justifyContent: 'center',
         alignItems: 'center'
     },
     allTextInputsContainer: {
-        height: hp(57),
+        height: hp(58),
         width: wp(100),
         backgroundColor: '#fcfcfc',
         alignItems: 'center',
-        justifyContent: 'flex-start'
+        justifyContent: 'space-between'
     },
     textInputBorderContainer: {
         height: hp(8.14),

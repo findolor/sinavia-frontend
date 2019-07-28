@@ -40,15 +40,15 @@ export default StyleSheet.create({
         height: hp(9),
         width: wp(87),
         borderWidth: wp(0.6),
-        borderRadius: 10,
-        borderColor: '#00D9EF',
+        borderRadius: 15,
+        borderColor: '#FF9900',
         marginBottom: hp(1.4),
         justifyContent: 'center',
         alignItems: 'center'
     },
     cardText: {
         fontFamily: 'Averta-SemiboldItalic',
-        color: '#F7941E',
+        color: '#00BACD',
         fontSize: hp(3.3)
     },
     carouselContainer: {
@@ -69,9 +69,9 @@ export default StyleSheet.create({
     picker: {
         height: hp(6),
         width: wp(30),
-        borderColor: '#00D9EF',
+        borderColor: '#FF9900',
         borderWidth: wp(0.5),
-        borderRadius: 10
+        borderRadius: 15
     },
     pickerText: {
         marginTop: hp(1.3),
@@ -79,7 +79,7 @@ export default StyleSheet.create({
         marginLeft: wp(1),
         marginRight: wp(1),
         fontSize: hp(2),
-        color: '#F7941E',
+        color: '#00BACD',
         textAlign: 'center',
         textAlignVertical: 'center'
     },
@@ -98,7 +98,7 @@ export default StyleSheet.create({
         width: wp(30),
         borderColor: '#00D9EF',
         borderWidth: wp(0.5),
-        borderRadius: 10,
+        borderRadius: 15,
         marginTop: hp(0.5),
         marginLeft: wp(-0.5)
     },

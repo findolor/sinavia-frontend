@@ -25,6 +25,7 @@ import styles from './style'
 import eye from '../../../assets/eye.png'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import moment from 'moment'
+import NotchView from '../../../components/notchView'
 
 const ANIMATION_DURATION = 100
 
@@ -165,137 +166,123 @@ class Register extends React.Component {
                 ]}
             >
                 <StatusBar hidden />
+                <NotchView color={'#fcfcfc'} />
                 <View style={styles.imageContainer}>
                     <Image
                         source={sinaviaLogo}
                         style={{
                             height: hp(15),
-                            resizeMode: 'contain',
-                            marginTop: hp(2.5)
+                            resizeMode: 'contain'
                         }}
                     />
                 </View>
                 <View style={styles.allTextInputsContainer}>
-                    <View style={styles.textInputBorderContainer}>
-                        <AuthTextInput
-                            placeholder="Kullanıcı Adı                                                                          "
-                            placeholderTextColor="#8A8888"
-                            onChangeText={this.usernameOnChange}
+                    <AuthTextInput
+                        placeholder="Kullanıcı Adı                                                                          "
+                        placeholderTextColor="#8A8888"
+                        onChangeText={this.usernameOnChange}
+                    />
+                    <AuthTextInput
+                        placeholder="Ad Soyad                                                                               "
+                        placeholderTextColor="#8A8888"
+                        onChangeText={this.nameLastameOnChange}
+                    />
+                    <TouchableOpacity onPress={this.showDateTimePicker}>
+                        <View style={styles.textInputContainer}>
+                            <Text
+                                style={[
+                                    styles.textInput,
+                                    { color: this.state.dateColor }
+                                ]}
+                            >
+                                {this.state.birthDateUI}
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                    <DateTimePicker
+                        isVisible={this.state.isDateTimePickerVisible}
+                        onConfirm={this.handleDatePicked}
+                        onCancel={this.hideDateTimePicker}
+                    />
+                    <AuthTextInput
+                        placeholder="Şehir                                                                                  "
+                        placeholderTextColor="#8A8888"
+                        onChangeText={this.cityOnChange}
+                    />
+                    <AuthTextInput
+                        placeholder="E-Posta                                                                                "
+                        placeholderTextColor="#8A8888"
+                        onChangeText={this.emailOnChange}
+                    />
+                    <View style={styles.textInputContainer}>
+                        <TextInput
+                            style={styles.textInput}
+                            secureTextEntry={this.state.hidePasswordFirst}
+                            placeholder="Şifre                                                                              "
+                            placeholderTextColor={'#8A8888'}
+                            onChangeText={text => {
+                                if (text === '') {
+                                    this.setState({
+                                        showPasswordEyeFirst: false
+                                    })
+                                } else {
+                                    this.setState({
+                                        showPasswordEyeFirst: true,
+                                        password: text
+                                    })
+                                }
+                            }}
                         />
-                    </View>
-                    <View style={styles.textInputBorderContainer}>
-                        <AuthTextInput
-                            placeholder="Ad Soyad                                                                               "
-                            placeholderTextColor="#8A8888"
-                            onChangeText={this.nameLastameOnChange}
-                        />
-                    </View>
-                    <View style={styles.textInputBorderContainer}>
-                        <TouchableOpacity onPress={this.showDateTimePicker}>
-                            <View style={styles.textInputContainer}>
-                                <Text
-                                    style={[
-                                        styles.textInput,
-                                        { color: this.state.dateColor }
-                                    ]}
+                        {this.state.showPasswordEyeFirst && (
+                            <View style={styles.eyeContainer}>
+                                <TouchableOpacity
+                                    onPress={this.managePasswordVisibility}
                                 >
-                                    {this.state.birthDateUI}
-                                </Text>
+                                    <Image
+                                        source={eye}
+                                        style={{
+                                            height: hp(3),
+                                            width: wp(9)
+                                        }}
+                                    />
+                                </TouchableOpacity>
                             </View>
-                        </TouchableOpacity>
-                        <DateTimePicker
-                            isVisible={this.state.isDateTimePickerVisible}
-                            onConfirm={this.handleDatePicked}
-                            onCancel={this.hideDateTimePicker}
+                        )}
+                    </View>
+                    <View style={styles.textInputContainer}>
+                        <TextInput
+                            style={styles.textInput}
+                            secureTextEntry={this.state.hidePasswordSecond}
+                            placeholder="Şifre (Tekrar)                                                                     "
+                            placeholderTextColor={'#8A8888'}
+                            onChangeText={text => {
+                                if (text === '') {
+                                    this.setState({
+                                        showPasswordEyeSecond: false
+                                    })
+                                } else {
+                                    this.setState({
+                                        showPasswordEyeSecond: true,
+                                        secondPassword: text
+                                    })
+                                }
+                            }}
                         />
-                    </View>
-                    <View style={styles.textInputBorderContainer}>
-                        <AuthTextInput
-                            placeholder="Şehir                                                                                  "
-                            placeholderTextColor="#8A8888"
-                            onChangeText={this.cityOnChange}
-                        />
-                    </View>
-                    <View style={styles.textInputBorderContainer}>
-                        <AuthTextInput
-                            placeholder="E-Posta                                                                                "
-                            placeholderTextColor="#8A8888"
-                            onChangeText={this.emailOnChange}
-                        />
-                    </View>
-                    <View style={styles.textInputBorderContainer}>
-                        <View style={styles.textInputContainer}>
-                            <TextInput
-                                style={styles.textInput}
-                                secureTextEntry={this.state.hidePasswordFirst}
-                                placeholder="Şifre                                                                              "
-                                placeholderTextColor={'#8A8888'}
-                                onChangeText={text => {
-                                    if (text === '') {
-                                        this.setState({
-                                            showPasswordEyeFirst: false
-                                        })
-                                    } else {
-                                        this.setState({
-                                            showPasswordEyeFirst: true,
-                                            password: text
-                                        })
-                                    }
-                                }}
-                            />
-                            {this.state.showPasswordEyeFirst && (
-                                <View style={styles.eyeContainer}>
-                                    <TouchableOpacity
-                                        onPress={this.managePasswordVisibility}
-                                    >
-                                        <Image
-                                            source={eye}
-                                            style={{
-                                                height: hp(3),
-                                                width: wp(9)
-                                            }}
-                                        />
-                                    </TouchableOpacity>
-                                </View>
-                            )}
-                        </View>
-                    </View>
-                    <View style={styles.textInputBorderContainer}>
-                        <View style={styles.textInputContainer}>
-                            <TextInput
-                                style={styles.textInput}
-                                secureTextEntry={this.state.hidePasswordSecond}
-                                placeholder="Şifre (Tekrar)                                                                     "
-                                placeholderTextColor={'#8A8888'}
-                                onChangeText={text => {
-                                    if (text === '') {
-                                        this.setState({
-                                            showPasswordEyeSecond: false
-                                        })
-                                    } else {
-                                        this.setState({
-                                            showPasswordEyeSecond: true,
-                                            secondPassword: text
-                                        })
-                                    }
-                                }}
-                            />
-                            {this.state.showPasswordEyeSecond && (
-                                <View style={styles.eyeContainer}>
-                                    <TouchableOpacity
-                                        onPress={this.managePasswordVisibility2}
-                                    >
-                                        <Image
-                                            source={eye}
-                                            style={{
-                                                height: hp(3),
-                                                width: wp(9)
-                                            }}
-                                        />
-                                    </TouchableOpacity>
-                                </View>
-                            )}
-                        </View>
+                        {this.state.showPasswordEyeSecond && (
+                            <View style={styles.eyeContainer}>
+                                <TouchableOpacity
+                                    onPress={this.managePasswordVisibility2}
+                                >
+                                    <Image
+                                        source={eye}
+                                        style={{
+                                            height: hp(3),
+                                            width: wp(9)
+                                        }}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                        )}
                     </View>
                 </View>
                 <View style={styles.toggleContainer}>
