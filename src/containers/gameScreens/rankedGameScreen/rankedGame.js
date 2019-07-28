@@ -578,7 +578,9 @@ class RankedGame extends React.Component {
                     <View style={styles.headerContainer}>
                         <View style={styles.userContainer}>
                             <Image
-                                source={require('../../../assets/snoop.jpg')}
+                                source={{
+                                    uri: this.props.playerProfilePicture
+                                }}
                                 style={styles.userProfilePicture}
                             />
                             <View style={styles.usernameContainer}>
@@ -624,7 +626,9 @@ class RankedGame extends React.Component {
                         </View>
                         <View style={styles.userContainer}>
                             <Image
-                                source={require('../../../assets/doge.jpeg')}
+                                source={{
+                                    uri: this.props.opponentProfilePicture
+                                }}
                                 style={styles.userProfilePicture}
                             />
                             <View style={styles.usernameContainer}>
