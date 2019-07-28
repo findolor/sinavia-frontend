@@ -5,14 +5,16 @@ import {
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
+import NotchView from '../../components/notchView'
 import { navigationPush } from '../../services/navigationService'
+
 import trophyDolu from '../../assets/mainScreens/trophy_Dolu.png'
 import trophyBos from '../../assets/mainScreens/trophy.png'
 import homeDolu from '../../assets/mainScreens/home_dolu.png'
 import homeBos from '../../assets/mainScreens/home.png'
 import jokerDolu from '../../assets/mainScreens/joker_dolu.png'
 import jokerBos from '../../assets/mainScreens/joker.png'
-import NotchView from '../../components/notchView'
+
 
 export default class Main extends React.Component {
     constructor(props) {

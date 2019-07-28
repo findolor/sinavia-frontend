@@ -24,9 +24,11 @@ import { LGS, YKS } from '../../../components/mainScreen/carousel/static/exams'
 import * as courses from '../../../components/mainScreen/carousel/static/courses'
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
 import AuthButton from '../../../components/authScreen/authButton'
+
 import profilePic from '../../../assets/profile2.jpg'
-import x from '../../../assets/x.png'
+import closeButton from '../../../assets/closeButton.png'
 import notificationLogo from '../../../assets/mainScreens/notification.png'
+
 import {
     navigationPush,
     navigationReset,
@@ -170,7 +172,7 @@ export default class Home extends React.Component {
                             }}
                         >
                             <Image
-                                source={x}
+                                source={closeButton}
                                 style={styles.xLogo}
                             />
                         </TouchableOpacity>

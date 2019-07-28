@@ -5,6 +5,16 @@ import CountDown from 'react-native-countdown-component'
 import NotchView from '../../../components/notchView'
 import { navigationPop } from '../../../services/navigationService'
 
+import snoop from '../../../assets/snoop.jpg'
+import doge from '../../../assets/doge.jpeg'
+import soru from '../../../assets/soru.jpg'
+import closeButton from '../../../assets/closeButton.png'
+import zoomButton from '../../../assets/gameScreens/zoomButton.png'
+import backButton from '../../../assets/backButton.png'
+import opponentsAnswer from '../../../assets/gameScreens/jokers/opponentsAnswer.png'
+import fiftyFifty from '../../../assets/gameScreens/jokers/fiftyFifty.png'
+import secondChance from '../../../assets/gameScreens/jokers/secondChance.png'
+
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
 const OPPONENT_ANSWER_COLOR = '#f5bc14'
@@ -578,7 +588,7 @@ class RankedGame extends React.Component {
                     <View style={styles.headerContainer}>
                         <View style={styles.userContainer}>
                             <Image
-                                source={require('../../../assets/snoop.jpg')}
+                                source={snoop}
                                 style={styles.userProfilePicture}
                             />
                             <View style={styles.usernameContainer}>
@@ -624,7 +634,7 @@ class RankedGame extends React.Component {
                         </View>
                         <View style={styles.userContainer}>
                             <Image
-                                source={require('../../../assets/doge.jpeg')}
+                                source={doge}
                                 style={styles.userProfilePicture}
                             />
                             <View style={styles.usernameContainer}>
@@ -669,7 +679,7 @@ class RankedGame extends React.Component {
                         <View style={styles.questionModalContainer}>
                             <View style={styles.questionImageModalContainer}>
                                 <Image
-                                    source={require('../../../assets/soru.jpg')}
+                                    source={soru}
                                     style={styles.questionModalStyle}
                                 />
                             </View>
@@ -678,7 +688,7 @@ class RankedGame extends React.Component {
                                     onPress={this.questionModalCloseOnPress}
                                 >
                                     <Image
-                                        source={require('../../../assets/x.png')}
+                                        source={closeButton}
                                         style={styles.closeModal}
                                     />
                                 </TouchableOpacity>
@@ -694,7 +704,7 @@ class RankedGame extends React.Component {
                     <View style={styles.zoomButtonContainer}>
                         <TouchableOpacity onPress={this.zoomButtonOnPress}>
                             <Image
-                                source={require('../../../assets/zoom.png')}
+                                source={zoomButton}
                                 style={styles.zoomButton}
                             />
                         </TouchableOpacity>
@@ -702,7 +712,7 @@ class RankedGame extends React.Component {
                     <View style={styles.backButtonContainer}>
                         <TouchableOpacity onPress={this.backButtonOnPress}>
                             <Image
-                                source={require('../../../assets/Back.png')}
+                                source={backButton}
                                 style={styles.backButton}
                             />
                         </TouchableOpacity>
@@ -836,7 +846,7 @@ class RankedGame extends React.Component {
                         >
                             <View style={styles.jokerAndTextContainer}>
                                 <Image
-                                    source={require('../../../assets/Rakip.png')}
+                                    source={opponentsAnswer}
                                     style={styles.joker}
                                 />
                                 <Text style={styles.jokerText}>
@@ -852,7 +862,7 @@ class RankedGame extends React.Component {
                         >
                             <View style={styles.jokerAndTextContainer}>
                                 <Image
-                                    source={require('../../../assets/Sikeleme.png')}
+                                    source={fiftyFifty}
                                     style={styles.joker}
                                 />
                                 <Text style={styles.jokerText}>Şık Ele</Text>
@@ -866,7 +876,7 @@ class RankedGame extends React.Component {
                         >
                             <View style={styles.jokerAndTextContainer}>
                                 <Image
-                                    source={require('../../../assets/2hak.png')}
+                                    source={secondChance}
                                     style={styles.joker}
                                 />
                                 <Text style={styles.jokerText}>

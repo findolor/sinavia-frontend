@@ -20,11 +20,12 @@ import {
     heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
 import { AuthButton, AuthTextInput } from '../../../components/authScreen'
-import sinaviaLogo from '../../../assets/sinavia_logo_cut.png'
 import styles from './style'
-import eye from '../../../assets/eye.png'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import moment from 'moment'
+
+import sinaviaLogo from '../../../assets/sinavia_logo_cut.png'
+import eye from '../../../assets/eye.png'
 
 const ANIMATION_DURATION = 100
 

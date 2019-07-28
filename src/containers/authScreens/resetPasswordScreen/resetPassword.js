@@ -12,8 +12,9 @@ import {
     heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
 import { AuthButton, AuthTextInput } from '../../../components/authScreen'
-import sinaviaLogo from '../../../assets/sinavia_logo_cut.png'
 import styles from './style'
+
+import sinaviaLogo from '../../../assets/sinavia_logo_cut.png'
 
 const IMAGE_HEIGHT = hp(45)
 const IMAGE_HEIGHT_SMALL = hp(35)
