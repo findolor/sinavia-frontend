@@ -172,6 +172,7 @@ export default class Home extends React.Component {
         return cardList
     }
 
+    // TODO Write this piece of code better
     updateModeButtonUI = gameMode => {
         switch (gameMode) {
             case 'ranked':
