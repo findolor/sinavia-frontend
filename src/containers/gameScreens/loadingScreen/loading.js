@@ -102,14 +102,22 @@ class LoadingScreen extends React.Component {
                         alignItems: 'center'
                     }}
                 >
-                    {/* <Button
+                    {/* <Buttonß
                         title="play"
                         onPress={this.play}
                         disabled={this.state.isDisabled}
                     >
                         Play
                     </Button> */}
-                    <Text>Yukleniyor</Text>
+                    <Text
+                        style={{
+                            fontFamily: 'Averta-BoldItalic',
+                            fontSize: 30,
+                            color: '#00d9ef'
+                        }}
+                    >
+                        Rakip Bekleniyor...
+                    </Text>
                 </View>
             </View>
         )

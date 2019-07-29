@@ -242,7 +242,6 @@ export default class Home extends React.Component {
         const card = this.cards(this.state.exam, this.state.carouselActiveSlide)
         return (
             <View style={styles.container}>
-                <StatusBar hidden />
                 <Modal
                     visible={this.state.isModalVisible}
                     transparent={true}
@@ -375,7 +374,10 @@ export default class Home extends React.Component {
                         <View style={styles.profilePicContainer}>
                             <TouchableOpacity>
                                 <Image
-                                    source={profilePic}
+                                    source={{
+                                        uri:
+                                            'https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-512.png'
+                                    }}
                                     style={styles.profilePic}
                                 />
                             </TouchableOpacity>
