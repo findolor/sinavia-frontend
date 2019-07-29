@@ -161,7 +161,7 @@ export default StyleSheet.create({
         height: hp(4),
         width: wp(17.8),
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'space-evenly',
         alignItems: 'center'
     },
     numbers: {

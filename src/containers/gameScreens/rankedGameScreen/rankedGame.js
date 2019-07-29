@@ -683,7 +683,11 @@ class RankedGame extends React.Component {
                         <View style={styles.questionModalContainer}>
                             <View style={styles.questionImageModalContainer}>
                                 <Image
-                                    source={require('../../../assets/soru.jpg')}
+                                    source={{
+                                        uri: this.state.questionList[
+                                            this.state.questionNumber
+                                        ]
+                                    }}
                                     style={styles.questionModalStyle}
                                 />
                             </View>

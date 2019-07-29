@@ -52,7 +52,7 @@ export default class Main extends React.Component {
                                     : emptyTrophyIcon
                             }
                             style={{
-                                resize: 'contain',
+                                resizeMode: 'contain',
                                 height: hp(5),
                                 width: hp(5)
                             }}

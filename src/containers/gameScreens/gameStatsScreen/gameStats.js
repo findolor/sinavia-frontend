@@ -51,7 +51,10 @@ class GameStatsScreen extends React.Component {
             matchResultLogo: '',
             // Question position
             questionPosition: 1,
-
+            // A list to feed into the scroll view
+            allQuestionsList: [],
+            // Screen position
+            screenPosition: 1,
             isQuestionModalVisible: false,
             favIconSelected: false
         }
@@ -138,6 +141,19 @@ class GameStatsScreen extends React.Component {
 
             totalEarnedPoints += playerCorrect * 20
 
+            for (i = 0; i < Object.keys(this.props.questionList).length; i++) {
+                this.state.allQuestionsList.push(
+                    <View style={styles.scrollQuestionContainer} key={i}>
+                        <View style={styles.questionContainer}>
+                            <Image
+                                source={{ uri: this.props.questionList[i] }}
+                                style={styles.questionStyle}
+                            />
+                        </View>
+                    </View>
+                )
+            }
+
             this.setState({
                 correctAnswerNumber: playerCorrect,
                 incorrectAnswerNumber: playerIncorrect,
@@ -156,7 +172,7 @@ class GameStatsScreen extends React.Component {
         })
     }
 
-    handleScroll = event => {
+    handleScrollHorizontal = event => {
         this.scrollX = event.nativeEvent.contentOffset.x
         this.setState({
             questionPosition: Math.min(
@@ -169,6 +185,23 @@ class GameStatsScreen extends React.Component {
                     0
                 ),
                 Object.keys(this.props.questionList).length /*Image count*/
+            )
+        })
+    }
+
+    handleScrollVertical = event => {
+        this.scrollY = event.nativeEvent.contentOffset.y
+        this.setState({
+            screenPosition: Math.min(
+                Math.max(
+                    Math.floor(
+                        this.scrollY /
+                            Math.round(Dimensions.get('window').height) +
+                            0.5
+                    ) + 1,
+                    0
+                ),
+                2
             )
         })
     }
@@ -195,6 +228,8 @@ class GameStatsScreen extends React.Component {
             <ScrollView
                 pagingEnabled={true}
                 showsVerticalScrollIndicator={false}
+                onScroll={this.handleScrollVertical}
+                scrollEventThrottle={8}
             >
                 <View style={styles.container}>
                     <Image source={background} style={styles.background} />
@@ -339,7 +374,9 @@ class GameStatsScreen extends React.Component {
                             <Image source={slideUp} style={styles.slideUpImg} />
                             <Text style={styles.slideViewText}>
                                 {' '}
-                                SORULARI GÖRMEK İÇİN KAYDIR{' '}
+                                {this.state.screenPosition === 1
+                                    ? 'SORULARI GÖRMEK İÇİN KAYDIR'
+                                    : 'PUANLARI GÖRMEK İÇİN KAYDIR'}{' '}
                             </Text>
                             <Image source={slideUp} style={styles.slideUpImg} />
                         </View>
@@ -355,69 +392,10 @@ class GameStatsScreen extends React.Component {
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                         pagingEnabled={true}
-                        onScroll={this.handleScroll}
+                        onScroll={this.handleScrollHorizontal}
                         scrollEventThrottle={8}
                     >
-                        <View style={styles.scrollQuestionContainer}>
-                            <View style={styles.questionContainer}>
-                                <Image
-                                    source={{
-                                        uri: this.props.questionList[
-                                            this.state.questionPosition - 1
-                                        ]
-                                    }}
-                                    style={styles.questionStyle}
-                                />
-                            </View>
-                        </View>
-                        <View style={styles.scrollQuestionContainer}>
-                            <View style={styles.questionContainer}>
-                                <Image
-                                    source={{
-                                        uri: this.props.questionList[
-                                            this.state.questionPosition - 1
-                                        ]
-                                    }}
-                                    style={styles.questionStyle}
-                                />
-                            </View>
-                        </View>
-                        <View style={styles.scrollQuestionContainer}>
-                            <View style={styles.questionContainer}>
-                                <Image
-                                    source={{
-                                        uri: this.props.questionList[
-                                            this.state.questionPosition - 1
-                                        ]
-                                    }}
-                                    style={styles.questionStyle}
-                                />
-                            </View>
-                        </View>
-                        <View style={styles.scrollQuestionContainer}>
-                            <View style={styles.questionContainer}>
-                                <Image
-                                    source={{
-                                        uri: this.props.questionList[
-                                            this.state.questionPosition - 1
-                                        ]
-                                    }}
-                                    style={styles.questionStyle}
-                                />
-                            </View>
-                        </View>
-                        <View style={styles.scrollQuestionContainer}>
-                            <View style={styles.questionContainer}>
-                                <Image
-                                    source={{
-                                        uri: this.props.questionList[
-                                            this.state.questionPosition - 1
-                                        ]
-                                    }}
-                                    style={styles.questionStyle}
-                                />
-                            </View>
-                        </View>
+                        {this.state.allQuestionsList}
                     </ScrollView>
                     <View style={styles.favAndAnswerContainer}>
                         <View style={styles.answerContainer}>
