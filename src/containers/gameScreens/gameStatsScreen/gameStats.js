@@ -11,6 +11,7 @@ import {
 import styles from './style'
 import background from '../../../assets/gameScreens/gameStatsBackground.jpg'
 import slideUp from '../../../assets/gameScreens/slideUp.png'
+import slideDown from '../../../assets/gameScreens/slideDown.png'
 import correct from '../../../assets/gameScreens/correct.png'
 import incorrect from '../../../assets/gameScreens/incorrect.png'
 import unanswered from '../../../assets/gameScreens/unanswered.png'
@@ -55,6 +56,7 @@ class GameStatsScreen extends React.Component {
             allQuestionsList: [],
             // Screen position
             screenPosition: 1,
+
             isQuestionModalVisible: false,
             favIconSelected: false
         }
@@ -64,6 +66,8 @@ class GameStatsScreen extends React.Component {
         await this.loadScreen()
     }
 
+    // TODO Tidy up this code block
+    // These could be implemented better
     loadScreen() {
         new Promise(resolve => {
             const playerProps = this.props.playerProps
@@ -172,6 +176,7 @@ class GameStatsScreen extends React.Component {
         })
     }
 
+    // Used for getting the index of questions from scroll view
     handleScrollHorizontal = event => {
         this.scrollX = event.nativeEvent.contentOffset.x
         this.setState({
@@ -189,6 +194,7 @@ class GameStatsScreen extends React.Component {
         })
     }
 
+    // Used for getting the index of screen from scroll view
     handleScrollVertical = event => {
         this.scrollY = event.nativeEvent.contentOffset.y
         this.setState({
@@ -201,7 +207,7 @@ class GameStatsScreen extends React.Component {
                     ) + 1,
                     0
                 ),
-                2
+                2 // Screen number which is 2
             )
         })
     }
@@ -371,14 +377,28 @@ class GameStatsScreen extends React.Component {
                     </View>
                     <View style={styles.slideView}>
                         <View style={styles.slideUpContainer}>
-                            <Image source={slideUp} style={styles.slideUpImg} />
+                            <Image
+                                source={
+                                    this.state.screenPosition === 1
+                                        ? slideUp
+                                        : slideDown
+                                }
+                                style={styles.slideUpImg}
+                            />
                             <Text style={styles.slideViewText}>
                                 {' '}
                                 {this.state.screenPosition === 1
                                     ? 'SORULARI GÖRMEK İÇİN KAYDIR'
                                     : 'PUANLARI GÖRMEK İÇİN KAYDIR'}{' '}
                             </Text>
-                            <Image source={slideUp} style={styles.slideUpImg} />
+                            <Image
+                                source={
+                                    this.state.screenPosition === 1
+                                        ? slideUp
+                                        : slideDown
+                                }
+                                style={styles.slideUpImg}
+                            />
                         </View>
                     </View>
                 </View>
