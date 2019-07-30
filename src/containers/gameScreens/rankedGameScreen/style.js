@@ -18,7 +18,7 @@ export default StyleSheet.create({
         borderBottomRightRadius: 30,
         shadowOpacity: 1,
         shadowColor: '#adadad',
-        shadowOffset: { width: wp(0), height: hp(0.5) },
+        shadowOffset: { width: wp(0), height: hp(0.7) },
         marginBottom: hp(1)
     },
     headerContainer: {

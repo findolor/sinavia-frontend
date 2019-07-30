@@ -75,7 +75,7 @@ export default class Main extends React.Component {
                                     : emptyHomeIcon
                             }
                             style={{
-                                resize: 'contain',
+                                resizeMode: 'contain',
                                 height: hp(5),
                                 width: hp(5)
                             }}
@@ -97,7 +97,7 @@ export default class Main extends React.Component {
                                     : emptyJokerIcon
                             }
                             style={{
-                                resize: 'contain',
+                                resizeMode: 'contain',
                                 height: hp(5),
                                 width: hp(5)
                             }}

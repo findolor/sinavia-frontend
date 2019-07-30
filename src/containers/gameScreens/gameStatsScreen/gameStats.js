@@ -1,13 +1,15 @@
 import React from 'react'
 import {
     Image,
-    Modal,
     ScrollView,
     Text,
     TouchableOpacity,
     View,
     Dimensions
 } from 'react-native'
+import { navigationReset } from '../../../services/navigationService'
+import { SCENE_KEYS } from '../../../config/'
+
 import styles from './style'
 import background from '../../../assets/gameScreens/gameStatsBackground.jpg'
 import slideUp from '../../../assets/gameScreens/slideUp.png'
@@ -21,6 +23,10 @@ import unselectedFav from '../../../assets/favori_bos.png'
 import YOU_WIN_LOGO from '../../../assets/gameScreens/win.png'
 import YOU_LOSE_LOGO from '../../../assets/gameScreens/lose.png'
 import DRAW_LOGO from '../../../assets/gameScreens/draw.png'
+
+const REPLAY_NORMAL_BORDER = '#00D9EF'
+const REPLAY_ACTIVE_BORDER = 'green'
+const REPLAY_DEACTIVE_BORDER = 'red'
 
 class GameStatsScreen extends React.Component {
     constructor(props) {
@@ -56,6 +62,12 @@ class GameStatsScreen extends React.Component {
             allQuestionsList: [],
             // Screen position
             screenPosition: 1,
+            // User answer background color. Changes depending on the result
+            answerBackgroundColor: '',
+            // Replay button press number. If it is one opponent has pressed it.
+            replayButtonPressNumber: 0,
+            // Replay button border color
+            replayButtonBorderColor: REPLAY_NORMAL_BORDER,
 
             isQuestionModalVisible: false,
             favIconSelected: false
@@ -64,6 +76,40 @@ class GameStatsScreen extends React.Component {
 
     async componentDidMount() {
         await this.loadScreen()
+        this.props.room.onMessage.add(message => {
+            this.chooseMessageAction(message)
+        })
+        this.props.room.onError.add(err => console.log(err))
+    }
+
+    chooseMessageAction = message => {
+        switch (message.action) {
+            case 'replay':
+                if (this.state.replayButtonPressNumber === 0) {
+                    this.setState({
+                        replayButtonBorderColor: REPLAY_ACTIVE_BORDER,
+                        replayButtonPressNumber: 1
+                    })
+                } else {
+                    console.log(message)
+                    setTimeout(() => {
+                        this.props.room.removeAllListeners()
+
+                        navigationReset(SCENE_KEYS.gameScreens.rankedGame, {
+                            room: this.props.room,
+                            client: this.props.client,
+                            playerUsername: this.props.playerUsername,
+                            playerProfilePicture: this.props
+                                .playerProfilePicture,
+                            opponentUsername: this.props.opponentUsername,
+                            opponentId: this.props.opponentId,
+                            opponentProfilePicture: this.props
+                                .opponentProfilePicture
+                        })
+                    }, 2000)
+                }
+                return
+        }
     }
 
     // TODO Tidy up this code block
@@ -229,6 +275,49 @@ class GameStatsScreen extends React.Component {
         }
     }
 
+    replayButtonOnPress = () => {
+        if (this.state.replayButtonPressNumber === 0) {
+            this.setState({
+                replayButtonBorderColor: REPLAY_ACTIVE_BORDER,
+                replayButtonPressNumber: 1
+            })
+            this.props.room.send({
+                action: 'replay'
+            })
+        } else {
+            this.props.room.send({
+                action: 'replay'
+            })
+            this.props.room.send({
+                action: 'reset-room'
+            })
+            setTimeout(() => {
+                this.props.room.removeAllListeners()
+
+                navigationReset(SCENE_KEYS.gameScreens.rankedGame, {
+                    room: this.props.room,
+                    client: this.props.client,
+                    playerUsername: this.props.playerUsername,
+                    playerProfilePicture: this.props.playerProfilePicture,
+                    opponentUsername: this.props.opponentUsername,
+                    opponentId: this.props.opponentId,
+                    opponentProfilePicture: this.props.opponentProfilePicture
+                })
+            }, 2000)
+        }
+    }
+
+    newOpponentButtonOnPress = () => {
+        this.props.room.leave()
+        navigationReset('game')
+    }
+
+    mainScreenButtonOnPress = () => {
+        this.props.room.leave()
+        this.props.client.close()
+        navigationReset('main')
+    }
+
     render() {
         return (
             <ScrollView
@@ -356,19 +445,32 @@ class GameStatsScreen extends React.Component {
                         </View>
                     </View>
                     <View style={styles.buttonsContainer}>
-                        <TouchableOpacity>
-                            <View style={styles.replayButton}>
+                        <TouchableOpacity onPress={this.replayButtonOnPress}>
+                            <View
+                                style={[
+                                    styles.replayButton,
+                                    {
+                                        borderColor: this.state
+                                            .replayButtonBorderColor,
+                                        borderWidth: 1
+                                    }
+                                ]}
+                            >
                                 <Text style={styles.buttonText}>Yeniden</Text>
                                 <Text style={styles.buttonText}>Oyna</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={this.newOpponentButtonOnPress}
+                        >
                             <View style={styles.newOpponentButton}>
                                 <Text style={styles.buttonText}>Yeni</Text>
                                 <Text style={styles.buttonText}>Rakip</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={this.mainScreenButtonOnPress}
+                        >
                             <View style={styles.mainScreenButton}>
                                 <Text style={styles.buttonText}>Ana</Text>
                                 <Text style={styles.buttonText}>Menü</Text>
@@ -419,8 +521,18 @@ class GameStatsScreen extends React.Component {
                     </ScrollView>
                     <View style={styles.favAndAnswerContainer}>
                         <View style={styles.answerContainer}>
-                            <View style={styles.correctAnswer}>
-                                <Text style={styles.optionText}>
+                            <View
+                                style={[
+                                    styles.correctAnswer,
+                                    { backgroundColor: 'white' }
+                                ]}
+                            >
+                                <Text
+                                    style={[
+                                        styles.optionText,
+                                        { color: '#00D9EF' }
+                                    ]}
+                                >
                                     {this.answerSwitcher(
                                         this.props.playerProps[
                                             this.props.client.id
@@ -451,8 +563,20 @@ class GameStatsScreen extends React.Component {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.answerContainer}>
-                            <View style={styles.correctAnswer}>
-                                <Text style={styles.optionText}>
+                            <View
+                                style={[
+                                    styles.correctAnswer,
+                                    {
+                                        backgroundColor: 'white'
+                                    }
+                                ]}
+                            >
+                                <Text
+                                    style={[
+                                        styles.optionText,
+                                        { color: '#00D9EF' }
+                                    ]}
+                                >
                                     {this.answerSwitcher(
                                         this.props.playerProps[
                                             this.props.client.id

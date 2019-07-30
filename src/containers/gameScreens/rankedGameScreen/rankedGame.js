@@ -5,7 +5,7 @@ import CountDown from 'react-native-countdown-component'
 import NotchView from '../../../components/notchView'
 import { SCENE_KEYS } from '../../../config/'
 import {
-    navigationPop,
+    navigationReset,
     navigationPush
 } from '../../../services/navigationService'
 
@@ -207,7 +207,12 @@ class RankedGame extends React.Component {
                     playerProps: this.state.playerProps,
                     room: this.props.room,
                     client: this.props.client,
-                    questionList: this.state.questionList
+                    questionList: this.state.questionList,
+                    playerUsername: this.props.playerUsername,
+                    playerProfilePicture: this.props.playerProfilePicture,
+                    opponentUsername: this.props.opponentUsername,
+                    opponentId: this.props.opponentId,
+                    opponentProfilePicture: this.props.opponentProfilePicture
                 })
                 return
         }
@@ -473,7 +478,7 @@ class RankedGame extends React.Component {
     backButtonOnPress = () => {
         this.props.room.removeAllListeners()
         this.props.room.leave()
-        navigationPop()
+        navigationReset('main')
     }
 
     zoomButtonOnPress = () => {

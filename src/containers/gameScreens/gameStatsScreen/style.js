@@ -274,7 +274,6 @@ export default StyleSheet.create({
         width: hp(6.5),
         borderRadius: 100,
         marginTop: hp(1),
-        backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -293,7 +292,6 @@ export default StyleSheet.create({
     },
     optionText: {
         fontFamily: 'Averta-Semibold',
-        color: '#00D9EF',
         letterSpacing: wp(0.1),
         fontSize: hp(3.5)
     }
