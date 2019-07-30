@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Config from 'react-native-config'
 
 export const postUser = async userInformation => {
     try {
@@ -7,7 +8,7 @@ export const postUser = async userInformation => {
         userInformation.isDeleted = 0
 
         const response = await axios.post(
-            'http://localhost:4000/api/users',
+            Config.SERVER_ENDPOINT + 'users/',
             userInformation
         )
         return response.data.data

@@ -3,7 +3,7 @@ import axios from 'axios'
 export const getToken = async userInformation => {
     try {
         const response = await axios.post(
-            'http://localhost:4000/api/token',
+            Config.SERVER_ENDPOINT + 'token/',
             userInformation
         )
         return response.data.data.token
