@@ -32,7 +32,7 @@ import NOTIFICATION_LOGO from '../../../assets/mainScreens/notification.png'
 import {
     navigationPush,
     navigationReset,
-    sceneKeys
+    SCENE_KEYS
 } from '../../../services/navigationService'
 const carouselFirstItem = 0
 const exams = [
@@ -245,6 +245,10 @@ export default class Home extends React.Component {
         navigationReset('game')
     }
 
+    profilePicOnPress = () => {
+        navigationPush(SCENE_KEYS.mainScreens.profile)
+    }
+
     render() {
         const card = this.cards(this.state.exam, this.state.carouselActiveSlide)
         return (
@@ -379,7 +383,7 @@ export default class Home extends React.Component {
                 <View style={{ height: hp(60), marginTop: hp(0) }}>
                     <View style={styles.header}>
                         <View style={styles.profilePicContainer}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={this.profilePicOnPress}>
                                 <Image
                                     source={{
                                         uri:

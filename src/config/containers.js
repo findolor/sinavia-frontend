@@ -4,8 +4,14 @@ import {
     Register,
     ResetPassword
 } from '../containers/authScreens'
-import Main from '../containers/mainScreens'
-import { RankedGame, LoadingScreen, GameStatsScreen } from '../containers/gameScreens'
+
+import { Main, Profile } from '../containers/mainScreens'
+
+import {
+    RankedGame,
+    LoadingScreen,
+    GameStatsScreen
+} from '../containers/gameScreens'
 
 export const authScreens = {
     opening: Opening,
@@ -15,7 +21,8 @@ export const authScreens = {
 }
 
 export const mainScreens = {
-    main: Main
+    main: Main,
+    profile: Profile
 }
 
 export const gameScreens = {

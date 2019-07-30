@@ -17,7 +17,8 @@ const config = {
             gameStats: 'gameStats'
         },
         mainScreens: {
-            main: 'main'
+            main: 'main',
+            profile: 'profile'
         }
     }
 }
