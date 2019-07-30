@@ -10,10 +10,7 @@ import {
     TouchableOpacity,
     View
 } from 'react-native'
-import {
-    heightPercentageToDP as hp,
-    widthPercentageToDP as wp
-} from 'react-native-responsive-screen'
+import { SCENE_KEYS, navigationPop } from '../../../services/navigationService'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import nebula from '../../../assets/cover.jpg'
@@ -32,13 +29,17 @@ export default class Profile extends React.Component {
         this.state = {}
     }
 
+    backButtonOnPress = () => {
+        navigationPop()
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <NotchView />
                 <View style={styles.header}>
-                    <TouchableOpacity>
-                    <Image source={returnLogo} style={styles.returnLogo} />
+                    <TouchableOpacity onPress={this.backButtonOnPress}>
+                        <Image source={returnLogo} style={styles.returnLogo} />
                     </TouchableOpacity>
                     <View style={styles.searchBar}>
                         <View style={styles.textInputView}>
@@ -49,31 +50,38 @@ export default class Profile extends React.Component {
                             />
                         </View>
                         <TouchableOpacity>
-                        <Image
-                            source={searchlogo}
-                            style={styles.searchBarLogo}
-                        />
+                            <Image
+                                source={searchlogo}
+                                style={styles.searchBarLogo}
+                            />
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity>
-                    <Image source={settingsLogo} style={styles.settingsLogo} />
+                        <Image
+                            source={settingsLogo}
+                            style={styles.settingsLogo}
+                        />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.profileContainer}>
-                    <ImageBackground source={nebula} style={styles.coverPhoto} imageStyle={{borderRadius: 30}}>
+                    <ImageBackground
+                        source={nebula}
+                        style={styles.coverPhoto}
+                        imageStyle={{ borderRadius: 30 }}
+                    >
                         <View style={styles.profilePicView}>
-                        <Image
-                            source={PROFILE_PIC}
-                            style={styles.profilePic}
-                        />
+                            <Image
+                                source={PROFILE_PIC}
+                                style={styles.profilePic}
+                            />
                         </View>
                         <View style={styles.nameView}>
-                        <Text style={styles.nameSurnameText}>
-                            Hakan Yılmaz
-                        </Text>
-                        <Text style={styles.usernameText}>
-                            @haqotherage
-                        </Text>
+                            <Text style={styles.nameSurnameText}>
+                                Hakan Yılmaz
+                            </Text>
+                            <Text style={styles.usernameText}>
+                                @haqotherage
+                            </Text>
                         </View>
                     </ImageBackground>
                 </View>
