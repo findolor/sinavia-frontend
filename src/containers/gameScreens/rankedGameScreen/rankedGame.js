@@ -3,7 +3,11 @@ import { View, Text, Image, TouchableOpacity, Modal, Alert } from 'react-native'
 import styles, { countdownProps } from './style'
 import CountDown from 'react-native-countdown-component'
 import NotchView from '../../../components/notchView'
-import { navigationPop } from '../../../services/navigationService'
+import { SCENE_KEYS } from '../../../config/'
+import {
+    navigationReset,
+    navigationPush
+} from '../../../services/navigationService'
 
 import SNOOP from '../../../assets/snoop.jpg'
 import DOGE from '../../../assets/doge.jpeg'
@@ -208,7 +212,18 @@ class RankedGame extends React.Component {
                 }, 2500)
                 return
             case 'match-finished':
-                this.setState({ isCountDownRunning: false })
+                this.shutdownGame()
+                navigationPush(SCENE_KEYS.gameScreens.gameStats, {
+                    playerProps: this.state.playerProps,
+                    room: this.props.room,
+                    client: this.props.client,
+                    questionList: this.state.questionList,
+                    playerUsername: this.props.playerUsername,
+                    playerProfilePicture: this.props.playerProfilePicture,
+                    opponentUsername: this.props.opponentUsername,
+                    opponentId: this.props.opponentId,
+                    opponentProfilePicture: this.props.opponentProfilePicture
+                })
                 return
         }
     }
@@ -473,7 +488,7 @@ class RankedGame extends React.Component {
     backButtonOnPress = () => {
         this.props.room.removeAllListeners()
         this.props.room.leave()
-        navigationPop()
+        navigationReset('main')
     }
 
     zoomButtonOnPress = () => {
@@ -588,7 +603,9 @@ class RankedGame extends React.Component {
                     <View style={styles.headerContainer}>
                         <View style={styles.userContainer}>
                             <Image
-                                source={SNOOP}
+                                source={{
+                                    uri: this.props.playerProfilePicture
+                                }}
                                 style={styles.userProfilePicture}
                             />
                             <View style={styles.usernameContainer}>
@@ -634,7 +651,9 @@ class RankedGame extends React.Component {
                         </View>
                         <View style={styles.userContainer}>
                             <Image
-                                source={DOGE}
+                                source={{
+                                    uri: this.props.opponentProfilePicture
+                                }}
                                 style={styles.userProfilePicture}
                             />
                             <View style={styles.usernameContainer}>
@@ -679,7 +698,11 @@ class RankedGame extends React.Component {
                         <View style={styles.questionModalContainer}>
                             <View style={styles.questionImageModalContainer}>
                                 <Image
-                                    source={SORU}
+                                    source={{
+                                        uri: this.state.questionList[
+                                            this.state.questionNumber
+                                        ]
+                                    }}
                                     style={styles.questionModalStyle}
                                 />
                             </View>

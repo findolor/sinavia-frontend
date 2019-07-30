@@ -83,7 +83,6 @@ export default class ResetPassword extends React.Component {
                     { paddingBottom: this.keyboardHeight }
                 ]}
             >
-                <StatusBar hidden />
                 <View style={styles.imageContainer}>
                     <Animated.Image
                         source={SINAVIA_LOGO}

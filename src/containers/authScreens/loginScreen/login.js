@@ -21,6 +21,7 @@ import {
 } from 'react-native-responsive-screen'
 import { AuthButton, AuthTextInput } from '../../../components/authScreen'
 import styles from './style'
+import NotchView from '../../../components/notchView'
 
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
 import EYE from '../../../assets/eye.png'
@@ -101,7 +102,7 @@ export default class Login extends React.Component {
                     { paddingBottom: this.keyboardHeight }
                 ]}
             >
-                <StatusBar hidden />
+                <NotchView color={'#fcfcfc'} />
                 <View style={styles.imageContainer}>
                     <Animated.Image
                         source={SINAVIA_LOGO}
@@ -109,7 +110,7 @@ export default class Login extends React.Component {
                             {
                                 height: hp(45),
                                 resizeMode: 'contain',
-                                marginTop: hp(7)
+                                marginTop: hp(3)
                             },
                             { height: this.imageHeight }
                         ]}

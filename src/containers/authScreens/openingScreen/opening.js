@@ -8,6 +8,7 @@ import {
 } from 'react-native-responsive-screen'
 import { AuthButton } from '../../../components/authScreen'
 import styles from './style'
+import NotchView from '../../../components/notchView'
 
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
 
@@ -15,7 +16,7 @@ export default class Opening extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <StatusBar hidden />
+                <NotchView color={'#fcfcfc'} />
                 <View style={styles.imageContainer}>
                     <Image
                         source={SINAVIA_LOGO}

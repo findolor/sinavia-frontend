@@ -5,15 +5,16 @@ import {
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
-import NotchView from '../../components/notchView'
-import { navigationPush } from '../../services/navigationService'
 
-import SELECTED_TROPHY from '../../assets/mainScreens/trophy_Dolu.png'
-import UNSELECTED_TROPHY from '../../assets/mainScreens/trophy.png'
-import SELECTED_HOME from '../../assets/mainScreens/home_dolu.png'
-import UNSELECTED_HOME from '../../assets/mainScreens/home.png'
-import SELECTED_JOKER from '../../assets/mainScreens/joker_dolu.png'
-import UNSELECTED_JOKER from '../../assets/mainScreens/joker.png'
+import selectedTrophyIcon from '../../assets/mainScreens/trophy_Dolu.png'
+import emptyTrophyIcon from '../../assets/mainScreens/trophy.png'
+import selectedHomeIcon from '../../assets/mainScreens/home_dolu.png'
+import emptyHomeIcon from '../../assets/mainScreens/home.png'
+import selectedJokerIcon from '../../assets/mainScreens/joker_dolu.png'
+import emptyJokerIcon from '../../assets/mainScreens/joker.png'
+import NotchView from '../../components/notchView'
+
+import { navigationPush } from '../../services/navigationService'
 
 export default class Main extends React.Component {
     constructor(props) {
@@ -49,11 +50,11 @@ export default class Main extends React.Component {
                         <Image
                             source={
                                 this.state.trophyIconSelected === true
-                                    ? SELECTED_TROPHY
-                                    : UNSELECTED_JOKER
+                                    ? selectedTrophyIcon
+                                    : emptyTrophyIcon
                             }
                             style={{
-                                resize: 'contain',
+                                resizeMode: 'contain',
                                 height: hp(5),
                                 width: hp(5)
                             }}
@@ -72,11 +73,11 @@ export default class Main extends React.Component {
                         <Image
                             source={
                                 this.state.homeIconSelected === true
-                                    ? SELECTED_HOME
-                                    : UNSELECTED_HOME
+                                    ? selectedHomeIcon
+                                    : emptyHomeIcon
                             }
                             style={{
-                                resize: 'contain',
+                                resizeMode: 'contain',
                                 height: hp(5),
                                 width: hp(5)
                             }}
@@ -94,11 +95,11 @@ export default class Main extends React.Component {
                         <Image
                             source={
                                 this.state.jokerIconSelected === true
-                                    ? SELECTED_JOKER
-                                    : UNSELECTED_JOKER
+                                    ? selectedJokerIcon
+                                    : emptyJokerIcon
                             }
                             style={{
-                                resize: 'contain',
+                                resizeMode: 'contain',
                                 height: hp(5),
                                 width: hp(5)
                             }}

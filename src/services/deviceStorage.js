@@ -23,3 +23,12 @@ const getItemFromStorage = async key => {
         console.log('AsyncStorage Error: ' + error.message)
     }
 }
+
+const clearDeviceStorage = async () => {
+    try {
+        await AsyncStorage.clear()
+    } catch (error) {
+        // TODO Change console.log to something else
+        console.log('AsyncStorage Error: ' + error.message)
+    }
+}

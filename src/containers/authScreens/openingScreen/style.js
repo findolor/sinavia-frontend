@@ -26,7 +26,7 @@ export default StyleSheet.create({
     },
     sinaviaText: {
         fontFamily: 'Averta-ExtraBoldItalic',
-        fontSize: hp(10),
+        fontSize: hp(12),
         color: '#00D9EF'
     },
     separatorContainer: {

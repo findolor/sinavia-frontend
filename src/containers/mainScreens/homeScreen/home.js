@@ -34,8 +34,7 @@ import {
     navigationReset,
     sceneKeys
 } from '../../../services/navigationService'
-
-const SLIDER_1_FIRST_ITEM = 0
+const carouselFirstItem = 0
 const exams = [
     'YKS',
     'LGS',
@@ -69,7 +68,6 @@ export default class Home extends React.Component {
         this.state = {
             exam: 'YKS',
             subject: '',
-            slider1ActiveSlide: SLIDER_1_FIRST_ITEM,
             isModalVisible: false,
             // Mode button variables
             rankedModeButtonBackground: EMPTY_MODE_COLOR,
@@ -80,7 +78,9 @@ export default class Home extends React.Component {
             friendsImage: FRIENDS_EMPTY_IMAGE,
             groupImage: GROUP_EMPTY_IMAGE,
             // Selected game mode
-            selectedGameMode: ''
+            selectedGameMode: '',
+            // Carousel slide item
+            carouselActiveSlide: carouselFirstItem
         }
     }
 
@@ -163,6 +163,7 @@ export default class Home extends React.Component {
                     onPress={() => {
                         this.onPressCard(choosenSubject[i])
                     }}
+                    key={i}
                 >
                     <View style={styles.card}>
                         <Text style={styles.cardText}>{choosenSubject[i]}</Text>
@@ -173,6 +174,7 @@ export default class Home extends React.Component {
         return cardList
     }
 
+    // TODO Write this piece of code better
     updateModeButtonUI = gameMode => {
         switch (gameMode) {
             case 'ranked':
@@ -235,11 +237,14 @@ export default class Home extends React.Component {
         this.updateModeButtonUI(selectedMode)
     }
 
+    playButtonOnPress = () => {
+        navigationReset('game')
+    }
+
     render() {
-        const card = this.cards(this.state.exam, this.state.slider1ActiveSlide)
+        const card = this.cards(this.state.exam, this.state.carouselActiveSlide)
         return (
             <View style={styles.container}>
-                <StatusBar hidden />
                 <Modal
                     visible={this.state.isModalVisible}
                     transparent={true}
@@ -363,6 +368,7 @@ export default class Home extends React.Component {
                             color="#00D9EF"
                             underlayColor="#1a5d63"
                             buttonText="Başla"
+                            onPress={this.playButtonOnPress}
                         />
                     </View>
                 </Modal>
@@ -371,7 +377,10 @@ export default class Home extends React.Component {
                         <View style={styles.profilePicContainer}>
                             <TouchableOpacity>
                                 <Image
-                                    source={PROFILE_PIC}
+                                    source={{
+                                        uri:
+                                            'https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-512.png'
+                                    }}
                                     style={styles.profilePic}
                                 />
                             </TouchableOpacity>
@@ -407,7 +416,7 @@ export default class Home extends React.Component {
                             sliderWidth={sliderWidth}
                             itemWidth={itemWidth}
                             hasParallaxImages={true}
-                            firstItem={SLIDER_1_FIRST_ITEM}
+                            firstItem={carouselFirstItem}
                             inactiveSlideScale={0.8}
                             inactiveSlideOpacity={0.65}
                             // inactiveSlideShift={20}
@@ -417,7 +426,7 @@ export default class Home extends React.Component {
                             }
                             loop={false}
                             onSnapToItem={index =>
-                                this.setState({ slider1ActiveSlide: index })
+                                this.setState({ carouselActiveSlide: index })
                             }
                         />
                     </View>
