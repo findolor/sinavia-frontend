@@ -31,6 +31,26 @@ export default class Main extends React.Component {
         this.setState({ visibleForm: visibleForm })
     }
 
+    updatePageIcons = pageName => {
+        switch (pageName) {
+            case 'HOME':
+                this.setState({ trophyIconSelected: false })
+                this.setState({ homeIconSelected: true })
+                this.setState({ jokerIconSelected: false })
+                return
+            case 'TROPHY':
+                this.setState({ homeIconSelected: false })
+                this.setState({ trophyIconSelected: true })
+                this.setState({ jokerIconSelected: false })
+                return
+            case 'JOKER':
+                this.setState({ trophyIconSelected: false })
+                this.setState({ jokerIconSelected: true })
+                this.setState({ homeIconSelected: false })
+                return
+        }
+    }
+
     render() {
         const visibleForm = this.state.visibleForm
         return (
@@ -39,13 +59,7 @@ export default class Main extends React.Component {
                 {visibleForm === 'HOME' && <Home />}
                 <View style={styles.bottomBar}>
                     <TouchableOpacity
-                        onPress={() => {
-                            this.setState({
-                                trophyIconSelected: true,
-                                homeIconSelected: false,
-                                jokerIconSelected: false
-                            })
-                        }}
+                        onPress={() => this.updatePageIcons('TROPHY')}
                     >
                         <Image
                             source={
@@ -61,14 +75,7 @@ export default class Main extends React.Component {
                         />
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={() => {
-                            this.setState({
-                                trophyIconSelected: false,
-                                homeIconSelected: true,
-                                jokerIconSelected: false
-                            })
-                            this.setVisibleForm('HOME')
-                        }}
+                        onPress={() => this.updatePageIcons('HOME')}
                     >
                         <Image
                             source={
@@ -84,13 +91,7 @@ export default class Main extends React.Component {
                         />
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={() => {
-                            this.setState({
-                                trophyIconSelected: false,
-                                homeIconSelected: false,
-                                jokerIconSelected: true
-                            })
-                        }}
+                        onPress={() => this.updatePageIcons('JOKER')}
                     >
                         <Image
                             source={

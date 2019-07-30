@@ -178,58 +178,62 @@ export default class Home extends React.Component {
     updateModeButtonUI = gameMode => {
         switch (gameMode) {
             case 'ranked':
-                this.state.rankedImage === RANKED_EMPTY_IMAGE
-                    ? this.setState({
-                          rankedImage: RANKED_SELECTED_IMAGE,
-                          rankedModeButtonBackground: SELECTED_MODE_COLOR
-                      })
-                    : this.setState({
-                          rankedImage: RANKED_EMPTY_IMAGE,
-                          rankedModeButtonBackground: EMPTY_MODE_COLOR
-                      })
+                if (this.state.selectedGameMode === gameMode) return
                 this.setState({
-                    friendsImage: FRIENDS_EMPTY_IMAGE,
-                    friendsModeButtonBackground: EMPTY_MODE_COLOR,
-                    groupImage: GROUP_EMPTY_IMAGE,
-                    groupModeButtonBackground: EMPTY_MODE_COLOR,
-                    selectedGameMode: gameMode
+                    rankedImage: RANKED_SELECTED_IMAGE,
+                    rankedModeButtonBackground: SELECTED_MODE_COLOR
                 })
+                if (this.state.selectedGameMode === 'friend') {
+                    this.setState({
+                        friendsImage: FRIENDS_EMPTY_IMAGE,
+                        friendsModeButtonBackground: EMPTY_MODE_COLOR
+                    })
+                } else if (this.state.selectedGameMode !== '') {
+                    this.setState({
+                        groupImage: GROUP_EMPTY_IMAGE,
+                        groupModeButtonBackground: EMPTY_MODE_COLOR
+                    })
+                }
+                this.setState({ selectedGameMode: gameMode })
                 return
             case 'friend':
-                this.state.friendsImage === FRIENDS_EMPTY_IMAGE
-                    ? this.setState({
-                          friendsImage: FRIENDS_SELECTED_IMAGE,
-                          friendsModeButtonBackground: SELECTED_MODE_COLOR
-                      })
-                    : this.setState({
-                          friendsImage: FRIENDS_EMPTY_IMAGE,
-                          friendsModeButtonBackground: EMPTY_MODE_COLOR
-                      })
+                if (this.state.selectedGameMode === gameMode) return
                 this.setState({
-                    rankedImage: RANKED_EMPTY_IMAGE,
-                    rankedModeButtonBackground: EMPTY_MODE_COLOR,
-                    groupImage: GROUP_EMPTY_IMAGE,
-                    groupModeButtonBackground: EMPTY_MODE_COLOR,
-                    selectedGameMode: gameMode
+                    friendsImage: FRIENDS_SELECTED_IMAGE,
+                    friendsModeButtonBackground: SELECTED_MODE_COLOR
                 })
+                if (this.state.selectedGameMode === 'ranked') {
+                    this.setState({
+                        rankedImage: RANKED_EMPTY_IMAGE,
+                        rankedModeButtonBackground: EMPTY_MODE_COLOR
+                    })
+                } else if (this.state.selectedGameMode !== '') {
+                    this.setState({
+                        groupImage: GROUP_EMPTY_IMAGE,
+                        groupModeButtonBackground: EMPTY_MODE_COLOR
+                    })
+                }
+                this.setState({ selectedGameMode: gameMode })
                 return
             case 'group':
-                this.state.groupImage === GROUP_EMPTY_IMAGE
-                    ? this.setState({
-                          groupImage: GROUP_SELECTED_IMAGE,
-                          groupModeButtonBackground: SELECTED_MODE_COLOR
-                      })
-                    : this.setState({
-                          groupImage: GROUP_EMPTY_IMAGE,
-                          groupModeButtonBackground: EMPTY_MODE_COLOR
-                      })
+                if (this.state.selectedGameMode === gameMode) return
                 this.setState({
-                    friendsImage: FRIENDS_EMPTY_IMAGE,
-                    friendsModeButtonBackground: EMPTY_MODE_COLOR,
-                    rankedImage: RANKED_EMPTY_IMAGE,
-                    rankedModeButtonBackground: EMPTY_MODE_COLOR,
-                    selectedGameMode: gameMode
+                    groupImage: GROUP_SELECTED_IMAGE,
+                    groupModeButtonBackground: SELECTED_MODE_COLOR
                 })
+                if (this.state.selectedGameMode === 'ranked') {
+                    this.setState({
+                        rankedImage: RANKED_EMPTY_IMAGE,
+                        rankedModeButtonBackground: EMPTY_MODE_COLOR
+                    })
+                } else if (this.state.selectedGameMode !== '') {
+                    this.setState({
+                        friendsImage: FRIENDS_EMPTY_IMAGE,
+                        friendsModeButtonBackground: EMPTY_MODE_COLOR
+                    })
+                }
+                this.setState({ selectedGameMode: gameMode })
+                return
         }
     }
 
