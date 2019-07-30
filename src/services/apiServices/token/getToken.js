@@ -1,9 +1,10 @@
 import axios from 'axios'
+import { API_ENDPOINT } from '../../../config/index'
 
 export const getToken = async userInformation => {
     try {
         const response = await axios.post(
-            Config.SERVER_ENDPOINT + 'token/',
+            API_ENDPOINT + 'token/',
             userInformation
         )
         return response.data.data.token

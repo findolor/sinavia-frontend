@@ -1,8 +1,6 @@
-import env from 'react-native-config'
-
 const config = {
     api: {
-        host: env.SERVER_ENDPOINT
+        host: 'http://localhost:4000/api/'
     },
     scene_keys: {
         authScreens: {

@@ -1,9 +1,9 @@
 import axios from 'axios'
-import Config from 'react-native-config'
+import { API_ENDPOINT } from '../../../config/index'
 
 export const getUser = async userToken => {
     try {
-        const response = await axios.get(Config.SERVER_ENDPOINT + 'users/', {
+        const response = await axios.get(API_ENDPOINT + 'users/', {
             headers: {
                 Authorization: 'Bearer ' + userToken
             }

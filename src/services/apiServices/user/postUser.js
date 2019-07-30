@@ -1,5 +1,5 @@
 import axios from 'axios'
-import Config from 'react-native-config'
+import { API_ENDPOINT } from '../../../config/index'
 
 export const postUser = async userInformation => {
     try {
@@ -8,7 +8,7 @@ export const postUser = async userInformation => {
         userInformation.isDeleted = 0
 
         const response = await axios.post(
-            Config.SERVER_ENDPOINT + 'users/',
+            API_ENDPOINT + 'users/',
             userInformation
         )
         return response.data.data
