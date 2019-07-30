@@ -2,14 +2,14 @@ import React from 'react'
 import {
     Image,
     View,
-    StatusBar,
     Text,
     TouchableOpacity,
     Switch,
     TextInput,
     Animated,
     Keyboard,
-    Platform
+    Platform,
+    Alert
 } from 'react-native'
 import { navigationPush } from '../../../services/navigationService'
 import { SCENE_KEYS } from '../../../config/index'
@@ -35,7 +35,7 @@ class Register extends React.Component {
         super(props)
         this.state = {
             // Register related stuff
-            birthDateUI: 'Doğum Tarihi  ',
+            birthDateUI: 'Doğum Tarihi  (Opsiyonel)',
             isDateTimePickerVisible: false,
             switchValue: false,
             showPasswordEyeFirst: false,
@@ -155,7 +155,25 @@ class Register extends React.Component {
             birthDate: this.state.birthDate,
             password: this.state.password
         }
-        this.props.createUser(userInformation)
+
+        let userInformationKeys = Object.keys(userInformation)
+        let wrongInformationList = []
+        let wrongInformationString = 'Yanlış alanlar! ->'
+
+        userInformationKeys.forEach(element => {
+            if (
+                userInformation[element] === '' &&
+                element !== 'birthDate' &&
+                element !== 'city'
+            ) {
+                wrongInformationList.push(element)
+                wrongInformationString += `${element}, `
+            }
+        })
+
+        if (Object.keys(wrongInformationList).length === 0)
+            this.props.createUser(userInformation)
+        else Alert.alert(wrongInformationString)
     }
 
     render() {
@@ -205,7 +223,7 @@ class Register extends React.Component {
                         onCancel={this.hideDateTimePicker}
                     />
                     <AuthTextInput
-                        placeholder="Şehir                                                                                  "
+                        placeholder="Şehir  (Opsiyonel)                                                                         "
                         placeholderTextColor="#8A8888"
                         onChangeText={this.cityOnChange}
                     />
@@ -239,7 +257,7 @@ class Register extends React.Component {
                                     onPress={this.managePasswordVisibility}
                                 >
                                     <Image
-                                        source={eye}
+                                        source={EYE}
                                         style={{
                                             height: hp(3),
                                             width: wp(9)
@@ -261,6 +279,8 @@ class Register extends React.Component {
                                         showPasswordEyeSecond: false
                                     })
                                 } else {
+                                    if (this.state.password !== text) {
+                                    }
                                     this.setState({
                                         showPasswordEyeSecond: true,
                                         secondPassword: text
@@ -269,84 +289,13 @@ class Register extends React.Component {
                             }}
                         />
                     </View>
-                    <View style={styles.textInputBorderContainer}>
-                        <View style={styles.textInputContainer}>
-                            <TextInput
-                                style={styles.textInput}
-                                secureTextEntry={this.state.hidePasswordFirst}
-                                placeholder="Şifre                                                                              "
-                                placeholderTextColor={'#8A8888'}
-                                onChangeText={text => {
-                                    if (text === '') {
-                                        this.setState({
-                                            showPasswordEyeFirst: false
-                                        })
-                                    } else {
-                                        this.setState({
-                                            showPasswordEyeFirst: true,
-                                            password: text
-                                        })
-                                    }
-                                }}
-                            />
-                            {this.state.showPasswordEyeFirst && (
-                                <View style={styles.eyeContainer}>
-                                    <TouchableOpacity
-                                        onPress={this.managePasswordVisibility}
-                                    >
-                                        <Image
-                                            source={EYE}
-                                            style={{
-                                                height: hp(3),
-                                                width: wp(9)
-                                            }}
-                                        />
-                                    </TouchableOpacity>
-                                </View>
-                            )}
-                        </View>
-                    </View>
-                    <View style={styles.textInputBorderContainer}>
-                        <View style={styles.textInputContainer}>
-                            <TextInput
-                                style={styles.textInput}
-                                secureTextEntry={this.state.hidePasswordSecond}
-                                placeholder="Şifre (Tekrar)                                                                     "
-                                placeholderTextColor={'#8A8888'}
-                                onChangeText={text => {
-                                    if (text === '') {
-                                        this.setState({
-                                            showPasswordEyeSecond: false
-                                        })
-                                    } else {
-                                        this.setState({
-                                            showPasswordEyeSecond: true,
-                                            secondPassword: text
-                                        })
-                                    }
-                                }}
-                            />
-                            {this.state.showPasswordEyeSecond && (
-                                <View style={styles.eyeContainer}>
-                                    <TouchableOpacity
-                                        onPress={this.managePasswordVisibility2}
-                                    >
-                                        <Image
-                                            source={eye}
-                                            style={{
-                                                height: hp(3),
-                                                width: wp(9)
-                                            }}
-                                        />
-                                    </TouchableOpacity>
-                                </View>
-                            )}
-                        </View>
-                    </View>
                 </View>
                 <View style={styles.toggleContainer}>
                     <Switch
-                        style={{ marginLeft: wp(7.5) }}
+                        style={{
+                            marginLeft: wp(7.5),
+                            transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }]
+                        }}
                         onValueChange={this.toggleSwitch}
                         value={this.state.switchValue}
                         trackColor="#00D9EF"
