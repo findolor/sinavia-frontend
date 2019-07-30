@@ -1,11 +1,5 @@
 import { AsyncStorage } from 'react-native'
 
-export const deviceStorage = {
-    saveItemToStorage: saveItemToStorage,
-    getItemFromStorage: getItemFromStorage,
-    clearDeviceStorage: clearDeviceStorage
-}
-
 const saveItemToStorage = async (key, value) => {
     try {
         await AsyncStorage.setItem(key, value)
@@ -32,4 +26,10 @@ const clearDeviceStorage = async () => {
         // TODO Change console.log to something else
         console.log('AsyncStorage Error: ' + error.message)
     }
+}
+
+export const deviceStorage = {
+    saveItemToStorage: saveItemToStorage,
+    getItemFromStorage: getItemFromStorage,
+    clearDeviceStorage: clearDeviceStorage
 }

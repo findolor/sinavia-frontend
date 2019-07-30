@@ -1,14 +1,9 @@
 import SInfo from 'react-native-sensitive-info'
 
-export const sensitiveStorage = {
-    saveSensitiveItem: saveSensitiveItem,
-    getSensitiveItem: getSensitiveItem,
-    deleteSensitiveItem: deleteSensitiveItem
-}
-
 const saveSensitiveItem = async (key, value) => {
     try {
-        await SInfo.setItem(key, value, {})
+        const data = await SInfo.setItem(key, value, {})
+        return data
     } catch (error) {
         // TODO console.log
         console.log(error)
@@ -32,4 +27,10 @@ const deleteSensitiveItem = async key => {
         // TODO console.log
         console.log(error)
     }
+}
+
+export const sensitiveStorage = {
+    saveSensitiveItem: saveSensitiveItem,
+    getSensitiveItem: getSensitiveItem,
+    deleteSensitiveItem: deleteSensitiveItem
 }

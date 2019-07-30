@@ -11,6 +11,7 @@ export const postUser = async userInformation => {
             API_ENDPOINT + 'users/',
             userInformation
         )
+
         return response.data.data
     } catch (error) {
         throw new Error(error)
