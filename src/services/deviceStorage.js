@@ -2,7 +2,8 @@ import { AsyncStorage } from 'react-native'
 
 export const deviceStorage = {
     saveItemToStorage: saveItemToStorage,
-    getItemFromStorage: getItemFromStorage
+    getItemFromStorage: getItemFromStorage,
+    clearDeviceStorage: clearDeviceStorage
 }
 
 const saveItemToStorage = async (key, value) => {
