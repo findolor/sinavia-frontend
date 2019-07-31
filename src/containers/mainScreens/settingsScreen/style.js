@@ -47,13 +47,18 @@ export default StyleSheet.create({
         width: wp(90),
         borderRadius: 30,
         marginTop: hp(0.5),
-        justifyContent: 'center',
         alignItems: 'center',
     },
     profilePic: {
         height: hp(18),
         width: hp(18),
-        borderRadius: 100
+        borderRadius: 100,
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    editImg: {
+        height: hp(3.5),
+        width: hp(3.5),
     },
     profilePicView: {
         height: hp(18),
@@ -123,5 +128,27 @@ export default StyleSheet.create({
         fontSize: wp(5),
         paddingVertical: hp(0),
         color: '#FFFFFF'
+    },
+    editImgView: {
+        height: hp(7),
+        width: wp(80),
+        justifyContent: 'center',
+        alignItems: 'flex-end'
+    },
+    editProfilePicView: {
+        height: hp(9),
+        width: hp(18),
+        borderBottomLeftRadius: 100,
+        borderBottomRightRadius: 100,
+        backgroundColor: '#E5E5E5',
+        opacity: 0.5,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    editText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: wp(5),
+        paddingVertical: hp(0),
+        color: 'black'
     }
 })
