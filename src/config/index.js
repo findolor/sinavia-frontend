@@ -14,7 +14,8 @@ const config = {
         gameScreens: {
             rankedGame: 'rankedGame',
             loading: 'loading',
-            gameStats: 'gameStats'
+            gameStats: 'gameStats',
+            matching: 'matching'
         },
         mainScreens: {
             main: 'main',

@@ -10,7 +10,8 @@ import { Main, Profile } from '../containers/mainScreens'
 import {
     RankedGame,
     LoadingScreen,
-    GameStatsScreen
+    GameStatsScreen,
+    MatchingScreen
 } from '../containers/gameScreens'
 
 export const authScreens = {
@@ -28,5 +29,6 @@ export const mainScreens = {
 export const gameScreens = {
     rankedGame: RankedGame,
     loading: LoadingScreen,
-    gameStats: GameStatsScreen
+    gameStats: GameStatsScreen,
+    matching: MatchingScreen
 }
