@@ -4,7 +4,6 @@ import styles from './style'
 import NotchView from '../../../components/notchView'
 import { SCENE_KEYS, navigationPush } from '../../../services/navigationService'
 
-import PROFILE_PIC from '../../../assets/profile2.jpg'
 import SWORD from '../../../assets/sword.png'
 
 class MatchIntroScreen extends React.Component {
@@ -13,20 +12,44 @@ class MatchIntroScreen extends React.Component {
         this.state = {}
     }
 
+    componentDidMount() {
+        // Waits for 5 sec and moves onto game screen
+        setTimeout(() => {
+            navigationPush(SCENE_KEYS.gameScreens.rankedGame, {
+                room: this.props.room,
+                client: this.props.client,
+                playerUsername: this.props.playerUsername,
+                playerProfilePicture: this.props.playerProfilePicture,
+                opponentUsername: this.props.opponentUsername,
+                opponentId: this.props.opponentId,
+                opponentProfilePicture: this.props.opponentProfilePicture
+            })
+        }, 5000)
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <NotchView color={'#E2871A'} />
                 <View style={styles.contentContainer}>
-                    <Text style={styles.courseText}>TÜRKÇE</Text>
-                    <Text style={styles.subjectText}>Paragrafta Anlam</Text>
+                    <Text style={styles.courseText}>
+                        {this.props.courseName}
+                    </Text>
+                    <Text style={styles.subjectText}>
+                        {this.props.subjectName}
+                    </Text>
                 </View>
-                <View style={styles.user1Container}>
-                    <View style={styles.user1PicContainer}>
-                        <Image source={PROFILE_PIC} style={styles.user1Pic} />
+                <View style={styles.playerContainer}>
+                    <View style={styles.playerPicContainer}>
+                        <Image
+                            source={{ uri: this.props.playerProfilePicture }}
+                            style={styles.playerPic}
+                        />
                     </View>
-                    <View style={styles.user1InfoContainer}>
-                        <Text style={styles.usernameText}>@haqotherage</Text>
+                    <View style={styles.playerInfoContainer}>
+                        <Text style={styles.usernameText}>
+                            @{this.props.playerUsername}
+                        </Text>
                         <Text style={styles.sinaviaScoreText}>
                             Sınavia Puanı: 20
                         </Text>
@@ -37,15 +60,20 @@ class MatchIntroScreen extends React.Component {
                     <Image source={SWORD} style={styles.sword} />
                     <View style={styles.separatorLineRight} />
                 </View>
-                <View style={styles.user2Container}>
-                    <View style={styles.user2InfoContainer}>
-                        <Text style={styles.usernameText}>@haqotherage</Text>
+                <View style={styles.opponentContainer}>
+                    <View style={styles.opponentInfoContainer}>
+                        <Text style={styles.usernameText}>
+                            @{this.props.opponentUsername}
+                        </Text>
                         <Text style={styles.sinaviaScoreText}>
                             Sınavia Puanı: 20
                         </Text>
                     </View>
-                    <View style={styles.user2PicContainer}>
-                        <Image source={PROFILE_PIC} style={styles.user1Pic} />
+                    <View style={styles.opponentPicContainer}>
+                        <Image
+                            source={{ uri: this.props.opponentProfilePicture }}
+                            style={styles.playerPic}
+                        />
                     </View>
                 </View>
             </View>

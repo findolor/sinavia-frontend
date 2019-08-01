@@ -18,13 +18,13 @@ export default StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
-    user1Container: {
+    playerContainer: {
         height: hp(32),
         width: wp(100),
         flexDirection: 'row',
         alignItems: 'center'
     },
-    user2Container: {
+    opponentContainer: {
         height: hp(32),
         width: wp(100),
         flexDirection: 'row',
@@ -55,32 +55,31 @@ export default StyleSheet.create({
         height: hp(18),
         width: wp(22)
     },
-    user1PicContainer: {
+    playerPicContainer: {
         height: hp(20),
         width: wp(30),
         alignItems: 'flex-start',
         marginLeft: wp(10)
     },
-    user1InfoContainer: {
+    playerInfoContainer: {
         height: hp(10),
         width: wp(60),
-        justifyContent: 'space-around',
-
+        justifyContent: 'space-around'
     },
-    user2PicContainer: {
+    opponentPicContainer: {
         height: hp(20),
         width: wp(30),
         alignItems: 'flex-end',
-        marginBottom: hp(4),
+        marginBottom: hp(4)
     },
-    user2InfoContainer: {
+    opponentInfoContainer: {
         height: hp(10),
         width: wp(60),
         justifyContent: 'space-around',
         alignItems: 'flex-end',
         marginBottom: hp(4)
     },
-    user1Pic: {
+    playerPic: {
         height: hp(15),
         width: hp(15),
         marginTop: hp(2.7),
@@ -91,22 +90,22 @@ export default StyleSheet.create({
         fontSize: wp(5),
         color: '#FFFFFF',
         textShadowColor: 'rgba(0, 0, 0, 0.7)',
-        textShadowOffset: {width: 0, height: 2},
+        textShadowOffset: { width: 0, height: 2 },
         textShadowRadius: 10
     },
-    sinaviaScoreText:{
+    sinaviaScoreText: {
         fontFamily: 'Averta-BoldItalic',
         fontSize: wp(5.4),
-        color: '#FFFFFF',
+        color: '#FFFFFF'
     },
     courseText: {
         fontFamily: 'Averta-BoldItalic',
         fontSize: wp(7.5),
-        color: '#FFFFFF',
+        color: '#FFFFFF'
     },
     subjectText: {
         fontFamily: 'Averta-BoldItalic',
         fontSize: wp(5),
-        color: '#FFFFFF',
+        color: '#FFFFFF'
     }
 })

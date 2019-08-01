@@ -75,7 +75,23 @@ class LoadingScreen extends React.Component {
 
             this.room.removeAllListeners()
 
-            navigationPush(SCENE_KEYS.gameScreens.rankedGame, {
+            // TODO goto match intro screen
+            navigationPush(SCENE_KEYS.gameScreens.matchIntro, {
+                // These are necessary for the game logic
+                room: this.room,
+                client: this.client,
+                // These can be used in both screens
+                playerUsername: playerUsername,
+                playerProfilePicture: playerProfilePicture,
+                opponentUsername: opponentUsername,
+                opponentId: opponentId,
+                opponentProfilePicture: opponentProfilePicture,
+                // These are used in the match intro screen
+                courseName: selectedPlayer.courseName,
+                subjectName: selectedPlayer.subjectName
+            })
+
+            /* navigationPush(SCENE_KEYS.gameScreens.rankedGame, {
                 room: this.room,
                 client: this.client,
                 playerUsername: playerUsername,
@@ -83,7 +99,7 @@ class LoadingScreen extends React.Component {
                 opponentUsername: opponentUsername,
                 opponentId: opponentId,
                 opponentProfilePicture: opponentProfilePicture
-            })
+            }) */
         })
     }
 
