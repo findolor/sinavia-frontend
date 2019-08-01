@@ -5,7 +5,7 @@ import {
     ResetPassword
 } from '../containers/authScreens'
 
-import { Main, Profile, ChangePassword} from '../containers/mainScreens'
+import { Main, Profile, ChangePassword } from '../containers/mainScreens'
 
 import {
     RankedGame,
