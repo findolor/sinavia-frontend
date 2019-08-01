@@ -32,20 +32,20 @@ export default StyleSheet.create({
         height: hp(32),
         width: wp(100),
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     boxesContainer: {
         height: hp(58),
         width: wp(100)
     },
-    first2Box:{
+    first2Box: {
         height: hp(29),
         width: wp(100),
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
     },
-    second2Box:{
+    second2Box: {
         height: hp(29),
         width: wp(100),
         flexDirection: 'row',
