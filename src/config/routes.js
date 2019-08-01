@@ -49,6 +49,10 @@ const RouterComp = () => {
                         component={gameScreens.loading}
                     />
                     <Scene
+                        key={SCENE_KEYS.gameScreens.matchIntro}
+                        component={gameScreens.matchIntro}
+                    />
+                    <Scene
                         key={SCENE_KEYS.gameScreens.rankedGame}
                         component={gameScreens.rankedGame}
                     />
