@@ -18,7 +18,8 @@ const config = {
         },
         mainScreens: {
             main: 'main',
-            profile: 'profile'
+            profile: 'profile',
+            favorites: 'favorites'
         }
     }
 }
