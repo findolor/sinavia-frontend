@@ -1,6 +1,6 @@
 import RankedGame from './rankedGameScreen/rankedGame'
 import LoadingScreen from './loadingScreen/loading'
 import GameStatsScreen from './gameStatsScreen/gameStats'
-import MatchingScreen from './matchingScreen/matching'
+import MatchIntroScreen from './matchIntroScreen/matchIntro'
 
-export { RankedGame, LoadingScreen, GameStatsScreen, MatchingScreen }
+export { RankedGame, LoadingScreen, GameStatsScreen, MatchIntroScreen }

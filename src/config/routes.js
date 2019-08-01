@@ -7,10 +7,6 @@ const RouterComp = () => {
     return (
         <Router>
             <Scene key="root" hideNavBar={true}>
-                <Scene
-                    key={SCENE_KEYS.gameScreens.matching}
-                    component={gameScreens.matching}
-                />
                 <Scene key="auth" hideNavBar={true}>
                     <Scene
                         key={SCENE_KEYS.authScreens.opening}
@@ -43,6 +39,10 @@ const RouterComp = () => {
                     <Scene
                         key={SCENE_KEYS.gameScreens.loading}
                         component={gameScreens.loading}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.gameScreens.matchIntro}
+                        component={gameScreens.matchIntro}
                     />
                     <Scene
                         key={SCENE_KEYS.gameScreens.rankedGame}

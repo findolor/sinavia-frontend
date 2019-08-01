@@ -15,7 +15,7 @@ const config = {
             rankedGame: 'rankedGame',
             loading: 'loading',
             gameStats: 'gameStats',
-            matching: 'matching'
+            matchIntro: 'matchIntro'
         },
         mainScreens: {
             main: 'main',

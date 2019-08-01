@@ -11,7 +11,7 @@ import {
     RankedGame,
     LoadingScreen,
     GameStatsScreen,
-    MatchingScreen
+    MatchIntroScreen
 } from '../containers/gameScreens'
 
 export const authScreens = {
@@ -30,5 +30,5 @@ export const gameScreens = {
     rankedGame: RankedGame,
     loading: LoadingScreen,
     gameStats: GameStatsScreen,
-    matching: MatchingScreen
+    matchIntro: MatchIntroScreen
 }
