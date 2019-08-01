@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import styles from './style'
 import NotchView from '../../../components/notchView'
-import { SCENE_KEYS, navigationPush } from '../../../services/navigationService'
+import { SCENE_KEYS, navigationPush, navigationPop } from '../../../services/navigationService'
 import returnLogo from '../../../assets/return.png'
 import nebula from '../../../assets/cover.jpg'
 import PROFILE_PIC from '../../../assets/profile2.jpg'
@@ -19,6 +19,10 @@ class Settings extends React.Component {
     constructor(props) {
         super(props)
         this.state = {}
+    }
+
+    backButtonOnPress = () => {
+        navigationPop()
     }
 
     render() {

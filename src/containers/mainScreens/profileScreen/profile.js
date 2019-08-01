@@ -10,7 +10,7 @@ import {
     TouchableOpacity,
     View
 } from 'react-native'
-import { SCENE_KEYS, navigationPop } from '../../../services/navigationService'
+import { SCENE_KEYS, navigationPop, navigationPush } from '../../../services/navigationService'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import nebula from '../../../assets/cover.jpg'
@@ -31,6 +31,10 @@ export default class Profile extends React.Component {
 
     backButtonOnPress = () => {
         navigationPop()
+    }
+
+    settingsOnPress = () => {
+        navigationPush(SCENE_KEYS.mainScreens.settings)
     }
 
     render() {
@@ -56,7 +60,9 @@ export default class Profile extends React.Component {
                             />
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                    onPress={this.settingsOnPress}
+                    >
                         <Image
                             source={settingsLogo}
                             style={styles.settingsLogo}

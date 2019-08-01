@@ -9,10 +9,6 @@ const RouterComp = () => {
             <Scene key="root" hideNavBar={true}>
                 <Scene key="auth" hideNavBar={true}>
                     <Scene
-                        key={SCENE_KEYS.mainScreens.settings}
-                        component={mainScreens.settings}
-                    />
-                    <Scene
                         key={SCENE_KEYS.authScreens.opening}
                         component={authScreens.opening}
                     />
@@ -37,6 +33,10 @@ const RouterComp = () => {
                     <Scene
                         key={SCENE_KEYS.mainScreens.profile}
                         component={mainScreens.profile}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.settings}
+                        component={mainScreens.settings}
                     />
                 </Scene>
                 <Scene key="game" hideNavBar={true}>
