@@ -19,7 +19,8 @@ const config = {
         mainScreens: {
             main: 'main',
             profile: 'profile',
-            settings: 'settings'
+            settings: 'settings',
+            changePassword: 'changePassword'
         }
     }
 }

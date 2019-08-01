@@ -5,7 +5,12 @@ import {
     ResetPassword
 } from '../containers/authScreens'
 
-import { Main, Profile, Settings } from '../containers/mainScreens'
+import {
+    Main,
+    Profile,
+    Settings,
+    ChangePassword
+} from '../containers/mainScreens'
 
 import {
     RankedGame,
@@ -24,6 +29,7 @@ export const mainScreens = {
     main: Main,
     profile: Profile,
     settings: Settings,
+    changePassword: ChangePassword
 }
 
 export const gameScreens = {

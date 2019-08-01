@@ -9,7 +9,11 @@ import {
 } from 'react-native'
 import styles from './style'
 import NotchView from '../../../components/notchView'
-import { SCENE_KEYS, navigationPush, navigationPop } from '../../../services/navigationService'
+import {
+    SCENE_KEYS,
+    navigationPush,
+    navigationPop
+} from '../../../services/navigationService'
 import returnLogo from '../../../assets/return.png'
 import nebula from '../../../assets/cover.jpg'
 import PROFILE_PIC from '../../../assets/profile2.jpg'
@@ -23,6 +27,10 @@ class Settings extends React.Component {
 
     backButtonOnPress = () => {
         navigationPop()
+    }
+
+    changePasswordOnPress = () => {
+        navigationPush(SCENE_KEYS.mainScreens.changePassword)
     }
 
     render() {
@@ -90,7 +98,7 @@ class Settings extends React.Component {
                     </View>
                 </View>
                 <View style={styles.buttonsContainer}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={this.changePasswordOnPress}>
                         <View style={styles.changePasswordButton}>
                             <Text style={styles.changePasswordText}>
                                 Şifre değiştir
