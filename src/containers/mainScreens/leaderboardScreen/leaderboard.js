@@ -27,8 +27,11 @@ class Leaderboard extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-                <NotchView color={'#fcfcfc'} />
+                <ScrollView
+                    style={styles.scrollView}
+                    showsVerticalScrollIndicator={false}
+                >
+                    <NotchView color={'#fcfcfc'} />
                     <View style={styles.leaderContainer}>
                         <View style={styles.tabbarContainer}>
                             <View style={styles.globalTabContainer}>
@@ -55,7 +58,9 @@ class Leaderboard extends React.Component {
                                         style={styles.firstUserTitlePic}
                                     />
                                     <View style={styles.firstUserOrderView}>
-                                        <Text style={styles.topTenOrderNumber}>1</Text>
+                                        <Text style={styles.topTenOrderNumber}>
+                                            1
+                                        </Text>
                                     </View>
                                 </ImageBackground>
                             </View>
@@ -74,7 +79,9 @@ class Leaderboard extends React.Component {
                                 <View style={styles.topTenUserPicContainer}>
                                     <ImageBackground
                                         source={PROFILE_PIC}
-                                        style={styles.secondAndThirdUsersFromTopTenPic}
+                                        style={
+                                            styles.secondAndThirdUsersFromTopTenPic
+                                        }
                                         imageStyle={{ borderRadius: 100 }}
                                     >
                                         <Image
@@ -83,8 +90,16 @@ class Leaderboard extends React.Component {
                                                 styles.secondAndThirdTitlePic
                                             }
                                         />
-                                        <View style={styles.secondToTenUsersOrderView}>
-                                            <Text style={styles.topTenOrderNumber}>2</Text>
+                                        <View
+                                            style={
+                                                styles.secondToTenUsersOrderView
+                                            }
+                                        >
+                                            <Text
+                                                style={styles.topTenOrderNumber}
+                                            >
+                                                2
+                                            </Text>
                                         </View>
                                     </ImageBackground>
                                 </View>
@@ -103,7 +118,9 @@ class Leaderboard extends React.Component {
                                 <View style={styles.topTenUserPicContainer}>
                                     <ImageBackground
                                         source={PROFILE_PIC}
-                                        style={styles.secondAndThirdUsersFromTopTenPic}
+                                        style={
+                                            styles.secondAndThirdUsersFromTopTenPic
+                                        }
                                         imageStyle={{ borderRadius: 100 }}
                                     >
                                         <Image
@@ -112,8 +129,16 @@ class Leaderboard extends React.Component {
                                                 styles.secondAndThirdTitlePic
                                             }
                                         />
-                                        <View style={styles.secondToTenUsersOrderView}>
-                                            <Text style={styles.topTenOrderNumber}>3</Text>
+                                        <View
+                                            style={
+                                                styles.secondToTenUsersOrderView
+                                            }
+                                        >
+                                            <Text
+                                                style={styles.topTenOrderNumber}
+                                            >
+                                                3
+                                            </Text>
                                         </View>
                                     </ImageBackground>
                                 </View>
@@ -135,8 +160,16 @@ class Leaderboard extends React.Component {
                                         style={styles.otherUsersFromTopTenPic}
                                         imageStyle={{ borderRadius: 100 }}
                                     >
-                                        <View style={styles.secondToTenUsersOrderView}>
-                                            <Text style={styles.topTenOrderNumber}>4</Text>
+                                        <View
+                                            style={
+                                                styles.secondToTenUsersOrderView
+                                            }
+                                        >
+                                            <Text
+                                                style={styles.topTenOrderNumber}
+                                            >
+                                                4
+                                            </Text>
                                         </View>
                                     </ImageBackground>
                                 </View>
@@ -160,8 +193,16 @@ class Leaderboard extends React.Component {
                                         style={styles.otherUsersFromTopTenPic}
                                         imageStyle={{ borderRadius: 100 }}
                                     >
-                                        <View style={styles.secondToTenUsersOrderView}>
-                                            <Text style={styles.topTenOrderNumber}>5</Text>
+                                        <View
+                                            style={
+                                                styles.secondToTenUsersOrderView
+                                            }
+                                        >
+                                            <Text
+                                                style={styles.topTenOrderNumber}
+                                            >
+                                                5
+                                            </Text>
                                         </View>
                                     </ImageBackground>
                                 </View>
@@ -183,8 +224,16 @@ class Leaderboard extends React.Component {
                                         style={styles.otherUsersFromTopTenPic}
                                         imageStyle={{ borderRadius: 100 }}
                                     >
-                                        <View style={styles.secondToTenUsersOrderView}>
-                                            <Text style={styles.topTenOrderNumber}>6</Text>
+                                        <View
+                                            style={
+                                                styles.secondToTenUsersOrderView
+                                            }
+                                        >
+                                            <Text
+                                                style={styles.topTenOrderNumber}
+                                            >
+                                                6
+                                            </Text>
                                         </View>
                                     </ImageBackground>
                                 </View>
@@ -206,8 +255,16 @@ class Leaderboard extends React.Component {
                                         style={styles.otherUsersFromTopTenPic}
                                         imageStyle={{ borderRadius: 100 }}
                                     >
-                                        <View style={styles.secondToTenUsersOrderView}>
-                                            <Text style={styles.topTenOrderNumber}>7</Text>
+                                        <View
+                                            style={
+                                                styles.secondToTenUsersOrderView
+                                            }
+                                        >
+                                            <Text
+                                                style={styles.topTenOrderNumber}
+                                            >
+                                                7
+                                            </Text>
                                         </View>
                                     </ImageBackground>
                                 </View>
@@ -231,8 +288,16 @@ class Leaderboard extends React.Component {
                                         style={styles.otherUsersFromTopTenPic}
                                         imageStyle={{ borderRadius: 100 }}
                                     >
-                                        <View style={styles.secondToTenUsersOrderView}>
-                                            <Text style={styles.topTenOrderNumber}>8</Text>
+                                        <View
+                                            style={
+                                                styles.secondToTenUsersOrderView
+                                            }
+                                        >
+                                            <Text
+                                                style={styles.topTenOrderNumber}
+                                            >
+                                                8
+                                            </Text>
                                         </View>
                                     </ImageBackground>
                                 </View>
@@ -254,8 +319,16 @@ class Leaderboard extends React.Component {
                                         style={styles.otherUsersFromTopTenPic}
                                         imageStyle={{ borderRadius: 100 }}
                                     >
-                                        <View style={styles.secondToTenUsersOrderView}>
-                                            <Text style={styles.topTenOrderNumber}>9</Text>
+                                        <View
+                                            style={
+                                                styles.secondToTenUsersOrderView
+                                            }
+                                        >
+                                            <Text
+                                                style={styles.topTenOrderNumber}
+                                            >
+                                                9
+                                            </Text>
                                         </View>
                                     </ImageBackground>
                                 </View>
@@ -277,8 +350,16 @@ class Leaderboard extends React.Component {
                                         style={styles.otherUsersFromTopTenPic}
                                         imageStyle={{ borderRadius: 100 }}
                                     >
-                                        <View style={styles.secondToTenUsersOrderView}>
-                                            <Text style={styles.topTenOrderNumber}>10</Text>
+                                        <View
+                                            style={
+                                                styles.secondToTenUsersOrderView
+                                            }
+                                        >
+                                            <Text
+                                                style={styles.topTenOrderNumber}
+                                            >
+                                                10
+                                            </Text>
                                         </View>
                                     </ImageBackground>
                                 </View>
@@ -308,57 +389,39 @@ class Leaderboard extends React.Component {
                             style={styles.slideDownRightImg}
                         />
                     </View>
-                    <View style={styles.continueOrderTextContainer}>
-                        <Image
-                            source={SLIDE_DOWN}
-                            style={styles.slideDownLeftImg}
-                        />
-                        <Text style={styles.continueOrderText}>
-                            Sıralamanın devamı için kaydır
-                        </Text>
-                        <Image
-                            source={SLIDE_DOWN}
-                            style={styles.slideDownRightImg}
-                        />
+                    <View style={styles.tenToHundredUserRow}>
+                        <View style={styles.tenToHundredUserOrderContainer}>
+                            <Text style={styles.tenToHundredUserOrderText}>
+                                11
+                            </Text>
+                        </View>
+                        <View style={styles.tenToHundredUserNameContainer}>
+                            <Text style={styles.tenToHundredUserNameText}>
+                                Oğuz Liv
+                            </Text>
+                        </View>
+                        <View style={styles.tenToHundredUserScoreContainer}>
+                            <Text style={styles.tenToHundredUserScoreText}>
+                                400
+                            </Text>
+                        </View>
                     </View>
-                    <View style={styles.continueOrderTextContainer}>
-                        <Image
-                            source={SLIDE_DOWN}
-                            style={styles.slideDownLeftImg}
-                        />
-                        <Text style={styles.continueOrderText}>
-                            Sıralamanın devamı için kaydır
-                        </Text>
-                        <Image
-                            source={SLIDE_DOWN}
-                            style={styles.slideDownRightImg}
-                        />
-                    </View>
-                    <View style={styles.continueOrderTextContainer}>
-                        <Image
-                            source={SLIDE_DOWN}
-                            style={styles.slideDownLeftImg}
-                        />
-                        <Text style={styles.continueOrderText}>
-                            Sıralamanın devamı için kaydır
-                        </Text>
-                        <Image
-                            source={SLIDE_DOWN}
-                            style={styles.slideDownRightImg}
-                        />
-                    </View>
-                    <View style={styles.continueOrderTextContainer}>
-                        <Image
-                            source={SLIDE_DOWN}
-                            style={styles.slideDownLeftImg}
-                        />
-                        <Text style={styles.continueOrderText}>
-                            Sıralamanın devamı için kaydır
-                        </Text>
-                        <Image
-                            source={SLIDE_DOWN}
-                            style={styles.slideDownRightImg}
-                        />
+                    <View style={styles.tenToHundredUserRow}>
+                        <View style={styles.tenToHundredUserOrderContainer}>
+                            <Text style={styles.tenToHundredUserOrderText}>
+                                12
+                            </Text>
+                        </View>
+                        <View style={styles.tenToHundredUserNameContainer}>
+                            <Text style={styles.tenToHundredUserNameText}>
+                                Hakan Yılmaz
+                            </Text>
+                        </View>
+                        <View style={styles.tenToHundredUserScoreContainer}>
+                            <Text style={styles.tenToHundredUserScoreText}>
+                                400
+                            </Text>
+                        </View>
                     </View>
                 </ScrollView>
                 <View style={styles.yourOrderTextContainer}>

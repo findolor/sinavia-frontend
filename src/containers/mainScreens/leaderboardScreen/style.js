@@ -120,21 +120,21 @@ export default StyleSheet.create({
     },
     topTenOrderNumber: {
         fontFamily: 'Averta-Semibold',
-        fontSize: wp(5),
+        fontSize: wp(4),
         color: '#000000'
     },
     nameText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: wp(5),
+        fontSize: wp(4),
         color: '#2E313C'
     },
     scoreText:{
         fontFamily: 'Averta-RegularItalic',
-        fontSize: wp(5),
+        fontSize: wp(4),
         color: '#FF6D00'
     },
     continueOrderTextContainer: {
-        height: hp(3.5),
+        height: hp(3.8),
         width: wp(100),
         flexDirection: 'row',
         justifyContent: 'center',
@@ -229,5 +229,48 @@ export default StyleSheet.create({
         width: hp(2),
         marginLeft: wp(1),
         marginBottom : hp(0.9)
+    },
+    tenToHundredUserRow: {
+        height: hp(6),
+        width: wp(100),
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderBottomWidth: wp(0.1),
+        borderBottomColor: '#CACACA'
+    },
+    tenToHundredUserOrderText: {
+        fontFamily: 'Averta-RegularItalic',
+        fontSize: wp(4.5),
+        color: '#A1A1A1',
+        marginLeft: wp(5)
+    },
+    tenToHundredUserNameText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: wp(4.5),
+        color: '#2E313C',
+        marginLeft: wp(2)
+    },
+    tenToHundredUserScoreText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: wp(4.5),
+        color: '#FF6D00'
+    },
+    tenToHundredUserOrderContainer: {
+        height: hp(6),
+        width: wp(20),
+        justifyContent: 'center',
+        alignItems: 'flex-end'
+    },
+    tenToHundredUserNameContainer: {
+        height: hp(6),
+        width: wp(60),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    tenToHundredUserScoreContainer: {
+        height: hp(6),
+        width: wp(20),
+        justifyContent: 'center',
+        alignItems: 'flex-start'
     }
 })
