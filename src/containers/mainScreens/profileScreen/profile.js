@@ -10,7 +10,11 @@ import {
     TouchableOpacity,
     View
 } from 'react-native'
-import { SCENE_KEYS, navigationPop } from '../../../services/navigationService'
+import {
+    SCENE_KEYS,
+    navigationPop,
+    navigationPush
+} from '../../../services/navigationService'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import nebula from '../../../assets/cover.jpg'
@@ -31,6 +35,10 @@ export default class Profile extends React.Component {
 
     backButtonOnPress = () => {
         navigationPop()
+    }
+
+    favoriteLogoOnPress = () => {
+        navigationPush(SCENE_KEYS.mainScreens.favorites)
     }
 
     render() {
@@ -118,7 +126,7 @@ export default class Profile extends React.Component {
                                 />
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={this.favoriteLogoOnPress}>
                             <View style={styles.favoritesBox}>
                                 <Text style={styles.boxText}>
                                     Favori Sorular

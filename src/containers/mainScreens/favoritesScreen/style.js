@@ -15,7 +15,7 @@ export default StyleSheet.create({
         height: hp(6),
         width: wp(88),
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         alignItems: 'center'
     },
     returnLogo: {
@@ -24,8 +24,13 @@ export default StyleSheet.create({
     },
     headerTextWrapper: {
         height: hp(6),
-        width: wp(88),
-        position: 'absolute',
+        width: wp(68),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    returnLogoContainer: {
+        height: hp(6),
+        width: wp(10),
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -77,15 +82,18 @@ export default StyleSheet.create({
         color: '#FFFFFF'
     },
     questionsContainer: {
-        height: hp(22),
-        width: wp(82),
-        marginLeft: wp(2)
+        height: hp(21.7),
+        width: wp(85),
+        paddingHorizontal: wp(3),
+        backgroundColor: '#efefef',
+        borderBottomLeftRadius: 25,
+        borderBottomRightRadius: 25
     },
     question: {
         height: hp(19),
         width: wp(30),
-        borderWidth: wp(0.5),
-        borderColor: '#E2871A',
+        //borderWidth: wp(0.5),
+        //borderColor: '#E2871A',
         borderRadius: 15,
         marginTop: hp(1.35),
         marginRight: wp(5)
