@@ -34,6 +34,7 @@ import {
     navigationReset,
     SCENE_KEYS
 } from '../../../services/navigationService'
+import NotchView from '../../../components/notchView'
 const carouselFirstItem = 0
 const exams = [
     'YKS',
@@ -253,6 +254,7 @@ export default class Home extends React.Component {
         const card = this.cards(this.state.exam, this.state.carouselActiveSlide)
         return (
             <View style={styles.container}>
+                <NotchView color={'#fcfcfc'} />
                 <Modal
                     visible={this.state.isModalVisible}
                     transparent={true}

@@ -1,5 +1,6 @@
 import React from 'react'
 import Home from './homeScreen/home'
+import Leaderboard from './leaderboardScreen/leaderboard'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
@@ -34,16 +35,19 @@ export default class Main extends React.Component {
     updatePageIcons = pageName => {
         switch (pageName) {
             case 'HOME':
+                this.setVisibleForm('HOME')
                 this.setState({ trophyIconSelected: false })
                 this.setState({ homeIconSelected: true })
                 this.setState({ jokerIconSelected: false })
                 return
             case 'TROPHY':
+                this.setVisibleForm('LEADERBOARD')
                 this.setState({ homeIconSelected: false })
                 this.setState({ trophyIconSelected: true })
                 this.setState({ jokerIconSelected: false })
                 return
             case 'JOKER':
+                this.setVisibleForm('HOME')
                 this.setState({ trophyIconSelected: false })
                 this.setState({ jokerIconSelected: true })
                 this.setState({ homeIconSelected: false })
@@ -55,8 +59,8 @@ export default class Main extends React.Component {
         const visibleForm = this.state.visibleForm
         return (
             <View style={styles.container}>
-                <NotchView color={'#fcfcfc'} />
                 {visibleForm === 'HOME' && <Home />}
+                {visibleForm === 'LEADERBOARD' && <Leaderboard />}
                 <View style={styles.bottomBar}>
                     <TouchableOpacity
                         onPress={() => this.updatePageIcons('TROPHY')}
