@@ -21,7 +21,8 @@ const config = {
             main: 'main',
             profile: 'profile',
             settings: 'settings',
-            changePassword: 'changePassword'
+            changePassword: 'changePassword',
+            favorites: 'favorites'
         }
     }
 }

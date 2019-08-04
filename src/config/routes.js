@@ -42,6 +42,10 @@ const RouterComp = () => {
                         key={SCENE_KEYS.mainScreens.changePassword}
                         component={mainScreens.changePassword}
                     />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.favorites}
+                        component={mainScreens.favorites}
+                    />
                 </Scene>
                 <Scene key="game" hideNavBar={true}>
                     <Scene
