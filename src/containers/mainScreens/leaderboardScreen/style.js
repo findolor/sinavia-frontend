@@ -257,19 +257,19 @@ export default StyleSheet.create({
     },
     tenToHundredUserOrderContainer: {
         height: hp(6),
-        width: wp(20),
+        width: wp(16),
         justifyContent: 'center',
         alignItems: 'flex-end'
     },
     tenToHundredUserNameContainer: {
         height: hp(6),
-        width: wp(60),
+        width: wp(68),
         justifyContent: 'center',
         alignItems: 'center'
     },
     tenToHundredUserScoreContainer: {
         height: hp(6),
-        width: wp(20),
+        width: wp(16),
         justifyContent: 'center',
         alignItems: 'flex-start'
     }

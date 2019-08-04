@@ -2,6 +2,7 @@ import React from 'react'
 import {
     Image,
     ImageBackground,
+    FlatList,
     Modal,
     ScrollView,
     StatusBar,
@@ -16,12 +17,46 @@ import FIRST_TITLE from '../../../assets/firstTitle.png'
 import SECOND_TITLE from '../../../assets/secondTitle.png'
 import THIRD_TITLE from '../../../assets/thirdTitle.png'
 import SLIDE_DOWN from '../../../assets/slide_down.png'
-import SLIDE_UP from '../../../assets/slide_up.png'
+
+const data = [
+    {
+        number: "11",
+        name: 'Hakan Yılmaz',
+        score: '400'
+    },
+    {
+        number: "11",
+        name: 'Hakan Yılmaz',
+        score: '400'
+    },
+    {
+        number: "11",
+        name: 'Hakan Yılmaz',
+        score: '400'
+    },
+    {
+        number: "11",
+        name: 'Hakan Yılmaz',
+        score: '400'
+    },
+    {
+        number: "11",
+        name: 'Hakan Yılmaz',
+        score: '400'
+    },
+    {
+        number: "11",
+        name: 'Hakan Yılmaz',
+        score: '400'
+    },
+];
 
 class Leaderboard extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = {
+            data: data
+        }
     }
 
     render() {
@@ -389,40 +424,27 @@ class Leaderboard extends React.Component {
                             style={styles.slideDownRightImg}
                         />
                     </View>
-                    <View style={styles.tenToHundredUserRow}>
-                        <View style={styles.tenToHundredUserOrderContainer}>
-                            <Text style={styles.tenToHundredUserOrderText}>
-                                11
-                            </Text>
-                        </View>
-                        <View style={styles.tenToHundredUserNameContainer}>
-                            <Text style={styles.tenToHundredUserNameText}>
-                                Oğuz Liv
-                            </Text>
-                        </View>
-                        <View style={styles.tenToHundredUserScoreContainer}>
-                            <Text style={styles.tenToHundredUserScoreText}>
-                                400
-                            </Text>
-                        </View>
-                    </View>
-                    <View style={styles.tenToHundredUserRow}>
-                        <View style={styles.tenToHundredUserOrderContainer}>
-                            <Text style={styles.tenToHundredUserOrderText}>
-                                12
-                            </Text>
-                        </View>
-                        <View style={styles.tenToHundredUserNameContainer}>
-                            <Text style={styles.tenToHundredUserNameText}>
-                                Hakan Yılmaz
-                            </Text>
-                        </View>
-                        <View style={styles.tenToHundredUserScoreContainer}>
-                            <Text style={styles.tenToHundredUserScoreText}>
-                                400
-                            </Text>
-                        </View>
-                    </View>
+                    <FlatList data={this.state.data} showsHorizontalScrollIndicator={false} renderItem={({ item }) => {
+                        return (
+                            <View style={styles.tenToHundredUserRow}>
+                                <View style={styles.tenToHundredUserOrderContainer}>
+                                    <Text style={styles.tenToHundredUserOrderText}>
+                                        {item.number}
+                                    </Text>
+                                </View>
+                                <View style={styles.tenToHundredUserNameContainer}>
+                                    <Text style={styles.tenToHundredUserNameText}>
+                                        {item.name}
+                                    </Text>
+                                </View>
+                                <View style={styles.tenToHundredUserScoreContainer}>
+                                    <Text style={styles.tenToHundredUserScoreText}>
+                                        {item.score}
+                                    </Text>
+                                </View>
+                            </View>
+                        );
+                    }} keyExtractor={(item, index) => index}/>
                 </ScrollView>
                 <View style={styles.yourOrderTextContainer}>
                     <Text style={styles.yourOrderText}>
