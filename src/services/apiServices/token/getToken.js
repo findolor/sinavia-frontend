@@ -7,8 +7,9 @@ export const getToken = async userInformation => {
             API_ENDPOINT + 'token/',
             userInformation
         )
+
         return response.data.data.token
     } catch (err) {
-        throw new Error(err)
+        throw new Error(err.message)
     }
 }

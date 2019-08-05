@@ -1,20 +1,57 @@
 import React from 'react'
-import { View, Image, Text } from 'react-native'
+import { View, Image, Text, Alert } from 'react-native'
 import styles from './style'
-import { navigationReset } from '../../services/navigationService'
+import { navigationReset, SCENE_KEYS } from '../../services/navigationService'
+import { deviceStorage } from '../../services/deviceStorage'
+import { connect } from 'react-redux'
+import { userActions } from '../../redux/user/actions'
 
 const APP_LOGO = require('../../assets/sinavia_logo_cut.png')
 
-export default class SplashScreen extends React.PureComponent {
+class SplashScreen extends React.PureComponent {
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = {
+            retryCount: 0
+        }
     }
 
-    componentDidMount() {
-        setTimeout(() => {
-            navigationReset('auth')
+    getJWTToken = async () => {
+        try {
+            const token = await deviceStorage.getItemFromStorage('JWT')
+
+            return token
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async componentDidMount() {
+        let token = await this.getJWTToken()
+
+        if (token === null) {
+            setTimeout(() => {
+                navigationReset('auth')
+            }, 3000)
+            return
+        }
+
+        this.props.loginUser(token)
+
+        this.loginInterval = setInterval(() => {
+            if (this.props.isLoggedIn) {
+                navigationReset('main')
+            } else {
+                if (++this.state.retryCount === 4) {
+                    Alert.alert('Lütfen tekrar giriş yapınız!')
+                    navigationReset('auth')
+                }
+            }
         }, 2000)
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.loginInterval)
     }
 
     render() {
@@ -26,3 +63,16 @@ export default class SplashScreen extends React.PureComponent {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    isLoggedIn: state.user.isLoggedIn
+})
+
+const mapDispatchToProps = dispatch => ({
+    loginUser: token => dispatch(userActions.checkUserToken(token))
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SplashScreen)

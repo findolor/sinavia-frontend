@@ -4,7 +4,9 @@ export const userTypes = {
     FETCH_USER: 'fetch_user',
     FETCH_USER_SUCCESS: 'fetch_user_success',
     GET_USER_TOKEN: 'get_user_token',
-    GET_USER_TOKEN_SUCCESS: 'get_user_token_success'
+    GET_USER_TOKEN_SUCCESS: 'get_user_token_success',
+    CHECK_USER_TOKEN: 'check_user_token',
+    CHECK_USER_TOKEN_SUCCESS: 'check_user_token_success'
 }
 
 const createUser = userInformation => {
@@ -28,8 +30,16 @@ const getUserToken = userInformation => {
     }
 }
 
+const checkUserToken = userToken => {
+    return {
+        type: userTypes.CHECK_USER_TOKEN,
+        payload: userToken
+    }
+}
+
 export const userActions = {
     createUser: createUser,
     fetchUser: fetchUser,
-    getUserToken: getUserToken
+    getUserToken: getUserToken,
+    checkUserToken: checkUserToken
 }

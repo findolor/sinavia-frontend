@@ -1,3 +1,3 @@
 export const INITIAL_STATE = {
-    temp: {}
+    isLoggedIn: false
 }

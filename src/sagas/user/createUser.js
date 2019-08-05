@@ -2,7 +2,6 @@ import { put, call } from 'redux-saga/effects'
 import { userTypes } from '../../redux/user/actions'
 import { postUser } from '../../services/apiServices/user/postUser'
 import { deviceStorage } from '../../services/deviceStorage'
-import { sensitiveStorage } from '../../services/sensitiveStorage'
 
 export function* createUser(action) {
     try {

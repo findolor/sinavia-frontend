@@ -13,6 +13,11 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 temp: action.payload
             }
+        case userTypes.CHECK_USER_TOKEN_SUCCESS:
+            return {
+                ...state,
+                isLoggedIn: action.payload
+            }
         default:
             return state
     }
