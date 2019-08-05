@@ -39,13 +39,9 @@ class SplashScreen extends React.PureComponent {
         this.props.loginUser(token)
 
         this.loginInterval = setInterval(() => {
-            if (this.props.isLoggedIn) {
-                navigationReset('main')
-            } else {
-                if (++this.state.retryCount === 4) {
-                    Alert.alert('Lütfen tekrar giriş yapınız!')
-                    navigationReset('auth')
-                }
+            if (++this.state.retryCount === 4) {
+                Alert.alert('Lütfen tekrar giriş yapınız!')
+                navigationReset('auth')
             }
         }, 2000)
     }

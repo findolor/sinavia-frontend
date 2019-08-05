@@ -2,31 +2,32 @@ import { put, call } from 'redux-saga/effects'
 import { checkToken } from '../../services/apiServices/token/checkToken'
 import { getToken } from '../../services/apiServices/token/getToken'
 import { deviceStorage } from '../../services/deviceStorage'
-import { userTypes } from '../../redux/user/actions'
+import { navigationReset } from '../../services/navigationService'
+
+async function getUserInformation(key) {
+    const userInformation = await deviceStorage.getItemFromStorage(key)
+    return userInformation
+}
 
 export function* loginUser(action) {
     try {
         const res = yield call(checkToken, action.payload)
 
-        if (res) {
-            yield put({
-                type: userTypes.CHECK_USER_TOKEN_SUCCESS,
-                payload: true
-            })
-        }
+        if (res) navigationReset('main')
     } catch (error) {
         try {
+            const info = yield call(getUserInformation, 'userInformation')
+
+            const userInformation = JSON.parse(info)
+
             const token = yield call(getToken, {
-                email: 'test@lol.com',
-                password: 'test'
+                email: userInformation.email,
+                password: userInformation.password
             })
 
             deviceStorage.saveItemToStorage('JWT', token)
 
-            yield put({
-                type: userTypes.CHECK_USER_TOKEN_SUCCESS,
-                payload: true
-            })
+            navigationReset('main')
         } catch (error) {
             console.log(error)
         }
