@@ -2,7 +2,8 @@ import env from 'react-native-config'
 
 const config = {
     api: {
-        host: env.SERVER_ENDPOINT
+        host: 'http://localhost:4000/api/v1/',
+        gameEngine: 'http://localhost:5000'
     },
     scene_keys: {
         authScreens: {
@@ -23,14 +24,16 @@ const config = {
             settings: 'settings',
             changePassword: 'changePassword',
             favorites: 'favorites'
-        }
+        },
+        splashScreen: 'splash'
     }
 }
 
 const API_ENDPOINT = config.api.host
+const GAME_ENGINE_ENDPOINT = config.api.gameEngine
 
 const SCENE_KEYS = config.scene_keys
 
-export { API_ENDPOINT, SCENE_KEYS }
+export { API_ENDPOINT, SCENE_KEYS, GAME_ENGINE_ENDPOINT }
 
 export default config

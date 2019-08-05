@@ -20,6 +20,8 @@ import {
     MatchIntroScreen
 } from '../containers/gameScreens'
 
+import { SplashScreen } from '../containers/splashScreen'
+
 export const authScreens = {
     opening: Opening,
     login: Login,
@@ -41,3 +43,5 @@ export const gameScreens = {
     gameStats: GameStatsScreen,
     matchIntro: MatchIntroScreen
 }
+
+export const splashScreen = SplashScreen

@@ -1,12 +1,23 @@
 import React from 'react'
 import { Scene, Router } from 'react-native-router-flux'
-import { authScreens, gameScreens, mainScreens } from './containers'
+import {
+    authScreens,
+    gameScreens,
+    mainScreens,
+    splashScreen
+} from './containers'
 import { SCENE_KEYS } from './index'
 
 const RouterComp = () => {
     return (
         <Router>
             <Scene key="root" hideNavBar={true}>
+                <Scene key="splash" hideNavBar={true}>
+                    <Scene
+                        key={SCENE_KEYS.splashScreen}
+                        component={splashScreen}
+                    />
+                </Scene>
                 <Scene key="auth" hideNavBar={true}>
                     <Scene
                         key={SCENE_KEYS.authScreens.opening}
