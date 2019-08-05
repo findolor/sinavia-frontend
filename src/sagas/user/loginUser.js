@@ -9,11 +9,17 @@ async function getUserInformation(key) {
     return userInformation
 }
 
+function goToMainScreen() {
+    setTimeout(() => {
+        navigationReset('main')
+    }, 3000)
+}
+
 export function* loginUser(action) {
     try {
         const res = yield call(checkToken, action.payload)
 
-        if (res) navigationReset('main')
+        if (res) goToMainScreen()
     } catch (error) {
         try {
             const info = yield call(getUserInformation, 'userInformation')
@@ -27,7 +33,7 @@ export function* loginUser(action) {
 
             deviceStorage.saveItemToStorage('JWT', token)
 
-            navigationReset('main')
+            goToMainScreen()
         } catch (error) {
             console.log(error)
         }

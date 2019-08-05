@@ -4,7 +4,6 @@ import {
     Text,
     TouchableOpacity,
     Image,
-    TextInput,
     ImageBackground
 } from 'react-native'
 import styles from './style'
@@ -12,8 +11,10 @@ import NotchView from '../../../components/notchView'
 import {
     SCENE_KEYS,
     navigationPush,
-    navigationPop
+    navigationPop,
+    navigationReset
 } from '../../../services/navigationService'
+import { deviceStorage } from '../../../services/deviceStorage'
 import returnLogo from '../../../assets/return.png'
 import nebula from '../../../assets/cover.jpg'
 import PROFILE_PIC from '../../../assets/profile2.jpg'
@@ -31,6 +32,11 @@ class Settings extends React.Component {
 
     changePasswordOnPress = () => {
         navigationPush(SCENE_KEYS.mainScreens.changePassword)
+    }
+
+    logoutButtonOnPress = async () => {
+        await deviceStorage.clearDeviceStorage()
+        navigationReset('auth')
     }
 
     render() {
@@ -105,7 +111,7 @@ class Settings extends React.Component {
                             </Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={this.logoutButtonOnPress}>
                         <View style={styles.logoutButton}>
                             <Text style={styles.logoutText}>Çıkış yap</Text>
                         </View>

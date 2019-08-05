@@ -53,7 +53,9 @@ class SplashScreen extends React.PureComponent {
     render() {
         return (
             <View style={styles.container}>
-                <Image source={APP_LOGO} style={styles.appLogo} />
+                <View style={styles.logoContainer}>
+                    <Image source={APP_LOGO} style={styles.appLogo} />
+                </View>
                 <Text style={styles.sinaviaText}>Sınavia</Text>
             </View>
         )
