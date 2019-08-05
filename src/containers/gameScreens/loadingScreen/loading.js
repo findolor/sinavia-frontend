@@ -7,6 +7,7 @@ window.localStorage = AsyncStorage
 global.Buffer = Buffer
 import * as Colyseus from 'colyseus.js'
 import { SCENE_KEYS, navigationPush } from '../../../services/navigationService'
+import { GAME_ENGINE_ENDPOINT } from '../../../config'
 
 class LoadingScreen extends React.Component {
     constructor(props) {
@@ -38,7 +39,7 @@ class LoadingScreen extends React.Component {
     }
 
     componentDidMount() {
-        this.client = new Colyseus.Client('http://localhost:5000')
+        this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
         this.client.onOpen.add(() => {
             setTimeout(() => {
                 this.joinRoom()
@@ -75,7 +76,23 @@ class LoadingScreen extends React.Component {
 
             this.room.removeAllListeners()
 
-            navigationPush(SCENE_KEYS.gameScreens.rankedGame, {
+            // TODO goto match intro screen
+            navigationPush(SCENE_KEYS.gameScreens.matchIntro, {
+                // These are necessary for the game logic
+                room: this.room,
+                client: this.client,
+                // These can be used in both screens
+                playerUsername: playerUsername,
+                playerProfilePicture: playerProfilePicture,
+                opponentUsername: opponentUsername,
+                opponentId: opponentId,
+                opponentProfilePicture: opponentProfilePicture,
+                // These are used in the match intro screen
+                courseName: selectedPlayer.courseName,
+                subjectName: selectedPlayer.subjectName
+            })
+
+            /* navigationPush(SCENE_KEYS.gameScreens.rankedGame, {
                 room: this.room,
                 client: this.client,
                 playerUsername: playerUsername,
@@ -83,7 +100,7 @@ class LoadingScreen extends React.Component {
                 opponentUsername: opponentUsername,
                 opponentId: opponentId,
                 opponentProfilePicture: opponentProfilePicture
-            })
+            }) */
         })
     }
 
