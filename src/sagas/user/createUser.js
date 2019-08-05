@@ -13,6 +13,14 @@ export function* createUser(action) {
             JSON.stringify(action.payload)
         )
 
+        deviceStorage.saveItemToStorage(
+            'userCredentials',
+            JSON.stringify({
+                email: action.payload.email,
+                password: action.payload.password
+            })
+        )
+
         const token = yield call(getToken, {
             email: action.payload.email,
             password: action.payload.password

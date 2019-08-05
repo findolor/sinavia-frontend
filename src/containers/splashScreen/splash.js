@@ -36,7 +36,7 @@ class SplashScreen extends React.PureComponent {
             return
         }
 
-        this.props.loginUser(token)
+        this.props.authenticateUser(token)
 
         this.loginInterval = setInterval(() => {
             if (++this.state.retryCount === 4) {
@@ -67,7 +67,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    loginUser: token => dispatch(userActions.checkUserToken(token))
+    authenticateUser: token => dispatch(userActions.checkUserToken(token))
 })
 
 export default connect(
