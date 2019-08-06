@@ -63,19 +63,17 @@ export default StyleSheet.create({
         width: wp(100),
         flexDirection: 'row'
     },
-    coursesDropdownContainer: {
+    dropdownContainer: {
         height: hp(18),
         width: wp(35),
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     leaderImageContainer: {
         height: hp(18),
         width: wp(30),
         justifyContent: 'flex-end',
         alignItems: 'center'
-    },
-    subjectsDropdownContainer: {
-        height: hp(18),
-        width: wp(35),
     },
     nameAndScoreContainer: {
         height: hp(9),
@@ -272,5 +270,42 @@ export default StyleSheet.create({
         width: wp(16),
         justifyContent: 'center',
         alignItems: 'flex-start'
-    }
+    },
+    picker: {
+        height: hp(6),
+        width: wp(25),
+        borderColor: '#FF9900',
+        borderWidth: wp(0.5),
+        borderRadius: 15,
+        marginTop: hp(5)
+    },
+    pickerText: {
+        marginTop: hp(1.3),
+        marginBottom: hp(1),
+        marginLeft: wp(1),
+        marginRight: wp(1),
+        fontSize: hp(2),
+        color: '#00BACD',
+        textAlign: 'center',
+        textAlignVertical: 'center'
+    },
+    pickerDropdownText: {
+        marginTop: hp(1.3),
+        marginBottom: hp(1),
+        marginLeft: wp(1),
+        marginRight: wp(1),
+        fontSize: hp(2),
+        color: '#F7941E',
+        textAlign: 'center',
+        textAlignVertical: 'center'
+    },
+    pickerDropdown: {
+        height: hp(50.5),
+        width: wp(25),
+        borderColor: '#00D9EF',
+        borderWidth: wp(0.5),
+        borderRadius: 15,
+        marginTop: hp(0.5),
+        marginLeft: wp(-0.5)
+    },
 })

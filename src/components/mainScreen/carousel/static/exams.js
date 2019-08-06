@@ -17,27 +17,27 @@ import tarihYKS from '../../../../assets/exams/yks/tarih.png'
 
 export const LGS = [
     {
-        title: '',
+        courseName: 'Türkçe',
         illustration: turkceLGS
     },
     {
-        title: '',
+        courseName: 'Matematik',
         illustration: matematikLGS
     },
     {
-        title: '',
+        courseName: 'Tarih',
         illustration: tarihLGS
     },
     {
-        title: '',
+        courseName: 'Fen Bilimleri',
         illustration: fenBilimleriLGS
     },
     {
-        title: '',
+        courseName: 'İngilizce',
         illustration: ingilizceLGS
     },
     {
-        title: '',
+        courseName: 'Din Kültürü',
         illustration: dinLGS
     }
 ]

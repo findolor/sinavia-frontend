@@ -10,6 +10,8 @@ import {
     TouchableOpacity,
     View
 } from 'react-native'
+import DropDown from '../../../components/mainScreen/dropdown/dropdown'
+import { LGS, YKS } from '../../../components/mainScreen/carousel/static/exams'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import PROFILE_PIC from '../../../assets/profile2.jpg'
@@ -20,43 +22,90 @@ import SLIDE_DOWN from '../../../assets/slide_down.png'
 
 const data = [
     {
-        number: "11",
+        number: '11',
         name: 'Hakan Yılmaz',
         score: '400'
     },
     {
-        number: "11",
+        number: '11',
         name: 'Hakan Yılmaz',
         score: '400'
     },
     {
-        number: "11",
+        number: '11',
         name: 'Hakan Yılmaz',
         score: '400'
     },
     {
-        number: "11",
+        number: '11',
         name: 'Hakan Yılmaz',
         score: '400'
     },
     {
-        number: "11",
+        number: '11',
         name: 'Hakan Yılmaz',
         score: '400'
     },
     {
-        number: "11",
+        number: '11',
         name: 'Hakan Yılmaz',
         score: '400'
-    },
-];
+    }
+]
+
+const courses = [
+    'YKS',
+    'LGS',
+    'KPSS',
+    'ALES',
+    'DGS',
+    'Dil Sınavları',
+    'TUS',
+    'DUS',
+    'EUS',
+    'Ehliyet Sınavları'
+]
 
 class Leaderboard extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            data: data
+            data: data,
+            selectedOrderMode: 'global',
+            globalButtonBackgroundColor: '#FF6D00',
+            globalButtonTextColor: '#FFFFFF',
+            friendsButtonBackgroundColor: '#FFFFFF',
+            friendsButtonTextColor: '#2E313C'
         }
+    }
+
+    updateOrderCategoryButtonUI = orderMode => {
+        switch (orderMode) {
+            case 'globalOrder':
+                if (this.state.selectedOrderMode === orderMode) return
+                this.setState({
+                    globalButtonBackgroundColor: '#FF6D00',
+                    globalButtonTextColor: '#FFFFFF',
+                    friendsButtonBackgroundColor: '#FFFFFF',
+                    friendsButtonTextColor: '#2E313C'
+                })
+                this.setState({ selectedGameMode: orderMode })
+                return
+            case 'friendsOrder':
+                if (this.state.selectedOrderMode === orderMode) return
+                this.setState({
+                    globalButtonBackgroundColor: '#FFFFFF',
+                    globalButtonTextColor: '#2E313C',
+                    friendsButtonBackgroundColor: '#FF6D00',
+                    friendsButtonTextColor: '#FFFFFF'
+                })
+                this.setState({ selectedGameMode: orderMode })
+                return
+        }
+    }
+
+    orderCategoryButtonOnPress = selectedMode => {
+        this.updateOrderCategoryButtonUI(selectedMode)
     }
 
     render() {
@@ -69,19 +118,80 @@ class Leaderboard extends React.Component {
                     <NotchView color={'#fcfcfc'} />
                     <View style={styles.leaderContainer}>
                         <View style={styles.tabbarContainer}>
-                            <View style={styles.globalTabContainer}>
-                                <Text style={styles.tabbarGlobalText}>
-                                    Global
-                                </Text>
-                            </View>
-                            <View style={styles.friendsTabContainer}>
-                                <Text style={styles.tabbarFriendsText}>
-                                    Arkadaş
-                                </Text>
-                            </View>
+                            <TouchableOpacity
+                                onPress={() =>
+                                    this.orderCategoryButtonOnPress(
+                                        'globalOrder'
+                                    )
+                                }
+                            >
+                                <View
+                                    style={[
+                                        styles.globalTabContainer,
+                                        {
+                                            backgroundColor: this.state
+                                                .globalButtonBackgroundColor
+                                        }
+                                    ]}
+                                >
+                                    <Text
+                                        style={[
+                                            styles.tabbarGlobalText,
+                                            {
+                                                color: this.state
+                                                    .globalButtonTextColor
+                                            }
+                                        ]}
+                                    >
+                                        Global
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() =>
+                                    this.orderCategoryButtonOnPress(
+                                        'friendsOrder'
+                                    )
+                                }
+                            >
+                                <View
+                                    style={[
+                                        styles.friendsTabContainer,
+                                        {
+                                            backgroundColor: this.state
+                                                .friendsButtonBackgroundColor
+                                        }
+                                    ]}
+                                >
+                                    <Text
+                                        style={[
+                                            styles.tabbarFriendsText,
+                                            {
+                                                color: this.state
+                                                    .friendsButtonTextColor
+                                            }
+                                        ]}
+                                    >
+                                        Arkadaş
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.dropdownsAndImageContainer}>
-                            <View style={styles.coursesDropdownContainer} />
+                            <View style={styles.dropdownContainer}>
+                                <DropDown
+                                    style={styles.picker}
+                                    textStyle={styles.pickerText}
+                                    dropdownTextStyle={
+                                        styles.pickerDropdownText
+                                    }
+                                    dropdownStyle={styles.pickerDropdown}
+                                    defaultValue={this.state.exam}
+                                    onSelect={(idx, value) =>
+                                        this.pickerSelect(idx, value)
+                                    }
+                                />
+                            </View>
                             <View style={styles.leaderImageContainer}>
                                 <ImageBackground
                                     source={PROFILE_PIC}
@@ -99,7 +209,20 @@ class Leaderboard extends React.Component {
                                     </View>
                                 </ImageBackground>
                             </View>
-                            <View style={styles.subjectsDropdownContainer} />
+                            <View style={styles.dropdownContainer}>
+                                <DropDown
+                                    style={styles.picker}
+                                    textStyle={styles.pickerText}
+                                    dropdownTextStyle={
+                                        styles.pickerDropdownText
+                                    }
+                                    dropdownStyle={styles.pickerDropdown}
+                                    defaultValue={this.state.exam}
+                                    onSelect={(idx, value) =>
+                                        this.pickerSelect(idx, value)
+                                    }
+                                />
+                            </View>
                         </View>
                         <View style={styles.nameAndScoreContainer}>
                             <Text style={styles.nameText}>Hakan Yılmaz</Text>
@@ -424,27 +547,56 @@ class Leaderboard extends React.Component {
                             style={styles.slideDownRightImg}
                         />
                     </View>
-                    <FlatList data={this.state.data} showsHorizontalScrollIndicator={false} renderItem={({ item }) => {
-                        return (
-                            <View style={styles.tenToHundredUserRow}>
-                                <View style={styles.tenToHundredUserOrderContainer}>
-                                    <Text style={styles.tenToHundredUserOrderText}>
-                                        {item.number}
-                                    </Text>
+                    <FlatList
+                        data={this.state.data}
+                        showsHorizontalScrollIndicator={false}
+                        renderItem={({ item }) => {
+                            return (
+                                <View style={styles.tenToHundredUserRow}>
+                                    <View
+                                        style={
+                                            styles.tenToHundredUserOrderContainer
+                                        }
+                                    >
+                                        <Text
+                                            style={
+                                                styles.tenToHundredUserOrderText
+                                            }
+                                        >
+                                            {item.number}
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={
+                                            styles.tenToHundredUserNameContainer
+                                        }
+                                    >
+                                        <Text
+                                            style={
+                                                styles.tenToHundredUserNameText
+                                            }
+                                        >
+                                            {item.name}
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={
+                                            styles.tenToHundredUserScoreContainer
+                                        }
+                                    >
+                                        <Text
+                                            style={
+                                                styles.tenToHundredUserScoreText
+                                            }
+                                        >
+                                            {item.score}
+                                        </Text>
+                                    </View>
                                 </View>
-                                <View style={styles.tenToHundredUserNameContainer}>
-                                    <Text style={styles.tenToHundredUserNameText}>
-                                        {item.name}
-                                    </Text>
-                                </View>
-                                <View style={styles.tenToHundredUserScoreContainer}>
-                                    <Text style={styles.tenToHundredUserScoreText}>
-                                        {item.score}
-                                    </Text>
-                                </View>
-                            </View>
-                        );
-                    }} keyExtractor={(item, index) => index}/>
+                            )
+                        }}
+                        keyExtractor={(item, index) => index}
+                    />
                 </ScrollView>
                 <View style={styles.yourOrderTextContainer}>
                     <Text style={styles.yourOrderText}>
