@@ -17,22 +17,29 @@ function goToMainScreen() {
 
 export function* authenticateUser(action) {
     try {
+        // We first check if the token is valid.
+        // If the res is true we continue to the main screen
         const res = yield call(checkToken, action.payload)
 
         if (res) goToMainScreen()
     } catch (error) {
+        // If we get unauthorized from api
         try {
+            // We get the user credentials from device storage
             const info = yield call(getUserInformation, 'userCredentials')
 
             const userInformation = JSON.parse(info)
 
+            // We send the credentials for getting the token and id
             const response = yield call(getToken, {
                 email: userInformation.email,
                 password: userInformation.password
             })
 
+            // We save the token
             deviceStorage.saveItemToStorage('JWT', response.token)
 
+            // We save the user id
             deviceStorage.saveItemToStorage('userId', response.id)
 
             goToMainScreen()

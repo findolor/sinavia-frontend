@@ -29,6 +29,7 @@ class SplashScreen extends React.PureComponent {
     async componentDidMount() {
         let token = await this.getJWTToken()
 
+        // If we don't have any token saved, we go to the auth screen
         if (token === null) {
             setTimeout(() => {
                 navigationReset('auth')
@@ -36,8 +37,10 @@ class SplashScreen extends React.PureComponent {
             return
         }
 
+        // We check if the token is valid. If not we get a new token
         this.props.authenticateUser(token)
 
+        // After 8 seconds we logout the user and go to the auth screen
         this.loginInterval = setInterval(() => {
             if (++this.state.retryCount === 4) {
                 Alert.alert('Lütfen tekrar giriş yapınız!')
