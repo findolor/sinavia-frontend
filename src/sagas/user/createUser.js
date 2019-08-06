@@ -21,12 +21,14 @@ export function* createUser(action) {
             })
         )
 
-        const token = yield call(getToken, {
+        deviceStorage.saveItemToStorage('userId', res.id)
+
+        const response = yield call(getToken, {
             email: action.payload.email,
             password: action.payload.password
         })
 
-        deviceStorage.saveItemToStorage('JWT', token)
+        deviceStorage.saveItemToStorage('JWT', response.token)
 
         navigationReset('main')
     } catch (error) {

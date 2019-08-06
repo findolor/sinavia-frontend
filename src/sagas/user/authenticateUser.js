@@ -22,16 +22,18 @@ export function* authenticateUser(action) {
         if (res) goToMainScreen()
     } catch (error) {
         try {
-            const info = yield call(getUserInformation, 'userInformation')
+            const info = yield call(getUserInformation, 'userCredentials')
 
             const userInformation = JSON.parse(info)
 
-            const token = yield call(getToken, {
+            const response = yield call(getToken, {
                 email: userInformation.email,
                 password: userInformation.password
             })
 
-            deviceStorage.saveItemToStorage('JWT', token)
+            deviceStorage.saveItemToStorage('JWT', response.token)
+
+            deviceStorage.saveItemToStorage('userId', response.id)
 
             goToMainScreen()
         } catch (error) {

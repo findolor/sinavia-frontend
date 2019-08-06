@@ -8,7 +8,7 @@ export const getToken = async userInformation => {
             userInformation
         )
 
-        return response.data.data.token
+        return { token: response.data.data.token, id: response.data.data.id }
     } catch (err) {
         throw new Error(err.message)
     }
