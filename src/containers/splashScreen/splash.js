@@ -65,15 +65,13 @@ class SplashScreen extends React.PureComponent {
     }
 }
 
-const mapStateToProps = state => ({
-    isLoggedIn: state.user.isLoggedIn
-})
+const mapStateToProps = state => ({})
 
 const mapDispatchToProps = dispatch => ({
     authenticateUser: token => dispatch(userActions.checkUserToken(token))
 })
 
 export default connect(
-    mapStateToProps,
+    null,
     mapDispatchToProps
 )(SplashScreen)

@@ -150,7 +150,8 @@ export default StyleSheet.create({
     nameView: {
         height: hp(10),
         width: wp(70),
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'space-around'
     },
     nameSurnameText: {
         fontFamily: 'Averta-Regular',
@@ -161,7 +162,20 @@ export default StyleSheet.create({
     usernameText: {
         fontFamily: 'Averta-Regular',
         fontSize: hp(2.4),
-        color: '#7B7B7B',
+        color: '#2E313C',
         paddingVertical: hp(0)
+    },
+    nameSurnameContainer: {
+        backgroundColor: '#FFFFFF80',
+        width: wp(40),
+        alignItems: 'center',
+        borderRadius: 30
+    },
+    usernameContainer: {
+        backgroundColor: '#FFFFFF80',
+        width: wp(30),
+        height: hp(3.5),
+        alignItems: 'center',
+        borderRadius: 30
     }
 })

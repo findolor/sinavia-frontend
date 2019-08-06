@@ -15,6 +15,7 @@ import {
     navigationPop,
     navigationPush
 } from '../../../services/navigationService'
+import { connect } from 'react-redux'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import nebula from '../../../assets/cover.jpg'
@@ -27,7 +28,7 @@ import settingsLogo from '../../../assets/settings.png'
 import searchlogo from '../../../assets/search.png'
 import PROFILE_PIC from '../../../assets/profile2.jpg'
 
-export default class Profile extends React.Component {
+class Profile extends React.Component {
     constructor(props) {
         super(props)
         this.state = {}
@@ -77,23 +78,27 @@ export default class Profile extends React.Component {
                 </View>
                 <View style={styles.profileContainer}>
                     <ImageBackground
-                        source={nebula}
+                        source={{ uri: this.props.coverPicture }}
                         style={styles.coverPhoto}
                         imageStyle={{ borderRadius: 30 }}
                     >
                         <View style={styles.profilePicView}>
                             <Image
-                                source={PROFILE_PIC}
+                                source={{ uri: this.props.profilePicture }}
                                 style={styles.profilePic}
                             />
                         </View>
                         <View style={styles.nameView}>
-                            <Text style={styles.nameSurnameText}>
-                                Hakan Yılmaz
-                            </Text>
-                            <Text style={styles.usernameText}>
-                                @haqotherage
-                            </Text>
+                            <View style={styles.nameSurnameContainer}>
+                                <Text style={styles.nameSurnameText}>
+                                    {this.props.name} {this.props.lastname}
+                                </Text>
+                            </View>
+                            <View style={styles.usernameContainer}>
+                                <Text style={styles.usernameText}>
+                                    @{this.props.username}
+                                </Text>
+                            </View>
                         </View>
                     </ImageBackground>
                 </View>
@@ -147,3 +152,18 @@ export default class Profile extends React.Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    username: state.user.username,
+    name: state.user.name,
+    lastname: state.user.lastname,
+    profilePicture: state.user.profilePicture,
+    coverPicture: state.user.coverPicture
+})
+
+const mapDispatchToProps = dispatch => ({})
+
+export default connect(
+    mapStateToProps,
+    null
+)(Profile)
