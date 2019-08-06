@@ -1,13 +1,15 @@
 import axios from 'axios'
+import { API_ENDPOINT } from '../../../config/index'
 
 export const getToken = async userInformation => {
     try {
         const response = await axios.post(
-            'http://localhost:4000/api/token',
+            API_ENDPOINT + 'token/',
             userInformation
         )
-        return response.data.data.token
+
+        return { token: response.data.data.token, id: response.data.data.id }
     } catch (err) {
-        throw new Error(err)
+        throw new Error(err.message)
     }
 }

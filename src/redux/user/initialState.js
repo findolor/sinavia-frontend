@@ -1,3 +1,8 @@
 export const INITIAL_STATE = {
-    temp: {}
+    username: '',
+    name: '',
+    lastname: '',
+    profilePicture: '',
+    coverPicture: '',
+    choosenExam: ''
 }

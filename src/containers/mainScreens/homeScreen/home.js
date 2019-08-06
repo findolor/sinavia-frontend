@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
     View
 } from 'react-native'
+import { connect } from 'react-redux'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
@@ -63,7 +64,7 @@ const FRIENDS_EMPTY_IMAGE = require('../../../assets/mainScreens/arkadas_siyah.p
 const GROUP_SELECTED_IMAGE = require('../../../assets/mainScreens/group.png')
 const GROUP_EMPTY_IMAGE = require('../../../assets/mainScreens/group_siyah.png')
 
-export default class Home extends React.Component {
+class Home extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -388,8 +389,7 @@ export default class Home extends React.Component {
                             <TouchableOpacity onPress={this.profilePicOnPress}>
                                 <Image
                                     source={{
-                                        uri:
-                                            'https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-512.png'
+                                        uri: this.props.profilePicture
                                     }}
                                     style={styles.profilePic}
                                 />
@@ -451,3 +451,14 @@ export default class Home extends React.Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    profilePicture: state.user.profilePicture
+})
+
+const mapDispatchToProps = dispatch => ({})
+
+export default connect(
+    mapStateToProps,
+    null
+)(Home)

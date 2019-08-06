@@ -47,7 +47,7 @@ export default StyleSheet.create({
         width: wp(90),
         borderRadius: 30,
         marginTop: hp(0.5),
-        alignItems: 'center',
+        alignItems: 'center'
     },
     profilePic: {
         height: hp(18),
@@ -58,7 +58,7 @@ export default StyleSheet.create({
     },
     editImg: {
         height: hp(3.5),
-        width: hp(3.5),
+        width: hp(3.5)
     },
     profilePicView: {
         height: hp(18),
@@ -136,18 +136,13 @@ export default StyleSheet.create({
         alignItems: 'flex-end'
     },
     editProfilePicView: {
-        height: hp(9),
-        width: hp(18),
-        borderBottomLeftRadius: 100,
-        borderBottomRightRadius: 100,
-        backgroundColor: '#E5E5E5',
-        opacity: 0.5,
-        justifyContent: 'center',
-        alignItems: 'center'
+        height: hp(16),
+        width: hp(11),
+        alignItems: 'flex-end'
     },
     editText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: wp(5),
+        fontSize: wp(4),
         paddingVertical: hp(0),
         color: 'black'
     }

@@ -1,16 +1,16 @@
 import axios from 'axios'
 import { API_ENDPOINT } from '../../../config/index'
 
-export const getUser = async (userToken, id) => {
+export const checkToken = async userToken => {
     try {
-        const response = await axios.get(API_ENDPOINT + 'users/' + id, {
+        const response = await axios.get(API_ENDPOINT + 'token/', {
             headers: {
                 Authorization: 'Bearer ' + userToken
             }
         })
-        return response.data.data
+
+        return response.data.success
     } catch (err) {
-        console.log(err)
-        return err.response
+        throw new Error(err.message)
     }
 }
