@@ -7,7 +7,8 @@ export const userTypes = {
     CHECK_USER_TOKEN: 'check_user_token',
     AUTHENTICATE_USER_SUCCESS: 'authenticate_user_success',
     LOGIN_USER: 'login_user',
-    LOGIN_USER_SUCCESS: 'login_user_success'
+    LOGIN_USER_SUCCESS: 'login_user_success',
+    SAVE_CHOOSEN_EXAM: 'save_choosen_exam'
 }
 
 const createUser = userInformation => {
@@ -38,9 +39,17 @@ const loginUser = userCredentials => {
     }
 }
 
+const saveChoosenExam = choosenExam => {
+    return {
+        type: userTypes.SAVE_CHOOSEN_EXAM,
+        payload: choosenExam
+    }
+}
+
 export const userActions = {
     createUser: createUser,
     fetchUser: fetchUser,
     checkUserToken: checkUserToken,
-    loginUser: loginUser
+    loginUser: loginUser,
+    saveChoosenExam: saveChoosenExam
 }

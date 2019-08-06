@@ -35,6 +35,11 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 temp: action.payload
             }
+        case userTypes.SAVE_CHOOSEN_EXAM:
+            return {
+                ...state,
+                choosenExam: action.payload
+            }
         default:
             return state
     }
