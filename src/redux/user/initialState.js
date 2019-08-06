@@ -1,3 +1,1 @@
-export const INITIAL_STATE = {
-    isLoggedIn: false
-}
+export const INITIAL_STATE = {}

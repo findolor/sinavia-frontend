@@ -7,7 +7,6 @@ export default function* root() {
         // User Sagas
         takeLatest(userTypes.CREATE_USER, userSagas.createUser),
         takeLatest(userTypes.FETCH_USER, userSagas.fetchUser),
-        takeLatest(userTypes.GET_USER_TOKEN, userSagas.fetchUserToken),
         takeLatest(userTypes.CHECK_USER_TOKEN, userSagas.authenticateUser),
         takeLatest(userTypes.LOGIN_USER, userSagas.loginUser)
     ])
