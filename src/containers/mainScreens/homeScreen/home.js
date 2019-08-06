@@ -70,7 +70,7 @@ class Home extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            exam: 'YKS',
+            exam: this.props.choosenExam,
             subject: '',
             isModalVisible: false,
             // Mode button variables
@@ -457,7 +457,8 @@ class Home extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    profilePicture: state.user.profilePicture
+    profilePicture: state.user.profilePicture,
+    choosenExam: state.user.choosenExam
 })
 
 const mapDispatchToProps = dispatch => ({

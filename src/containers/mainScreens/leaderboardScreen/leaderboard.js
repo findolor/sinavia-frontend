@@ -117,6 +117,8 @@ class Leaderboard extends React.Component {
         this.updateOrderCategoryButtonUI(selectedMode)
     }
 
+    pickerSelectCourse = () => {}
+
     render() {
         return (
             <View style={styles.container}>
@@ -198,7 +200,7 @@ class Leaderboard extends React.Component {
                                     defaultValue={'Genel'}
                                     options={this.state.courseLeaderboardList}
                                     onSelect={(idx, value) =>
-                                        this.pickerSelect(idx, value)
+                                        this.pickerSelectCourse(idx, value)
                                     }
                                 />
                             </View>
@@ -227,10 +229,10 @@ class Leaderboard extends React.Component {
                                         styles.pickerDropdownText
                                     }
                                     dropdownStyle={styles.pickerDropdown}
-                                    defaultValue={'Genel'}
-                                    options={this.state.courseLeaderboardList}
+                                    defaultValue={''}
+                                    options={this.state.subjectLeaderboardList}
                                     onSelect={(idx, value) =>
-                                        this.pickerSelect(idx, value)
+                                        this.pickerSelectSubject(idx, value)
                                     }
                                 />
                             </View>
