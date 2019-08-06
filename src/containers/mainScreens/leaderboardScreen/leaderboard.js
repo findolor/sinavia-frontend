@@ -14,6 +14,7 @@ import { connect } from 'react-redux'
 import { userActions } from '../../../redux/user/actions'
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
 import { LGS, YKS } from '../../../components/mainScreen/carousel/static/exams'
+import * as courses from '../../../components/mainScreen/carousel/static/courses'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import PROFILE_PIC from '../../../assets/profile2.jpg'
@@ -67,7 +68,9 @@ class Leaderboard extends React.Component {
             friendsButtonTextColor: '#2E313C',
             // Dropwodn list variables
             courseLeaderboardList: ['Genel'],
-            subjectLeaderboardList: []
+            subjectLeaderboardList: [],
+            subjectLeaderboardListDefaultValue: '',
+            isSubjectDropdownVisible: false
         }
     }
 
@@ -117,7 +120,71 @@ class Leaderboard extends React.Component {
         this.updateOrderCategoryButtonUI(selectedMode)
     }
 
-    pickerSelectCourse = () => {}
+    pickerSelectCourse = (idx, value) => {
+        this.setState({ isSubjectDropdownVisible: false })
+        setTimeout(() => {
+            this.subjectSwitchPicker(value)
+        }, 300)
+    }
+
+    pickerSelectSubject = (idx, value) => {}
+
+    subjectSwitchPicker = selectedCourse => {
+        switch (this.props.choosenExam) {
+            case 'LGS':
+                switch (selectedCourse) {
+                    case 'Genel':
+                        this.setState({
+                            subjectLeaderboardList: [],
+                            subjectLeaderboardListDefaultValue: ''
+                        })
+                        return
+                    case 'Türkçe':
+                        this.setState({
+                            subjectLeaderboardList: courses.LGS.turkce,
+                            subjectLeaderboardListDefaultValue: 'Hepsi',
+                            isSubjectDropdownVisible: true
+                        })
+                        return
+                    case 'Matematik':
+                        this.setState({
+                            subjectLeaderboardList: courses.LGS.matematik,
+                            subjectLeaderboardListDefaultValue: 'Hepsi',
+                            isSubjectDropdownVisible: true
+                        })
+                        return
+                    case 'Tarih':
+                        this.setState({
+                            subjectLeaderboardList: courses.LGS.tarih,
+                            subjectLeaderboardListDefaultValue: 'Hepsi',
+                            isSubjectDropdownVisible: true
+                        })
+                        return
+                    case 'Fen Bilimleri':
+                        this.setState({
+                            subjectLeaderboardList: courses.LGS.fen,
+                            subjectLeaderboardListDefaultValue: 'Hepsi',
+                            isSubjectDropdownVisible: true
+                        })
+                        return
+                    case 'İngilizce':
+                        this.setState({
+                            subjectLeaderboardList: courses.LGS.ingilizce,
+                            subjectLeaderboardListDefaultValue: 'Hepsi',
+                            isSubjectDropdownVisible: true
+                        })
+                        return
+                    case 'Din Kültürü':
+                        this.setState({
+                            subjectLeaderboardList: courses.LGS.din,
+                            subjectLeaderboardListDefaultValue: 'Hepsi',
+                            isSubjectDropdownVisible: true
+                        })
+                        return
+                }
+                return
+        }
+    }
 
     render() {
         return (
@@ -221,21 +288,28 @@ class Leaderboard extends React.Component {
                                     </View>
                                 </ImageBackground>
                             </View>
-                            <View style={styles.dropdownContainer}>
-                                <DropDown
-                                    style={styles.picker}
-                                    textStyle={styles.pickerText}
-                                    dropdownTextStyle={
-                                        styles.pickerDropdownText
-                                    }
-                                    dropdownStyle={styles.pickerDropdown}
-                                    defaultValue={''}
-                                    options={this.state.subjectLeaderboardList}
-                                    onSelect={(idx, value) =>
-                                        this.pickerSelectSubject(idx, value)
-                                    }
-                                />
-                            </View>
+                            {this.state.isSubjectDropdownVisible && (
+                                <View style={styles.dropdownContainer}>
+                                    <DropDown
+                                        style={styles.picker}
+                                        textStyle={styles.pickerText}
+                                        dropdownTextStyle={
+                                            styles.pickerDropdownText
+                                        }
+                                        dropdownStyle={styles.pickerDropdown}
+                                        defaultValue={
+                                            this.state
+                                                .subjectLeaderboardListDefaultValue
+                                        }
+                                        options={
+                                            this.state.subjectLeaderboardList
+                                        }
+                                        onSelect={(idx, value) =>
+                                            this.pickerSelectSubject(idx, value)
+                                        }
+                                    />
+                                </View>
+                            )}
                         </View>
                         <View style={styles.nameAndScoreContainer}>
                             <Text style={styles.nameText}>Hakan Yılmaz</Text>

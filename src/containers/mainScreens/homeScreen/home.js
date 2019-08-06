@@ -116,25 +116,22 @@ class Home extends React.Component {
         if (sinav === 'LGS') {
             switch (index) {
                 case 0:
-                    choosenSubject = courses.lgsTurkce
+                    choosenSubject = courses.LGS.turkce
                     break
                 case 1:
-                    choosenSubject = courses.lgsMat
+                    choosenSubject = courses.LGS.matematik
                     break
                 case 2:
-                    choosenSubject = courses.lgsTarih
+                    choosenSubject = courses.LGS.tarih
                     break
                 case 3:
-                    choosenSubject = courses.lgsFen
+                    choosenSubject = courses.LGS.fen
                     break
                 case 4:
-                    choosenSubject = courses.lgsIng
+                    choosenSubject = courses.LGS.ingilizce
                     break
                 case 5:
-                    choosenSubject = courses.lgsDin
-                    break
-                default:
-                    choosenSubject = courses.lgsTurkce
+                    choosenSubject = courses.LGS.din
                     break
             }
         } else if (sinav === 'YKS') {
