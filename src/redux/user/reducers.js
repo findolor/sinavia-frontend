@@ -21,6 +21,15 @@ export default (state = INITIAL_STATE, action) => {
                 profilePicture: action.payload.profilePicture,
                 coverPicture: action.payload.coverPicture
             }
+        case userTypes.LOGIN_USER_SUCCESS:
+            return {
+                ...state,
+                username: action.payload.username,
+                name: action.payload.name,
+                lastname: action.payload.lastname,
+                profilePicture: action.payload.profilePicture,
+                coverPicture: action.payload.coverPicture
+            }
         case userTypes.FETCH_USER_SUCCESS:
             return {
                 ...state,

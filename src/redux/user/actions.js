@@ -6,7 +6,8 @@ export const userTypes = {
     GET_USER_TOKEN: 'get_user_token',
     CHECK_USER_TOKEN: 'check_user_token',
     AUTHENTICATE_USER_SUCCESS: 'authenticate_user_success',
-    LOGIN_USER: 'login_user'
+    LOGIN_USER: 'login_user',
+    LOGIN_USER_SUCCESS: 'login_user_success'
 }
 
 const createUser = userInformation => {

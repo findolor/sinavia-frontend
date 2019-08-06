@@ -3,6 +3,7 @@ import { getToken } from '../../services/apiServices/token/getToken'
 import { getUser } from '../../services/apiServices/user/getUser'
 import { deviceStorage } from '../../services/deviceStorage'
 import { navigationReset } from '../../services/navigationService'
+import { userTypes } from '../../redux/user/actions'
 
 export function* loginUser(action) {
     try {
@@ -27,6 +28,17 @@ export function* loginUser(action) {
             'userInformation',
             JSON.stringify(userInformation)
         )
+
+        yield put({
+            type: userTypes.LOGIN_USER_SUCCESS,
+            payload: {
+                username: userInformation.username,
+                name: userInformation.name,
+                lastname: userInformation.lastname,
+                profilePicture: userInformation.profilePicture,
+                coverPicture: userInformation.coverPicture
+            }
+        })
 
         // Going to the main screen
         navigationReset('main')
