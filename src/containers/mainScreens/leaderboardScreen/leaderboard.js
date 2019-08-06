@@ -10,6 +10,8 @@ import {
     TouchableOpacity,
     View
 } from 'react-native'
+import { connect } from 'react-redux'
+import { userActions } from '../../../redux/user/actions'
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
 import { LGS, YKS } from '../../../components/mainScreen/carousel/static/exams'
 import styles from './style'
@@ -53,19 +55,6 @@ const data = [
     }
 ]
 
-const courses = [
-    'YKS',
-    'LGS',
-    'KPSS',
-    'ALES',
-    'DGS',
-    'Dil Sınavları',
-    'TUS',
-    'DUS',
-    'EUS',
-    'Ehliyet Sınavları'
-]
-
 class Leaderboard extends React.Component {
     constructor(props) {
         super(props)
@@ -82,7 +71,22 @@ class Leaderboard extends React.Component {
         }
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+        const courseList = this.state.courseLeaderboardList
+
+        this.courseSwitchPicker(courseList)
+    }
+
+    courseSwitchPicker = courseList => {
+        switch (this.props.choosenExam) {
+            case 'LGS':
+                LGS.forEach(course => {
+                    courseList.push(course.courseName)
+                })
+                return
+        }
+        this.setState({ courseLeaderboardList: courseList })
+    }
 
     updateOrderCategoryButtonUI = orderMode => {
         switch (orderMode) {
@@ -191,7 +195,8 @@ class Leaderboard extends React.Component {
                                         styles.pickerDropdownText
                                     }
                                     dropdownStyle={styles.pickerDropdown}
-                                    defaultValue={this.state.exam}
+                                    defaultValue={'Genel'}
+                                    options={this.state.courseLeaderboardList}
                                     onSelect={(idx, value) =>
                                         this.pickerSelect(idx, value)
                                     }
@@ -222,7 +227,8 @@ class Leaderboard extends React.Component {
                                         styles.pickerDropdownText
                                     }
                                     dropdownStyle={styles.pickerDropdown}
-                                    defaultValue={this.state.exam}
+                                    defaultValue={'Genel'}
+                                    options={this.state.courseLeaderboardList}
                                     onSelect={(idx, value) =>
                                         this.pickerSelect(idx, value)
                                     }
@@ -613,4 +619,13 @@ class Leaderboard extends React.Component {
     }
 }
 
-export default Leaderboard
+const mapStateToProps = state => ({
+    choosenExam: state.user.choosenExam
+})
+
+const mapDispatchToProps = dispatch => ({})
+
+export default connect(
+    mapStateToProps,
+    null
+)(Leaderboard)

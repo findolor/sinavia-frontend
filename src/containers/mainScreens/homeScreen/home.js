@@ -9,6 +9,7 @@ import {
     View
 } from 'react-native'
 import { connect } from 'react-redux'
+import { userActions } from '../../../redux/user/actions'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
@@ -102,6 +103,7 @@ class Home extends React.Component {
             exam: value
         })
         await deviceStorage.saveItemToStorage('choosenExam', value)
+        this.props.saveChoosenExam(value)
     }
 
     onPressCard(title) {
@@ -458,9 +460,12 @@ const mapStateToProps = state => ({
     profilePicture: state.user.profilePicture
 })
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+    saveChoosenExam: choosenExam =>
+        dispatch(userActions.saveChoosenExam(choosenExam))
+})
 
 export default connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
 )(Home)

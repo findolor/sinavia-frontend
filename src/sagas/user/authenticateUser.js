@@ -5,9 +5,9 @@ import { deviceStorage } from '../../services/deviceStorage'
 import { navigationReset } from '../../services/navigationService'
 import { userTypes } from '../../redux/user/actions'
 
-async function getUserInformation(key) {
-    const userInformation = await deviceStorage.getItemFromStorage(key)
-    return userInformation
+async function getFromStorage(key) {
+    const item = await deviceStorage.getItemFromStorage(key)
+    return item
 }
 
 function goToMainScreen() {
@@ -23,7 +23,7 @@ export function* authenticateUser(action) {
         let res = yield call(checkToken, action.payload)
 
         // We get userInformation from storage
-        let user = yield call(getUserInformation, 'userInformation')
+        let user = yield call(getFromStorage, 'userInformation')
 
         let userInformation = JSON.parse(user)
 
@@ -39,12 +39,16 @@ export function* authenticateUser(action) {
             }
         })
 
+        let choosenExam = yield call(getFromStorage, 'choosenExam')
+
+        yield put({ type: userTypes.SAVE_CHOOSEN_EXAM, payload: choosenExam })
+
         if (res) goToMainScreen()
     } catch (error) {
         // If we get unauthorized from api
         try {
             // We get the user credentials from device storage
-            const info = yield call(getUserInformation, 'userCredentials')
+            const info = yield call(getFromStorage, 'userCredentials')
 
             const userCredentials = JSON.parse(info)
 
@@ -61,7 +65,7 @@ export function* authenticateUser(action) {
             deviceStorage.saveItemToStorage('userId', res.id)
 
             // We get userInformation from storage
-            let user = yield call(getUserInformation, 'userInformation')
+            let user = yield call(getFromStorage, 'userInformation')
 
             let userInformation = JSON.parse(user)
 
@@ -75,6 +79,13 @@ export function* authenticateUser(action) {
                     profilePicture: userInformation.profilePicture,
                     coverPicture: userInformation.coverPicture
                 }
+            })
+
+            choosenExam = yield call(getFromStorage, 'choosenExam')
+
+            yield put({
+                type: userTypes.SAVE_CHOOSEN_EXAM,
+                payload: choosenExam
             })
 
             goToMainScreen()
