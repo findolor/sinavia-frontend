@@ -15,6 +15,8 @@ import {
     navigationReset
 } from '../../../services/navigationService'
 import { deviceStorage } from '../../../services/deviceStorage'
+import { connect } from 'react-redux'
+// Picture imports
 import returnLogo from '../../../assets/return.png'
 import nebula from '../../../assets/cover.jpg'
 import PROFILE_PIC from '../../../assets/profile2.jpg'
@@ -55,7 +57,7 @@ class Settings extends React.Component {
                 </View>
                 <View style={styles.profileContainer}>
                     <ImageBackground
-                        source={nebula}
+                        source={{ uri: this.props.coverPicture }}
                         style={styles.coverPhoto}
                         imageStyle={{ borderRadius: 30 }}
                     >
@@ -66,17 +68,18 @@ class Settings extends React.Component {
                         </View>
                         <View style={styles.profilePicView}>
                             <ImageBackground
-                                source={PROFILE_PIC}
+                                source={{ uri: this.props.profilePicture }}
                                 style={styles.profilePic}
                                 imageStyle={{ borderRadius: 100 }}
                             >
-                                <TouchableOpacity>
-                                    <View style={styles.editProfilePicView}>
-                                        <Text style={styles.editText}>
-                                            Düzenle
-                                        </Text>
-                                    </View>
-                                </TouchableOpacity>
+                                <View style={styles.editProfilePicView}>
+                                    <TouchableOpacity>
+                                        <Image
+                                            source={EDIT}
+                                            style={styles.editImg}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
                             </ImageBackground>
                         </View>
                     </ImageBackground>
@@ -122,4 +125,16 @@ class Settings extends React.Component {
     }
 }
 
-export default Settings
+const mapStateToProps = state => ({
+    name: state.user.name,
+    lastname: state.user.lastname,
+    profilePicture: state.user.profilePicture,
+    coverPicture: state.user.coverPicture
+})
+
+const mapDispatchToProps = dispatch => ({})
+
+export default connect(
+    mapStateToProps,
+    null
+)(Settings)
