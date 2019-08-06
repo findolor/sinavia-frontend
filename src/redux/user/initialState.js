@@ -1,3 +1,1 @@
-export const INITIAL_STATE = {
-    temp: {}
-}
+export const INITIAL_STATE = {}

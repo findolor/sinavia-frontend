@@ -1,5 +1,3 @@
-import env from 'react-native-config'
-
 const config = {
     api: {
         host: 'http://localhost:4000/api/v1/',

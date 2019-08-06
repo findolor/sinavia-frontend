@@ -2,23 +2,22 @@ import React from 'react'
 import {
     Image,
     View,
-    StatusBar,
     Text,
     TextInput,
     TouchableOpacity,
     Keyboard,
     Animated,
-    Platform
+    Platform,
+    Alert
 } from 'react-native'
-import {
-    navigationPush,
-    navigationReset
-} from '../../../services/navigationService'
+import { navigationPush } from '../../../services/navigationService'
 import { SCENE_KEYS } from '../../../config/index'
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
+import { connect } from 'react-redux'
+import { userActions } from '../../../redux/user/actions'
 import { AuthButton, AuthTextInput } from '../../../components/authScreen'
 import styles from './style'
 import NotchView from '../../../components/notchView'
@@ -30,13 +29,15 @@ const IMAGE_HEIGHT = hp(40)
 const IMAGE_HEIGHT_SMALL = hp(25)
 const ANIMATION_DURATION = 100
 
-export default class Login extends React.Component {
+class Login extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             showForgotPasswordText: true,
             showPasswordEye: false,
-            hidePassword: true
+            hidePassword: true,
+            email: '',
+            password: ''
         }
 
         this.keyboardHeight = new Animated.Value(0)
@@ -94,6 +95,32 @@ export default class Login extends React.Component {
         this.setState({ hidePassword: !this.state.hidePassword })
     }
 
+    emailOnChange = text => {
+        this.setState({ email: text })
+    }
+
+    loginOnPress = () => {
+        let userCredentials = {
+            email: this.state.email,
+            password: this.state.password
+        }
+
+        let userCredentialsKeys = Object.keys(userCredentials)
+        let wrongCredentialList = []
+        let wrongCredentialString = 'Yanlış alanlar! ->'
+
+        userCredentialsKeys.forEach(element => {
+            if (userCredentials[element] === '') {
+                wrongCredentialList.push(element)
+                wrongCredentialString += `${element}, `
+            }
+        })
+
+        if (Object.keys(wrongCredentialList).length === 0)
+            this.props.loginUser(userCredentials)
+        else Alert.alert(wrongCredentialString)
+    }
+
     render() {
         return (
             <Animated.View
@@ -120,6 +147,7 @@ export default class Login extends React.Component {
                     <AuthTextInput
                         placeholder="Kullanıcı Adı veya E-Posta                                                                 "
                         placeholderTextColor="#8A8888"
+                        onChangeText={email => this.emailOnChange(email)}
                     />
                     <View style={styles.textInputContainer}>
                         <TextInput
@@ -136,7 +164,8 @@ export default class Login extends React.Component {
                                 } else {
                                     this.setState({
                                         showForgotPasswordText: false,
-                                        showPasswordEye: true
+                                        showPasswordEye: true,
+                                        password: text
                                     })
                                 }
                             }}
@@ -181,12 +210,24 @@ export default class Login extends React.Component {
                         color="#00D9EF"
                         underlayColor="#1a5d63"
                         buttonText="Giriş Yap"
-                        onPress={() => {
-                            navigationReset('main')
-                        }}
+                        onPress={this.loginOnPress}
                     />
                 </View>
             </Animated.View>
         )
     }
 }
+
+const mapStateToProps = state => ({
+    isLoggedIn: state.user.isLoggedIn
+})
+
+const mapDispatchToProps = dispatch => ({
+    loginUser: userCredentials =>
+        dispatch(userActions.loginUser(userCredentials))
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Login)

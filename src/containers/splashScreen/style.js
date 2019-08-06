@@ -13,8 +13,11 @@ export default StyleSheet.create({
     },
     appLogo: {
         resizeMode: 'contain',
-        height: hp(60),
-        width: wp(60)
+        height: hp(40),
+        width: wp(40)
+    },
+    logoContainer: {
+        paddingLeft: wp(5)
     },
     sinaviaText: {
         fontFamily: 'Averta-ExtraBoldItalic',
