@@ -104,11 +104,11 @@ export default StyleSheet.create({
     },
     modalView: {
         backgroundColor: '#ffffff',
-        height: hp(44),
+        height: hp(60),
         width: wp(87.5),
-        marginTop: hp(15),
-        borderColor: '#27AAE1',
-        borderWidth: 3,
+        marginTop: hp(7),
+        borderColor: '#00D9EF',
+        borderWidth: wp(0.75),
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center'
@@ -221,5 +221,104 @@ export default StyleSheet.create({
         resizeMode: 'contain',
         height: hp(9),
         width: wp(9)
+    },
+    createOrJoinRoomButtonsContainer: {
+        height: hp(27),
+        width: wp(60),
+        justifyContent: 'space-between'
+    },
+    createOrJoinRoomButton: {
+        height: hp(10),
+        width: wp(60),
+        backgroundColor: '#00D9EF',
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    gameCodeContainer: {
+        height: hp(12),
+        width: wp(87.5),
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    gameCodeBox: {
+        height: hp(10),
+        width: wp(66),
+        borderWidth: wp(0.5),
+        borderRadius: 10,
+        borderColor: '#707070',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    gameCodeText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: wp(10),
+        letterSpacing: wp(1),
+        color: '#5C5C5C'
+    },
+    copyImage: {
+        height: hp(3),
+        width: hp(3),
+        position: 'absolute',
+        left: wp(25),
+        bottom: hp(-0.5)
+    },
+    gameCodeInfoTextContainer: {
+        height: hp(8),
+        width: wp(66),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    gameCodeInfoText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: wp(3),
+        color: '#A8A8A8'
+    },
+    usersListContainer: {
+        height: hp(35),
+        width: wp(87.5),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    userRow: {
+        height: hp(6),
+        width: wp(66),
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderBottomWidth: wp(0.1),
+        borderBottomColor: '#CACACA'
+    },
+    profilePicContainerinRow: {
+        height: hp(6),
+        width: wp(15),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    userPic: {
+        height: hp(5),
+        width: hp(5),
+        borderRadius: 100
+    },
+    nameContainer: {
+        height: hp(6),
+        width: wp(51),
+        justifyContent: 'center',
+        alignItems: 'flex-start'
+    },
+    nameText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: wp(4),
+        color: '#5C5C5C'
+    },
+    usersCounterContainer: {
+        height: hp(5),
+        width: wp(87.5),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    usersCounterText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: wp(4),
+        color: '#5C5C5C'
     }
 })

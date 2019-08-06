@@ -311,7 +311,6 @@ class Register extends React.Component {
                     height={hp(7)}
                     width={wp(85)}
                     color="#00D9EF"
-                    underlayColor="#1a5d63"
                     buttonText="Kayıt Ol"
                     onPress={this.registerOnPress}
                 />

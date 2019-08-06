@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, TouchableHighlight, Text } from 'react-native'
+import { StyleSheet, TouchableOpacity, Text } from 'react-native'
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp
@@ -17,7 +17,7 @@ export default (AuthButton = ({
     marginBottom
 }) => {
     return (
-        <TouchableHighlight
+        <TouchableOpacity
             style={[
                 styles.button,
                 { backgroundColor: color },
@@ -26,11 +26,10 @@ export default (AuthButton = ({
                 { height: height },
                 { width: width }
             ]}
-            underlayColor={underlayColor}
             onPress={onPress}
         >
             <Text style={styles.buttonText}>{buttonText}</Text>
-        </TouchableHighlight>
+        </TouchableOpacity>
     )
 })
 
