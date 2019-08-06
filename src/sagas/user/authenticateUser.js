@@ -28,12 +28,12 @@ export function* authenticateUser(action) {
             // We get the user credentials from device storage
             const info = yield call(getUserInformation, 'userCredentials')
 
-            const userInformation = JSON.parse(info)
+            const userCredentials = JSON.parse(info)
 
             // We send the credentials for getting the token and id
             const response = yield call(getToken, {
-                email: userInformation.email,
-                password: userInformation.password
+                email: userCredentials.email,
+                password: userCredentials.password
             })
 
             // We save the token
