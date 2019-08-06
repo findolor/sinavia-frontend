@@ -13,6 +13,7 @@ import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
+import { deviceStorage } from '../../../services/deviceStorage'
 import Carousel from 'react-native-snap-carousel'
 import {
     sliderWidth,
@@ -96,10 +97,11 @@ class Home extends React.Component {
         )
     }
 
-    pickerSelect(idx, value) {
+    async pickerSelect(idx, value) {
         this.setState({
             exam: value
         })
+        await deviceStorage.saveItemToStorage('choosenExam', value)
     }
 
     onPressCard(title) {

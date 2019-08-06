@@ -75,9 +75,14 @@ class Leaderboard extends React.Component {
             globalButtonBackgroundColor: '#FF6D00',
             globalButtonTextColor: '#FFFFFF',
             friendsButtonBackgroundColor: '#FFFFFF',
-            friendsButtonTextColor: '#2E313C'
+            friendsButtonTextColor: '#2E313C',
+            // Dropwodn list variables
+            courseLeaderboardList: ['Genel'],
+            subjectLeaderboardList: []
         }
     }
+
+    componentDidMount() {}
 
     updateOrderCategoryButtonUI = orderMode => {
         switch (orderMode) {
