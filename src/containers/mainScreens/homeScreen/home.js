@@ -32,6 +32,7 @@ import AuthButton from '../../../components/authScreen/authButton'
 import PROFILE_PIC from '../../../assets/profile2.jpg'
 import CLOSE_BUTTON from '../../../assets/closeButton.png'
 import NOTIFICATION_LOGO from '../../../assets/mainScreens/notification.png'
+import BACK_BUTTON from '../../../assets/backButton.png'
 
 import {
     navigationPush,
@@ -326,13 +327,15 @@ class Home extends React.Component {
     gameModesView() {
         return (
             <View style={styles.modal}>
-                <TouchableOpacity
-                    onPress={() => {
-                        this.setState({ isModalVisible: false })
-                    }}
-                >
-                    <Image source={CLOSE_BUTTON} style={styles.xLogo} />
-                </TouchableOpacity>
+                <View style={styles.onlyCloseButtonContainer}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.setState({ isModalVisible: false })
+                        }}
+                    >
+                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.modalView}>
                     <Text style={styles.modalSubjectText}>
                         {this.state.subject}
@@ -427,7 +430,7 @@ class Home extends React.Component {
                     height={hp(7)}
                     width={wp(87.5)}
                     color="#00D9EF"
-                    buttonText="Başla"
+                    buttonText="Başlat"
                     onPress={this.playButtonOnPress}
                 />
             </View>
@@ -437,13 +440,22 @@ class Home extends React.Component {
     groupModesView() {
         return (
             <View style={styles.modal}>
-                <TouchableOpacity
-                    onPress={() => {
-                        this.setState({ isModalVisible: false })
-                    }}
-                >
-                    <Image source={CLOSE_BUTTON} style={styles.xLogo} />
-                </TouchableOpacity>
+                <View style={styles.backAndCloseButtonsContainer}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.setState({ visibleView: 'GAME_MODES' })
+                        }}
+                    >
+                        <Image source={BACK_BUTTON} style={styles.backLogo} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.setState({ isModalVisible: false })
+                        }}
+                    >
+                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.modalView}>
                     <View style={styles.createOrJoinRoomButtonsContainer}>
                         <AuthButton
@@ -464,7 +476,7 @@ class Home extends React.Component {
                             color="#00D9EF"
                             buttonText="Oyuna katıl"
                             onPress={() =>
-                                this.setState({ visibleView: 'IS_JOINED_ROOM' })
+                                this.setState({ visibleView: 'JOIN_ROOM' })
                             }
                         />
                     </View>
@@ -473,16 +485,74 @@ class Home extends React.Component {
         )
     }
 
-    createRoomView() {
+    joinRoomView() {
         return (
             <View style={styles.modal}>
+                <View style={styles.backAndCloseButtonsContainer}>
                 <TouchableOpacity
                     onPress={() => {
-                        this.setState({ visibleView: 'QUIT_GROUP_GAME' })
+                        this.setState({ visibleView: 'GROUP_MODES' })
+                    }}
+                >
+                    <Image source={BACK_BUTTON} style={styles.backLogo} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => {
+                        this.setState({ isModalVisible: false })
                     }}
                 >
                     <Image source={CLOSE_BUTTON} style={styles.xLogo} />
                 </TouchableOpacity>
+                </View>
+                <View style={styles.modalView}>
+                    <View style={styles.joinGameCodeContainer}>
+                        <View style={styles.gameCodeBox}>
+                            <TextInput
+                                style={styles.joinGameCodeTextInput}
+                                placeholder="Oda Kodu"
+                                placeholderTextColor="#A8A8A8"
+                                autoCapitalize="characters"
+                            />
+                        </View>
+                    </View>
+                    <View style={styles.joinGameInfoContainer}>
+                        <Text style={styles.joinGameInfoText}>
+                            Aldığın oda kodunu
+                        </Text>
+                        <Text style={styles.joinGameInfoText}>
+                            yukarıdaki alana girerek
+                        </Text>
+                        <Text style={styles.joinGameInfoText}>
+                            oyuna dahil ol
+                        </Text>
+                    </View>
+                </View>
+                <AuthButton
+                    marginTop={hp(2)}
+                    height={hp(7)}
+                    width={wp(87.5)}
+                    color="#00D9EF"
+                    buttonText="Onayla"
+                    onPress={() => {
+                        this.setState({ visibleView: 'IS_JOINED_ROOM'})
+                    }}
+                />
+            </View>
+        )
+    }
+
+    createRoomView() {
+        return (
+            <View style={styles.modal}>
+                <View style={styles.onlyCloseButtonContainer}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.setState({ visibleView: 'QUIT_GROUP_GAME' })
+                        }}
+                    >
+                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.modalView}>
                     <View style={styles.gameCodeContainer}>
                         <View style={styles.gameCodeBox}>
@@ -577,60 +647,18 @@ class Home extends React.Component {
         )
     }
 
-    joinRoomView() {
-        return (
-            <View style={styles.modal}>
-                <TouchableOpacity
-                    onPress={() => {
-                        this.setState({ visibleView: 'QUIT_GROUP_GAME' })
-                    }}
-                >
-                    <Image source={CLOSE_BUTTON} style={styles.xLogo} />
-                </TouchableOpacity>
-                <View style={styles.modalView}>
-                    <View style={styles.joinGameCodeContainer}>
-                        <View style={styles.gameCodeBox}>
-                            <TextInput
-                                style={styles.joinGameCodeTextInput}
-                                placeholder="Oda Kodu"
-                                placeholderTextColor="#A8A8A8"
-                                autoCapitalize="characters"
-                            />
-                        </View>
-                    </View>
-                    <View style={styles.joinGameInfoContainer}>
-                        <Text style={styles.joinGameInfoText}>
-                            Aldığın oda kodunu
-                        </Text>
-                        <Text style={styles.joinGameInfoText}>
-                            yukarıdaki alana girerek
-                        </Text>
-                        <Text style={styles.joinGameInfoText}>
-                            oyuna dahil ol
-                        </Text>
-                    </View>
-                </View>
-                <AuthButton
-                    marginTop={hp(2)}
-                    height={hp(7)}
-                    width={wp(87.5)}
-                    color="#00D9EF"
-                    buttonText="Onayla"
-                />
-            </View>
-        )
-    }
-
     isJoinedRoomView() {
         return (
             <View style={styles.modal}>
-                <TouchableOpacity
-                    onPress={() => {
-                        this.setState({ visibleView: 'QUIT_GROUP_GAME' })
-                    }}
-                >
-                    <Image source={CLOSE_BUTTON} style={styles.xLogo} />
-                </TouchableOpacity>
+                <View style={styles.onlyCloseButtonContainer}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.setState({ visibleView: 'QUIT_GROUP_GAME' })
+                        }}
+                    >
+                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.modalView}>
                     <View style={styles.isJoinedRoomSubjectContainer}>
                         <Text style={styles.modalSubjectText}>

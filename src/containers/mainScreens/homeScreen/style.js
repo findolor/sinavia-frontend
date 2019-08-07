@@ -106,7 +106,7 @@ export default StyleSheet.create({
         backgroundColor: '#ffffff',
         height: hp(67),
         width: wp(87.5),
-        marginTop: hp(3),
+        marginTop: hp(2),
         borderColor: '#00D9EF',
         borderWidth: wp(0.75),
         borderRadius: 10,
@@ -197,11 +197,29 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    backAndCloseButtonsContainer: {
+        height: hp(6),
+        width: wp(86),
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: hp(6)
+    },
+    onlyCloseButtonContainer: {
+        height: hp(6),
+        width: wp(86),
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        marginTop: hp(6)
+    },
     xLogo: {
         height: hp(4),
-        width: hp(4),
-        marginTop: hp(5),
-        marginLeft: wp(77)
+        width: hp(4)
+    },
+    backLogo: {
+        height: hp(4),
+        width: hp(4)
     },
     modal: {
         flex: 1,
@@ -355,7 +373,7 @@ export default StyleSheet.create({
         width: wp(15),
         borderColor: '#707070',
         borderWidth: wp(0.5),
-        borderRadius: 15,
+        borderRadius: 10,
         marginBottom: hp(1)
     },
     questionPickerText: {
@@ -371,8 +389,6 @@ export default StyleSheet.create({
     questionPickerDropdownText: {
         marginTop: hp(1.3),
         marginBottom: hp(1),
-        marginLeft: wp(1),
-        marginRight: wp(1),
         fontSize: hp(2),
         color: '#F7941E',
         textAlign: 'center',
@@ -383,9 +399,9 @@ export default StyleSheet.create({
         width: wp(15),
         borderColor: '#707070',
         borderWidth: wp(0.5),
-        borderRadius: 15,
+        borderRadius: 10,
         marginTop: hp(0.5),
-        marginLeft: wp(-0.5)
+        marginRight: wp(-0.5)
     },
     joinGameCodeContainer: {
         height: hp(12),
