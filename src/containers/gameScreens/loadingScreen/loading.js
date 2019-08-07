@@ -14,24 +14,26 @@ class LoadingScreen extends React.Component {
         super(props)
         this.state = {
             gameMode: {
-                ranked: 'rankedRoom'
+                ranked: 'rankedRoom',
+                group: 'groupRoom'
             },
             player: {
                 playerOne: {
                     create: true,
-                    userLevel: 4,
                     examName: 'LGS',
                     courseName: 'Matematik',
                     subjectName: 'Sayilar',
-                    databaseId: '4973ef67-cc68-4702-8082-f9ea6b69a463'
+                    databaseId: '4973ef67-cc68-4702-8082-f9ea6b69a463',
+                    roomCode: 'aaa',
+                    maxClientNumber: 3
                 },
                 playerTwo: {
                     create: true,
-                    userLevel: 4,
                     examName: 'LGS',
                     courseName: 'Matematik',
                     subjectName: 'Sayilar',
-                    databaseId: 'c4b812f2-78d5-4bc3-a46a-87a03bdf97fc'
+                    databaseId: 'c4b812f2-78d5-4bc3-a46a-87a03bdf97fc',
+                    roomCode: 'aaa'
                 }
             },
             isDisabled: true
@@ -51,7 +53,7 @@ class LoadingScreen extends React.Component {
     joinRoom = () => {
         const selectedPlayer = this.state.player.playerOne
 
-        this.room = this.client.join(this.state.gameMode.ranked, selectedPlayer)
+        this.room = this.client.join(this.state.gameMode.group, selectedPlayer)
         // Opponent information
         let opponentUsername
         let opponentId
@@ -91,16 +93,6 @@ class LoadingScreen extends React.Component {
                 courseName: selectedPlayer.courseName,
                 subjectName: selectedPlayer.subjectName
             })
-
-            /* navigationPush(SCENE_KEYS.gameScreens.rankedGame, {
-                room: this.room,
-                client: this.client,
-                playerUsername: playerUsername,
-                playerProfilePicture: playerProfilePicture,
-                opponentUsername: opponentUsername,
-                opponentId: opponentId,
-                opponentProfilePicture: opponentProfilePicture
-            }) */
         })
     }
 
@@ -119,13 +111,6 @@ class LoadingScreen extends React.Component {
                         alignItems: 'center'
                     }}
                 >
-                    {/* <Buttonß
-                        title="play"
-                        onPress={this.play}
-                        disabled={this.state.isDisabled}
-                    >
-                        Play
-                    </Button> */}
                     <Text
                         style={{
                             fontFamily: 'Averta-BoldItalic',
