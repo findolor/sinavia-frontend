@@ -4,5 +4,5 @@ export const INITIAL_STATE = {
     lastname: '',
     profilePicture: '',
     coverPicture: '',
-    choosenExam: ''
+    choosenExam: 'YKS'
 }

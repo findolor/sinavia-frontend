@@ -41,7 +41,12 @@ export function* authenticateUser(action) {
 
         let choosenExam = yield call(getFromStorage, 'choosenExam')
 
-        yield put({ type: userTypes.SAVE_CHOOSEN_EXAM, payload: choosenExam })
+        if (choosenExam !== null) {
+            yield put({
+                type: userTypes.SAVE_CHOOSEN_EXAM,
+                payload: choosenExam
+            })
+        }
 
         if (res) goToMainScreen()
     } catch (error) {
@@ -83,10 +88,12 @@ export function* authenticateUser(action) {
 
             choosenExam = yield call(getFromStorage, 'choosenExam')
 
-            yield put({
-                type: userTypes.SAVE_CHOOSEN_EXAM,
-                payload: choosenExam
-            })
+            if (choosenExam !== null) {
+                yield put({
+                    type: userTypes.SAVE_CHOOSEN_EXAM,
+                    payload: choosenExam
+                })
+            }
 
             goToMainScreen()
         } catch (error) {
