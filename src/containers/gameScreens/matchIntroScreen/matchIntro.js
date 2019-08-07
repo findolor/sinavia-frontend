@@ -15,7 +15,7 @@ class MatchIntroScreen extends React.Component {
     componentDidMount() {
         // Waits for 5 sec and moves onto game screen
         setTimeout(() => {
-            navigationPush(SCENE_KEYS.gameScreens.rankedGame, {
+            navigationPush(SCENE_KEYS.gameScreens.groupGame, {
                 room: this.props.room,
                 client: this.props.client,
                 playerUsername: this.props.playerUsername,

@@ -17,7 +17,8 @@ import {
     RankedGame,
     LoadingScreen,
     GameStatsScreen,
-    MatchIntroScreen
+    MatchIntroScreen,
+    GroupGame
 } from '../containers/gameScreens'
 
 import { SplashScreen } from '../containers/splashScreen'
@@ -41,7 +42,8 @@ export const gameScreens = {
     rankedGame: RankedGame,
     loading: LoadingScreen,
     gameStats: GameStatsScreen,
-    matchIntro: MatchIntroScreen
+    matchIntro: MatchIntroScreen,
+    groupGame: GroupGame
 }
 
 export const splashScreen = SplashScreen

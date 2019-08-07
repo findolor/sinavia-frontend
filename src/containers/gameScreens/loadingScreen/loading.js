@@ -25,7 +25,7 @@ class LoadingScreen extends React.Component {
                     subjectName: 'Sayilar',
                     databaseId: '4973ef67-cc68-4702-8082-f9ea6b69a463',
                     roomCode: 'aaa',
-                    maxClientNumber: 3
+                    maxClientNumber: 2
                 },
                 playerTwo: {
                     create: true,

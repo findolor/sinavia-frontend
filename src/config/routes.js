@@ -76,6 +76,10 @@ const RouterComp = () => {
                         component={gameScreens.rankedGame}
                     />
                     <Scene
+                        key={SCENE_KEYS.gameScreens.groupGame}
+                        component={gameScreens.groupGame}
+                    />
+                    <Scene
                         key={SCENE_KEYS.gameScreens.gameStats}
                         component={gameScreens.gameStats}
                     />
