@@ -20,36 +20,36 @@ import SLIDE_DOWN from '../../../assets/slide_down.png'
 
 const data = [
     {
-        number: "11",
+        number: '11',
         name: 'Hakan Yılmaz',
         score: '400'
     },
     {
-        number: "11",
+        number: '11',
         name: 'Hakan Yılmaz',
         score: '400'
     },
     {
-        number: "11",
+        number: '11',
         name: 'Hakan Yılmaz',
         score: '400'
     },
     {
-        number: "11",
+        number: '11',
         name: 'Hakan Yılmaz',
         score: '400'
     },
     {
-        number: "11",
+        number: '11',
         name: 'Hakan Yılmaz',
         score: '400'
     },
     {
-        number: "11",
+        number: '11',
         name: 'Hakan Yılmaz',
         score: '400'
-    },
-];
+    }
+]
 
 class Leaderboard extends React.Component {
     constructor(props) {
@@ -424,27 +424,56 @@ class Leaderboard extends React.Component {
                             style={styles.slideDownRightImg}
                         />
                     </View>
-                    <FlatList data={this.state.data} showsHorizontalScrollIndicator={false} renderItem={({ item }) => {
-                        return (
-                            <View style={styles.tenToHundredUserRow}>
-                                <View style={styles.tenToHundredUserOrderContainer}>
-                                    <Text style={styles.tenToHundredUserOrderText}>
-                                        {item.number}
-                                    </Text>
+                    <FlatList
+                        data={this.state.data}
+                        showsHorizontalScrollIndicator={false}
+                        renderItem={({ item }) => {
+                            return (
+                                <View style={styles.tenToHundredUserRow}>
+                                    <View
+                                        style={
+                                            styles.tenToHundredUserOrderContainer
+                                        }
+                                    >
+                                        <Text
+                                            style={
+                                                styles.tenToHundredUserOrderText
+                                            }
+                                        >
+                                            {item.number}
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={
+                                            styles.tenToHundredUserNameContainer
+                                        }
+                                    >
+                                        <Text
+                                            style={
+                                                styles.tenToHundredUserNameText
+                                            }
+                                        >
+                                            {item.name}
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={
+                                            styles.tenToHundredUserScoreContainer
+                                        }
+                                    >
+                                        <Text
+                                            style={
+                                                styles.tenToHundredUserScoreText
+                                            }
+                                        >
+                                            {item.score}
+                                        </Text>
+                                    </View>
                                 </View>
-                                <View style={styles.tenToHundredUserNameContainer}>
-                                    <Text style={styles.tenToHundredUserNameText}>
-                                        {item.name}
-                                    </Text>
-                                </View>
-                                <View style={styles.tenToHundredUserScoreContainer}>
-                                    <Text style={styles.tenToHundredUserScoreText}>
-                                        {item.score}
-                                    </Text>
-                                </View>
-                            </View>
-                        );
-                    }} keyExtractor={(item, index) => index}/>
+                            )
+                        }}
+                        keyExtractor={(item, index) => index}
+                    />
                 </ScrollView>
                 <View style={styles.yourOrderTextContainer}>
                     <Text style={styles.yourOrderText}>

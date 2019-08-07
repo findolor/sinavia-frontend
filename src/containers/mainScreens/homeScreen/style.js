@@ -104,9 +104,9 @@ export default StyleSheet.create({
     },
     modalView: {
         backgroundColor: '#ffffff',
-        height: hp(60),
+        height: hp(67),
         width: wp(87.5),
-        marginTop: hp(7),
+        marginTop: hp(3),
         borderColor: '#00D9EF',
         borderWidth: wp(0.75),
         borderRadius: 10,
@@ -116,6 +116,7 @@ export default StyleSheet.create({
     modalSubjectText: {
         fontFamily: 'Averta-BoldItalic',
         color: '#F7941E',
+        marginTop: hp(1),
         fontSize: hp(3.3)
     },
     separatorContainer: {
@@ -197,8 +198,8 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     xLogo: {
-        height: hp(5),
-        width: hp(5),
+        height: hp(4),
+        width: hp(4),
         marginTop: hp(5),
         marginLeft: wp(77)
     },
@@ -223,7 +224,7 @@ export default StyleSheet.create({
         width: wp(9)
     },
     createOrJoinRoomButtonsContainer: {
-        height: hp(27),
+        height: hp(30),
         width: wp(60),
         justifyContent: 'space-between'
     },
@@ -247,24 +248,39 @@ export default StyleSheet.create({
         borderWidth: wp(0.5),
         borderRadius: 10,
         borderColor: '#707070',
+        flexDirection: 'row',
         justifyContent: 'center',
+        alignItems: 'center'
+    },
+    gameCodeBoxLeftView: {
+        height: hp(10),
+        width: wp(10)
+    },
+    gameCodeBoxTextView: {
+        height: hp(10),
+        width: wp(46),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    gameCodeBoxRightView: {
+        height: hp(10),
+        width: wp(10),
+        justifyContent: 'flex-end',
         alignItems: 'center'
     },
     gameCodeText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: wp(10),
+        fontSize: wp(7),
         letterSpacing: wp(1),
         color: '#5C5C5C'
     },
     copyImage: {
         height: hp(3),
         width: hp(3),
-        position: 'absolute',
-        left: wp(25),
-        bottom: hp(-0.5)
+        marginBottom: hp(1)
     },
     gameCodeInfoTextContainer: {
-        height: hp(8),
+        height: hp(7.5),
         width: wp(66),
         justifyContent: 'center',
         alignItems: 'center'
@@ -320,5 +336,107 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Bold',
         fontSize: wp(4),
         color: '#5C5C5C'
+    },
+    questionsNumberContainer: {
+        height: hp(7.5),
+        width: wp(66),
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    questionsNumberText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: wp(4.5),
+        color: '#5C5C5C',
+        marginBottom: hp(1)
+    },
+    questionNumberPicker: {
+        height: hp(6),
+        width: wp(15),
+        borderColor: '#707070',
+        borderWidth: wp(0.5),
+        borderRadius: 15,
+        marginBottom: hp(1)
+    },
+    questionPickerText: {
+        marginTop: hp(1.3),
+        marginBottom: hp(1),
+        marginLeft: wp(1),
+        marginRight: wp(1),
+        fontSize: hp(2),
+        color: '#F7941E',
+        textAlign: 'center',
+        textAlignVertical: 'center'
+    },
+    questionPickerDropdownText: {
+        marginTop: hp(1.3),
+        marginBottom: hp(1),
+        marginLeft: wp(1),
+        marginRight: wp(1),
+        fontSize: hp(2),
+        color: '#F7941E',
+        textAlign: 'center',
+        textAlignVertical: 'center'
+    },
+    questionPickerDropdown: {
+        height: hp(32),
+        width: wp(15),
+        borderColor: '#707070',
+        borderWidth: wp(0.5),
+        borderRadius: 15,
+        marginTop: hp(0.5),
+        marginLeft: wp(-0.5)
+    },
+    joinGameCodeContainer: {
+        height: hp(12),
+        width: wp(87.5),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    joinGameInfoContainer: {
+        height: hp(15),
+        width: wp(66),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    joinGameInfoText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: wp(4.5),
+        color: '#5C5C5C'
+    },
+    joinGameCodeTextInput: {
+        fontFamily: 'Averta-Regular',
+        fontSize: wp(7),
+        letterSpacing: wp(1)
+    },
+    isJoinedRoomSubjectContainer: {
+        height: hp(9),
+        width: wp(66),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    quitView: {
+        backgroundColor: '#ffffff',
+        height: hp(20),
+        width: wp(87.5),
+        marginTop: hp(35),
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#00D9EF',
+        borderWidth: wp(0.75),
+        borderRadius: 10
+    },
+    areYouSureText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: wp(4.5),
+        color: '#5C5C5C'
+    },
+    yesOrNoButtonsContainer: {
+        height: hp(10),
+        width: wp(87.5),
+        marginTop: hp(2),
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start'
     }
 })
