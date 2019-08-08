@@ -422,8 +422,7 @@ export default StyleSheet.create({
     },
     joinGameCodeTextInput: {
         fontFamily: 'Averta-Regular',
-        fontSize: wp(7),
-        letterSpacing: wp(1)
+        fontSize: wp(5)
     },
     isJoinedRoomSubjectContainer: {
         height: hp(9),

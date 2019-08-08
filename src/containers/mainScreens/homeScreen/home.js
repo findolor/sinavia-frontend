@@ -141,7 +141,8 @@ class Home extends React.Component {
             //Questions Number for Creating Group
             questionsNumber: '5',
             groupCode: '',
-            visibleView: ''
+            visibleView: '',
+            visibleRankedGameStartPress: ''
         }
     }
 
@@ -330,7 +331,7 @@ class Home extends React.Component {
                 <View style={styles.onlyCloseButtonContainer}>
                     <TouchableOpacity
                         onPress={() => {
-                            this.setState({ isModalVisible: false })
+                            this.setState({ isModalVisible: false, visibleRankedGameStartPress: '' })
                         }}
                     >
                         <Image source={CLOSE_BUTTON} style={styles.xLogo} />
@@ -345,8 +346,9 @@ class Home extends React.Component {
                     </View>
                     <View style={styles.gameModesContainer}>
                         <View style={styles.gameModeContainer}>
-                            <TouchableOpacity
-                                onPress={() => this.modeButtonOnPress('ranked')}
+                            <TouchableOpacity                         onPress={() => {
+                                this.setState({ visibleRankedGameStartPress: 'START_RANKED_GAME_PRESS' })
+                            }}
                             >
                                 <View
                                     style={[
@@ -371,7 +373,11 @@ class Home extends React.Component {
                         </View>
                         <View style={styles.gameModeContainer}>
                             <TouchableOpacity
-                                onPress={() => this.modeButtonOnPress('friend')}
+                                onPress={() =>
+                                    this.setState({
+                                        visibleRankedGameStartPress: ''
+                                    })
+                                }
                             >
                                 <View
                                     style={[
@@ -398,7 +404,8 @@ class Home extends React.Component {
                             <TouchableOpacity
                                 onPress={() =>
                                     this.setState({
-                                        visibleView: 'GROUP_MODES'
+                                        visibleView: 'GROUP_MODES',
+                                        visibleRankedGameStartPress: ''
                                     })
                                 }
                             >
@@ -425,14 +432,15 @@ class Home extends React.Component {
                         </View>
                     </View>
                 </View>
-                <AuthButton
+                {this.state.visibleRankedGameStartPress === 'START_RANKED_GAME_PRESS' && <AuthButton
                     marginTop={hp(2)}
                     height={hp(7)}
                     width={wp(87.5)}
                     color="#00D9EF"
                     buttonText="Başlat"
                     onPress={this.playButtonOnPress}
-                />
+                />}
+
             </View>
         )
     }
@@ -509,7 +517,9 @@ class Home extends React.Component {
                         <View style={styles.gameCodeBox}>
                             <TextInput
                                 style={styles.joinGameCodeTextInput}
-                                placeholder="Oda Kodu"
+                                maxLength={6}
+                                placeholder="Oda Kodu  "
+                                placeholderStyle={styles.joinGameCodeTextInputPlaceholder}
                                 placeholderTextColor="#A8A8A8"
                                 autoCapitalize="characters"
                             />
@@ -547,7 +557,7 @@ class Home extends React.Component {
                 <View style={styles.onlyCloseButtonContainer}>
                     <TouchableOpacity
                         onPress={() => {
-                            this.setState({ visibleView: 'QUIT_GROUP_GAME' })
+                            this.setState({ visibleView: 'QUIT_GROUP_GAME_FROM_CREATE' })
                         }}
                     >
                         <Image source={CLOSE_BUTTON} style={styles.xLogo} />
@@ -653,7 +663,7 @@ class Home extends React.Component {
                 <View style={styles.onlyCloseButtonContainer}>
                     <TouchableOpacity
                         onPress={() => {
-                            this.setState({ visibleView: 'QUIT_GROUP_GAME' })
+                            this.setState({ visibleView: 'QUIT_GROUP_GAME_FROM_IS_JOINED' })
                         }}
                     >
                         <Image source={CLOSE_BUTTON} style={styles.xLogo} />
@@ -705,7 +715,7 @@ class Home extends React.Component {
         )
     }
 
-    quitGroupGameView() {
+    quitGroupGameViewFromCreate() {
         return (
             <View style={styles.modal}>
                 <View style={styles.quitView}>
@@ -729,6 +739,42 @@ class Home extends React.Component {
                         width={wp(42)}
                         color="#00D9EF"
                         buttonText="Hayır"
+                        onPress={() => {
+                            this.setState({ visibleView: 'CREATE_ROOM' })
+                        }}
+                    />
+                </View>
+            </View>
+        )
+    }
+
+    quitGroupGameViewFromIsJoined() {
+        return (
+            <View style={styles.modal}>
+                <View style={styles.quitView}>
+                    <Text style={styles.areYouSureText}>
+                        Odadan çıkış yapmak istediğine
+                    </Text>
+                    <Text style={styles.areYouSureText}>emin misin?</Text>
+                </View>
+                <View style={styles.yesOrNoButtonsContainer}>
+                    <AuthButton
+                        height={hp(7)}
+                        width={wp(42)}
+                        color="#00D9EF"
+                        buttonText="Evet"
+                        onPress={() => {
+                            this.setState({ isModalVisible: false })
+                        }}
+                    />
+                    <AuthButton
+                        height={hp(7)}
+                        width={wp(42)}
+                        color="#00D9EF"
+                        buttonText="Hayır"
+                        onPress={() => {
+                            this.setState({ visibleView: 'IS_JOINED_ROOM' })
+                        }}
                     />
                 </View>
             </View>
@@ -762,10 +808,9 @@ class Home extends React.Component {
                     {visibleView === 'GROUP_MODES' && this.groupModesView()}
                     {visibleView === 'CREATE_ROOM' && this.createRoomView()}
                     {visibleView === 'JOIN_ROOM' && this.joinRoomView()}
-                    {visibleView === 'IS_JOINED_ROOM' &&
-                        this.isJoinedRoomView()}
-                    {visibleView === 'QUIT_GROUP_GAME' &&
-                        this.quitGroupGameView()}
+                    {visibleView === 'IS_JOINED_ROOM' && this.isJoinedRoomView()}
+                    {visibleView === 'QUIT_GROUP_GAME_FROM_CREATE' && this.quitGroupGameViewFromCreate()}
+                    {visibleView === 'QUIT_GROUP_GAME_FROM_IS_JOINED' && this.quitGroupGameViewFromIsJoined()}
                 </Modal>
                 <View style={{ height: hp(60), marginTop: hp(0) }}>
                     <View style={styles.header}>
