@@ -251,6 +251,10 @@ class Home extends React.Component {
         navigationPush(SCENE_KEYS.mainScreens.profile)
     }
 
+    notificationPicOnPress = () => {
+        navigationPush(SCENE_KEYS.mainScreens.notifications)
+    }
+
     render() {
         const card = this.cards(this.state.exam, this.state.carouselActiveSlide)
         return (
@@ -409,7 +413,7 @@ class Home extends React.Component {
                             />
                         </View>
                         <View style={styles.notificationLogoContainer}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={this.notificationPicOnPress}>
                                 <Image
                                     source={NOTIFICATION_LOGO}
                                     style={styles.notificationLogo}

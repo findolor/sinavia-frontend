@@ -46,6 +46,10 @@ const RouterComp = () => {
                         component={mainScreens.profile}
                     />
                     <Scene
+                        key={SCENE_KEYS.mainScreens.notifications}
+                        component={mainScreens.notifications}
+                    />
+                    <Scene
                         key={SCENE_KEYS.mainScreens.settings}
                         component={mainScreens.settings}
                     />
