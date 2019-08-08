@@ -13,6 +13,10 @@ const RouterComp = () => {
         <Router>
             <Scene key="root" hideNavBar={true}>
                 <Scene
+                    key={SCENE_KEYS.gameScreens.groupGameStats}
+                    component={gameScreens.groupGameStats}
+                />
+                <Scene
                     key={SCENE_KEYS.mainScreens.main}
                     component={mainScreens.main}
                 />
