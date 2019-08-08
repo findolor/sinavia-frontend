@@ -1,10 +1,13 @@
 import React from 'react'
 import {
+    Clipboard,
+    FlatList,
     Image,
     Modal,
     ScrollView,
     StatusBar,
     Text,
+    TextInput,
     TouchableOpacity,
     View
 } from 'react-native'
@@ -31,6 +34,7 @@ import AuthButton from '../../../components/authScreen/authButton'
 import PROFILE_PIC from '../../../assets/profile2.jpg'
 import CLOSE_BUTTON from '../../../assets/closeButton.png'
 import NOTIFICATION_LOGO from '../../../assets/mainScreens/notification.png'
+import BACK_BUTTON from '../../../assets/backButton.png'
 
 import {
     navigationPush,
@@ -51,6 +55,7 @@ const exams = [
     'EUS',
     'Ehliyet Sınavları'
 ]
+const questionsNumbersList = ['5', '10', '15', '20']
 const examList = {
     YKS: YKS,
     LGS: LGS
@@ -65,6 +70,50 @@ const FRIENDS_SELECTED_IMAGE = require('../../../assets/mainScreens/arkadas.png'
 const FRIENDS_EMPTY_IMAGE = require('../../../assets/mainScreens/arkadas_siyah.png')
 const GROUP_SELECTED_IMAGE = require('../../../assets/mainScreens/group.png')
 const GROUP_EMPTY_IMAGE = require('../../../assets/mainScreens/group_siyah.png')
+const COPY_IMAGE = require('../../../assets/mainScreens/copy.png')
+
+const data = [
+    {
+        userPic: PROFILE_PIC,
+        name: 'Nurettin Hakan Yılmaz'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    }
+]
 
 class Home extends React.Component {
     constructor(props) {
@@ -73,6 +122,10 @@ class Home extends React.Component {
             exam: this.props.choosenExam,
             subject: '',
             isModalVisible: false,
+            groupModeView: false,
+            createRoomView: false,
+            joinRoomView: false,
+            isJoinedRoomView: false,
             // Mode button variables
             rankedModeButtonBackground: EMPTY_MODE_COLOR,
             friendsModeButtonBackground: EMPTY_MODE_COLOR,
@@ -84,8 +137,19 @@ class Home extends React.Component {
             // Selected game mode
             selectedGameMode: '',
             // Carousel slide item
-            carouselActiveSlide: carouselFirstItem
+            carouselActiveSlide: carouselFirstItem,
+            // Example Users Data for Group Mode
+            data: data,
+            //Questions Number for Creating Group
+            questionsNumber: '5',
+            groupCode: '',
+            visibleView: '',
+            visibleRankedGameStartPress: ''
         }
+    }
+
+    writeToClipboard = async () => {
+        await Clipboard.setString(this.state.groupCode)
     }
 
     _renderItemWithParallax({ item, index }, parallaxProps) {
@@ -106,8 +170,30 @@ class Home extends React.Component {
         this.props.saveChoosenExam(value)
     }
 
+    questionsPickerSelect(idx, value) {
+        this.setState({
+            questionsNumber: value
+        })
+    }
+
+    randomCodeGenerator() {
+        var result = ''
+        var characters = 'ABCDEF0123456789'
+        var charactersLength = characters.length
+        for (var i = 0; i < 6; i++) {
+            result += characters.charAt(
+                Math.floor(Math.random() * charactersLength)
+            )
+        }
+        return result
+    }
+
     onPressCard(title) {
-        this.setState({ isModalVisible: true, subject: title })
+        this.setState({
+            isModalVisible: true,
+            subject: title,
+            visibleView: 'GAME_MODES'
+        })
     }
 
     cards(sinav, index) {
@@ -240,6 +326,462 @@ class Home extends React.Component {
         }
     }
 
+    gameModesView() {
+        return (
+            <View style={styles.modal}>
+                <View style={styles.onlyCloseButtonContainer}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.setState({ isModalVisible: false, visibleRankedGameStartPress: '' })
+                        }}
+                    >
+                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.modalView}>
+                    <Text style={styles.modalSubjectText}>
+                        {this.state.subject}
+                    </Text>
+                    <View style={styles.separatorContainer}>
+                        <View style={styles.separatorLine} />
+                    </View>
+                    <View style={styles.gameModesContainer}>
+                        <View style={styles.gameModeContainer}>
+                            <TouchableOpacity                         onPress={() => {
+                                this.setState({ visibleRankedGameStartPress: 'START_RANKED_GAME_PRESS' })
+                            }}
+                            >
+                                <View
+                                    style={[
+                                        styles.gameModeLogoContainer,
+                                        {
+                                            backgroundColor: this.state
+                                                .rankedModeButtonBackground
+                                        }
+                                    ]}
+                                >
+                                    <Image
+                                        source={this.state.rankedImage}
+                                        style={styles.rankedModeImage}
+                                    />
+                                </View>
+                            </TouchableOpacity>
+                            <View style={styles.gameModeContextContainer}>
+                                <Text style={styles.gameModeContextText}>
+                                    Rastgele bir kullanıcı ile yarış
+                                </Text>
+                            </View>
+                        </View>
+                        <View style={styles.gameModeContainer}>
+                            <TouchableOpacity
+                                onPress={() =>
+                                    this.setState({
+                                        visibleRankedGameStartPress: ''
+                                    })
+                                }
+                            >
+                                <View
+                                    style={[
+                                        styles.gameModeLogoContainer,
+                                        {
+                                            backgroundColor: this.state
+                                                .friendsModeButtonBackground
+                                        }
+                                    ]}
+                                >
+                                    <Image
+                                        source={this.state.friendsImage}
+                                        style={styles.friendsModeImage}
+                                    />
+                                </View>
+                            </TouchableOpacity>
+                            <View style={styles.gameModeContextContainer}>
+                                <Text style={styles.gameModeContextText}>
+                                    Arkadaşın ile yarış
+                                </Text>
+                            </View>
+                        </View>
+                        <View style={styles.gameModeContainer}>
+                            <TouchableOpacity
+                                onPress={() =>
+                                    this.setState({
+                                        visibleView: 'GROUP_MODES',
+                                        visibleRankedGameStartPress: ''
+                                    })
+                                }
+                            >
+                                <View
+                                    style={[
+                                        styles.gameModeLogoContainer,
+                                        {
+                                            backgroundColor: this.state
+                                                .groupModeButtonBackground
+                                        }
+                                    ]}
+                                >
+                                    <Image
+                                        source={this.state.groupImage}
+                                        style={styles.groupModeImage}
+                                    />
+                                </View>
+                            </TouchableOpacity>
+                            <View style={styles.gameModeContextContainer}>
+                                <Text style={styles.gameModeContextText}>
+                                    Arkadaş grubun ile yarış
+                                </Text>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+                {this.state.visibleRankedGameStartPress === 'START_RANKED_GAME_PRESS' && <AuthButton
+                    marginTop={hp(2)}
+                    height={hp(7)}
+                    width={wp(87.5)}
+                    color="#00D9EF"
+                    buttonText="Başlat"
+                    onPress={this.playButtonOnPress}
+                />}
+
+            </View>
+        )
+    }
+
+    groupModesView() {
+        return (
+            <View style={styles.modal}>
+                <View style={styles.backAndCloseButtonsContainer}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.setState({ visibleView: 'GAME_MODES' })
+                        }}
+                    >
+                        <Image source={BACK_BUTTON} style={styles.backLogo} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.setState({ isModalVisible: false })
+                        }}
+                    >
+                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.modalView}>
+                    <View style={styles.createOrJoinRoomButtonsContainer}>
+                        <AuthButton
+                            height={hp(12)}
+                            width={wp(60)}
+                            color="#00D9EF"
+                            buttonText="Oyun kur"
+                            onPress={() =>
+                                this.setState({
+                                    visibleView: 'CREATE_ROOM',
+                                    groupCode: this.randomCodeGenerator()
+                                })
+                            }
+                        />
+                        <AuthButton
+                            height={hp(12)}
+                            width={wp(60)}
+                            color="#00D9EF"
+                            buttonText="Oyuna katıl"
+                            onPress={() =>
+                                this.setState({ visibleView: 'JOIN_ROOM' })
+                            }
+                        />
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
+    joinRoomView() {
+        return (
+            <View style={styles.modal}>
+                <View style={styles.backAndCloseButtonsContainer}>
+                <TouchableOpacity
+                    onPress={() => {
+                        this.setState({ visibleView: 'GROUP_MODES' })
+                    }}
+                >
+                    <Image source={BACK_BUTTON} style={styles.backLogo} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => {
+                        this.setState({ isModalVisible: false })
+                    }}
+                >
+                    <Image source={CLOSE_BUTTON} style={styles.xLogo} />
+                </TouchableOpacity>
+                </View>
+                <View style={styles.modalView}>
+                    <View style={styles.joinGameCodeContainer}>
+                        <View style={styles.gameCodeBox}>
+                            <TextInput
+                                style={styles.joinGameCodeTextInput}
+                                maxLength={6}
+                                placeholder="Oda Kodu  "
+                                placeholderStyle={styles.joinGameCodeTextInputPlaceholder}
+                                placeholderTextColor="#A8A8A8"
+                                autoCapitalize="characters"
+                            />
+                        </View>
+                    </View>
+                    <View style={styles.joinGameInfoContainer}>
+                        <Text style={styles.joinGameInfoText}>
+                            Aldığın oda kodunu
+                        </Text>
+                        <Text style={styles.joinGameInfoText}>
+                            yukarıdaki alana girerek
+                        </Text>
+                        <Text style={styles.joinGameInfoText}>
+                            oyuna dahil ol
+                        </Text>
+                    </View>
+                </View>
+                <AuthButton
+                    marginTop={hp(2)}
+                    height={hp(7)}
+                    width={wp(87.5)}
+                    color="#00D9EF"
+                    buttonText="Onayla"
+                    onPress={() => {
+                        this.setState({ visibleView: 'IS_JOINED_ROOM'})
+                    }}
+                />
+            </View>
+        )
+    }
+
+    createRoomView() {
+        return (
+            <View style={styles.modal}>
+                <View style={styles.onlyCloseButtonContainer}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.setState({ visibleView: 'QUIT_GROUP_GAME_FROM_CREATE' })
+                        }}
+                    >
+                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.modalView}>
+                    <View style={styles.gameCodeContainer}>
+                        <View style={styles.gameCodeBox}>
+                            <View style={styles.gameCodeBoxLeftView} />
+                            <View style={styles.gameCodeBoxTextView}>
+                                <Text
+                                    style={styles.gameCodeText}
+                                    selectable={true}
+                                >
+                                    {this.state.groupCode}
+                                </Text>
+                            </View>
+                            <View style={styles.gameCodeBoxRightView}>
+                                <TouchableOpacity
+                                    onPress={this.writeToClipboard}
+                                >
+                                    <Image
+                                        source={COPY_IMAGE}
+                                        style={styles.copyImage}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={styles.gameCodeInfoTextContainer}>
+                        <Text style={styles.gameCodeInfoText}>
+                            Grup olarak oynamak için{' '}
+                        </Text>
+                        <Text style={styles.gameCodeInfoText}>
+                            yukarıdaki kodu arkadaşlarınla paylaş
+                        </Text>
+                    </View>
+                    <View style={styles.questionsNumberContainer}>
+                        <Text style={styles.questionsNumberText}>
+                            Soru Sayısı:{' '}
+                        </Text>
+                        <DropDown
+                            style={styles.questionNumberPicker}
+                            textStyle={styles.questionPickerText}
+                            dropdownTextStyle={
+                                styles.questionPickerDropdownText
+                            }
+                            dropdownStyle={styles.questionPickerDropdown}
+                            options={questionsNumbersList}
+                            defaultValue={this.state.questionsNumber}
+                            onSelect={(idx, value) =>
+                                this.questionsPickerSelect(idx, value)
+                            }
+                        />
+                    </View>
+                    <View style={styles.usersListContainer}>
+                        <FlatList
+                            data={this.state.data}
+                            vertical={true}
+                            showsVerticalScrollIndicator={false}
+                            renderItem={({ item }) => {
+                                return (
+                                    <View style={styles.userRow}>
+                                        <View
+                                            style={
+                                                styles.profilePicContainerinRow
+                                            }
+                                        >
+                                            <Image
+                                                source={item.userPic}
+                                                style={styles.userPic}
+                                            />
+                                        </View>
+                                        <View style={styles.nameContainer}>
+                                            <Text style={styles.nameText}>
+                                                {item.name}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                )
+                            }}
+                            keyExtractor={(item, index) => index}
+                        />
+                    </View>
+                    <View style={styles.usersCounterContainer}>
+                        <Text style={styles.usersCounterText}>3/20</Text>
+                    </View>
+                </View>
+                <AuthButton
+                    marginTop={hp(2)}
+                    height={hp(7)}
+                    width={wp(87.5)}
+                    color="#00D9EF"
+                    buttonText="Başla"
+                />
+            </View>
+        )
+    }
+
+    isJoinedRoomView() {
+        return (
+            <View style={styles.modal}>
+                <View style={styles.onlyCloseButtonContainer}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.setState({ visibleView: 'QUIT_GROUP_GAME_FROM_IS_JOINED' })
+                        }}
+                    >
+                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.modalView}>
+                    <View style={styles.isJoinedRoomSubjectContainer}>
+                        <Text style={styles.modalSubjectText}>
+                            Paragrafta Anlam
+                        </Text>
+                    </View>
+                    <FlatList
+                        data={this.state.data}
+                        vertical={true}
+                        showsVerticalScrollIndicator={false}
+                        renderItem={({ item }) => {
+                            return (
+                                <View style={styles.userRow}>
+                                    <View
+                                        style={styles.profilePicContainerinRow}
+                                    >
+                                        <Image
+                                            source={item.userPic}
+                                            style={styles.userPic}
+                                        />
+                                    </View>
+                                    <View style={styles.nameContainer}>
+                                        <Text style={styles.nameText}>
+                                            {item.name}
+                                        </Text>
+                                    </View>
+                                </View>
+                            )
+                        }}
+                        keyExtractor={(item, index) => index}
+                    />
+                    <View style={styles.usersCounterContainer}>
+                        <Text style={styles.usersCounterText}>3/20</Text>
+                    </View>
+                </View>
+                <AuthButton
+                    marginTop={hp(2)}
+                    height={hp(7)}
+                    width={wp(87.5)}
+                    color="#00D9EF"
+                    buttonText="Hazır"
+                />
+            </View>
+        )
+    }
+
+    quitGroupGameViewFromCreate() {
+        return (
+            <View style={styles.modal}>
+                <View style={styles.quitView}>
+                    <Text style={styles.areYouSureText}>
+                        Odadan çıkış yapmak istediğine
+                    </Text>
+                    <Text style={styles.areYouSureText}>emin misin?</Text>
+                </View>
+                <View style={styles.yesOrNoButtonsContainer}>
+                    <AuthButton
+                        height={hp(7)}
+                        width={wp(42)}
+                        color="#00D9EF"
+                        buttonText="Evet"
+                        onPress={() => {
+                            this.setState({ isModalVisible: false })
+                        }}
+                    />
+                    <AuthButton
+                        height={hp(7)}
+                        width={wp(42)}
+                        color="#00D9EF"
+                        buttonText="Hayır"
+                        onPress={() => {
+                            this.setState({ visibleView: 'CREATE_ROOM' })
+                        }}
+                    />
+                </View>
+            </View>
+        )
+    }
+
+    quitGroupGameViewFromIsJoined() {
+        return (
+            <View style={styles.modal}>
+                <View style={styles.quitView}>
+                    <Text style={styles.areYouSureText}>
+                        Odadan çıkış yapmak istediğine
+                    </Text>
+                    <Text style={styles.areYouSureText}>emin misin?</Text>
+                </View>
+                <View style={styles.yesOrNoButtonsContainer}>
+                    <AuthButton
+                        height={hp(7)}
+                        width={wp(42)}
+                        color="#00D9EF"
+                        buttonText="Evet"
+                        onPress={() => {
+                            this.setState({ isModalVisible: false })
+                        }}
+                    />
+                    <AuthButton
+                        height={hp(7)}
+                        width={wp(42)}
+                        color="#00D9EF"
+                        buttonText="Hayır"
+                        onPress={() => {
+                            this.setState({ visibleView: 'IS_JOINED_ROOM' })
+                        }}
+                    />
+                </View>
+            </View>
+        )
+    }
+
     modeButtonOnPress = selectedMode => {
         this.updateModeButtonUI(selectedMode)
     }
@@ -254,6 +796,7 @@ class Home extends React.Component {
 
     render() {
         const card = this.cards(this.state.exam, this.state.carouselActiveSlide)
+        const visibleView = this.state.visibleView
         return (
             <View style={styles.container}>
                 <NotchView color={'#fcfcfc'} />
@@ -262,127 +805,13 @@ class Home extends React.Component {
                     transparent={true}
                     animationType={'fade'}
                 >
-                    <View style={styles.modal}>
-                        <TouchableOpacity
-                            onPress={() => {
-                                this.setState({ isModalVisible: false })
-                            }}
-                        >
-                            <Image source={CLOSE_BUTTON} style={styles.xLogo} />
-                        </TouchableOpacity>
-                        <View style={styles.modalView}>
-                            <Text style={styles.modalSubjectText}>
-                                {this.state.subject}
-                            </Text>
-                            <View style={styles.separatorContainer}>
-                                <View style={styles.separatorLine} />
-                            </View>
-                            <View style={styles.gameModesContainer}>
-                                <View style={styles.gameModeContainer}>
-                                    <TouchableOpacity
-                                        onPress={() =>
-                                            this.modeButtonOnPress('ranked')
-                                        }
-                                    >
-                                        <View
-                                            style={[
-                                                styles.gameModeLogoContainer,
-                                                {
-                                                    backgroundColor: this.state
-                                                        .rankedModeButtonBackground
-                                                }
-                                            ]}
-                                        >
-                                            <Image
-                                                source={this.state.rankedImage}
-                                                style={styles.rankedModeImage}
-                                            />
-                                        </View>
-                                    </TouchableOpacity>
-                                    <View
-                                        style={styles.gameModeContextContainer}
-                                    >
-                                        <Text
-                                            style={styles.gameModeContextText}
-                                        >
-                                            Rastgele bir kullanıcı ile yarış
-                                        </Text>
-                                    </View>
-                                </View>
-                                <View style={styles.gameModeContainer}>
-                                    <TouchableOpacity
-                                        onPress={() =>
-                                            this.modeButtonOnPress('friend')
-                                        }
-                                    >
-                                        <View
-                                            style={[
-                                                styles.gameModeLogoContainer,
-                                                {
-                                                    backgroundColor: this.state
-                                                        .friendsModeButtonBackground
-                                                }
-                                            ]}
-                                        >
-                                            <Image
-                                                source={this.state.friendsImage}
-                                                style={styles.friendsModeImage}
-                                            />
-                                        </View>
-                                    </TouchableOpacity>
-                                    <View
-                                        style={styles.gameModeContextContainer}
-                                    >
-                                        <Text
-                                            style={styles.gameModeContextText}
-                                        >
-                                            Arkadaşın ile yarış
-                                        </Text>
-                                    </View>
-                                </View>
-                                <View style={styles.gameModeContainer}>
-                                    <TouchableOpacity
-                                        onPress={() =>
-                                            this.modeButtonOnPress('group')
-                                        }
-                                    >
-                                        <View
-                                            style={[
-                                                styles.gameModeLogoContainer,
-                                                {
-                                                    backgroundColor: this.state
-                                                        .groupModeButtonBackground
-                                                }
-                                            ]}
-                                        >
-                                            <Image
-                                                source={this.state.groupImage}
-                                                style={styles.groupModeImage}
-                                            />
-                                        </View>
-                                    </TouchableOpacity>
-                                    <View
-                                        style={styles.gameModeContextContainer}
-                                    >
-                                        <Text
-                                            style={styles.gameModeContextText}
-                                        >
-                                            Arkadaş grubun ile yarış
-                                        </Text>
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
-                        <AuthButton
-                            marginTop={hp(2)}
-                            height={hp(7)}
-                            width={wp(87.5)}
-                            color="#00D9EF"
-                            underlayColor="#1a5d63"
-                            buttonText="Başla"
-                            onPress={this.playButtonOnPress}
-                        />
-                    </View>
+                    {visibleView === 'GAME_MODES' && this.gameModesView()}
+                    {visibleView === 'GROUP_MODES' && this.groupModesView()}
+                    {visibleView === 'CREATE_ROOM' && this.createRoomView()}
+                    {visibleView === 'JOIN_ROOM' && this.joinRoomView()}
+                    {visibleView === 'IS_JOINED_ROOM' && this.isJoinedRoomView()}
+                    {visibleView === 'QUIT_GROUP_GAME_FROM_CREATE' && this.quitGroupGameViewFromCreate()}
+                    {visibleView === 'QUIT_GROUP_GAME_FROM_IS_JOINED' && this.quitGroupGameViewFromIsJoined()}
                 </Modal>
                 <View style={{ height: hp(60), marginTop: hp(0) }}>
                     <View style={styles.header}>
