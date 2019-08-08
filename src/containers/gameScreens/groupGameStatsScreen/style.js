@@ -294,5 +294,51 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Semibold',
         letterSpacing: wp(0.1),
         fontSize: hp(3.5)
+    },
+    userRow: {
+        height: hp(7),
+        width: wp(82),
+        flexDirection: 'row',
+        borderBottomWidth: wp(0.5),
+        borderBottomColor: '#CACACA'
+    },
+    orderContainer: {
+        height: hp(7),
+        width: wp(5),
+        justifyContent: 'center',
+        alignItems: 'flex-end'
+    },
+    nameContainer: {
+        height: hp(7),
+        width: wp(50),
+        justifyContent: 'center',
+        alignItems: 'flex-start'
+    },
+    optionsContainer: {
+        height: hp(7),
+        width: wp(27),
+        flexDirection: 'row'
+    },
+    optionContainer: {
+        height: hp(7),
+        width: wp(9),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    orderNumberText: {
+        fontFamily: 'Averta-Semibold',
+        color: '#2E313C',
+        fontSize: hp(2.5)
+    },
+    nameText: {
+        fontFamily: 'Averta-Semibold',
+        color: '#2E313C',
+        fontSize: hp(2.5),
+        marginLeft: wp(4)
+    },
+    optionCounterText: {
+        fontFamily: 'Averta-Semibold',
+        color: '#FF9900',
+        fontSize: hp(2.5)
     }
 })
