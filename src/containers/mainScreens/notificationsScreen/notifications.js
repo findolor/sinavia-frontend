@@ -14,8 +14,9 @@ import { navigationPop } from '../../../services/navigationService'
 import PROFILE_PIC from '../../../assets/profile2.jpg'
 import ACCEPT_BUTTON from  '../../../assets/gameScreens/correct.png'
 import REJECT_BUTTON from '../../../assets/gameScreens/incorrect.png'
+import Home from '../main'
 
-const data = [
+const friendsRequestsList = [
     {
         userPic: PROFILE_PIC,
         name: 'Nurettin Hakan Yılmaz'
@@ -74,7 +75,7 @@ class Notifications extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            data: data,
+            friendsRequestsList: friendsRequestsList,
             selectedNotificationsMode: 'generalNotifications',
             generalNotificationsButtonBackgroundColor: '#FF9900',
             generalNotificationsButtonTextColor: '#FFFFFF',
@@ -183,8 +184,9 @@ class Notifications extends React.Component {
                         </View>
                     </TouchableOpacity>
                 </View>
-                <FlatList
-                    data={this.state.data}
+                {this.state.selectedNotificationsMode === 'generalNotifications' && <Text>Genel Bildirimler</Text>}
+                {this.state.selectedNotificationsMode === 'friendsRequests' && <FlatList
+                    data={this.state.friendsRequestsList}
                     vertical={true}
                     showsVerticalScrollIndicator={false}
                     renderItem={({ item }) => {
@@ -223,7 +225,7 @@ class Notifications extends React.Component {
                         )
                     }}
                     keyExtractor={(item, index) => index}
-                />
+                />}
             </View>
         )
     }
