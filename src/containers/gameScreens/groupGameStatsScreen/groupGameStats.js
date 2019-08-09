@@ -11,15 +11,12 @@ import {
 import styles from './style'
 import background from '../../../assets/gameScreens/gameStatsBackground.jpg'
 import slideUp from '../../../assets/gameScreens/slideUp.png'
-import correct from '../../../assets/gameScreens/correct.png'
-import incorrect from '../../../assets/gameScreens/incorrect.png'
-import unanswered from '../../../assets/gameScreens/unanswered.png'
-import profilePic from '../../../assets/profile2.jpg'
+import CORRECT_IMG from '../../../assets/gameScreens/correct.png'
+import INCORRECT_IMG from '../../../assets/gameScreens/incorrect.png'
+import UNANSWERED_IMG from '../../../assets/gameScreens/unanswered.png'
 import question from '../../../assets/soru.jpg'
 import selectedFav from '../../../assets/favori.png'
 import unselectedFav from '../../../assets/favori_bos.png'
-import selectedJokerIcon from '../../../assets/mainScreens/joker_dolu.png'
-import emptyJokerIcon from '../../../assets/mainScreens/joker.png'
 const YOU_WIN_LOGO = require('../../../assets/gameScreens/win.png')
 
 const data = [
@@ -43,6 +40,42 @@ const data = [
     },
     {
         name: 'Hakan Yılmaz',
+        correctsNumber: '10',
+        unansweredsNumber: '2',
+        incorrectsNumber: '3'
+    },
+    {
+        name: 'Hakan Yılmaz',
+        correctsNumber: '10',
+        unansweredsNumber: '2',
+        incorrectsNumber: '3'
+    },
+    {
+        name: 'Hakan Yılmaz',
+        correctsNumber: '10',
+        unansweredsNumber: '2',
+        incorrectsNumber: '3'
+    },
+    {
+        name: 'Hakan Yılmaz',
+        correctsNumber: '10',
+        unansweredsNumber: '2',
+        incorrectsNumber: '3'
+    },
+    {
+        name: 'Hakan Yılmaz',
+        correctsNumber: '10',
+        unansweredsNumber: '2',
+        incorrectsNumber: '3'
+    },
+    {
+        name: 'Hakan Yılmaz',
+        correctsNumber: '10',
+        unansweredsNumber: '2',
+        incorrectsNumber: '3'
+    },
+    {
+        name: 'Nurettin Hakan Yılmaz',
         correctsNumber: '10',
         unansweredsNumber: '2',
         incorrectsNumber: '3'
@@ -103,10 +136,30 @@ class GroupGameStatsScreen extends React.Component {
                         />
                     </View>
                     <View style={styles.resultsContainer}>
+                        <View style={styles.resultsContainerHeader}>
+                            <View style={styles.orderContainer}>
+                                <Text style={styles.orderHeaderText}>No</Text>
+                            </View>
+                            <View style={styles.nameContainer}>
+                                <Text style={styles.nameHeaderText}>Ad Soyad</Text>
+                            </View>
+                            <View style={styles.optionsContainer}>
+                                <View style={styles.optionContainer}>
+                                    <Image source={CORRECT_IMG} style={styles.optionsImg}/>
+                                </View>
+                                <View style={styles.optionContainer}>
+                                    <Image source={UNANSWERED_IMG}  style={styles.optionsImg}/>
+                                </View>
+                                <View style={styles.optionContainer}>
+                                    <Image source={INCORRECT_IMG}  style={styles.optionsImg}/>
+                                </View>
+                            </View>
+                        </View>
                         <FlatList
                             data={this.state.data}
                             vertical={true}
                             showsVerticalScrollIndicator={false}
+                            nestedScrollEnabled={true}
                             renderItem={({ item }) => {
                                 return (
                                     <View style={styles.userRow}>

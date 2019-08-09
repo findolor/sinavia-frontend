@@ -299,18 +299,18 @@ export default StyleSheet.create({
         height: hp(7),
         width: wp(82),
         flexDirection: 'row',
-        borderBottomWidth: wp(0.5),
-        borderBottomColor: '#CACACA'
+        borderTopWidth: wp(0.5),
+        borderTopColor: '#CACACA'
     },
     orderContainer: {
         height: hp(7),
-        width: wp(5),
+        width: wp(12),
         justifyContent: 'center',
-        alignItems: 'flex-end'
+        alignItems: 'center'
     },
     nameContainer: {
         height: hp(7),
-        width: wp(50),
+        width: wp(43),
         justifyContent: 'center',
         alignItems: 'flex-start'
     },
@@ -326,19 +326,37 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     orderNumberText: {
-        fontFamily: 'Averta-Semibold',
+        fontFamily: 'Averta-SemiboldItalic',
         color: '#2E313C',
-        fontSize: hp(2.5)
+        fontSize: hp(3.5)
     },
     nameText: {
         fontFamily: 'Averta-Semibold',
         color: '#2E313C',
-        fontSize: hp(2.5),
-        marginLeft: wp(4)
+        fontSize: hp(2.5)
     },
     optionCounterText: {
-        fontFamily: 'Averta-Semibold',
+        fontFamily: 'Averta-BoldItalic',
         color: '#FF9900',
-        fontSize: hp(2.5)
+        fontSize: hp(3.5)
+    },
+    resultsContainerHeader: {
+        height: hp(6),
+        width: wp(82),
+        flexDirection: 'row'
+    },
+    optionsImg: {
+        height: hp(3),
+        width: hp(3)
+    },
+    orderHeaderText: {
+        fontFamily: 'Averta-ExtraBoldItalic',
+        color: '#FF9900',
+        fontSize: hp(3)
+    },
+    nameHeaderText: {
+        fontFamily: 'Averta-ExtraBoldItalic',
+        color: '#FF9900',
+        fontSize: hp(3)
     }
 })
