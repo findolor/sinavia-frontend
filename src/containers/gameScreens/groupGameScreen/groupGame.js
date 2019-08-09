@@ -177,7 +177,7 @@ class GroupGame extends React.Component {
                 return
             case 'match-finished':
                 this.shutdownGame()
-                navigationPush(SCENE_KEYS.gameScreens.gameStats, {
+                navigationPush(SCENE_KEYS.gameScreens.groupGameStats, {
                     playerProps: this.state.playerProps,
                     room: this.props.room,
                     client: this.props.client,
