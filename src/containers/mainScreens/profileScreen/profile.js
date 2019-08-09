@@ -42,6 +42,10 @@ class Profile extends React.Component {
         navigationPush(SCENE_KEYS.mainScreens.settings)
     }
 
+    profileSearchOnPress = () => {
+        navigationPush(SCENE_KEYS.mainScreens.profileSearch)
+    }
+
     favoriteLogoOnPress = () => {
         navigationPush(SCENE_KEYS.mainScreens.favorites)
     }
@@ -62,7 +66,7 @@ class Profile extends React.Component {
                                 placeholderTextColor={'#7B7B7B'}
                             />
                         </View>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={this.profileSearchOnPress}>
                             <Image
                                 source={searchlogo}
                                 style={styles.searchBarLogo}

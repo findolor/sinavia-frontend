@@ -1,7 +1,7 @@
 const config = {
     api: {
-        host: 'http://localhost:4000/api/v1/',
-        gameEngine: 'http://localhost:5000'
+        host: 'http://10.253.12.219:4000/api/v1/',
+        gameEngine: 'http://10.253.12.219:5000'
     },
     scene_keys: {
         authScreens: {
@@ -22,7 +22,8 @@ const config = {
             profile: 'profile',
             settings: 'settings',
             changePassword: 'changePassword',
-            favorites: 'favorites'
+            favorites: 'favorites',
+            profileSearch: 'profileSearch'
         },
         splashScreen: 'splash'
     }
