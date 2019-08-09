@@ -99,8 +99,17 @@ class ProfileSearch extends React.Component {
                 <NotchView color={'#fcfcfc'} />
                 <View style={styles.header}>
                     <TouchableOpacity onPress={this.backButtonOnPress}>
-                        <Image source={returnLogo} style={styles.returnLogo} />
+                        <View style={styles.returnLogoContainer}>
+                            <Image
+                                source={returnLogo}
+                                style={styles.returnLogo}
+                            />
+                        </View>
                     </TouchableOpacity>
+                    <View style={styles.headerTextWrapper}>
+                        <Text style={styles.searchText}>"Hakan"</Text>
+                        <Text style={styles.searchInfoText}>ile alakalı sonuçlar</Text>
+                    </View>
                 </View>
                 <FlatList
                     data={this.state.usersList}

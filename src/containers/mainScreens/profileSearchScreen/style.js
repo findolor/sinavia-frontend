@@ -12,14 +12,39 @@ export default StyleSheet.create({
         backgroundColor: '#fcfcfc'
     },
     header: {
-        height: hp(6),
+        height: hp(8),
         width: wp(88),
+        flexDirection: 'row'
+    },
+    returnLogoContainer: {
+        height: hp(6),
+        width: wp(10),
         justifyContent: 'center',
-        alignItems: 'flex-start'
+        alignItems: 'center'
     },
     returnLogo: {
         height: hp(3.5),
         width: hp(3.5)
+    },
+    headerTextWrapper: {
+        height: hp(6),
+        width: wp(68),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    searchText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(3),
+        color: '#00D9EF',
+        marginBottom: hp(0.5),
+        marginLeft: wp(3)
+    },
+    searchInfoText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(2.5),
+        color: '#00D9EF',
+        marginBottom: hp(0.5),
+        marginLeft: wp(3)
     },
     userRow: {
         height: hp(8),
@@ -58,14 +83,14 @@ export default StyleSheet.create({
     },
     nameText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: wp(4),
+        fontSize: hp(2.5),
         color: '#2E313C',
         marginTop: hp(1),
         marginLeft: wp(3)
     },
     usernameText: {
         fontFamily: 'Averta-SemiboldItalic',
-        fontSize: wp(4),
+        fontSize: hp(2.5),
         color: '#FF9900',
         marginBottom: hp(0.5),
         marginLeft: wp(3)
