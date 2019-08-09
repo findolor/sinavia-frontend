@@ -71,11 +71,67 @@ const friendsRequestsList = [
     }
 ]
 
+const generalNotificationsList = [
+    {
+        userPic: PROFILE_PIC,
+        name: 'Nurettin Hakan Yılmaz'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan'
+    }
+]
+
 class Notifications extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             friendsRequestsList: friendsRequestsList,
+            generalNotificationsList: generalNotificationsList,
             selectedNotificationsMode: 'generalNotifications',
             generalNotificationsButtonBackgroundColor: '#FF9900',
             generalNotificationsButtonTextColor: '#FFFFFF',
@@ -184,7 +240,47 @@ class Notifications extends React.Component {
                         </View>
                     </TouchableOpacity>
                 </View>
-                {this.state.selectedNotificationsMode === 'generalNotifications' && <Text>Genel Bildirimler</Text>}
+                {this.state.selectedNotificationsMode === 'generalNotifications' && <FlatList
+                    data={this.state.generalNotificationsList}
+                    vertical={true}
+                    showsVerticalScrollIndicator={false}
+                    renderItem={({ item }) => {
+                        return (
+                            <View style={styles.userRow}>
+                                <View
+                                    style={
+                                        styles.userPicContainerInRow
+                                    }
+                                >
+                                    <Image
+                                        source={item.userPic}
+                                        style={styles.userPic}
+                                    />
+                                </View>
+                                <View style={styles.nameContainer}>
+                                    <Text style={styles.nameText}>
+                                        {item.name}
+                                    </Text>
+                                </View>
+                                <View style={styles.friendshipButtonsContainer}>
+                                    <TouchableOpacity>
+                                        <Image
+                                            source={ACCEPT_BUTTON}
+                                            style={styles.friendshipButtons}
+                                        />
+                                    </TouchableOpacity>
+                                    <TouchableOpacity>
+                                        <Image
+                                            source={REJECT_BUTTON}
+                                            style={styles.friendshipButtons}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        )
+                    }}
+                    keyExtractor={(item, index) => index}
+                />}
                 {this.state.selectedNotificationsMode === 'friendsRequests' && <FlatList
                     data={this.state.friendsRequestsList}
                     vertical={true}
