@@ -8,6 +8,7 @@ import {
     navigationReset,
     navigationPush
 } from '../../../services/navigationService'
+import { connect } from 'react-redux'
 
 import CLOSE_BUTTON from '../../../assets/closeButton.png'
 import ZOOM_BUTTON from '../../../assets/gameScreens/zoomButton.png'
@@ -15,55 +16,11 @@ import BACK_BUTTON from '../../../assets/backButton.png'
 import FIFTY_FIFTY from '../../../assets/gameScreens/jokers/fiftyFifty.png'
 import SECOND_CHANCE from '../../../assets/gameScreens/jokers/secondChance.png'
 import GROUP_LOGO from '../../../assets/mainScreens/group.png'
-import PROFILE_PIC from '../../../assets/profile2.jpg'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
 const CORRECT_ANSWER_COLOR = '#14e31f'
 const INCORRECT_ANSWER_COLOR = '#eb2b0e'
-
-const data = [
-    {
-        userPic: PROFILE_PIC,
-        name: 'Nurettin Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    }
-]
 
 class GroupGame extends React.Component {
     constructor(props) {
@@ -172,7 +129,6 @@ class GroupGame extends React.Component {
             case 'client-leaving':
                 // TODO navigate to the game-stats screen
                 Alert.alert(this.state.opponentId, 'oyuncu oyundan ayrildi.')
-
                 return
         }
     }
@@ -225,12 +181,7 @@ class GroupGame extends React.Component {
                     playerProps: this.state.playerProps,
                     room: this.props.room,
                     client: this.props.client,
-                    questionList: this.state.questionList,
-                    playerUsername: this.props.playerUsername,
-                    playerProfilePicture: this.props.playerProfilePicture,
-                    opponentUsername: this.props.opponentUsername,
-                    opponentId: this.props.opponentId,
-                    opponentProfilePicture: this.props.opponentProfilePicture
+                    questionList: this.state.questionList
                 })
                 return
         }
@@ -389,11 +340,11 @@ class GroupGame extends React.Component {
         })
         // After setting the button and sending 'button-press' action, we send 'finished' action for round end
         // There is a timeout because there needs to be a delay between the events
-        /* this.finishedTimeout = setTimeout(() => {
+        this.finishedTimeout = setTimeout(() => {
             that.props.room.send({
                 action: 'finished'
             })
-        }, 1000) */
+        }, 1000)
     }
 
     highlightButton = buttonNumber => {
@@ -571,13 +522,13 @@ class GroupGame extends React.Component {
                         <View style={styles.userContainer}>
                             <Image
                                 source={{
-                                    uri: this.props.playerProfilePicture
+                                    uri: this.props.profilePicture
                                 }}
                                 style={styles.userProfilePicture}
                             />
                             <View style={styles.usernameContainer}>
                                 <Text style={styles.usernameText}>
-                                    {this.props.playerUsername}
+                                    {this.props.username}
                                 </Text>
                             </View>
                             <View style={styles.answersContainer}>
@@ -847,4 +798,14 @@ class GroupGame extends React.Component {
     }
 }
 
-export default GroupGame
+const mapStateToProps = state => ({
+    profilePicture: state.user.profilePicture,
+    username: state.user.username
+})
+
+const mapDispatchToProps = dispatch => ({})
+
+export default connect(
+    mapStateToProps,
+    null
+)(GroupGame)

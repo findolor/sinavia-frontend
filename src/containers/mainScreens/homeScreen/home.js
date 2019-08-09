@@ -5,11 +5,11 @@ import {
     Image,
     Modal,
     ScrollView,
-    StatusBar,
     Text,
     TextInput,
     TouchableOpacity,
-    View
+    View,
+    AsyncStorage
 } from 'react-native'
 import { connect } from 'react-redux'
 import { userActions } from '../../../redux/user/actions'
@@ -30,6 +30,13 @@ import { LGS, YKS } from '../../../components/mainScreen/carousel/static/exams'
 import * as courses from '../../../components/mainScreen/carousel/static/courses'
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
 import AuthButton from '../../../components/authScreen/authButton'
+// Colyseus imports
+import { Buffer } from 'buffer'
+window.localStorage = AsyncStorage
+global.Buffer = Buffer
+import * as Colyseus from 'colyseus.js'
+
+import { GAME_ENGINE_ENDPOINT } from '../../../config'
 
 import PROFILE_PIC from '../../../assets/profile2.jpg'
 import CLOSE_BUTTON from '../../../assets/closeButton.png'
@@ -62,7 +69,7 @@ const examList = {
 }
 
 const SELECTED_MODE_COLOR = '#00D9EF'
-const EMPTY_MODE_COLOR = '#fcfcfc'
+const EMPTY_MODE_COLOR = '#A8A8A8'
 
 const RANKED_SELECTED_IMAGE = require('../../../assets/mainScreens/tek_beyaz.png')
 const RANKED_EMPTY_IMAGE = require('../../../assets/mainScreens/tek.png')
@@ -71,49 +78,6 @@ const FRIENDS_EMPTY_IMAGE = require('../../../assets/mainScreens/arkadas_siyah.p
 const GROUP_SELECTED_IMAGE = require('../../../assets/mainScreens/group.png')
 const GROUP_EMPTY_IMAGE = require('../../../assets/mainScreens/group_siyah.png')
 const COPY_IMAGE = require('../../../assets/mainScreens/copy.png')
-
-const data = [
-    {
-        userPic: PROFILE_PIC,
-        name: 'Nurettin Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    }
-]
 
 class Home extends React.Component {
     constructor(props) {
@@ -127,9 +91,7 @@ class Home extends React.Component {
             joinRoomView: false,
             isJoinedRoomView: false,
             // Mode button variables
-            rankedModeButtonBackground: EMPTY_MODE_COLOR,
-            friendsModeButtonBackground: EMPTY_MODE_COLOR,
-            groupModeButtonBackground: EMPTY_MODE_COLOR,
+            rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
             // Mode images
             rankedImage: RANKED_EMPTY_IMAGE,
             friendsImage: FRIENDS_EMPTY_IMAGE,
@@ -138,13 +100,20 @@ class Home extends React.Component {
             selectedGameMode: '',
             // Carousel slide item
             carouselActiveSlide: carouselFirstItem,
-            // Example Users Data for Group Mode
-            data: data,
             //Questions Number for Creating Group
-            questionsNumber: '5',
+            questionNumber: '5',
             groupCode: '',
+            groupCodeOnChangeText: '',
             visibleView: '',
-            visibleRankedGameStartPress: ''
+            visibleRankedGameStartPress: '',
+
+            groupRoomPlayerList: [
+                {
+                    profilePicture: this.props.profilePicture,
+                    username: this.props.username,
+                    status: 'Hazır'
+                }
+            ]
         }
     }
 
@@ -171,8 +140,9 @@ class Home extends React.Component {
     }
 
     questionsPickerSelect(idx, value) {
-        this.setState({
-            questionsNumber: value
+        this.room.send({
+            action: 'set-question-number',
+            questionAmount: value
         })
     }
 
@@ -326,15 +296,28 @@ class Home extends React.Component {
         }
     }
 
+    rankedGameModeOnPress = () => {
+        this.setState({
+            visibleRankedGameStartPress: 'START_RANKED_GAME_PRESS',
+            rankedModeButtonBorderColor:
+                this.state.rankedModeButtonBorderColor === EMPTY_MODE_COLOR
+                    ? SELECTED_MODE_COLOR
+                    : EMPTY_MODE_COLOR
+        })
+    }
+
+    closeModalButtonOnPress = () => {
+        this.setState({
+            isModalVisible: false,
+            visibleRankedGameStartPress: ''
+        })
+    }
+
     gameModesView() {
         return (
             <View style={styles.modal}>
                 <View style={styles.onlyCloseButtonContainer}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            this.setState({ isModalVisible: false, visibleRankedGameStartPress: '' })
-                        }}
-                    >
+                    <TouchableOpacity onPress={this.closeModalButtonOnPress}>
                         <Image source={CLOSE_BUTTON} style={styles.xLogo} />
                     </TouchableOpacity>
                 </View>
@@ -347,16 +330,15 @@ class Home extends React.Component {
                     </View>
                     <View style={styles.gameModesContainer}>
                         <View style={styles.gameModeContainer}>
-                            <TouchableOpacity                         onPress={() => {
-                                this.setState({ visibleRankedGameStartPress: 'START_RANKED_GAME_PRESS' })
-                            }}
+                            <TouchableOpacity
+                                onPress={this.rankedGameModeOnPress}
                             >
                                 <View
                                     style={[
                                         styles.gameModeLogoContainer,
                                         {
-                                            backgroundColor: this.state
-                                                .rankedModeButtonBackground
+                                            borderColor: this.state
+                                                .rankedModeButtonBorderColor
                                         }
                                     ]}
                                 >
@@ -376,19 +358,12 @@ class Home extends React.Component {
                             <TouchableOpacity
                                 onPress={() =>
                                     this.setState({
-                                        visibleRankedGameStartPress: ''
+                                        visibleRankedGameStartPress: '',
+                                        rankedModeButtonBorderColor: EMPTY_MODE_COLOR
                                     })
                                 }
                             >
-                                <View
-                                    style={[
-                                        styles.gameModeLogoContainer,
-                                        {
-                                            backgroundColor: this.state
-                                                .friendsModeButtonBackground
-                                        }
-                                    ]}
-                                >
+                                <View style={styles.gameModeLogoContainer}>
                                     <Image
                                         source={this.state.friendsImage}
                                         style={styles.friendsModeImage}
@@ -406,19 +381,12 @@ class Home extends React.Component {
                                 onPress={() =>
                                     this.setState({
                                         visibleView: 'GROUP_MODES',
-                                        visibleRankedGameStartPress: ''
+                                        visibleRankedGameStartPress: '',
+                                        rankedModeButtonBorderColor: EMPTY_MODE_COLOR
                                     })
                                 }
                             >
-                                <View
-                                    style={[
-                                        styles.gameModeLogoContainer,
-                                        {
-                                            backgroundColor: this.state
-                                                .groupModeButtonBackground
-                                        }
-                                    ]}
-                                >
+                                <View style={styles.gameModeLogoContainer}>
                                     <Image
                                         source={this.state.groupImage}
                                         style={styles.groupModeImage}
@@ -433,17 +401,95 @@ class Home extends React.Component {
                         </View>
                     </View>
                 </View>
-                {this.state.visibleRankedGameStartPress === 'START_RANKED_GAME_PRESS' && <AuthButton
-                    marginTop={hp(2)}
-                    height={hp(7)}
-                    width={wp(87.5)}
-                    color="#00D9EF"
-                    buttonText="Başlat"
-                    onPress={this.playButtonOnPress}
-                />}
-
+                {this.state.visibleRankedGameStartPress ===
+                    'START_RANKED_GAME_PRESS' && (
+                    <AuthButton
+                        marginTop={hp(2)}
+                        height={hp(7)}
+                        width={wp(87.5)}
+                        color="#00D9EF"
+                        buttonText="Başlat"
+                        onPress={this.playButtonOnPress}
+                    />
+                )}
             </View>
         )
+    }
+
+    createGameOnPress = () => {
+        this.setState({
+            visibleView: 'CREATE_ROOM',
+            groupCode: this.randomCodeGenerator()
+        })
+        this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
+        this.client.onOpen.add(() => {
+            this.joinRoom(true)
+        })
+    }
+
+    joinRoom = async isCreate => {
+        const databaseId = await deviceStorage.getItemFromStorage('userId')
+
+        this.room = this.client.join('groupRoom', {
+            examName: 'LGS',
+            courseName: 'Matematik',
+            subjectName: 'Sayilar',
+            databaseId: databaseId,
+            roomCode:
+                isCreate === true
+                    ? this.state.groupCode
+                    : this.state.groupCodeOnChangeText,
+            create: isCreate
+        })
+
+        this.room.onJoin.add(() => {
+            if (!isCreate) this.setState({ visibleView: 'IS_JOINED_ROOM' })
+            this.room.onMessage.add(message => {
+                switch (message.action) {
+                    case 'player-props':
+                        console.log(message)
+                        const playerIds = Object.keys(message.playerProps)
+
+                        playerList = []
+
+                        playerIds.forEach(element => {
+                            if (message.playerProps[element].readyStatus) {
+                                playerList.push({
+                                    username:
+                                        message.playerProps[element].username,
+                                    id: element,
+                                    profilePicture:
+                                        message.playerProps[element]
+                                            .profilePicture,
+                                    status: 'Hazır'
+                                })
+                            } else {
+                                playerList.push({
+                                    username:
+                                        message.playerProps[element].username,
+                                    id: element,
+                                    profilePicture:
+                                        message.playerProps[element]
+                                            .profilePicture,
+                                    status: 'Bekleniyor'
+                                })
+                            }
+                        })
+
+                        this.setState({ groupRoomPlayerList: playerList })
+                        return
+                    case 'start-match':
+                        this.setState({ isModalVisible: false })
+                        navigationReset('game', { isHardReset: true })
+                        navigationPush(SCENE_KEYS.gameScreens.groupGame, {
+                            // These are necessary for the game logic
+                            room: this.room,
+                            client: this.client
+                        })
+                        return
+                }
+            })
+        })
     }
 
     groupModesView() {
@@ -472,12 +518,7 @@ class Home extends React.Component {
                             width={wp(60)}
                             color="#00D9EF"
                             buttonText="Oyun kur"
-                            onPress={() =>
-                                this.setState({
-                                    visibleView: 'CREATE_ROOM',
-                                    groupCode: this.randomCodeGenerator()
-                                })
-                            }
+                            onPress={this.createGameOnPress}
                         />
                         <AuthButton
                             height={hp(12)}
@@ -494,24 +535,31 @@ class Home extends React.Component {
         )
     }
 
+    joinRoomOnPress = () => {
+        this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
+        this.client.onOpen.add(() => {
+            this.joinRoom(false)
+        })
+    }
+
     joinRoomView() {
         return (
             <View style={styles.modal}>
                 <View style={styles.backAndCloseButtonsContainer}>
-                <TouchableOpacity
-                    onPress={() => {
-                        this.setState({ visibleView: 'GROUP_MODES' })
-                    }}
-                >
-                    <Image source={BACK_BUTTON} style={styles.backLogo} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => {
-                        this.setState({ isModalVisible: false })
-                    }}
-                >
-                    <Image source={CLOSE_BUTTON} style={styles.xLogo} />
-                </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.setState({ visibleView: 'GROUP_MODES' })
+                        }}
+                    >
+                        <Image source={BACK_BUTTON} style={styles.backLogo} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.setState({ isModalVisible: false })
+                        }}
+                    >
+                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.modalView}>
                     <View style={styles.joinGameCodeContainer}>
@@ -520,9 +568,16 @@ class Home extends React.Component {
                                 style={styles.joinGameCodeTextInput}
                                 maxLength={6}
                                 placeholder="Oda Kodu  "
-                                placeholderStyle={styles.joinGameCodeTextInputPlaceholder}
+                                placeholderStyle={
+                                    styles.joinGameCodeTextInputPlaceholder
+                                }
                                 placeholderTextColor="#A8A8A8"
                                 autoCapitalize="characters"
+                                onChangeText={text =>
+                                    this.setState({
+                                        groupCodeOnChangeText: text
+                                    })
+                                }
                             />
                         </View>
                     </View>
@@ -544,23 +599,29 @@ class Home extends React.Component {
                     width={wp(87.5)}
                     color="#00D9EF"
                     buttonText="Onayla"
-                    onPress={() => {
-                        this.setState({ visibleView: 'IS_JOINED_ROOM'})
-                    }}
+                    onPress={this.joinRoomOnPress}
                 />
             </View>
         )
+    }
+
+    startGroupOnPress = () => {
+        this.room.send({
+            action: 'start-match'
+        })
+    }
+
+    closeGroupOnPressCreate = () => {
+        this.setState({
+            visibleView: 'QUIT_GROUP_GAME_FROM_CREATE'
+        })
     }
 
     createRoomView() {
         return (
             <View style={styles.modal}>
                 <View style={styles.onlyCloseButtonContainer}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            this.setState({ visibleView: 'QUIT_GROUP_GAME_FROM_CREATE' })
-                        }}
-                    >
+                    <TouchableOpacity onPress={this.closeGroupOnPressCreate}>
                         <Image source={CLOSE_BUTTON} style={styles.xLogo} />
                     </TouchableOpacity>
                 </View>
@@ -608,7 +669,7 @@ class Home extends React.Component {
                             }
                             dropdownStyle={styles.questionPickerDropdown}
                             options={questionsNumbersList}
-                            defaultValue={this.state.questionsNumber}
+                            defaultValue={this.state.questionNumber}
                             onSelect={(idx, value) =>
                                 this.questionsPickerSelect(idx, value)
                             }
@@ -616,7 +677,7 @@ class Home extends React.Component {
                     </View>
                     <View style={styles.usersListContainer}>
                         <FlatList
-                            data={this.state.data}
+                            data={this.state.groupRoomPlayerList}
                             vertical={true}
                             showsVerticalScrollIndicator={false}
                             renderItem={({ item }) => {
@@ -628,23 +689,29 @@ class Home extends React.Component {
                                             }
                                         >
                                             <Image
-                                                source={item.userPic}
+                                                source={{
+                                                    uri: item.profilePicture
+                                                }}
                                                 style={styles.userPic}
                                             />
                                         </View>
                                         <View style={styles.nameContainer}>
                                             <Text style={styles.nameText}>
-                                                {item.name}
+                                                {item.username}
                                             </Text>
+                                            <Text>{item.status}</Text>
                                         </View>
                                     </View>
                                 )
                             }}
-                            keyExtractor={(item, index) => index}
+                            keyExtractor={(item, index) => index.toString()}
                         />
                     </View>
                     <View style={styles.usersCounterContainer}>
-                        <Text style={styles.usersCounterText}>3/20</Text>
+                        <Text style={styles.usersCounterText}>
+                            {Object.keys(this.state.groupRoomPlayerList).length}
+                            /30
+                        </Text>
                     </View>
                 </View>
                 <AuthButton
@@ -653,20 +720,29 @@ class Home extends React.Component {
                     width={wp(87.5)}
                     color="#00D9EF"
                     buttonText="Başla"
+                    onPress={this.startGroupOnPress}
                 />
             </View>
         )
+    }
+
+    groupGameReadyOnPress = () => {
+        this.room.send({
+            action: 'ready-status'
+        })
+    }
+
+    closeGroupOnPressJoin = () => {
+        this.setState({
+            visibleView: 'QUIT_GROUP_GAME_FROM_IS_JOINED'
+        })
     }
 
     isJoinedRoomView() {
         return (
             <View style={styles.modal}>
                 <View style={styles.onlyCloseButtonContainer}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            this.setState({ visibleView: 'QUIT_GROUP_GAME_FROM_IS_JOINED' })
-                        }}
-                    >
+                    <TouchableOpacity onPress={this.closeGroupOnPressJoin}>
                         <Image source={CLOSE_BUTTON} style={styles.xLogo} />
                     </TouchableOpacity>
                 </View>
@@ -677,7 +753,7 @@ class Home extends React.Component {
                         </Text>
                     </View>
                     <FlatList
-                        data={this.state.data}
+                        data={this.state.groupRoomPlayerList}
                         vertical={true}
                         showsVerticalScrollIndicator={false}
                         renderItem={({ item }) => {
@@ -687,22 +763,28 @@ class Home extends React.Component {
                                         style={styles.profilePicContainerinRow}
                                     >
                                         <Image
-                                            source={item.userPic}
+                                            source={{
+                                                uri: item.profilePicture
+                                            }}
                                             style={styles.userPic}
                                         />
                                     </View>
                                     <View style={styles.nameContainer}>
                                         <Text style={styles.nameText}>
-                                            {item.name}
+                                            {item.username}
                                         </Text>
+                                        <Text>{item.status}</Text>
                                     </View>
                                 </View>
                             )
                         }}
-                        keyExtractor={(item, index) => index}
+                        keyExtractor={(item, index) => index.toString()}
                     />
                     <View style={styles.usersCounterContainer}>
-                        <Text style={styles.usersCounterText}>3/20</Text>
+                        <Text style={styles.usersCounterText}>
+                            {Object.keys(this.state.groupRoomPlayerList).length}
+                            /30
+                        </Text>
                     </View>
                 </View>
                 <AuthButton
@@ -711,45 +793,19 @@ class Home extends React.Component {
                     width={wp(87.5)}
                     color="#00D9EF"
                     buttonText="Hazır"
+                    onPress={this.groupGameReadyOnPress}
                 />
             </View>
         )
     }
 
-    quitGroupGameViewFromCreate() {
-        return (
-            <View style={styles.modal}>
-                <View style={styles.quitView}>
-                    <Text style={styles.areYouSureText}>
-                        Odadan çıkış yapmak istediğine
-                    </Text>
-                    <Text style={styles.areYouSureText}>emin misin?</Text>
-                </View>
-                <View style={styles.yesOrNoButtonsContainer}>
-                    <AuthButton
-                        height={hp(7)}
-                        width={wp(42)}
-                        color="#00D9EF"
-                        buttonText="Evet"
-                        onPress={() => {
-                            this.setState({ isModalVisible: false })
-                        }}
-                    />
-                    <AuthButton
-                        height={hp(7)}
-                        width={wp(42)}
-                        color="#00D9EF"
-                        buttonText="Hayır"
-                        onPress={() => {
-                            this.setState({ visibleView: 'CREATE_ROOM' })
-                        }}
-                    />
-                </View>
-            </View>
-        )
+    leaveGroupGame = () => {
+        this.setState({ isModalVisible: false })
+        this.room.leave()
+        this.client.close()
     }
 
-    quitGroupGameViewFromIsJoined() {
+    quitGroupGame(isCreate) {
         return (
             <View style={styles.modal}>
                 <View style={styles.quitView}>
@@ -764,9 +820,7 @@ class Home extends React.Component {
                         width={wp(42)}
                         color="#00D9EF"
                         buttonText="Evet"
-                        onPress={() => {
-                            this.setState({ isModalVisible: false })
-                        }}
+                        onPress={this.leaveGroupGame}
                     />
                     <AuthButton
                         height={hp(7)}
@@ -774,7 +828,12 @@ class Home extends React.Component {
                         color="#00D9EF"
                         buttonText="Hayır"
                         onPress={() => {
-                            this.setState({ visibleView: 'IS_JOINED_ROOM' })
+                            this.setState({
+                                visibleView:
+                                    isCreate === true
+                                        ? 'CREATE_ROOM'
+                                        : 'IS_JOINED_ROOM'
+                            })
                         }}
                     />
                 </View>
@@ -787,7 +846,7 @@ class Home extends React.Component {
     }
 
     playButtonOnPress = () => {
-        navigationReset('game')
+        navigationReset('game', { isHardReset: false })
     }
 
     profilePicOnPress = () => {
@@ -809,9 +868,12 @@ class Home extends React.Component {
                     {visibleView === 'GROUP_MODES' && this.groupModesView()}
                     {visibleView === 'CREATE_ROOM' && this.createRoomView()}
                     {visibleView === 'JOIN_ROOM' && this.joinRoomView()}
-                    {visibleView === 'IS_JOINED_ROOM' && this.isJoinedRoomView()}
-                    {visibleView === 'QUIT_GROUP_GAME_FROM_CREATE' && this.quitGroupGameViewFromCreate()}
-                    {visibleView === 'QUIT_GROUP_GAME_FROM_IS_JOINED' && this.quitGroupGameViewFromIsJoined()}
+                    {visibleView === 'IS_JOINED_ROOM' &&
+                        this.isJoinedRoomView()}
+                    {visibleView === 'QUIT_GROUP_GAME_FROM_CREATE' &&
+                        this.quitGroupGame(true)}
+                    {visibleView === 'QUIT_GROUP_GAME_FROM_IS_JOINED' &&
+                        this.quitGroupGame(false)}
                 </Modal>
                 <View style={{ height: hp(60), marginTop: hp(0) }}>
                     <View style={styles.header}>
@@ -884,7 +946,8 @@ class Home extends React.Component {
 
 const mapStateToProps = state => ({
     profilePicture: state.user.profilePicture,
-    choosenExam: state.user.choosenExam
+    choosenExam: state.user.choosenExam,
+    username: state.user.username
 })
 
 const mapDispatchToProps = dispatch => ({

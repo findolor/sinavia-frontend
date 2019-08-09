@@ -41,19 +41,21 @@ class LoadingScreen extends React.Component {
     }
 
     componentDidMount() {
-        this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
-        this.client.onOpen.add(() => {
-            setTimeout(() => {
-                this.joinRoom()
-            }, 3000)
-        })
+        if (!this.props.isHardReset) {
+            this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
+            this.client.onOpen.add(() => {
+                setTimeout(() => {
+                    this.joinRoom()
+                }, 3000)
+            })
+        }
     }
 
     // Client sends a ready signal when they join a room successfully
     joinRoom = () => {
         const selectedPlayer = this.state.player.playerOne
 
-        this.room = this.client.join(this.state.gameMode.group, selectedPlayer)
+        this.room = this.client.join(this.state.gameMode.ranked, selectedPlayer)
         // Opponent information
         let opponentUsername
         let opponentId
@@ -78,7 +80,6 @@ class LoadingScreen extends React.Component {
 
             this.room.removeAllListeners()
 
-            // TODO goto match intro screen
             navigationPush(SCENE_KEYS.gameScreens.matchIntro, {
                 // These are necessary for the game logic
                 room: this.room,
@@ -94,10 +95,6 @@ class LoadingScreen extends React.Component {
                 subjectName: selectedPlayer.subjectName
             })
         })
-    }
-
-    play = () => {
-        this.joinRoom()
     }
 
     render() {
