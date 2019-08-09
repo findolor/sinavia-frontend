@@ -15,7 +15,8 @@ const config = {
             loading: 'loading',
             gameStats: 'gameStats',
             matchIntro: 'matchIntro',
-            groupGame: 'groupGame'
+            groupGame: 'groupGame',
+            groupGameStats: 'groupGameStats'
         },
         mainScreens: {
             main: 'main',

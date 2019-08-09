@@ -18,7 +18,8 @@ import {
     LoadingScreen,
     GameStatsScreen,
     MatchIntroScreen,
-    GroupGame
+    GroupGame,
+    GroupGameStatsScreen
 } from '../containers/gameScreens'
 
 import { SplashScreen } from '../containers/splashScreen'
@@ -43,7 +44,8 @@ export const gameScreens = {
     loading: LoadingScreen,
     gameStats: GameStatsScreen,
     matchIntro: MatchIntroScreen,
-    groupGame: GroupGame
+    groupGame: GroupGame,
+    groupGameStats: GroupGameStatsScreen
 }
 
 export const splashScreen = SplashScreen
