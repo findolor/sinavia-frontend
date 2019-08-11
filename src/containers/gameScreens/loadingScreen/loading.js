@@ -41,6 +41,7 @@ class LoadingScreen extends React.Component {
     }
 
     componentDidMount() {
+        if (this.props.isHardReset) return
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
         this.client.onOpen.add(() => {
             setTimeout(() => {

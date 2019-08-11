@@ -421,13 +421,9 @@ class Home extends React.Component {
 
     createGameOnPress = () => {
         this.setState({
-            visibleView: 'CREATE_ROOM',
-            groupCode: this.randomCodeGenerator()
+            isModalVisible: false
         })
-        this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
-        this.client.onOpen.add(() => {
-            this.joinRoom(true)
-        })
+        navigationPush(SCENE_KEYS.mainScreens.createGroupRoom)
     }
 
     joinRoom = async isCreate => {

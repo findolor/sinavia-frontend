@@ -1,11 +1,32 @@
 import React from 'react'
-import { View, TouchableOpacity, Image, Text } from 'react-native'
-import DropDown from '../../../components/mainScreen/dropdown/dropdown'
-import AuthButton from '../../../components/authScreen/authButton'
-
-// Images
-const CLOSE_BUTTON = require('../../../assets/closeButton.png')
-const COPY_IMAGE = require('../../../assets/mainScreens/copy.png')
+import { View, TouchableOpacity, Image, Text, FlatList } from 'react-native'
+import DropDown from '../../../../../components/mainScreen/dropdown/dropdown'
+import AuthButton from '../../../../../components/authScreen/authButton'
+import NotchView from '../../../../../components/notchView'
+import styles from './style'
+import {
+    navigationPush,
+    navigationReset,
+    SCENE_KEYS
+} from '../../../../../services/navigationService'
+import { deviceStorage } from '../../../../../services/deviceStorage'
+// Colyseus game engine imports
+import { Buffer } from 'buffer'
+import { AsyncStorage } from 'react-native'
+window.localStorage = AsyncStorage
+global.Buffer = Buffer
+import * as Colyseus from 'colyseus.js'
+// Styling imports
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
+// Image imports
+const COPY_IMAGE = require('../../../../../assets/mainScreens/copy.png')
+// Question amounts that can be taken
+const QUESTION_AMOUNTS_LIST = ['5', '10', '15', '20']
+// Game engine endpoint url
+import { GAME_ENGINE_ENDPOINT } from '../../../../../config'
 
 class CreateGroupRoom extends React.Component {
     constructor(props) {
@@ -20,14 +41,121 @@ class CreateGroupRoom extends React.Component {
         }
     }
 
+    componentDidMount() {
+        this.setState({
+            groupCode: this.randomCodeGenerator()
+        })
+        this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
+        this.client.onOpen.add(() => {
+            this.joinRoom(true)
+        })
+    }
+
+    startGroupGameOnPress = () => {
+        const playerListLenght = Object.keys(this.state.groupRoomPlayerList)
+            .length
+
+        let readyCount = 0
+
+        this.state.groupRoomPlayerList.forEach(player => {
+            if (player.status === 'Hazır') readyCount++
+        })
+
+        if (readyCount !== playerListLenght || playerListLenght === 1) return
+
+        this.room.send({
+            action: 'start-match'
+        })
+    }
+
+    joinRoom = async isCreate => {
+        const databaseId = await deviceStorage.getItemFromStorage('userId')
+
+        this.room = this.client.join('groupRoom', {
+            // These will be props coming from home screen
+            examName: 'LGS',
+            courseName: 'Matematik',
+            subjectName: 'Sayilar',
+            databaseId: databaseId,
+            roomCode: this.state.groupCode,
+            create: isCreate
+        })
+
+        this.room.onJoin.add(() => {
+            this.room.onMessage.add(message => {
+                console.log(message)
+                switch (message.action) {
+                    case 'player-props':
+                        const playerIds = Object.keys(message.playerProps)
+
+                        playerList = []
+
+                        playerIds.forEach(element => {
+                            if (message.playerProps[element].readyStatus) {
+                                playerList.push({
+                                    username:
+                                        message.playerProps[element].username,
+                                    id: element,
+                                    profilePicture:
+                                        message.playerProps[element]
+                                            .profilePicture,
+                                    status: 'Hazır'
+                                })
+                            } else {
+                                playerList.push({
+                                    username:
+                                        message.playerProps[element].username,
+                                    id: element,
+                                    profilePicture:
+                                        message.playerProps[element]
+                                            .profilePicture,
+                                    status: 'Bekleniyor'
+                                })
+                            }
+                        })
+
+                        this.setState({ groupRoomPlayerList: playerList })
+                        return
+                    case 'start-match':
+                        navigationReset('game', { isHardReset: true })
+                        navigationPush(SCENE_KEYS.gameScreens.groupGame, {
+                            room: this.room,
+                            client: this.client
+                        })
+                        return
+                }
+            })
+        })
+    }
+
+    randomCodeGenerator() {
+        var result = ''
+        var characters = 'ABCDEF0123456789'
+        var charactersLength = characters.length
+        for (var i = 0; i < 6; i++) {
+            result += characters.charAt(
+                Math.floor(Math.random() * charactersLength)
+            )
+        }
+        return result
+    }
+
+    writeToClipboard = async () => {
+        await Clipboard.setString(this.state.groupCode)
+    }
+
+    // Selected question amount is sent to the server
+    questionAmountPicker(idx, value) {
+        this.room.send({
+            action: 'set-question-number',
+            questionAmount: value
+        })
+    }
+
     render() {
         return (
-            <View style={styles.modal}>
-                <View style={styles.onlyCloseButtonContainer}>
-                    <TouchableOpacity onPress={this.closeGroupOnPressCreate}>
-                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
-                    </TouchableOpacity>
-                </View>
+            <View style={styles.container}>
+                <NotchView color={'#fcfcfc'} />
                 <View style={styles.modalView}>
                     <View style={styles.gameCodeContainer}>
                         <View style={styles.gameCodeBox}>
@@ -71,10 +199,10 @@ class CreateGroupRoom extends React.Component {
                                 styles.questionPickerDropdownText
                             }
                             dropdownStyle={styles.questionPickerDropdown}
-                            options={questionsNumbersList}
+                            options={QUESTION_AMOUNTS_LIST}
                             defaultValue={this.state.questionNumber}
                             onSelect={(idx, value) =>
-                                this.questionsPickerSelect(idx, value)
+                                this.questionAmountPicker(idx, value)
                             }
                         />
                     </View>
@@ -123,9 +251,11 @@ class CreateGroupRoom extends React.Component {
                     width={wp(87.5)}
                     color="#00D9EF"
                     buttonText="Başla"
-                    onPress={this.startGroupOnPress}
+                    onPress={this.startGroupGameOnPress}
                 />
             </View>
         )
     }
 }
+
+export default CreateGroupRoom

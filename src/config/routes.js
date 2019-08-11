@@ -57,6 +57,10 @@ const RouterComp = () => {
                         key={SCENE_KEYS.mainScreens.favorites}
                         component={mainScreens.favorites}
                     />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.createGroupRoom}
+                        component={mainScreens.createGroupRoom}
+                    />
                 </Scene>
                 <Scene key="game" hideNavBar={true}>
                     <Scene

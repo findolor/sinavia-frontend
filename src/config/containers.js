@@ -10,7 +10,8 @@ import {
     Profile,
     Settings,
     ChangePassword,
-    Favorites
+    Favorites,
+    CreateGroupRoom
 } from '../containers/mainScreens'
 
 import {
@@ -36,7 +37,8 @@ export const mainScreens = {
     profile: Profile,
     settings: Settings,
     changePassword: ChangePassword,
-    favorites: Favorites
+    favorites: Favorites,
+    createGroupRoom: CreateGroupRoom
 }
 
 export const gameScreens = {

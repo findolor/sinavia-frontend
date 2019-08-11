@@ -25,7 +25,8 @@ const config = {
             profile: 'profile',
             settings: 'settings',
             changePassword: 'changePassword',
-            favorites: 'favorites'
+            favorites: 'favorites',
+            createGroupRoom: 'createGroupRoom'
         },
         splashScreen: 'splash'
     }
