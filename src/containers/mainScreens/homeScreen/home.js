@@ -536,6 +536,11 @@ class Home extends React.Component {
     }
 
     joinRoomOnPress = () => {
+        if (
+            this.state.groupCodeOnChangeText === '' ||
+            this.state.groupCodeOnChangeText.length !== 6
+        )
+            return
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
         this.client.onOpen.add(() => {
             this.joinRoom(false)
@@ -606,6 +611,17 @@ class Home extends React.Component {
     }
 
     startGroupOnPress = () => {
+        const playerListLenght = Object.keys(this.state.groupRoomPlayerList)
+            .length
+
+        let readyCount = 0
+
+        this.state.groupRoomPlayerList.forEach(player => {
+            if (player.status === 'Hazır') readyCount++
+        })
+
+        if (readyCount !== playerListLenght || playerListLenght === 1) return
+
         this.room.send({
             action: 'start-match'
         })
