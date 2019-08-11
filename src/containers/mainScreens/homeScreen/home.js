@@ -107,13 +107,7 @@ class Home extends React.Component {
             visibleView: '',
             visibleRankedGameStartPress: '',
 
-            groupRoomPlayerList: [
-                {
-                    profilePicture: this.props.profilePicture,
-                    username: this.props.username,
-                    status: 'Hazır'
-                }
-            ]
+            groupRoomPlayerList: []
         }
     }
 
@@ -144,6 +138,15 @@ class Home extends React.Component {
             action: 'set-question-number',
             questionAmount: value
         })
+    }
+
+    carouselIndexToCourseName = () => {
+        switch (this.state.exam) {
+            case 'YKS':
+                return YKS[this.state.carouselActiveSlide].courseName
+            case 'LGS':
+                return LGS[this.state.carouselActiveSlide].courseName
+        }
     }
 
     randomCodeGenerator() {
@@ -862,7 +865,11 @@ class Home extends React.Component {
     }
 
     playButtonOnPress = () => {
-        navigationReset('game', { isHardReset: false })
+        navigationReset('game', {
+            examName: this.state.exam,
+            courseName: this.carouselIndexToCourseName(),
+            subjectName: this.state.subject
+        })
     }
 
     profilePicOnPress = () => {

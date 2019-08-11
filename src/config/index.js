@@ -1,6 +1,7 @@
 const config = {
     api: {
         host: 'http://localhost:4000/api/v1/',
+        //host: 'https://sinavia-test.herokuapp.com/',
         gameEngine: 'http://localhost:5000'
         //gameEngine: 'https://sinavia-test.herokuapp.com/'
     },

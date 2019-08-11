@@ -41,14 +41,12 @@ class LoadingScreen extends React.Component {
     }
 
     componentDidMount() {
-        if (!this.props.isHardReset) {
-            this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
-            this.client.onOpen.add(() => {
-                setTimeout(() => {
-                    this.joinRoom()
-                }, 3000)
-            })
-        }
+        this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
+        this.client.onOpen.add(() => {
+            setTimeout(() => {
+                this.joinRoom()
+            }, 3000)
+        })
     }
 
     // Client sends a ready signal when they join a room successfully
