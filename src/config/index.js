@@ -2,6 +2,7 @@ const config = {
     api: {
         host: 'http://localhost:4000/api/v1/',
         gameEngine: 'http://localhost:5000'
+        //gameEngine: 'https://sinavia-test.herokuapp.com/'
     },
     scene_keys: {
         authScreens: {
