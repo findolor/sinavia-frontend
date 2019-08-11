@@ -113,32 +113,34 @@ class GroupGameStatsScreen extends React.Component {
             let profilePicture = ''
 
             playerIds.forEach((playerId, index) => {
-                username = playerProps[playerId].username
-                profilePicture = playerProps[playerId].profilePicture
-                playerProps[playerId].answers.forEach(result => {
-                    console.log(result)
-                    switch (result.result) {
-                        case null:
-                            unanswered++
-                            return
-                        case true:
-                            correct++
-                            return
-                        case false:
-                            incorrect++
-                    }
-                })
-                playerList.push({
-                    username: username,
-                    profilePicture: profilePicture,
-                    correct: correct,
-                    incorrect: incorrect,
-                    unanswered: unanswered,
-                    index: index + 1
-                })
-                correct = 0
-                incorrect = 0
-                unanswered = 0
+                if (!playerProps[playerId].isLeft) {
+                    username = playerProps[playerId].username
+                    profilePicture = playerProps[playerId].profilePicture
+                    playerProps[playerId].answers.forEach(result => {
+                        console.log(result)
+                        switch (result.result) {
+                            case null:
+                                unanswered++
+                                return
+                            case true:
+                                correct++
+                                return
+                            case false:
+                                incorrect++
+                        }
+                    })
+                    playerList.push({
+                        username: username,
+                        profilePicture: profilePicture,
+                        correct: correct,
+                        incorrect: incorrect,
+                        unanswered: unanswered,
+                        index: index + 1
+                    })
+                    correct = 0
+                    incorrect = 0
+                    unanswered = 0
+                }
             })
 
             for (i = 0; i < Object.keys(this.props.questionList).length; i++) {

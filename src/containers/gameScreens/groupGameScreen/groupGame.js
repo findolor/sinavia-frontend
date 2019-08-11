@@ -62,9 +62,6 @@ class GroupGame extends React.Component {
             countDownTime: 60,
             // playerProps state
             playerProps: {},
-            // Opponent clientId
-            // TODO fix here
-            //opponentIds: this.props.opponentIds,
             // modal visibility variable
             isQuestionModalVisible: false,
             // Question option names
@@ -130,7 +127,20 @@ class GroupGame extends React.Component {
                 // TODO navigate to the game-stats screen
                 Alert.alert(this.state.opponentId, 'oyuncu oyundan ayrildi.')
                 return
+            case 'only-client':
+                this.onlyClientMatchQuit()
+                return
+            case 'finished-resend':
+                this.props.room.send({
+                    action: 'finished'
+                })
         }
+    }
+
+    onlyClientMatchQuit = () => {
+        Alert.alert('Herkes oyundan ayrıldı!')
+        this.shutdownGame()
+        this.props.client.close()
     }
 
     // TODO Move these actions to their functions
