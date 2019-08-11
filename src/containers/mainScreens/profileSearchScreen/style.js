@@ -36,7 +36,7 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Semibold',
         fontSize: hp(3),
         color: '#00D9EF',
-        marginBottom: hp(0.5),
+        marginTop: hp(1),
         marginLeft: wp(3)
     },
     searchInfoText: {
@@ -94,5 +94,8 @@ export default StyleSheet.create({
         color: '#FF9900',
         marginBottom: hp(0.5),
         marginLeft: wp(3)
+    },
+    bottomNotch: {
+        padding: hp(1)
     }
 })

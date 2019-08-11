@@ -143,6 +143,7 @@ class ProfileSearch extends React.Component {
                     }}
                     keyExtractor={(item, index) => index}
                 />
+                <View style={styles.bottomNotch}></View>
             </View>
         )
     }
