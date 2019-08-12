@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-    FlatList,
-    View,
-    Text,
-    TouchableOpacity,
-    Image
-} from 'react-native'
+import { FlatList, View, Text, TouchableOpacity, Image } from 'react-native'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import { navigationPop } from '../../../services/navigationService'
@@ -78,7 +72,7 @@ const usersList = [
         userPic: PROFILE_PIC,
         name: 'Nurettin Hakan Yılmaz',
         username: 'haqotherage'
-    },
+    }
 ]
 
 class ProfileSearch extends React.Component {
@@ -108,7 +102,9 @@ class ProfileSearch extends React.Component {
                     </TouchableOpacity>
                     <View style={styles.headerTextWrapper}>
                         <Text style={styles.searchText}>"Hakan"</Text>
-                        <Text style={styles.searchInfoText}>ile alakalı sonuçlar</Text>
+                        <Text style={styles.searchInfoText}>
+                            ile alakalı sonuçlar
+                        </Text>
                     </View>
                 </View>
                 <FlatList
@@ -118,31 +114,32 @@ class ProfileSearch extends React.Component {
                     renderItem={({ item }) => {
                         return (
                             <TouchableOpacity>
-                            <View style={styles.userRow}>
-                                <View
-                                    style={
-                                        styles.userPicContainerInRow
-                                    }
-                                >
-                                    <Image
-                                        source={item.userPic}
-                                        style={styles.userPic}
-                                    />
-                                </View>
-                                <View style={styles.namesContainer}>
-                                    <View style={styles.nameContainer}>
-                                        <Text style={styles.nameText}>{item.name}</Text>
+                                <View style={styles.userRow}>
+                                    <View style={styles.userPicContainerInRow}>
+                                        <Image
+                                            source={item.userPic}
+                                            style={styles.userPic}
+                                        />
                                     </View>
-                                    <View style={styles.usernameContainer}>
-                                        <Text style={styles.usernameText}>@{item.username}</Text>
+                                    <View style={styles.namesContainer}>
+                                        <View style={styles.nameContainer}>
+                                            <Text style={styles.nameText}>
+                                                {item.name}
+                                            </Text>
+                                        </View>
+                                        <View style={styles.usernameContainer}>
+                                            <Text style={styles.usernameText}>
+                                                @{item.username}
+                                            </Text>
+                                        </View>
                                     </View>
                                 </View>
-                            </View>
                             </TouchableOpacity>
                         )
                     }}
                     keyExtractor={(item, index) => index}
                 />
+                <View style={styles.bottomView} />
             </View>
         )
     }
