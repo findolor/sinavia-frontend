@@ -12,12 +12,9 @@ import {
     ChangePassword,
     Favorites,
     ProfileSearch,
-<<<<<<< HEAD
     CreateGroupRoom,
-    JoinGroupRoom
-=======
+    JoinGroupRoom,
     OpponentsProfile
->>>>>>> opponentsProfile
 } from '../containers/mainScreens'
 
 import {
@@ -45,12 +42,9 @@ export const mainScreens = {
     changePassword: ChangePassword,
     favorites: Favorites,
     profileSearch: ProfileSearch,
-<<<<<<< HEAD
     createGroupRoom: CreateGroupRoom,
-    joinGroupRoom: JoinGroupRoom
-=======
+    joinGroupRoom: JoinGroupRoom,
     opponentsProfile: OpponentsProfile
->>>>>>> opponentsProfile
 }
 
 export const gameScreens = {
