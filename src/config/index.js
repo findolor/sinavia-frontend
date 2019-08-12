@@ -1,7 +1,9 @@
 const config = {
     api: {
         host: 'http://localhost:4000/api/v1/',
+        //host: 'https://sinavia-test.herokuapp.com/',
         gameEngine: 'http://localhost:5000'
+        //gameEngine: 'https://sinavia-test.herokuapp.com/'
     },
     scene_keys: {
         authScreens: {
@@ -14,8 +16,9 @@ const config = {
             rankedGame: 'rankedGame',
             loading: 'loading',
             gameStats: 'gameStats',
-            groupGameStats: 'groupGameStats',
-            matchIntro: 'matchIntro'
+            matchIntro: 'matchIntro',
+            groupGame: 'groupGame',
+            groupGameStats: 'groupGameStats'
         },
         mainScreens: {
             main: 'main',
@@ -23,7 +26,9 @@ const config = {
             settings: 'settings',
             changePassword: 'changePassword',
             favorites: 'favorites',
-            profileSearch: 'profileSearch'
+            profileSearch: 'profileSearch',
+            createGroupRoom: 'createGroupRoom',
+            joinGroupRoom: 'joinGroupRoom'
         },
         splashScreen: 'splash'
     }

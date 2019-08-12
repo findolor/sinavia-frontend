@@ -14,24 +14,26 @@ class LoadingScreen extends React.Component {
         super(props)
         this.state = {
             gameMode: {
-                ranked: 'rankedRoom'
+                ranked: 'rankedRoom',
+                group: 'groupRoom'
             },
             player: {
                 playerOne: {
                     create: true,
-                    userLevel: 4,
                     examName: 'LGS',
                     courseName: 'Matematik',
                     subjectName: 'Sayilar',
-                    databaseId: '4973ef67-cc68-4702-8082-f9ea6b69a463'
+                    databaseId: '4973ef67-cc68-4702-8082-f9ea6b69a463',
+                    roomCode: 'aaa',
+                    maxClientNumber: 2
                 },
                 playerTwo: {
                     create: true,
-                    userLevel: 4,
                     examName: 'LGS',
                     courseName: 'Matematik',
                     subjectName: 'Sayilar',
-                    databaseId: 'c4b812f2-78d5-4bc3-a46a-87a03bdf97fc'
+                    databaseId: 'c4b812f2-78d5-4bc3-a46a-87a03bdf97fc',
+                    roomCode: 'aaa'
                 }
             },
             isDisabled: true
@@ -39,6 +41,7 @@ class LoadingScreen extends React.Component {
     }
 
     componentDidMount() {
+        if (this.props.isHardReset) return
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
         this.client.onOpen.add(() => {
             setTimeout(() => {
@@ -76,7 +79,6 @@ class LoadingScreen extends React.Component {
 
             this.room.removeAllListeners()
 
-            // TODO goto match intro screen
             navigationPush(SCENE_KEYS.gameScreens.matchIntro, {
                 // These are necessary for the game logic
                 room: this.room,
@@ -91,21 +93,7 @@ class LoadingScreen extends React.Component {
                 courseName: selectedPlayer.courseName,
                 subjectName: selectedPlayer.subjectName
             })
-
-            /* navigationPush(SCENE_KEYS.gameScreens.rankedGame, {
-                room: this.room,
-                client: this.client,
-                playerUsername: playerUsername,
-                playerProfilePicture: playerProfilePicture,
-                opponentUsername: opponentUsername,
-                opponentId: opponentId,
-                opponentProfilePicture: opponentProfilePicture
-            }) */
         })
-    }
-
-    play = () => {
-        this.joinRoom()
     }
 
     render() {
@@ -119,13 +107,6 @@ class LoadingScreen extends React.Component {
                         alignItems: 'center'
                     }}
                 >
-                    {/* <Buttonß
-                        title="play"
-                        onPress={this.play}
-                        disabled={this.state.isDisabled}
-                    >
-                        Play
-                    </Button> */}
                     <Text
                         style={{
                             fontFamily: 'Averta-BoldItalic',

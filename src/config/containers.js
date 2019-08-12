@@ -11,15 +11,18 @@ import {
     Settings,
     ChangePassword,
     Favorites,
-    ProfileSearch
+    ProfileSearch,
+    CreateGroupRoom,
+    JoinGroupRoom
 } from '../containers/mainScreens'
 
 import {
     RankedGame,
     LoadingScreen,
     GameStatsScreen,
-    GroupGameStatsScreen,
-    MatchIntroScreen
+    MatchIntroScreen,
+    GroupGame,
+    GroupGameStatsScreen
 } from '../containers/gameScreens'
 
 import { SplashScreen } from '../containers/splashScreen'
@@ -37,15 +40,18 @@ export const mainScreens = {
     settings: Settings,
     changePassword: ChangePassword,
     favorites: Favorites,
-    profileSearch: ProfileSearch
+    profileSearch: ProfileSearch,
+    createGroupRoom: CreateGroupRoom,
+    joinGroupRoom: JoinGroupRoom
 }
 
 export const gameScreens = {
     rankedGame: RankedGame,
     loading: LoadingScreen,
     gameStats: GameStatsScreen,
-    groupGameStats: GroupGameStatsScreen,
-    matchIntro: MatchIntroScreen
+    matchIntro: MatchIntroScreen,
+    groupGame: GroupGame,
+    groupGameStats: GroupGameStatsScreen
 }
 
 export const splashScreen = SplashScreen

@@ -44,31 +44,31 @@ export const LGS = [
 
 export const YKS = [
     {
-        title: '',
+        courseName: 'Türkçe',
         illustration: turkceYKS
     },
     {
-        title: '',
+        courseName: 'Coğrafya',
         illustration: cografyaYKS
     },
     {
-        title: '',
+        courseName: 'Tarih',
         illustration: tarihYKS
     },
     {
-        title: '',
+        courseName: 'Matematik',
         illustration: matematikYKS
     },
     {
-        title: '',
+        courseName: 'Fizik',
         illustration: fizikYKS
     },
     {
-        title: '',
+        courseName: 'Kimya',
         illustration: kimyaYKS
     },
     {
-        title: '',
+        courseName: 'Biyoloji',
         illustration: biyolojiYKS
     }
 ]

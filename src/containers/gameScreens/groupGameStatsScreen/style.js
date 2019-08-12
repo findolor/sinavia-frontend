@@ -275,7 +275,8 @@ export default StyleSheet.create({
         borderRadius: 100,
         marginTop: hp(1),
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: 'white'
     },
     answerText: {
         fontFamily: 'Averta-Semibold',
@@ -293,7 +294,8 @@ export default StyleSheet.create({
     optionText: {
         fontFamily: 'Averta-Semibold',
         letterSpacing: wp(0.1),
-        fontSize: hp(3.5)
+        fontSize: hp(3.5),
+        color: '#00D9EF'
     },
     userRow: {
         height: hp(7),

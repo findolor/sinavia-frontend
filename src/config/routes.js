@@ -61,6 +61,14 @@ const RouterComp = () => {
                         key={SCENE_KEYS.mainScreens.favorites}
                         component={mainScreens.favorites}
                     />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.createGroupRoom}
+                        component={mainScreens.createGroupRoom}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.joinGroupRoom}
+                        component={mainScreens.joinGroupRoom}
+                    />
                 </Scene>
                 <Scene key="game" hideNavBar={true}>
                     <Scene
@@ -74,6 +82,10 @@ const RouterComp = () => {
                     <Scene
                         key={SCENE_KEYS.gameScreens.rankedGame}
                         component={gameScreens.rankedGame}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.gameScreens.groupGame}
+                        component={gameScreens.groupGame}
                     />
                     <Scene
                         key={SCENE_KEYS.gameScreens.gameStats}
