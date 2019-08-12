@@ -47,7 +47,7 @@ class CreateGroupRoom extends React.Component {
         })
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
         this.client.onOpen.add(() => {
-            this.joinRoom(true)
+            this.joinRoom()
         })
     }
 
@@ -68,7 +68,7 @@ class CreateGroupRoom extends React.Component {
         })
     }
 
-    joinRoom = async isCreate => {
+    joinRoom = async () => {
         const databaseId = await deviceStorage.getItemFromStorage('userId')
 
         this.room = this.client.join('groupRoom', {
@@ -78,12 +78,11 @@ class CreateGroupRoom extends React.Component {
             subjectName: 'Sayilar',
             databaseId: databaseId,
             roomCode: this.state.groupCode,
-            create: isCreate
+            create: true
         })
 
         this.room.onJoin.add(() => {
             this.room.onMessage.add(message => {
-                console.log(message)
                 switch (message.action) {
                     case 'player-props':
                         const playerIds = Object.keys(message.playerProps)

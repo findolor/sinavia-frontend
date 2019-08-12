@@ -61,6 +61,10 @@ const RouterComp = () => {
                         key={SCENE_KEYS.mainScreens.createGroupRoom}
                         component={mainScreens.createGroupRoom}
                     />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.joinGroupRoom}
+                        component={mainScreens.joinGroupRoom}
+                    />
                 </Scene>
                 <Scene key="game" hideNavBar={true}>
                     <Scene

@@ -60,7 +60,7 @@ const exams = [
     'EUS',
     'Ehliyet Sınavları'
 ]
-const questionsNumbersList = ['5', '10', '15', '20']
+const CLOSE_BUTTON = require('../../../assets/closeButton.png')
 const examList = {
     YKS: YKS,
     LGS: LGS
@@ -83,10 +83,6 @@ class Home extends React.Component {
             exam: this.props.choosenExam,
             subject: '',
             isModalVisible: false,
-            groupModeView: false,
-            createRoomView: false,
-            joinRoomView: false,
-            isJoinedRoomView: false,
             // Mode button variables
             rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
             // Mode images
@@ -100,12 +96,8 @@ class Home extends React.Component {
 
             groupCodeOnChangeText: '',
             visibleView: '',
-            visibleRankedGameStartPress: ''
+            visibleRankedGameStartPress: false
         }
-    }
-
-    writeToClipboard = async () => {
-        await Clipboard.setString(this.state.groupCode)
     }
 
     _renderItemWithParallax({ item, index }, parallaxProps) {
@@ -126,13 +118,6 @@ class Home extends React.Component {
         this.props.saveChoosenExam(value)
     }
 
-    questionsPickerSelect(idx, value) {
-        this.room.send({
-            action: 'set-question-number',
-            questionAmount: value
-        })
-    }
-
     carouselIndexToCourseName = () => {
         switch (this.state.exam) {
             case 'YKS':
@@ -140,18 +125,6 @@ class Home extends React.Component {
             case 'LGS':
                 return LGS[this.state.carouselActiveSlide].courseName
         }
-    }
-
-    randomCodeGenerator() {
-        var result = ''
-        var characters = 'ABCDEF0123456789'
-        var charactersLength = characters.length
-        for (var i = 0; i < 6; i++) {
-            result += characters.charAt(
-                Math.floor(Math.random() * charactersLength)
-            )
-        }
-        return result
     }
 
     onPressCard(title) {
@@ -294,7 +267,7 @@ class Home extends React.Component {
 
     rankedGameModeOnPress = () => {
         this.setState({
-            visibleRankedGameStartPress: 'START_RANKED_GAME_PRESS',
+            visibleRankedGameStartPress: true,
             rankedModeButtonBorderColor:
                 this.state.rankedModeButtonBorderColor === EMPTY_MODE_COLOR
                     ? SELECTED_MODE_COLOR
@@ -305,7 +278,7 @@ class Home extends React.Component {
     closeModalButtonOnPress = () => {
         this.setState({
             isModalVisible: false,
-            visibleRankedGameStartPress: ''
+            visibleRankedGameStartPress: true
         })
     }
 
@@ -354,7 +327,7 @@ class Home extends React.Component {
                             <TouchableOpacity
                                 onPress={() =>
                                     this.setState({
-                                        visibleRankedGameStartPress: '',
+                                        visibleRankedGameStartPress: true,
                                         rankedModeButtonBorderColor: EMPTY_MODE_COLOR
                                     })
                                 }
@@ -377,7 +350,7 @@ class Home extends React.Component {
                                 onPress={() =>
                                     this.setState({
                                         visibleView: 'GROUP_MODES',
-                                        visibleRankedGameStartPress: '',
+                                        visibleRankedGameStartPress: false,
                                         rankedModeButtonBorderColor: EMPTY_MODE_COLOR
                                     })
                                 }
@@ -397,8 +370,7 @@ class Home extends React.Component {
                         </View>
                     </View>
                 </View>
-                {this.state.visibleRankedGameStartPress ===
-                    'START_RANKED_GAME_PRESS' && (
+                {this.state.visibleRankedGameStartPress && (
                     <AuthButton
                         marginTop={hp(2)}
                         height={hp(7)}
@@ -412,76 +384,11 @@ class Home extends React.Component {
         )
     }
 
-    createGameOnPress = () => {
+    createGroupRoomOnPress = () => {
         this.setState({
             isModalVisible: false
         })
         navigationPush(SCENE_KEYS.mainScreens.createGroupRoom)
-    }
-
-    joinRoom = async isCreate => {
-        const databaseId = await deviceStorage.getItemFromStorage('userId')
-
-        this.room = this.client.join('groupRoom', {
-            examName: 'LGS',
-            courseName: 'Matematik',
-            subjectName: 'Sayilar',
-            databaseId: databaseId,
-            roomCode:
-                isCreate === true
-                    ? this.state.groupCode
-                    : this.state.groupCodeOnChangeText,
-            create: isCreate
-        })
-
-        this.room.onJoin.add(() => {
-            if (!isCreate) this.setState({ visibleView: 'IS_JOINED_ROOM' })
-            this.room.onMessage.add(message => {
-                switch (message.action) {
-                    case 'player-props':
-                        console.log(message)
-                        const playerIds = Object.keys(message.playerProps)
-
-                        playerList = []
-
-                        playerIds.forEach(element => {
-                            if (message.playerProps[element].readyStatus) {
-                                playerList.push({
-                                    username:
-                                        message.playerProps[element].username,
-                                    id: element,
-                                    profilePicture:
-                                        message.playerProps[element]
-                                            .profilePicture,
-                                    status: 'Hazır'
-                                })
-                            } else {
-                                playerList.push({
-                                    username:
-                                        message.playerProps[element].username,
-                                    id: element,
-                                    profilePicture:
-                                        message.playerProps[element]
-                                            .profilePicture,
-                                    status: 'Bekleniyor'
-                                })
-                            }
-                        })
-
-                        this.setState({ groupRoomPlayerList: playerList })
-                        return
-                    case 'start-match':
-                        this.setState({ isModalVisible: false })
-                        navigationReset('game', { isHardReset: true })
-                        navigationPush(SCENE_KEYS.gameScreens.groupGame, {
-                            // These are necessary for the game logic
-                            room: this.room,
-                            client: this.client
-                        })
-                        return
-                }
-            })
-        })
     }
 
     groupModesView() {
@@ -510,7 +417,7 @@ class Home extends React.Component {
                             width={wp(60)}
                             color="#00D9EF"
                             buttonText="Oyun kur"
-                            onPress={this.createGameOnPress}
+                            onPress={this.createGroupRoomOnPress}
                         />
                         <AuthButton
                             height={hp(12)}
@@ -527,7 +434,7 @@ class Home extends React.Component {
         )
     }
 
-    joinRoomOnPress = () => {
+    joinGroupRoomOnPress = () => {
         if (
             this.state.groupCodeOnChangeText === '' ||
             this.state.groupCodeOnChangeText.length !== 6
@@ -535,7 +442,31 @@ class Home extends React.Component {
             return
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
         this.client.onOpen.add(() => {
-            this.joinRoom(false)
+            this.tryJoiningRoom()
+        })
+    }
+
+    tryJoiningRoom = async () => {
+        const databaseId = await deviceStorage.getItemFromStorage('userId')
+
+        this.room = this.client.join('groupRoom', {
+            // These will be props coming from home screen
+            examName: 'LGS',
+            courseName: 'Matematik',
+            subjectName: 'Sayilar',
+            databaseId: databaseId,
+            roomCode: this.state.groupCodeOnChangeText,
+            // Because we are joining a game, we don't want to create a new room
+            create: false
+        })
+
+        this.room.onJoin.add(() => {
+            this.setState({ isModalVisible: false })
+            this.room.removeAllListeners()
+            navigationPush(SCENE_KEYS.mainScreens.joinGroupRoom, {
+                client: this.client,
+                room: this.room
+            })
         })
     }
 
@@ -596,129 +527,10 @@ class Home extends React.Component {
                     width={wp(87.5)}
                     color="#00D9EF"
                     buttonText="Onayla"
-                    onPress={this.joinRoomOnPress}
+                    onPress={this.joinGroupRoomOnPress}
                 />
             </View>
         )
-    }
-
-    groupGameReadyOnPress = () => {
-        this.room.send({
-            action: 'ready-status'
-        })
-    }
-
-    closeGroupOnPressJoin = () => {
-        this.setState({
-            visibleView: 'QUIT_GROUP_GAME_FROM_IS_JOINED'
-        })
-    }
-
-    isJoinedRoomView() {
-        return (
-            <View style={styles.modal}>
-                <View style={styles.onlyCloseButtonContainer}>
-                    <TouchableOpacity onPress={this.closeGroupOnPressJoin}>
-                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.modalView}>
-                    <View style={styles.isJoinedRoomSubjectContainer}>
-                        <Text style={styles.modalSubjectText}>
-                            Paragrafta Anlam
-                        </Text>
-                    </View>
-                    <FlatList
-                        data={this.state.groupRoomPlayerList}
-                        vertical={true}
-                        showsVerticalScrollIndicator={false}
-                        renderItem={({ item }) => {
-                            return (
-                                <View style={styles.userRow}>
-                                    <View
-                                        style={styles.profilePicContainerinRow}
-                                    >
-                                        <Image
-                                            source={{
-                                                uri: item.profilePicture
-                                            }}
-                                            style={styles.userPic}
-                                        />
-                                    </View>
-                                    <View style={styles.nameContainer}>
-                                        <Text style={styles.nameText}>
-                                            {item.username}
-                                        </Text>
-                                        <Text>{item.status}</Text>
-                                    </View>
-                                </View>
-                            )
-                        }}
-                        keyExtractor={(item, index) => index.toString()}
-                    />
-                    <View style={styles.usersCounterContainer}>
-                        <Text style={styles.usersCounterText}>
-                            {Object.keys(this.state.groupRoomPlayerList).length}
-                            /30
-                        </Text>
-                    </View>
-                </View>
-                <AuthButton
-                    marginTop={hp(2)}
-                    height={hp(7)}
-                    width={wp(87.5)}
-                    color="#00D9EF"
-                    buttonText="Hazır"
-                    onPress={this.groupGameReadyOnPress}
-                />
-            </View>
-        )
-    }
-
-    leaveGroupGame = () => {
-        this.setState({ isModalVisible: false })
-        this.room.leave()
-        this.client.close()
-    }
-
-    quitGroupGame(isCreate) {
-        return (
-            <View style={styles.modal}>
-                <View style={styles.quitView}>
-                    <Text style={styles.areYouSureText}>
-                        Odadan çıkış yapmak istediğine
-                    </Text>
-                    <Text style={styles.areYouSureText}>emin misin?</Text>
-                </View>
-                <View style={styles.yesOrNoButtonsContainer}>
-                    <AuthButton
-                        height={hp(7)}
-                        width={wp(42)}
-                        color="#00D9EF"
-                        buttonText="Evet"
-                        onPress={this.leaveGroupGame}
-                    />
-                    <AuthButton
-                        height={hp(7)}
-                        width={wp(42)}
-                        color="#00D9EF"
-                        buttonText="Hayır"
-                        onPress={() => {
-                            this.setState({
-                                visibleView:
-                                    isCreate === true
-                                        ? 'CREATE_ROOM'
-                                        : 'IS_JOINED_ROOM'
-                            })
-                        }}
-                    />
-                </View>
-            </View>
-        )
-    }
-
-    modeButtonOnPress = selectedMode => {
-        this.updateModeButtonUI(selectedMode)
     }
 
     playButtonOnPress = () => {
@@ -746,14 +558,7 @@ class Home extends React.Component {
                 >
                     {visibleView === 'GAME_MODES' && this.gameModesView()}
                     {visibleView === 'GROUP_MODES' && this.groupModesView()}
-                    {visibleView === 'CREATE_ROOM' && this.createRoomView()}
                     {visibleView === 'JOIN_ROOM' && this.joinRoomView()}
-                    {visibleView === 'IS_JOINED_ROOM' &&
-                        this.isJoinedRoomView()}
-                    {visibleView === 'QUIT_GROUP_GAME_FROM_CREATE' &&
-                        this.quitGroupGame(true)}
-                    {visibleView === 'QUIT_GROUP_GAME_FROM_IS_JOINED' &&
-                        this.quitGroupGame(false)}
                 </Modal>
                 <View style={{ height: hp(60), marginTop: hp(0) }}>
                     <View style={styles.header}>
