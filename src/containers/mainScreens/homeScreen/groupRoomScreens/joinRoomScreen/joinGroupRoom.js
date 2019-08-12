@@ -14,6 +14,7 @@ import {
     navigationReset,
     SCENE_KEYS
 } from '../../../../../services/navigationService'
+import DropDown from '../../../../../components/mainScreen/dropdown/dropdown'
 // Styling imports
 import {
     heightPercentageToDP as hp,
@@ -22,6 +23,10 @@ import {
 // Image imports
 const CLOSE_BUTTON = require('../../../../../assets/closeButton.png')
 const LEADER_LOGO = require('../../../../../assets/mainScreens/groupLeaderSword.png')
+const COPY_IMAGE = require('../../../../../assets/mainScreens/copy.png')
+
+// Question amounts that can be taken
+const QUESTION_AMOUNTS_LIST = ['5', '10', '15', '20']
 
 class JoinGroupRoom extends React.Component {
     constructor(props) {
@@ -30,7 +35,11 @@ class JoinGroupRoom extends React.Component {
             // Group player list
             groupRoomPlayerList: [],
             // Quit modal visible variable
-            isQuitGameModalVisible: false
+            isQuitGameModalVisible: false,
+            // Variable for checking leader status
+            isClientLeader: false,
+            // Group game question number
+            questionNumber: '5'
         }
     }
 
@@ -62,9 +71,11 @@ class JoinGroupRoom extends React.Component {
                                 isLeader: message.playerProps[element].isLeader
                             })
                         }
+                        message.playerProps[this.props.client.id].isLeader ===
+                        true
+                            ? this.setState({ isClientLeader: true })
+                            : this.setState({ isClientLeader: false })
                     })
-
-                    console.log(playerList)
 
                     this.setState({ groupRoomPlayerList: playerList })
                     return
@@ -79,9 +90,38 @@ class JoinGroupRoom extends React.Component {
         })
     }
 
+    // Selected question amount is sent to the server
+    questionAmountPicker(idx, value) {
+        this.room.send({
+            action: 'set-question-number',
+            questionAmount: value
+        })
+    }
+
     groupGameReadyOnPress = () => {
+        if (!this.state.isClientLeader) {
+            this.props.room.send({
+                action: 'ready-status'
+            })
+        } else {
+            this.startGroupGameOnPress()
+        }
+    }
+
+    startGroupGameOnPress = () => {
+        const playerListLenght = Object.keys(this.state.groupRoomPlayerList)
+            .length
+
+        let readyCount = 0
+
+        this.state.groupRoomPlayerList.forEach(player => {
+            if (player.status === 'Hazır') readyCount++
+        })
+
+        if (readyCount !== playerListLenght || playerListLenght === 1) return
+
         this.props.room.send({
-            action: 'ready-status'
+            action: 'start-match'
         })
     }
 
@@ -112,11 +152,68 @@ class JoinGroupRoom extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.modalView}>
-                    <View style={styles.isJoinedRoomSubjectContainer}>
-                        <Text style={styles.modalSubjectText}>
-                            Paragrafta Anlam
-                        </Text>
-                    </View>
+                    {!this.state.isClientLeader && (
+                        <View style={styles.isJoinedRoomSubjectContainer}>
+                            <Text style={styles.modalSubjectText}>
+                                Paragrafta Anlam
+                            </Text>
+                        </View>
+                    )}
+                    {this.state.isClientLeader && (
+                        <View style={styles.isLeaderContainer}>
+                            <View style={styles.gameCodeContainer}>
+                                <View style={styles.gameCodeBox}>
+                                    <View style={styles.gameCodeBoxLeftView} />
+                                    <View style={styles.gameCodeBoxTextView}>
+                                        <Text
+                                            style={styles.gameCodeText}
+                                            selectable={true}
+                                        >
+                                            {this.props.roomCode}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.gameCodeBoxRightView}>
+                                        <TouchableOpacity
+                                            onPress={this.writeToClipboard}
+                                        >
+                                            <Image
+                                                source={COPY_IMAGE}
+                                                style={styles.copyImage}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={styles.gameCodeInfoTextContainer}>
+                                <Text style={styles.gameCodeInfoText}>
+                                    Grup olarak oynamak için{' '}
+                                </Text>
+                                <Text style={styles.gameCodeInfoText}>
+                                    yukarıdaki kodu arkadaşlarınla paylaş
+                                </Text>
+                            </View>
+                            <View style={styles.questionsNumberContainer}>
+                                <Text style={styles.questionsNumberText}>
+                                    Soru Sayısı:{' '}
+                                </Text>
+                                <DropDown
+                                    style={styles.questionNumberPicker}
+                                    textStyle={styles.questionPickerText}
+                                    dropdownTextStyle={
+                                        styles.questionPickerDropdownText
+                                    }
+                                    dropdownStyle={
+                                        styles.questionPickerDropdown
+                                    }
+                                    options={QUESTION_AMOUNTS_LIST}
+                                    defaultValue={this.state.questionNumber}
+                                    onSelect={(idx, value) =>
+                                        this.questionAmountPicker(idx, value)
+                                    }
+                                />
+                            </View>
+                        </View>
+                    )}
                     <FlatList
                         data={this.state.groupRoomPlayerList}
                         vertical={true}
@@ -165,7 +262,9 @@ class JoinGroupRoom extends React.Component {
                     height={hp(7)}
                     width={wp(87.5)}
                     color="#00D9EF"
-                    buttonText="Hazır"
+                    buttonText={
+                        this.state.isClientLeader === true ? 'Başlat' : 'Hazır'
+                    }
                     onPress={this.groupGameReadyOnPress}
                 />
                 <Modal visible={this.state.isQuitGameModalVisible}>

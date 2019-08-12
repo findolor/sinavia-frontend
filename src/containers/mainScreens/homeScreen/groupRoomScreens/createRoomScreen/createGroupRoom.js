@@ -31,6 +31,7 @@ import {
 const COPY_IMAGE = require('../../../../../assets/mainScreens/copy.png')
 const CLOSE_BUTTON = require('../../../../../assets/closeButton.png')
 const LEADER_LOGO = require('../../../../../assets/mainScreens/groupLeaderSword.png')
+
 // Question amounts that can be taken
 const QUESTION_AMOUNTS_LIST = ['5', '10', '15', '20']
 // Game engine endpoint url
@@ -47,7 +48,9 @@ class CreateGroupRoom extends React.Component {
             // Group player list
             groupRoomPlayerList: [],
             // Quit modal visible variable
-            isQuitGameModalVisible: false
+            isQuitGameModalVisible: false,
+            // Variable for checking leader status
+            isClientLeader: false
         }
     }
 
@@ -125,6 +128,9 @@ class CreateGroupRoom extends React.Component {
                                         message.playerProps[element].isLeader
                                 })
                             }
+                            message.playerProps[element].isLeader === true
+                                ? this.setState({ isClientLeader: true })
+                                : this.setState({ isClientLeader: false })
                         })
 
                         this.setState({ groupRoomPlayerList: playerList })

@@ -1,7 +1,5 @@
 import React from 'react'
 import {
-    Clipboard,
-    FlatList,
     Image,
     Modal,
     ScrollView,
@@ -403,7 +401,8 @@ class Home extends React.Component {
             this.room.removeAllListeners()
             navigationPush(SCENE_KEYS.mainScreens.joinGroupRoom, {
                 client: this.client,
-                room: this.room
+                room: this.room,
+                roomCode: this.state.groupCodeOnChangeText
             })
         })
     }

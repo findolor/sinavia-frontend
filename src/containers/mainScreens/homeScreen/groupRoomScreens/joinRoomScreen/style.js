@@ -127,5 +127,111 @@ export default StyleSheet.create({
         resizeMode: 'contain',
         height: hp(6),
         width: wp(6)
+    },
+    questionsNumberContainer: {
+        height: hp(7.5),
+        width: wp(66),
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    questionsNumberText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: wp(4.5),
+        color: '#5C5C5C',
+        marginBottom: hp(1)
+    },
+    questionNumberPicker: {
+        height: hp(6),
+        width: wp(15),
+        borderColor: '#707070',
+        borderWidth: wp(0.5),
+        borderRadius: 10,
+        marginBottom: hp(1)
+    },
+    questionPickerText: {
+        marginTop: hp(1.3),
+        marginBottom: hp(1),
+        marginLeft: wp(1),
+        marginRight: wp(1),
+        fontSize: hp(2),
+        color: '#F7941E',
+        textAlign: 'center',
+        textAlignVertical: 'center'
+    },
+    questionPickerDropdownText: {
+        marginTop: hp(1.3),
+        marginBottom: hp(1),
+        fontSize: hp(2),
+        color: '#F7941E',
+        textAlign: 'center',
+        textAlignVertical: 'center'
+    },
+    questionPickerDropdown: {
+        height: hp(32),
+        width: wp(15),
+        borderColor: '#707070',
+        borderWidth: wp(0.5),
+        borderRadius: 10,
+        marginTop: hp(0.5),
+        marginRight: wp(-0.5)
+    },
+    gameCodeContainer: {
+        height: hp(12),
+        width: wp(87.5),
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    gameCodeBox: {
+        height: hp(10),
+        width: wp(66),
+        borderWidth: wp(0.5),
+        borderRadius: 10,
+        borderColor: '#707070',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    gameCodeBoxLeftView: {
+        height: hp(10),
+        width: wp(10)
+    },
+    gameCodeBoxTextView: {
+        height: hp(10),
+        width: wp(46),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    gameCodeText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: wp(7),
+        letterSpacing: wp(1),
+        color: '#5C5C5C'
+    },
+    gameCodeBoxRightView: {
+        height: hp(10),
+        width: wp(10),
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    copyImage: {
+        height: hp(3),
+        width: hp(3),
+        marginBottom: hp(1)
+    },
+    gameCodeInfoTextContainer: {
+        height: hp(7.5),
+        width: wp(66),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    gameCodeInfoText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: wp(3),
+        color: '#A8A8A8'
+    },
+    isLeaderContainer: {
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })

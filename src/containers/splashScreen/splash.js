@@ -41,9 +41,10 @@ class SplashScreen extends React.PureComponent {
         this.props.authenticateUser(token)
 
         // After 8 seconds we logout the user and go to the auth screen
-        this.loginInterval = setInterval(() => {
+        this.loginInterval = setInterval(async () => {
             if (++this.state.retryCount === 4) {
                 Alert.alert('Lütfen tekrar giriş yapınız!')
+                //await deviceStorage.clearDeviceStorage()
                 navigationReset('auth')
             }
         }, 2000)
