@@ -89,13 +89,13 @@ class Home extends React.Component {
             rankedImage: RANKED_EMPTY_IMAGE,
             friendsImage: FRIENDS_EMPTY_IMAGE,
             groupImage: GROUP_EMPTY_IMAGE,
-            // Selected game mode
-            selectedGameMode: '',
             // Carousel slide item
             carouselActiveSlide: carouselFirstItem,
-
+            // On change text for the group room code
             groupCodeOnChangeText: '',
+            // Modal visible view variable
             visibleView: '',
+            // Variable for making start button when pressed ranked
             visibleRankedGameStartPress: false
         }
     }
@@ -202,67 +202,10 @@ class Home extends React.Component {
         return cardList
     }
 
-    // TODO Write this piece of code better
-    updateModeButtonUI = gameMode => {
-        switch (gameMode) {
-            case 'ranked':
-                if (this.state.selectedGameMode === gameMode) return
-                this.setState({
-                    rankedImage: RANKED_SELECTED_IMAGE,
-                    rankedModeButtonBackground: SELECTED_MODE_COLOR
-                })
-                if (this.state.selectedGameMode === 'friend') {
-                    this.setState({
-                        friendsImage: FRIENDS_EMPTY_IMAGE,
-                        friendsModeButtonBackground: EMPTY_MODE_COLOR
-                    })
-                } else if (this.state.selectedGameMode !== '') {
-                    this.setState({
-                        groupImage: GROUP_EMPTY_IMAGE,
-                        groupModeButtonBackground: EMPTY_MODE_COLOR
-                    })
-                }
-                this.setState({ selectedGameMode: gameMode })
-                return
-            case 'friend':
-                if (this.state.selectedGameMode === gameMode) return
-                this.setState({
-                    friendsImage: FRIENDS_SELECTED_IMAGE,
-                    friendsModeButtonBackground: SELECTED_MODE_COLOR
-                })
-                if (this.state.selectedGameMode === 'ranked') {
-                    this.setState({
-                        rankedImage: RANKED_EMPTY_IMAGE,
-                        rankedModeButtonBackground: EMPTY_MODE_COLOR
-                    })
-                } else if (this.state.selectedGameMode !== '') {
-                    this.setState({
-                        groupImage: GROUP_EMPTY_IMAGE,
-                        groupModeButtonBackground: EMPTY_MODE_COLOR
-                    })
-                }
-                this.setState({ selectedGameMode: gameMode })
-                return
-            case 'group':
-                if (this.state.selectedGameMode === gameMode) return
-                this.setState({
-                    groupImage: GROUP_SELECTED_IMAGE,
-                    groupModeButtonBackground: SELECTED_MODE_COLOR
-                })
-                if (this.state.selectedGameMode === 'ranked') {
-                    this.setState({
-                        rankedImage: RANKED_EMPTY_IMAGE,
-                        rankedModeButtonBackground: EMPTY_MODE_COLOR
-                    })
-                } else if (this.state.selectedGameMode !== '') {
-                    this.setState({
-                        friendsImage: FRIENDS_EMPTY_IMAGE,
-                        friendsModeButtonBackground: EMPTY_MODE_COLOR
-                    })
-                }
-                this.setState({ selectedGameMode: gameMode })
-                return
-        }
+    closeModalButtonOnPress = () => {
+        this.setState({
+            isModalVisible: false
+        })
     }
 
     rankedGameModeOnPress = () => {
@@ -275,10 +218,18 @@ class Home extends React.Component {
         })
     }
 
-    closeModalButtonOnPress = () => {
+    friendsGameModeOnPress = () => {
         this.setState({
-            isModalVisible: false,
-            visibleRankedGameStartPress: true
+            visibleRankedGameStartPress: false,
+            rankedModeButtonBorderColor: EMPTY_MODE_COLOR
+        })
+    }
+
+    groupGameModeOnPress = () => {
+        this.setState({
+            visibleView: 'GROUP_MODES',
+            visibleRankedGameStartPress: false,
+            rankedModeButtonBorderColor: EMPTY_MODE_COLOR
         })
     }
 
@@ -325,12 +276,7 @@ class Home extends React.Component {
                         </View>
                         <View style={styles.gameModeContainer}>
                             <TouchableOpacity
-                                onPress={() =>
-                                    this.setState({
-                                        visibleRankedGameStartPress: true,
-                                        rankedModeButtonBorderColor: EMPTY_MODE_COLOR
-                                    })
-                                }
+                                onPress={this.friendsGameModeOnPress}
                             >
                                 <View style={styles.gameModeLogoContainer}>
                                     <Image
@@ -347,13 +293,7 @@ class Home extends React.Component {
                         </View>
                         <View style={styles.gameModeContainer}>
                             <TouchableOpacity
-                                onPress={() =>
-                                    this.setState({
-                                        visibleView: 'GROUP_MODES',
-                                        visibleRankedGameStartPress: false,
-                                        rankedModeButtonBorderColor: EMPTY_MODE_COLOR
-                                    })
-                                }
+                                onPress={this.groupGameModeOnPress}
                             >
                                 <View style={styles.gameModeLogoContainer}>
                                     <Image
@@ -391,22 +331,20 @@ class Home extends React.Component {
         navigationPush(SCENE_KEYS.mainScreens.createGroupRoom)
     }
 
+    groupModesBackButtonOnPress = () => {
+        this.setState({ visibleView: 'GAME_MODES' })
+    }
+
     groupModesView() {
         return (
             <View style={styles.modal}>
                 <View style={styles.backAndCloseButtonsContainer}>
                     <TouchableOpacity
-                        onPress={() => {
-                            this.setState({ visibleView: 'GAME_MODES' })
-                        }}
+                        onPress={this.groupModesBackButtonOnPress}
                     >
                         <Image source={BACK_BUTTON} style={styles.backLogo} />
                     </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => {
-                            this.setState({ isModalVisible: false })
-                        }}
-                    >
+                    <TouchableOpacity onPress={this.closeModalButtonOnPress}>
                         <Image source={CLOSE_BUTTON} style={styles.xLogo} />
                     </TouchableOpacity>
                 </View>
@@ -470,22 +408,18 @@ class Home extends React.Component {
         })
     }
 
+    joinRoomBackButtonOnPress = () => {
+        this.setState({ visibleView: 'GROUP_MODES' })
+    }
+
     joinRoomView() {
         return (
             <View style={styles.modal}>
                 <View style={styles.backAndCloseButtonsContainer}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            this.setState({ visibleView: 'GROUP_MODES' })
-                        }}
-                    >
+                    <TouchableOpacity onPress={this.joinRoomBackButtonOnPress}>
                         <Image source={BACK_BUTTON} style={styles.backLogo} />
                     </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => {
-                            this.setState({ isModalVisible: false })
-                        }}
-                    >
+                    <TouchableOpacity onPress={this.closeModalButtonOnPress}>
                         <Image source={CLOSE_BUTTON} style={styles.xLogo} />
                     </TouchableOpacity>
                 </View>
@@ -631,8 +565,7 @@ class Home extends React.Component {
 
 const mapStateToProps = state => ({
     profilePicture: state.user.profilePicture,
-    choosenExam: state.user.choosenExam,
-    username: state.user.username
+    choosenExam: state.user.choosenExam
 })
 
 const mapDispatchToProps = dispatch => ({

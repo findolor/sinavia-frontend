@@ -71,7 +71,7 @@ export default StyleSheet.create({
     },
     nameContainer: {
         height: hp(6),
-        width: wp(51),
+        width: wp(41),
         justifyContent: 'center',
         alignItems: 'flex-start'
     },
@@ -90,5 +90,42 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Bold',
         fontSize: wp(4),
         color: '#5C5C5C'
+    },
+    quitView: {
+        backgroundColor: '#ffffff',
+        height: hp(20),
+        width: wp(87.5),
+        marginTop: hp(35),
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#00D9EF',
+        borderWidth: wp(0.75),
+        borderRadius: 10
+    },
+    areYouSureText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: wp(4.5),
+        color: '#5C5C5C'
+    },
+    yesOrNoButtonsContainer: {
+        height: hp(10),
+        width: wp(87.5),
+        marginTop: hp(2),
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start'
+    },
+    modalContainer: {
+        flex: 1,
+        alignItems: 'center',
+        backgroundColor: '#000000DE'
+    },
+    leaderContainer: {
+        width: wp(10)
+    },
+    leaderLogo: {
+        resizeMode: 'contain',
+        height: hp(6),
+        width: wp(6)
     }
 })

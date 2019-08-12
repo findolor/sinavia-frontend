@@ -1,5 +1,12 @@
 import React from 'react'
-import { View, TouchableOpacity, Image, Text, FlatList } from 'react-native'
+import {
+    View,
+    TouchableOpacity,
+    Image,
+    Text,
+    FlatList,
+    Modal
+} from 'react-native'
 import AuthButton from '../../../../../components/authScreen/authButton'
 import styles from './style'
 import {
@@ -14,13 +21,16 @@ import {
 } from 'react-native-responsive-screen'
 // Image imports
 const CLOSE_BUTTON = require('../../../../../assets/closeButton.png')
+const LEADER_LOGO = require('../../../../../assets/mainScreens/groupLeaderSword.png')
 
 class JoinGroupRoom extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             // Group player list
-            groupRoomPlayerList: []
+            groupRoomPlayerList: [],
+            // Quit modal visible variable
+            isQuitGameModalVisible: false
         }
     }
 
@@ -39,7 +49,8 @@ class JoinGroupRoom extends React.Component {
                                 id: element,
                                 profilePicture:
                                     message.playerProps[element].profilePicture,
-                                status: 'Hazır'
+                                status: 'Hazır',
+                                isLeader: message.playerProps[element].isLeader
                             })
                         } else {
                             playerList.push({
@@ -47,10 +58,13 @@ class JoinGroupRoom extends React.Component {
                                 id: element,
                                 profilePicture:
                                     message.playerProps[element].profilePicture,
-                                status: 'Bekleniyor'
+                                status: 'Bekleniyor',
+                                isLeader: message.playerProps[element].isLeader
                             })
                         }
                     })
+
+                    console.log(playerList)
 
                     this.setState({ groupRoomPlayerList: playerList })
                     return
@@ -71,11 +85,29 @@ class JoinGroupRoom extends React.Component {
         })
     }
 
+    closeGroupGameOnPress = () => {
+        this.setState({ isQuitGameModalVisible: true })
+    }
+
+    quitGameNo = () => {
+        this.setState({ isQuitGameModalVisible: false })
+    }
+
+    quitGameYes = () => {
+        this.shutdownRoutine()
+    }
+
+    shutdownRoutine = () => {
+        this.props.room.leave()
+        this.props.client.close()
+        navigationReset('main')
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.onlyCloseButtonContainer}>
-                    <TouchableOpacity onPress={this.closeGroupOnPressJoin}>
+                    <TouchableOpacity onPress={this.closeGroupGameOnPress}>
                         <Image source={CLOSE_BUTTON} style={styles.xLogo} />
                     </TouchableOpacity>
                 </View>
@@ -108,6 +140,14 @@ class JoinGroupRoom extends React.Component {
                                         </Text>
                                         <Text>{item.status}</Text>
                                     </View>
+                                    {item.isLeader && (
+                                        <View style={styles.leaderContainer}>
+                                            <Image
+                                                source={LEADER_LOGO}
+                                                style={styles.leaderLogo}
+                                            />
+                                        </View>
+                                    )}
                                 </View>
                             )
                         }}
@@ -128,6 +168,34 @@ class JoinGroupRoom extends React.Component {
                     buttonText="Hazır"
                     onPress={this.groupGameReadyOnPress}
                 />
+                <Modal visible={this.state.isQuitGameModalVisible}>
+                    <View style={styles.modalContainer}>
+                        <View style={styles.quitView}>
+                            <Text style={styles.areYouSureText}>
+                                Odadan çıkış yapmak istediğine
+                            </Text>
+                            <Text style={styles.areYouSureText}>
+                                emin misin?
+                            </Text>
+                        </View>
+                        <View style={styles.yesOrNoButtonsContainer}>
+                            <AuthButton
+                                height={hp(7)}
+                                width={wp(42)}
+                                color="#00D9EF"
+                                buttonText="Evet"
+                                onPress={this.quitGameYes}
+                            />
+                            <AuthButton
+                                height={hp(7)}
+                                width={wp(42)}
+                                color="#00D9EF"
+                                buttonText="Hayır"
+                                onPress={this.quitGameNo}
+                            />
+                        </View>
+                    </View>
+                </Modal>
             </View>
         )
     }

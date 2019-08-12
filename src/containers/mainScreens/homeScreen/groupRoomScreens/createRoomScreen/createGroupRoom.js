@@ -1,5 +1,12 @@
 import React from 'react'
-import { View, TouchableOpacity, Image, Text, FlatList } from 'react-native'
+import {
+    View,
+    TouchableOpacity,
+    Image,
+    Text,
+    FlatList,
+    Modal
+} from 'react-native'
 import DropDown from '../../../../../components/mainScreen/dropdown/dropdown'
 import AuthButton from '../../../../../components/authScreen/authButton'
 import styles from './style'
@@ -23,6 +30,7 @@ import {
 // Image imports
 const COPY_IMAGE = require('../../../../../assets/mainScreens/copy.png')
 const CLOSE_BUTTON = require('../../../../../assets/closeButton.png')
+const LEADER_LOGO = require('../../../../../assets/mainScreens/groupLeaderSword.png')
 // Question amounts that can be taken
 const QUESTION_AMOUNTS_LIST = ['5', '10', '15', '20']
 // Game engine endpoint url
@@ -37,7 +45,9 @@ class CreateGroupRoom extends React.Component {
             // Group game question number
             questionNumber: '5',
             // Group player list
-            groupRoomPlayerList: []
+            groupRoomPlayerList: [],
+            // Quit modal visible variable
+            isQuitGameModalVisible: false
         }
     }
 
@@ -98,7 +108,9 @@ class CreateGroupRoom extends React.Component {
                                     profilePicture:
                                         message.playerProps[element]
                                             .profilePicture,
-                                    status: 'Hazır'
+                                    status: 'Hazır',
+                                    isLeader:
+                                        message.playerProps[element].isLeader
                                 })
                             } else {
                                 playerList.push({
@@ -108,7 +120,9 @@ class CreateGroupRoom extends React.Component {
                                     profilePicture:
                                         message.playerProps[element]
                                             .profilePicture,
-                                    status: 'Bekleniyor'
+                                    status: 'Bekleniyor',
+                                    isLeader:
+                                        message.playerProps[element].isLeader
                                 })
                             }
                         })
@@ -151,11 +165,29 @@ class CreateGroupRoom extends React.Component {
         })
     }
 
+    closeGroupGameOnPress = () => {
+        this.setState({ isQuitGameModalVisible: true })
+    }
+
+    quitGameNo = () => {
+        this.setState({ isQuitGameModalVisible: false })
+    }
+
+    quitGameYes = () => {
+        this.shutdownRoutine()
+    }
+
+    shutdownRoutine = () => {
+        this.room.leave()
+        this.client.close()
+        navigationReset('main')
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.onlyCloseButtonContainer}>
-                    <TouchableOpacity onPress={this.closeGroupOnPressCreate}>
+                    <TouchableOpacity onPress={this.closeGroupGameOnPress}>
                         <Image source={CLOSE_BUTTON} style={styles.xLogo} />
                     </TouchableOpacity>
                 </View>
@@ -235,6 +267,16 @@ class CreateGroupRoom extends React.Component {
                                             </Text>
                                             <Text>{item.status}</Text>
                                         </View>
+                                        {item.isLeader && (
+                                            <View
+                                                style={styles.leaderContainer}
+                                            >
+                                                <Image
+                                                    source={LEADER_LOGO}
+                                                    style={styles.leaderLogo}
+                                                />
+                                            </View>
+                                        )}
                                     </View>
                                 )
                             }}
@@ -256,6 +298,34 @@ class CreateGroupRoom extends React.Component {
                     buttonText="Başla"
                     onPress={this.startGroupGameOnPress}
                 />
+                <Modal visible={this.state.isQuitGameModalVisible}>
+                    <View style={styles.modalContainer}>
+                        <View style={styles.quitView}>
+                            <Text style={styles.areYouSureText}>
+                                Odadan çıkış yapmak istediğine
+                            </Text>
+                            <Text style={styles.areYouSureText}>
+                                emin misin?
+                            </Text>
+                        </View>
+                        <View style={styles.yesOrNoButtonsContainer}>
+                            <AuthButton
+                                height={hp(7)}
+                                width={wp(42)}
+                                color="#00D9EF"
+                                buttonText="Evet"
+                                onPress={this.quitGameYes}
+                            />
+                            <AuthButton
+                                height={hp(7)}
+                                width={wp(42)}
+                                color="#00D9EF"
+                                buttonText="Hayır"
+                                onPress={this.quitGameNo}
+                            />
+                        </View>
+                    </View>
+                </Modal>
             </View>
         )
     }
