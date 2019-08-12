@@ -28,7 +28,8 @@ const config = {
             favorites: 'favorites',
             profileSearch: 'profileSearch',
             createGroupRoom: 'createGroupRoom',
-            joinGroupRoom: 'joinGroupRoom'
+            joinGroupRoom: 'joinGroupRoom',
+            opponentsProfile: 'opponentsProfile'
         },
         splashScreen: 'splash'
     }

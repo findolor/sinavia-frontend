@@ -2,7 +2,7 @@ import React from 'react'
 import { FlatList, View, Text, TouchableOpacity, Image } from 'react-native'
 import styles from './style'
 import NotchView from '../../../components/notchView'
-import { navigationPop } from '../../../services/navigationService'
+import { navigationPop, navigationPush, SCENE_KEYS } from '../../../services/navigationService'
 
 import returnLogo from '../../../assets/return.png'
 import PROFILE_PIC from '../../../assets/profile2.jpg'
@@ -87,6 +87,10 @@ class ProfileSearch extends React.Component {
         navigationPop()
     }
 
+    goToProfileOnPress = () => {
+        navigationPush(SCENE_KEYS.mainScreens.opponentsProfile)
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -113,7 +117,7 @@ class ProfileSearch extends React.Component {
                     showsVerticalScrollIndicator={false}
                     renderItem={({ item }) => {
                         return (
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={this.goToProfileOnPress}>
                                 <View style={styles.userRow}>
                                     <View style={styles.userPicContainerInRow}>
                                         <Image
@@ -139,7 +143,6 @@ class ProfileSearch extends React.Component {
                     }}
                     keyExtractor={(item, index) => index}
                 />
-                <View style={styles.bottomView} />
             </View>
         )
     }
