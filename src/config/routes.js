@@ -50,6 +50,10 @@ const RouterComp = () => {
                         component={mainScreens.profileSearch}
                     />
                     <Scene
+                        key={SCENE_KEYS.mainScreens.opponentsProfile}
+                        component={mainScreens.opponentsProfile}
+                    />
+                    <Scene
                         key={SCENE_KEYS.mainScreens.settings}
                         component={mainScreens.settings}
                     />
