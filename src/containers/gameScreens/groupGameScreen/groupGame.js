@@ -191,7 +191,8 @@ class GroupGame extends React.Component {
                     playerProps: this.state.playerProps,
                     room: this.props.room,
                     client: this.props.client,
-                    questionList: this.state.questionList
+                    questionList: this.state.questionList,
+                    examName: groupState.matchInformation.examName
                 })
                 return
         }

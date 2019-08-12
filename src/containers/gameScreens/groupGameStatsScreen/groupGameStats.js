@@ -112,12 +112,11 @@ class GroupGameStatsScreen extends React.Component {
             let username = ''
             let profilePicture = ''
 
-            playerIds.forEach((playerId, index) => {
+            playerIds.forEach(playerId => {
                 if (!playerProps[playerId].isLeft) {
                     username = playerProps[playerId].username
                     profilePicture = playerProps[playerId].profilePicture
                     playerProps[playerId].answers.forEach(result => {
-                        console.log(result)
                         switch (result.result) {
                             case null:
                                 unanswered++
@@ -129,13 +128,19 @@ class GroupGameStatsScreen extends React.Component {
                                 incorrect++
                         }
                     })
+                    let net
+
+                    if (this.props.examName !== 'LGS')
+                        net = correct - incorrect / 4
+                    else net = correct - incorrect / 3
+
                     playerList.push({
                         username: username,
                         profilePicture: profilePicture,
                         correct: correct,
                         incorrect: incorrect,
                         unanswered: unanswered,
-                        index: index + 1
+                        net: net
                     })
                     correct = 0
                     incorrect = 0
@@ -155,6 +160,8 @@ class GroupGameStatsScreen extends React.Component {
                     </View>
                 )
             }
+
+            playerList.sort((a, b) => parseFloat(b.net) - parseFloat(a.net))
 
             this.setState({ flatListData: playerList })
 
@@ -300,14 +307,14 @@ class GroupGameStatsScreen extends React.Component {
                             vertical={true}
                             showsVerticalScrollIndicator={false}
                             nestedScrollEnabled={true}
-                            renderItem={({ item }) => {
+                            renderItem={({ item, index }) => {
                                 return (
                                     <View style={styles.userRow}>
                                         <View style={styles.orderContainer}>
                                             <Text
                                                 style={styles.orderNumberText}
                                             >
-                                                {item.index}
+                                                {index + 1}
                                             </Text>
                                         </View>
                                         <View style={styles.nameContainer}>
@@ -408,7 +415,8 @@ class GroupGameStatsScreen extends React.Component {
                 <View style={styles.secondScreenView}>
                     <View style={styles.questionNumberContainer}>
                         <Text style={styles.questionNumberText}>
-                            {this.state.questionPosition}/5
+                            {this.state.questionPosition}/
+                            {Object.keys(this.state.allQuestionsList).length}
                         </Text>
                     </View>
                     <ScrollView

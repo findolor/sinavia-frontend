@@ -391,7 +391,7 @@ class Home extends React.Component {
             courseName: 'Matematik',
             subjectName: 'Sayilar',
             databaseId: databaseId,
-            roomCode: this.state.groupCodeOnChangeText,
+            roomCode: this.state.groupCodeOnChangeText.toString(),
             // Because we are joining a game, we don't want to create a new room
             create: false
         })
