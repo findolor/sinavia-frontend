@@ -18,6 +18,7 @@ import {
 import { connect } from 'react-redux'
 import styles from './style'
 import NotchView from '../../../components/notchView'
+import SemiCircleProgress from '../../../components/semiCircleProgress'
 import nebula from '../../../assets/cover.jpg'
 import returnLogo from '../../../assets/return.png'
 import searchlogo from '../../../assets/search.png'
@@ -25,12 +26,18 @@ import PROFILE_PIC from '../../../assets/profile2.jpg'
 import ADD_FRIEND from '../../../assets/mainScreens/addFriend.png'
 import ADD_FRIEND_REQUESTED from '../../../assets/mainScreens/addFriendRequested.png'
 import ALREADY_FRIEND from '../../../assets/mainScreens/alreadyFriend.png'
+import { widthPercentageToDP } from 'react-native-responsive-screen'
+import Home from '../main'
 
 class OpponentsProfile extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            friendshipStatus: 'addFriend'
+            friendshipStatus: 'addFriend',
+            youVersusOpponentTotalGames: 45,
+            yourWinsAgainstOpponent: 0,
+            opponentsWinsAgainstYou: 0
+
         }
     }
 
@@ -55,6 +62,8 @@ class OpponentsProfile extends React.Component {
     }
 
     render() {
+        const yourWins = this.state.yourWinsAgainstOpponent
+        const opponentWins = this.state.opponentsWinsAgainstYou
         return (
             <View style={styles.container}>
                 <NotchView />
@@ -181,11 +190,54 @@ class OpponentsProfile extends React.Component {
                             <Text style={styles.lostText}>Kaybettiği: 40</Text>
                         </View>
                         <View style={styles.chartContainer}>
-
+                            <SemiCircleProgress
+                                percentage={75}
+                                progressColor={"#00D9EF"}
+                                circleRadius={95}
+                                animationSpeed={0.1}
+                                progressWidth={widthPercentageToDP(5)}
+                            >
+                                <Text style={styles.chartPercentageText}>75%</Text>
+                            </SemiCircleProgress>
                         </View>
                     </View>
                     <View style={styles.versusGameStatsBox}>
-
+                        <View style={styles.versusGameTextsContainer}>
+                            <View style={styles.versusGameTitleContainer}>
+                                <Text style={styles.versusGameTitleText}>Aranızdaki Oyunlar</Text>
+                            </View>
+                            <View style={styles.versusGameTotalContainer}>
+                                <Text style={styles.versusTotalText}>Toplam Oyun </Text>
+                                <Text style={styles.versusTotalCounter}>45</Text>
+                            </View>
+                        </View>
+                            {yourWins>0 && opponentWins>0 && <View style={styles.versusGameChartContainer}>
+                                <View style={[styles.yourWinsView, {width: widthPercentageToDP((yourWins/(yourWins+opponentWins))*82)}]}/>
+                                <View style={[styles.opponentsWinsView, {width: widthPercentageToDP((opponentWins/(yourWins+opponentWins))*82)}]}/>
+                                <Text style={styles.yourWinsCounter}>{this.state.yourWinsAgainstOpponent}</Text>
+                                <Text style={styles.opponentWinsCounter}>{this.state.opponentsWinsAgainstYou}</Text>
+                            </View>}
+                            {yourWins>0 && opponentWins===0 && <View style={styles.versusGameChartContainer}>
+                                <View style={[styles.yourWinsView, {width: widthPercentageToDP(82), borderTopRightRadius: 10, borderBottomRightRadius: 10}]}/>
+                                <Text style={styles.yourWinsCounter}>{this.state.yourWinsAgainstOpponent}</Text>
+                                <Text style={styles.opponentWinsCounter}>{this.state.opponentsWinsAgainstYou}</Text>
+                            </View>}
+                            {yourWins===0 && opponentWins>0 && <View style={styles.versusGameChartContainer}>
+                                <View style={[styles.opponentsWinsView, {width: widthPercentageToDP(82), borderTopLeftRadius: 10, borderBottomLeftRadius: 10}]}/>
+                                <Text style={styles.yourWinsCounter}>{this.state.yourWinsAgainstOpponent}</Text>
+                                <Text style={styles.opponentWinsCounter}>{this.state.opponentsWinsAgainstYou}</Text>
+                            </View>}
+                            {yourWins===0 && opponentWins===0 && <View style={styles.versusGameChartContainer}>
+                                <View style={[styles.noneWinsView, {width: widthPercentageToDP(82), borderTopLeftRadius: 10, borderBottomLeftRadius: 10}]}>
+                                    <Text style={styles.noneWinsInfoText}>Henüz kazanan yok, hadi bunu değiştir!</Text>
+                                </View>
+                                <Text style={styles.yourWinsCounter}>{this.state.yourWinsAgainstOpponent}</Text>
+                                <Text style={styles.opponentWinsCounter}>{this.state.opponentsWinsAgainstYou}</Text>
+                            </View>}
+                        <View style={styles.versusGameNamesContainer}>
+                            <Text style={styles.versusGameTitleText}>Sen</Text>
+                            <Text style={styles.versusGameTitleText}>Arda Nakışçı</Text>
+                        </View>
                     </View>
                     <View style={styles.badgesBox}>
 

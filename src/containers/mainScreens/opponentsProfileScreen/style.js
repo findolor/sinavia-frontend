@@ -150,7 +150,8 @@ export default StyleSheet.create({
         borderWidth: hp(0.3),
         borderRadius: 10,
         borderColor: '#00D9EF',
-        marginTop: hp(2.5)
+        marginTop: hp(2.5),
+        alignItems: 'center'
     },
     badgesBox: {
         height: hp(16),
@@ -223,45 +224,142 @@ export default StyleSheet.create({
     chartContainer :{
         height: hp(22.5),
         width: wp(49),
-        backgroundColor: 'blue'
+        justifyContent: 'center',
+        alignItems: 'flex-start'
     },
     totalGameStatsText: {
         fontFamily: 'Averta-Semibold',
         fontSize: hp(2.3),
         color: '#2E313C',
-        marginLeft: wp(3),
+        marginLeft: wp(4),
         marginTop: hp(2)
     },
     totalGamesPlayedCounter: {
         fontFamily: 'Averta-Semibold',
         fontSize: hp(4),
         color: '#2E313C',
-        marginLeft: wp(3),
+        marginLeft: wp(4),
         marginTop: hp(1)
     },
     totalGamesPlayedText: {
         fontFamily: 'Averta-Semibold',
         fontSize: hp(1.5),
         color: '#CACACA',
-        marginLeft: wp(3)
+        marginLeft: wp(4)
     },
     wonText: {
         fontFamily: 'Averta-Regular',
         fontSize: hp(1.8),
         color: '#6AC259',
-        marginLeft: wp(3),
+        marginLeft: wp(4),
         marginTop: hp(1.5)
     },
     drawText: {
         fontFamily: 'Averta-Regular',
         fontSize: hp(1.8),
         color: '#2E313C',
-        marginLeft: wp(3)
+        marginLeft: wp(4)
     },
     lostText: {
         fontFamily: 'Averta-Regular',
         fontSize: hp(1.8),
         color: '#B72A2A',
-        marginLeft: wp(3)
+        marginLeft: wp(4)
+    },
+    chartPercentageText: {
+        fontFamily: 'Averta-BoldItalic',
+        fontSize: hp(5),
+        color: '#FF9900'
+    },
+    versusGameTextsContainer: {
+        height: hp(5.5),
+        width: wp(82),
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    versusGameTitleContainer: {
+        height: hp(5),
+        width: wp(41),
+        justifyContent: 'center',
+        alignItems: 'flex-start'
+    },
+    versusGameTotalContainer: {
+        height: hp(5),
+        width: wp(41),
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    versusGameTitleText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(2.3),
+        color: '#2E313C'
+    },
+    versusTotalText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(2.3),
+        color: '#00D9EF'
+    },
+    versusTotalCounter: {
+        fontFamily: 'Averta-SemiboldItalic',
+        fontSize: hp(2.7),
+        color: '#FF9900'
+    },
+    versusGameChartContainer: {
+        height: hp(6),
+        width: wp(82),
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row'
+    },
+    yourWinsView: {
+        height: hp(5),
+        borderTopLeftRadius: 10,
+        borderBottomLeftRadius: 10,
+        backgroundColor: '#6AC259'
+    },
+    opponentsWinsView: {
+        height: hp(5),
+        width: wp(41),
+        borderTopRightRadius: 10,
+        borderBottomRightRadius: 10,
+        backgroundColor: '#B72A2A'
+    },
+    noneWinsView: {
+        height: hp(5),
+        width: wp(82),
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10,
+        backgroundColor: '#FF9900'
+    },
+    noneWinsInfoText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(1.5),
+        color: '#FFFFFF'
+    },
+    yourWinsCounter: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(2.3),
+        color: '#FFFFFF',
+        position: 'absolute',
+        paddingRight: wp(75)
+    },
+    opponentWinsCounter: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(2.3),
+        color: '#FFFFFF',
+        position: 'absolute',
+        paddingLeft: wp(75)
+    },
+    versusGameNamesContainer: {
+        height: hp(7),
+        width: wp(81),
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start'
+    },
+    namesText: {
+
     }
 })
