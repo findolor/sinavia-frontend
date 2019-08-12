@@ -2,93 +2,29 @@ import React from 'react'
 import { FlatList, View, Text, TouchableOpacity, Image } from 'react-native'
 import styles from './style'
 import NotchView from '../../../components/notchView'
-import { navigationPop, navigationPush, SCENE_KEYS } from '../../../services/navigationService'
+import { navigationPop } from '../../../services/navigationService'
+import { connect } from 'react-redux'
+import { userActions } from '../../../redux/user/actions'
 
 import returnLogo from '../../../assets/return.png'
-import PROFILE_PIC from '../../../assets/profile2.jpg'
-
-const usersList = [
-    {
-        userPic: PROFILE_PIC,
-        name: 'Nurettin Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Nurettin Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Nurettin Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Nurettin Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Nurettin Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Nurettin Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Nurettin Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Nurettin Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Nurettin Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Nurettin Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Nurettin Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Nurettin Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Nurettin Hakan Yılmaz',
-        username: 'haqotherage'
-    }
-]
 
 class ProfileSearch extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            usersList: usersList
-        }
+        this.state = {}
+    }
+
+    componentDidMount() {
+        this.props.searchUsers(this.props.searchedKeyword)
+        console.log(this.props.returnedSearchList)
     }
 
     backButtonOnPress = () => {
         navigationPop()
     }
 
-    goToProfileOnPress = () => {
-        navigationPush(SCENE_KEYS.mainScreens.opponentsProfile)
+    userOnPress = text => {
+        console.log(text)
     }
 
     render() {
@@ -105,47 +41,85 @@ class ProfileSearch extends React.Component {
                         </View>
                     </TouchableOpacity>
                     <View style={styles.headerTextWrapper}>
-                        <Text style={styles.searchText}>"Hakan"</Text>
+                        <Text style={styles.searchText}>
+                            "{this.props.searchedKeyword}"
+                        </Text>
                         <Text style={styles.searchInfoText}>
                             ile alakalı sonuçlar
                         </Text>
                     </View>
                 </View>
-                <FlatList
-                    data={this.state.usersList}
-                    vertical={true}
-                    showsVerticalScrollIndicator={false}
-                    renderItem={({ item }) => {
-                        return (
-                            <TouchableOpacity onPress={this.goToProfileOnPress}>
-                                <View style={styles.userRow}>
-                                    <View style={styles.userPicContainerInRow}>
-                                        <Image
-                                            source={item.userPic}
-                                            style={styles.userPic}
-                                        />
-                                    </View>
-                                    <View style={styles.namesContainer}>
-                                        <View style={styles.nameContainer}>
-                                            <Text style={styles.nameText}>
-                                                {item.name}
-                                            </Text>
+                {Object.keys(this.props.returnedSearchList).length !== 0 && (
+                    <FlatList
+                        data={this.props.returnedSearchList}
+                        vertical={true}
+                        showsVerticalScrollIndicator={false}
+                        renderItem={({ item }) => {
+                            return (
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        this.userOnPress(item.userId)
+                                    }
+                                >
+                                    <View style={styles.userRow}>
+                                        <View
+                                            style={styles.userPicContainerInRow}
+                                        >
+                                            <Image
+                                                source={{
+                                                    uri: item.profilePicture
+                                                }}
+                                                style={styles.userPic}
+                                            />
                                         </View>
-                                        <View style={styles.usernameContainer}>
-                                            <Text style={styles.usernameText}>
-                                                @{item.username}
-                                            </Text>
+                                        <View style={styles.namesContainer}>
+                                            <View style={styles.nameContainer}>
+                                                <Text style={styles.nameText}>
+                                                    {item.name}
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={styles.usernameContainer}
+                                            >
+                                                <Text
+                                                    style={styles.usernameText}
+                                                >
+                                                    @{item.username}
+                                                </Text>
+                                            </View>
                                         </View>
                                     </View>
-                                </View>
-                            </TouchableOpacity>
-                        )
-                    }}
-                    keyExtractor={(item, index) => index}
-                />
+                                </TouchableOpacity>
+                            )
+                        }}
+                        keyExtractor={(item, index) => index.toString()}
+                    />
+                )}
+                {Object.keys(this.props.returnedSearchList).length === 0 && (
+                    <View
+                        style={{
+                            flex: 1,
+                            justifyContent: 'center'
+                        }}
+                    >
+                        <Text>Sonuç yok</Text>
+                    </View>
+                )}
             </View>
         )
     }
 }
 
-export default ProfileSearch
+const mapStateToProps = state => ({
+    returnedSearchList: state.user.returnedSearchList
+})
+
+const mapDispatchToProps = dispatch => ({
+    searchUsers: searchedKeyword =>
+        dispatch(userActions.searchUsers(searchedKeyword))
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ProfileSearch)

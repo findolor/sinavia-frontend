@@ -4,5 +4,6 @@ export const INITIAL_STATE = {
     lastname: '',
     profilePicture: '',
     coverPicture: '',
-    choosenExam: 'YKS'
+    choosenExam: 'YKS',
+    returnedSearchList: []
 }
