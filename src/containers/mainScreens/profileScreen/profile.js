@@ -26,12 +26,14 @@ import favoriteLogo from '../../../assets/favorite.png'
 import returnLogo from '../../../assets/return.png'
 import settingsLogo from '../../../assets/settings.png'
 import searchlogo from '../../../assets/search.png'
-import PROFILE_PIC from '../../../assets/profile2.jpg'
 
 class Profile extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = {
+            // Search text variable
+            searchText: ''
+        }
     }
 
     backButtonOnPress = () => {
@@ -43,7 +45,10 @@ class Profile extends React.Component {
     }
 
     profileSearchOnPress = () => {
-        navigationPush(SCENE_KEYS.mainScreens.profileSearch)
+        if (this.state.searchText === '') return
+        navigationPush(SCENE_KEYS.mainScreens.profileSearch, {
+            searchedKeyword: this.state.searchText
+        })
     }
 
     favoriteLogoOnPress = () => {
@@ -62,8 +67,12 @@ class Profile extends React.Component {
                         <View style={styles.textInputView}>
                             <TextInput
                                 style={styles.searchBarText}
-                                placeholder="Kullanıcı ara..."
+                                placeholder="@kullanıcıadı ile ara..."
                                 placeholderTextColor={'#7B7B7B'}
+                                onChangeText={text =>
+                                    this.setState({ searchText: text })
+                                }
+                                autoCapitalize={'none'}
                             />
                         </View>
                         <TouchableOpacity onPress={this.profileSearchOnPress}>

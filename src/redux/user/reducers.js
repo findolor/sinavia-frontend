@@ -40,6 +40,11 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 choosenExam: action.payload
             }
+        case userTypes.SEARCH_USERS_SUCCESS:
+            return {
+                ...state,
+                returnedSearchList: action.payload
+            }
         default:
             return state
     }

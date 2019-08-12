@@ -8,7 +8,9 @@ export const userTypes = {
     AUTHENTICATE_USER_SUCCESS: 'authenticate_user_success',
     LOGIN_USER: 'login_user',
     LOGIN_USER_SUCCESS: 'login_user_success',
-    SAVE_CHOOSEN_EXAM: 'save_choosen_exam'
+    SAVE_CHOOSEN_EXAM: 'save_choosen_exam',
+    SEARCH_USERS: 'search_users',
+    SEARCH_USERS_SUCCESS: 'search_users_success'
 }
 
 const createUser = userInformation => {
@@ -46,10 +48,18 @@ const saveChoosenExam = choosenExam => {
     }
 }
 
+const searchUsers = searchedKeyword => {
+    return {
+        type: userTypes.SEARCH_USERS,
+        payload: searchedKeyword
+    }
+}
+
 export const userActions = {
     createUser: createUser,
     fetchUser: fetchUser,
     checkUserToken: checkUserToken,
     loginUser: loginUser,
-    saveChoosenExam: saveChoosenExam
+    saveChoosenExam: saveChoosenExam,
+    searchUsers: searchUsers
 }

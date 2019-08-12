@@ -94,8 +94,5 @@ export default StyleSheet.create({
         color: '#FF9900',
         marginBottom: hp(0.5),
         marginLeft: wp(3)
-    },
-    bottomView: {
-        height: hp(3)
     }
 })
