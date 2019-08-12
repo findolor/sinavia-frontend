@@ -8,7 +8,8 @@ export default StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: '#000000DE'
     },
     usersListContainer: {
         height: hp(35),
@@ -175,5 +176,16 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Bold',
         fontSize: wp(4),
         color: '#5C5C5C'
+    },
+    onlyCloseButtonContainer: {
+        height: hp(6),
+        width: wp(86),
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    xLogo: {
+        height: hp(4),
+        width: hp(4)
     }
 })

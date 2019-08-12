@@ -2,7 +2,6 @@ import React from 'react'
 import { View, TouchableOpacity, Image, Text, FlatList } from 'react-native'
 import DropDown from '../../../../../components/mainScreen/dropdown/dropdown'
 import AuthButton from '../../../../../components/authScreen/authButton'
-import NotchView from '../../../../../components/notchView'
 import styles from './style'
 import {
     navigationPush,
@@ -23,6 +22,7 @@ import {
 } from 'react-native-responsive-screen'
 // Image imports
 const COPY_IMAGE = require('../../../../../assets/mainScreens/copy.png')
+const CLOSE_BUTTON = require('../../../../../assets/closeButton.png')
 // Question amounts that can be taken
 const QUESTION_AMOUNTS_LIST = ['5', '10', '15', '20']
 // Game engine endpoint url
@@ -155,7 +155,11 @@ class CreateGroupRoom extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <NotchView color={'#fcfcfc'} />
+                <View style={styles.onlyCloseButtonContainer}>
+                    <TouchableOpacity onPress={this.closeGroupOnPressCreate}>
+                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.modalView}>
                     <View style={styles.gameCodeContainer}>
                         <View style={styles.gameCodeBox}>
