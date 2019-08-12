@@ -73,26 +73,35 @@ const friendsRequestsList = [
 
 const generalNotificationsList = [
     {
+        generalNotification: 'acceptedFriendship',
         userPic: PROFILE_PIC,
-        name: 'Nurettin Hakan Yılmaz'
+        friendsName: 'Hakan Yılmaz'
     },
     {
+        generalNotification: 'requestedGame',
         userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
+        friendsName: 'Hakan Yılmaz',
+        examNmae: 'YKS',
+        courseName: 'Türkçe',
+        subjectNam: 'Paragrafta Anlam'
     },
     {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
+        generalNotification: 'yourOrder',
         userPic: PROFILE_PIC,
         name: 'Hakan Yılmaz'
     },
     {
+        generalNotification: 'yourSinaviaScore',
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    },
+    {
+        generalNotification: 'yourSuccessPercentage',
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz'
+    },
+    {
+        generalNotification: 'yourStatistics',
         userPic: PROFILE_PIC,
         name: 'Hakan Yılmaz'
     },
