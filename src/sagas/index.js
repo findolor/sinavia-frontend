@@ -8,7 +8,6 @@ export default function* root() {
         takeLatest(userTypes.CREATE_USER, userSagas.createUser),
         takeLatest(userTypes.FETCH_USER, userSagas.fetchUser),
         takeLatest(userTypes.CHECK_USER_TOKEN, userSagas.authenticateUser),
-        takeLatest(userTypes.LOGIN_USER, userSagas.loginUser),
-        takeLatest(userTypes.SEARCH_USERS, userSagas.findUsers)
+        takeLatest(userTypes.LOGIN_USER, userSagas.loginUser)
     ])
 }

@@ -27,7 +27,9 @@ import ADD_FRIEND from '../../../assets/mainScreens/addFriend.png'
 import ADD_FRIEND_REQUESTED from '../../../assets/mainScreens/addFriendRequested.png'
 import ALREADY_FRIEND from '../../../assets/mainScreens/alreadyFriend.png'
 import { widthPercentageToDP } from 'react-native-responsive-screen'
-import Home from '../main'
+
+import { getFriendship } from '../../../services/apiServices/friendship/getFriendship'
+import { deviceStorage } from '../../../services/deviceStorage'
 
 class OpponentsProfile extends React.Component {
     constructor(props) {
@@ -38,6 +40,22 @@ class OpponentsProfile extends React.Component {
             yourWinsAgainstOpponent: 0,
             opponentsWinsAgainstYou: 0
         }
+    }
+
+    async componentDidMount() {
+        const friendship = await this.getFriendshipInformation()
+    }
+
+    getFriendshipInformation = async () => {
+        const userToken = await deviceStorage.getItemFromStorage('JWT')
+        const userId = await deviceStorage.getItemFromStorage('userId')
+        const friendship = await getFriendship(
+            userToken,
+            userId,
+            this.props.userInformation.id
+        )
+
+        return friendship
     }
 
     backButtonOnPress = () => {
@@ -94,19 +112,24 @@ class OpponentsProfile extends React.Component {
                     >
                         <View style={styles.profilePicView}>
                             <Image
-                                source={PROFILE_PIC}
+                                source={{
+                                    uri: this.props.userInformation
+                                        .profilePicture
+                                }}
                                 style={styles.profilePic}
                             />
                         </View>
                         <View style={styles.nameView}>
                             <View style={styles.nameSurnameContainer}>
                                 <Text style={styles.nameSurnameText}>
-                                    Hakan Yılmaz
+                                    {this.props.userInformation.name +
+                                        ' ' +
+                                        this.props.userInformation.lastname}
                                 </Text>
                             </View>
                             <View style={styles.usernameContainer}>
                                 <Text style={styles.usernameText}>
-                                    @haqotherage
+                                    @{this.props.userInformation.username}
                                 </Text>
                             </View>
                         </View>

@@ -2,29 +2,53 @@ import React from 'react'
 import { FlatList, View, Text, TouchableOpacity, Image } from 'react-native'
 import styles from './style'
 import NotchView from '../../../components/notchView'
-import { navigationPop } from '../../../services/navigationService'
+import {
+    navigationPop,
+    navigationPush,
+    SCENE_KEYS
+} from '../../../services/navigationService'
 import { connect } from 'react-redux'
-import { userActions } from '../../../redux/user/actions'
+
+import { searchUsers } from '../../../services/apiServices/user/searchUsers'
+import { deviceStorage } from '../../../services/deviceStorage'
 
 import returnLogo from '../../../assets/return.png'
 
 class ProfileSearch extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = {
+            returnedSearchList: []
+        }
     }
 
-    componentDidMount() {
-        this.props.searchUsers(this.props.searchedKeyword)
-        console.log(this.props.returnedSearchList)
+    async componentDidMount() {
+        let userList = await this.getSearchedUsersList()
+
+        this.setState({ returnedSearchList: userList })
+    }
+
+    getSearchedUsersList = async () => {
+        const userToken = await deviceStorage.getItemFromStorage('JWT')
+        const userId = await deviceStorage.getItemFromStorage('userId')
+
+        const returnedSearchList = await searchUsers(
+            userToken,
+            this.props.searchedKeyword,
+            userId
+        )
+
+        return returnedSearchList
     }
 
     backButtonOnPress = () => {
         navigationPop()
     }
 
-    userOnPress = text => {
-        console.log(text)
+    userOnPress = searchListIndex => {
+        navigationPush(SCENE_KEYS.mainScreens.opponentsProfile, {
+            userInformation: this.state.returnedSearchList[searchListIndex]
+        })
     }
 
     render() {
@@ -49,17 +73,15 @@ class ProfileSearch extends React.Component {
                         </Text>
                     </View>
                 </View>
-                {Object.keys(this.props.returnedSearchList).length !== 0 && (
+                {Object.keys(this.state.returnedSearchList).length !== 0 && (
                     <FlatList
-                        data={this.props.returnedSearchList}
+                        data={this.state.returnedSearchList}
                         vertical={true}
                         showsVerticalScrollIndicator={false}
-                        renderItem={({ item }) => {
+                        renderItem={({ item, index }) => {
                             return (
                                 <TouchableOpacity
-                                    onPress={() =>
-                                        this.userOnPress(item.userId)
-                                    }
+                                    onPress={() => this.userOnPress(index)}
                                 >
                                     <View style={styles.userRow}>
                                         <View
@@ -95,7 +117,7 @@ class ProfileSearch extends React.Component {
                         keyExtractor={(item, index) => index.toString()}
                     />
                 )}
-                {Object.keys(this.props.returnedSearchList).length === 0 && (
+                {Object.keys(this.state.returnedSearchList).length === 0 && (
                     <View
                         style={{
                             flex: 1,
@@ -110,16 +132,11 @@ class ProfileSearch extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({
-    returnedSearchList: state.user.returnedSearchList
-})
+const mapStateToProps = state => ({})
 
-const mapDispatchToProps = dispatch => ({
-    searchUsers: searchedKeyword =>
-        dispatch(userActions.searchUsers(searchedKeyword))
-})
+const mapDispatchToProps = dispatch => ({})
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+    null,
+    null
 )(ProfileSearch)

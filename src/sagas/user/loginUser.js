@@ -22,12 +22,15 @@ export function* loginUser(action) {
 
         // Then we get our user information
         const userInformation = yield call(getUser, res.token, res.id)
-
+        console.log(userInformation)
         // We save the user information
         deviceStorage.saveItemToStorage(
             'userInformation',
             JSON.stringify(userInformation)
         )
+
+        // We save the user id
+        deviceStorage.saveItemToStorage('userId', res.id)
 
         yield put({
             type: userTypes.LOGIN_USER_SUCCESS,
