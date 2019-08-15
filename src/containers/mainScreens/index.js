@@ -9,6 +9,7 @@ import {
     JoinGroupRoom
 } from './homeScreen/groupRoomScreens/index'
 import OpponentsProfile from './opponentsProfileScreen/opponentsProfile'
+import Statistics from './statisticsScreen/statistics'
 
 export {
     Profile,
@@ -19,5 +20,6 @@ export {
     ProfileSearch,
     CreateGroupRoom,
     JoinGroupRoom,
-    OpponentsProfile
+    OpponentsProfile,
+    Statistics
 }

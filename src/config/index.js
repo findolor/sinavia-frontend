@@ -29,7 +29,8 @@ const config = {
             profileSearch: 'profileSearch',
             createGroupRoom: 'createGroupRoom',
             joinGroupRoom: 'joinGroupRoom',
-            opponentsProfile: 'opponentsProfile'
+            opponentsProfile: 'opponentsProfile',
+            statistics: 'statistics'
         },
         splashScreen: 'splash'
     }
