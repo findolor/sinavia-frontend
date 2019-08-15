@@ -68,10 +68,39 @@ export default StyleSheet.create({
         borderBottomWidth: wp(0.1),
         borderBottomColor: '#CACACA'
     },
+    gameContentsContainer: {
+        height: hp(8),
+        width: wp(30.5),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     userPicContainerInRow: {
         height: hp(8),
-        width: wp(16),
+        width: wp(12.5),
         justifyContent: 'center',
+        alignItems: 'flex-start'
+    },
+    gameRequestContainer: {
+        height: hp(8),
+        width: wp(45)
+    },
+    gameRequestTextContainer: {
+        height: hp(3),
+        width: wp(45),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    gameRequestButtonsContainer: {
+        height: hp(5),
+        width: wp(45),
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center'
+    },
+    textsinRowWithPic: {
+        height: hp(8),
+        width: wp(75.5),
+        flexDirection: 'row',
         alignItems: 'center'
     },
     userPic: {
@@ -100,5 +129,51 @@ export default StyleSheet.create({
     friendshipButtons: {
         height: hp(4),
         width: hp(4)
+    },
+    notificationRowsText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(2),
+        color: '#2E313C'
+    },
+    notificationRowsTextOrange: {
+        fontFamily: 'Averta-BoldItalic',
+        fontSize: hp(2),
+        color: '#FF9900'
+    },
+    notificationRowsTextClick: {
+        fontFamily: 'Averta-BoldItalic',
+        fontSize: hp(2.4),
+        color: '#00D9EF'
+    },
+    gameContentText: {
+        fontFamily: 'Averta-BoldItalic',
+        fontSize: hp(1.5),
+        color: '#FF9900'
+    },
+    gameRequestText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(1.3),
+        color: '#2E313C'
+    },
+    acceptButton: {
+        height: hp(4),
+        width: wp(15),
+        borderRadius: 6,
+        backgroundColor: '#6AC259',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    rejectButton: {
+        height: hp(4),
+        width: wp(15),
+        borderRadius: 6,
+        backgroundColor: '#B72A2A',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    gameRequestsButtonText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(1.5),
+        color: '#FFFFFF'
     }
 })
