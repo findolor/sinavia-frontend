@@ -2,9 +2,7 @@ import React from 'react'
 import {
     Image,
     ImageBackground,
-    Modal,
     ScrollView,
-    StatusBar,
     Text,
     TextInput,
     TouchableOpacity,
@@ -19,16 +17,19 @@ import { connect } from 'react-redux'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import SemiCircleProgress from '../../../components/semiCircleProgress'
-import nebula from '../../../assets/cover.jpg'
 import returnLogo from '../../../assets/return.png'
 import searchlogo from '../../../assets/search.png'
-import PROFILE_PIC from '../../../assets/profile2.jpg'
 import ADD_FRIEND from '../../../assets/mainScreens/addFriend.png'
 import ADD_FRIEND_REQUESTED from '../../../assets/mainScreens/addFriendRequested.png'
 import ALREADY_FRIEND from '../../../assets/mainScreens/alreadyFriend.png'
 import { widthPercentageToDP } from 'react-native-responsive-screen'
 
 import { getFriendship } from '../../../services/apiServices/friendship/getFriendship'
+import { getFriends } from '../../../services/apiServices/friendship/getFriends'
+import { getStatistics } from '../../../services/apiServices/statistic/getStatistics'
+import { getFriendMatches } from '../../../services/apiServices/friendship/getFriendMatches'
+import { sendFriendshipRequest } from '../../../services/apiServices/friendship/sendFriendshipRequest'
+import { acceptFriendshipRequest } from '../../../services/apiServices/friendship/acceptFriendshipRequest'
 import { deviceStorage } from '../../../services/deviceStorage'
 
 class OpponentsProfile extends React.Component {
@@ -38,49 +39,162 @@ class OpponentsProfile extends React.Component {
             friendshipStatus: 'addFriend',
             youVersusOpponentTotalGames: 45,
             yourWinsAgainstOpponent: 0,
-            opponentsWinsAgainstYou: 0
+            opponentsWinsAgainstYou: 0,
+            // Played games variables
+            gamesPlayed: 0,
+            wonGames: 0,
+            lostGames: 0,
+            drawGames: 0,
+
+            semiCirclePercentage: 0,
+            totalFriends: 0,
+            // is friend request sent or received?
+            isFriendRequestSent: false,
+            // Friend games that was played together
+            totalFriendGamesPlayed: 0,
+            clientWinCount: 0,
+            opponentWinCount: 0
         }
     }
 
     async componentDidMount() {
-        const friendship = await this.getFriendshipInformation()
+        this.userToken = await deviceStorage.getItemFromStorage('JWT')
+        this.userId = await deviceStorage.getItemFromStorage('userId')
+
+        await this.loadUserProfile()
     }
 
-    getFriendshipInformation = async () => {
-        const userToken = await deviceStorage.getItemFromStorage('JWT')
-        const userId = await deviceStorage.getItemFromStorage('userId')
+    loadUserProfile = async () => {
+        await this.loadStatistics()
+        await this.loadFriendshipInformation()
+        await this.loadFriendMatches()
+    }
+
+    loadFriendshipInformation = async () => {
         const friendship = await getFriendship(
-            userToken,
-            userId,
-            this.props.userInformation.id
+            this.userToken,
+            this.userId,
+            this.props.opponentInformation.id
         )
 
-        return friendship
+        if (Object.keys(friendship).length !== 0) {
+            if (friendship[0].friendshipStatus === 'requested') {
+                friendship[0].userId === this.userId
+                    ? this.setState({ isFriendRequestSent: true })
+                    : this.setState({ isFriendRequestSent: false })
+                this.setState({ friendshipStatus: 'friendRequestSent' })
+            } else this.setState({ friendshipStatus: 'alreadyFriend' })
+        }
+    }
+
+    loadFriendMatches = async () => {
+        const friendMatches = await getFriendMatches(
+            this.userToken,
+            this.userId,
+            this.props.opponentInformation.id
+        )
+
+        let clientWinCount = 0
+        let opponentWinCount = 0
+        let totalFriendGamesPlayed = 0
+
+        friendMatches.forEach(match => {
+            totalFriendGamesPlayed++
+            if (!match.isMatchDraw) {
+                if (match.winnerId === this.userId) clientWinCount++
+                else opponentWinCount++
+            }
+        })
+
+        this.setState({
+            totalFriendGamesPlayed: totalFriendGamesPlayed,
+            clientWinCount: clientWinCount,
+            opponentWinCount: opponentWinCount
+        })
+    }
+
+    loadFriends = async () => {
+        const friends = await getFriends(
+            this.userToken,
+            this.props.opponentInformation.id
+        )
+
+        this.setState({ totalFriends: Object.keys(friends).length })
+    }
+
+    loadStatistics = async () => {
+        const statistics = await getStatistics(
+            this.userToken,
+            this.props.opponentInformation.id
+        )
+
+        let wonGames = 0
+        let lostGames = 0
+        let drawGames = 0
+
+        statistics.forEach(statistic => {
+            switch (statistic.gameResult) {
+                case 'win':
+                    wonGames++
+                    return
+                case 'lose':
+                    lostGames++
+                    return
+                case 'draw':
+                    drawGames++
+                    return
+            }
+        })
+
+        this.setState({
+            wonGames: wonGames,
+            lostGames: lostGames,
+            drawGames: drawGames,
+            gamesPlayed: Object.keys(statistics).length,
+            semiCirclePercentage:
+                (wonGames / Object.keys(statistics).length) * 100
+        })
     }
 
     backButtonOnPress = () => {
         navigationPop()
     }
 
-    friendshipStatusOnPress = friendshipStatusMode => {
-        {
-            switch (friendshipStatusMode) {
-                case 'addFriend':
-                    this.setState({ friendshipStatus: 'friendRequestSent' })
-                    return
-                case 'friendRequestSent':
-                    this.setState({ friendshipStatus: 'alreadyFriend' })
-                    return
-                case 'alreadyFriend':
-                    this.setState({ friendshipStatus: 'addFriend' })
-                    return
-            }
+    sendFriendshipRequest = () => {
+        sendFriendshipRequest(
+            this.userToken,
+            this.userId,
+            this.props.opponentInformation.id
+        )
+    }
+
+    friendshipStatusOnPress = () => {
+        switch (this.state.friendshipStatus) {
+            case 'addFriend':
+                this.sendFriendshipRequest()
+                this.setState({
+                    friendshipStatus: 'friendRequestSent',
+                    isFriendRequestSent: true
+                })
+                return
+            case 'friendRequestSent':
+                if (!this.state.isFriendRequestSent) {
+                    acceptFriendshipRequest(
+                        this.userToken,
+                        this.userId,
+                        this.props.opponentInformation.id
+                    )
+                    this.setState({
+                        friendshipStatus: 'alreadyFriend'
+                    })
+                }
+                return
+            case 'alreadyFriend':
+                return
         }
     }
 
     render() {
-        const yourWins = this.state.yourWinsAgainstOpponent
-        const opponentWins = this.state.opponentsWinsAgainstYou
         return (
             <View style={styles.container}>
                 <NotchView />
@@ -106,14 +220,16 @@ class OpponentsProfile extends React.Component {
                 </View>
                 <View style={styles.profileContainer}>
                     <ImageBackground
-                        source={nebula}
+                        source={{
+                            uri: this.props.opponentInformation.coverPicture
+                        }}
                         style={styles.coverPhoto}
-                        imageStyle={{ borderRadius: 30 }}
+                        imageStyle={{ borderRadius: 10 }}
                     >
                         <View style={styles.profilePicView}>
                             <Image
                                 source={{
-                                    uri: this.props.userInformation
+                                    uri: this.props.opponentInformation
                                         .profilePicture
                                 }}
                                 style={styles.profilePic}
@@ -122,14 +238,14 @@ class OpponentsProfile extends React.Component {
                         <View style={styles.nameView}>
                             <View style={styles.nameSurnameContainer}>
                                 <Text style={styles.nameSurnameText}>
-                                    {this.props.userInformation.name +
+                                    {this.props.opponentInformation.name +
                                         ' ' +
-                                        this.props.userInformation.lastname}
+                                        this.props.opponentInformation.lastname}
                                 </Text>
                             </View>
                             <View style={styles.usernameContainer}>
                                 <Text style={styles.usernameText}>
-                                    @{this.props.userInformation.username}
+                                    @{this.props.opponentInformation.username}
                                 </Text>
                             </View>
                         </View>
@@ -148,16 +264,12 @@ class OpponentsProfile extends React.Component {
                             </View>
                             <View style={styles.opponentsFriendsCounterView}>
                                 <Text style={styles.opponentsFriendsCounter}>
-                                    28
+                                    {this.state.totalFriends}
                                 </Text>
                             </View>
                         </View>
                         <TouchableOpacity
-                            onPress={() =>
-                                this.friendshipStatusOnPress(
-                                    this.state.friendshipStatus
-                                )
-                            }
+                            onPress={this.friendshipStatusOnPress}
                         >
                             <View style={styles.yourFriendshipStatusBox}>
                                 {this.state.friendshipStatus ===
@@ -217,7 +329,11 @@ class OpponentsProfile extends React.Component {
                                                     styles.addFriendRequestedText
                                                 }
                                             >
-                                                gönderildi
+                                                {this.state
+                                                    .isFriendRequestSent ===
+                                                true
+                                                    ? 'gönderildi'
+                                                    : 'alındı'}
                                             </Text>
                                         </View>
                                     </View>
@@ -257,25 +373,45 @@ class OpponentsProfile extends React.Component {
                                 Oyun İstatistikleri
                             </Text>
                             <Text style={styles.totalGamesPlayedCounter}>
-                                200
+                                {this.state.gamesPlayed}
                             </Text>
                             <Text style={styles.totalGamesPlayedText}>
                                 Oynadığı Oyun
                             </Text>
-                            <Text style={styles.wonText}>Kazandığı: 150</Text>
-                            <Text style={styles.drawText}>Beraberlik: 10</Text>
-                            <Text style={styles.lostText}>Kaybettiği: 40</Text>
+                            <Text style={styles.wonText}>
+                                Kazandığı: {this.state.wonGames}
+                            </Text>
+                            <Text style={styles.drawText}>
+                                Beraberlik: {this.state.drawGames}
+                            </Text>
+                            <Text style={styles.lostText}>
+                                Kaybettiği: {this.state.lostGames}
+                            </Text>
                         </View>
                         <View style={styles.chartContainer}>
                             <SemiCircleProgress
-                                percentage={75}
+                                percentage={
+                                    this.state.gamesPlayed !== 0
+                                        ? parseInt(
+                                              this.state.semiCirclePercentage.toFixed(
+                                                  0
+                                              ),
+                                              10
+                                          )
+                                        : 0
+                                }
                                 progressColor={'#00D9EF'}
                                 circleRadius={widthPercentageToDP(22)}
                                 animationSpeed={0.1}
                                 progressWidth={widthPercentageToDP(5)}
                             >
                                 <Text style={styles.chartPercentageText}>
-                                    75%
+                                    {this.state.gamesPlayed !== 0
+                                        ? this.state.semiCirclePercentage.toFixed(
+                                              0
+                                          )
+                                        : 0}
+                                    %
                                 </Text>
                             </SemiCircleProgress>
                         </View>
@@ -292,112 +428,126 @@ class OpponentsProfile extends React.Component {
                                     Toplam Oyun{' '}
                                 </Text>
                                 <Text style={styles.versusTotalCounter}>
-                                    45
+                                    {this.state.totalFriendGamesPlayed}
                                 </Text>
                             </View>
                         </View>
-                        {yourWins > 0 && opponentWins > 0 && (
-                            <View style={styles.versusGameChartContainer}>
-                                <View
-                                    style={[
-                                        styles.yourWinsView,
-                                        {
-                                            width: widthPercentageToDP(
-                                                (yourWins /
-                                                    (yourWins + opponentWins)) *
-                                                    82
-                                            )
-                                        }
-                                    ]}
-                                />
-                                <View
-                                    style={[
-                                        styles.opponentsWinsView,
-                                        {
-                                            width: widthPercentageToDP(
-                                                (opponentWins /
-                                                    (yourWins + opponentWins)) *
-                                                    82
-                                            )
-                                        }
-                                    ]}
-                                />
-                                <Text style={styles.yourWinsCounter}>
-                                    {this.state.yourWinsAgainstOpponent}
-                                </Text>
-                                <Text style={styles.opponentWinsCounter}>
-                                    {this.state.opponentsWinsAgainstYou}
-                                </Text>
-                            </View>
-                        )}
-                        {yourWins > 0 && opponentWins === 0 && (
-                            <View style={styles.versusGameChartContainer}>
-                                <View
-                                    style={[
-                                        styles.yourWinsView,
-                                        {
-                                            width: widthPercentageToDP(82),
-                                            borderTopRightRadius: 10,
-                                            borderBottomRightRadius: 10
-                                        }
-                                    ]}
-                                />
-                                <Text style={styles.yourWinsCounter}>
-                                    {this.state.yourWinsAgainstOpponent}
-                                </Text>
-                                <Text style={styles.opponentWinsCounter}>
-                                    {this.state.opponentsWinsAgainstYou}
-                                </Text>
-                            </View>
-                        )}
-                        {yourWins === 0 && opponentWins > 0 && (
-                            <View style={styles.versusGameChartContainer}>
-                                <View
-                                    style={[
-                                        styles.opponentsWinsView,
-                                        {
-                                            width: widthPercentageToDP(82),
-                                            borderTopLeftRadius: 10,
-                                            borderBottomLeftRadius: 10
-                                        }
-                                    ]}
-                                />
-                                <Text style={styles.yourWinsCounter}>
-                                    {this.state.yourWinsAgainstOpponent}
-                                </Text>
-                                <Text style={styles.opponentWinsCounter}>
-                                    {this.state.opponentsWinsAgainstYou}
-                                </Text>
-                            </View>
-                        )}
-                        {yourWins === 0 && opponentWins === 0 && (
-                            <View style={styles.versusGameChartContainer}>
-                                <View
-                                    style={[
-                                        styles.noneWinsView,
-                                        {
-                                            width: widthPercentageToDP(82),
-                                            borderTopLeftRadius: 10,
-                                            borderBottomLeftRadius: 10
-                                        }
-                                    ]}
-                                >
-                                    <Text style={styles.noneWinsInfoText}>
-                                        Henüz kazanan yok, hadi bunu değiştir!
+                        {this.state.clientWinCount > 0 &&
+                            this.state.opponentWinCount > 0 && (
+                                <View style={styles.versusGameChartContainer}>
+                                    <View
+                                        style={[
+                                            styles.yourWinsView,
+                                            {
+                                                width: widthPercentageToDP(
+                                                    (this.state.clientWinCount /
+                                                        (this.state
+                                                            .clientWinCount +
+                                                            this.state
+                                                                .opponentWinCount)) *
+                                                        82
+                                                )
+                                            }
+                                        ]}
+                                    />
+                                    <View
+                                        style={[
+                                            styles.opponentsWinsView,
+                                            {
+                                                width: widthPercentageToDP(
+                                                    (this.state
+                                                        .opponentWinCount /
+                                                        (this.state
+                                                            .clientWinCount +
+                                                            this.state
+                                                                .opponentWinCount)) *
+                                                        82
+                                                )
+                                            }
+                                        ]}
+                                    />
+                                    <Text style={styles.yourWinsCounter}>
+                                        {this.state.clientWinCount}
+                                    </Text>
+                                    <Text style={styles.opponentWinsCounter}>
+                                        {this.state.opponentWinCount}
                                     </Text>
                                 </View>
-                                <Text style={styles.yourWinsCounter}>
-                                    {this.state.yourWinsAgainstOpponent}
-                                </Text>
-                                <Text style={styles.opponentWinsCounter}>
-                                    {this.state.opponentsWinsAgainstYou}
-                                </Text>
-                            </View>
-                        )}
+                            )}
+                        {this.state.clientWinCount > 0 &&
+                            this.state.opponentWinCount === 0 && (
+                                <View style={styles.versusGameChartContainer}>
+                                    <View
+                                        style={[
+                                            styles.yourWinsView,
+                                            {
+                                                width: widthPercentageToDP(82),
+                                                borderTopRightRadius: 10,
+                                                borderBottomRightRadius: 10
+                                            }
+                                        ]}
+                                    />
+                                    <Text style={styles.yourWinsCounter}>
+                                        {this.state.clientWinCount}
+                                    </Text>
+                                    <Text style={styles.opponentWinsCounter}>
+                                        {this.state.opponentWinCount}
+                                    </Text>
+                                </View>
+                            )}
+                        {this.state.clientWinCount === 0 &&
+                            this.state.opponentWinCount > 0 && (
+                                <View style={styles.versusGameChartContainer}>
+                                    <View
+                                        style={[
+                                            styles.opponentsWinsView,
+                                            {
+                                                width: widthPercentageToDP(82),
+                                                borderTopLeftRadius: 10,
+                                                borderBottomLeftRadius: 10
+                                            }
+                                        ]}
+                                    />
+                                    <Text style={styles.yourWinsCounter}>
+                                        {this.state.clientWinCount}
+                                    </Text>
+                                    <Text style={styles.opponentWinsCounter}>
+                                        {this.state.opponentWinCount}
+                                    </Text>
+                                </View>
+                            )}
+                        {this.state.clientWinCount === 0 &&
+                            this.state.opponentWinCount === 0 && (
+                                <View style={styles.versusGameChartContainer}>
+                                    <View
+                                        style={[
+                                            styles.noneWinsView,
+                                            {
+                                                width: widthPercentageToDP(82),
+                                                borderTopLeftRadius: 10,
+                                                borderBottomLeftRadius: 10
+                                            }
+                                        ]}
+                                    >
+                                        <Text style={styles.noneWinsInfoText}>
+                                            Henüz kazanan yok, hadi bunu
+                                            değiştir!
+                                        </Text>
+                                    </View>
+                                    <Text style={styles.yourWinsCounter}>
+                                        {this.state.clientWinCount}
+                                    </Text>
+                                    <Text style={styles.opponentWinsCounter}>
+                                        {this.state.opponentWinCount}
+                                    </Text>
+                                </View>
+                            )}
                         <View style={styles.versusGameNamesContainer}>
                             <Text style={styles.versusGameTitleText}>Sen</Text>
                             <Text style={styles.versusGameTitleText}>
-                                Arda Nakışçı
+                                {this.props.opponentInformation.name +
+                                    ' ' +
+                                    this.props.opponentInformation.lastname}
                             </Text>
                         </View>
                     </View>

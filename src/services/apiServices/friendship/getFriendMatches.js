@@ -1,15 +1,15 @@
 import axios from 'axios'
 import { API_ENDPOINT } from '../../../config/index'
 
-export const getFriendship = async (userToken, userId, opponentId) => {
+export const getFriendMatches = async (userToken, userId, friendId) => {
     try {
-        const response = await axios.get(API_ENDPOINT + 'friendships/', {
+        const response = await axios.get(API_ENDPOINT + 'friendsMatches/', {
             headers: {
                 Authorization: 'Bearer ' + userToken
             },
             params: {
                 userId: userId,
-                opponentId: opponentId
+                friendId: friendId
             }
         })
         return response.data.data

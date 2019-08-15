@@ -163,13 +163,13 @@ export default StyleSheet.create({
         marginBottom: hp(2)
     },
     opponentsFriendsTextView: {
-        height: hp(4.7),
+        height: hp(3.5),
         width: wp(40),
         justifyContent: 'center',
         alignItems: 'center'
     },
     opponentsFriendsCounterView: {
-        height: hp(5.3),
+        height: hp(6.5),
         width: wp(40),
         justifyContent: 'center',
         alignItems: 'center'
@@ -221,7 +221,7 @@ export default StyleSheet.create({
         height: hp(22.5),
         width: wp(40)
     },
-    chartContainer :{
+    chartContainer: {
         height: hp(22.5),
         width: wp(49),
         justifyContent: 'center',
@@ -359,7 +359,5 @@ export default StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'flex-start'
     },
-    namesText: {
-
-    }
+    namesText: {}
 })

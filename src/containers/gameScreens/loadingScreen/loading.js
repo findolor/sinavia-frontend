@@ -1,13 +1,17 @@
 import React from 'react'
-import { View, Text, Button, AsyncStorage } from 'react-native'
+import { View, Text, Button } from 'react-native'
 import styles from './style'
 import NotchView from '../../../components/notchView'
+// Colyseus imports
 import { Buffer } from 'buffer'
+import { AsyncStorage } from 'react-native'
 window.localStorage = AsyncStorage
 global.Buffer = Buffer
 import * as Colyseus from 'colyseus.js'
+// App service imports
 import { SCENE_KEYS, navigationPush } from '../../../services/navigationService'
 import { GAME_ENGINE_ENDPOINT } from '../../../config'
+import { deviceStorage } from '../../../services/deviceStorage'
 
 class LoadingScreen extends React.Component {
     constructor(props) {
@@ -17,44 +21,32 @@ class LoadingScreen extends React.Component {
                 ranked: 'rankedRoom',
                 group: 'groupRoom'
             },
-            player: {
-                playerOne: {
-                    create: true,
-                    examName: 'LGS',
-                    courseName: 'Matematik',
-                    subjectName: 'Sayilar',
-                    databaseId: '4973ef67-cc68-4702-8082-f9ea6b69a463',
-                    roomCode: 'aaa',
-                    maxClientNumber: 2
-                },
-                playerTwo: {
-                    create: true,
-                    examName: 'LGS',
-                    courseName: 'Matematik',
-                    subjectName: 'Sayilar',
-                    databaseId: 'c4b812f2-78d5-4bc3-a46a-87a03bdf97fc',
-                    roomCode: 'aaa'
-                }
-            },
             isDisabled: true
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         if (this.props.isHardReset) return
+
+        const userId = await deviceStorage.getItemFromStorage('userId')
+
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
         this.client.onOpen.add(() => {
             setTimeout(() => {
-                this.joinRoom()
+                this.joinRoom({
+                    create: true,
+                    examName: 'LGS',
+                    courseName: 'Matematik',
+                    subjectName: 'Sayilar',
+                    databaseId: userId
+                })
             }, 3000)
         })
     }
 
     // Client sends a ready signal when they join a room successfully
-    joinRoom = () => {
-        const selectedPlayer = this.state.player.playerOne
-
-        this.room = this.client.join(this.state.gameMode.ranked, selectedPlayer)
+    joinRoom = playerOptions => {
+        this.room = this.client.join(this.state.gameMode.ranked, playerOptions)
         // Opponent information
         let opponentUsername
         let opponentId
@@ -90,8 +82,8 @@ class LoadingScreen extends React.Component {
                 opponentId: opponentId,
                 opponentProfilePicture: opponentProfilePicture,
                 // These are used in the match intro screen
-                courseName: selectedPlayer.courseName,
-                subjectName: selectedPlayer.subjectName
+                courseName: playerOptions.courseName,
+                subjectName: playerOptions.subjectName
             })
         })
     }

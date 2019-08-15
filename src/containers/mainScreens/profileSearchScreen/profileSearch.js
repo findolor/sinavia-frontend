@@ -47,7 +47,7 @@ class ProfileSearch extends React.Component {
 
     userOnPress = searchListIndex => {
         navigationPush(SCENE_KEYS.mainScreens.opponentsProfile, {
-            userInformation: this.state.returnedSearchList[searchListIndex]
+            opponentInformation: this.state.returnedSearchList[searchListIndex]
         })
     }
 
@@ -97,7 +97,9 @@ class ProfileSearch extends React.Component {
                                         <View style={styles.namesContainer}>
                                             <View style={styles.nameContainer}>
                                                 <Text style={styles.nameText}>
-                                                    {item.name}
+                                                    {item.name +
+                                                        ' ' +
+                                                        item.lastname}
                                                 </Text>
                                             </View>
                                             <View

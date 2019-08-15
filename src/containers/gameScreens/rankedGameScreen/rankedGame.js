@@ -141,6 +141,7 @@ class RankedGame extends React.Component {
                 // Do a shutdown routine
                 this.shutdownGame()
 
+                navigationReset('main')
                 return
         }
     }
