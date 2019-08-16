@@ -24,12 +24,9 @@ import ADD_FRIEND_REQUESTED from '../../../assets/mainScreens/addFriendRequested
 import ALREADY_FRIEND from '../../../assets/mainScreens/alreadyFriend.png'
 import { widthPercentageToDP } from 'react-native-responsive-screen'
 
-import { getFriendship } from '../../../services/apiServices/friendship/getFriendship'
-import { getFriends } from '../../../services/apiServices/friendship/getFriends'
-import { getStatistics } from '../../../services/apiServices/statistic/getStatistics'
-import { getFriendMatches } from '../../../services/apiServices/friendship/getFriendMatches'
-import { sendFriendshipRequest } from '../../../services/apiServices/friendship/sendFriendshipRequest'
-import { acceptFriendshipRequest } from '../../../services/apiServices/friendship/acceptFriendshipRequest'
+import { friendshipServices } from '../../../sagas/friendship/'
+import { statisticsServices } from '../../../sagas/statistic/'
+
 import { deviceStorage } from '../../../services/deviceStorage'
 
 class OpponentsProfile extends React.Component {
@@ -58,7 +55,6 @@ class OpponentsProfile extends React.Component {
     }
 
     async componentDidMount() {
-        this.userToken = await deviceStorage.getItemFromStorage('JWT')
         this.userId = await deviceStorage.getItemFromStorage('userId')
 
         await this.loadUserProfile()
@@ -68,29 +64,26 @@ class OpponentsProfile extends React.Component {
         await this.loadStatistics()
         await this.loadFriendshipInformation()
         await this.loadFriendMatches()
+        await this.loadFriends()
     }
 
     loadFriendshipInformation = async () => {
-        const friendship = await getFriendship(
-            this.userToken,
-            this.userId,
+        const friendship = await friendshipServices.getFriendship(
             this.props.opponentInformation.id
         )
 
         if (Object.keys(friendship).length !== 0) {
-            if (friendship[0].friendshipStatus === 'requested') {
-                friendship[0].userId === this.userId
-                    ? this.setState({ isFriendRequestSent: true })
-                    : this.setState({ isFriendRequestSent: false })
+            friendship[0].userId === this.userId
+                ? this.setState({ isFriendRequestSent: true })
+                : this.setState({ isFriendRequestSent: false })
+            if (friendship[0].friendshipStatus === 'requested')
                 this.setState({ friendshipStatus: 'friendRequestSent' })
-            } else this.setState({ friendshipStatus: 'alreadyFriend' })
+            else this.setState({ friendshipStatus: 'alreadyFriend' })
         }
     }
 
     loadFriendMatches = async () => {
-        const friendMatches = await getFriendMatches(
-            this.userToken,
-            this.userId,
+        const friendMatches = await friendshipServices.getFriendMatches(
             this.props.opponentInformation.id
         )
 
@@ -114,17 +107,13 @@ class OpponentsProfile extends React.Component {
     }
 
     loadFriends = async () => {
-        const friends = await getFriends(
-            this.userToken,
-            this.props.opponentInformation.id
-        )
+        const friends = await friendshipServices.getFriends()
 
         this.setState({ totalFriends: Object.keys(friends).length })
     }
 
     loadStatistics = async () => {
-        const statistics = await getStatistics(
-            this.userToken,
+        const statistics = await statisticsServices.getStatistics(
             this.props.opponentInformation.id
         )
 
@@ -161,35 +150,49 @@ class OpponentsProfile extends React.Component {
     }
 
     sendFriendshipRequest = () => {
-        sendFriendshipRequest(
-            this.userToken,
-            this.userId,
+        friendshipServices.sendFriendshipRequest(
             this.props.opponentInformation.id
         )
+        this.setState({
+            friendshipStatus: 'friendRequestSent',
+            isFriendRequestSent: true
+        })
+    }
+
+    acceptFriendshipRequest = () => {
+        friendshipServices.acceptFriendshipRequest(
+            this.props.opponentInformation.id
+        )
+        this.setState({
+            friendshipStatus: 'alreadyFriend',
+            totalFriends: this.state.totalFriends + 1
+        })
+    }
+
+    deleteFriendship = () => {
+        if (this.state.isFriendRequestSent)
+            friendshipServices.deleteFriendship(this.userId)
+        else
+            friendshipServices.deleteFriendship(
+                this.props.opponentInformation.id
+            )
+        this.setState({
+            friendshipStatus: 'addFriend',
+            totalFriends: this.state.totalFriends - 1
+        })
     }
 
     friendshipStatusOnPress = () => {
         switch (this.state.friendshipStatus) {
             case 'addFriend':
                 this.sendFriendshipRequest()
-                this.setState({
-                    friendshipStatus: 'friendRequestSent',
-                    isFriendRequestSent: true
-                })
                 return
             case 'friendRequestSent':
-                if (!this.state.isFriendRequestSent) {
-                    acceptFriendshipRequest(
-                        this.userToken,
-                        this.userId,
-                        this.props.opponentInformation.id
-                    )
-                    this.setState({
-                        friendshipStatus: 'alreadyFriend'
-                    })
-                }
+                if (!this.state.isFriendRequestSent)
+                    this.acceptFriendshipRequest()
                 return
             case 'alreadyFriend':
+                this.deleteFriendship()
                 return
         }
     }

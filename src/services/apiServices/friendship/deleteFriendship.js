@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { API_ENDPOINT } from '../../../config/index'
 
-export const getFriends = async (userToken, userId) => {
+export const deleteFriendship = async (userToken, userId) => {
     try {
-        const response = await axios.get(
+        const response = await axios.delete(
             API_ENDPOINT + 'friendships/' + userId,
             {
                 headers: {
