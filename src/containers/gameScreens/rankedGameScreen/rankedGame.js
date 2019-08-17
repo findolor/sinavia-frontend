@@ -870,11 +870,21 @@ class RankedGame extends React.Component {
                         >
                             <View style={styles.jokerAndTextContainer}>
                                 <Image
-                                    source={OPPONENTS_ANSWER}
+                                    source={
+                                        this.state
+                                            .isSeeOpponentAnswerJokerDisabled ===
+                                        false
+                                            ? OPPONENTS_ANSWER
+                                            : null
+                                    }
                                     style={styles.joker}
                                 />
                                 <Text style={styles.jokerText}>
-                                    Rakibin şıkkını gör
+                                    {this.state
+                                        .isSeeOpponentAnswerJokerDisabled ===
+                                    false
+                                        ? 'Rakibin şıkkını gör'
+                                        : ''}
                                 </Text>
                             </View>
                         </TouchableOpacity>
@@ -886,10 +896,21 @@ class RankedGame extends React.Component {
                         >
                             <View style={styles.jokerAndTextContainer}>
                                 <Image
-                                    source={FIFTY_FIFTY}
+                                    source={
+                                        this.state
+                                            .isRemoveOptionJokerDisabled ===
+                                        false
+                                            ? FIFTY_FIFTY
+                                            : null
+                                    }
                                     style={styles.joker}
                                 />
-                                <Text style={styles.jokerText}>Şık Ele</Text>
+                                <Text style={styles.jokerText}>
+                                    {this.state.isRemoveOptionJokerDisabled ===
+                                    false
+                                        ? 'Şık Ele'
+                                        : ''}
+                                </Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -900,11 +921,20 @@ class RankedGame extends React.Component {
                         >
                             <View style={styles.jokerAndTextContainer}>
                                 <Image
-                                    source={SECOND_CHANCE}
+                                    source={
+                                        this.state
+                                            .isSecondChanceJokerDisabled ===
+                                        false
+                                            ? SECOND_CHANCE
+                                            : null
+                                    }
                                     style={styles.joker}
                                 />
                                 <Text style={styles.jokerText}>
-                                    İkinci Şans
+                                    {this.state.isSecondChanceJokerDisabled ===
+                                    false
+                                        ? 'İkinci Şans'
+                                        : ''}
                                 </Text>
                             </View>
                         </TouchableOpacity>
