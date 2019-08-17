@@ -30,12 +30,10 @@ class Statistics extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            timeRange:{
-                thisWeek: [0,6],
-                thisMonth: [0,30],
-                last3month: [0,1,11,12],
-                last6month: [0,1,23,24]
-            },
+            thisWeek: [0,6],
+            thisMonth: [0,30],
+            last3month: [0,1,11,12],
+            last6month: [0,1,23,24],
             courseLeaderboardList: ['Genel'],
             subjectLeaderboardList: [],
             subjectLeaderboardListDefaultValue: '',
@@ -161,9 +159,30 @@ class Statistics extends React.Component {
         navigationPop()
     }
 
-    onRheostatValUpdated = (payload) => {
+    thisWeekOnRheostatValUpdated = (payload) => {
         this.setState({
-            timeRange: payload
+            thisWeek: payload
+        })
+        console.log(payload)
+    }
+
+    thisMonthOnRheostatValUpdated = (payload) => {
+        this.setState({
+            thisMonth: payload
+        })
+        console.log(payload)
+    }
+
+    last3MonthOnRheostatValUpdated = (payload) => {
+        this.setState({
+            last3Month: payload
+        })
+        console.log(payload)
+    }
+
+    last6MonthOnRheostatValUpdated = (payload) => {
+        this.setState({
+            last6Month: payload
         })
         console.log(payload)
     }
@@ -322,7 +341,7 @@ class Statistics extends React.Component {
                                     max={6}
                                     theme={{ rheostat: { themeColor: '#00D9EF', grey: '#CACACA' } }}
                                     svgData={thisWeekData}
-                                    onValuesUpdated={this.onRheostatValUpdated}
+                                    onValuesUpdated={this.thisWeekOnRheostatValUpdated}
                                 />
                             )}
                             {this.state.timezone === 'Bu ay' && (
@@ -332,7 +351,7 @@ class Statistics extends React.Component {
                                     max={30}
                                     theme={{ rheostat: { themeColor: '#00D9EF', grey: '#CACACA' } }}
                                     svgData={thisMonthData}
-                                    onValuesUpdated={this.onRheostatValUpdated}
+                                    onValuesUpdated={this.thisMonthOnRheostatValUpdated}
                                 />
                             )}
                             {this.state.timezone === 'Son 3 ay' && (
@@ -342,7 +361,7 @@ class Statistics extends React.Component {
                                     max={11}
                                     theme={{ rheostat: { themeColor: '#00D9EF', grey: '#CACACA' } }}
                                     svgData={last3MonthData}
-                                    onValuesUpdated={this.onRheostatValUpdated}
+                                    onValuesUpdated={this.last3MonthOnRheostatValUpdated}
                                 />
                             )}
                             {this.state.timezone === 'Son 6 ay' && (
@@ -352,45 +371,45 @@ class Statistics extends React.Component {
                                     max={23}
                                     theme={{ rheostat: { themeColor: '#00D9EF', grey: '#CACACA' } }}
                                     svgData={last6MonthData}
-                                    onValuesUpdated={this.onRheostatValUpdated}
+                                    onValuesUpdated={this.last6MonthOnRheostatValUpdated}
                                 />
                             )}
                         </View>
                         <View style={styles.timezonesTextView}>
                             {this.state.timezone === 'Bu hafta' && (
                                 <Text style={styles.timezonesText}>
-                                    {Moment.utc().startOf('week').add(this.state.timeRange.thisWeek[0], 'days').format('dddd')}
+                                    {Moment.utc().startOf('week').add(this.state.thisWeek[0], 'days').format('dddd')}
                                     -
-                                    {Moment.utc().startOf('week').add(this.state.timeRange.thisWeek[1], 'days').format('dddd')}
+                                    {Moment.utc().startOf('week').add(this.state.thisWeek[1], 'days').format('dddd')}
                                 </Text >
                             )}
                             {this.state.timezone === 'Bu ay' && (
                                 <Text style={styles.timezonesText}>
-                                    {Moment.utc().startOf('month').add(this.state.timeRange.thisMonth[0], 'days').format('LL')}
+                                    {Moment.utc().startOf('month').add(this.state.thisMonth[0], 'days').format('LL')}
                                     -
-                                    {Moment.utc().startOf('month').add(this.state.timeRange.thisMonth[1], 'days').format('LL')}
+                                    {Moment.utc().startOf('month').add(this.state.thisMonth[1], 'days').format('LL')}
                                 </Text >
                             )}
                             {this.state.timezone === 'Son 3 ay' && (
                                 <Text style={styles.timezonesTextlast3Month}>
-                                    {Moment.utc().startOf('today').subtract(this.state.timeRange.last3month[3], 'week').date()}
+                                    {Moment.utc().startOf('today').subtract(this.state.last3month[3], 'week').format('DD MMM')}
                                     -
-                                    {Moment.utc().startOf('today').subtract(this.state.timeRange.last3month[2], 'week').format('LL')}
+                                    {Moment.utc().startOf('today').subtract(this.state.last3month[2], 'week').format('DD MMM YYYY')}
                                     /
-                                    {Moment.utc().startOf('today').subtract(this.state.timeRange.last3month[1], 'week').date()}
+                                    {Moment.utc().startOf('today').subtract(this.state.last3month[1], 'week').format('DD MMM')}
                                     -
-                                    {Moment.utc().startOf('today').add(this.state.timeRange.last3month[0], 'week').format('LL')}
+                                    {Moment.utc().startOf('today').add(this.state.last3month[0], 'week').format('DD MMM YYYY')}
                                 </Text >
                             )}
                             {this.state.timezone === 'Son 6 ay' && (
-                                <Text style={styles.timezonesText}>
-                                    {Moment.utc().startOf('today').subtract(this.state.timeRange.last6month[3], 'week').date()}
+                                <Text style={styles.timezonesTextlast3Month}>
+                                    {Moment.utc().startOf('today').subtract(this.state.last6month[3], 'week').format('DD MMM')}
                                     -
-                                    {Moment.utc().startOf('today').subtract(this.state.timeRange.last6month[2], 'week').format('LL')}
+                                    {Moment.utc().startOf('today').subtract(this.state.last6month[2], 'week').format('DD MMM YYYY')}
                                     /
-                                    {Moment.utc().startOf('today').subtract(this.state.timeRange.last6month[1], 'week').date()}
+                                    {Moment.utc().startOf('today').subtract(this.state.last6month[1], 'week').format('DD MMM')}
                                     -
-                                    {Moment.utc().startOf('today').add(this.state.timeRange.last6month[0], 'week').format('LL')}
+                                    {Moment.utc().startOf('today').add(this.state.last6month[0], 'week').format('DD MMM YYYY')}
                                 </Text >
                             )}
                         </View>
