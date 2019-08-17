@@ -62,6 +62,10 @@ const RouterComp = () => {
                         component={mainScreens.settings}
                     />
                     <Scene
+                        key={SCENE_KEYS.mainScreens.statistics}
+                        component={mainScreens.statistics}
+                    />
+                    <Scene
                         key={SCENE_KEYS.mainScreens.changePassword}
                         component={mainScreens.changePassword}
                     />

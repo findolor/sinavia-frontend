@@ -12,15 +12,148 @@ import NotchView from '../../../components/notchView'
 import returnLogo from '../../../assets/return.png'
 import { navigationPop } from '../../../services/navigationService'
 import Moment from 'moment';
+import 'moment/locale/tr';
 import SemiCircleProgress from '../../../components/semiCircleProgress'
+import { LGS } from '../../../components/mainScreen/carousel/static/exams'
+import * as courses from '../../../components/mainScreen/carousel/static/courses'
+import { connect } from 'react-redux'
+
+const timezonesList = [
+    'Bu hafta',
+    'Bu ay',
+    'Son 3 ay',
+    'Son 6 ay',
+    'Ay seçin'
+]
 
 class Statistics extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             timeRange:{
-                values: [0,30]
-            }
+                thisWeek: [0,6],
+                thisMonth: [0,30],
+                last3month: [0,1,11,12],
+                last6month: [0,1,23,24]
+            },
+            courseLeaderboardList: ['Genel'],
+            subjectLeaderboardList: [],
+            subjectLeaderboardListDefaultValue: '',
+            isSubjectDropdownVisible: false,
+            timezone: 'Bu ay'
+        }
+    }
+
+    componentDidMount() {
+        const courseList = this.state.courseLeaderboardList
+
+        this.courseSwitchPicker(courseList)
+    }
+
+    courseSwitchPicker = courseList => {
+        switch (this.props.choosenExam) {
+            case 'LGS':
+                LGS.forEach(course => {
+                    courseList.push(course.courseName)
+                })
+                return
+        }
+        this.setState({ courseLeaderboardList: courseList })
+    }
+
+    pickerSelectCourse = (idx, value) => {
+        this.setState({ isSubjectDropdownVisible: false })
+        setTimeout(() => {
+            this.subjectSwitchPicker(value)
+        }, 300)
+    }
+
+    pickerSelectSubject = (idx, value) => {}
+
+    subjectSwitchPicker = selectedCourse => {
+        switch (this.props.choosenExam) {
+            case 'LGS':
+                switch (selectedCourse) {
+                    case 'Genel':
+                        this.setState({
+                            subjectLeaderboardList: [],
+                            subjectLeaderboardListDefaultValue: ''
+                        })
+                        return
+                    case 'Türkçe':
+                        this.setState({
+                            subjectLeaderboardList: courses.LGS.turkce,
+                            subjectLeaderboardListDefaultValue: 'Hepsi',
+                            isSubjectDropdownVisible: true
+                        })
+                        return
+                    case 'Matematik':
+                        this.setState({
+                            subjectLeaderboardList: courses.LGS.matematik,
+                            subjectLeaderboardListDefaultValue: 'Hepsi',
+                            isSubjectDropdownVisible: true
+                        })
+                        return
+                    case 'Tarih':
+                        this.setState({
+                            subjectLeaderboardList: courses.LGS.tarih,
+                            subjectLeaderboardListDefaultValue: 'Hepsi',
+                            isSubjectDropdownVisible: true
+                        })
+                        return
+                    case 'Fen Bilimleri':
+                        this.setState({
+                            subjectLeaderboardList: courses.LGS.fen,
+                            subjectLeaderboardListDefaultValue: 'Hepsi',
+                            isSubjectDropdownVisible: true
+                        })
+                        return
+                    case 'İngilizce':
+                        this.setState({
+                            subjectLeaderboardList: courses.LGS.ingilizce,
+                            subjectLeaderboardListDefaultValue: 'Hepsi',
+                            isSubjectDropdownVisible: true
+                        })
+                        return
+                    case 'Din Kültürü':
+                        this.setState({
+                            subjectLeaderboardList: courses.LGS.din,
+                            subjectLeaderboardListDefaultValue: 'Hepsi',
+                            isSubjectDropdownVisible: true
+                        })
+                        return
+                }
+                return
+        }
+    }
+
+    timezoneSelect = (idx, value) => {
+        switch (value) {
+            case 'Bu hafta':
+                this.setState({
+                    timezone: 'Bu hafta'
+                })
+                return
+            case 'Bu ay':
+                this.setState({
+                    timezone: 'Bu ay'
+                })
+                return
+            case 'Son 3 ay':
+                this.setState({
+                    timezone: 'Son 3 ay'
+                })
+                return
+            case 'Son 6 ay':
+                this.setState({
+                    timezone: 'Son 6 ay'
+                })
+                return
+            case 'Ay seçin':
+                this.setState({
+                    timezone: 'Ay Seçin'
+                })
+                return
         }
     }
 
@@ -36,18 +169,22 @@ class Statistics extends React.Component {
     }
 
     render() {
-        const randomStartAngleCorrectCircle = Math.floor(Math.random() * 345) + 15;
-        const randomStartAngleIncorrectCircle = Math.floor(Math.random() * 345) + 15;
-        const randomStartAngleUnansweredCircle = Math.floor(Math.random() * 345) + 15;
-        const areaSvgData = [50, 10, 40, 85, 85, 35, 53, 24,
-            50, 10, 40, 95, 85, 40,
-            24,50, 10, 40, 85, 85, 91, 35, 53, 24,
-            50, 10, 40, 95, 85, 40,50, 10, 40, 85, 85, 35, 53, 24,
-            50, 10, 40, 95, 85, 40,
-            24,50, 10, 40, 85, 85, 91, 35, 53, 24,
-            50, 10, 40, 95, 85, 40]
-        const values= [
+        const thisWeekData = [50, 10, 40, 85, 85, 35, 53]
+        const thisMonthData = [50, 10, 40, 85, 85, 35, 53, 24, 35, 100, 50, 10, 40, 85, 85, 35, 53, 24, 35, 100, 50, 10, 40, 85, 85, 35, 53, 24, 35, 100, 50]
+        const last3MonthData = [50, 10, 40, 85, 85, 35, 53, 24, 35, 100, 75, 45]
+        const last6MonthData = [50, 10, 40, 85, 85, 35, 53, 24, 35, 100, 75, 45, 50, 10, 40, 85, 85, 35, 53, 24, 35, 100, 75, 45]
+
+        const thisWeek= [
+            0, 6
+        ]
+        const thisMonth= [
             0, 30
+        ]
+        const last3Month= [
+            0, 11
+        ]
+        const last6Month= [
+            0, 23
         ]
         return (
             <View style={styles.container}>
@@ -60,15 +197,56 @@ class Statistics extends React.Component {
                 <View style={styles.dropdownsContainer}>
                     <DropDown
                         style={styles.picker}
+                        textStyle={styles.pickerText}
+                        dropdownTextStyle={
+                            styles.pickerDropdownText
+                        }
+                        dropdownStyle={styles.pickerDropdown}
+                        defaultValue={'Genel'}
+                        options={this.state.courseLeaderboardList}
+                        onSelect={(idx, value) =>
+                            this.pickerSelectCourse(idx, value)
+                        }
                     />
-                    <DropDown
-                        style={styles.picker}
-                    />
+                    {this.state.isSubjectDropdownVisible && (
+                        <View style={styles.dropdownContainer}>
+                            <DropDown
+                                style={styles.picker}
+                                textStyle={styles.pickerText}
+                                dropdownTextStyle={
+                                    styles.pickerDropdownText
+                                }
+                                dropdownStyle={styles.pickerDropdown}
+                                defaultValue={
+                                    this.state
+                                        .subjectLeaderboardListDefaultValue
+                                }
+                                options={
+                                    this.state.subjectLeaderboardList
+                                }
+                                onSelect={(idx, value) =>
+                                    this.pickerSelectSubject(idx, value)
+                                }
+                            />
+                        </View>
+                    )}
                 </View>
                 <View style={styles.statisticsContainer}>
                     <View style={styles.timeZoneDropdownsContainer}>
                         <DropDown
                             style={styles.picker}
+                            textStyle={styles.pickerText}
+                            dropdownTextStyle={
+                                styles.pickerDropdownText
+                            }
+                            dropdownStyle={styles.pickerDropdown}
+                            defaultValue={
+                                this.state.timezone
+                            }
+                            options={timezonesList}
+                            onSelect={(idx, value) =>
+                                this.timezoneSelect(idx, value)
+                            }
                         />
                     </View>
                     <View style={styles.totalGameStatsContainer}>
@@ -111,47 +289,110 @@ class Statistics extends React.Component {
                                 <View style={styles.correctPoint}/>
                                 <View style={styles.percentagesTextView}>
                                     <Text style={styles.optionsText}>DOĞRU</Text>
-                                    <Text style={styles.percentagesText}>50%</Text>
+                                    <Text style={styles.percentagesText}>150 - 50%</Text>
                                 </View>
                             </View>
                             <View style={styles.percentageContainer}>
                                 <View style={styles.incorrectPoint}/>
                                 <View style={styles.percentagesTextView}>
                                     <Text style={styles.optionsText}>YANLIŞ</Text>
-                                    <Text style={styles.percentagesText}>50%</Text>
+                                    <Text style={styles.percentagesText}>150 - 50%</Text>
                                 </View>
                             </View>
                             <View style={styles.percentageContainer}>
                                 <View style={styles.unansweredPoint}/>
                                 <View style={styles.percentagesTextView}>
                                     <Text style={styles.optionsText}>BOŞ</Text>
-                                    <Text style={styles.percentagesText}>50%</Text>
+                                    <Text style={styles.percentagesText}>150 - 50%</Text>
                                 </View>
                             </View>
                         </View>
                         <View style={styles.circlesContainer}>
-                            <ProgressCircle style={styles.correctCircle} progress={0.4} progressColor={'#6AC259'} strokeWidth={wp(3)} startAngle={70} />
-                            <ProgressCircle style={styles.incorrectCircle} progress={0.4} progressColor={'#B72A2A'} strokeWidth={wp(3)} startAngle={135} />
-                            <ProgressCircle style={styles.unansweredCircle} progress={0.4} progressColor={'#00D9EF'} strokeWidth={wp(3)} startAngle={30} />
+                            <ProgressCircle style={styles.correctCircle} progress={0.6} progressColor={'#6AC259'} strokeWidth={wp(3)} startAngle={70} />
+                            <ProgressCircle style={styles.incorrectCircle} progress={0.35} progressColor={'#B72A2A'} strokeWidth={wp(3)} startAngle={135} />
+                            <ProgressCircle style={styles.unansweredCircle} progress={0.05} progressColor={'#00D9EF'} strokeWidth={wp(3)} startAngle={30} />
                         </View>
                     </View>
                     <View style={styles.timezoneChartContainer}>
                         <View style={styles.barRheostatContainer}>
-                        <BarRheostat
-                            values={values}
-                            min={0}
-                            max={30}
-                            theme={{ rheostat: { themeColor: '#00D9EF', grey: '#CACACA' } }}
-                            svgData={areaSvgData}
-                            onValuesUpdated={this.onRheostatValUpdated}
-                        />
+                            {this.state.timezone === 'Bu hafta' && (
+                                <BarRheostat
+                                    values={thisWeek}
+                                    min={0}
+                                    max={6}
+                                    theme={{ rheostat: { themeColor: '#00D9EF', grey: '#CACACA' } }}
+                                    svgData={thisWeekData}
+                                    onValuesUpdated={this.onRheostatValUpdated}
+                                />
+                            )}
+                            {this.state.timezone === 'Bu ay' && (
+                                <BarRheostat
+                                    values={thisMonth}
+                                    min={0}
+                                    max={30}
+                                    theme={{ rheostat: { themeColor: '#00D9EF', grey: '#CACACA' } }}
+                                    svgData={thisMonthData}
+                                    onValuesUpdated={this.onRheostatValUpdated}
+                                />
+                            )}
+                            {this.state.timezone === 'Son 3 ay' && (
+                                <BarRheostat
+                                    values={last3Month}
+                                    min={0}
+                                    max={11}
+                                    theme={{ rheostat: { themeColor: '#00D9EF', grey: '#CACACA' } }}
+                                    svgData={last3MonthData}
+                                    onValuesUpdated={this.onRheostatValUpdated}
+                                />
+                            )}
+                            {this.state.timezone === 'Son 6 ay' && (
+                                <BarRheostat
+                                    values={last6Month}
+                                    min={0}
+                                    max={23}
+                                    theme={{ rheostat: { themeColor: '#00D9EF', grey: '#CACACA' } }}
+                                    svgData={last6MonthData}
+                                    onValuesUpdated={this.onRheostatValUpdated}
+                                />
+                            )}
                         </View>
                         <View style={styles.timezonesTextView}>
-                            <Text style={styles.timezonesText}>
-                                {Moment.utc().startOf('month').add(this.state.timeRange.values[0], 'days').format('DD/MM/YYYY')}
-                                -
-                                {Moment.utc().startOf('month').add(this.state.timeRange.values[1], 'days').format('DD/MM/YYYY')}
-                            </Text >
+                            {this.state.timezone === 'Bu hafta' && (
+                                <Text style={styles.timezonesText}>
+                                    {Moment.utc().startOf('week').add(this.state.timeRange.thisWeek[0], 'days').format('dddd')}
+                                    -
+                                    {Moment.utc().startOf('week').add(this.state.timeRange.thisWeek[1], 'days').format('dddd')}
+                                </Text >
+                            )}
+                            {this.state.timezone === 'Bu ay' && (
+                                <Text style={styles.timezonesText}>
+                                    {Moment.utc().startOf('month').add(this.state.timeRange.thisMonth[0], 'days').format('LL')}
+                                    -
+                                    {Moment.utc().startOf('month').add(this.state.timeRange.thisMonth[1], 'days').format('LL')}
+                                </Text >
+                            )}
+                            {this.state.timezone === 'Son 3 ay' && (
+                                <Text style={styles.timezonesTextlast3Month}>
+                                    {Moment.utc().startOf('today').subtract(this.state.timeRange.last3month[3], 'week').date()}
+                                    -
+                                    {Moment.utc().startOf('today').subtract(this.state.timeRange.last3month[2], 'week').format('LL')}
+                                    /
+                                    {Moment.utc().startOf('today').subtract(this.state.timeRange.last3month[1], 'week').date()}
+                                    -
+                                    {Moment.utc().startOf('today').add(this.state.timeRange.last3month[0], 'week').format('LL')}
+                                </Text >
+                            )}
+                            {this.state.timezone === 'Son 6 ay' && (
+                                <Text style={styles.timezonesText}>
+                                    {Moment.utc().startOf('today').subtract(this.state.timeRange.last6month[3], 'week').date()}
+                                    -
+                                    {Moment.utc().startOf('today').subtract(this.state.timeRange.last6month[2], 'week').format('LL')}
+                                    /
+                                    {Moment.utc().startOf('today').subtract(this.state.timeRange.last6month[1], 'week').date()}
+                                    -
+                                    {Moment.utc().startOf('today').add(this.state.timeRange.last6month[0], 'week').format('LL')}
+                                </Text >
+                            )}
                         </View>
                     </View>
                 </View>
@@ -160,4 +401,13 @@ class Statistics extends React.Component {
     }
 }
 
-export default Statistics
+const mapStateToProps = state => ({
+    choosenExam: state.user.choosenExam
+})
+
+const mapDispatchToProps = dispatch => ({})
+
+export default connect(
+    mapStateToProps,
+    null
+)(Statistics)

@@ -307,5 +307,5 @@ export default StyleSheet.create({
         borderRadius: 15,
         marginTop: hp(0.5),
         marginLeft: wp(-0.5)
-    },
+    }
 })

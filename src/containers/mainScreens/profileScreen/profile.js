@@ -50,6 +50,10 @@ class Profile extends React.Component {
         navigationPush(SCENE_KEYS.mainScreens.favorites)
     }
 
+    statisticsLogoOnPress = () => {
+        navigationPush(SCENE_KEYS.mainScreens.statistics)
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -108,7 +112,7 @@ class Profile extends React.Component {
                 </View>
                 <View style={styles.boxesContainer}>
                     <View style={styles.first2Box}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={this.statisticsLogoOnPress}>
                             <View style={styles.statisticsBox}>
                                 <Text style={styles.boxText}>
                                     İstatistikler

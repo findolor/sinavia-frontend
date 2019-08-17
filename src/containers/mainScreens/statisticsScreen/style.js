@@ -37,6 +37,37 @@ export default StyleSheet.create({
         borderRadius: 6,
         marginTop: hp(0.5)
     },
+    pickerText: {
+        marginTop: hp(1.3),
+        marginBottom: hp(1),
+        marginLeft: wp(1),
+        marginRight: wp(1),
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(3),
+        color: '#2E313C',
+        textAlign: 'center',
+        textAlignVertical: 'center'
+    },
+    pickerDropdownText: {
+        marginTop: hp(1.3),
+        marginBottom: hp(1),
+        marginLeft: wp(1),
+        marginRight: wp(1),
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(2),
+        color: '#2E313C',
+        textAlign: 'center',
+        textAlignVertical: 'center'
+    },
+    pickerDropdown: {
+        height: hp(28.5),
+        width: wp(40),
+        borderColor: '#FF9900',
+        borderWidth: wp(0.5),
+        borderRadius: 6,
+        marginTop: hp(0.5),
+        marginLeft: wp(-0.5)
+    },
     statisticsContainer: {
         height: hp(77),
         width: wp(88),
@@ -158,7 +189,13 @@ export default StyleSheet.create({
     },
     timezonesText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: hp(3),
+        fontSize: hp(2.5),
+        color: '#2E313C',
+        marginBottom: hp(1)
+    },
+    timezonesTextlast3Month: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(2.2),
         color: '#2E313C',
         marginBottom: hp(1)
     },
