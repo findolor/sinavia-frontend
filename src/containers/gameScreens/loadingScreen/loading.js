@@ -32,7 +32,7 @@ class LoadingScreen extends React.Component {
 
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
         this.client.onOpen.add(() => {
-            setTimeout(() => {
+            /* setTimeout(() => {
                 this.joinRoom({
                     create: true,
                     examName: 'LGS',
@@ -40,7 +40,14 @@ class LoadingScreen extends React.Component {
                     subjectName: 'Sayilar',
                     databaseId: userId
                 })
-            }, 3000)
+            }, 3000) */
+            this.joinRoom({
+                create: true,
+                examName: 'LGS',
+                courseName: 'Matematik',
+                subjectName: 'Sayilar',
+                databaseId: userId
+            })
         })
     }
 
