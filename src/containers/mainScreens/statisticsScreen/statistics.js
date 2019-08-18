@@ -17,6 +17,7 @@ import SemiCircleProgress from '../../../components/semiCircleProgress'
 import { LGS } from '../../../components/mainScreen/carousel/static/exams'
 import * as courses from '../../../components/mainScreen/carousel/static/courses'
 import { connect } from 'react-redux'
+import { quizList } from './exampleQuizzes'
 
 const timezonesList = [
     'Bu hafta',
@@ -26,11 +27,23 @@ const timezonesList = [
     'Ay seçin'
 ]
 
+const quizResult = {
+    examName: 'YKS',
+    courseName: 'Türkçe',
+    subjectName: 'Paragrafta Anlam',
+    correctNumber: '3',
+    incorrectNumber: '1',
+    unansweredNumber: '1',
+    earnedPoints: '',
+    gameResult: 'won',
+    createdAt: '1566086400'
+}
+
 class Statistics extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            thisWeek: {values: [0, 6]},
+            thisWeek: {values: [0, 7]},
             thisMonth: {values: [0, 30]},
             last3Month: {values: [0,12]},
             last6Month: {values: [0,24]},
@@ -40,7 +53,13 @@ class Statistics extends React.Component {
             isSubjectDropdownVisible: false,
             timezone: 'Bu ay',
             startDate: Moment.utc().startOf('month').add(0, 'days').format("YYYY-MM-DD"),
-            endDate: Moment.utc().startOf('month').add(1, 'days').format("YYYY-MM-DD")
+            endDate: Moment.utc().startOf('month').add(1, 'days').format("YYYY-MM-DD"),
+            wons: '0',
+            losts: '0',
+            draws: '0',
+            corrects: '0',
+            incorrects: '0',
+            unanswereds: '0'
         }
     }
 
@@ -162,19 +181,47 @@ class Statistics extends React.Component {
     }
 
     thisWeekOnRheostatValUpdated = (payload) => {
+        let wonsCounter=0, lostsCounter=0, drawsCounter=0, correctsCounter=0, incorrectsCounter=0, unansweredsCounter=0
         this.setState({
             thisWeek: payload,
-            startDate: Moment.utc().startOf('month').add(payload.values[0], 'days').format("YYYY-MM-DD"),
-            endDate: Moment.utc().startOf('month').add(payload.values[1], 'days').format("YYYY-MM-DD")
+            startDate: Moment.utc().startOf('week').add(payload.values[0], 'days').format('YYYY-MM-DD'),
+            endDate: Moment.utc().startOf('week').add(payload.values[1], 'days').format('YYYY-MM-DD')
         })
+        for (let i = 0; i < quizList.length; i++) {
+            if(quizList[i].createdAt >= this.state.startDate && quizList[i].createdAt <= this.state.endDate){
+                if(quizList[i].gameResult === 'won'){
+                    wonsCounter++
+                }
+                else if(quizList[i].gameResult === 'lost'){
+                    lostsCounter++
+                }
+                else {
+                    drawsCounter++
+                }
+                correctsCounter += quizList[i].correctNumber
+                incorrectsCounter += quizList[i].incorrectNumber
+                unansweredsCounter += quizList[i].unansweredNumber
+            }
+        }
+        this.setState({
+            wons: wonsCounter,
+            losts: lostsCounter,
+            draws: drawsCounter,
+            corrects: correctsCounter,
+            incorrects: incorrectsCounter,
+            unanswereds: unansweredsCounter
+        })
+        console.log(this.state.corrects)
+        console.log(this.state.incorrects)
+        console.log(this.state.unanswereds)
         console.log(payload)
     }
 
     thisMonthOnRheostatValUpdated = (payload) => {
         this.setState({
             thisMonth: payload,
-            startDate: Moment.utc().startOf('month').add(payload.values[0], 'days').format("YYYY-MM-DD"),
-            endDate: Moment.utc().startOf('month').add(payload.values[1], 'days').format("YYYY-MM-DD")
+            startDate: Moment.utc().startOf('month').add(payload.values[0], 'days').format('YYYY-MM-DD'),
+            endDate: Moment.utc().startOf('month').add(payload.values[1], 'days').format('YYYY-MM-DD')
         })
         console.log(payload)
         console.log(this.state.startDate)
@@ -195,10 +242,16 @@ class Statistics extends React.Component {
     }
 
     render() {
-        const thisWeekData = [50, 10, 40, 85, 85, 35, 53]
+        const wons = this.state.wons
+        const losts = this.state.losts
+        const draws = this.state.draws
+        const corrects = this.state.corrects
+        const incorrects = this.state.incorrects
+        const unanswereds = this.state.unanswereds
+        const thisWeekData = [50, 180, 40, 85, 85, 35, 53]
         const thisMonthData = [50, 10, 40, 85, 85, 35, 53, 24, 35, 100, 50, 10, 40, 85, 85, 35, 53, 24, 35, 100, 50, 10, 40, 85, 85, 35, 53, 24, 35, 100, 50]
         const last3MonthData = [50, 10, 40, 85, 85, 35, 53, 24, 35, 100, 75, 45]
-        const last6MonthData = [50, 10, 40, 85, 85, 35, 53, 24, 35, 100, 75, 45, 50, 10, 40, 85, 85, 35, 53, 24, 35, 100, 75, 45]
+        const last6MonthData = [50, 180, 40, 85, 85, 35, 53, 24, 35, 100, 75, 45, 50, 10, 40, 85, 85, 35, 53, 24, 35, 100, 75, 45]
 
         const thisWeek= [
             0, 6
@@ -278,25 +331,25 @@ class Statistics extends React.Component {
                     <View style={styles.totalGameStatsContainer}>
                         <View style={styles.totalGameStatsInfosContainer}>
                             <Text style={styles.totalGamesPlayedAndSolvedQuestionsCounter}>
-                                200
+                                {wons+draws+losts}
                             </Text>
                             <Text style={styles.totalGamesPlayedAndSolvedQuestionsText}>
                                 Oynadığın Oyun
                             </Text>
-                            <Text style={styles.wonText}>Kazandığı: 150</Text>
-                            <Text style={styles.drawText}>Beraberlik: 10</Text>
-                            <Text style={styles.lostText}>Kaybettiği: 40</Text>
+                            <Text style={styles.wonText}>Kazandığı: {wons}</Text>
+                            <Text style={styles.drawText}>Beraberlik: {draws}</Text>
+                            <Text style={styles.lostText}>Kaybettiği: {losts}</Text>
                         </View>
                         <View style={styles.semiCircleContainer}>
                             <SemiCircleProgress
-                                percentage={75}
+                                percentage={(wons/(wons+losts+draws))*100}
                                 progressColor={'#00D9EF'}
                                 circleRadius={wp(20)}
                                 animationSpeed={0.1}
                                 progressWidth={wp(5)}
                             >
                                 <Text style={styles.chartPercentageText}>
-                                    75%
+                                    {((wons/(wons+losts+draws))*100).toFixed(0)}%
                                 </Text>
                             </SemiCircleProgress>
                         </View>
@@ -305,7 +358,7 @@ class Statistics extends React.Component {
                         <View style={styles.percentagesContainer}>
                             <View style={styles.totalQuestionsSolvedContainer}>
                                 <Text style={styles.totalGamesPlayedAndSolvedQuestionsCounter}>
-                                    200
+                                    {corrects+incorrects+unanswereds}
                                 </Text>
                                 <Text style={styles.totalGamesPlayedAndSolvedQuestionsText}>
                                     Çözülen Soru
@@ -315,28 +368,28 @@ class Statistics extends React.Component {
                                 <View style={styles.correctPoint}/>
                                 <View style={styles.percentagesTextView}>
                                     <Text style={styles.optionsText}>DOĞRU</Text>
-                                    <Text style={styles.percentagesText}>150 - 50%</Text>
+                                    <Text style={styles.percentagesText}>{corrects} - {((corrects/(corrects+incorrects+unanswereds))*100).toFixed(2)}%</Text>
                                 </View>
                             </View>
                             <View style={styles.percentageContainer}>
                                 <View style={styles.incorrectPoint}/>
                                 <View style={styles.percentagesTextView}>
                                     <Text style={styles.optionsText}>YANLIŞ</Text>
-                                    <Text style={styles.percentagesText}>150 - 50%</Text>
+                                    <Text style={styles.percentagesText}>{incorrects} - {((incorrects/(corrects+incorrects+unanswereds))*100).toFixed(2)}%</Text>
                                 </View>
                             </View>
                             <View style={styles.percentageContainer}>
                                 <View style={styles.unansweredPoint}/>
                                 <View style={styles.percentagesTextView}>
                                     <Text style={styles.optionsText}>BOŞ</Text>
-                                    <Text style={styles.percentagesText}>150 - 50%</Text>
+                                    <Text style={styles.percentagesText}>{unanswereds} - {((unanswereds/(corrects+incorrects+unanswereds))*100).toFixed(2)}%</Text>
                                 </View>
                             </View>
                         </View>
                         <View style={styles.circlesContainer}>
-                            <ProgressCircle style={styles.correctCircle} progress={0.6} progressColor={'#6AC259'} strokeWidth={wp(3)} startAngle={70} />
-                            <ProgressCircle style={styles.incorrectCircle} progress={0.35} progressColor={'#B72A2A'} strokeWidth={wp(3)} startAngle={135} />
-                            <ProgressCircle style={styles.unansweredCircle} progress={0.05} progressColor={'#00D9EF'} strokeWidth={wp(3)} startAngle={30} />
+                            <ProgressCircle style={styles.correctCircle} progress={(corrects/(corrects+incorrects+unanswereds))} progressColor={'#6AC259'} strokeWidth={wp(3)} startAngle={70} />
+                            <ProgressCircle style={styles.incorrectCircle} progress={(incorrects/(corrects+incorrects+unanswereds))} progressColor={'#B72A2A'} strokeWidth={wp(3)} startAngle={135} />
+                            <ProgressCircle style={styles.unansweredCircle} progress={(unanswereds/(corrects+incorrects+unanswereds))} progressColor={'#00D9EF'} strokeWidth={wp(3)} startAngle={30} />
                         </View>
                     </View>
                     <View style={styles.timezoneChartContainer}>

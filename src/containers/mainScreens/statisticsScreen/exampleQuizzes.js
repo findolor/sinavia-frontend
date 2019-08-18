@@ -1,0 +1,178 @@
+export const quizList =[
+    {
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        subjectName: 'Paragrafta Anlam',
+        correctNumber: 5,
+        incorrectNumber: 0,
+        unansweredNumber: 0,
+        earnedPoints: '',
+        gameResult: 'won',
+        createdAt: '2019-08-18'
+    },
+    {
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        subjectName: 'Paragrafta Anlam',
+        correctNumber: 5,
+        incorrectNumber: 0,
+        unansweredNumber: 0,
+        earnedPoints: '',
+        gameResult: 'won',
+        createdAt: '2019-08-18'
+    },
+    {
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        subjectName: 'Paragrafta Anlam',
+        correctNumber: 4,
+        incorrectNumber: 1,
+        unansweredNumber: 0,
+        earnedPoints: '',
+        gameResult: 'won',
+        createdAt: '2019-08-18'
+    },
+    {
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        subjectName: 'Paragrafta Anlam',
+        correctNumber: 4,
+        incorrectNumber: 1,
+        unansweredNumber: 0,
+        earnedPoints: '',
+        gameResult: 'won',
+        createdAt: '2019-08-17'
+    },
+    {
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        subjectName: 'Paragrafta Anlam',
+        correctNumber: 3,
+        incorrectNumber: 2,
+        unansweredNumber: 0,
+        earnedPoints: '',
+        gameResult: 'won',
+        createdAt: '2019-08-16'
+    },
+    {
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        subjectName: 'Paragrafta Anlam',
+        correctNumber: 2,
+        incorrectNumber: 0,
+        unansweredNumber: 3,
+        earnedPoints: '',
+        gameResult: 'draw',
+        createdAt: '2019-08-16'
+    },
+    {
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        subjectName: 'Paragrafta Anlam',
+        correctNumber: 2,
+        incorrectNumber: 1,
+        unansweredNumber: 2,
+        earnedPoints: '',
+        gameResult: 'won',
+        createdAt: '2019-08-16'
+    },
+    {
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        subjectName: 'Paragrafta Anlam',
+        correctNumber: 2,
+        incorrectNumber: 3,
+        unansweredNumber: 0,
+        earnedPoints: '',
+        gameResult: 'lost',
+        createdAt: '2019-08-16'
+    },
+    {
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        subjectName: 'Paragrafta Anlam',
+        correctNumber: 4,
+        incorrectNumber: 0,
+        unansweredNumber: 1,
+        earnedPoints: '',
+        gameResult: 'draw',
+        createdAt: '2019-08-16'
+    },
+    {
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        subjectName: 'Paragrafta Anlam',
+        correctNumber: 2,
+        incorrectNumber: 2,
+        unansweredNumber: 1,
+        earnedPoints: '',
+        gameResult: 'lost',
+        createdAt: '2019-08-15'
+    },
+    {
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        subjectName: 'Paragrafta Anlam',
+        correctNumber: 5,
+        incorrectNumber: 0,
+        unansweredNumber: 0,
+        earnedPoints: '',
+        gameResult: 'won',
+        createdAt: '2019-08-15'
+    },
+    {
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        subjectName: 'Paragrafta Anlam',
+        correctNumber: 1,
+        incorrectNumber: 3,
+        unansweredNumber: 1,
+        earnedPoints: '',
+        gameResult: 'draw',
+        createdAt: '2019-08-15'
+    },
+    {
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        subjectName: 'Paragrafta Anlam',
+        correctNumber: 1,
+        incorrectNumber: 2,
+        unansweredNumber: 2,
+        earnedPoints: '',
+        gameResult: 'lost',
+        createdAt: '2019-08-14'
+    },
+    {
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        subjectName: 'Paragrafta Anlam',
+        correctNumber: 3,
+        incorrectNumber: 1,
+        unansweredNumber: 1,
+        earnedPoints: '',
+        gameResult: 'won',
+        createdAt: '2019-08-14'
+    },
+    {
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        subjectName: 'Paragrafta Anlam',
+        correctNumber: 2,
+        incorrectNumber: 3,
+        unansweredNumber: 0,
+        earnedPoints: '',
+        gameResult: 'lost',
+        createdAt: '2019-08-13'
+    },
+    {
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        subjectName: 'Paragrafta Anlam',
+        correctNumber: 3,
+        incorrectNumber: 2,
+        unansweredNumber: 0,
+        earnedPoints: '',
+        gameResult: 'won',
+        createdAt: '2019-08-12'
+    },
+]
