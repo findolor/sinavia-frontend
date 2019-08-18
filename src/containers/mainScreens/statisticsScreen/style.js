@@ -172,17 +172,17 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     timezoneChartContainer: {
-        height: hp(25),
+        height: hp(26),
         width: wp(88),
         justifyContent: 'center',
         alignItems: 'center'
     },
     barRheostatContainer: {
-        height: hp(18),
-        width: wp(80)
+        height: hp(20),
+        width: wp(75)
     },
     timezonesTextView: {
-        height: hp(8),
+        height: hp(6),
         width: wp(80),
         justifyContent: 'flex-end',
         alignItems: 'center'

@@ -15,6 +15,10 @@ import {
 import DefaultProgressBar from '../components/DefaultProgressBar';
 import linear from '../algorithms/linear';
 import DefaultHandler from '../components/DefaultHandler';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
 
 const PropTypeArrOfNumber = PropTypes.arrayOf(PropTypes.number);
 const PropTypeReactComponent = PropTypes.oneOfType([PropTypes.func, PropTypes.object]);
@@ -301,8 +305,7 @@ const withRheostat = (ChartCompo = null) => {
 
       return (
           <View style={[{
-            marginTop: 30,
-            marginHorizontal: 10,
+            marginTop: hp(0.5),
             position: 'relative',
           }]}
           >

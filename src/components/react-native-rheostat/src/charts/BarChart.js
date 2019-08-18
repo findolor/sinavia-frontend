@@ -5,6 +5,10 @@ import {
   View,
 } from 'react-native';
 import styled from 'styled-components/native';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
 import BarChart from 'react-native-svg-charts/src/bar-chart/bar-chart';
 
 // const defaultProps = {
@@ -50,7 +54,7 @@ class DefaultBarChart extends React.PureComponent {
     return (
       <View style={[style]}>
         <BarChart
-          style={{ height: '100%' }}
+          style={{ height: hp(16) }}
           data={data}
           svg={{
             fill: backgroundColor,
@@ -61,13 +65,13 @@ class DefaultBarChart extends React.PureComponent {
         <Animated.View style={{
           ...StyleSheet.absoluteFillObject,
           width: diffValue,
-          height: '100%',
+          height: hp(16),
           transform: [{ translateX: prevPos }],
           overflow: 'hidden',
         }}
         >
           <AnimatedBarChart
-            style={{ transform: [{ translateX: prevValue }], height: '100%', width }}
+            style={{ transform: [{ translateX: prevValue }], height: hp(16), width }}
             data={data}
             svg={{
               fill: chartColor,
