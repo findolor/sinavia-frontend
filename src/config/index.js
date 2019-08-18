@@ -1,9 +1,11 @@
 const config = {
     api: {
         host: 'http://localhost:4000/api/v1/',
-        //host: 'https://sinavia-test.herokuapp.com/',
-        gameEngine: 'http://localhost:5000'
-        //gameEngine: 'https://sinavia-test.herokuapp.com/'
+        hostAWS:
+            'http://sinavia-test.eu-central-1.elasticbeanstalk.com/api/v1/',
+        gameEngine: 'http://localhost:5000',
+        gameEngineAWS:
+            'http://sinavia-test.eu-central-1.elasticbeanstalk.com:5000'
     },
     scene_keys: {
         authScreens: {
@@ -36,7 +38,9 @@ const config = {
 }
 
 const API_ENDPOINT = config.api.host
+//const API_ENDPOINT = config.api.hostAWS
 const GAME_ENGINE_ENDPOINT = config.api.gameEngine
+//const GAME_ENGINE_ENDPOINT = config.api.gameEngineAWS
 
 const SCENE_KEYS = config.scene_keys
 
