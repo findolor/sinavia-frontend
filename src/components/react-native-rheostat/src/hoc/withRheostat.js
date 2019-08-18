@@ -352,7 +352,7 @@ const withRheostat = (ChartCompo = null) => {
                 return (
                   <Animated.View
                     key={`progress-bar-${idx}`}
-                    renderToHardwareTextureAndroid
+                    renderToHardwareTextureAndroid={true}
                     style={[{ position: 'absolute', height: 'auto' }, this.getProgressStyle(idx)]}
                   >
                     <ProgressBar theme={theme} />

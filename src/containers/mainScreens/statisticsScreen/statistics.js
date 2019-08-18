@@ -38,7 +38,9 @@ class Statistics extends React.Component {
             subjectLeaderboardList: [],
             subjectLeaderboardListDefaultValue: '',
             isSubjectDropdownVisible: false,
-            timezone: 'Bu ay'
+            timezone: 'Bu ay',
+            startDate: Moment.utc().startOf('month').add(0, 'days').format("YYYY-MM-DD"),
+            endDate: Moment.utc().startOf('month').add(1, 'days').format("YYYY-MM-DD")
         }
     }
 
@@ -161,16 +163,21 @@ class Statistics extends React.Component {
 
     thisWeekOnRheostatValUpdated = (payload) => {
         this.setState({
-            thisWeek: payload
+            thisWeek: payload,
+            startDate: Moment.utc().startOf('month').add(payload.values[0], 'days').format("YYYY-MM-DD"),
+            endDate: Moment.utc().startOf('month').add(payload.values[1], 'days').format("YYYY-MM-DD")
         })
         console.log(payload)
     }
 
     thisMonthOnRheostatValUpdated = (payload) => {
         this.setState({
-            thisMonth: payload
+            thisMonth: payload,
+            startDate: Moment.utc().startOf('month').add(payload.values[0], 'days').format("YYYY-MM-DD"),
+            endDate: Moment.utc().startOf('month').add(payload.values[1], 'days').format("YYYY-MM-DD")
         })
         console.log(payload)
+        console.log(this.state.startDate)
     }
 
     last3MonthOnRheostatValUpdated = (payload) => {
@@ -349,7 +356,7 @@ class Statistics extends React.Component {
                                 </Text >
                             )}
                             {this.state.timezone === 'Son 3 ay' && (
-                                <Text style={styles.timezonesTextlast3Month}>
+                                <Text style={styles.timezonesTextLastMonths}>
                                     {Moment.utc().startOf('today').add(this.state.last3Month.values[0]-12, 'weeks').format('DD MMM')}
                                     -
                                     {Moment.utc().startOf('today').add(this.state.last3Month.values[0]-11, 'weeks').format('DD MMM YYYY')}
@@ -360,7 +367,7 @@ class Statistics extends React.Component {
                                 </Text >
                             )}
                             {this.state.timezone === 'Son 6 ay' && (
-                                <Text style={styles.timezonesTextlast3Month}>
+                                <Text style={styles.timezonesTextLastMonths}>
                                     {Moment.utc().startOf('today').add(this.state.last6Month.values[0]-24, 'weeks').format('DD MMM')}
                                     -
                                     {Moment.utc().startOf('today').add(this.state.last6Month.values[0]-23, 'weeks').format('DD MMM YYYY')}
@@ -379,6 +386,7 @@ class Statistics extends React.Component {
                                     max={6}
                                     theme={{ rheostat: { themeColor: '#00D9EF', grey: '#CACACA' } }}
                                     svgData={thisWeekData}
+                                    snap={false}
                                     onValuesUpdated={this.thisWeekOnRheostatValUpdated}
                                 />
                             )}

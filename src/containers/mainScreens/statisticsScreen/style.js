@@ -193,7 +193,7 @@ export default StyleSheet.create({
         color: '#2E313C',
         marginBottom: hp(1)
     },
-    timezonesTextlast3Month: {
+    timezonesTextLastMonths: {
         fontFamily: 'Averta-Semibold',
         fontSize: hp(2.2),
         color: '#2E313C',
