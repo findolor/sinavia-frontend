@@ -29,6 +29,7 @@
 		8234A81F9D7E458BA9CC600B /* Averta-ExtrathinItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4A931156D29643CA8BB1A16C /* Averta-ExtrathinItalic.otf */; };
 		95CB3382C216494EA94682F7 /* Averta-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5972F7AA2FE0420E9D6F681C /* Averta-Black.otf */; };
 		981889EA3B4B40A1B0A17761 /* Averta-RegularItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3CEEF7C287524C95BC284325 /* Averta-RegularItalic.otf */; };
+		9A4B8DEA230AD1A20086F97E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A4B8DE9230AD1A20086F97E /* GoogleService-Info.plist */; };
 		A60AA0DF81344ABC946DDCA0 /* Averta-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = CBD4F8D6FF994206B79B5A09 /* Averta-LightItalic.otf */; };
 		B19388F18BC24D738B0A620B /* Averta-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 248B895017E84678B0BD244F /* Averta-BoldItalic.otf */; };
 		C8A88142F0164A51B7BD8A62 /* Averta-SemiboldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = EACB2F9E64DE4106A41EF1BE /* Averta-SemiboldItalic.otf */; };
@@ -87,6 +88,7 @@
 		77FB107A7AAB407C866137E5 /* Averta-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-Bold.otf"; path = "../src/assets/fonts/Averta-Bold.otf"; sourceTree = "<group>"; };
 		83FB10C90C0545E49953A162 /* Averta-Extrathin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-Extrathin.otf"; path = "../src/assets/fonts/Averta-Extrathin.otf"; sourceTree = "<group>"; };
 		91BC6053A74C69383CF220DF /* Pods-Sinavia-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sinavia-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Sinavia-tvOSTests/Pods-Sinavia-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		9A4B8DE9230AD1A20086F97E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Documents/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A66DE66C276C03BB2AA790B4 /* libPods-Sinavia-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sinavia-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA095F8ABB6942DEB3AF685C /* Averta-Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-Thin.otf"; path = "../src/assets/fonts/Averta-Thin.otf"; sourceTree = "<group>"; };
 		C419ACD11AFC9960C0C81C77 /* libPods-SinaviaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SinaviaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -206,6 +208,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				9A4B8DE9230AD1A20086F97E /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Sinavia */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* SinaviaTests */,
@@ -407,6 +410,7 @@
 				E0572877956E4880BD150338 /* Averta-Extrathin.otf in Resources */,
 				8234A81F9D7E458BA9CC600B /* Averta-ExtrathinItalic.otf in Resources */,
 				2E0C31687154475CB83EC959 /* Averta-Light.otf in Resources */,
+				9A4B8DEA230AD1A20086F97E /* GoogleService-Info.plist in Resources */,
 				A60AA0DF81344ABC946DDCA0 /* Averta-LightItalic.otf in Resources */,
 				2513F96770234444B2ADE2A8 /* Averta-Regular.otf in Resources */,
 				981889EA3B4B40A1B0A17761 /* Averta-RegularItalic.otf in Resources */,

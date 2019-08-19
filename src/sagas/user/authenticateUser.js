@@ -4,6 +4,7 @@ import { getToken } from '../../services/apiServices/token/getToken'
 import { deviceStorage } from '../../services/deviceStorage'
 import { navigationReset } from '../../services/navigationService'
 import { userTypes } from '../../redux/user/actions'
+import { fcmService } from '../../services/fcmService'
 
 async function getFromStorage(key) {
     const item = await deviceStorage.getItemFromStorage(key)
@@ -47,6 +48,11 @@ export function* authenticateUser(action) {
                 payload: choosenExam
             })
         }
+
+        yield call(fcmService.checkPermissions)
+        const fcmToken = yield call(fcmService.getFcmToken)
+
+        deviceStorage.saveItemToStorage('fcmToken', fcmToken)
 
         if (res) goToMainScreen()
     } catch (error) {
@@ -94,6 +100,11 @@ export function* authenticateUser(action) {
                     payload: choosenExam
                 })
             }
+
+            yield call(fcmService.checkPermissions)
+            const fcmToken = yield call(fcmService.getFcmToken)
+
+            deviceStorage.saveItemToStorage('fcmToken', fcmToken)
 
             goToMainScreen()
         } catch (error) {

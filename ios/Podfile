@@ -28,6 +28,12 @@ target 'Sinavia' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
+  # Required by RNFirebase
+  pod 'Firebase/Core', '~> 6.3.0'
+  pod 'Firebase/Messaging'
+
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
+
   target 'SinaviaTests' do
     inherit! :search_paths
     # Pods for testing
