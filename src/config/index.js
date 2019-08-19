@@ -31,7 +31,8 @@ const config = {
             profileSearch: 'profileSearch',
             createGroupRoom: 'createGroupRoom',
             joinGroupRoom: 'joinGroupRoom',
-            opponentsProfile: 'opponentsProfile'
+            opponentsProfile: 'opponentsProfile',
+            notifications: 'notifications'
         },
         splashScreen: 'splash'
     }
