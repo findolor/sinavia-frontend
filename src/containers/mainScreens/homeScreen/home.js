@@ -26,7 +26,6 @@ import * as courses from '../../../components/mainScreen/carousel/static/courses
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
 import AuthButton from '../../../components/authScreen/authButton'
 
-import PROFILE_PIC from '../../../assets/profile2.jpg'
 import CLOSE_BUTTON from '../../../assets/closeButton.png'
 import NOTIFICATION_LOGO from '../../../assets/mainScreens/notification.png'
 
@@ -413,7 +412,9 @@ class Home extends React.Component {
                             />
                         </View>
                         <View style={styles.notificationLogoContainer}>
-                            <TouchableOpacity onPress={this.notificationPicOnPress}>
+                            <TouchableOpacity
+                                onPress={this.notificationPicOnPress}
+                            >
                                 <Image
                                     source={NOTIFICATION_LOGO}
                                     style={styles.notificationLogo}

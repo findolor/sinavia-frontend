@@ -12,10 +12,6 @@ const RouterComp = () => {
     return (
         <Router>
             <Scene key="root" hideNavBar={true}>
-                <Scene
-                    key={SCENE_KEYS.mainScreens.notifications}
-                    component={mainScreens.notifications}
-                />
                 <Scene key="splash" hideNavBar={true}>
                     <Scene
                         key={SCENE_KEYS.splashScreen}
@@ -64,6 +60,10 @@ const RouterComp = () => {
                     <Scene
                         key={SCENE_KEYS.mainScreens.favorites}
                         component={mainScreens.favorites}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.notifications}
+                        component={mainScreens.notifications}
                     />
                 </Scene>
                 <Scene key="game" hideNavBar={true}>

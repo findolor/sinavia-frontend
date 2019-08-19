@@ -4,7 +4,8 @@ import {
     View,
     Text,
     TouchableOpacity,
-    Image, TextInput
+    Image,
+    TextInput
 } from 'react-native'
 import styles from './style'
 import NotchView from '../../../components/notchView'
@@ -12,10 +13,8 @@ import returnLogo from '../../../assets/return.png'
 import { navigationPop } from '../../../services/navigationService'
 
 import PROFILE_PIC from '../../../assets/profile2.jpg'
-import ACCEPT_BUTTON from  '../../../assets/gameScreens/correct.png'
+import ACCEPT_BUTTON from '../../../assets/gameScreens/correct.png'
 import REJECT_BUTTON from '../../../assets/gameScreens/incorrect.png'
-import Home from '../main'
-import * as courses from '../../../components/mainScreen/carousel/static/courses'
 
 const friendsRequestsList = [
     {
@@ -109,7 +108,6 @@ const generalNotificationsList = [
         generalNotificationType: 'yourStatistics',
         timePeriod: 'haftaki'
     }
-
 ]
 
 class Notifications extends React.Component {
@@ -122,14 +120,15 @@ class Notifications extends React.Component {
             generalNotificationsButtonBackgroundColor: '#FF9900',
             generalNotificationsButtonTextColor: '#FFFFFF',
             friendsRequestsButtonBackgroundColor: '#FFFFFF',
-            friendsRequestsButtonTextColor: '#2E313C',
+            friendsRequestsButtonTextColor: '#2E313C'
         }
     }
 
     updateNotificationsCategoryButtonUI = notificationsMode => {
         switch (notificationsMode) {
             case 'generalNotifications':
-                if (this.state.selectedNotificationsMode === notificationsMode) return
+                if (this.state.selectedNotificationsMode === notificationsMode)
+                    return
                 this.setState({
                     selectedNotificationsMode: 'generalNotifications',
                     generalNotificationsButtonBackgroundColor: '#FF9900',
@@ -139,7 +138,8 @@ class Notifications extends React.Component {
                 })
                 return
             case 'friendsRequests':
-                if (this.state.selectedNotificationsMode === notificationsMode) return
+                if (this.state.selectedNotificationsMode === notificationsMode)
+                    return
                 this.setState({
                     selectedNotificationsMode: 'friendsRequests',
                     generalNotificationsButtonBackgroundColor: '#FFFFFF',
@@ -147,25 +147,24 @@ class Notifications extends React.Component {
                     friendsRequestsButtonBackgroundColor: '#FF9900',
                     friendsRequestsButtonTextColor: '#FFFFFF'
                 })
-                this.setState({ selectedGameMode: notificationsMode })
                 return
         }
     }
 
     notificationsCategoryButtonOnPress = selectedNotificationsMode => {
         this.updateNotificationsCategoryButtonUI(selectedNotificationsMode)
-        this.setState({selectedNotificationsMode: selectedNotificationsMode})
+        this.setState({ selectedNotificationsMode: selectedNotificationsMode })
     }
 
     backButtonOnPress = () => {
         navigationPop()
     }
 
-    notificationsListRender({item}) {
-            switch (item.generalNotificationType) {
-                case 'acceptedFriendship':
-                    return (
-                        <TouchableOpacity>
+    notificationsListRender({ item }) {
+        switch (item.generalNotificationType) {
+            case 'acceptedFriendship':
+                return (
+                    <TouchableOpacity>
                         <View style={styles.userRow}>
                             <View style={styles.userPicContainerInRow}>
                                 <Image
@@ -174,79 +173,125 @@ class Notifications extends React.Component {
                                 />
                             </View>
                             <View style={styles.textsinRowWithPic}>
-                                <Text style={styles.notificationRowsText}>{item.friendsName} arkadaşlık isteğini kabul etti.</Text>
+                                <Text style={styles.notificationRowsText}>
+                                    {item.friendsName} arkadaşlık isteğini kabul
+                                    etti.
+                                </Text>
                             </View>
                         </View>
-                        </TouchableOpacity>
-                    )
-                    break
-                case 'requestedGame':
-                    return (
-                        <View style={styles.userRow}>
-                            <View style={styles.userPicContainerInRow}>
-                                <Image
-                                    source={item.userPic}
-                                    style={styles.userPic}
-                                />
-                            </View>
-                            <View style={styles.gameContentsContainer}>
-                                <Text style={styles.gameContentText}>{item.examName}</Text>
-                                <Text style={styles.gameContentText}>{item.courseName}</Text>
-                                <Text style={styles.gameContentText}>{item.subjectName}</Text>
-                            </View>
-                            <View style={styles.gameRequestContainer}>
-                                <View style={styles.gameRequestTextContainer}>
-                                    <Text style={styles.gameRequestText}>{item.friendsName} oyun isteği gönderdi.</Text>
-                                </View>
-                                <View style={styles.gameRequestButtonsContainer}>
-                                    <TouchableOpacity>
-                                    <View style={styles.acceptButton}><Text style={styles.gameRequestsButtonText}>Kabul Et</Text></View>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity>
-                                    <View style={styles.rejectButton}><Text style={styles.gameRequestsButtonText}>Reddet</Text></View>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
+                    </TouchableOpacity>
+                )
+                break
+            case 'requestedGame':
+                return (
+                    <View style={styles.userRow}>
+                        <View style={styles.userPicContainerInRow}>
+                            <Image
+                                source={item.userPic}
+                                style={styles.userPic}
+                            />
                         </View>
-                    )
-                    break
-                case 'yourOrder':
-                    return (
-                        <View style={styles.userRow}>
-                            <Text style={styles.notificationRowsText}>Geçen {item.timePeriod} Türkiye siralaman <Text style={{color: '#FF9900'}}>{item.order}</Text>. Başarılı bir hafta dileriz.</Text>
-                        </View>
-                    )
-                    break
-                case 'yourSinaviaScore':
-                    return (
-                        <View style={styles.userRow}>
-                            <Text style={styles.notificationRowsText}>
-                                Önceki {item.timePeriod}, {item.examName}-{item.courseName} kategorisinde
-                                <Text style={{color: '#FF9900'}}> {item.sinaviaScore} Sınavia Puanı </Text>topladın.
+                        <View style={styles.gameContentsContainer}>
+                            <Text style={styles.gameContentText}>
+                                {item.examName}
+                            </Text>
+                            <Text style={styles.gameContentText}>
+                                {item.courseName}
+                            </Text>
+                            <Text style={styles.gameContentText}>
+                                {item.subjectName}
                             </Text>
                         </View>
-                    )
-                    break
-                case 'yourSuccessPercentage':
-                    return (
-                        <View style={styles.userRow}>
-                            <Text style={styles.notificationRowsText}>{item.examName}-{item.courseName} dersinin <Text style={{color: '#00D9EF'}}>{item.subjectName}</Text> konusundaki başarı oranın <Text style={{color: '#FF9900'}}>{item.successPercentage}%</Text>. Biraz daha çalışmalısın.</Text>
-                        </View>
-                    )
-                    break
-                case 'yourStatistics':
-                    return (
-                        <TouchableOpacity>
-                            <View style={styles.userRow}>
-                                <Text style={styles.notificationRowsText}>Geçen {item.timePeriod} istatistiklerini görmek için <Text style={{color: '#00D9EF'}}>TIKLA!</Text> </Text>
-
+                        <View style={styles.gameRequestContainer}>
+                            <View style={styles.gameRequestTextContainer}>
+                                <Text style={styles.gameRequestText}>
+                                    {item.friendsName} oyun isteği gönderdi.
+                                </Text>
                             </View>
-                        </TouchableOpacity>
-                    )
-                    break
-                default:
-                    break
-            }
+                            <View style={styles.gameRequestButtonsContainer}>
+                                <TouchableOpacity>
+                                    <View style={styles.acceptButton}>
+                                        <Text
+                                            style={
+                                                styles.gameRequestsButtonText
+                                            }
+                                        >
+                                            Kabul Et
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity>
+                                    <View style={styles.rejectButton}>
+                                        <Text
+                                            style={
+                                                styles.gameRequestsButtonText
+                                            }
+                                        >
+                                            Reddet
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                )
+            case 'yourOrder':
+                return (
+                    <View style={styles.userRow}>
+                        <Text style={styles.notificationRowsText}>
+                            Geçen {item.timePeriod} Türkiye siralaman{' '}
+                            <Text style={{ color: '#FF9900' }}>
+                                {item.order}
+                            </Text>
+                            . Başarılı bir hafta dileriz.
+                        </Text>
+                    </View>
+                )
+            case 'yourSinaviaScore':
+                return (
+                    <View style={styles.userRow}>
+                        <Text style={styles.notificationRowsText}>
+                            Önceki {item.timePeriod}, {item.examName}-
+                            {item.courseName} kategorisinde
+                            <Text style={{ color: '#FF9900' }}>
+                                {' '}
+                                {item.sinaviaScore} Sınavia Puanı{' '}
+                            </Text>
+                            topladın.
+                        </Text>
+                    </View>
+                )
+            case 'yourSuccessPercentage':
+                return (
+                    <View style={styles.userRow}>
+                        <Text style={styles.notificationRowsText}>
+                            {item.examName}-{item.courseName} dersinin{' '}
+                            <Text style={{ color: '#00D9EF' }}>
+                                {item.subjectName}
+                            </Text>{' '}
+                            konusundaki başarı oranın{' '}
+                            <Text style={{ color: '#FF9900' }}>
+                                {item.successPercentage}%
+                            </Text>
+                            . Biraz daha çalışmalısın.
+                        </Text>
+                    </View>
+                )
+            case 'yourStatistics':
+                return (
+                    <TouchableOpacity>
+                        <View style={styles.userRow}>
+                            <Text style={styles.notificationRowsText}>
+                                Geçen {item.timePeriod} istatistiklerini görmek
+                                için{' '}
+                                <Text style={{ color: '#00D9EF' }}>TIKLA!</Text>{' '}
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                )
+            default:
+                break
+        }
     }
 
     render() {
@@ -259,11 +304,13 @@ class Notifications extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.tabbarContainer}>
-                    <TouchableOpacity onPress={() =>
-                        this.notificationsCategoryButtonOnPress(
-                            'generalNotifications'
-                        )
-                    }>
+                    <TouchableOpacity
+                        onPress={() =>
+                            this.notificationsCategoryButtonOnPress(
+                                'generalNotifications'
+                            )
+                        }
+                    >
                         <View
                             style={[
                                 styles.generalNotificationsContainer,
@@ -286,11 +333,13 @@ class Notifications extends React.Component {
                             </Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() =>
-                        this.notificationsCategoryButtonOnPress(
-                            'friendsRequests'
-                        )
-                    }>
+                    <TouchableOpacity
+                        onPress={() =>
+                            this.notificationsCategoryButtonOnPress(
+                                'friendsRequests'
+                            )
+                        }
+                    >
                         <View
                             style={[
                                 styles.friendsRequestsContainer,
@@ -314,54 +363,59 @@ class Notifications extends React.Component {
                         </View>
                     </TouchableOpacity>
                 </View>
-                {this.state.selectedNotificationsMode === 'generalNotifications' && <FlatList
-                    data={this.state.generalNotificationsList}
-                    vertical={true}
-                    showsVerticalScrollIndicator={false}
-                    renderItem={this.notificationsListRender}
-                    keyExtractor={(item, index) => index}
-                />}
-                {this.state.selectedNotificationsMode === 'friendsRequests' && <FlatList
-                    data={this.state.friendsRequestsList}
-                    vertical={true}
-                    showsVerticalScrollIndicator={false}
-                    renderItem={({ item }) => {
-                        return (
-                            <View style={styles.userRow}>
-                                <View
-                                    style={
-                                        styles.userPicContainerInRow
-                                    }
-                                >
-                                    <Image
-                                        source={item.userPic}
-                                        style={styles.userPic}
-                                    />
-                                </View>
-                                <View style={styles.nameContainer}>
-                                    <Text style={styles.nameText}>
-                                        {item.name}
-                                    </Text>
-                                </View>
-                                <View style={styles.friendshipButtonsContainer}>
-                                    <TouchableOpacity>
+                {this.state.selectedNotificationsMode ===
+                    'generalNotifications' && (
+                    <FlatList
+                        data={this.state.generalNotificationsList}
+                        vertical={true}
+                        showsVerticalScrollIndicator={false}
+                        renderItem={this.notificationsListRender}
+                        keyExtractor={(item, index) => index}
+                    />
+                )}
+                {this.state.selectedNotificationsMode === 'friendsRequests' && (
+                    <FlatList
+                        data={this.state.friendsRequestsList}
+                        vertical={true}
+                        showsVerticalScrollIndicator={false}
+                        renderItem={({ item }) => {
+                            return (
+                                <View style={styles.userRow}>
+                                    <View style={styles.userPicContainerInRow}>
                                         <Image
-                                            source={ACCEPT_BUTTON}
-                                            style={styles.friendshipButtons}
+                                            source={item.userPic}
+                                            style={styles.userPic}
                                         />
-                                    </TouchableOpacity>
-                                    <TouchableOpacity>
-                                        <Image
-                                            source={REJECT_BUTTON}
-                                            style={styles.friendshipButtons}
-                                        />
-                                    </TouchableOpacity>
+                                    </View>
+                                    <View style={styles.nameContainer}>
+                                        <Text style={styles.nameText}>
+                                            {item.name}
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={
+                                            styles.friendshipButtonsContainer
+                                        }
+                                    >
+                                        <TouchableOpacity>
+                                            <Image
+                                                source={ACCEPT_BUTTON}
+                                                style={styles.friendshipButtons}
+                                            />
+                                        </TouchableOpacity>
+                                        <TouchableOpacity>
+                                            <Image
+                                                source={REJECT_BUTTON}
+                                                style={styles.friendshipButtons}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
-                            </View>
-                        )
-                    }}
-                    keyExtractor={(item, index) => index}
-                />}
+                            )
+                        }}
+                        keyExtractor={(item, index) => index}
+                    />
+                )}
             </View>
         )
     }

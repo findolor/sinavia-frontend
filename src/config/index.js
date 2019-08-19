@@ -1,7 +1,7 @@
 const config = {
     api: {
-        host: 'http://10.253.12.219:4000/api/v1/',
-        gameEngine: 'http://10.253.12.219:5000'
+        host: 'http://10.253.12.217:4000/api/',
+        gameEngine: 'http://10.253.12.217:5000'
     },
     scene_keys: {
         authScreens: {
