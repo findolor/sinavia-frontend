@@ -153,7 +153,7 @@ class Register extends React.Component {
             email: this.state.email,
             city: this.state.city,
             birthDate: this.state.birthDate,
-            password: this.state.password
+            password: this.state.passwordz
         }
 
         let userInformationKeys = Object.keys(userInformation)

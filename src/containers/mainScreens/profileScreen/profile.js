@@ -59,6 +59,10 @@ class Profile extends React.Component {
         navigationPush(SCENE_KEYS.mainScreens.friendsList)
     }
 
+    statisticsLogoOnPress = () => {
+        navigationPush(SCENE_KEYS.mainScreens.statistics)
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -121,46 +125,66 @@ class Profile extends React.Component {
                 </View>
                 <View style={styles.boxesContainer}>
                     <View style={styles.first2Box}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={this.statisticsLogoOnPress}>
                             <View style={styles.statisticsBox}>
-                                <Text style={styles.boxText}>
-                                    İstatistikler
-                                </Text>
-                                <Image
-                                    source={statisticsLogo}
-                                    style={styles.boxLogo}
-                                />
+                                <View style={styles.boxTextContainer}>
+                                    <Text style={styles.boxText}>
+                                        İstatistikler
+                                    </Text>
+                                </View>
+                                <View style={styles.boxLogoContainer}>
+                                    <Image
+                                        source={statisticsLogo}
+                                        style={styles.boxLogo}
+                                    />
+                                </View>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this.friendsLogoOnPress}>
                             <View style={styles.friendsBox}>
-                                <Text style={styles.boxText}>Arkadaşlar</Text>
-                                <Image
-                                    source={friendsLogo}
-                                    style={styles.boxLogo}
-                                />
+                                <View style={styles.boxTextContainer}>
+                                    <Text style={styles.boxText}>
+                                        Arkadaşlar
+                                    </Text>
+                                </View>
+                                <View style={styles.boxLogoContainer}>
+                                    <Image
+                                        source={friendsLogo}
+                                        style={styles.boxLogo}
+                                    />
+                                </View>
                             </View>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.second2Box}>
                         <TouchableOpacity>
                             <View style={styles.badgesBox}>
-                                <Text style={styles.boxText}>Kazanımlar</Text>
-                                <Image
-                                    source={trophyLogo}
-                                    style={styles.boxLogo}
-                                />
+                                <View style={styles.boxTextContainer}>
+                                    <Text style={styles.boxText}>
+                                        Kazanımlar
+                                    </Text>
+                                </View>
+                                <View style={styles.boxLogoContainer}>
+                                    <Image
+                                        source={trophyLogo}
+                                        style={styles.boxLogo}
+                                    />
+                                </View>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this.favoriteLogoOnPress}>
                             <View style={styles.favoritesBox}>
-                                <Text style={styles.boxText}>
-                                    Favori Sorular
-                                </Text>
-                                <Image
-                                    source={favoriteLogo}
-                                    style={styles.boxLogo}
-                                />
+                                <View style={styles.boxTextContainer}>
+                                    <Text style={styles.boxText}>
+                                        Favori Sorular
+                                    </Text>
+                                </View>
+                                <View style={styles.boxLogoContainer}>
+                                    <Image
+                                        source={favoriteLogo}
+                                        style={styles.boxLogo}
+                                    />
+                                </View>
                             </View>
                         </TouchableOpacity>
                     </View>

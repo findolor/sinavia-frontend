@@ -1,9 +1,7 @@
 const config = {
     api: {
         host: 'http://localhost:4000/api/',
-        //host: 'https://sinavia-test.herokuapp.com/',
         gameEngine: 'http://localhost:5000'
-        //gameEngine: 'https://sinavia-test.herokuapp.com/'
     },
     scene_keys: {
         authScreens: {
@@ -31,7 +29,8 @@ const config = {
             createGroupRoom: 'createGroupRoom',
             joinGroupRoom: 'joinGroupRoom',
             opponentsProfile: 'opponentsProfile',
-            notifications: 'notifications'
+            notifications: 'notifications',
+            statistics: 'statistics'
         },
         splashScreen: 'splash'
     }
