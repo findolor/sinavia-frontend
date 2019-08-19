@@ -26,6 +26,7 @@ const config = {
             settings: 'settings',
             changePassword: 'changePassword',
             favorites: 'favorites',
+            friendsList: 'friendsList',
             profileSearch: 'profileSearch',
             createGroupRoom: 'createGroupRoom',
             joinGroupRoom: 'joinGroupRoom',

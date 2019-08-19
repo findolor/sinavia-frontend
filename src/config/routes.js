@@ -12,6 +12,52 @@ const RouterComp = () => {
     return (
         <Router>
             <Scene key="root" hideNavBar={true}>
+                <Scene key="main" hideNavBar={true}>
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.main}
+                        component={mainScreens.main}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.profile}
+                        component={mainScreens.profile}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.profileSearch}
+                        component={mainScreens.profileSearch}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.opponentsProfile}
+                        component={mainScreens.opponentsProfile}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.settings}
+                        component={mainScreens.settings}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.changePassword}
+                        component={mainScreens.changePassword}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.favorites}
+                        component={mainScreens.favorites}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.friendsList}
+                        component={mainScreens.friendsList}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.createGroupRoom}
+                        component={mainScreens.createGroupRoom}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.joinGroupRoom}
+                        component={mainScreens.joinGroupRoom}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.notifications}
+                        component={mainScreens.notifications}
+                    />
+                </Scene>
                 <Scene key="splash" hideNavBar={true}>
                     <Scene
                         key={SCENE_KEYS.splashScreen}
@@ -64,6 +110,10 @@ const RouterComp = () => {
                     <Scene
                         key={SCENE_KEYS.mainScreens.favorites}
                         component={mainScreens.favorites}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.friendsList}
+                        component={mainScreens.friendsList}
                     />
                     <Scene
                         key={SCENE_KEYS.mainScreens.createGroupRoom}

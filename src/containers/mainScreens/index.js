@@ -4,6 +4,7 @@ import Main from './main'
 import Settings from './settingsScreen/settings'
 import ChangePassword from './changePasswordScreen/changePassword'
 import Favorites from './favoritesScreen/favorites'
+import FriendsList from './friendsListScreen/friendsList'
 import ProfileSearch from './profileSearchScreen/profileSearch'
 import {
     CreateGroupRoom,
@@ -17,6 +18,7 @@ export {
     Settings,
     ChangePassword,
     Favorites,
+    FriendsList,
     ProfileSearch,
     CreateGroupRoom,
     JoinGroupRoom,

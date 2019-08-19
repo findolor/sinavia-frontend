@@ -55,6 +55,10 @@ class Profile extends React.Component {
         navigationPush(SCENE_KEYS.mainScreens.favorites)
     }
 
+    friendsLogoOnPress = () => {
+        navigationPush(SCENE_KEYS.mainScreens.friendsList)
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -128,7 +132,7 @@ class Profile extends React.Component {
                                 />
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={this.friendsLogoOnPress}>
                             <View style={styles.friendsBox}>
                                 <Text style={styles.boxText}>Arkadaşlar</Text>
                                 <Image
