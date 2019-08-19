@@ -1,4 +1,5 @@
 import Profile from './profileScreen/profile'
+import Notifications from './notificationsScreen/notifications'
 import Main from './main'
 import Settings from './settingsScreen/settings'
 import ChangePassword from './changePasswordScreen/changePassword'
@@ -19,5 +20,6 @@ export {
     ProfileSearch,
     CreateGroupRoom,
     JoinGroupRoom,
-    OpponentsProfile
+    OpponentsProfile,
+    Notifications
 }

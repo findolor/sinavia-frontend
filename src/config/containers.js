@@ -14,7 +14,8 @@ import {
     ProfileSearch,
     CreateGroupRoom,
     JoinGroupRoom,
-    OpponentsProfile
+    OpponentsProfile,
+    Notifications
 } from '../containers/mainScreens'
 
 import {
@@ -44,7 +45,8 @@ export const mainScreens = {
     profileSearch: ProfileSearch,
     createGroupRoom: CreateGroupRoom,
     joinGroupRoom: JoinGroupRoom,
-    opponentsProfile: OpponentsProfile
+    opponentsProfile: OpponentsProfile,
+    notifications: Notifications
 }
 
 export const gameScreens = {

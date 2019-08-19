@@ -36,6 +36,7 @@ import * as Colyseus from 'colyseus.js'
 
 import { GAME_ENGINE_ENDPOINT } from '../../../config'
 
+import CLOSE_BUTTON from '../../../assets/closeButton.png'
 import NOTIFICATION_LOGO from '../../../assets/mainScreens/notification.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
 
@@ -478,6 +479,10 @@ class Home extends React.Component {
         navigationPush(SCENE_KEYS.mainScreens.profile)
     }
 
+    notificationPicOnPress = () => {
+        navigationPush(SCENE_KEYS.mainScreens.notifications)
+    }
+
     render() {
         const card = this.cards(this.state.exam, this.state.carouselActiveSlide)
         const visibleView = this.state.visibleView
@@ -519,7 +524,9 @@ class Home extends React.Component {
                             />
                         </View>
                         <View style={styles.notificationLogoContainer}>
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={this.notificationPicOnPress}
+                            >
                                 <Image
                                     source={NOTIFICATION_LOGO}
                                     style={styles.notificationLogo}
