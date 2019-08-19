@@ -1,6 +1,5 @@
 import React from 'react'
 import { ProgressCircle } from 'react-native-svg-charts'
-import { BarRheostat} from '../../../components/react-native-rheostat';
 import Rheostat from 'react-native-rheostat'
 import { Image, Text, TouchableOpacity, View, SafeAreaView } from 'react-native'
 import {
@@ -15,7 +14,6 @@ import { navigationPop } from '../../../services/navigationService'
 import Moment from 'moment';
 import 'moment/locale/tr';
 import SemiCircleProgress from '../../../components/semiCircleProgress'
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { LGS } from '../../../components/mainScreen/carousel/static/exams'
 import * as courses from '../../../components/mainScreen/carousel/static/courses'
 import { connect } from 'react-redux'
