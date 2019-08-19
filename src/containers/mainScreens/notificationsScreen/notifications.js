@@ -11,65 +11,12 @@ import styles from './style'
 import NotchView from '../../../components/notchView'
 import returnLogo from '../../../assets/return.png'
 import { navigationPop } from '../../../services/navigationService'
+import { friendshipServices } from '../../../sagas/friendship/'
+import { userServices } from '../../../sagas/user'
 
 import PROFILE_PIC from '../../../assets/profile2.jpg'
 import ACCEPT_BUTTON from '../../../assets/gameScreens/correct.png'
 import REJECT_BUTTON from '../../../assets/gameScreens/incorrect.png'
-
-const friendsRequestsList = [
-    {
-        userPic: PROFILE_PIC,
-        name: 'Nurettin Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan'
-    }
-]
 
 const generalNotificationsList = [
     {
@@ -114,7 +61,7 @@ class Notifications extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            friendsRequestsList: friendsRequestsList,
+            friendRequestsList: [],
             generalNotificationsList: generalNotificationsList,
             selectedNotificationsMode: 'generalNotifications',
             generalNotificationsButtonBackgroundColor: '#FF9900',
@@ -140,13 +87,7 @@ class Notifications extends React.Component {
             case 'friendsRequests':
                 if (this.state.selectedNotificationsMode === notificationsMode)
                     return
-                this.setState({
-                    selectedNotificationsMode: 'friendsRequests',
-                    generalNotificationsButtonBackgroundColor: '#FFFFFF',
-                    generalNotificationsButtonTextColor: '#2E313C',
-                    friendsRequestsButtonBackgroundColor: '#FF9900',
-                    friendsRequestsButtonTextColor: '#FFFFFF'
-                })
+                this.friendsRequestsOnPress()
                 return
         }
     }
@@ -158,6 +99,41 @@ class Notifications extends React.Component {
 
     backButtonOnPress = () => {
         navigationPop()
+    }
+
+    friendsRequestsOnPress = async () => {
+        this.setState({
+            selectedNotificationsMode: 'friendsRequests',
+            generalNotificationsButtonBackgroundColor: '#FFFFFF',
+            generalNotificationsButtonTextColor: '#2E313C',
+            friendsRequestsButtonBackgroundColor: '#FF9900',
+            friendsRequestsButtonTextColor: '#FFFFFF'
+        })
+
+        await this.loadFriendRequests()
+    }
+
+    loadFriendRequests = async () => {
+        const friendRequests = await friendshipServices.getFriendRequests()
+
+        const userIdList = []
+
+        friendRequests.forEach(request => {
+            userIdList.push(request.userId)
+        })
+
+        if (Object.keys(userIdList).length === 0) {
+            this.setState({ friendRequestsList: [] })
+            return
+        }
+
+        await this.getUserInformations(userIdList)
+    }
+
+    getUserInformations = async idList => {
+        const userInformations = await userServices.getUsers(idList)
+
+        this.setState({ friendRequestsList: userInformations })
     }
 
     notificationsListRender({ item }) {
@@ -294,6 +270,23 @@ class Notifications extends React.Component {
         }
     }
 
+    // TODO List doen't refresh on its own fix it
+    acceptFriendRequestOnPress = (friendId, index) => {
+        friendshipServices.acceptFriendshipRequest(friendId)
+
+        const friendRequestsList = this.state.friendRequestsList
+
+        console.log(friendRequestsList)
+
+        friendRequestsList.splice(index, 1)
+
+        console.log(friendRequestsList)
+
+        this.setState({
+            friendRequestsList: friendRequestsList
+        })
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -370,26 +363,29 @@ class Notifications extends React.Component {
                         vertical={true}
                         showsVerticalScrollIndicator={false}
                         renderItem={this.notificationsListRender}
-                        keyExtractor={(item, index) => index}
+                        keyExtractor={(item, index) => index.toString()}
                     />
                 )}
                 {this.state.selectedNotificationsMode === 'friendsRequests' && (
                     <FlatList
-                        data={this.state.friendsRequestsList}
+                        data={this.state.friendRequestsList}
                         vertical={true}
                         showsVerticalScrollIndicator={false}
-                        renderItem={({ item }) => {
+                        extraData={this.state.friendRequestsList}
+                        renderItem={({ item, index }) => {
                             return (
                                 <View style={styles.userRow}>
                                     <View style={styles.userPicContainerInRow}>
                                         <Image
-                                            source={item.userPic}
+                                            source={{
+                                                uri: item.profilePicture
+                                            }}
                                             style={styles.userPic}
                                         />
                                     </View>
                                     <View style={styles.nameContainer}>
                                         <Text style={styles.nameText}>
-                                            {item.name}
+                                            {item.name + ' ' + item.lastname}
                                         </Text>
                                     </View>
                                     <View
@@ -397,13 +393,24 @@ class Notifications extends React.Component {
                                             styles.friendshipButtonsContainer
                                         }
                                     >
-                                        <TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                this.acceptFriendRequestOnPress(
+                                                    item.id,
+                                                    index
+                                                )
+                                            }
+                                        >
                                             <Image
                                                 source={ACCEPT_BUTTON}
                                                 style={styles.friendshipButtons}
                                             />
                                         </TouchableOpacity>
-                                        <TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={
+                                                this.rejectFriendRequestOnPress
+                                            }
+                                        >
                                             <Image
                                                 source={REJECT_BUTTON}
                                                 style={styles.friendshipButtons}
@@ -413,7 +420,7 @@ class Notifications extends React.Component {
                                 </View>
                             )
                         }}
-                        keyExtractor={(item, index) => index}
+                        keyExtractor={(item, index) => index.toString()}
                     />
                 )}
             </View>

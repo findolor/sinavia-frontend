@@ -4,6 +4,7 @@ import { getFriendMatchesService } from './getFriendMatches'
 import { sendFriendshipRequestService } from './sendFriendshipRequest'
 import { acceptFriendshipRequestService } from './acceptFriendshipRequest'
 import { deleteFriendshipService } from './deleteFriendship'
+import { getFriendRequestsService } from './getFriendRequests'
 
 export const friendshipServices = {
     getFriendship: getFriendshipService,
@@ -11,5 +12,6 @@ export const friendshipServices = {
     getFriendMatches: getFriendMatchesService,
     sendFriendshipRequest: sendFriendshipRequestService,
     acceptFriendshipRequest: acceptFriendshipRequestService,
-    deleteFriendship: deleteFriendshipService
+    deleteFriendship: deleteFriendshipService,
+    getFriendRequests: getFriendRequestsService
 }

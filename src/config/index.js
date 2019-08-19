@@ -1,8 +1,7 @@
 const config = {
     api: {
-        host: 'http://localhost:4000/api/v1/',
-        hostAWS:
-            'http://sinavia-test.eu-central-1.elasticbeanstalk.com/api/v1/',
+        host: 'http://localhost:4000/api/',
+        hostAWS: 'http://sinavia-test.eu-central-1.elasticbeanstalk.com/api/',
         gameEngine: 'http://localhost:5000',
         gameEngineAWS:
             'http://sinavia-test.eu-central-1.elasticbeanstalk.com:5000'
