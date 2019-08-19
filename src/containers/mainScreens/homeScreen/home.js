@@ -36,7 +36,6 @@ import * as Colyseus from 'colyseus.js'
 
 import { GAME_ENGINE_ENDPOINT } from '../../../config'
 
-import CLOSE_BUTTON from '../../../assets/closeButton.png'
 import NOTIFICATION_LOGO from '../../../assets/mainScreens/notification.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
 
