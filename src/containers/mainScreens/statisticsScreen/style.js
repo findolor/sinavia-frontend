@@ -43,7 +43,7 @@ export default StyleSheet.create({
         marginLeft: wp(1),
         marginRight: wp(1),
         fontFamily: 'Averta-Bold',
-        fontSize: hp(3),
+        fontSize: hp(2),
         color: '#2E313C',
         textAlign: 'center',
         textAlignVertical: 'center'
@@ -60,7 +60,7 @@ export default StyleSheet.create({
         textAlignVertical: 'center'
     },
     pickerDropdown: {
-        height: hp(28.5),
+        height: hp(38),
         width: wp(40),
         borderColor: '#FF9900',
         borderWidth: wp(0.5),
@@ -77,7 +77,7 @@ export default StyleSheet.create({
         alignItems:'center'
     },
     percentagesAndCirclesContainer: {
-        height: hp(25),
+        height: hp(32),
         width: wp(82),
         flexDirection: 'row',
         alignItems: 'center',
@@ -86,13 +86,14 @@ export default StyleSheet.create({
         borderColor: '#CACACA'
     },
     totalQuestionsSolvedContainer: {
-        height: hp(8.5),
+        height: hp(9),
         width: wp(34),
-        justifyContent: 'center'
+        justifyContent: 'flex-start'
     },
     percentagesContainer: {
-        height: hp(25),
-        width: wp(34)
+        height: hp(32),
+        width: wp(34),
+        justifyContent: 'center'
     },
     circlesContainer: {
         height: hp(25),
@@ -101,17 +102,17 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     correctCircle: {
-        height: hp(21),
-        width: hp(23)
+        height: hp(24),
+        width: hp(26)
     },
     incorrectCircle: {
-        height: hp(14),
-        width: hp(16),
+        height: hp(16),
+        width: hp(18),
         position: 'absolute'
     },
     unansweredCircle: {
-        height: hp(7),
-        width: hp(9),
+        height: hp(8),
+        width: hp(10),
         position: 'absolute'
     },
     wonPercentageSemiCircle: {
@@ -121,7 +122,7 @@ export default StyleSheet.create({
         position: 'absolute'
     },
     percentageContainer: {
-        height: hp(5),
+        height: hp(6),
         width: wp(34),
         flexDirection: 'row',
         marginLeft: wp(2)
@@ -172,18 +173,19 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     timezoneChartContainer: {
-        height: hp(26),
+        height: hp(12),
         width: wp(88),
         justifyContent: 'center',
         alignItems: 'center'
     },
     barRheostatContainer: {
-        height: hp(20),
-        width: wp(75)
+        height: hp(6),
+        width: wp(75),
+        justifyContent: 'center'
     },
     timezonesTextView: {
         height: hp(6),
-        width: wp(80),
+        width: wp(88),
         justifyContent: 'flex-end',
         alignItems: 'center'
     },
@@ -217,7 +219,7 @@ export default StyleSheet.create({
     },
     totalGamesPlayedAndSolvedQuestionsText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: hp(1.5),
+        fontSize: hp(1.8),
         color: '#CACACA',
         marginLeft: wp(8.5)
     },
@@ -248,11 +250,11 @@ export default StyleSheet.create({
     },
     chartPercentageText: {
         fontFamily: 'Averta-BoldItalic',
-        fontSize: hp(5),
+        fontSize: hp(4),
         color: '#FF9900'
     },
     totalGameStatsContainer: {
-        height: hp(16),
+        height: hp(21),
         width: wp(82),
         flexDirection: 'row',
         justifyContent: 'center',

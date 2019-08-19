@@ -149,7 +149,8 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        marginTop: hp(87)
+        marginTop: hp(87),
+        backgroundColor: '#fcfcfc'
     },
     yourOrderText: {
         fontFamily: 'Averta-RegularItalic',

@@ -1,7 +1,8 @@
 import React from 'react'
 import { ProgressCircle } from 'react-native-svg-charts'
 import { BarRheostat} from '../../../components/react-native-rheostat';
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import Rheostat from 'react-native-rheostat'
+import { Image, Text, TouchableOpacity, View, SafeAreaView } from 'react-native'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
@@ -14,6 +15,7 @@ import { navigationPop } from '../../../services/navigationService'
 import Moment from 'moment';
 import 'moment/locale/tr';
 import SemiCircleProgress from '../../../components/semiCircleProgress'
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { LGS } from '../../../components/mainScreen/carousel/static/exams'
 import * as courses from '../../../components/mainScreen/carousel/static/courses'
 import { connect } from 'react-redux'
@@ -43,7 +45,7 @@ class Statistics extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            thisWeek: {values: [0, 7]},
+            thisWeek: {values: [0, 6]},
             thisMonth: {values: [0, 30]},
             last3Month: {values: [0,12]},
             last6Month: {values: [0,24]},
@@ -54,12 +56,16 @@ class Statistics extends React.Component {
             timezone: 'Bu ay',
             startDate: Moment.utc().startOf('month').add(0, 'days').format("YYYY-MM-DD"),
             endDate: Moment.utc().startOf('month').add(1, 'days').format("YYYY-MM-DD"),
-            wons: '0',
-            losts: '0',
-            draws: '0',
-            corrects: '0',
-            incorrects: '0',
-            unanswereds: '0'
+            wons: 0,
+            losts: 0,
+            draws: 0,
+            corrects: 0,
+            incorrects: 0,
+            unanswereds: 0,
+            wonPercentage: 0,
+            correctPercentage: 0,
+            incorrectPercentage: 0,
+            unansweredPercentage: 0
         }
     }
 
@@ -209,19 +215,50 @@ class Statistics extends React.Component {
             draws: drawsCounter,
             corrects: correctsCounter,
             incorrects: incorrectsCounter,
-            unanswereds: unansweredsCounter
+            unanswereds: unansweredsCounter,
+            wonPercentage: wonsCounter/(wonsCounter+lostsCounter+drawsCounter)*100,
+            correctPercentage: correctsCounter/(correctsCounter+incorrectsCounter+unansweredsCounter)*100,
+            incorrectPercentage: incorrectsCounter/(correctsCounter+incorrectsCounter+unansweredsCounter)*100,
+            unansweredPercentage: unansweredsCounter/(correctsCounter+incorrectsCounter+unansweredsCounter)*100
         })
-        console.log(this.state.corrects)
-        console.log(this.state.incorrects)
-        console.log(this.state.unanswereds)
+        console.log(this.state.startDate)
         console.log(payload)
     }
 
     thisMonthOnRheostatValUpdated = (payload) => {
+        let wonsCounter=0, lostsCounter=0, drawsCounter=0, correctsCounter=0, incorrectsCounter=0, unansweredsCounter=0
         this.setState({
             thisMonth: payload,
             startDate: Moment.utc().startOf('month').add(payload.values[0], 'days').format('YYYY-MM-DD'),
             endDate: Moment.utc().startOf('month').add(payload.values[1], 'days').format('YYYY-MM-DD')
+        })
+        for (let i = 0; i < quizList.length; i++) {
+            if(quizList[i].createdAt >= this.state.startDate && quizList[i].createdAt <= this.state.endDate){
+                if(quizList[i].gameResult === 'won'){
+                    wonsCounter++
+                }
+                else if(quizList[i].gameResult === 'lost'){
+                    lostsCounter++
+                }
+                else {
+                    drawsCounter++
+                }
+                correctsCounter += quizList[i].correctNumber
+                incorrectsCounter += quizList[i].incorrectNumber
+                unansweredsCounter += quizList[i].unansweredNumber
+            }
+        }
+        this.setState({
+            wons: wonsCounter,
+            losts: lostsCounter,
+            draws: drawsCounter,
+            corrects: correctsCounter,
+            incorrects: incorrectsCounter,
+            unanswereds: unansweredsCounter,
+            wonPercentage: wonsCounter/(wonsCounter+lostsCounter+drawsCounter)*100,
+            correctPercentage: correctsCounter/(correctsCounter+incorrectsCounter+unansweredsCounter)*100,
+            incorrectPercentage: incorrectsCounter/(correctsCounter+incorrectsCounter+unansweredsCounter)*100,
+            unansweredPercentage: unansweredsCounter/(correctsCounter+incorrectsCounter+unansweredsCounter)*100
         })
         console.log(payload)
         console.log(this.state.startDate)
@@ -336,9 +373,9 @@ class Statistics extends React.Component {
                             <Text style={styles.totalGamesPlayedAndSolvedQuestionsText}>
                                 Oynadığın Oyun
                             </Text>
-                            <Text style={styles.wonText}>Kazandığı: {wons}</Text>
-                            <Text style={styles.drawText}>Beraberlik: {draws}</Text>
-                            <Text style={styles.lostText}>Kaybettiği: {losts}</Text>
+                            <Text style={styles.wonText}>Kazandığı: {this.state.wons}</Text>
+                            <Text style={styles.drawText}>Beraberlik: {this.state.draws}</Text>
+                            <Text style={styles.lostText}>Kaybettiği: {this.state.losts}</Text>
                         </View>
                         <View style={styles.semiCircleContainer}>
                             <SemiCircleProgress
@@ -368,28 +405,28 @@ class Statistics extends React.Component {
                                 <View style={styles.correctPoint}/>
                                 <View style={styles.percentagesTextView}>
                                     <Text style={styles.optionsText}>DOĞRU</Text>
-                                    <Text style={styles.percentagesText}>{corrects} - {((corrects/(corrects+incorrects+unanswereds))*100).toFixed(2)}%</Text>
+                                    <Text style={styles.percentagesText}>{corrects} - {this.state.correctPercentage.toFixed(2)}%</Text>
                                 </View>
                             </View>
                             <View style={styles.percentageContainer}>
                                 <View style={styles.incorrectPoint}/>
                                 <View style={styles.percentagesTextView}>
                                     <Text style={styles.optionsText}>YANLIŞ</Text>
-                                    <Text style={styles.percentagesText}>{incorrects} - {((incorrects/(corrects+incorrects+unanswereds))*100).toFixed(2)}%</Text>
+                                    <Text style={styles.percentagesText}>{incorrects} - {this.state.incorrectPercentage.toFixed(2)}%</Text>
                                 </View>
                             </View>
                             <View style={styles.percentageContainer}>
                                 <View style={styles.unansweredPoint}/>
                                 <View style={styles.percentagesTextView}>
                                     <Text style={styles.optionsText}>BOŞ</Text>
-                                    <Text style={styles.percentagesText}>{unanswereds} - {((unanswereds/(corrects+incorrects+unanswereds))*100).toFixed(2)}%</Text>
+                                    <Text style={styles.percentagesText}>{unanswereds} - {this.state.unansweredPercentage.toFixed(2)}%</Text>
                                 </View>
                             </View>
                         </View>
                         <View style={styles.circlesContainer}>
-                            <ProgressCircle style={styles.correctCircle} progress={(corrects/(corrects+incorrects+unanswereds))} progressColor={'#6AC259'} strokeWidth={wp(3)} startAngle={70} />
-                            <ProgressCircle style={styles.incorrectCircle} progress={(incorrects/(corrects+incorrects+unanswereds))} progressColor={'#B72A2A'} strokeWidth={wp(3)} startAngle={135} />
-                            <ProgressCircle style={styles.unansweredCircle} progress={(unanswereds/(corrects+incorrects+unanswereds))} progressColor={'#00D9EF'} strokeWidth={wp(3)} startAngle={30} />
+                            <ProgressCircle style={styles.correctCircle} progress={(corrects/(corrects+incorrects+unanswereds))} progressColor={'#6AC259'} strokeWidth={hp(2.2)} startAngle={70} />
+                            <ProgressCircle style={styles.incorrectCircle} progress={(incorrects/(corrects+incorrects+unanswereds))} progressColor={'#B72A2A'} strokeWidth={hp(2.2)} startAngle={135} />
+                            <ProgressCircle style={styles.unansweredCircle} progress={(unanswereds/(corrects+incorrects+unanswereds))} progressColor={'#00D9EF'} strokeWidth={hp(2.2)} startAngle={30} />
                         </View>
                     </View>
                     <View style={styles.timezoneChartContainer}>
@@ -433,43 +470,42 @@ class Statistics extends React.Component {
                         </View>
                         <View style={styles.barRheostatContainer}>
                             {this.state.timezone === 'Bu hafta' && (
-                                <BarRheostat
+                                <Rheostat
                                     values={thisWeek}
                                     min={0}
                                     max={6}
                                     theme={{ rheostat: { themeColor: '#00D9EF', grey: '#CACACA' } }}
-                                    svgData={thisWeekData}
                                     snap={false}
                                     onValuesUpdated={this.thisWeekOnRheostatValUpdated}
                                 />
                             )}
                             {this.state.timezone === 'Bu ay' && (
-                                <BarRheostat
+                                <Rheostat
                                     values={thisMonth}
                                     min={0}
                                     max={30}
                                     theme={{ rheostat: { themeColor: '#00D9EF', grey: '#CACACA' } }}
-                                    svgData={thisMonthData}
+                                    snap={false}
                                     onValuesUpdated={this.thisMonthOnRheostatValUpdated}
                                 />
                             )}
                             {this.state.timezone === 'Son 3 ay' && (
-                                <BarRheostat
+                                <Rheostat
                                     values={last3Month}
                                     min={0}
                                     max={11}
                                     theme={{ rheostat: { themeColor: '#00D9EF', grey: '#CACACA' } }}
-                                    svgData={last3MonthData}
+                                    snap={true}
                                     onValuesUpdated={this.last3MonthOnRheostatValUpdated}
                                 />
                             )}
                             {this.state.timezone === 'Son 6 ay' && (
-                                <BarRheostat
+                                <Rheostat
                                     values={last6Month}
                                     min={0}
                                     max={23}
                                     theme={{ rheostat: { themeColor: '#00D9EF', grey: '#CACACA' } }}
-                                    svgData={last6MonthData}
+                                    snap={true}
                                     onValuesUpdated={this.last6MonthOnRheostatValUpdated}
                                 />
                             )}

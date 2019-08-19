@@ -101,9 +101,21 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    boxTextContainer: {
+        height: hp(12),
+        width: wp(42.5),
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    boxLogoContainer:{
+        height: hp(13),
+        width: wp(42.5),
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
     boxText: {
         fontFamily: 'Averta-ExtraBoldItalic',
-        fontSize: hp(3.5),
+        fontSize: hp(3),
         color: '#2E313C',
         marginBottom: hp(1)
     },
