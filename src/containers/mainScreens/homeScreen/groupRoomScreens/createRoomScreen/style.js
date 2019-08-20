@@ -130,12 +130,6 @@ export default StyleSheet.create({
         marginTop: hp(0.5),
         marginRight: wp(-0.5)
     },
-    usersListContainer: {
-        height: hp(35),
-        width: wp(87.5),
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
     userRow: {
         height: hp(6),
         width: wp(66),
