@@ -119,7 +119,6 @@ class Home extends React.Component {
                 })
         } */
         this.messageListener = firebase.messaging().onMessage(message => {
-            console.log(message)
             Alert.alert(message.data.body)
         })
         this.NotificationListener = firebase
