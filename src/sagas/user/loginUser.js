@@ -4,6 +4,8 @@ import { getUser } from '../../services/apiServices/user/getUser'
 import { deviceStorage } from '../../services/deviceStorage'
 import { navigationReset } from '../../services/navigationService'
 import { userTypes } from '../../redux/user/actions'
+import { fcmService } from '../../services/fcmService'
+import { postFCMToken } from '../../services/apiServices/fcmToken/postToken'
 
 export function* loginUser(action) {
     try {
@@ -22,7 +24,7 @@ export function* loginUser(action) {
 
         // Then we get our user information
         const userInformation = yield call(getUser, res.token, res.id)
-        console.log(userInformation)
+
         // We save the user information
         deviceStorage.saveItemToStorage(
             'userInformation',
@@ -42,6 +44,15 @@ export function* loginUser(action) {
                 coverPicture: userInformation.coverPicture
             }
         })
+
+        yield call(fcmService.checkPermissions)
+
+        const fcmToken = yield call(fcmService.getFcmToken)
+        deviceStorage.saveItemToStorage('fcmToken', fcmToken)
+
+        userInformation.fcmToken = fcmToken
+
+        yield call(postFCMToken, res.token, userInformation)
 
         // Going to the main screen
         navigationReset('main')

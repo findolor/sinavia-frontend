@@ -49,7 +49,6 @@ export function* authenticateUser(action) {
             })
         }
 
-        yield call(fcmService.checkPermissions)
         const fcmToken = yield call(fcmService.getFcmToken)
 
         deviceStorage.saveItemToStorage('fcmToken', fcmToken)
@@ -101,7 +100,6 @@ export function* authenticateUser(action) {
                 })
             }
 
-            yield call(fcmService.checkPermissions)
             const fcmToken = yield call(fcmService.getFcmToken)
 
             deviceStorage.saveItemToStorage('fcmToken', fcmToken)

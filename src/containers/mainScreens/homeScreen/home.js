@@ -7,7 +7,9 @@ import {
     TextInput,
     TouchableOpacity,
     View,
-    AsyncStorage
+    AsyncStorage,
+    Platform,
+    Alert
 } from 'react-native'
 import { connect } from 'react-redux'
 import { userActions } from '../../../redux/user/actions'
@@ -104,9 +106,28 @@ class Home extends React.Component {
     }
 
     async componentDidMount() {
+        await fcmService.checkPermissions()
+        /* if (Platform.OS === 'ios') {
+            this.messageListener = firebase.messaging().onMessage(message => {
+                console.log(message)
+            })
+        } else {
+            this.messageListener = firebase
+                .notifications()
+                .onNotification(notification => {
+                    console.log(notification)
+                })
+        } */
         this.messageListener = firebase.messaging().onMessage(message => {
             console.log(message)
+            Alert.alert(message.data.body)
         })
+        this.NotificationListener = firebase
+            .notifications()
+            .onNotification(notification => {
+                console.log(notification)
+                Alert.alert(notification.body)
+            })
     }
 
     _renderItemWithParallax({ item, index }, parallaxProps) {

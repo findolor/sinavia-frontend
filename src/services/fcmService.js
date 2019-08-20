@@ -3,7 +3,6 @@ import firebase from 'react-native-firebase'
 const getFcmToken = async () => {
     const fcmToken = await firebase.messaging().getToken()
     if (fcmToken) {
-        console.log(fcmToken)
         return fcmToken
     } else {
         console.log('no token')
