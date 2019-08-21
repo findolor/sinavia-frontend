@@ -16,6 +16,8 @@ const scene_keys = {
         rankedGame: 'rankedGame',
         loading: 'loading',
         gameStats: 'gameStats',
+        rankedMatchingScreen: 'rankedMatchingScreen',
+        friendMatchingScreen: 'friendMatchingScreen',
         matchIntro: 'matchIntro',
         groupGame: 'groupGame',
         groupGameStats: 'groupGameStats'
