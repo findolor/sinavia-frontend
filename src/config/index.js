@@ -14,6 +14,8 @@ const config = {
             rankedGame: 'rankedGame',
             loading: 'loading',
             gameStats: 'gameStats',
+            rankedMatchingScreen: 'rankedMatchingScreen',
+            friendMatchingScreen: 'friendMatchingScreen',
             matchIntro: 'matchIntro',
             groupGame: 'groupGame',
             groupGameStats: 'groupGameStats'

@@ -24,6 +24,8 @@ import {
     RankedGame,
     LoadingScreen,
     GameStatsScreen,
+    RankedMatchingScreen,
+    FriendMatchingScreen,
     MatchIntroScreen,
     GroupGame,
     GroupGameStatsScreen
@@ -57,6 +59,8 @@ export const gameScreens = {
     rankedGame: RankedGame,
     loading: LoadingScreen,
     gameStats: GameStatsScreen,
+    rankedMatchingScreen: RankedMatchingScreen,
+    friendMatchingScreen: FriendMatchingScreen,
     matchIntro: MatchIntroScreen,
     groupGame: GroupGame,
     groupGameStats: GroupGameStatsScreen
