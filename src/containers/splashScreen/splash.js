@@ -5,6 +5,7 @@ import { navigationReset, SCENE_KEYS } from '../../services/navigationService'
 import { deviceStorage } from '../../services/deviceStorage'
 import { connect } from 'react-redux'
 import { userActions } from '../../redux/user/actions'
+import LottieView from 'lottie-react-native'
 
 const APP_LOGO = require('../../assets/sinavia_logo_cut.png')
 
@@ -57,10 +58,15 @@ class SplashScreen extends React.PureComponent {
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.logoContainer}>
+                {/* <View style={styles.logoContainer}>
                     <Image source={APP_LOGO} style={styles.appLogo} />
                 </View>
-                <Text style={styles.sinaviaText}>Sınavia</Text>
+                <Text style={styles.sinaviaText}>Sınavia</Text> */}
+                <LottieView
+                    source={require('../../assets/splashScreen/sinavia.json')}
+                    autoPlay
+                    loop
+                />
             </View>
         )
     }
