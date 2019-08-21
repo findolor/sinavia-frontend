@@ -311,5 +311,134 @@ export default StyleSheet.create({
     joinGameCodeTextInput: {
         fontFamily: 'Averta-Regular',
         fontSize: wp(5)
+    },
+    quitView: {
+        backgroundColor: '#ffffff',
+        height: hp(20),
+        width: wp(87.5),
+        marginTop: hp(35),
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#00D9EF',
+        borderWidth: wp(0.75),
+        borderRadius: 10
+    },
+    areYouSureText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: wp(4.5),
+        color: '#5C5C5C'
+    },
+    yesOrNoButtonsContainer: {
+        height: hp(10),
+        width: wp(87.5),
+        marginTop: hp(2),
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start'
+    },
+    usersContainer: {
+        height: hp(22),
+        width: wp(87.5),
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row'
+    },
+    userContainer: {
+        height: hp(22),
+        width: wp(43.75)
+    },
+    userPicContainer: {
+        height: hp(12),
+        width: wp(43.75),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    userPic: {
+        height: hp(10.5),
+        width: hp(10.5),
+        marginTop: hp(4.5),
+        borderRadius: 100
+    },
+    nameAndUsernameContainer: {
+        height: hp(10),
+        width: wp(43.75),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    sword: {
+        height: hp(6.5),
+        width: hp(4.25),
+        position: 'absolute'
+    },
+    userListContainer: {
+        height: hp(45),
+        width: wp(87.35),
+        alignItems: 'center'
+    },
+    userRow: {
+        height: hp(8),
+        width: wp(75),
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderBottomWidth: wp(0.1),
+        borderBottomColor: '#CACACA',
+        marginBottom: hp(1)
+    },
+    userPicContainerInRow: {
+        height: hp(8),
+        width: wp(14),
+        justifyContent: 'center',
+        alignItems: 'flex-start'
+    },
+    userPicInRow: {
+        height: hp(6.5),
+        width: hp(6.5),
+        borderRadius: 100
+    },
+    nameContainer: {
+        height: hp(8),
+        width: wp(61),
+        justifyContent: 'center',
+        alignItems: 'flex-start'
+    },
+    nameText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(2.2),
+        color: '#5C5C5C'
+    },
+    nameAndSurnameText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(1.9),
+        marginTop: hp(2),
+        color: '#5C5C5C'
+    },
+    userNameText: {
+        fontFamily: 'Averta-RegularItalic',
+        fontSize: hp(2.2),
+        color: '#FF9900'
+    },
+    searchBar: {
+        height: hp(6),
+        width: wp(75),
+        borderRadius: 30,
+        borderColor: '#00D9EF',
+        borderWidth: hp(0.3),
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    textInputView: {
+        height: hp(3.8),
+        width: wp(63),
+        justifyContent: 'center',
+        marginLeft: wp(2.7)
+    },
+    searchBarText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(2.2),
+        paddingVertical: hp(0)
+    },
+    spaceView: {
+        height: hp(1.5)
     }
 })

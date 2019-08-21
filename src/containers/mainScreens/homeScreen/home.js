@@ -9,7 +9,8 @@ import {
     View,
     AsyncStorage,
     Platform,
-    Alert
+    Alert,
+    FlatList
 } from 'react-native'
 import { connect } from 'react-redux'
 import { userActions } from '../../../redux/user/actions'
@@ -52,6 +53,8 @@ import {
 } from '../../../services/navigationService'
 import NotchView from '../../../components/notchView'
 
+import PROFILE_PIC from '../../../assets/profile2.jpg'
+import SWORD from '../../../assets/sword.png'
 const carouselFirstItem = 0
 const exams = [
     'YKS',
@@ -81,6 +84,74 @@ const FRIENDS_EMPTY_IMAGE = require('../../../assets/mainScreens/arkadas_siyah.p
 const GROUP_SELECTED_IMAGE = require('../../../assets/mainScreens/group.png')
 const GROUP_EMPTY_IMAGE = require('../../../assets/mainScreens/group_siyah.png')
 
+const friendsListData = [
+    {
+        userPic: PROFILE_PIC,
+        name: 'Nurettin Hakan Yılmaz',
+        username: 'haqotherage'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Mehmet',
+        username: 'haqotherage'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Nakışçı',
+        username: 'haqotherage'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Arca Altunsu',
+        username: 'haqotherage'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Orkun Külçe',
+        username: 'haqotherage'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Ahmet',
+        username: 'ahmetnakisci'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Burak',
+        username: 'ruzgar'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz',
+        username: 'haqotherage'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz',
+        username: 'haqotherage'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz',
+        username: 'haqotherage'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz',
+        username: 'haqotherage'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan Yılmaz',
+        username: 'haqotherage'
+    },
+    {
+        userPic: PROFILE_PIC,
+        name: 'Hakan',
+        username: 'haqotherage'
+    }
+]
+
 class Home extends React.Component {
     constructor(props) {
         super(props)
@@ -101,7 +172,10 @@ class Home extends React.Component {
             // Modal visible view variable
             visibleView: '',
             // Variable for making start button when pressed ranked
-            visibleRankedGameStartPress: false
+            visibleRankedGameStartPress: false,
+            opponentUserPic: '',
+            opponentName: '',
+            opponentUsername: ''
         }
     }
 
@@ -247,13 +321,6 @@ class Home extends React.Component {
         })
     }
 
-    friendsGameModeOnPress = () => {
-        this.setState({
-            visibleRankedGameStartPress: false,
-            rankedModeButtonBorderColor: EMPTY_MODE_COLOR
-        })
-    }
-
     groupGameModeOnPress = () => {
         this.setState({
             visibleView: 'GROUP_MODES',
@@ -304,9 +371,7 @@ class Home extends React.Component {
                             </View>
                         </View>
                         <View style={styles.gameModeContainer}>
-                            <TouchableOpacity
-                                onPress={this.friendsGameModeOnPress}
-                            >
+                            <TouchableOpacity onPress={this.friendRoomOnPress}>
                                 <View style={styles.gameModeLogoContainer}>
                                     <Image
                                         source={this.state.friendsImage}
@@ -360,7 +425,11 @@ class Home extends React.Component {
         navigationPush(SCENE_KEYS.mainScreens.createGroupRoom)
     }
 
-    groupModesBackButtonOnPress = () => {
+    friendRoomOnPress = () => {
+        this.setState({ visibleView: 'FRIEND_ROOM' })
+    }
+
+    friendRoomAndGameModesBackButtonOnPress = () => {
         this.setState({ visibleView: 'GAME_MODES' })
     }
 
@@ -369,7 +438,7 @@ class Home extends React.Component {
             <View style={styles.modal}>
                 <View style={styles.backAndCloseButtonsContainer}>
                     <TouchableOpacity
-                        onPress={this.groupModesBackButtonOnPress}
+                        onPress={this.friendRoomAndGameModesBackButtonOnPress}
                     >
                         <Image source={BACK_BUTTON} style={styles.backLogo} />
                     </TouchableOpacity>
@@ -397,6 +466,147 @@ class Home extends React.Component {
                         />
                     </View>
                 </View>
+            </View>
+        )
+    }
+
+    searchFilterFunction = text => {
+        this.setState({
+            value: text
+        })
+
+        const newData = friendsListData.filter(item => {
+            const itemData = `${item.name.toUpperCase()} ${item.username.toUpperCase()}`
+            const textData = text.toUpperCase()
+
+            return itemData.indexOf(textData) > -1
+        })
+        this.setState({
+            data: newData
+        })
+    }
+
+    userOnPress(user) {
+        this.setState({
+            opponentUserPic: user.userPic,
+            opponentName: user.name,
+            opponentUsername: user.username
+        })
+        console.log(this.state.opponentUserPic)
+        console.log(this.state.opponentName)
+        console.log(this.state.opponentUsername)
+    }
+
+    friendRoomView() {
+        return (
+            <View style={styles.modal}>
+                <View style={styles.backAndCloseButtonsContainer}>
+                    <TouchableOpacity
+                        onPress={this.friendRoomAndGameModesBackButtonOnPress}
+                    >
+                        <Image source={BACK_BUTTON} style={styles.backLogo} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.closeModalButtonOnPress}>
+                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.modalView}>
+                    <View style={styles.usersContainer}>
+                        <View style={styles.userContainer}>
+                            <View style={styles.userPicContainer}>
+                                <Image
+                                    source={PROFILE_PIC}
+                                    style={styles.userPic}
+                                />
+                            </View>
+                            <View style={styles.nameAndUsernameContainer}>
+                                <Text style={styles.nameAndSurnameText}>
+                                    Nurettin Hakan Yılmaz
+                                </Text>
+                                <Text style={styles.userNameText}>
+                                    @haqotherage
+                                </Text>
+                            </View>
+                        </View>
+                        <Image source={SWORD} style={styles.sword} />
+                        <View style={styles.userContainer}>
+                            <View style={styles.userPicContainer}>
+                                <Image
+                                    source={this.state.opponentUserPic}
+                                    style={styles.userPic}
+                                />
+                            </View>
+                            <View style={styles.nameAndUsernameContainer}>
+                                <Text style={styles.nameAndSurnameText}>
+                                    {this.state.opponentName}
+                                </Text>
+                                <Text style={styles.userNameText}>
+                                    {this.state.opponentUsername}
+                                </Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={styles.userListContainer}>
+                        <View style={styles.searchBar}>
+                            <View style={styles.textInputView}>
+                                <TextInput
+                                    style={styles.searchBarText}
+                                    placeholder="Arkadaşını ara..."
+                                    placeholderTextColor={'#7B7B7B'}
+                                    autoCapitalize={'none'}
+                                    onChangeText={text =>
+                                        this.searchFilterFunction(text)
+                                    }
+                                    value={this.state.value}
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.spaceView} />
+                        <FlatList
+                            data={this.state.data}
+                            vertical={true}
+                            showsVerticalScrollIndicator={false}
+                            renderItem={({ item }) => {
+                                return (
+                                    <TouchableOpacity
+                                        onPress={() => this.userOnPress(item)}
+                                    >
+                                        <View style={styles.userRow}>
+                                            <View
+                                                style={
+                                                    styles.userPicContainerInRow
+                                                }
+                                            >
+                                                <Image
+                                                    source={item.userPic}
+                                                    style={styles.userPicInRow}
+                                                />
+                                            </View>
+                                            <View style={styles.nameContainer}>
+                                                <Text style={styles.nameText}>
+                                                    {item.name}
+                                                </Text>
+                                                <Text
+                                                    style={styles.userNameText}
+                                                >
+                                                    @{item.username}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    </TouchableOpacity>
+                                )
+                            }}
+                            keyExtractor={(item, index) => index.toString()}
+                        />
+                    </View>
+                </View>
+                <AuthButton
+                    marginTop={hp(2)}
+                    height={hp(7)}
+                    width={wp(87.5)}
+                    color="#00D9EF"
+                    buttonText="Başla"
+                />
             </View>
         )
     }
@@ -525,6 +735,7 @@ class Home extends React.Component {
                     animationType={'fade'}
                 >
                     {visibleView === 'GAME_MODES' && this.gameModesView()}
+                    {visibleView === 'FRIEND_ROOM' && this.friendRoomView()}
                     {visibleView === 'GROUP_MODES' && this.groupModesView()}
                     {visibleView === 'JOIN_ROOM' && this.joinRoomView()}
                 </Modal>

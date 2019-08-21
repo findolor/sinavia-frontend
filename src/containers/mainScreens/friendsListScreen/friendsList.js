@@ -85,7 +85,7 @@ class FriendsList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            data: friendsListData,
+            data: friendsListData
         }
     }
 
@@ -107,7 +107,7 @@ class FriendsList extends React.Component {
         this.setState({
             data: newData,
         });
-    };
+    }
 
     render() {
         return (
