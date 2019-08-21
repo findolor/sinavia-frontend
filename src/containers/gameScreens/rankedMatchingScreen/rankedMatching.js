@@ -6,9 +6,7 @@ import { SCENE_KEYS, navigationPush } from '../../../services/navigationService'
 
 import COVER from '../../../assets/cover.jpg'
 import PROFILE_PIC from '../../../assets/profile2.jpg'
-import WHITE from '../../../assets/white.jpg'
 import SWORD from '../../../assets/sword.png'
-import background from '../../../assets/gameScreens/gameStatsBackground.jpg'
 
 class RankedMatchingScreen extends React.Component {
     constructor(props) {
@@ -16,30 +14,53 @@ class RankedMatchingScreen extends React.Component {
         this.state = {}
     }
 
+    componentDidMount() {
+        // Waits for 5 sec and moves onto game screen
+        setTimeout(() => {
+            navigationPush(SCENE_KEYS.gameScreens.rankedGame, {
+                room: this.props.room,
+                client: this.props.client,
+                playerUsername: this.props.playerUsername,
+                playerProfilePicture: this.props.playerProfilePicture,
+                opponentUsername: this.props.opponentUsername,
+                opponentId: this.props.opponentId,
+                opponentProfilePicture: this.props.opponentProfilePicture,
+                playerCoverPicture: this.props.playerCoverPicture,
+                opponentCoverPicture: this.props.opponentCoverPicture
+            })
+        }, 5000)
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <NotchView color={'#00D9EF'} />
                 <View style={styles.contentContainer}>
-                    <Text style={styles.courseText}>TÜRKÇE</Text>
-                    <Text style={styles.subjectText}>Paragrafta Anlam</Text>
+                    <Text style={styles.courseText}>
+                        {this.props.courseName}
+                    </Text>
+                    <Text style={styles.subjectText}>
+                        {this.props.subjectName}
+                    </Text>
                 </View>
                 <View style={styles.coverContainer}>
                     <ImageBackground
-                        source={COVER}
+                        source={{ uri: this.props.playerCoverPicture }}
                         resizeMode={'stretch'}
                         style={styles.cover}
                     >
                         <View style={styles.playerView}>
                             <View style={styles.userPicContainer}>
-                                    <Image
-                                        source={PROFILE_PIC}
-                                        style={styles.playerPic}
-                                    />
+                                <Image
+                                    source={{
+                                        uri: this.props.playerProfilePicture
+                                    }}
+                                    style={styles.playerPic}
+                                />
                             </View>
                             <View style={styles.userInfoContainer}>
                                 <Text style={styles.usernameText}>
-                                    @haqotherage
+                                    @{this.props.playerUsername}
                                 </Text>
                                 <Text style={styles.sinaviaScoreText}>
                                     Sınavia Puanı: 20
@@ -50,14 +71,14 @@ class RankedMatchingScreen extends React.Component {
                 </View>
                 <View style={styles.coverContainer}>
                     <ImageBackground
-                        source={COVER}
+                        source={{ uri: this.props.opponentCoverPicture }}
                         resizeMode={'stretch'}
                         style={styles.cover}
                     >
                         <View style={styles.playerView}>
                             <View style={styles.opponentInfoContainer}>
                                 <Text style={styles.usernameText}>
-                                    @haqotherage
+                                    @{this.props.opponentUsername}
                                 </Text>
                                 <Text style={styles.sinaviaScoreText}>
                                     Sınavia Puanı: 20
@@ -65,7 +86,9 @@ class RankedMatchingScreen extends React.Component {
                             </View>
                             <View style={styles.opponentPicContainer}>
                                 <Image
-                                    source={PROFILE_PIC}
+                                    source={{
+                                        uri: this.props.opponentProfilePicture
+                                    }}
                                     style={styles.playerPic}
                                 />
                             </View>
@@ -73,14 +96,11 @@ class RankedMatchingScreen extends React.Component {
                     </ImageBackground>
                 </View>
                 <View style={styles.separatorView}>
-                    <View style={styles.separatorLine}/>
+                    <View style={styles.separatorLine} />
                     <View style={styles.separatorCircle}>
-                        <Image
-                            source={SWORD}
-                            style={styles.swordPic}
-                        />
+                        <Image source={SWORD} style={styles.swordPic} />
                     </View>
-                    <View style={styles.separatorLine}/>
+                    <View style={styles.separatorLine} />
                 </View>
             </View>
         )
