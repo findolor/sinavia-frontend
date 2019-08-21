@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "462622702392",
+    "firebase_url": "https://sinavia-a494f.firebaseio.com",
+    "project_id": "sinavia-a494f",
+    "storage_bucket": "sinavia-a494f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:462622702392:android:cdb75002739e39a9",
+        "android_client_info": {
+          "package_name": "com.sinavia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "462622702392-ragutk38sp7muoi81pbd9la2kl0lqh6c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCR7u1JfDM7AFKTFTXUPvGVv1F4IkXiLmA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "462622702392-ragutk38sp7muoi81pbd9la2kl0lqh6c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "462622702392-5so2msbq3tg5tinmq4ighmat9n9499oc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.company.sinavia"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

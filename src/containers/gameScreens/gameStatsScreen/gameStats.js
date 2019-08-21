@@ -519,7 +519,8 @@ class GameStatsScreen extends React.Component {
                 <View style={styles.secondScreenView}>
                     <View style={styles.questionNumberContainer}>
                         <Text style={styles.questionNumberText}>
-                            {this.state.questionPosition}/5
+                            {this.state.questionPosition}/
+                            {Object.keys(this.state.allQuestionsList).length}
                         </Text>
                     </View>
                     <ScrollView

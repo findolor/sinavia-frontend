@@ -7,7 +7,9 @@ import {
     TextInput,
     TouchableOpacity,
     View,
-    AsyncStorage
+    AsyncStorage,
+    Platform,
+    Alert
 } from 'react-native'
 import { connect } from 'react-redux'
 import { userActions } from '../../../redux/user/actions'
@@ -34,6 +36,10 @@ window.localStorage = AsyncStorage
 global.Buffer = Buffer
 import * as Colyseus from 'colyseus.js'
 
+// FCM imports
+import firebase from 'react-native-firebase'
+import { fcmService } from '../../../services/fcmService'
+
 import { GAME_ENGINE_ENDPOINT } from '../../../config'
 
 import NOTIFICATION_LOGO from '../../../assets/mainScreens/notification.png'
@@ -45,6 +51,7 @@ import {
     SCENE_KEYS
 } from '../../../services/navigationService'
 import NotchView from '../../../components/notchView'
+
 const carouselFirstItem = 0
 const exams = [
     'YKS',
@@ -96,6 +103,30 @@ class Home extends React.Component {
             // Variable for making start button when pressed ranked
             visibleRankedGameStartPress: false
         }
+    }
+
+    async componentDidMount() {
+        await fcmService.checkPermissions()
+        /* if (Platform.OS === 'ios') {
+            this.messageListener = firebase.messaging().onMessage(message => {
+                console.log(message)
+            })
+        } else {
+            this.messageListener = firebase
+                .notifications()
+                .onNotification(notification => {
+                    console.log(notification)
+                })
+        } */
+        this.messageListener = firebase.messaging().onMessage(message => {
+            Alert.alert(message.data.body)
+        })
+        this.NotificationListener = firebase
+            .notifications()
+            .onNotification(notification => {
+                console.log(notification)
+                Alert.alert(notification.body)
+            })
     }
 
     _renderItemWithParallax({ item, index }, parallaxProps) {

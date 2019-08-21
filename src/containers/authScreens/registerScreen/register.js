@@ -118,7 +118,7 @@ class Register extends React.Component {
     handleDatePicked = date => {
         this.hideDateTimePicker()
         this.setState({
-            birthDate: date.toISOString(),
+            birthDate: date,
             birthDateUI: moment(new Date(date.toString().substr(0, 16))).format(
                 'DD-MM-YYYY'
             ),

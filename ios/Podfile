@@ -34,6 +34,11 @@ target 'Sinavia' do
 
   pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
 
+  # Required by RNFirebase
+  pod 'Firebase/Core', '~> 6.3.0'
+  pod 'Firebase/Messaging', '~> 6.3.0'
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
+
   target 'SinaviaTests' do
     inherit! :search_paths
     # Pods for testing

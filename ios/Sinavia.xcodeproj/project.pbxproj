@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* SinaviaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SinaviaTests.m */; };
 		011DF84842B7407FB0A02353 /* Averta-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = BA095F8ABB6942DEB3AF685C /* Averta-Thin.otf */; };
-		065A2F050128DE729C6B19B2 /* libPods-Sinavia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D51408837E05BED04C16191 /* libPods-Sinavia.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -21,7 +20,7 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* SinaviaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SinaviaTests.m */; };
 		2E0C31687154475CB83EC959 /* Averta-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 61D9DEFCA3644797B56562CF /* Averta-Light.otf */; };
-		5481360601B11200B049728F /* libPods-Sinavia-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E95D2D973A55D8ED4F3DA93E /* libPods-Sinavia-tvOS.a */; };
+		505C301EB7EF91FF434EFABF /* libPods-Sinavia-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B13033158B1DA1B89A9F8EB6 /* libPods-Sinavia-tvOSTests.a */; };
 		5E810ADBB667416CB14F009C /* Averta-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 77FB107A7AAB407C866137E5 /* Averta-Bold.otf */; };
 		7724CB6AF76244749AF6742E /* Averta-ThinItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = E5D5B0119C6C43178A6BF48E /* Averta-ThinItalic.otf */; };
 		78347418EBE3459FA0319787 /* Averta-ExtraBoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = F439108D5643454A89AB1B03 /* Averta-ExtraBoldItalic.otf */; };
@@ -29,14 +28,16 @@
 		8234A81F9D7E458BA9CC600B /* Averta-ExtrathinItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4A931156D29643CA8BB1A16C /* Averta-ExtrathinItalic.otf */; };
 		95CB3382C216494EA94682F7 /* Averta-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5972F7AA2FE0420E9D6F681C /* Averta-Black.otf */; };
 		981889EA3B4B40A1B0A17761 /* Averta-RegularItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3CEEF7C287524C95BC284325 /* Averta-RegularItalic.otf */; };
+		9A106987230D57460032C703 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A106986230D57450032C703 /* GoogleService-Info.plist */; };
 		9A7DF232230C799300890161 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7DF231230C799300890161 /* File.swift */; };
+		9EDA85F01EFC6497ACD82F89 /* libPods-Sinavia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6803A60CA2105D929503EBF /* libPods-Sinavia.a */; };
 		A60AA0DF81344ABC946DDCA0 /* Averta-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = CBD4F8D6FF994206B79B5A09 /* Averta-LightItalic.otf */; };
 		B19388F18BC24D738B0A620B /* Averta-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 248B895017E84678B0BD244F /* Averta-BoldItalic.otf */; };
 		C8A88142F0164A51B7BD8A62 /* Averta-SemiboldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = EACB2F9E64DE4106A41EF1BE /* Averta-SemiboldItalic.otf */; };
-		CE7F38A072FCA84C37825743 /* libPods-Sinavia-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A66DE66C276C03BB2AA790B4 /* libPods-Sinavia-tvOSTests.a */; };
+		CBB1142FB95B5183608D822C /* libPods-SinaviaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C61695E582B001D251D7D2C0 /* libPods-SinaviaTests.a */; };
 		D561A176A6704E7D9BBBBBE3 /* Averta-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6231AE9AFD5748BFBA96CC66 /* Averta-ExtraBold.otf */; };
-		D8997BD324DCD234A88746CB /* libPods-SinaviaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C419ACD11AFC9960C0C81C77 /* libPods-SinaviaTests.a */; };
 		E0572877956E4880BD150338 /* Averta-Extrathin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 83FB10C90C0545E49953A162 /* Averta-Extrathin.otf */; };
+		FCAC24CB773D0E899A9DAADD /* libPods-Sinavia-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C488FBE5DBC807830C75345 /* libPods-Sinavia-tvOS.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		00E356EE1AD99517003FC87E /* SinaviaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SinaviaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* SinaviaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SinaviaTests.m; sourceTree = "<group>"; };
+		10FF207AA7FFDFE166B2E75F /* Pods-Sinavia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sinavia.release.xcconfig"; path = "Target Support Files/Pods-Sinavia/Pods-Sinavia.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Sinavia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sinavia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Sinavia/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Sinavia/AppDelegate.m; sourceTree = "<group>"; };
@@ -68,40 +70,40 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Sinavia/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Sinavia/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Sinavia/main.m; sourceTree = "<group>"; };
-		1BF82ABB64EA15A81D29F967 /* Pods-Sinavia-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sinavia-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Sinavia-tvOSTests/Pods-Sinavia-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		248B895017E84678B0BD244F /* Averta-BoldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-BoldItalic.otf"; path = "../src/assets/fonts/Averta-BoldItalic.otf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* Sinavia-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sinavia-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* Sinavia-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Sinavia-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3581B62ADF65DE9B30D69F6C /* Pods-Sinavia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sinavia.debug.xcconfig"; path = "Target Support Files/Pods-Sinavia/Pods-Sinavia.debug.xcconfig"; sourceTree = "<group>"; };
+		37656958B7BDC10A1AED74A9 /* Pods-Sinavia-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sinavia-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Sinavia-tvOS/Pods-Sinavia-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		3CEEF7C287524C95BC284325 /* Averta-RegularItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-RegularItalic.otf"; path = "../src/assets/fonts/Averta-RegularItalic.otf"; sourceTree = "<group>"; };
 		3ED724505EC742939CA77B84 /* Averta-Semibold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-Semibold.otf"; path = "../src/assets/fonts/Averta-Semibold.otf"; sourceTree = "<group>"; };
+		3F0B529F0DF4EB813B79F5EC /* Pods-SinaviaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SinaviaTests.release.xcconfig"; path = "Target Support Files/Pods-SinaviaTests/Pods-SinaviaTests.release.xcconfig"; sourceTree = "<group>"; };
 		4A931156D29643CA8BB1A16C /* Averta-ExtrathinItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-ExtrathinItalic.otf"; path = "../src/assets/fonts/Averta-ExtrathinItalic.otf"; sourceTree = "<group>"; };
 		5972F7AA2FE0420E9D6F681C /* Averta-Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-Black.otf"; path = "../src/assets/fonts/Averta-Black.otf"; sourceTree = "<group>"; };
-		5D51408837E05BED04C16191 /* libPods-Sinavia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sinavia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FB9B3528D274DBE85064220 /* Averta-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-Regular.otf"; path = "../src/assets/fonts/Averta-Regular.otf"; sourceTree = "<group>"; };
 		61D9DEFCA3644797B56562CF /* Averta-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-Light.otf"; path = "../src/assets/fonts/Averta-Light.otf"; sourceTree = "<group>"; };
-		61FB69BC117190B47F8854D0 /* Pods-Sinavia-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sinavia-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Sinavia-tvOS/Pods-Sinavia-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		6231AE9AFD5748BFBA96CC66 /* Averta-ExtraBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-ExtraBold.otf"; path = "../src/assets/fonts/Averta-ExtraBold.otf"; sourceTree = "<group>"; };
-		7340931777FF0AB7C2CC7051 /* Pods-Sinavia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sinavia.debug.xcconfig"; path = "Target Support Files/Pods-Sinavia/Pods-Sinavia.debug.xcconfig"; sourceTree = "<group>"; };
-		7349335DF8C7FEFFFBC42B3B /* Pods-Sinavia-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sinavia-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Sinavia-tvOS/Pods-Sinavia-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		75AEFB9D3E54903813467531 /* Pods-Sinavia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sinavia.release.xcconfig"; path = "Target Support Files/Pods-Sinavia/Pods-Sinavia.release.xcconfig"; sourceTree = "<group>"; };
-		7733A884DAFB9706E479CE60 /* Pods-SinaviaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SinaviaTests.release.xcconfig"; path = "Target Support Files/Pods-SinaviaTests/Pods-SinaviaTests.release.xcconfig"; sourceTree = "<group>"; };
+		6C488FBE5DBC807830C75345 /* libPods-Sinavia-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sinavia-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6CC7FD1C4E2A74AB09926F09 /* Pods-Sinavia-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sinavia-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Sinavia-tvOS/Pods-Sinavia-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		77FB107A7AAB407C866137E5 /* Averta-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-Bold.otf"; path = "../src/assets/fonts/Averta-Bold.otf"; sourceTree = "<group>"; };
+		7D01560C726C2ACCB3734B8F /* Pods-Sinavia-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sinavia-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Sinavia-tvOSTests/Pods-Sinavia-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		83FB10C90C0545E49953A162 /* Averta-Extrathin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-Extrathin.otf"; path = "../src/assets/fonts/Averta-Extrathin.otf"; sourceTree = "<group>"; };
-		91BC6053A74C69383CF220DF /* Pods-Sinavia-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sinavia-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Sinavia-tvOSTests/Pods-Sinavia-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		9A106986230D57450032C703 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Documents/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9A7DF230230C799200890161 /* Sinavia-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Sinavia-Bridging-Header.h"; sourceTree = "<group>"; };
 		9A7DF231230C799300890161 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
-		A66DE66C276C03BB2AA790B4 /* libPods-Sinavia-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sinavia-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6803A60CA2105D929503EBF /* libPods-Sinavia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sinavia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC8951B9CD060DF9FAD03977 /* Pods-Sinavia-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sinavia-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Sinavia-tvOSTests/Pods-Sinavia-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		B13033158B1DA1B89A9F8EB6 /* libPods-Sinavia-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sinavia-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA095F8ABB6942DEB3AF685C /* Averta-Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-Thin.otf"; path = "../src/assets/fonts/Averta-Thin.otf"; sourceTree = "<group>"; };
-		C419ACD11AFC9960C0C81C77 /* libPods-SinaviaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SinaviaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C61695E582B001D251D7D2C0 /* libPods-SinaviaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SinaviaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBD4F8D6FF994206B79B5A09 /* Averta-LightItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-LightItalic.otf"; path = "../src/assets/fonts/Averta-LightItalic.otf"; sourceTree = "<group>"; };
-		CF67879502B5983ED3E16B1A /* Pods-SinaviaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SinaviaTests.debug.xcconfig"; path = "Target Support Files/Pods-SinaviaTests/Pods-SinaviaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DB3A73B728FD4C1CA784E21F /* Averta-BlackItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-BlackItalic.otf"; path = "../src/assets/fonts/Averta-BlackItalic.otf"; sourceTree = "<group>"; };
 		E5D5B0119C6C43178A6BF48E /* Averta-ThinItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-ThinItalic.otf"; path = "../src/assets/fonts/Averta-ThinItalic.otf"; sourceTree = "<group>"; };
-		E95D2D973A55D8ED4F3DA93E /* libPods-Sinavia-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sinavia-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EACB2F9E64DE4106A41EF1BE /* Averta-SemiboldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-SemiboldItalic.otf"; path = "../src/assets/fonts/Averta-SemiboldItalic.otf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F439108D5643454A89AB1B03 /* Averta-ExtraBoldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-ExtraBoldItalic.otf"; path = "../src/assets/fonts/Averta-ExtraBoldItalic.otf"; sourceTree = "<group>"; };
+		F806CE0F1C41A343D19B8E01 /* Pods-SinaviaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SinaviaTests.debug.xcconfig"; path = "Target Support Files/Pods-SinaviaTests/Pods-SinaviaTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,7 +111,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8997BD324DCD234A88746CB /* libPods-SinaviaTests.a in Frameworks */,
+				CBB1142FB95B5183608D822C /* libPods-SinaviaTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,7 +119,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				065A2F050128DE729C6B19B2 /* libPods-Sinavia.a in Frameworks */,
+				9EDA85F01EFC6497ACD82F89 /* libPods-Sinavia.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,7 +127,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5481360601B11200B049728F /* libPods-Sinavia-tvOS.a in Frameworks */,
+				FCAC24CB773D0E899A9DAADD /* libPods-Sinavia-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,7 +135,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE7F38A072FCA84C37825743 /* libPods-Sinavia-tvOSTests.a in Frameworks */,
+				505C301EB7EF91FF434EFABF /* libPods-Sinavia-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,10 +178,10 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				5D51408837E05BED04C16191 /* libPods-Sinavia.a */,
-				E95D2D973A55D8ED4F3DA93E /* libPods-Sinavia-tvOS.a */,
-				A66DE66C276C03BB2AA790B4 /* libPods-Sinavia-tvOSTests.a */,
-				C419ACD11AFC9960C0C81C77 /* libPods-SinaviaTests.a */,
+				A6803A60CA2105D929503EBF /* libPods-Sinavia.a */,
+				6C488FBE5DBC807830C75345 /* libPods-Sinavia-tvOS.a */,
+				B13033158B1DA1B89A9F8EB6 /* libPods-Sinavia-tvOSTests.a */,
+				C61695E582B001D251D7D2C0 /* libPods-SinaviaTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -187,14 +189,14 @@
 		476961472FEA9FE3760CA56B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				7340931777FF0AB7C2CC7051 /* Pods-Sinavia.debug.xcconfig */,
-				75AEFB9D3E54903813467531 /* Pods-Sinavia.release.xcconfig */,
-				7349335DF8C7FEFFFBC42B3B /* Pods-Sinavia-tvOS.debug.xcconfig */,
-				61FB69BC117190B47F8854D0 /* Pods-Sinavia-tvOS.release.xcconfig */,
-				1BF82ABB64EA15A81D29F967 /* Pods-Sinavia-tvOSTests.debug.xcconfig */,
-				91BC6053A74C69383CF220DF /* Pods-Sinavia-tvOSTests.release.xcconfig */,
-				CF67879502B5983ED3E16B1A /* Pods-SinaviaTests.debug.xcconfig */,
-				7733A884DAFB9706E479CE60 /* Pods-SinaviaTests.release.xcconfig */,
+				3581B62ADF65DE9B30D69F6C /* Pods-Sinavia.debug.xcconfig */,
+				10FF207AA7FFDFE166B2E75F /* Pods-Sinavia.release.xcconfig */,
+				6CC7FD1C4E2A74AB09926F09 /* Pods-Sinavia-tvOS.debug.xcconfig */,
+				37656958B7BDC10A1AED74A9 /* Pods-Sinavia-tvOS.release.xcconfig */,
+				7D01560C726C2ACCB3734B8F /* Pods-Sinavia-tvOSTests.debug.xcconfig */,
+				AC8951B9CD060DF9FAD03977 /* Pods-Sinavia-tvOSTests.release.xcconfig */,
+				F806CE0F1C41A343D19B8E01 /* Pods-SinaviaTests.debug.xcconfig */,
+				3F0B529F0DF4EB813B79F5EC /* Pods-SinaviaTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -209,6 +211,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				9A106986230D57450032C703 /* GoogleService-Info.plist */,
 				9A7DF231230C799300890161 /* File.swift */,
 				13B07FAE1A68108700A75B9A /* Sinavia */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -265,7 +268,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "SinaviaTests" */;
 			buildPhases = (
-				5C175146C5C05708E03079ED /* [CP] Check Pods Manifest.lock */,
+				6C08C8BFFD52FC0870988AF1 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
@@ -284,7 +287,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Sinavia" */;
 			buildPhases = (
-				444C6D10623B584E75C4FEDC /* [CP] Check Pods Manifest.lock */,
+				ED095ACD6FE8A23BAD0C32D0 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
@@ -304,7 +307,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Sinavia-tvOS" */;
 			buildPhases = (
-				1D861BDBC210B3462492DDEA /* [CP] Check Pods Manifest.lock */,
+				63EFB644C081DF901626F7A4 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -324,7 +327,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Sinavia-tvOSTests" */;
 			buildPhases = (
-				38A0538ACD9C2F09D93A890A /* [CP] Check Pods Manifest.lock */,
+				2273A28D9763E696F850BD17 /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -413,6 +416,7 @@
 				E0572877956E4880BD150338 /* Averta-Extrathin.otf in Resources */,
 				8234A81F9D7E458BA9CC600B /* Averta-ExtrathinItalic.otf in Resources */,
 				2E0C31687154475CB83EC959 /* Averta-Light.otf in Resources */,
+				9A106987230D57460032C703 /* GoogleService-Info.plist in Resources */,
 				A60AA0DF81344ABC946DDCA0 /* Averta-LightItalic.otf in Resources */,
 				2513F96770234444B2ADE2A8 /* Averta-Regular.otf in Resources */,
 				981889EA3B4B40A1B0A17761 /* Averta-RegularItalic.otf in Resources */,
@@ -455,43 +459,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		1D861BDBC210B3462492DDEA /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Sinavia-tvOS-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Bundle React Native Code And Images";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
-		};
-		38A0538ACD9C2F09D93A890A /* [CP] Check Pods Manifest.lock */ = {
+		2273A28D9763E696F850BD17 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -513,7 +481,21 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		444C6D10623B584E75C4FEDC /* [CP] Check Pods Manifest.lock */ = {
+		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle React Native Code And Images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		63EFB644C081DF901626F7A4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -528,14 +510,14 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Sinavia-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Sinavia-tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5C175146C5C05708E03079ED /* [CP] Check Pods Manifest.lock */ = {
+		6C08C8BFFD52FC0870988AF1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -551,6 +533,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-SinaviaTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ED095ACD6FE8A23BAD0C32D0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Sinavia-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -663,7 +667,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CF67879502B5983ED3E16B1A /* Pods-SinaviaTests.debug.xcconfig */;
+			baseConfigurationReference = F806CE0F1C41A343D19B8E01 /* Pods-SinaviaTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -688,7 +692,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7733A884DAFB9706E479CE60 /* Pods-SinaviaTests.release.xcconfig */;
+			baseConfigurationReference = 3F0B529F0DF4EB813B79F5EC /* Pods-SinaviaTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -710,7 +714,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7340931777FF0AB7C2CC7051 /* Pods-Sinavia.debug.xcconfig */;
+			baseConfigurationReference = 3581B62ADF65DE9B30D69F6C /* Pods-Sinavia.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -735,7 +739,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 75AEFB9D3E54903813467531 /* Pods-Sinavia.release.xcconfig */;
+			baseConfigurationReference = 10FF207AA7FFDFE166B2E75F /* Pods-Sinavia.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -758,7 +762,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7349335DF8C7FEFFFBC42B3B /* Pods-Sinavia-tvOS.debug.xcconfig */;
+			baseConfigurationReference = 6CC7FD1C4E2A74AB09926F09 /* Pods-Sinavia-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -786,7 +790,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 61FB69BC117190B47F8854D0 /* Pods-Sinavia-tvOS.release.xcconfig */;
+			baseConfigurationReference = 37656958B7BDC10A1AED74A9 /* Pods-Sinavia-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -814,7 +818,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1BF82ABB64EA15A81D29F967 /* Pods-Sinavia-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = 7D01560C726C2ACCB3734B8F /* Pods-Sinavia-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -841,7 +845,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 91BC6053A74C69383CF220DF /* Pods-Sinavia-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = AC8951B9CD060DF9FAD03977 /* Pods-Sinavia-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
