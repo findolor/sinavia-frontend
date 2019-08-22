@@ -12,6 +12,10 @@ const RouterComp = () => {
     return (
         <Router>
             <Scene key="root" hideNavBar={true}>
+                <Scene
+                    key={SCENE_KEYS.gameScreens.friendGameStats}
+                    component={gameScreens.friendGameStats}
+                />
                 <Scene key="splash" hideNavBar={true}>
                     <Scene
                         key={SCENE_KEYS.splashScreen}

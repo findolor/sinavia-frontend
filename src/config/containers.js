@@ -27,6 +27,7 @@ import {
     RankedMatchingScreen,
     FriendMatchingScreen,
     MatchIntroScreen,
+    FriendGameStatsScreen,
     GroupGame,
     GroupGameStatsScreen
 } from '../containers/gameScreens'
@@ -63,7 +64,8 @@ export const gameScreens = {
     friendMatchingScreen: FriendMatchingScreen,
     matchIntro: MatchIntroScreen,
     groupGame: GroupGame,
-    groupGameStats: GroupGameStatsScreen
+    groupGameStats: GroupGameStatsScreen,
+    friendGameStats: FriendGameStatsScreen
 }
 
 export const splashScreen = SplashScreen
