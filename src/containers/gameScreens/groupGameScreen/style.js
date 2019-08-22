@@ -27,9 +27,10 @@ export default StyleSheet.create({
         justifyContent: 'space-evenly'
     },
     questionContainer: {
-        backgroundColor: '#fff',
+        backgroundColor: '#ffffff',
         height: hp(52),
-        marginHorizontal: wp(5),
+        width: wp(84),
+        marginLeft: wp(8),
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center'
@@ -238,6 +239,78 @@ export default StyleSheet.create({
         height: hp(7),
         width: wp(7),
         resizeMode: 'contain'
+    },
+    userRow: {
+        height: hp(7),
+        width: wp(82),
+        flexDirection: 'row',
+        borderTopWidth: wp(0.5),
+        borderTopColor: '#CACACA'
+    },
+    orderContainer: {
+        height: hp(7),
+        width: wp(12),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    orderNumberText: {
+        fontFamily: 'Averta-SemiboldItalic',
+        color: '#2E313C',
+        fontSize: hp(3.5)
+    },
+    nameContainer: {
+        height: hp(7),
+        width: wp(43),
+        justifyContent: 'center',
+        alignItems: 'flex-start'
+    },
+    nameText: {
+        fontFamily: 'Averta-Semibold',
+        color: '#2E313C',
+        fontSize: hp(2.5)
+    },
+    optionsContainer: {
+        height: hp(7),
+        width: wp(27),
+        flexDirection: 'row'
+    },
+    optionContainer: {
+        height: hp(7),
+        width: wp(9),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    optionCounterText: {
+        fontFamily: 'Averta-BoldItalic',
+        color: '#FF9900',
+        fontSize: hp(3.5)
+    },
+    orderHeaderText: {
+        fontFamily: 'Averta-ExtraBoldItalic',
+        color: '#FF9900',
+        fontSize: hp(3)
+    },
+    nameHeaderText: {
+        fontFamily: 'Averta-ExtraBoldItalic',
+        color: '#FF9900',
+        fontSize: hp(3)
+    },
+    resultsContainer: {
+        height: hp(52),
+        width: wp(87.8),
+        backgroundColor: '#F2FEFF',
+        marginLeft: wp(6.4),
+        borderRadius: 20,
+        alignItems: 'center'
+    },
+    resultsContainerHeader: {
+        height: hp(6),
+        width: wp(82),
+        flexDirection: 'row'
+    },
+    optionsImg: {
+        height: hp(3),
+        width: hp(3)
     }
 })
 

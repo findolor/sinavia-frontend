@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, Modal, Alert } from 'react-native'
+import { View, Text, Image, TouchableOpacity, Modal, Alert, FlatList} from 'react-native'
 import styles, { countdownProps } from './style'
 import CountDown from 'react-native-countdown-component'
 import NotchView from '../../../components/notchView'
@@ -16,11 +16,79 @@ import BACK_BUTTON from '../../../assets/backButton.png'
 import FIFTY_FIFTY from '../../../assets/gameScreens/jokers/fiftyFifty.png'
 import SECOND_CHANCE from '../../../assets/gameScreens/jokers/secondChance.png'
 import GROUP_LOGO from '../../../assets/mainScreens/group.png'
+import Leaderboard from '../../mainScreens/main'
+import PROFILE_PIC from '../../../assets/profile2.jpg'
+import CORRECT_IMG from '../../../assets/gameScreens/correct.png'
+import UNANSWERED_IMG from '../../../assets/gameScreens/unanswered.png'
+import INCORRECT_IMG from '../../../assets/gameScreens/incorrect.png'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
 const CORRECT_ANSWER_COLOR = '#14e31f'
 const INCORRECT_ANSWER_COLOR = '#eb2b0e'
+
+const groupListData = [
+    {
+        username: 'haqotherage',
+        correct: 3,
+        unanswered: 1,
+        incorrect: 1
+    },
+    {
+        username: 'haqotherage',
+        correct: 3,
+        unanswered: 1,
+        incorrect: 1
+    },
+    {
+        username: 'haqotherage',
+        correct: 3,
+        unanswered: 1,
+        incorrect: 1
+    },
+    {
+        username: 'haqotherage',
+        correct: 3,
+        unanswered: 1,
+        incorrect: 1
+    },
+    {
+        username: 'haqotherage',
+        correct: 3,
+        unanswered: 1,
+        incorrect: 1
+    },
+    {
+        username: 'haqotherage',
+        correct: 3,
+        unanswered: 1,
+        incorrect: 1
+    },
+    {
+        username: 'haqotherage',
+        correct: 3,
+        unanswered: 1,
+        incorrect: 1
+    },
+    {
+        username: 'haqotherage',
+        correct: 3,
+        unanswered: 1,
+        incorrect: 1
+    },
+    {
+        username: 'haqotherage',
+        correct: 3,
+        unanswered: 1,
+        incorrect: 1
+    },
+    {
+        username: 'haqotherage',
+        correct: 3,
+        unanswered: 1,
+        incorrect: 1
+    }
+]
 
 class GroupGame extends React.Component {
     constructor(props) {
@@ -77,7 +145,8 @@ class GroupGame extends React.Component {
             // Joker active variables
             isSecondChanceJokerActive: false,
             // Current question answer for second chance
-            questionAnswer: 0
+            questionAnswer: 0,
+            visibleContainer: 'QUESTION'
         }
     }
 
@@ -352,9 +421,9 @@ class GroupGame extends React.Component {
         // After setting the button and sending 'button-press' action, we send 'finished' action for round end
         // There is a timeout because there needs to be a delay between the events
         this.finishedTimeout = setTimeout(() => {
-            that.props.room.send({
+            /*that.props.room.send({
                 action: 'finished'
-            })
+            })*/
         }, 1000)
     }
 
@@ -517,11 +586,13 @@ class GroupGame extends React.Component {
     }
 
     seeGroupOnPress = () => {
-        this.setState({ isGroupModalVisible: true })
+        this.setState({visibleContainer: 'FRIENDS_LIST'})
+        console.log(this.state.visibleContainer)
     }
 
-    groupModalCloseOnPress = () => {
-        this.setState({ isGroupModalVisible: false })
+    seeQuestionOnPress = () => {
+        this.setState({visibleContainer: 'QUESTION'})
+        console.log(this.state.visibleContainer)
     }
 
     render() {
@@ -579,30 +650,120 @@ class GroupGame extends React.Component {
                             </View>
                         </View>
                         <View style={styles.seeGroupContainer}>
-                            <TouchableOpacity onPress={this.seeGroupOnPress}>
-                                <View style={styles.seeGroupCircle}>
-                                    <Image
-                                        source={GROUP_LOGO}
-                                        style={styles.seeGroupContainerLogo}
-                                    />
-                                </View>
-                            </TouchableOpacity>
-                            <Text style={styles.seeGroupText}>Diğer</Text>
-                            <Text style={styles.seeGroupText}>
-                                Yarışmacılar
-                            </Text>
+                            {this.state.visibleContainer === 'QUESTION' &&  <View><TouchableOpacity onPress={this.seeGroupOnPress}>
+                                <Text style={styles.seeGroupText}>Diğer</Text>
+                                <Text style={styles.seeGroupText}>
+                                    Yarışmacılar
+                                </Text>
+                            </TouchableOpacity></View>}
+                            {this.state.visibleContainer === 'FRIENDS_LIST' &&  <View><TouchableOpacity onPress={this.seeQuestionOnPress}>
+                                <Text style={styles.seeGroupText}>Soruyu</Text>
+                                <Text style={styles.seeGroupText}>Gör</Text>
+                            </TouchableOpacity></View>}
                         </View>
                     </View>
-                    <View style={styles.questionContainer}>
+                    {this.state.visibleContainer === 'QUESTION' && <View style={styles.questionContainer}>
                         <Image
                             source={{
                                 uri: this.state.questionList[
                                     this.state.questionNumber
-                                ]
+                                    ]
                             }}
                             style={styles.questionStyle}
                         />
-                    </View>
+                    </View>}
+                    {this.state.visibleContainer === 'FRIENDS_LIST' &&  <View style={styles.questionContainer}>
+                        <View style={styles.resultsContainerHeader}>
+                            <View style={styles.orderContainer}>
+                                <Text style={styles.orderHeaderText}>No</Text>
+                            </View>
+                            <View style={styles.nameContainer}>
+                                <Text style={styles.nameHeaderText}>
+                                    Kullanıcı
+                                </Text>
+                            </View>
+                            <View style={styles.optionsContainer}>
+                                <View style={styles.optionContainer}>
+                                    <Image
+                                        source={CORRECT_IMG}
+                                        style={styles.optionsImg}
+                                    />
+                                </View>
+                                <View style={styles.optionContainer}>
+                                    <Image
+                                        source={UNANSWERED_IMG}
+                                        style={styles.optionsImg}
+                                    />
+                                </View>
+                                <View style={styles.optionContainer}>
+                                    <Image
+                                        source={INCORRECT_IMG}
+                                        style={styles.optionsImg}
+                                    />
+                                </View>
+                            </View>
+                        </View>
+                        <FlatList
+                            data={groupListData}
+                            vertical={true}
+                            showsVerticalScrollIndicator={false}
+                            nestedScrollEnabled={true}
+                            renderItem={({ item, index }) => {
+                                return (
+                                    <View style={styles.userRow}>
+                                        <View style={styles.orderContainer}>
+                                            <Text
+                                                style={styles.orderNumberText}
+                                            >
+                                                {index + 1}
+                                            </Text>
+                                        </View>
+                                        <View style={styles.nameContainer}>
+                                            <Text style={styles.nameText}>
+                                                {item.username}
+                                            </Text>
+                                        </View>
+                                        <View style={styles.optionsContainer}>
+                                            <View
+                                                style={styles.optionContainer}
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.optionCounterText
+                                                    }
+                                                >
+                                                    {item.correct}
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={styles.optionContainer}
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.optionCounterText
+                                                    }
+                                                >
+                                                    {item.unanswered}
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={styles.optionContainer}
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.optionCounterText
+                                                    }
+                                                >
+                                                    {item.incorrect}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                )
+                            }}
+                            keyExtractor={(item, index) => index.toString()}
+                        />
+                    </View>}
                     <Modal
                         visible={this.state.isQuestionModalVisible}
                         transparent={true}
