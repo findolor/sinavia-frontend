@@ -23,8 +23,10 @@ export default StyleSheet.create({
     },
     headerContainer: {
         height: hp(13),
+        width: wp(100),
         flexDirection: 'row',
-        justifyContent: 'space-evenly'
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     questionContainer: {
         backgroundColor: '#ffffff',
@@ -120,22 +122,23 @@ export default StyleSheet.create({
         flex: 1
     },
     userContainer: {
-        justifyContent: 'space-evenly',
+        justifyContent: 'center',
         alignItems: 'center',
-        width: wp(25),
-        flex: 1
+        height: hp(13),
+        width: wp(32)
     },
     seeGroupContainer: {
-        justifyContent: 'space-evenly',
+        justifyContent: 'center',
         alignItems: 'center',
-        width: wp(25),
-        flex: 1
+        height: hp(13),
+        width: wp(32)
     },
     seeGroupCircle: {
-        backgroundColor: '#f77502',
-        height: hp(6),
-        width: hp(6),
-        borderRadius: 100,
+        height: hp(10),
+        width: wp(25),
+        borderWidth: hp(0.5),
+        borderColor: '#FFFFFF',
+        borderRadius: 30,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -148,7 +151,7 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Bold',
         fontSize: wp(4),
         color: '#fff',
-        fontWeight: '800'
+        zIndex: 1
     },
     userProfilePicture: {
         resizeMode: 'contain',
@@ -177,25 +180,24 @@ export default StyleSheet.create({
         fontWeight: '600'
     },
     countdownContainer: {
-        height: hp(9),
-        width: hp(9),
-        backgroundColor: '#fff',
-        borderRadius: 100,
+        height: hp(13),
+        width: wp(20),
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: hp(1)
     },
     countdownInnerContainer: {
-        height: hp(7.5),
-        width: hp(7.5),
-        backgroundColor: '#3FC8D9',
+        height: hp(10),
+        width: hp(10),
+        borderWidth: hp(0.5),
+        borderColor: 'white',
         borderRadius: 100,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     countdownText: {
         fontFamily: 'Averta-Bold',
-        fontSize: wp(7),
+        fontSize: hp(4),
         color: '#fff',
         fontWeight: '800'
     },
@@ -311,9 +313,16 @@ export default StyleSheet.create({
     optionsImg: {
         height: hp(3),
         width: hp(3)
+    },
+    seeUsersAndQuestionTextView: {
+        height: hp(7),
+        width: hp(7),
+        borderRadius: 100,
+        backgroundColor: 'white'
+
     }
 })
 
 export const countdownProps = {
-    size: wp(4)
+    size: hp(2.5)
 }

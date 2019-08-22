@@ -650,16 +650,14 @@ class GroupGame extends React.Component {
                             </View>
                         </View>
                         <View style={styles.seeGroupContainer}>
-                            {this.state.visibleContainer === 'QUESTION' &&  <View><TouchableOpacity onPress={this.seeGroupOnPress}>
-                                <Text style={styles.seeGroupText}>Diğer</Text>
-                                <Text style={styles.seeGroupText}>
-                                    Yarışmacılar
-                                </Text>
-                            </TouchableOpacity></View>}
-                            {this.state.visibleContainer === 'FRIENDS_LIST' &&  <View><TouchableOpacity onPress={this.seeQuestionOnPress}>
+                            {this.state.visibleContainer === 'QUESTION' &&  <TouchableOpacity onPress={this.seeGroupOnPress}><View style={styles.seeGroupCircle}>
+                                <Text style={styles.seeGroupText}>Grubu</Text>
+                                <Text style={styles.seeGroupText}>Gör</Text>
+                            </View></TouchableOpacity>}
+                            {this.state.visibleContainer === 'FRIENDS_LIST' && <TouchableOpacity onPress={this.seeQuestionOnPress}><View style={styles.seeGroupCircle}>
                                 <Text style={styles.seeGroupText}>Soruyu</Text>
                                 <Text style={styles.seeGroupText}>Gör</Text>
-                            </TouchableOpacity></View>}
+                            </View></TouchableOpacity>}
                         </View>
                     </View>
                     {this.state.visibleContainer === 'QUESTION' && <View style={styles.questionContainer}>
@@ -799,12 +797,12 @@ class GroupGame extends React.Component {
                         </Text>
                     </View>
                     <View style={styles.zoomButtonContainer}>
-                        <TouchableOpacity onPress={this.zoomButtonOnPress}>
+                        {this.state.visibleContainer === 'QUESTION' && <TouchableOpacity onPress={this.zoomButtonOnPress}>
                             <Image
                                 source={ZOOM_BUTTON}
                                 style={styles.zoomButton}
                             />
-                        </TouchableOpacity>
+                        </TouchableOpacity>}
                     </View>
                     <View style={styles.backButtonContainer}>
                         <TouchableOpacity onPress={this.backButtonOnPress}>
