@@ -18,7 +18,6 @@ import {
 import { connect } from 'react-redux'
 import styles from './style'
 import NotchView from '../../../components/notchView'
-import nebula from '../../../assets/cover.jpg'
 import statisticsLogo from '../../../assets/pie_chart.png'
 import friendsLogo from '../../../assets/friends.png'
 import trophyLogo from '../../../assets/trophy.png'
@@ -26,6 +25,9 @@ import favoriteLogo from '../../../assets/favorite.png'
 import returnLogo from '../../../assets/return.png'
 import settingsLogo from '../../../assets/settings.png'
 import searchlogo from '../../../assets/search.png'
+
+import COVER from '../../../assets/cover.jpg'
+import PROFILE_PIC from '../../../assets/profile2.jpg'
 
 class Profile extends React.Component {
     constructor(props) {
@@ -99,27 +101,28 @@ class Profile extends React.Component {
                 </View>
                 <View style={styles.profileContainer}>
                     <ImageBackground
-                        source={{ uri: this.props.coverPicture }}
+                        source={COVER}
                         style={styles.coverPhoto}
                         imageStyle={{ borderRadius: 30 }}
                     >
+                        <View style={styles.profileContainerShadowView}>
                         <View style={styles.profilePicView}>
                             <Image
                                 source={{ uri: this.props.profilePicture }}
                                 style={styles.profilePic}
                             />
                         </View>
-                        <View style={styles.nameView}>
-                            <View style={styles.nameSurnameContainer}>
+                        <View style={styles.profileInfoView}>
                                 <Text style={styles.nameSurnameText}>
                                     {this.props.name} {this.props.lastname}
                                 </Text>
-                            </View>
-                            <View style={styles.usernameContainer}>
                                 <Text style={styles.usernameText}>
                                     @{this.props.username}
                                 </Text>
-                            </View>
+                                <Text style={styles.sinaviaScoreText}>
+                                    Sınavia Puanı: 100
+                                </Text>
+                        </View>
                         </View>
                     </ImageBackground>
                 </View>
