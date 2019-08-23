@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux'
 import configureStore from './createStore'
 import rootSaga from '../sagas'
-import userReducer from './user/reducers'
+import clientReducer from './client/reducers'
+import friendsReducer from './friends/reducers'
 
 export default () => {
     const rootReducer = combineReducers({
-        user: userReducer
+        client: clientReducer,
+        friends: friendsReducer
     })
 
     return configureStore(rootReducer, rootSaga)

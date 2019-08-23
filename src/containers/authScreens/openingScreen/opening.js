@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, StatusBar, View, Text } from 'react-native'
+import { Image, View, Text } from 'react-native'
 import { navigationPush } from '../../../services/navigationService'
 import { SCENE_KEYS } from '../../../config/index'
 import {

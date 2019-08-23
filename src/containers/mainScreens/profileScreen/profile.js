@@ -99,25 +99,31 @@ class Profile extends React.Component {
                 </View>
                 <View style={styles.profileContainer}>
                     <ImageBackground
-                        source={{ uri: this.props.coverPicture }}
+                        source={{
+                            uri: this.props.clientInformation.coverPicture
+                        }}
                         style={styles.coverPhoto}
                         imageStyle={{ borderRadius: 30 }}
                     >
                         <View style={styles.profilePicView}>
                             <Image
-                                source={{ uri: this.props.profilePicture }}
+                                source={{
+                                    uri: this.props.clientInformation
+                                        .profilePicture
+                                }}
                                 style={styles.profilePic}
                             />
                         </View>
                         <View style={styles.nameView}>
                             <View style={styles.nameSurnameContainer}>
                                 <Text style={styles.nameSurnameText}>
-                                    {this.props.name} {this.props.lastname}
+                                    {this.props.clientInformation.name}{' '}
+                                    {this.props.clientInformation.lastname}
                                 </Text>
                             </View>
                             <View style={styles.usernameContainer}>
                                 <Text style={styles.usernameText}>
-                                    @{this.props.username}
+                                    @{this.props.clientInformation.username}
                                 </Text>
                             </View>
                         </View>
@@ -195,11 +201,7 @@ class Profile extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    username: state.user.username,
-    name: state.user.name,
-    lastname: state.user.lastname,
-    profilePicture: state.user.profilePicture,
-    coverPicture: state.user.coverPicture
+    clientInformation: state.client.clientInformation
 })
 
 const mapDispatchToProps = dispatch => ({})

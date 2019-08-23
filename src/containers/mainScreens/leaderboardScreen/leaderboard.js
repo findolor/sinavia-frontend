@@ -11,7 +11,7 @@ import {
     View
 } from 'react-native'
 import { connect } from 'react-redux'
-import { userActions } from '../../../redux/user/actions'
+import { clientActions } from '../../../redux/client/actions'
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
 import { LGS, YKS } from '../../../components/mainScreen/carousel/static/exams'
 import * as courses from '../../../components/mainScreen/carousel/static/courses'
@@ -696,7 +696,7 @@ class Leaderboard extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    choosenExam: state.user.choosenExam
+    choosenExam: state.client.choosenExam
 })
 
 const mapDispatchToProps = dispatch => ({})

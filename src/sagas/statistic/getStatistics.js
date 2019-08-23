@@ -1,10 +1,7 @@
 import { getStatistics } from '../../services/apiServices/statistic/getStatistics'
-import { deviceStorage } from '../../services/deviceStorage'
 
-export async function getStatisticsService(friendId) {
-    const userToken = await deviceStorage.getItemFromStorage('JWT')
-
-    const res = getStatistics(userToken, friendId)
+export async function getStatisticsService(clientToken, friendId) {
+    const res = getStatistics(clientToken, friendId)
 
     return res
 }

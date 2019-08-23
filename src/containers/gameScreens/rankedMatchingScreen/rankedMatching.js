@@ -4,8 +4,6 @@ import styles from './style'
 import NotchView from '../../../components/notchView'
 import { SCENE_KEYS, navigationPush } from '../../../services/navigationService'
 
-import COVER from '../../../assets/cover.jpg'
-import PROFILE_PIC from '../../../assets/profile2.jpg'
 import SWORD from '../../../assets/sword.png'
 
 class RankedMatchingScreen extends React.Component {

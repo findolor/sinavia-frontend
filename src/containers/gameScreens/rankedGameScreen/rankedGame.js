@@ -9,9 +9,6 @@ import {
     navigationPush
 } from '../../../services/navigationService'
 
-import SNOOP from '../../../assets/snoop.jpg'
-import DOGE from '../../../assets/doge.jpeg'
-import SORU from '../../../assets/soru.jpg'
 import CLOSE_BUTTON from '../../../assets/closeButton.png'
 import ZOOM_BUTTON from '../../../assets/gameScreens/zoomButton.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
@@ -119,6 +116,7 @@ class RankedGame extends React.Component {
 
         // Clear room listeners
         this.props.room.removeAllListeners()
+        this.props.client.close()
 
         // Clear other game related things
         this.setState({ isCountDownRunning: false })
@@ -136,7 +134,7 @@ class RankedGame extends React.Component {
                 return
             case 'client-leaving':
                 // TODO navigate to the game-stats screen
-                Alert.alert(this.state.opponentId, 'oyuncu oyundan ayrildi.')
+                Alert.alert(this.props.opponentUsername, 'oyundan ayrildi.')
 
                 // Do a shutdown routine
                 this.shutdownGame()

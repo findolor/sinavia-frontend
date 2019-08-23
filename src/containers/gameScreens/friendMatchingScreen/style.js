@@ -122,7 +122,7 @@ export default StyleSheet.create({
         width: wp(100),
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: "rgba(0,0,0,0.5)"
+        backgroundColor: 'rgba(0,0,0,0.5)'
     },
     separatorView: {
         height: hp(20),
@@ -165,7 +165,7 @@ export default StyleSheet.create({
         borderWidth: hp(1),
         borderColor: 'white',
         borderRadius: 100,
-        backgroundColor: "#FF9900",
+        backgroundColor: '#FF9900',
         zIndex: 1
     },
     swordPic: {
@@ -185,7 +185,15 @@ export default StyleSheet.create({
     },
     timerText: {
         fontFamily: 'Averta-BoldItalic',
-        fontSize: hp(9.5),
+        fontSize: hp(10),
         color: '#FFFFFF'
+    },
+    sword: {
+        height: hp(19.5),
+        width: hp(12.75)
     }
 })
+
+export const countdownProps = {
+    size: wp(9)
+}

@@ -3,56 +3,77 @@ import { getToken } from '../../services/apiServices/token/getToken'
 import { getUser } from '../../services/apiServices/user/getUser'
 import { deviceStorage } from '../../services/deviceStorage'
 import { navigationReset } from '../../services/navigationService'
-import { userTypes } from '../../redux/user/actions'
+import { clientTypes } from '../../redux/client/actions'
+import { friendTypes } from '../../redux/friends/actions'
 import { fcmService } from '../../services/fcmService'
 import { postFCMToken } from '../../services/apiServices/fcmToken/postToken'
+import { getFriends } from '../../services/apiServices/friendship/getFriends'
 
 export function* loginUser(action) {
     try {
         // We get our token from the api
         // action.payload is our email and password
         const res = yield call(getToken, action.payload)
-
-        // We save the token
-        deviceStorage.saveItemToStorage('JWT', res.token)
+        // Saving the api token to redux state
+        yield put({
+            type: clientTypes.SAVE_API_TOKEN,
+            payload: res.token
+        })
+        // We save the token to storage
+        deviceStorage.saveItemToStorage('clientToken', res.token)
 
         // We save our user credentials
         deviceStorage.saveItemToStorage(
-            'userCredentials',
+            'clientCredentials',
             JSON.stringify(action.payload)
         )
-
-        // Then we get our user information
-        const userInformation = yield call(getUser, res.token, res.id)
-
-        // We save the user information
-        deviceStorage.saveItemToStorage(
-            'userInformation',
-            JSON.stringify(userInformation)
-        )
-
-        // We save the user id
-        deviceStorage.saveItemToStorage('userId', res.id)
-
+        // Save credential state to redux
         yield put({
-            type: userTypes.LOGIN_USER_SUCCESS,
-            payload: {
-                username: userInformation.username,
-                name: userInformation.name,
-                lastname: userInformation.lastname,
-                profilePicture: userInformation.profilePicture,
-                coverPicture: userInformation.coverPicture
-            }
+            type: clientTypes.SAVE_CLIENT_CREDENTIALS,
+            payload: action.payload
         })
 
-        yield call(fcmService.checkPermissions)
+        // Then we get our user information
+        const clientInformation = yield call(getUser, res.token, res.id)
+        // We save the user information
+        deviceStorage.saveItemToStorage(
+            'clientInformation',
+            JSON.stringify(clientInformation)
+        )
+        // Then we save it as redux state
+        yield put({
+            type: clientTypes.SAVE_CLIENT_INFORMATION,
+            payload: clientInformation
+        })
 
+        // We save the user id storage and redux state
+        deviceStorage.saveItemToStorage('clientDBId', res.id)
+        yield put({
+            type: clientTypes.SAVE_CLIENT_DB_ID,
+            payload: res.id
+        })
+
+        // We check if client has permissions for fcm
+        yield call(fcmService.checkPermissions)
+        // We get our fcm token and save it
         const fcmToken = yield call(fcmService.getFcmToken)
         deviceStorage.saveItemToStorage('fcmToken', fcmToken)
+        // We add the token to our client info
+        clientInformation.fcmToken = fcmToken
+        // We send a request to api to save our fcm token
+        yield call(postFCMToken, res.token, clientInformation)
 
-        userInformation.fcmToken = fcmToken
-
-        yield call(postFCMToken, res.token, userInformation)
+        // We get all of our friend ids
+        const friendsList = yield call(getFriends, res.token, res.id)
+        deviceStorage.saveItemToStorage(
+            'clientFriends',
+            JSON.stringify(friendsList)
+        )
+        // We save clients friends ids to redux state
+        yield put({
+            type: friendTypes.SAVE_FRIEND_IDS,
+            payload: friendsList
+        })
 
         // Going to the main screen
         navigationReset('main')

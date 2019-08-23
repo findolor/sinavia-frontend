@@ -7,7 +7,6 @@ export const postUser = async userInformation => {
             'https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-512.png'
         userInformation.coverPicture =
             'https://assets.traveltriangle.com/blog/wp-content/uploads/2017/11/Hill-Stations-Near-Kolkata-cover1-400x267.jpg'
-        userInformation.isDeleted = 0
 
         const response = await axios.post(
             API_ENDPOINT + 'users/',

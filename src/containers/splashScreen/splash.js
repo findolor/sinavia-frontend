@@ -4,7 +4,7 @@ import styles from './style'
 import { navigationReset, SCENE_KEYS } from '../../services/navigationService'
 import { deviceStorage } from '../../services/deviceStorage'
 import { connect } from 'react-redux'
-import { userActions } from '../../redux/user/actions'
+import { clientActions } from '../../redux/client/actions'
 import LottieView from 'lottie-react-native'
 
 const APP_LOGO = require('../../assets/sinavia_logo_cut.png')
@@ -19,7 +19,7 @@ class SplashScreen extends React.PureComponent {
 
     getJWTToken = async () => {
         try {
-            const token = await deviceStorage.getItemFromStorage('JWT')
+            const token = await deviceStorage.getItemFromStorage('clientToken')
 
             return token
         } catch (error) {
@@ -75,7 +75,7 @@ class SplashScreen extends React.PureComponent {
 const mapStateToProps = state => ({})
 
 const mapDispatchToProps = dispatch => ({
-    authenticateUser: token => dispatch(userActions.checkUserToken(token))
+    authenticateUser: token => dispatch(clientActions.checkUserToken(token))
 })
 
 export default connect(

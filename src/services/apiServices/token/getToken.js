@@ -3,7 +3,6 @@ import { API_ENDPOINT } from '../../../config/index'
 
 export const getToken = async userInformation => {
     try {
-        console.log(API_ENDPOINT, userInformation)
         const response = await axios.post(
             API_ENDPOINT + 'token/',
             userInformation

@@ -15,7 +15,7 @@ import {
     navigationReset,
     SCENE_KEYS
 } from '../../../../../services/navigationService'
-import { deviceStorage } from '../../../../../services/deviceStorage'
+import { connect } from 'react-redux'
 // Colyseus game engine imports
 import { Buffer } from 'buffer'
 import { AsyncStorage } from 'react-native'
@@ -82,14 +82,12 @@ class CreateGroupRoom extends React.Component {
     }
 
     joinRoom = async () => {
-        const databaseId = await deviceStorage.getItemFromStorage('userId')
-
         this.room = this.client.join('groupRoom', {
             // These will be props coming from home screen
             examName: 'LGS',
             courseName: 'Matematik',
             subjectName: 'Sayilar',
-            databaseId: databaseId,
+            databaseId: this.props.clientDBId,
             roomCode: this.state.groupCode,
             create: true
         })
@@ -337,4 +335,13 @@ class CreateGroupRoom extends React.Component {
     }
 }
 
-export default CreateGroupRoom
+const mapStateToProps = state => ({
+    clientDBId: state.client.clientDBId
+})
+
+const mapDispatchToProps = dispatch => ({})
+
+export default connect(
+    mapStateToProps,
+    null
+)(CreateGroupRoom)

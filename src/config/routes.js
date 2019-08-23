@@ -63,6 +63,10 @@ const RouterComp = () => {
                         key={SCENE_KEYS.mainScreens.notifications}
                         component={mainScreens.notifications}
                     />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.statistics}
+                        component={mainScreens.statistics}
+                    />
                 </Scene>
                 <Scene key="auth" hideNavBar={true}>
                     <Scene
@@ -106,6 +110,18 @@ const RouterComp = () => {
                     <Scene
                         key={SCENE_KEYS.gameScreens.groupGameStats}
                         component={gameScreens.groupGameStats}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.gameScreens.rankedMatchingScreen}
+                        component={gameScreens.rankedMatchingScreen}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.gameScreens.friendMatchingScreen}
+                        component={gameScreens.friendMatchingScreen}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.gameScreens.friendGame}
+                        component={gameScreens.friendGame}
                     />
                 </Scene>
             </Scene>

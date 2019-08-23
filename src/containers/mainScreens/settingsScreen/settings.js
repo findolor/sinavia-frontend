@@ -57,7 +57,9 @@ class Settings extends React.Component {
                 </View>
                 <View style={styles.profileContainer}>
                     <ImageBackground
-                        source={{ uri: this.props.coverPicture }}
+                        source={{
+                            uri: this.props.clientInformation.coverPicture
+                        }}
                         style={styles.coverPhoto}
                         imageStyle={{ borderRadius: 30 }}
                     >
@@ -68,7 +70,10 @@ class Settings extends React.Component {
                         </View>
                         <View style={styles.profilePicView}>
                             <ImageBackground
-                                source={{ uri: this.props.profilePicture }}
+                                source={{
+                                    uri: this.props.clientInformation
+                                        .profilePicture
+                                }}
                                 style={styles.profilePic}
                                 imageStyle={{ borderRadius: 100 }}
                             >
@@ -126,10 +131,7 @@ class Settings extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    name: state.user.name,
-    lastname: state.user.lastname,
-    profilePicture: state.user.profilePicture,
-    coverPicture: state.user.coverPicture
+    clientInformation: state.client.clientInformation
 })
 
 const mapDispatchToProps = dispatch => ({})

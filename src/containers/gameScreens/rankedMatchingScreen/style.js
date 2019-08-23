@@ -114,7 +114,7 @@ export default StyleSheet.create({
         width: wp(100),
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: "rgba(0,0,0,0.5)"
+        backgroundColor: 'rgba(0,0,0,0.5)'
     },
     separatorView: {
         height: hp(20),
@@ -138,7 +138,7 @@ export default StyleSheet.create({
         borderWidth: hp(0.5),
         borderColor: 'white',
         borderRadius: 100,
-        backgroundColor: "rgba(0,0,0,0.5)"
+        backgroundColor: 'rgba(0,0,0,0.5)'
     },
     swordPic: {
         height: wp(19.5),

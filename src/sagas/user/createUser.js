@@ -3,43 +3,61 @@ import { postUser } from '../../services/apiServices/user/postUser'
 import { getToken } from '../../services/apiServices/token/getToken'
 import { deviceStorage } from '../../services/deviceStorage'
 import { navigationReset } from '../../services/navigationService'
-import { userTypes } from '../../redux/user/actions'
+import { clientTypes } from '../../redux/client/actions'
 
 export function* createUser(action) {
     try {
+        // We send the client information to our server
         const res = yield call(postUser, action.payload)
 
+        // Saving the credentials to storage
         deviceStorage.saveItemToStorage(
-            'userInformation',
-            JSON.stringify(action.payload)
-        )
-
-        deviceStorage.saveItemToStorage(
-            'userCredentials',
+            'clientCredentials',
             JSON.stringify({
                 email: action.payload.email,
                 password: action.payload.password
             })
         )
+        // Saving credentials to redux state
+        yield put({
+            type: clientTypes.SAVE_CLIENT_CREDENTIALS,
+            payload: {
+                email: action.payload.email,
+                password: action.payload.password
+            }
+        })
 
-        deviceStorage.saveItemToStorage('userId', res.id)
+        // Saving the id to storage
+        deviceStorage.saveItemToStorage('clientDBId', res.id)
+        // Saving the id to redux state
+        yield put({
+            type: clientTypes.SAVE_CLIENT_DB_ID,
+            payload: res.id
+        })
 
+        // Get token from server
         const response = yield call(getToken, {
             email: action.payload.email,
             password: action.payload.password
         })
-
-        deviceStorage.saveItemToStorage('JWT', response.token)
-
+        // Save token to storage
+        deviceStorage.saveItemToStorage('clientToken', response.token)
+        // Save token to redux state
         yield put({
-            type: userTypes.CREATE_USER_SUCCESS,
-            payload: {
-                username: action.payload.username,
-                name: action.payload.name,
-                lastname: action.payload.lastname,
-                profilePicture: action.payload.profilePicture,
-                coverPicture: action.payload.coverPicture
-            }
+            type: clientTypes.SAVE_API_TOKEN,
+            payload: response.token
+        })
+
+        // Saving information to storage
+        delete action.payload.password
+        deviceStorage.saveItemToStorage(
+            'clientInformation',
+            JSON.stringify(action.payload)
+        )
+        // Saving client information to redux state
+        yield put({
+            type: clientTypes.SAVE_CLIENT_INFORMATION,
+            payload: action.payload
         })
 
         navigationReset('main')

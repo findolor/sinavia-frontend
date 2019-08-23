@@ -1,11 +1,9 @@
 import { getFriendship } from '../../services/apiServices/friendship/getFriendship'
-import { deviceStorage } from '../../services/deviceStorage'
 
-export async function getFriendshipService(friendId) {
-    const userToken = await deviceStorage.getItemFromStorage('JWT')
-    const userId = await deviceStorage.getItemFromStorage('userId')
+export async function getFriendshipService(clientToken, clientDBId, friendId) {
+    const res = getFriendship(clientToken, clientDBId, friendId)
 
-    const res = getFriendship(userToken, userId, friendId)
+    console.log(clientDBId, clientToken, friendId)
 
     return res
 }

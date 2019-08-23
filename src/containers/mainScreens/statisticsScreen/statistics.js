@@ -516,7 +516,7 @@ class Statistics extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    choosenExam: state.user.choosenExam
+    choosenExam: state.client.choosenExam
 })
 
 const mapDispatchToProps = dispatch => ({})

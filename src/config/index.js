@@ -1,7 +1,7 @@
 const api = {
-    host: 'http://10.253.12.217:4000/api/',
+    host: 'http://localhost:4000/api/',
     hostAWS: 'http://sinavia-test.eu-central-1.elasticbeanstalk.com/api/',
-    gameEngine: 'http://10.253.12.217:5000',
+    gameEngine: 'http://localhost:5000',
     gameEngineAWS: 'http://sinavia-test.eu-central-1.elasticbeanstalk.com:5000'
 }
 
@@ -20,7 +20,8 @@ const scene_keys = {
         friendMatchingScreen: 'friendMatchingScreen',
         matchIntro: 'matchIntro',
         groupGame: 'groupGame',
-        groupGameStats: 'groupGameStats'
+        groupGameStats: 'groupGameStats',
+        friendGame: 'friendGame'
     },
     mainScreens: {
         main: 'main',

@@ -13,7 +13,8 @@ import {
     FlatList
 } from 'react-native'
 import { connect } from 'react-redux'
-import { userActions } from '../../../redux/user/actions'
+import { clientActions } from '../../../redux/client/actions'
+import { friendActions } from '../../../redux/friends/actions'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
@@ -41,6 +42,9 @@ import * as Colyseus from 'colyseus.js'
 import firebase from 'react-native-firebase'
 import { fcmService } from '../../../services/fcmService'
 
+import { friendshipServices } from '../../../sagas/friendship/'
+import { friendGameServices } from '../../../sagas/friendGame/'
+import { userServices } from '../../../sagas/user/'
 import { GAME_ENGINE_ENDPOINT } from '../../../config'
 
 import NOTIFICATION_LOGO from '../../../assets/mainScreens/notification.png'
@@ -53,7 +57,6 @@ import {
 } from '../../../services/navigationService'
 import NotchView from '../../../components/notchView'
 
-import PROFILE_PIC from '../../../assets/profile2.jpg'
 import SWORD from '../../../assets/sword.png'
 const carouselFirstItem = 0
 const exams = [
@@ -84,74 +87,6 @@ const FRIENDS_EMPTY_IMAGE = require('../../../assets/mainScreens/arkadas_siyah.p
 const GROUP_SELECTED_IMAGE = require('../../../assets/mainScreens/group.png')
 const GROUP_EMPTY_IMAGE = require('../../../assets/mainScreens/group_siyah.png')
 
-const friendsListData = [
-    {
-        userPic: PROFILE_PIC,
-        name: 'Nurettin Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Mehmet',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Nakışçı',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Arca Altunsu',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Orkun Külçe',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Ahmet',
-        username: 'ahmetnakisci'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Burak',
-        username: 'ruzgar'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan',
-        username: 'haqotherage'
-    }
-]
-
 class Home extends React.Component {
     constructor(props) {
         super(props)
@@ -175,7 +110,11 @@ class Home extends React.Component {
             visibleRankedGameStartPress: false,
             opponentUserPic: '',
             opponentName: '',
-            opponentUsername: ''
+            opponentUsername: '',
+            opponentInformation: {},
+            friendList: [],
+            friendListNewData: [],
+            originalFriends: []
         }
     }
 
@@ -193,14 +132,104 @@ class Home extends React.Component {
                 })
         } */
         this.messageListener = firebase.messaging().onMessage(message => {
-            Alert.alert(message.data.body)
+            this.fcmMessagePicker(message)
         })
         this.NotificationListener = firebase
             .notifications()
             .onNotification(notification => {
-                console.log(notification)
                 Alert.alert(notification.body)
             })
+    }
+
+    fcmMessagePicker = message => {
+        switch (message.data.type) {
+            case 'friendRequest':
+                break
+            case 'friendApproved':
+                this.customAlert(
+                    true,
+                    'Arkadaşlık İsteği!',
+                    message.data.body,
+                    this.friendRequestAccepted,
+                    {
+                        opponentId: message.data.userId
+                    }
+                )
+                break
+            case 'friendGameRequest':
+                this.customAlert(
+                    false,
+                    'Oyun İsteği!',
+                    message.data.body,
+                    this.playFriendGame,
+                    {
+                        opponentId: message.data.userId,
+                        roomCode: message.data.roomCode
+                    }
+                )
+                break
+        }
+    }
+
+    playFriendGame = async params => {
+        const opponentInformation = await userServices.getUser(
+            this.props.clientToken,
+            params.opponentId
+        )
+
+        navigationReset('game', { isHardReset: true })
+        navigationPush(SCENE_KEYS.gameScreens.friendMatchingScreen, {
+            roomCode: params.roomCode,
+            opponentInformation: opponentInformation,
+            isCreateRoom: false
+        })
+    }
+
+    friendRequestAccepted = params => {
+        const friends = this.props.friendIds
+        friends.push(params.opponentId)
+
+        this.props.saveFriendIdList(friends)
+    }
+
+    customAlert = (
+        isTwoButtoned,
+        alertTitle,
+        alertBody,
+        onPressFunction,
+        params
+    ) => {
+        if (isTwoButtoned) {
+            Alert.alert(
+                alertTitle,
+                alertBody,
+                [
+                    {
+                        text: 'Tamam',
+                        onPress: () => onPressFunction(params)
+                    }
+                ],
+                { cancelable: false }
+            )
+        } else {
+            Alert.alert(
+                alertTitle,
+                alertBody,
+                [
+                    {
+                        text: 'Reddet',
+                        onPress: () => {
+                            return
+                        }
+                    },
+                    {
+                        text: 'Kabul et',
+                        onPress: () => onPressFunction(params)
+                    }
+                ],
+                { cancelable: false }
+            )
+        }
     }
 
     _renderItemWithParallax({ item, index }, parallaxProps) {
@@ -425,8 +454,18 @@ class Home extends React.Component {
         navigationPush(SCENE_KEYS.mainScreens.createGroupRoom)
     }
 
-    friendRoomOnPress = () => {
-        this.setState({ visibleView: 'FRIEND_ROOM' })
+    friendRoomOnPress = async () => {
+        if (Object.keys(this.props.friendIds).length === 0) return
+        const friends = await userServices.getUsers(
+            this.props.clientToken,
+            this.props.friendIds
+        )
+
+        this.setState({
+            visibleView: 'FRIEND_ROOM',
+            friendList: friends,
+            originalFriends: friends
+        })
     }
 
     friendRoomAndGameModesBackButtonOnPress = () => {
@@ -471,30 +510,63 @@ class Home extends React.Component {
     }
 
     searchFilterFunction = text => {
+        if (text === '')
+            this.setState({ friendList: this.state.originalFriends })
         this.setState({
             value: text
         })
 
-        const newData = friendsListData.filter(item => {
-            const itemData = `${item.name.toUpperCase()} ${item.username.toUpperCase()}`
+        const newData = this.state.friendList.filter(item => {
+            const itemData = `${item.name.toUpperCase() +
+                ' ' +
+                item.lastname.toUpperCase()} ${item.username.toUpperCase()}`
             const textData = text.toUpperCase()
 
             return itemData.indexOf(textData) > -1
         })
         this.setState({
-            data: newData
+            friendList: newData,
+            friendListNewData: newData
         })
     }
 
     userOnPress(user) {
         this.setState({
-            opponentUserPic: user.userPic,
-            opponentName: user.name,
-            opponentUsername: user.username
+            opponentUserPic: user.profilePicture,
+            opponentName: user.name + ' ' + user.lastname,
+            opponentUsername: user.username,
+            opponentInformation: user
         })
-        console.log(this.state.opponentUserPic)
-        console.log(this.state.opponentName)
-        console.log(this.state.opponentUsername)
+    }
+
+    randomCodeGenerator() {
+        var result = ''
+        var characters = 'ABCDEF0123456789'
+        var charactersLength = characters.length
+        for (var i = 0; i < 6; i++) {
+            result += characters.charAt(
+                Math.floor(Math.random() * charactersLength)
+            )
+        }
+        return result
+    }
+
+    friendGameModeOnPress = async () => {
+        const randomNumber = this.randomCodeGenerator()
+
+        navigationReset('game', { isHardReset: true })
+        navigationPush(SCENE_KEYS.gameScreens.friendMatchingScreen, {
+            roomCode: randomNumber,
+            opponentInformation: this.state.opponentInformation,
+            isCreateRoom: true
+        })
+
+        await friendGameServices.sendFriendGameRequest(
+            this.props.clientToken,
+            this.props.clientInformation,
+            randomNumber,
+            this.state.opponentInformation.fcmToken
+        )
     }
 
     friendRoomView() {
@@ -515,16 +587,21 @@ class Home extends React.Component {
                         <View style={styles.userContainer}>
                             <View style={styles.userPicContainer}>
                                 <Image
-                                    source={PROFILE_PIC}
+                                    source={{
+                                        uri: this.props.clientInformation
+                                            .profilePicture
+                                    }}
                                     style={styles.userPic}
                                 />
                             </View>
                             <View style={styles.nameAndUsernameContainer}>
                                 <Text style={styles.nameAndSurnameText}>
-                                    Nurettin Hakan Yılmaz
+                                    {this.props.clientInformation.name +
+                                        '  ' +
+                                        this.props.clientInformation.lastname}
                                 </Text>
                                 <Text style={styles.userNameText}>
-                                    @haqotherage
+                                    @{this.props.clientInformation.username}
                                 </Text>
                             </View>
                         </View>
@@ -532,7 +609,7 @@ class Home extends React.Component {
                         <View style={styles.userContainer}>
                             <View style={styles.userPicContainer}>
                                 <Image
-                                    source={this.state.opponentUserPic}
+                                    source={{ uri: this.state.opponentUserPic }}
                                     style={styles.userPic}
                                 />
                             </View>
@@ -563,7 +640,7 @@ class Home extends React.Component {
                         </View>
                         <View style={styles.spaceView} />
                         <FlatList
-                            data={this.state.data}
+                            data={this.state.friendList}
                             vertical={true}
                             showsVerticalScrollIndicator={false}
                             renderItem={({ item }) => {
@@ -578,13 +655,17 @@ class Home extends React.Component {
                                                 }
                                             >
                                                 <Image
-                                                    source={item.userPic}
+                                                    source={{
+                                                        uri: item.profilePicture
+                                                    }}
                                                     style={styles.userPicInRow}
                                                 />
                                             </View>
                                             <View style={styles.nameContainer}>
                                                 <Text style={styles.nameText}>
-                                                    {item.name}
+                                                    {item.name +
+                                                        ' ' +
+                                                        item.lastname}
                                                 </Text>
                                                 <Text
                                                     style={styles.userNameText}
@@ -606,6 +687,7 @@ class Home extends React.Component {
                     width={wp(87.5)}
                     color="#00D9EF"
                     buttonText="Başla"
+                    onPress={this.friendGameModeOnPress}
                 />
             </View>
         )
@@ -624,14 +706,12 @@ class Home extends React.Component {
     }
 
     tryJoiningRoom = async () => {
-        const databaseId = await deviceStorage.getItemFromStorage('userId')
-
         this.room = this.client.join('groupRoom', {
             // These will be props coming from home screen
             examName: 'LGS',
             courseName: 'Matematik',
             subjectName: 'Sayilar',
-            databaseId: databaseId,
+            databaseId: this.props.clientDBId,
             roomCode: this.state.groupCodeOnChangeText.toString(),
             // Because we are joining a game, we don't want to create a new room
             create: false
@@ -745,7 +825,8 @@ class Home extends React.Component {
                             <TouchableOpacity onPress={this.profilePicOnPress}>
                                 <Image
                                     source={{
-                                        uri: this.props.profilePicture
+                                        uri: this.props.clientInformation
+                                            .profilePicture
                                     }}
                                     style={styles.profilePic}
                                 />
@@ -811,13 +892,18 @@ class Home extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    profilePicture: state.user.profilePicture,
-    choosenExam: state.user.choosenExam
+    choosenExam: state.client.choosenExam,
+    clientInformation: state.client.clientInformation,
+    clientDBId: state.client.clientDBId,
+    clientToken: state.client.clientToken,
+    friendIds: state.friends.friendIds
 })
 
 const mapDispatchToProps = dispatch => ({
     saveChoosenExam: choosenExam =>
-        dispatch(userActions.saveChoosenExam(choosenExam))
+        dispatch(clientActions.saveChoosenExam(choosenExam)),
+    saveFriendIdList: friendList =>
+        dispatch(friendActions.saveFriendIds(friendList))
 })
 
 export default connect(

@@ -8,32 +8,36 @@ import {
     navigationReset,
     navigationPush
 } from '../../../services/navigationService'
-import { connect } from 'react-redux'
 
 import CLOSE_BUTTON from '../../../assets/closeButton.png'
 import ZOOM_BUTTON from '../../../assets/gameScreens/zoomButton.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
+import OPPONENTS_ANSWER from '../../../assets/gameScreens/jokers/opponentsAnswer.png'
 import FIFTY_FIFTY from '../../../assets/gameScreens/jokers/fiftyFifty.png'
 import SECOND_CHANCE from '../../../assets/gameScreens/jokers/secondChance.png'
-import GROUP_LOGO from '../../../assets/mainScreens/group.png'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
+const OPPONENT_ANSWER_COLOR = '#f5bc14'
 const CORRECT_ANSWER_COLOR = '#14e31f'
 const INCORRECT_ANSWER_COLOR = '#eb2b0e'
 
-class GroupGame extends React.Component {
+class FriendGame extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             // Player buttons
             playerOneButton: 0,
+            playerTwoButton: 0,
             // Question number
             questionNumber: 0,
             // Player answers
             playerOneCorrect: 0,
             playerOneIncorrect: 0,
             playerOneUnanswered: 0,
+            playerTwoCorrect: 0,
+            playerTwoIncorrect: 0,
+            playerTwoUnanswered: 0,
             // Countdown running variable
             isCountDownRunning: false,
             // Round starter variable
@@ -62,6 +66,8 @@ class GroupGame extends React.Component {
             countDownTime: 60,
             // playerProps state
             playerProps: {},
+            // Opponent clientId
+            opponentId: this.props.opponentId,
             // modal visibility variable
             isQuestionModalVisible: false,
             // Question option names
@@ -73,8 +79,10 @@ class GroupGame extends React.Component {
             buttonSixName: 'Boş',
             // Joker disable variables
             isRemoveOptionJokerDisabled: false,
+            isSeeOpponentAnswerJokerDisabled: false,
             isSecondChanceJokerDisabled: false,
             // Joker active variables
+            isSeeOpponentAnswerJokerActive: false,
             isSecondChanceJokerActive: false,
             // Current question answer for second chance
             questionAnswer: 0
@@ -89,7 +97,7 @@ class GroupGame extends React.Component {
         })
         this.props.room.onStateChange.add(state => {
             // We update the UI after state changes
-            this.chooseStateAction(state.groupState)
+            this.chooseStateAction(state.friendState)
         })
         // Joker messages come through here
         this.props.room.onMessage.add(message => {
@@ -108,7 +116,7 @@ class GroupGame extends React.Component {
 
         // Clear room listeners
         this.props.room.removeAllListeners()
-
+        this.props.client.close()
         // Clear other game related things
         this.setState({ isCountDownRunning: false })
     }
@@ -125,39 +133,34 @@ class GroupGame extends React.Component {
                 return
             case 'client-leaving':
                 // TODO navigate to the game-stats screen
-                Alert.alert(this.state.opponentId, 'oyuncu oyundan ayrildi.')
+                Alert.alert(this.props.opponentUsername, 'oyundan ayrildi.')
+
+                // Do a shutdown routine
+                this.shutdownGame()
+
+                navigationReset('main')
                 return
-            case 'only-client':
-                this.onlyClientMatchQuit()
-                return
-            case 'finished-resend':
-                this.props.room.send({
-                    action: 'finished'
-                })
         }
     }
 
-    onlyClientMatchQuit = () => {
-        Alert.alert('Herkes oyundan ayrıldı!')
-        this.shutdownGame()
-        this.props.client.close()
-    }
-
     // TODO Move these actions to their functions
-    chooseStateAction = groupState => {
+    chooseStateAction = friendState => {
         // We check the action that happened
-        switch (groupState.stateInformation) {
+        switch (friendState.stateInformation) {
             // Setting up question number and resetting the buttons
             case 'question':
                 // We set the questionList once when the game starts
-                if (groupState.questionNumber === 0)
-                    this.setState({ questionList: groupState.questionList })
+                if (friendState.questionNumber === 0)
+                    this.setState({ questionList: friendState.questionList })
+                // If the second chance joker is active when the round starts, we deactivate it
+                if (this.state.isSeeOpponentAnswerJokerActive)
+                    this.setState({ isSeeOpponentAnswerJokerActive: false })
                 // We reset the questions every time a round starts
                 this.resetButtons()
                 // Necessary settings
                 this.setState({
                     start: false,
-                    questionNumber: groupState.questionNumber,
+                    questionNumber: friendState.questionNumber,
                     isQuestionAnswered: false,
                     countDownTime: 60,
                     isCountDownRunning: false
@@ -166,6 +169,7 @@ class GroupGame extends React.Component {
                 this.startTimeout = setTimeout(() => {
                     this.setState({
                         playerOneButton: 0,
+                        playerTwoButton: 0,
                         isCountDownRunning: true,
                         start: true
                     })
@@ -173,13 +177,33 @@ class GroupGame extends React.Component {
                 return
             // As soon as someone answers, a result event is fired
             case 'result':
-                this.setState({ playerProps: groupState.playerProps })
+                if (
+                    this.state.isSeeOpponentAnswerJokerActive &&
+                    // We check if the answer is from the opponent, if not we don't proceed
+                    friendState.playerProps[this.props.client.id].answers[
+                        this.state.questionNumber
+                    ] === undefined
+                ) {
+                    this.setState({ isSeeOpponentAnswerJokerActive: false })
+                    // We show the opponent answer here
+                    this.highlightOpponentButton(
+                        friendState.playerProps[this.state.opponentId].answers[
+                            this.state.questionNumber
+                        ].answer
+                    )
+                }
+                this.setState({ playerProps: friendState.playerProps })
                 return
             case 'show-results':
                 // 8 second countdown time for the results
                 this.setState({
                     countDownTime: 8
                 })
+                this.highlightOpponentButton(
+                    friendState.playerProps[this.state.opponentId].answers[
+                        this.state.questionNumber
+                    ].answer
+                )
                 this.updateTimeout = setTimeout(() => {
                     // We wait 2.5 seconds for the reveal
                     this.updatePlayerResults()
@@ -187,25 +211,31 @@ class GroupGame extends React.Component {
                 return
             case 'match-finished':
                 this.shutdownGame()
-                navigationPush(SCENE_KEYS.gameScreens.groupGameStats, {
+                navigationPush(SCENE_KEYS.gameScreens.gameStats, {
                     playerProps: this.state.playerProps,
                     room: this.props.room,
                     client: this.props.client,
                     questionList: this.state.questionList,
-                    examName: groupState.matchInformation.examName
+                    playerUsername: this.props.playerUsername,
+                    playerProfilePicture: this.props.playerProfilePicture,
+                    opponentUsername: this.props.opponentUsername,
+                    opponentId: this.props.opponentId,
+                    opponentProfilePicture: this.props.opponentProfilePicture
                 })
                 return
         }
     }
-    // TODO add a list here that has all the answers
+
     updatePlayerResults = () => {
         // Player answers to the question
         const answers = this.state.playerProps[this.props.client.id].answers
+        const answersOpponent = this.state.playerProps[this.state.opponentId]
+            .answers
 
         // Switch statement for the user
         this.updateAnswers(answers, true)
         // Switch statement for the opponent
-        // TODO make the list here
+        this.updateAnswers(answersOpponent, false)
     }
 
     updateAnswers = (answers, isClient) => {
@@ -220,9 +250,10 @@ class GroupGame extends React.Component {
                         answers[this.state.questionNumber].correctAnswer,
                         true
                     )
-                } else {
-                    // TODO Add it to the list
-                }
+                } else
+                    this.setState({
+                        playerTwoUnanswered: this.state.playerTwoUnanswered + 1
+                    })
                 return
             // If the answer is correct
             case true:
@@ -234,9 +265,10 @@ class GroupGame extends React.Component {
                         answers[this.state.questionNumber].answer,
                         true
                     )
-                } else {
-                    // TODO Add it to the list
-                }
+                } else
+                    this.setState({
+                        playerTwoCorrect: this.state.playerTwoCorrect + 1
+                    })
                 return
             // If the answer is incorrect
             case false:
@@ -252,9 +284,10 @@ class GroupGame extends React.Component {
                         answers[this.state.questionNumber].correctAnswer,
                         true
                     )
-                } else {
-                    // TODO Add it to the list
-                }
+                } else
+                    this.setState({
+                        playerTwoIncorrect: this.state.playerTwoIncorrect + 1
+                    })
                 return
         }
     }
@@ -384,6 +417,29 @@ class GroupGame extends React.Component {
         }
     }
 
+    highlightOpponentButton = buttonNumber => {
+        switch (buttonNumber) {
+            case 1:
+                this.setState({ buttonOneBorderColor: OPPONENT_ANSWER_COLOR })
+                return
+            case 2:
+                this.setState({ buttonTwoBorderColor: OPPONENT_ANSWER_COLOR })
+                return
+            case 3:
+                this.setState({ buttonThreeBorderColor: OPPONENT_ANSWER_COLOR })
+                return
+            case 4:
+                this.setState({ buttonFourBorderColor: OPPONENT_ANSWER_COLOR })
+                return
+            case 5:
+                this.setState({ buttonFiveBorderColor: OPPONENT_ANSWER_COLOR })
+                return
+            case 6:
+                this.setState({ buttonSixBorderColor: OPPONENT_ANSWER_COLOR })
+                return
+        }
+    }
+
     disableButtons = () => {
         this.setState({
             isButtonOneDisabled: true,
@@ -410,6 +466,7 @@ class GroupGame extends React.Component {
             buttonFiveBorderColor: NORMAL_BUTTON_COLOR,
             buttonSixBorderColor: NORMAL_BUTTON_COLOR,
             playerOneButton: 0,
+            playerTwoButton: 0,
             buttonOneName: 'A',
             buttonTwoName: 'B',
             buttonThreeName: 'C',
@@ -506,6 +563,26 @@ class GroupGame extends React.Component {
         }
     }
 
+    seeOpponentAnswerJokerOnPressed = () => {
+        this.setState({
+            isSeeOpponentAnswerJokerDisabled: true,
+            isSeeOpponentAnswerJokerActive: true
+        })
+
+        // If the user answered the question before we used the joker, we show the answer immediately
+        const playerProp = this.state.playerProps[this.state.opponentId]
+        let answers
+        // Necessary checks for any undefined variables
+        if (playerProp !== undefined) {
+            answers = playerProp.answers[this.state.questionNumber]
+
+            if (answers !== undefined) {
+                this.setState({ isSeeOpponentAnswerJokerActive: false })
+                this.highlightOpponentButton(answers.answer)
+            }
+        }
+    }
+
     secondChangeJokerOnPressed = () => {
         this.setState({
             isSecondChanceJokerDisabled: true,
@@ -514,14 +591,6 @@ class GroupGame extends React.Component {
         this.props.room.send({
             action: 'second-chance-joker'
         })
-    }
-
-    seeGroupOnPress = () => {
-        this.setState({ isGroupModalVisible: true })
-    }
-
-    groupModalCloseOnPress = () => {
-        this.setState({ isGroupModalVisible: false })
     }
 
     render() {
@@ -533,14 +602,13 @@ class GroupGame extends React.Component {
                         <View style={styles.userContainer}>
                             <Image
                                 source={{
-                                    uri: this.props.clientInformation
-                                        .profilePicture
+                                    uri: this.props.playerProfilePicture
                                 }}
                                 style={styles.userProfilePicture}
                             />
                             <View style={styles.usernameContainer}>
                                 <Text style={styles.usernameText}>
-                                    {this.props.clientInformation.username}
+                                    {this.props.playerUsername}
                                 </Text>
                             </View>
                             <View style={styles.answersContainer}>
@@ -579,19 +647,35 @@ class GroupGame extends React.Component {
                                 />
                             </View>
                         </View>
-                        <View style={styles.seeGroupContainer}>
-                            <TouchableOpacity onPress={this.seeGroupOnPress}>
-                                <View style={styles.seeGroupCircle}>
-                                    <Image
-                                        source={GROUP_LOGO}
-                                        style={styles.seeGroupContainerLogo}
-                                    />
-                                </View>
-                            </TouchableOpacity>
-                            <Text style={styles.seeGroupText}>Diğer</Text>
-                            <Text style={styles.seeGroupText}>
-                                Yarışmacılar
-                            </Text>
+                        <View style={styles.userContainer}>
+                            <Image
+                                source={{
+                                    uri: this.props.opponentProfilePicture
+                                }}
+                                style={styles.userProfilePicture}
+                            />
+                            <View style={styles.usernameContainer}>
+                                <Text style={styles.usernameText}>
+                                    {this.props.opponentUsername}
+                                </Text>
+                            </View>
+                            <View style={styles.answersContainer}>
+                                <Text style={styles.answersText}>D:</Text>
+                                <Text> </Text>
+                                <Text style={styles.answersText}>
+                                    {this.state.playerTwoCorrect}
+                                </Text>
+                                <Text style={styles.answersText}> Y:</Text>
+                                <Text> </Text>
+                                <Text style={styles.answersText}>
+                                    {this.state.playerTwoIncorrect}
+                                </Text>
+                                <Text style={styles.answersText}> B:</Text>
+                                <Text> </Text>
+                                <Text style={styles.answersText}>
+                                    {this.state.playerTwoUnanswered}
+                                </Text>
+                            </View>
                         </View>
                     </View>
                     <View style={styles.questionContainer}>
@@ -609,7 +693,7 @@ class GroupGame extends React.Component {
                         transparent={true}
                         animationType={'fade'}
                     >
-                        <View style={styles.modalContainer}>
+                        <View style={styles.questionModalContainer}>
                             <View style={styles.questionImageModalContainer}>
                                 <Image
                                     source={{
@@ -776,15 +860,54 @@ class GroupGame extends React.Component {
                 <View style={styles.jokerContainer}>
                     <View style={styles.touchableJokerContainer}>
                         <TouchableOpacity
+                            onPress={this.seeOpponentAnswerJokerOnPressed}
+                            disabled={
+                                this.state.isSeeOpponentAnswerJokerDisabled
+                            }
+                        >
+                            <View style={styles.jokerAndTextContainer}>
+                                <Image
+                                    source={
+                                        this.state
+                                            .isSeeOpponentAnswerJokerDisabled ===
+                                        false
+                                            ? OPPONENTS_ANSWER
+                                            : null
+                                    }
+                                    style={styles.joker}
+                                />
+                                <Text style={styles.jokerText}>
+                                    {this.state
+                                        .isSeeOpponentAnswerJokerDisabled ===
+                                    false
+                                        ? 'Rakibin şıkkını gör'
+                                        : ''}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.touchableJokerContainer}>
+                        <TouchableOpacity
                             onPress={this.removeOptionJokerOnPressed}
                             disabled={this.state.isRemoveOptionJokerDisabled}
                         >
                             <View style={styles.jokerAndTextContainer}>
                                 <Image
-                                    source={FIFTY_FIFTY}
+                                    source={
+                                        this.state
+                                            .isRemoveOptionJokerDisabled ===
+                                        false
+                                            ? FIFTY_FIFTY
+                                            : null
+                                    }
                                     style={styles.joker}
                                 />
-                                <Text style={styles.jokerText}>Şık Ele</Text>
+                                <Text style={styles.jokerText}>
+                                    {this.state.isRemoveOptionJokerDisabled ===
+                                    false
+                                        ? 'Şık Ele'
+                                        : ''}
+                                </Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -795,11 +918,20 @@ class GroupGame extends React.Component {
                         >
                             <View style={styles.jokerAndTextContainer}>
                                 <Image
-                                    source={SECOND_CHANCE}
+                                    source={
+                                        this.state
+                                            .isSecondChanceJokerDisabled ===
+                                        false
+                                            ? SECOND_CHANCE
+                                            : null
+                                    }
                                     style={styles.joker}
                                 />
                                 <Text style={styles.jokerText}>
-                                    İkinci Şans
+                                    {this.state.isSecondChanceJokerDisabled ===
+                                    false
+                                        ? 'İkinci Şans'
+                                        : ''}
                                 </Text>
                             </View>
                         </TouchableOpacity>
@@ -810,13 +942,4 @@ class GroupGame extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({
-    clientInformation: state.client.clientInformation
-})
-
-const mapDispatchToProps = dispatch => ({})
-
-export default connect(
-    mapStateToProps,
-    null
-)(GroupGame)
+export default FriendGame

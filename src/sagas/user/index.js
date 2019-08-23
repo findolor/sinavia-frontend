@@ -1,8 +1,9 @@
 import { createUser } from './createUser'
-import { fetchUser } from './fetchUser'
+import { fetchUser, getUserService } from './fetchUser'
 import { authenticateUser } from './authenticateUser'
 import { loginUser } from './loginUser'
 import { getUsersService } from './getUsers'
+import { searchUsersService } from './searchUsers'
 
 export const userSagas = {
     createUser: createUser,
@@ -12,5 +13,7 @@ export const userSagas = {
 }
 
 export const userServices = {
-    getUsers: getUsersService
+    getUsers: getUsersService,
+    getUser: getUserService,
+    searchUsers: searchUsersService
 }

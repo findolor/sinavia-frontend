@@ -14,7 +14,7 @@ import {
 import { navigationPush } from '../../../services/navigationService'
 import { SCENE_KEYS } from '../../../config/index'
 import { connect } from 'react-redux'
-import { userActions } from '../../../redux/user/actions'
+import { clientActions } from '../../../redux/client/actions'
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp
@@ -153,7 +153,7 @@ class Register extends React.Component {
             email: this.state.email,
             city: this.state.city,
             birthDate: this.state.birthDate,
-            password: this.state.passwordz
+            password: this.state.password
         }
 
         let userInformationKeys = Object.keys(userInformation)
@@ -337,7 +337,7 @@ const mapStateToProps = state => {}
 
 const mapDispatchToProps = dispatch => ({
     createUser: userInformation =>
-        dispatch(userActions.createUser(userInformation))
+        dispatch(clientActions.createUser(userInformation))
 })
 
 export default connect(

@@ -13,6 +13,8 @@ import returnLogo from '../../../assets/return.png'
 import { navigationPop } from '../../../services/navigationService'
 import { friendshipServices } from '../../../sagas/friendship/'
 import { userServices } from '../../../sagas/user'
+import { connect } from 'react-redux'
+import { friendActions } from '../../../redux/friends/actions'
 
 import PROFILE_PIC from '../../../assets/profile2.jpg'
 import ACCEPT_BUTTON from '../../../assets/gameScreens/correct.png'
@@ -114,7 +116,10 @@ class Notifications extends React.Component {
     }
 
     loadFriendRequests = async () => {
-        const friendRequests = await friendshipServices.getFriendRequests()
+        const friendRequests = await friendshipServices.getFriendRequests(
+            this.props.clientToken,
+            this.props.clientDBId
+        )
 
         const userIdList = []
 
@@ -131,7 +136,10 @@ class Notifications extends React.Component {
     }
 
     getUserInformations = async idList => {
-        const userInformations = await userServices.getUsers(idList)
+        const userInformations = await userServices.getUsers(
+            this.props.clientToken,
+            idList
+        )
 
         this.setState({ friendRequestsList: userInformations })
     }
@@ -157,7 +165,6 @@ class Notifications extends React.Component {
                         </View>
                     </TouchableOpacity>
                 )
-                break
             case 'requestedGame':
                 return (
                     <View style={styles.userRow}>
@@ -270,17 +277,26 @@ class Notifications extends React.Component {
         }
     }
 
+    addToFriendIds = id => {
+        const friendList = this.props.friendIds
+        friendList.push(id)
+
+        this.props.saveFriendIdList(friendList)
+    }
+
     // TODO List doen't refresh on its own fix it
     acceptFriendRequestOnPress = (friendId, index) => {
-        friendshipServices.acceptFriendshipRequest(friendId)
+        this.addToFriendIds(friendId)
 
-        const friendRequestsList = this.state.friendRequestsList
+        friendshipServices.acceptFriendshipRequest(
+            this.props.clientToken,
+            this.props.clientDBId,
+            friendId,
+            this.props.clientInformation.username
+        )
 
-        console.log(friendRequestsList)
-
+        let friendRequestsList = this.state.friendRequestsList
         friendRequestsList.splice(index, 1)
-
-        console.log(friendRequestsList)
 
         this.setState({
             friendRequestsList: friendRequestsList
@@ -371,7 +387,6 @@ class Notifications extends React.Component {
                         data={this.state.friendRequestsList}
                         vertical={true}
                         showsVerticalScrollIndicator={false}
-                        extraData={this.state.friendRequestsList}
                         renderItem={({ item, index }) => {
                             return (
                                 <View style={styles.userRow}>
@@ -428,4 +443,19 @@ class Notifications extends React.Component {
     }
 }
 
-export default Notifications
+const mapStateToProps = state => ({
+    clientDBId: state.client.clientDBId,
+    clientToken: state.client.clientToken,
+    friendIds: state.friends.friendIds,
+    clientInformation: state.client.clientInformation
+})
+
+const mapDispatchToProps = dispatch => ({
+    saveFriendIdList: friendList =>
+        dispatch(friendActions.saveFriendIds(friendList))
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Notifications)

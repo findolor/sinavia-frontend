@@ -9,8 +9,7 @@ import {
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 
-import { searchUsers } from '../../../services/apiServices/user/searchUsers'
-import { deviceStorage } from '../../../services/deviceStorage'
+import { userServices } from '../../../sagas/user/'
 
 import returnLogo from '../../../assets/return.png'
 
@@ -23,22 +22,13 @@ class ProfileSearch extends React.Component {
     }
 
     async componentDidMount() {
-        let userList = await this.getSearchedUsersList()
-
-        this.setState({ returnedSearchList: userList })
-    }
-
-    getSearchedUsersList = async () => {
-        const userToken = await deviceStorage.getItemFromStorage('JWT')
-        const userId = await deviceStorage.getItemFromStorage('userId')
-
-        const returnedSearchList = await searchUsers(
-            userToken,
-            this.props.searchedKeyword,
-            userId
+        let userList = await userServices.searchUsers(
+            this.props.clientToken,
+            this.props.clientDBId,
+            this.props.searchedKeyword
         )
 
-        return returnedSearchList
+        this.setState({ returnedSearchList: userList })
     }
 
     backButtonOnPress = () => {
@@ -134,11 +124,14 @@ class ProfileSearch extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+    clientToken: state.client.clientToken,
+    clientDBId: state.client.clientDBId
+})
 
 const mapDispatchToProps = dispatch => ({})
 
 export default connect(
-    null,
+    mapStateToProps,
     null
 )(ProfileSearch)

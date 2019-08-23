@@ -26,8 +26,7 @@ import { widthPercentageToDP } from 'react-native-responsive-screen'
 
 import { friendshipServices } from '../../../sagas/friendship/'
 import { statisticsServices } from '../../../sagas/statistic/'
-
-import { deviceStorage } from '../../../services/deviceStorage'
+import { friendActions } from '../../../redux/friends/actions'
 
 class OpponentsProfile extends React.Component {
     constructor(props) {
@@ -55,25 +54,27 @@ class OpponentsProfile extends React.Component {
     }
 
     async componentDidMount() {
-        this.userId = await deviceStorage.getItemFromStorage('userId')
-
         await this.loadUserProfile()
     }
 
     loadUserProfile = async () => {
-        await this.loadStatistics()
         await this.loadFriendshipInformation()
+        await this.loadStatistics()
         await this.loadFriendMatches()
         await this.loadFriends()
     }
 
     loadFriendshipInformation = async () => {
         const friendship = await friendshipServices.getFriendship(
+            this.props.clientToken,
+            this.props.clientDBId,
             this.props.opponentInformation.id
         )
 
+        console.log(friendship)
+
         if (Object.keys(friendship).length !== 0) {
-            friendship[0].userId === this.userId
+            friendship[0].userId === this.props.clientDBId
                 ? this.setState({ isFriendRequestSent: true })
                 : this.setState({ isFriendRequestSent: false })
             if (friendship[0].friendshipStatus === 'requested')
@@ -84,6 +85,8 @@ class OpponentsProfile extends React.Component {
 
     loadFriendMatches = async () => {
         const friendMatches = await friendshipServices.getFriendMatches(
+            this.props.clientToken,
+            this.props.clientDBId,
             this.props.opponentInformation.id
         )
 
@@ -94,7 +97,7 @@ class OpponentsProfile extends React.Component {
         friendMatches.forEach(match => {
             totalFriendGamesPlayed++
             if (!match.isMatchDraw) {
-                if (match.winnerId === this.userId) clientWinCount++
+                if (match.winnerId === this.props.clientDBId) clientWinCount++
                 else opponentWinCount++
             }
         })
@@ -107,13 +110,17 @@ class OpponentsProfile extends React.Component {
     }
 
     loadFriends = async () => {
-        const friends = await friendshipServices.getFriends()
+        const friends = await friendshipServices.getFriends(
+            this.props.clientToken,
+            this.props.opponentInformation.id
+        )
 
         this.setState({ totalFriends: Object.keys(friends).length })
     }
 
     loadStatistics = async () => {
         const statistics = await statisticsServices.getStatistics(
+            this.props.clientToken,
             this.props.opponentInformation.id
         )
 
@@ -123,10 +130,10 @@ class OpponentsProfile extends React.Component {
 
         statistics.forEach(statistic => {
             switch (statistic.gameResult) {
-                case 'win':
+                case 'won':
                     wonGames++
                     return
-                case 'lose':
+                case 'lost':
                     lostGames++
                     return
                 case 'draw':
@@ -151,7 +158,10 @@ class OpponentsProfile extends React.Component {
 
     sendFriendshipRequest = () => {
         friendshipServices.sendFriendshipRequest(
-            this.props.opponentInformation.id
+            this.props.clientToken,
+            this.props.clientDBId,
+            this.props.opponentInformation.id,
+            this.props.clientInformation.username
         )
         this.setState({
             friendshipStatus: 'friendRequestSent',
@@ -159,9 +169,20 @@ class OpponentsProfile extends React.Component {
         })
     }
 
+    addToFriendIds = id => {
+        const friendList = this.props.friendIds
+        friendList.push(id)
+
+        this.props.saveFriendIdList(friendList)
+    }
+
     acceptFriendshipRequest = () => {
+        this.addToFriendIds(this.props.opponentInformation.id)
         friendshipServices.acceptFriendshipRequest(
-            this.props.opponentInformation.id
+            this.props.clientToken,
+            this.props.clientDBId,
+            this.props.opponentInformation.id,
+            this.props.clientInformation.username
         )
         this.setState({
             friendshipStatus: 'alreadyFriend',
@@ -169,13 +190,29 @@ class OpponentsProfile extends React.Component {
         })
     }
 
+    removeFromFriendIds = id => {
+        const friendList = this.props.friendIds
+        const index = friendList.indexOf(id)
+
+        friendList.splice(index, 1)
+
+        this.props.saveFriendIdList(friendList)
+    }
+
     deleteFriendship = () => {
-        if (this.state.isFriendRequestSent)
-            friendshipServices.deleteFriendship(this.userId)
-        else
+        if (this.state.isFriendRequestSent) {
+            this.removeFromFriendIds(this.props.opponentInformation.id)
             friendshipServices.deleteFriendship(
+                this.props.clientToken,
+                this.props.clientDBId
+            )
+        } else {
+            this.removeFromFriendIds(this.props.clientDBId)
+            friendshipServices.deleteFriendship(
+                this.props.clientToken,
                 this.props.opponentInformation.id
             )
+        }
         this.setState({
             friendshipStatus: 'addFriend',
             totalFriends: this.state.totalFriends - 1
@@ -561,4 +598,19 @@ class OpponentsProfile extends React.Component {
     }
 }
 
-export default OpponentsProfile
+const mapStateToProps = state => ({
+    clientDBId: state.client.clientDBId,
+    clientToken: state.client.clientToken,
+    friendIds: state.friends.friendIds,
+    clientInformation: state.client.clientInformation
+})
+
+const mapDispatchToProps = dispatch => ({
+    saveFriendIdList: friendList =>
+        dispatch(friendActions.saveFriendIds(friendList))
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(OpponentsProfile)
