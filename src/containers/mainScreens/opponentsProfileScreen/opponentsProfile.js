@@ -264,28 +264,28 @@ class OpponentsProfile extends React.Component {
                             uri: this.props.opponentInformation.coverPicture
                         }}
                         style={styles.coverPhoto}
-                        imageStyle={{ borderRadius: 10 }}
+                        imageStyle={{ borderRadius: 30 }}
                     >
-                        <View style={styles.profilePicView}>
-                            <Image
-                                source={{
-                                    uri: this.props.opponentInformation
-                                        .profilePicture
-                                }}
-                                style={styles.profilePic}
-                            />
-                        </View>
-                        <View style={styles.nameView}>
-                            <View style={styles.nameSurnameContainer}>
-                                <Text style={styles.nameSurnameText}>
-                                    {this.props.opponentInformation.name +
-                                        ' ' +
-                                        this.props.opponentInformation.lastname}
-                                </Text>
+                        <View style={styles.profileContainerShadowView}>
+                            <View style={styles.profilePicView}>
+                                <Image
+                                    source={{
+                                        uri: this.props.opponentInformation
+                                            .profilePicture
+                                    }}
+                                    style={styles.profilePic}
+                                />
                             </View>
-                            <View style={styles.usernameContainer}>
+                            <View style={styles.profileInfoView}>
+                                <Text style={styles.nameSurnameText}>
+                                    {this.props.opponentInformation.name}{' '}
+                                    {this.props.opponentInformation.lastname}
+                                </Text>
                                 <Text style={styles.usernameText}>
                                     @{this.props.opponentInformation.username}
+                                </Text>
+                                <Text style={styles.sinaviaScoreText}>
+                                    Sınavia Puanı: 100
                                 </Text>
                             </View>
                         </View>
