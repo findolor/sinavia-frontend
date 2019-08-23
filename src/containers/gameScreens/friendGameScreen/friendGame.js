@@ -211,7 +211,7 @@ class FriendGame extends React.Component {
                 return
             case 'match-finished':
                 this.shutdownGame()
-                navigationPush(SCENE_KEYS.gameScreens.gameStats, {
+                navigationPush(SCENE_KEYS.gameScreens.friendGameStats, {
                     playerProps: this.state.playerProps,
                     room: this.props.room,
                     client: this.props.client,

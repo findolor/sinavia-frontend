@@ -7,7 +7,10 @@ import {
     View,
     Dimensions
 } from 'react-native'
-import { navigationReset } from '../../../services/navigationService'
+import {
+    navigationReset,
+    navigationPush
+} from '../../../services/navigationService'
 import { SCENE_KEYS } from '../../../config/'
 
 import styles from './style'
@@ -23,12 +26,13 @@ import unselectedFav from '../../../assets/favori_bos.png'
 import YOU_WIN_LOGO from '../../../assets/gameScreens/win.png'
 import YOU_LOSE_LOGO from '../../../assets/gameScreens/lose.png'
 import DRAW_LOGO from '../../../assets/gameScreens/draw.png'
+import { widthPercentageToDP } from 'react-native-responsive-screen'
 
 const REPLAY_NORMAL_BORDER = '#00D9EF'
 const REPLAY_ACTIVE_BORDER = 'green'
 const REPLAY_DEACTIVE_BORDER = 'red'
 
-class GameStatsScreen extends React.Component {
+class FriendGameStatsScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -55,7 +59,7 @@ class GameStatsScreen extends React.Component {
             clientProfilePicture: '',
             opponentProfilePicture: '',
             // Match result logo
-            matchResultLogo: '',
+            matchResultLogo: null,
             // Question position
             questionPosition: 1,
             // A list to feed into the scroll view
@@ -71,7 +75,11 @@ class GameStatsScreen extends React.Component {
             // Replay button disabled
             isReplayButtonDisabled: false,
             // Fav icon selection
-            favIconSelected: false
+            favIconSelected: false,
+
+            totalFriendGamesPlayed: 0,
+            clientWinCount: 10,
+            opponentWinCount: 10
         }
     }
 
@@ -92,11 +100,10 @@ class GameStatsScreen extends React.Component {
                         replayButtonPressNumber: 1
                     })
                 } else {
-                    console.log(message)
                     setTimeout(() => {
                         this.props.room.removeAllListeners()
 
-                        navigationReset(SCENE_KEYS.gameScreens.rankedGame, {
+                        navigationReset(SCENE_KEYS.gameScreens.friendGame, {
                             room: this.props.room,
                             client: this.props.client,
                             playerUsername: this.props.playerUsername,
@@ -148,12 +155,13 @@ class GameStatsScreen extends React.Component {
                         switch (result.result) {
                             case null:
                                 opponentUnanswered++
-                                return
+                                break
                             case true:
                                 opponentCorrect++
-                                return
+                                break
                             case false:
                                 opponentIncorrect++
+                                break
                         }
                     })
                 } else {
@@ -163,12 +171,13 @@ class GameStatsScreen extends React.Component {
                         switch (result.result) {
                             case null:
                                 playerUnanswered++
-                                return
+                                break
                             case true:
                                 playerCorrect++
-                                return
+                                break
                             case false:
                                 playerIncorrect++
+                                break
                         }
                     })
                 }
@@ -302,7 +311,7 @@ class GameStatsScreen extends React.Component {
             setTimeout(() => {
                 this.props.room.removeAllListeners()
 
-                navigationReset(SCENE_KEYS.gameScreens.rankedGame, {
+                navigationReset(SCENE_KEYS.gameScreens.friendGame, {
                     room: this.props.room,
                     client: this.props.client,
                     playerUsername: this.props.playerUsername,
@@ -313,11 +322,6 @@ class GameStatsScreen extends React.Component {
                 })
             }, 2000)
         }
-    }
-
-    newOpponentButtonOnPress = () => {
-        this.props.room.leave()
-        navigationReset('game')
     }
 
     mainScreenButtonOnPress = () => {
@@ -343,7 +347,7 @@ class GameStatsScreen extends React.Component {
                         />
                     </View>
                     <View style={styles.resultsContainer}>
-                        <View style={styles.results1Container}>
+                        <View style={styles.userPicsContainer}>
                             <View style={styles.user1Container}>
                                 <Image
                                     source={{
@@ -354,50 +358,6 @@ class GameStatsScreen extends React.Component {
                                 <Text style={styles.usernameText}>
                                     {this.state.clientUsername}
                                 </Text>
-                            </View>
-                            <View style={styles.answersContainer}>
-                                <View style={styles.dividedAnswer}>
-                                    <Text style={styles.numbers}>
-                                        {this.state.correctAnswerNumber}
-                                    </Text>
-                                    <Image
-                                        source={correct}
-                                        style={styles.answerImg}
-                                    />
-                                    <Text style={styles.numbers}>
-                                        {this.state.opponentCorrectAnswerNumber}
-                                    </Text>
-                                </View>
-                                <View style={styles.dividedAnswer}>
-                                    <Text style={styles.numbers}>
-                                        {this.state.incorrectAnswerNumber}
-                                    </Text>
-                                    <Image
-                                        source={incorrect}
-                                        style={styles.answerImg}
-                                    />
-                                    <Text style={styles.numbers}>
-                                        {
-                                            this.state
-                                                .opponentInorrectAnswerNumber
-                                        }
-                                    </Text>
-                                </View>
-                                <View style={styles.dividedAnswer}>
-                                    <Text style={styles.numbers}>
-                                        {this.state.unansweredAnswerNumber}
-                                    </Text>
-                                    <Image
-                                        source={unanswered}
-                                        style={styles.answerImg}
-                                    />
-                                    <Text style={styles.numbers}>
-                                        {
-                                            this.state
-                                                .opponentUnansweredAnswerNumber
-                                        }
-                                    </Text>
-                                </View>
                             </View>
                             <View style={styles.user2Container}>
                                 <Image
@@ -411,52 +371,215 @@ class GameStatsScreen extends React.Component {
                                 </Text>
                             </View>
                         </View>
-                        <View style={styles.results2Container}>
-                            <View style={styles.allScoresContainer}>
-                                <View style={styles.scoreContainer}>
-                                    <Text style={styles.scoresText}>
-                                        Oyunu Bitirdin
-                                    </Text>
-                                    <Text style={styles.scoresText}>
-                                        {this.state.finishedGamePoint}
-                                    </Text>
-                                </View>
-                                <View style={styles.scoreContainer}>
-                                    <Text style={styles.scoresText}>
-                                        Doğru Cevap x{' '}
+                        <View style={styles.resultsAndStatisticsContainer}>
+                            <View style={styles.dividedAnswer}>
+                                <View style={styles.numberContainer}>
+                                    <Text style={styles.numbers}>
                                         {this.state.correctAnswerNumber}
                                     </Text>
-                                    <Text style={styles.scoresText}>
-                                        {this.state.correctAnswerPoint}
-                                    </Text>
                                 </View>
-                                <View style={styles.scoreContainer}>
-                                    <Text style={styles.scoresText}>
-                                        {this.state.matchResultText}
-                                    </Text>
-                                    <Text style={styles.scoresText}>
-                                        {this.state.matchResultPoint}
+                                <Image
+                                    source={correct}
+                                    style={styles.answerImg}
+                                />
+                                <View style={styles.numberContainer}>
+                                    <Text style={styles.numbers}>
+                                        {this.state.opponentCorrectAnswerNumber}
                                     </Text>
                                 </View>
                             </View>
-                            <View style={styles.separatorContainer}>
-                                <View style={styles.separatorLine} />
+                            <View style={styles.dividedAnswer}>
+                                <View style={styles.numberContainer}>
+                                    <Text style={styles.numbers}>
+                                        {this.state.incorrectAnswerNumber}
+                                    </Text>
+                                </View>
+                                <Image
+                                    source={incorrect}
+                                    style={styles.answerImg}
+                                />
+                                <View style={styles.numberContainer}>
+                                    <Text style={styles.numbers}>
+                                        {
+                                            this.state
+                                                .opponentInorrectAnswerNumber
+                                        }
+                                    </Text>
+                                </View>
                             </View>
-                            <View style={styles.sinaviaScoreContainer}>
-                                <Text style={styles.sinaviaScoreText}>
-                                    Sınavia Puanı
-                                </Text>
-                                <Text style={styles.sinaviaScoreText}>
-                                    {this.state.totalEarnedPoints}
-                                </Text>
+                            <View style={styles.dividedAnswer}>
+                                <View style={styles.numberContainer}>
+                                    <Text style={styles.numbers}>
+                                        {this.state.unansweredAnswerNumber}
+                                    </Text>
+                                </View>
+                                <Image
+                                    source={unanswered}
+                                    style={styles.answerImg}
+                                />
+                                <View style={styles.numberContainer}>
+                                    <Text style={styles.numbers}>
+                                        {
+                                            this.state
+                                                .opponentUnansweredAnswerNumber
+                                        }
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style={styles.versusGameStatsBox}>
+                                <View style={styles.versusGameTextsContainer}>
+                                    <View
+                                        style={styles.versusGameTitleContainer}
+                                    >
+                                        <Text
+                                            style={styles.versusGameTitleText}
+                                        >
+                                            Aranızdaki Oyunlar
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={styles.versusGameTotalContainer}
+                                    >
+                                        <Text style={styles.versusTotalText}>
+                                            Toplam Oyun{' '}
+                                        </Text>
+                                        <Text style={styles.versusTotalCounter}>
+                                            {this.state.totalFriendGamesPlayed}
+                                        </Text>
+                                    </View>
+                                </View>
+                                {this.state.clientWinCount > 0 &&
+                                    this.state.opponentWinCount > 0 && (
+                                        <View
+                                            style={
+                                                styles.versusGameChartContainer
+                                            }
+                                        >
+                                            <View
+                                                style={[
+                                                    styles.yourWinsView,
+                                                    {
+                                                        width: widthPercentageToDP(
+                                                            (this.state
+                                                                .clientWinCount /
+                                                                (this.state
+                                                                    .clientWinCount +
+                                                                    this.state
+                                                                        .opponentWinCount)) *
+                                                                82
+                                                        )
+                                                    }
+                                                ]}
+                                            />
+                                            <View
+                                                style={[
+                                                    styles.opponentsWinsView,
+                                                    {
+                                                        width: widthPercentageToDP(
+                                                            (this.state
+                                                                .opponentWinCount /
+                                                                (this.state
+                                                                    .clientWinCount +
+                                                                    this.state
+                                                                        .opponentWinCount)) *
+                                                                82
+                                                        )
+                                                    }
+                                                ]}
+                                            />
+                                            <Text
+                                                style={styles.yourWinsCounter}
+                                            >
+                                                {this.state.clientWinCount}
+                                            </Text>
+                                            <Text
+                                                style={
+                                                    styles.opponentWinsCounter
+                                                }
+                                            >
+                                                {this.state.opponentWinCount}
+                                            </Text>
+                                        </View>
+                                    )}
+                                {this.state.clientWinCount > 0 &&
+                                    this.state.opponentWinCount === 0 && (
+                                        <View
+                                            style={
+                                                styles.versusGameChartContainer
+                                            }
+                                        >
+                                            <View
+                                                style={[
+                                                    styles.yourWinsView,
+                                                    {
+                                                        width: widthPercentageToDP(
+                                                            82
+                                                        ),
+                                                        borderTopRightRadius: 10,
+                                                        borderBottomRightRadius: 10
+                                                    }
+                                                ]}
+                                            />
+                                            <Text
+                                                style={styles.yourWinsCounter}
+                                            >
+                                                {this.state.clientWinCount}
+                                            </Text>
+                                            <Text
+                                                style={
+                                                    styles.opponentWinsCounter
+                                                }
+                                            >
+                                                {this.state.opponentWinCount}
+                                            </Text>
+                                        </View>
+                                    )}
+                                {this.state.clientWinCount === 0 &&
+                                    this.state.opponentWinCount > 0 && (
+                                        <View
+                                            style={
+                                                styles.versusGameChartContainer
+                                            }
+                                        >
+                                            <View
+                                                style={[
+                                                    styles.opponentsWinsView,
+                                                    {
+                                                        width: widthPercentageToDP(
+                                                            82
+                                                        ),
+                                                        borderTopLeftRadius: 10,
+                                                        borderBottomLeftRadius: 10
+                                                    }
+                                                ]}
+                                            />
+                                            <Text
+                                                style={styles.yourWinsCounter}
+                                            >
+                                                {this.state.clientWinCount}
+                                            </Text>
+                                            <Text
+                                                style={
+                                                    styles.opponentWinsCounter
+                                                }
+                                            >
+                                                {this.state.opponentWinCount}
+                                            </Text>
+                                        </View>
+                                    )}
+                                <View style={styles.versusGameNamesContainer}>
+                                    <Text style={styles.versusGameTitleText}>
+                                        Sen
+                                    </Text>
+                                    <Text style={styles.versusGameTitleText}>
+                                        {this.state.opponentUsername}
+                                    </Text>
+                                </View>
                             </View>
                         </View>
                     </View>
                     <View style={styles.buttonsContainer}>
-                        <TouchableOpacity
-                            onPress={this.replayButtonOnPress}
-                            disabled={this.state.isReplayButtonDisabled}
-                        >
+                        <TouchableOpacity onPress={this.replayButtonOnPress}>
                             <View
                                 style={[
                                     styles.replayButton,
@@ -469,14 +592,6 @@ class GameStatsScreen extends React.Component {
                             >
                                 <Text style={styles.buttonText}>Yeniden</Text>
                                 <Text style={styles.buttonText}>Oyna</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={this.newOpponentButtonOnPress}
-                        >
-                            <View style={styles.newOpponentButton}>
-                                <Text style={styles.buttonText}>Yeni</Text>
-                                <Text style={styles.buttonText}>Rakip</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -607,4 +722,4 @@ class GameStatsScreen extends React.Component {
     }
 }
 
-export default GameStatsScreen
+export default FriendGameStatsScreen

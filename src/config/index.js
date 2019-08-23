@@ -21,7 +21,8 @@ const scene_keys = {
         matchIntro: 'matchIntro',
         groupGame: 'groupGame',
         groupGameStats: 'groupGameStats',
-        friendGame: 'friendGame'
+        friendGame: 'friendGame',
+        friendGameStats: 'friendGameStats'
     },
     mainScreens: {
         main: 'main',

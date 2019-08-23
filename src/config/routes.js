@@ -123,6 +123,10 @@ const RouterComp = () => {
                         key={SCENE_KEYS.gameScreens.friendGame}
                         component={gameScreens.friendGame}
                     />
+                    <Scene
+                        key={SCENE_KEYS.gameScreens.friendGameStats}
+                        component={gameScreens.friendGameStats}
+                    />
                 </Scene>
             </Scene>
         </Router>
