@@ -123,7 +123,7 @@ class GameStatsScreen extends React.Component {
     // TODO Tidy up this code block
     // These could be implemented better
     loadScreen() {
-        new Promise(resolve => {
+        return new Promise(resolve => {
             const playerProps = this.props.playerProps
             const playerIds = Object.keys(playerProps)
 

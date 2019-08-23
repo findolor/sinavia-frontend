@@ -1,5 +1,13 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, Modal, Alert } from 'react-native'
+import {
+    View,
+    Text,
+    Image,
+    TouchableOpacity,
+    Modal,
+    Alert,
+    FlatList
+} from 'react-native'
 import styles, { countdownProps } from './style'
 import CountDown from 'react-native-countdown-component'
 import NotchView from '../../../components/notchView'
@@ -15,7 +23,9 @@ import ZOOM_BUTTON from '../../../assets/gameScreens/zoomButton.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
 import FIFTY_FIFTY from '../../../assets/gameScreens/jokers/fiftyFifty.png'
 import SECOND_CHANCE from '../../../assets/gameScreens/jokers/secondChance.png'
-import GROUP_LOGO from '../../../assets/mainScreens/group.png'
+import CORRECT_IMG from '../../../assets/gameScreens/correct.png'
+import UNANSWERED_IMG from '../../../assets/gameScreens/unanswered.png'
+import INCORRECT_IMG from '../../../assets/gameScreens/incorrect.png'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
@@ -76,13 +86,18 @@ class GroupGame extends React.Component {
             isSecondChanceJokerDisabled: false,
             // Joker active variables
             isSecondChanceJokerActive: false,
-            // Current question answer for second chance
-            questionAnswer: 0
+            // Current question answer for second chance joker
+            questionAnswer: 0,
+            // Question visible variable
+            isQuestionVisible: true,
+            // Group leaderboard
+            groupLeaderboard: []
         }
     }
 
     // We get the room in props
-    componentDidMount() {
+    async componentDidMount() {
+        await this.initializeLeaderboard()
         // We send ready signal when game screen is loaded
         this.props.room.send({
             action: 'ready'
@@ -98,7 +113,27 @@ class GroupGame extends React.Component {
         this.props.room.onError.add(err => console.log(err))
     }
 
-    componentWillUnmount() {}
+    initializeLeaderboard = () => {
+        return new Promise(resolve => {
+            const groupLeaderboard = []
+
+            this.props.groupRoomPlayerList.forEach(player => {
+                delete player.id
+                delete player.profilePicture
+                delete player.status
+                delete player.isLeader
+                player.correct = 0
+                player.incorrect = 0
+                player.unanswered = 0
+                groupLeaderboard.push(player)
+            })
+            this.setState({ groupLeaderboard: groupLeaderboard })
+
+            console.log(groupLeaderboard)
+
+            resolve(true)
+        })
+    }
 
     shutdownGame = () => {
         // We clear the timeouts on quitting
@@ -141,6 +176,7 @@ class GroupGame extends React.Component {
         Alert.alert('Herkes oyundan ayrıldı!')
         this.shutdownGame()
         this.props.client.close()
+        navigationReset('main')
     }
 
     // TODO Move these actions to their functions
@@ -202,59 +238,90 @@ class GroupGame extends React.Component {
         // Player answers to the question
         const answers = this.state.playerProps[this.props.client.id].answers
 
+        console.log(this.state.playerProps)
+
         // Switch statement for the user
-        this.updateAnswers(answers, true)
-        // Switch statement for the opponent
-        // TODO make the list here
+        this.updateAnswers(answers)
+        // Update group leaderboard
+        this.updateGroupLeaderboard()
     }
 
-    updateAnswers = (answers, isClient) => {
+    updateGroupLeaderboard = () => {
+        const playerList = []
+
+        const playerProps = this.state.playerProps
+        const playerIds = Object.keys(playerProps)
+
+        let correct = 0
+        let incorrect = 0
+        let unanswered = 0
+        let username = ''
+
+        playerIds.forEach(playerId => {
+            if (!playerProps[playerId].isLeft) {
+                username = playerProps[playerId].username
+                playerProps[playerId].answers.forEach(result => {
+                    switch (result.result) {
+                        case null:
+                            unanswered++
+                            return
+                        case true:
+                            correct++
+                            return
+                        case false:
+                            incorrect++
+                    }
+                })
+
+                playerList.push({
+                    username: username,
+                    correct: correct,
+                    incorrect: incorrect,
+                    unanswered: unanswered
+                })
+                correct = 0
+                incorrect = 0
+                unanswered = 0
+            }
+        })
+        this.setState({ groupLeaderboard: playerList })
+    }
+
+    updateAnswers = answers => {
         switch (answers[this.state.questionNumber].result) {
             // If the answer is unanswered
             case null:
-                if (isClient) {
-                    this.setState({
-                        playerOneUnanswered: this.state.playerOneUnanswered + 1
-                    })
-                    this.updateButtons(
-                        answers[this.state.questionNumber].correctAnswer,
-                        true
-                    )
-                } else {
-                    // TODO Add it to the list
-                }
+                this.setState({
+                    playerOneUnanswered: this.state.playerOneUnanswered + 1
+                })
+                this.updateButtons(
+                    answers[this.state.questionNumber].correctAnswer,
+                    true
+                )
                 return
             // If the answer is correct
             case true:
-                if (isClient) {
-                    this.setState({
-                        playerOneCorrect: this.state.playerOneCorrect + 1
-                    })
-                    this.updateButtons(
-                        answers[this.state.questionNumber].answer,
-                        true
-                    )
-                } else {
-                    // TODO Add it to the list
-                }
+                this.setState({
+                    playerOneCorrect: this.state.playerOneCorrect + 1
+                })
+                this.updateButtons(
+                    answers[this.state.questionNumber].answer,
+                    true
+                )
                 return
             // If the answer is incorrect
             case false:
-                if (isClient) {
-                    this.setState({
-                        playerOneIncorrect: this.state.playerOneIncorrect + 1
-                    })
-                    this.updateButtons(
-                        answers[this.state.questionNumber].answer,
-                        false
-                    )
-                    this.updateButtons(
-                        answers[this.state.questionNumber].correctAnswer,
-                        true
-                    )
-                } else {
-                    // TODO Add it to the list
-                }
+                this.setState({
+                    playerOneIncorrect: this.state.playerOneIncorrect + 1
+                })
+                this.updateButtons(
+                    answers[this.state.questionNumber].answer,
+                    false
+                )
+                this.updateButtons(
+                    answers[this.state.questionNumber].correctAnswer,
+                    true
+                )
                 return
         }
     }
@@ -516,12 +583,8 @@ class GroupGame extends React.Component {
         })
     }
 
-    seeGroupOnPress = () => {
-        this.setState({ isGroupModalVisible: true })
-    }
-
-    groupModalCloseOnPress = () => {
-        this.setState({ isGroupModalVisible: false })
+    changeQuestionLeaderboard = () => {
+        this.setState({ isQuestionVisible: !this.state.isQuestionVisible })
     }
 
     render() {
@@ -580,30 +643,154 @@ class GroupGame extends React.Component {
                             </View>
                         </View>
                         <View style={styles.seeGroupContainer}>
-                            <TouchableOpacity onPress={this.seeGroupOnPress}>
-                                <View style={styles.seeGroupCircle}>
-                                    <Image
-                                        source={GROUP_LOGO}
-                                        style={styles.seeGroupContainerLogo}
-                                    />
-                                </View>
-                            </TouchableOpacity>
-                            <Text style={styles.seeGroupText}>Diğer</Text>
-                            <Text style={styles.seeGroupText}>
-                                Yarışmacılar
-                            </Text>
+                            {this.state.isQuestionVisible === true && (
+                                <TouchableOpacity
+                                    onPress={this.changeQuestionLeaderboard}
+                                >
+                                    <View style={styles.seeGroupCircle}>
+                                        <Text style={styles.seeGroupText}>
+                                            Grubu
+                                        </Text>
+                                        <Text style={styles.seeGroupText}>
+                                            Gör
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
+                            )}
+                            {this.state.isQuestionVisible === false && (
+                                <TouchableOpacity
+                                    onPress={this.changeQuestionLeaderboard}
+                                >
+                                    <View style={styles.seeGroupCircle}>
+                                        <Text style={styles.seeGroupText}>
+                                            Soruyu
+                                        </Text>
+                                        <Text style={styles.seeGroupText}>
+                                            Gör
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
+                            )}
                         </View>
                     </View>
-                    <View style={styles.questionContainer}>
-                        <Image
-                            source={{
-                                uri: this.state.questionList[
-                                    this.state.questionNumber
-                                ]
-                            }}
-                            style={styles.questionStyle}
-                        />
-                    </View>
+                    {this.state.isQuestionVisible === true && (
+                        <View style={styles.questionContainer}>
+                            <Image
+                                source={{
+                                    uri: this.state.questionList[
+                                        this.state.questionNumber
+                                    ]
+                                }}
+                                style={styles.questionStyle}
+                            />
+                        </View>
+                    )}
+                    {this.state.isQuestionVisible === false && (
+                        <View style={styles.questionContainer}>
+                            <View style={styles.resultsContainerHeader}>
+                                <View style={styles.orderContainer}>
+                                    <Text style={styles.orderHeaderText}>
+                                        No
+                                    </Text>
+                                </View>
+                                <View style={styles.nameContainer}>
+                                    <Text style={styles.nameHeaderText}>
+                                        Kullanıcı
+                                    </Text>
+                                </View>
+                                <View style={styles.optionsContainer}>
+                                    <View style={styles.optionContainer}>
+                                        <Image
+                                            source={CORRECT_IMG}
+                                            style={styles.optionsImg}
+                                        />
+                                    </View>
+                                    <View style={styles.optionContainer}>
+                                        <Image
+                                            source={UNANSWERED_IMG}
+                                            style={styles.optionsImg}
+                                        />
+                                    </View>
+                                    <View style={styles.optionContainer}>
+                                        <Image
+                                            source={INCORRECT_IMG}
+                                            style={styles.optionsImg}
+                                        />
+                                    </View>
+                                </View>
+                            </View>
+                            <FlatList
+                                data={this.state.groupLeaderboard}
+                                vertical={true}
+                                showsVerticalScrollIndicator={false}
+                                nestedScrollEnabled={true}
+                                renderItem={({ item, index }) => {
+                                    return (
+                                        <View style={styles.userRow}>
+                                            <View style={styles.orderContainer}>
+                                                <Text
+                                                    style={
+                                                        styles.orderNumberText
+                                                    }
+                                                >
+                                                    {index + 1}
+                                                </Text>
+                                            </View>
+                                            <View style={styles.nameContainer}>
+                                                <Text style={styles.nameText}>
+                                                    {item.username}
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={styles.optionsContainer}
+                                            >
+                                                <View
+                                                    style={
+                                                        styles.optionContainer
+                                                    }
+                                                >
+                                                    <Text
+                                                        style={
+                                                            styles.optionCounterText
+                                                        }
+                                                    >
+                                                        {item.correct}
+                                                    </Text>
+                                                </View>
+                                                <View
+                                                    style={
+                                                        styles.optionContainer
+                                                    }
+                                                >
+                                                    <Text
+                                                        style={
+                                                            styles.optionCounterText
+                                                        }
+                                                    >
+                                                        {item.unanswered}
+                                                    </Text>
+                                                </View>
+                                                <View
+                                                    style={
+                                                        styles.optionContainer
+                                                    }
+                                                >
+                                                    <Text
+                                                        style={
+                                                            styles.optionCounterText
+                                                        }
+                                                    >
+                                                        {item.incorrect}
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                        </View>
+                                    )
+                                }}
+                                keyExtractor={(item, index) => index.toString()}
+                            />
+                        </View>
+                    )}
                     <Modal
                         visible={this.state.isQuestionModalVisible}
                         transparent={true}
@@ -639,12 +826,14 @@ class GroupGame extends React.Component {
                         </Text>
                     </View>
                     <View style={styles.zoomButtonContainer}>
-                        <TouchableOpacity onPress={this.zoomButtonOnPress}>
-                            <Image
-                                source={ZOOM_BUTTON}
-                                style={styles.zoomButton}
-                            />
-                        </TouchableOpacity>
+                        {this.state.isQuestionVisible === true && (
+                            <TouchableOpacity onPress={this.zoomButtonOnPress}>
+                                <Image
+                                    source={ZOOM_BUTTON}
+                                    style={styles.zoomButton}
+                                />
+                            </TouchableOpacity>
+                        )}
                     </View>
                     <View style={styles.backButtonContainer}>
                         <TouchableOpacity onPress={this.backButtonOnPress}>

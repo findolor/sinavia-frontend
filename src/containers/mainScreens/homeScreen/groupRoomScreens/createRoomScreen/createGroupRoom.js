@@ -137,7 +137,8 @@ class CreateGroupRoom extends React.Component {
                         navigationReset('game', { isHardReset: true })
                         navigationPush(SCENE_KEYS.gameScreens.groupGame, {
                             room: this.room,
-                            client: this.client
+                            client: this.client,
+                            groupRoomPlayerList: this.state.groupRoomPlayerList
                         })
                         return
                 }
