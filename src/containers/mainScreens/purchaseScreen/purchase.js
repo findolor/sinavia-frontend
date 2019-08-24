@@ -3,6 +3,7 @@ import {
     Image,
     ImageBackground,
     FlatList,
+    Linking,
     ScrollView,
     Text,
     TouchableOpacity,
@@ -76,9 +77,9 @@ class PurchaseScreen extends React.Component {
                                 <Text style={styles.bookSalePercentageText}>%40</Text>
                             </View>
                             <View style={styles.bookBuyButtonContainer}>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={() => Linking.openURL('https://www.pegem.net/kitabevi/148300-2020-KPSS-Genel-Yetenek-Genel-Kultur-Video-Destekli-Konu-Anlatimli-Moduler-Set-6-Kitap--kitabi.aspx')}>
                                     <View style={styles.bookBuyButton}>
-                                        <Text style={styles.bookCostWithSaleText}>175,00 ₺</Text>
+                                        <Text style={styles.bookCostWithSaleText}>171,00 ₺</Text>
                                     </View>
                                 </TouchableOpacity>
                             </View>
@@ -100,59 +101,9 @@ class PurchaseScreen extends React.Component {
                                 <Text style={styles.bookSalePercentageText}>%40</Text>
                             </View>
                             <View style={styles.bookBuyButtonContainer}>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={() => Linking.openURL('https://www.pegem.net/kitabevi/148300-2020-KPSS-Genel-Yetenek-Genel-Kultur-Video-Destekli-Konu-Anlatimli-Moduler-Set-6-Kitap--kitabi.aspx')}>
                                     <View style={styles.bookBuyButton}>
-                                        <Text style={styles.bookCostWithSaleText}>175,00 ₺</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.booksRowView}>
-                        <View style={styles.bookView}>
-                            <View style={styles.bookImgContainer}>
-                                <Image source={PEGEM} style={styles.bookImgStyle}/>
-                            </View>
-                            <View style={styles.bookInfoContainer}>
-                                <Text style={styles.bookInfoText}>2020 KPSS Genel</Text>
-                                <Text style={styles.bookInfoText}>Yenenek Genel Kültür</Text>
-                            </View>
-                            <View style={styles.bookPublisherContainer}>
-                                <Text style={styles.bookPublisherText}>Pegem Akademi</Text>
-                                <Text style={styles.bookPublisherText}>Yayıncılık</Text>
-                            </View>
-                            <View style={styles.bookCostContainer}>
-                                <Text style={styles.bookCostWithoutSaleText}>285,00 ₺</Text>
-                                <Text style={styles.bookSalePercentageText}>%40</Text>
-                            </View>
-                            <View style={styles.bookBuyButtonContainer}>
-                                <TouchableOpacity>
-                                    <View style={styles.bookBuyButton}>
-                                        <Text style={styles.bookCostWithSaleText}>175,00 ₺</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={styles.bookView}>
-                            <View style={styles.bookImgContainer}>
-                                <Image source={PEGEM} style={styles.bookImgStyle}/>
-                            </View>
-                            <View style={styles.bookInfoContainer}>
-                                <Text style={styles.bookInfoText}>2020 KPSS Genel</Text>
-                                <Text style={styles.bookInfoText}>Yenenek Genel Kültür</Text>
-                            </View>
-                            <View style={styles.bookPublisherContainer}>
-                                <Text style={styles.bookPublisherText}>Pegem Akademi</Text>
-                                <Text style={styles.bookPublisherText}>Yayıncılık</Text>
-                            </View>
-                            <View style={styles.bookCostContainer}>
-                                <Text style={styles.bookCostWithoutSaleText}>285,00 ₺</Text>
-                                <Text style={styles.bookSalePercentageText}>%40</Text>
-                            </View>
-                            <View style={styles.bookBuyButtonContainer}>
-                                <TouchableOpacity>
-                                    <View style={styles.bookBuyButton}>
-                                        <Text style={styles.bookCostWithSaleText}>175,00 ₺</Text>
+                                        <Text style={styles.bookCostWithSaleText}>171,00 ₺</Text>
                                     </View>
                                 </TouchableOpacity>
                             </View>
@@ -176,9 +127,9 @@ class PurchaseScreen extends React.Component {
                                 <Text style={styles.bookSalePercentageText}>%40</Text>
                             </View>
                             <View style={styles.bookBuyButtonContainer}>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={() => Linking.openURL('https://www.pegem.net/kitabevi/148300-2020-KPSS-Genel-Yetenek-Genel-Kultur-Video-Destekli-Konu-Anlatimli-Moduler-Set-6-Kitap--kitabi.aspx')}>
                                     <View style={styles.bookBuyButton}>
-                                        <Text style={styles.bookCostWithSaleText}>175,00 ₺</Text>
+                                        <Text style={styles.bookCostWithSaleText}>171,00 ₺</Text>
                                     </View>
                                 </TouchableOpacity>
                             </View>
@@ -200,9 +151,59 @@ class PurchaseScreen extends React.Component {
                                 <Text style={styles.bookSalePercentageText}>%40</Text>
                             </View>
                             <View style={styles.bookBuyButtonContainer}>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={() => Linking.openURL('https://www.pegem.net/kitabevi/148300-2020-KPSS-Genel-Yetenek-Genel-Kultur-Video-Destekli-Konu-Anlatimli-Moduler-Set-6-Kitap--kitabi.aspx')}>
                                     <View style={styles.bookBuyButton}>
-                                        <Text style={styles.bookCostWithSaleText}>175,00 ₺</Text>
+                                        <Text style={styles.bookCostWithSaleText}>171,00 ₺</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={styles.booksRowView}>
+                        <View style={styles.bookView}>
+                            <View style={styles.bookImgContainer}>
+                                <Image source={PEGEM} style={styles.bookImgStyle}/>
+                            </View>
+                            <View style={styles.bookInfoContainer}>
+                                <Text style={styles.bookInfoText}>2020 KPSS Genel</Text>
+                                <Text style={styles.bookInfoText}>Yenenek Genel Kültür</Text>
+                            </View>
+                            <View style={styles.bookPublisherContainer}>
+                                <Text style={styles.bookPublisherText}>Pegem Akademi</Text>
+                                <Text style={styles.bookPublisherText}>Yayıncılık</Text>
+                            </View>
+                            <View style={styles.bookCostContainer}>
+                                <Text style={styles.bookCostWithoutSaleText}>285,00 ₺</Text>
+                                <Text style={styles.bookSalePercentageText}>%40</Text>
+                            </View>
+                            <View style={styles.bookBuyButtonContainer}>
+                                <TouchableOpacity onPress={() => Linking.openURL('https://www.pegem.net/kitabevi/148300-2020-KPSS-Genel-Yetenek-Genel-Kultur-Video-Destekli-Konu-Anlatimli-Moduler-Set-6-Kitap--kitabi.aspx')}>
+                                    <View style={styles.bookBuyButton}>
+                                        <Text style={styles.bookCostWithSaleText}>171,00 ₺</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <View style={styles.bookView}>
+                            <View style={styles.bookImgContainer}>
+                                <Image source={PEGEM} style={styles.bookImgStyle}/>
+                            </View>
+                            <View style={styles.bookInfoContainer}>
+                                <Text style={styles.bookInfoText}>2020 KPSS Genel</Text>
+                                <Text style={styles.bookInfoText}>Yenenek Genel Kültür</Text>
+                            </View>
+                            <View style={styles.bookPublisherContainer}>
+                                <Text style={styles.bookPublisherText}>Pegem Akademi</Text>
+                                <Text style={styles.bookPublisherText}>Yayıncılık</Text>
+                            </View>
+                            <View style={styles.bookCostContainer}>
+                                <Text style={styles.bookCostWithoutSaleText}>285,00 ₺</Text>
+                                <Text style={styles.bookSalePercentageText}>%40</Text>
+                            </View>
+                            <View style={styles.bookBuyButtonContainer}>
+                                <TouchableOpacity onPress={() => Linking.openURL('https://www.pegem.net/kitabevi/148300-2020-KPSS-Genel-Yetenek-Genel-Kultur-Video-Destekli-Konu-Anlatimli-Moduler-Set-6-Kitap--kitabi.aspx')}>
+                                    <View style={styles.bookBuyButton}>
+                                        <Text style={styles.bookCostWithSaleText}>171,00 ₺</Text>
                                     </View>
                                 </TouchableOpacity>
                             </View>
