@@ -58,15 +58,15 @@ class SplashScreen extends React.PureComponent {
     render() {
         return (
             <View style={styles.container}>
-                {/* <View style={styles.logoContainer}>
+                <View style={styles.logoContainer}>
                     <Image source={APP_LOGO} style={styles.appLogo} />
                 </View>
-                <Text style={styles.sinaviaText}>Sınavia</Text> */}
-                <LottieView
+                <Text style={styles.sinaviaText}>Sınavia</Text>
+                {/* <LottieView
                     source={require('../../assets/splashScreen/sinavia.json')}
                     autoPlay
                     loop
-                />
+                /> */}
             </View>
         )
     }
