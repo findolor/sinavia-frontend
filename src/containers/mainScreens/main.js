@@ -1,6 +1,7 @@
 import React from 'react'
 import Home from './homeScreen/home'
 import Leaderboard from './leaderboardScreen/leaderboard'
+import Purchase from './purchaseScreen/purchase'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
@@ -42,15 +43,15 @@ export default class Main extends React.Component {
                 return
             case 'TROPHY':
                 this.setVisibleForm('LEADERBOARD')
-                this.setState({ homeIconSelected: false })
                 this.setState({ trophyIconSelected: true })
+                this.setState({ homeIconSelected: false })
                 this.setState({ jokerIconSelected: false })
                 return
-            case 'JOKER':
-                this.setVisibleForm('HOME')
+            case 'PURCHASE':
+                this.setVisibleForm('PURCHASE')
                 this.setState({ trophyIconSelected: false })
-                this.setState({ jokerIconSelected: true })
                 this.setState({ homeIconSelected: false })
+                this.setState({ jokerIconSelected: true })
                 return
         }
     }
@@ -61,6 +62,7 @@ export default class Main extends React.Component {
             <View style={styles.container}>
                 {visibleForm === 'HOME' && <Home />}
                 {visibleForm === 'LEADERBOARD' && <Leaderboard />}
+                {visibleForm === 'PURCHASE' && <Purchase />}
                 <View style={styles.bottomBar}>
                     <TouchableOpacity
                         onPress={() => this.updatePageIcons('TROPHY')}
@@ -95,7 +97,7 @@ export default class Main extends React.Component {
                         />
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={() => this.updatePageIcons('JOKER')}
+                        onPress={() => this.updatePageIcons('PURCHASE')}
                     >
                         <Image
                             source={
