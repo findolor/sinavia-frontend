@@ -8,7 +8,6 @@ import {
     TouchableOpacity,
     View,
     AsyncStorage,
-    Platform,
     Alert,
     FlatList
 } from 'react-native'
@@ -120,30 +119,29 @@ class Home extends React.Component {
 
     async componentDidMount() {
         await fcmService.checkPermissions()
-        /* if (Platform.OS === 'ios') {
-            this.messageListener = firebase.messaging().onMessage(message => {
-                console.log(message)
-            })
-        } else {
-            this.messageListener = firebase
-                .notifications()
-                .onNotification(notification => {
-                    console.log(notification)
-                })
-        } */
         this.messageListener = firebase.messaging().onMessage(message => {
+            console.log(message, 'mes')
             this.fcmMessagePicker(message)
         })
         this.NotificationListener = firebase
             .notifications()
             .onNotification(notification => {
-                Alert.alert(notification.body)
+                console.log(notification, 'not')
             })
     }
 
     fcmMessagePicker = message => {
         switch (message.data.type) {
             case 'friendRequest':
+                this.customAlert(
+                    false,
+                    'Arkadaşlık isteği!',
+                    message.data.body,
+                    this.acceptFriendRequest,
+                    {
+                        opponentId: message.data.userId
+                    }
+                )
                 break
             case 'friendApproved':
                 this.customAlert(
@@ -190,6 +188,20 @@ class Home extends React.Component {
         friends.push(params.opponentId)
 
         this.props.saveFriendIdList(friends)
+    }
+
+    acceptFriendRequest = params => {
+        const friends = this.props.friendIds
+        friends.push(params.opponentId)
+
+        this.props.saveFriendIdList(friends)
+
+        friendshipServices.acceptFriendshipRequest(
+            this.props.clientToken,
+            this.props.clientDBId,
+            params.opponentId,
+            this.props.clientInformation.username
+        )
     }
 
     customAlert = (
