@@ -1,7 +1,7 @@
 import turkce from '../../../../assets/coursesImages/turkce.png'
 import matematik from '../../../../assets/coursesImages/matematik.png'
 import tarih from '../../../../assets/coursesImages/tarih.png'
-import fenBilimleri from '../../../../assets/coursesImages/turkce.png'
+import fen from '../../../../assets/coursesImages/fen.png'
 import ingilizce from '../../../../assets/coursesImages/ingilizce.png'
 import din from '../../../../assets/coursesImages/din.png'
 import biyoloji from '../../../../assets/coursesImages/biyoloji.png'
@@ -20,6 +20,16 @@ import tus_klinik from '../../../../assets/coursesImages/tus_klinik.png'
 import dus_klinik from '../../../../assets/coursesImages/dus_klinik.png'
 import eus_klinik from '../../../../assets/coursesImages/eus_klinik.png'
 import ehliyet from '../../../../assets/coursesImages/ehliyet.png'
+import hukuk from '../../../../assets/coursesImages/hukuk.png'
+import isletme from '../../../../assets/coursesImages/isletme.png'
+import maliye from '../../../../assets/coursesImages/maliye.png'
+import iktisat from '../../../../assets/coursesImages/iktisat.png'
+import muhasebe from '../../../../assets/coursesImages/muhasebe.png'
+import vatandaslik from '../../../../assets/coursesImages/vatandaslik.png'
+import egitim_bilimleri from '../../../../assets/coursesImages/egitim_bilimleri.png'
+import oabt from '../../../../assets/coursesImages/oabt.png'
+import sozel_bilimler from '../../../../assets/coursesImages/sozel_bilimler.png'
+import sayisal_bolumler from '../../../../assets/coursesImages/sayisal_bilimler.png'
 
 export const LGS = [
     {
@@ -36,7 +46,7 @@ export const LGS = [
     },
     {
         courseName: 'Fen Bilimleri',
-        illustration: turkce
+        illustration: fen
     },
     {
         courseName: 'İngilizce',
@@ -86,11 +96,11 @@ export const YKS = [
 export const KPSS = [
     {
         courseName: 'Sözel Bölüm',
-        illustration: turkce
+        illustration: sozel_bilimler
     },
     {
         courseName: 'Sayısal Bölüm',
-        illustration: turkce
+        illustration: sayisal_bolumler
     },
     {
         courseName: 'Tarih',
@@ -102,35 +112,35 @@ export const KPSS = [
     },
     {
         courseName: 'Vatandaşlık',
-        illustration: turkce
+        illustration: vatandaslik
     },
     {
         courseName: 'Eğitim Bilimleri',
-        illustration: turkce
+        illustration: egitim_bilimleri
     },
     {
         courseName: 'ÖABT',
-        illustration: turkce
+        illustration: oabt
     },
     {
         courseName: 'İşletme',
-        illustration: turkce
+        illustration: isletme
     },
     {
         courseName: 'Muhasebe',
-        illustration: turkce
+        illustration: muhasebe
     },
     {
         courseName: 'Hukuk',
-        illustration: turkce
+        illustration: hukuk
     },
     {
         courseName: 'İktisat',
-        illustration: turkce
+        illustration: iktisat
     },
     {
         courseName: 'Maliye',
-        illustration: turkce
+        illustration: maliye
     },
 ]
 
