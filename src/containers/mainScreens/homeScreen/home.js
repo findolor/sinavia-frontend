@@ -21,13 +21,15 @@ import {
 import { deviceStorage } from '../../../services/deviceStorage'
 import Carousel from 'react-native-snap-carousel'
 import {
+    sliderHeight,
     sliderWidth,
+    itemHeight,
     itemWidth
 } from '../../../components/mainScreen/carousel/styles/SliderEntry.style'
 import SliderEntry from '../../../components/mainScreen/carousel/components/SliderEntry'
 import carouselStyle from '../../../components/mainScreen/carousel/styles/index.style'
 import styles from './style'
-import { LGS, YKS } from '../../../components/mainScreen/carousel/static/exams'
+import { LGS, YKS, KPSS, ALES, DGS, YDS, TUS, DUS, EUS, Ehliyet } from '../../../components/mainScreen/carousel/static/exams'
 import * as courses from '../../../components/mainScreen/carousel/static/courses'
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
 import AuthButton from '../../../components/authScreen/authButton'
@@ -62,16 +64,24 @@ const exams = [
     'KPSS',
     'ALES',
     'DGS',
-    'Dil Sınavları',
+    'YDS',
     'TUS',
     'DUS',
     'EUS',
-    'Ehliyet Sınavları'
+    'Ehliyet'
 ]
 const CLOSE_BUTTON = require('../../../assets/closeButton.png')
 const examList = {
     YKS: YKS,
-    LGS: LGS
+    LGS: LGS,
+    KPSS: KPSS,
+    ALES: ALES,
+    DGS: DGS,
+    YDS: YDS,
+    TUS: TUS,
+    DUS: DUS,
+    EUS: EUS,
+    Ehliyet: Ehliyet
 }
 
 const SELECTED_MODE_COLOR = '#00D9EF'
@@ -203,12 +213,10 @@ class Home extends React.Component {
             })
     }
 
-    _renderItemWithParallax({ item, index }, parallaxProps) {
+    _renderItemWithParallax({ item }) {
         return (
             <SliderEntry
                 data={item}
-                parallax={true}
-                parallaxProps={parallaxProps}
             />
         )
     }
@@ -227,6 +235,22 @@ class Home extends React.Component {
                 return YKS[this.state.carouselActiveSlide].courseName
             case 'LGS':
                 return LGS[this.state.carouselActiveSlide].courseName
+            case 'KPSS':
+                return YKS[this.state.carouselActiveSlide].courseName
+            case 'ALES':
+                return LGS[this.state.carouselActiveSlide].courseName
+            case 'DGS':
+                return YKS[this.state.carouselActiveSlide].courseName
+            case 'YDS':
+                return LGS[this.state.carouselActiveSlide].courseName
+            case 'TUS':
+                return YKS[this.state.carouselActiveSlide].courseName
+            case 'DUS':
+                return LGS[this.state.carouselActiveSlide].courseName
+            case 'EUS':
+                return YKS[this.state.carouselActiveSlide].courseName
+            case 'Ehliyet':
+                return LGS[this.state.carouselActiveSlide].courseName
         }
     }
 
@@ -244,46 +268,177 @@ class Home extends React.Component {
         if (sinav === 'LGS') {
             switch (index) {
                 case 0:
-                    choosenSubject = courses.LGS.turkce
+                    choosenSubject = courses.LGS.lgsTurkce
                     break
                 case 1:
-                    choosenSubject = courses.LGS.matematik
+                    choosenSubject = courses.LGS.lgsMatematik
                     break
                 case 2:
-                    choosenSubject = courses.LGS.tarih
+                    choosenSubject = courses.LGS.lgsTarih
                     break
                 case 3:
-                    choosenSubject = courses.LGS.fen
+                    choosenSubject = courses.LGS.lgsFen
                     break
                 case 4:
-                    choosenSubject = courses.LGS.ingilizce
+                    choosenSubject = courses.LGS.lgsIngilizce
                     break
                 case 5:
-                    choosenSubject = courses.LGS.din
+                    choosenSubject = courses.LGS.lgsDin
                     break
             }
         } else if (sinav === 'YKS') {
             switch (index) {
                 case 0:
-                    choosenSubject = courses.yksTurkce
+                    choosenSubject = courses.YKS.yksTurkce
                     break
                 case 1:
-                    choosenSubject = courses.yksCog
+                    choosenSubject = courses.YKS.yksEdebiyat
                     break
                 case 2:
-                    choosenSubject = courses.yksTarih
+                    choosenSubject = courses.YKS.yksCografya
                     break
                 case 3:
-                    choosenSubject = courses.yksMat
+                    choosenSubject = courses.YKS.yksTarih
                     break
                 case 4:
-                    choosenSubject = courses.yksFizik
+                    choosenSubject = courses.YKS.yksMatematik
                     break
                 case 5:
-                    choosenSubject = courses.yksKimya
+                    choosenSubject = courses.YKS.yksGeometri
                     break
-                default:
-                    choosenSubject = courses.yksBiyo
+                case 6:
+                    choosenSubject = courses.YKS.yksFizik
+                    break
+                case 7:
+                    choosenSubject = courses.YKS.yksKimya
+                    break
+                case 8:
+                    choosenSubject = courses.YKS.yksBiyoloji
+                    break
+                case 9:
+                    choosenSubject = courses.YKS.yksFelsefe
+                    break
+            }
+        }
+        else if (sinav === 'KPSS') {
+            switch (index) {
+                case 0:
+                    choosenSubject = courses.KPSS.kpssSozelBolum
+                    break
+                case 1:
+                    choosenSubject = courses.KPSS.kpssSayisalBolum
+                    break
+                case 2:
+                    choosenSubject = courses.KPSS.kpssTarih
+                    break
+                case 3:
+                    choosenSubject = courses.KPSS.kpssCografya
+                    break
+                case 4:
+                    choosenSubject = courses.KPSS.kpssVatandaslik
+                    break
+                case 5:
+                    choosenSubject = courses.KPSS.kpssEgitimBilimleri
+                    break
+                case 6:
+                    choosenSubject = courses.KPSS.kpssOABT
+                    break
+                case 7:
+                    choosenSubject = courses.KPSS.kpssIsletme
+                    break
+                case 8:
+                    choosenSubject = courses.KPSS.kpssMuhasebe
+                    break
+                case 9:
+                    choosenSubject = courses.KPSS.kpssHukuk
+                    break
+                case 10:
+                    choosenSubject = courses.KPSS.kpssIktisat
+                    break
+                case 11:
+                    choosenSubject = courses.KPSS.kpssMaliye
+                    break
+            }
+        }
+        else if (sinav === 'ALES') {
+            switch (index) {
+                case 0:
+                    choosenSubject = courses.ALES.alesTurkce
+                    break
+                case 1:
+                    choosenSubject = courses.ALES.alesMatematik
+                    break
+                case 2:
+                    choosenSubject = courses.ALES.alesGeometri
+                    break
+            }
+        }
+        else if (sinav === 'DGS') {
+            switch (index) {
+                case 0:
+                    choosenSubject = courses.DGS.dgsTurkce
+                    break
+                case 1:
+                    choosenSubject = courses.DGS.dgsMatematik
+                    break
+                case 2:
+                    choosenSubject = courses.DGS.dgsGeometri
+                    break
+            }
+        }
+        else if (sinav === 'YDS') {
+            switch (index) {
+                case 0:
+                    choosenSubject = courses.YDS.ydsIngilizce
+                    break
+                case 1:
+                    choosenSubject = courses.YDS.ydsAlmanca
+                    break
+                case 2:
+                    choosenSubject = courses.YDS.ydsFransizca
+                    break
+                case 3:
+                    choosenSubject = courses.YDS.ydsRusca
+                    break
+                case 4:
+                    choosenSubject = courses.YDS.ydsArapca
+                    break
+            }
+        }
+        else if (sinav === 'TUS') {
+            switch (index) {
+                case 0:
+                    choosenSubject = courses.TUS.tusTemelBilimler
+                    break
+                case 1:
+                    choosenSubject = courses.TUS.tusKlinikBilimler
+                    break
+            }
+        }
+        else if (sinav === 'DUS') {
+            switch (index) {
+                case 0:
+                    choosenSubject = courses.DUS.dusTemelBilimler
+                    break
+                case 1:
+                    choosenSubject = courses.DUS.dusKlinikBilimler
+                    break
+            }
+        }
+        else if (sinav === 'EUS') {
+            switch (index) {
+                case 0:
+                    choosenSubject = courses.EUS.eusTemelBilimler
+                    break
+                case 1:
+                    choosenSubject = courses.EUS.eusEczacilikBilimleri
+                    break
+            }
+        }
+        else if (sinav === 'Ehliyet') {
+            switch (index) {
+                case 0:
+                    choosenSubject = courses.EHLIYET.ehliyetCikmis
                     break
             }
         }
@@ -777,21 +932,17 @@ class Home extends React.Component {
                     </View>
                     <View style={styles.carouselContainer}>
                         <Carousel
-                            zIndex={-1}
+                            zIndex={1}
                             ref={c => (this._slider1Ref = c)}
                             data={examList[this.state.exam]}
                             renderItem={this._renderItemWithParallax}
+                            sliderHeight={sliderHeight}
                             sliderWidth={sliderWidth}
+                            itemHeight={itemHeight}
                             itemWidth={itemWidth}
-                            hasParallaxImages={true}
                             firstItem={carouselFirstItem}
                             inactiveSlideScale={0.8}
                             inactiveSlideOpacity={0.65}
-                            // inactiveSlideShift={20}
-                            containerCustomStyle={carouselStyle.slider}
-                            contentContainerCustomStyle={
-                                carouselStyle.sliderContentContainer
-                            }
                             loop={false}
                             onSnapToItem={index =>
                                 this.setState({ carouselActiveSlide: index })
