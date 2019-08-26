@@ -339,7 +339,7 @@ export default class ModalDropdown extends Component {
                 renderRow={this._renderRow}
                 renderSeparator={renderSeparator || this._renderSeparator}
                 automaticallyAdjustContentInsets={false}
-                showsVerticalScrollIndicator={showsVerticalScrollIndicator}
+                showsVerticalScrollIndicator={false}
                 keyboardShouldPersistTaps={keyboardShouldPersistTaps}
             />
         )
