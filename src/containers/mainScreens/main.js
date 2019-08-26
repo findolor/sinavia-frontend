@@ -14,9 +14,6 @@ import selectedHomeIcon from '../../assets/mainScreens/home_dolu.png'
 import emptyHomeIcon from '../../assets/mainScreens/home.png'
 import selectedJokerIcon from '../../assets/mainScreens/joker_dolu.png'
 import emptyJokerIcon from '../../assets/mainScreens/joker.png'
-import NotchView from '../../components/notchView'
-
-import { navigationPush } from '../../services/navigationService'
 
 export default class Main extends React.Component {
     constructor(props) {

@@ -284,7 +284,6 @@ class Notifications extends React.Component {
         this.props.saveFriendIdList(friendList)
     }
 
-    // TODO List doen't refresh on its own fix it
     acceptFriendRequestOnPress = (friendId, index) => {
         this.addToFriendIds(friendId)
 
@@ -387,6 +386,7 @@ class Notifications extends React.Component {
                         data={this.state.friendRequestsList}
                         vertical={true}
                         showsVerticalScrollIndicator={false}
+                        extraData={this.state}
                         renderItem={({ item, index }) => {
                             return (
                                 <View style={styles.userRow}>

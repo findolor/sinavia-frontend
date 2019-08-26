@@ -130,6 +130,10 @@ class Home extends React.Component {
             })
     }
 
+    componentWillUnmount() {
+        this.messageListener()
+    }
+
     fcmMessagePicker = message => {
         switch (message.data.type) {
             case 'friendRequest':
@@ -166,6 +170,11 @@ class Home extends React.Component {
                     }
                 )
                 break
+            case 'friendDeleted': {
+                Alert.alert('this', message.data.userId)
+                this.friendDeleted({ opponentId: message.data.userId })
+                break
+            }
         }
     }
 
@@ -202,6 +211,14 @@ class Home extends React.Component {
             params.opponentId,
             this.props.clientInformation.username
         )
+    }
+
+    friendDeleted = params => {
+        const friends = this.props.friendIds
+        const index = friends.indexOf(params.opponentId)
+
+        friends.splice(index, 1)
+        this.props.saveFriendIdList(friends)
     }
 
     customAlert = (

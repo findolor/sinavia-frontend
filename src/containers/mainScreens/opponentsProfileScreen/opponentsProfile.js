@@ -8,11 +8,7 @@ import {
     TouchableOpacity,
     View
 } from 'react-native'
-import {
-    SCENE_KEYS,
-    navigationPop,
-    navigationPush
-} from '../../../services/navigationService'
+import { SCENE_KEYS, navigationPop } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import styles from './style'
 import NotchView from '../../../components/notchView'
@@ -49,7 +45,9 @@ class OpponentsProfile extends React.Component {
             // Friend games that was played together
             totalFriendGamesPlayed: 0,
             clientWinCount: 0,
-            opponentWinCount: 0
+            opponentWinCount: 0,
+            // We send back deleted friend index for refreshing friedns screen
+            deletedFriendIndex: null
         }
     }
 
@@ -70,8 +68,6 @@ class OpponentsProfile extends React.Component {
             this.props.clientDBId,
             this.props.opponentInformation.id
         )
-
-        console.log(friendship)
 
         if (Object.keys(friendship).length !== 0) {
             friendship[0].userId === this.props.clientDBId
@@ -152,8 +148,20 @@ class OpponentsProfile extends React.Component {
         })
     }
 
+    // TODO this doesn't refresh the screen upon popping
     backButtonOnPress = () => {
-        navigationPop()
+        if (
+            !this.props.isWithSearchBar &&
+            this.state.deletedFriendIndex !== null
+        ) {
+            const friendsList = this.props.friendsScreenFriendsList
+            friendsList.splice(this.state.deletedFriendIndex, 1)
+
+            navigationPop(true, {
+                popScreen: SCENE_KEYS.mainScreens.friendsList,
+                friendsList: friendsList
+            })
+        } else navigationPop()
     }
 
     sendFriendshipRequest = () => {
@@ -201,21 +209,36 @@ class OpponentsProfile extends React.Component {
 
     deleteFriendship = () => {
         if (this.state.isFriendRequestSent) {
-            this.removeFromFriendIds(this.props.opponentInformation.id)
             friendshipServices.deleteFriendship(
                 this.props.clientToken,
-                this.props.clientDBId
+                this.props.clientDBId,
+                this.props.opponentInformation.id,
+                true
             )
         } else {
-            this.removeFromFriendIds(this.props.clientDBId)
             friendshipServices.deleteFriendship(
                 this.props.clientToken,
-                this.props.opponentInformation.id
+                this.props.opponentInformation.id,
+                this.props.clientDBId,
+                false
             )
+        }
+        this.removeFromFriendIds(this.props.opponentInformation.id)
+
+        let friendIndex
+
+        if (this.props.friendsScreenFriendsList) {
+            this.props.friendsScreenFriendsList.forEach((friend, index) => {
+                if (this.props.opponentInformation.id === friend.id) {
+                    friendIndex = index
+                    return
+                }
+            })
         }
         this.setState({
             friendshipStatus: 'addFriend',
-            totalFriends: this.state.totalFriends - 1
+            totalFriends: this.state.totalFriends - 1,
+            deletedFriendIndex: friendIndex
         })
     }
 
@@ -242,21 +265,25 @@ class OpponentsProfile extends React.Component {
                     <TouchableOpacity onPress={this.backButtonOnPress}>
                         <Image source={returnLogo} style={styles.returnLogo} />
                     </TouchableOpacity>
-                    <View style={styles.searchBar}>
-                        <View style={styles.textInputView}>
-                            <TextInput
-                                style={styles.searchBarText}
-                                placeholder="Kullanıcı ara..."
-                                placeholderTextColor={'#7B7B7B'}
-                            />
+                    {this.props.isWithSearchBar && (
+                        <View style={styles.searchBar}>
+                            <View style={styles.textInputView}>
+                                <TextInput
+                                    style={styles.searchBarText}
+                                    placeholder="Kullanıcı ara..."
+                                    placeholderTextColor={'#7B7B7B'}
+                                />
+                            </View>
+                            <TouchableOpacity
+                                onPress={this.profileSearchOnPress}
+                            >
+                                <Image
+                                    source={searchlogo}
+                                    style={styles.searchBarLogo}
+                                />
+                            </TouchableOpacity>
                         </View>
-                        <TouchableOpacity onPress={this.profileSearchOnPress}>
-                            <Image
-                                source={searchlogo}
-                                style={styles.searchBarLogo}
-                            />
-                        </TouchableOpacity>
-                    </View>
+                    )}
                 </View>
                 <View style={styles.profileContainer}>
                     <ImageBackground

@@ -7,7 +7,11 @@ import {
     View,
     TextInput
 } from 'react-native'
-import { SCENE_KEYS, navigationPop } from '../../../services/navigationService'
+import {
+    SCENE_KEYS,
+    navigationPop,
+    navigationPush
+} from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import { userServices } from '../../../sagas/user/'
 import styles from './style'
@@ -18,19 +22,18 @@ class FriendsList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            friendsList: [],
+            friendsList: this.props.friendsList,
             value: ''
         }
     }
 
     async componentDidMount() {
-        console.log(this.props.friendIds)
         if (Object.keys(this.props.friendIds).length === 0) return
         const friends = await userServices.getUsers(
             this.props.clientToken,
             this.props.friendIds
         )
-        console.log(friends)
+
         this.setState({ friendsList: friends })
     }
 
@@ -43,7 +46,7 @@ class FriendsList extends React.Component {
             value: text
         })
 
-        const newData = friendsListData.filter(item => {
+        const newData = this.state.friendsList.filter(item => {
             const itemData = `${item.name.toUpperCase() +
                 ' ' +
                 item.lastname.toUpperCase()} ${item.username.toUpperCase()}`
@@ -52,7 +55,15 @@ class FriendsList extends React.Component {
             return itemData.indexOf(textData) > -1
         })
         this.setState({
-            data: newData
+            friendsList: newData
+        })
+    }
+
+    friendOnPress = listIndex => {
+        navigationPush(SCENE_KEYS.mainScreens.opponentsProfile, {
+            opponentInformation: this.state.friendsList[listIndex],
+            isWithSearchBar: false,
+            friendsScreenFriendsList: this.state.friendsList
         })
     }
 
@@ -90,9 +101,11 @@ class FriendsList extends React.Component {
                         data={this.state.friendsList}
                         vertical={true}
                         showsVerticalScrollIndicator={false}
-                        renderItem={({ item }) => {
+                        renderItem={({ item, index }) => {
                             return (
-                                <TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => this.friendOnPress(index)}
+                                >
                                     <View style={styles.userRow}>
                                         <View
                                             style={styles.userPicContainerInRow}

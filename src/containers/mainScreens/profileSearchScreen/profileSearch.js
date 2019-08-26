@@ -37,7 +37,8 @@ class ProfileSearch extends React.Component {
 
     userOnPress = searchListIndex => {
         navigationPush(SCENE_KEYS.mainScreens.opponentsProfile, {
-            opponentInformation: this.state.returnedSearchList[searchListIndex]
+            opponentInformation: this.state.returnedSearchList[searchListIndex],
+            isWithSearchBar: true
         })
     }
 

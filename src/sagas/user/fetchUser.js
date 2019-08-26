@@ -4,7 +4,6 @@ import { getUser } from '../../services/apiServices/user/getUser'
 
 export function* fetchUser(action) {
     const res = yield call(getUser, action.payload)
-    console.log(res)
     yield put({ type: clientTypes.FETCH_USER_SUCCESS, payload: res })
 }
 

@@ -70,7 +70,6 @@ class GroupGameStatsScreen extends React.Component {
                         replayButtonPressNumber: 1
                     })
                 } else {
-                    console.log(message)
                     setTimeout(() => {
                         this.props.room.removeAllListeners()
 

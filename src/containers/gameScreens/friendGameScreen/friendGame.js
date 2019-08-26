@@ -173,7 +173,7 @@ class FriendGame extends React.Component {
                         isCountDownRunning: true,
                         start: true
                     })
-                }, 5000)
+                }, 3000)
                 return
             // As soon as someone answers, a result event is fired
             case 'result':
@@ -197,7 +197,7 @@ class FriendGame extends React.Component {
             case 'show-results':
                 // 8 second countdown time for the results
                 this.setState({
-                    countDownTime: 8
+                    countDownTime: 5
                 })
                 this.highlightOpponentButton(
                     friendState.playerProps[this.state.opponentId].answers[
@@ -205,9 +205,9 @@ class FriendGame extends React.Component {
                     ].answer
                 )
                 this.updateTimeout = setTimeout(() => {
-                    // We wait 2.5 seconds for the reveal
+                    // We wait 1.5 seconds for the reveal
                     this.updatePlayerResults()
-                }, 2500)
+                }, 1500)
                 return
             case 'match-finished':
                 this.shutdownGame()

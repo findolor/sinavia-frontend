@@ -129,8 +129,6 @@ class GroupGame extends React.Component {
             })
             this.setState({ groupLeaderboard: groupLeaderboard })
 
-            console.log(groupLeaderboard)
-
             resolve(true)
         })
     }
@@ -205,7 +203,7 @@ class GroupGame extends React.Component {
                         isCountDownRunning: true,
                         start: true
                     })
-                }, 5000)
+                }, 3000)
                 return
             // As soon as someone answers, a result event is fired
             case 'result':
@@ -214,7 +212,7 @@ class GroupGame extends React.Component {
             case 'show-results':
                 // 8 second countdown time for the results
                 this.setState({
-                    countDownTime: 8
+                    countDownTime: 5
                 })
                 this.updateTimeout = setTimeout(() => {
                     // We wait 2.5 seconds for the reveal
@@ -237,8 +235,6 @@ class GroupGame extends React.Component {
     updatePlayerResults = () => {
         // Player answers to the question
         const answers = this.state.playerProps[this.props.client.id].answers
-
-        console.log(this.state.playerProps)
 
         // Switch statement for the user
         this.updateAnswers(answers)

@@ -1,6 +1,6 @@
 const api = {
     host: 'http://localhost:4000/api/',
-    hostAWS: 'http://sinavia-test.eu-central-1.elasticbeanstalk.com/api/',
+    hostAWS: 'http://sinavia-test.eu-central-1.elasticbeanstalk.com:8080/api/',
     gameEngine: 'http://localhost:5000',
     gameEngineAWS: 'http://sinavia-test.eu-central-1.elasticbeanstalk.com:5000'
 }
@@ -41,10 +41,10 @@ const scene_keys = {
     splashScreen: 'splash'
 }
 
-const API_ENDPOINT = api.host
-//const API_ENDPOINT = config.api.hostAWS
-const GAME_ENGINE_ENDPOINT = api.gameEngine
-//const GAME_ENGINE_ENDPOINT = config.api.gameEngineAWS
+//7const API_ENDPOINT = api.host
+const API_ENDPOINT = api.hostAWS
+//const GAME_ENGINE_ENDPOINT = api.gameEngine
+const GAME_ENGINE_ENDPOINT = api.gameEngineAWS
 
 const SCENE_KEYS = scene_keys
 
