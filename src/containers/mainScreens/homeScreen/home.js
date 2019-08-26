@@ -171,7 +171,6 @@ class Home extends React.Component {
                 )
                 break
             case 'friendDeleted': {
-                Alert.alert('this', message.data.userId)
                 this.friendDeleted({ opponentId: message.data.userId })
                 break
             }

@@ -41,10 +41,10 @@ const scene_keys = {
     splashScreen: 'splash'
 }
 
-//7const API_ENDPOINT = api.host
-const API_ENDPOINT = api.hostAWS
-//const GAME_ENGINE_ENDPOINT = api.gameEngine
-const GAME_ENGINE_ENDPOINT = api.gameEngineAWS
+const API_ENDPOINT = api.host
+//const API_ENDPOINT = api.hostAWS
+const GAME_ENGINE_ENDPOINT = api.gameEngine
+//const GAME_ENGINE_ENDPOINT = api.gameEngineAWS
 
 const SCENE_KEYS = scene_keys
 

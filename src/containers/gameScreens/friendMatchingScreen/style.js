@@ -185,7 +185,7 @@ export default StyleSheet.create({
     },
     timerText: {
         fontFamily: 'Averta-BoldItalic',
-        fontSize: hp(10),
+        fontSize: hp(9),
         color: '#FFFFFF'
     },
     sword: {
