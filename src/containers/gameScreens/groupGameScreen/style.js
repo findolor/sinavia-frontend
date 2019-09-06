@@ -31,8 +31,7 @@ export default StyleSheet.create({
     questionContainer: {
         backgroundColor: '#ffffff',
         height: hp(52),
-        width: wp(84),
-        marginLeft: wp(8),
+        marginHorizontal: wp(5),
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center'
@@ -193,7 +192,7 @@ export default StyleSheet.create({
         borderColor: 'white',
         borderRadius: 100,
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     countdownText: {
         fontFamily: 'Averta-Bold',
@@ -319,7 +318,6 @@ export default StyleSheet.create({
         width: hp(7),
         borderRadius: 100,
         backgroundColor: 'white'
-
     }
 })
 

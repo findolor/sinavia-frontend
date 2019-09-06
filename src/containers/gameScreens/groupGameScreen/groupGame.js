@@ -102,15 +102,15 @@ class GroupGame extends React.Component {
         this.props.room.send({
             action: 'ready'
         })
-        this.props.room.onStateChange.add(state => {
+        this.props.room.onStateChange(state => {
             // We update the UI after state changes
             this.chooseStateAction(state.groupState)
         })
         // Joker messages come through here
-        this.props.room.onMessage.add(message => {
+        this.props.room.onMessage(message => {
             this.chooseMessageAction(message)
         })
-        this.props.room.onError.add(err => console.log(err))
+        this.props.room.onError(err => console.log(err))
     }
 
     initializeLeaderboard = () => {
@@ -173,7 +173,6 @@ class GroupGame extends React.Component {
     onlyClientMatchQuit = () => {
         Alert.alert('Herkes oyundan ayrıldı!')
         this.shutdownGame()
-        this.props.client.close()
         navigationReset('main')
     }
 
@@ -234,7 +233,8 @@ class GroupGame extends React.Component {
     // TODO add a list here that has all the answers
     updatePlayerResults = () => {
         // Player answers to the question
-        const answers = this.state.playerProps[this.props.client.id].answers
+        const answers = this.state.playerProps[this.props.room.sessionId]
+            .answers
 
         // Switch statement for the user
         this.updateAnswers(answers)

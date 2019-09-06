@@ -95,15 +95,15 @@ class RankedGame extends React.Component {
         this.props.room.send({
             action: 'ready'
         })
-        this.props.room.onStateChange.add(state => {
+        this.props.room.onStateChange(state => {
             // We update the UI after state changes
             this.chooseStateAction(state.rankedState)
         })
         // Joker messages come through here
-        this.props.room.onMessage.add(message => {
+        this.props.room.onMessage(message => {
             this.chooseMessageAction(message)
         })
-        this.props.room.onError.add(err => console.log(err))
+        this.props.room.onError(err => console.log(err))
     }
 
     componentWillUnmount() {}
@@ -116,8 +116,6 @@ class RankedGame extends React.Component {
 
         // Clear room listeners
         this.props.room.removeAllListeners()
-        this.props.client.close()
-
         // Clear other game related things
         this.setState({ isCountDownRunning: false })
     }
@@ -181,7 +179,7 @@ class RankedGame extends React.Component {
                 if (
                     this.state.isSeeOpponentAnswerJokerActive &&
                     // We check if the answer is from the opponent, if not we don't proceed
-                    rankedState.playerProps[this.props.client.id].answers[
+                    rankedState.playerProps[this.props.room.sessionId].answers[
                         this.state.questionNumber
                     ] === undefined
                 ) {
@@ -229,7 +227,8 @@ class RankedGame extends React.Component {
 
     updatePlayerResults = () => {
         // Player answers to the question
-        const answers = this.state.playerProps[this.props.client.id].answers
+        const answers = this.state.playerProps[this.props.room.sessionId]
+            .answers
         const answersOpponent = this.state.playerProps[this.state.opponentId]
             .answers
 
@@ -695,7 +694,7 @@ class RankedGame extends React.Component {
                         animationType={'fade'}
                     >
                         <View style={styles.questionModalContainer}>
-                            <View style={styles.questionImageModalContainer}>
+                            <View>
                                 <Image
                                     source={{
                                         uri: this.state.questionList[

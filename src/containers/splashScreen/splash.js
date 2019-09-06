@@ -45,7 +45,7 @@ class SplashScreen extends React.PureComponent {
         this.loginInterval = setInterval(async () => {
             if (++this.state.retryCount === 3) {
                 Alert.alert('Lütfen tekrar giriş yapınız!')
-                await deviceStorage.clearDeviceStorage()
+                //await deviceStorage.clearDeviceStorage()
                 navigationReset('auth')
             }
         }, 2000)

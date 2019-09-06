@@ -1,7 +1,13 @@
+const local = true
+
 const api = {
-    host: 'http://localhost:4000/api/',
+    host:
+        local === true
+            ? 'http://localhost:4000/api/'
+            : 'http://192.168.43.67:4000/api/',
     hostAWS: 'http://sinavia-test.eu-central-1.elasticbeanstalk.com:8080/api/',
-    gameEngine: 'http://localhost:5000',
+    gameEngine:
+        local === true ? 'http://localhost:5000' : 'http://192.168.43.67:5000',
     gameEngineAWS: 'http://sinavia-test.eu-central-1.elasticbeanstalk.com:5000'
 }
 

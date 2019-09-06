@@ -22,20 +22,18 @@ class LoadingScreen extends React.Component {
     async componentDidMount() {
         if (this.props.isHardReset) return
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
-        this.client.onOpen.add(() => {
-            this.joinRoom({
-                create: true,
-                examName: 'LGS',
-                courseName: 'Matematik',
-                subjectName: 'Sayilar',
-                databaseId: this.props.clientDBId
-            })
+        this.joinRoom({
+            create: true,
+            examName: 'LGS',
+            courseName: 'Matematik',
+            subjectName: 'Sayilar',
+            databaseId: this.props.clientDBId
         })
     }
 
     // Client sends a ready signal when they join a room successfully
-    joinRoom = playerOptions => {
-        this.room = this.client.join('rankedRoom', playerOptions)
+    joinRoom = async playerOptions => {
+        this.room = await this.client.joinOrCreate('rankedRoom', playerOptions)
         // Opponent information
         let opponentUsername
         let opponentId
@@ -45,12 +43,12 @@ class LoadingScreen extends React.Component {
         let playerUsername
         let playerProfilePicture
         let playerCoverPicture
-        this.room.onMessage.add(message => {
+        this.room.onMessage(message => {
             // Message is playerProps
             const playerIds = Object.keys(message)
 
             playerIds.forEach(element => {
-                if (this.client.id !== element) {
+                if (this.room.sessionId !== element) {
                     opponentUsername = message[element].username
                     opponentId = element
                     opponentProfilePicture = message[element].profilePicture

@@ -172,7 +172,7 @@ class FriendMatchingScreen extends React.Component {
                 </View>
                 <View style={styles.separatorView}>
                     <View style={styles.separatorLineUser}>
-                        <Text style={styles.winLoseText}>Kazanma Sayısı</Text>
+                        <Text style={styles.winLoseText}>Kazanma</Text>
                         <Text style={styles.winLoseCounterText}>20</Text>
                     </View>
                     <View style={styles.separatorCircle}>
@@ -198,7 +198,7 @@ class FriendMatchingScreen extends React.Component {
                         )}
                     </View>
                     <View style={styles.separatorLineOpponent}>
-                        <Text style={styles.winLoseText}>Kazanma Sayısı</Text>
+                        <Text style={styles.winLoseText}>Kazanma</Text>
                         <Text style={styles.winLoseCounterText}>20</Text>
                     </View>
                 </View>
