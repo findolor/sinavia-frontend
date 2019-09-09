@@ -20,7 +20,6 @@ class SplashScreen extends React.PureComponent {
     getJWTToken = async () => {
         try {
             const token = await deviceStorage.getItemFromStorage('clientToken')
-
             return token
         } catch (error) {
             console.log(error)
@@ -45,7 +44,7 @@ class SplashScreen extends React.PureComponent {
         this.loginInterval = setInterval(async () => {
             if (++this.state.retryCount === 3) {
                 Alert.alert('Lütfen tekrar giriş yapınız!')
-                //await deviceStorage.clearDeviceStorage()
+                await deviceStorage.clearDeviceStorage()
                 navigationReset('auth')
             }
         }, 2000)

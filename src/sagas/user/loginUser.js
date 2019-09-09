@@ -8,6 +8,7 @@ import { friendTypes } from '../../redux/friends/actions'
 import { fcmService } from '../../services/fcmService'
 import { postFCMToken } from '../../services/apiServices/fcmToken/postToken'
 import { getFriends } from '../../services/apiServices/friendship/getFriends'
+import { getFavouriteQuestions } from '../../services/apiServices/favouriteQuestion/getFavouriteQuestions'
 
 export function* loginUser(action) {
     try {
@@ -31,6 +32,23 @@ export function* loginUser(action) {
         yield put({
             type: clientTypes.SAVE_CLIENT_CREDENTIALS,
             payload: action.payload
+        })
+
+        // We save user favourite questions
+        const favouriteQuestions = yield call(
+            getFavouriteQuestions,
+            res.token,
+            res.id
+        )
+        // Saving to device storage
+        deviceStorage.saveItemToStorage(
+            'favouriteQuestions',
+            JSON.stringify(favouriteQuestions)
+        )
+        // Saving the favs to redux state
+        yield put({
+            type: clientTypes.SAVE_FAVOURITE_QUESTIONS,
+            payload: favouriteQuestions
         })
 
         // Then we get our user information

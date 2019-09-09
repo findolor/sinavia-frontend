@@ -50,6 +50,20 @@ export function* authenticateUser(action) {
             })
         }
 
+        // Get favourited questions from storage
+        let favouriteQuestions = yield call(
+            getFromStorage,
+            'favouriteQuestions'
+        )
+        favouriteQuestions = JSON.parse(favouriteQuestions)
+        // Save it to redux state
+        if (favouriteQuestions !== null && favouriteQuestions !== []) {
+            yield put({
+                type: clientTypes.SAVE_FAVOURITE_QUESTIONS,
+                payload: favouriteQuestions
+            })
+        }
+
         // Get client id from storage
         let clientDBId = yield call(getFromStorage, 'clientDBId')
         // Save it to redux state
@@ -138,6 +152,20 @@ export function* authenticateUser(action) {
                 yield put({
                     type: clientTypes.SAVE_CHOOSEN_EXAM,
                     payload: choosenExam
+                })
+            }
+
+            // Get favourited questions from storage
+            let favouriteQuestions = yield call(
+                getFromStorage,
+                'favouriteQuestions'
+            )
+            favouriteQuestions = JSON.parse(favouriteQuestions)
+            // Save it to redux state
+            if (favouriteQuestions !== null && favouriteQuestions !== []) {
+                yield put({
+                    type: clientTypes.SAVE_FAVOURITE_QUESTIONS,
+                    payload: favouriteQuestions
                 })
             }
 

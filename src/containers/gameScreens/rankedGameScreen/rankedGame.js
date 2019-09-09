@@ -85,7 +85,9 @@ class RankedGame extends React.Component {
             isSeeOpponentAnswerJokerActive: false,
             isSecondChanceJokerActive: false,
             // Current question answer for second chance
-            questionAnswer: 0
+            questionAnswer: 0,
+            // Contains every information about question
+            fullQuestionList: []
         }
     }
 
@@ -139,6 +141,9 @@ class RankedGame extends React.Component {
                 this.shutdownGame()
 
                 navigationReset('main')
+                return
+            case 'save-questions':
+                this.setState({ fullQuestionList: message.fullQuestionList })
                 return
         }
     }
@@ -220,7 +225,8 @@ class RankedGame extends React.Component {
                     playerProfilePicture: this.props.playerProfilePicture,
                     opponentUsername: this.props.opponentUsername,
                     opponentId: this.props.opponentId,
-                    opponentProfilePicture: this.props.opponentProfilePicture
+                    opponentProfilePicture: this.props.opponentProfilePicture,
+                    fullQuestionList: this.state.fullQuestionList
                 })
                 return
         }
