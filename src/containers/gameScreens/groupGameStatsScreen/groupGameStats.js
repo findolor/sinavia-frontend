@@ -55,10 +55,10 @@ class GroupGameStatsScreen extends React.Component {
 
     async componentDidMount() {
         await this.loadScreen()
-        this.props.room.onMessage(message => {
+        this.props.room.onMessage.add(message => {
             this.chooseMessageAction(message)
         })
-        this.props.room.onError(err => console.log(err))
+        this.props.room.onError.add(err => console.log(err))
     }
 
     chooseMessageAction = message => {
@@ -251,6 +251,7 @@ class GroupGameStatsScreen extends React.Component {
 
     mainScreenButtonOnPress = () => {
         this.props.room.leave()
+        this.props.client.close()
         navigationReset('main')
     }
 
@@ -442,7 +443,7 @@ class GroupGameStatsScreen extends React.Component {
                                 >
                                     {this.answerSwitcher(
                                         this.props.playerProps[
-                                            this.props.room.sessionId
+                                            this.props.client.id
                                         ].answers[
                                             this.state.questionPosition - 1
                                         ].correctAnswer
@@ -486,7 +487,7 @@ class GroupGameStatsScreen extends React.Component {
                                 >
                                     {this.answerSwitcher(
                                         this.props.playerProps[
-                                            this.props.room.sessionId
+                                            this.props.client.id
                                         ].answers[
                                             this.state.questionPosition - 1
                                         ].answer

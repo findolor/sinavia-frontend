@@ -882,31 +882,32 @@ class Home extends React.Component {
         )
             return
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
-        this.tryJoiningRoom()
+        this.client.onOpen.add(() => {
+            this.tryJoiningRoom()
+        })
     }
 
     tryJoiningRoom = async () => {
-        this.client
-            .join('groupRoom', {
-                // These will be props coming from home screen
-                examName: 'LGS',
-                courseName: 'Matematik',
-                subjectName: 'Sayilar',
-                databaseId: this.props.clientDBId,
-                roomCode: this.state.groupCodeOnChangeText.toString()
+        this.room = this.client.join('groupRoom', {
+            // These will be props coming from home screen
+            examName: 'LGS',
+            courseName: 'Matematik',
+            subjectName: 'Sayilar',
+            databaseId: this.props.clientDBId,
+            roomCode: this.state.groupCodeOnChangeText.toString(),
+            // Because we are joining a game, we don't want to create a new room
+            create: false
+        })
+
+        this.room.onJoin.add(() => {
+            this.setState({ isModalVisible: false })
+            this.room.removeAllListeners()
+            navigationPush(SCENE_KEYS.mainScreens.joinGroupRoom, {
+                client: this.client,
+                room: this.room,
+                roomCode: this.state.groupCodeOnChangeText
             })
-            .then(room => {
-                this.setState({ isModalVisible: false })
-                room.removeAllListeners()
-                navigationPush(SCENE_KEYS.mainScreens.joinGroupRoom, {
-                    client: this.client,
-                    room: room,
-                    roomCode: this.state.groupCodeOnChangeText
-                })
-            })
-            .catch(error => {
-                console.log(error)
-            })
+        })
     }
 
     joinRoomBackButtonOnPress = () => {

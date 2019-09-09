@@ -19,21 +19,32 @@ class LoadingScreen extends React.Component {
         this.state = {}
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         if (this.props.isHardReset) return
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
-        this.joinRoom({
+        // 0.11.0
+        /* this.joinRoom({
             create: true,
             examName: 'LGS',
             courseName: 'Matematik',
             subjectName: 'Sayilar',
             databaseId: this.props.clientDBId
+        }) */
+        // 0.10.8
+        this.client.onOpen.add(() => {
+            this.joinRoom({
+                create: true,
+                examName: 'LGS',
+                courseName: 'Matematik',
+                subjectName: 'Sayilar',
+                databaseId: this.props.clientDBId
+            })
         })
     }
 
     // Client sends a ready signal when they join a room successfully
-    joinRoom = async playerOptions => {
-        this.room = await this.client.joinOrCreate('rankedRoom', playerOptions)
+    joinRoom = playerOptions => {
+        this.room = this.client.join('rankedRoom', playerOptions)
         // Opponent information
         let opponentUsername
         let opponentId
@@ -43,12 +54,12 @@ class LoadingScreen extends React.Component {
         let playerUsername
         let playerProfilePicture
         let playerCoverPicture
-        this.room.onMessage(message => {
+        this.room.onMessage.add(message => {
             // Message is playerProps
             const playerIds = Object.keys(message)
 
             playerIds.forEach(element => {
-                if (this.room.sessionId !== element) {
+                if (this.client.id !== element) {
                     opponentUsername = message[element].username
                     opponentId = element
                     opponentProfilePicture = message[element].profilePicture
@@ -59,7 +70,6 @@ class LoadingScreen extends React.Component {
                     playerCoverPicture = message[element].coverPicture
                 }
             })
-
             this.room.removeAllListeners()
 
             navigationPush(SCENE_KEYS.gameScreens.rankedMatchingScreen, {

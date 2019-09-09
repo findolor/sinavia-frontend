@@ -61,7 +61,9 @@ class CreateGroupRoom extends React.Component {
             },
             () => {
                 this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
-                this.joinRoom()
+                this.client.onOpen.add(() => {
+                    this.joinRoom()
+                })
             }
         )
     }
@@ -83,77 +85,61 @@ class CreateGroupRoom extends React.Component {
         })
     }
 
-    joinRoom = async () => {
-        this.client
-            .create('groupRoom', {
-                // These will be props coming from home screen
-                examName: 'LGS',
-                courseName: 'Matematik',
-                subjectName: 'Sayilar',
-                databaseId: this.props.clientDBId,
-                roomCode: this.state.groupCode
-            })
-            .then(room => {
-                this.room = room
-                room.onMessage(message => {
-                    switch (message.action) {
-                        case 'player-props':
-                            const playerIds = Object.keys(message.playerProps)
+    joinRoom = () => {
+        this.room = this.client.join('groupRoom', {
+            // These will be props coming from home screen
+            examName: 'LGS',
+            courseName: 'Matematik',
+            subjectName: 'Sayilar',
+            databaseId: this.props.clientDBId,
+            roomCode: this.state.groupCode,
+            create: true
+        })
 
-                            playerList = []
+        this.room.onMessage.add(message => {
+            switch (message.action) {
+                case 'player-props':
+                    const playerIds = Object.keys(message.playerProps)
 
-                            playerIds.forEach(element => {
-                                if (message.playerProps[element].readyStatus) {
-                                    playerList.push({
-                                        username:
-                                            message.playerProps[element]
-                                                .username,
-                                        id: element,
-                                        profilePicture:
-                                            message.playerProps[element]
-                                                .profilePicture,
-                                        status: 'Hazır',
-                                        isLeader:
-                                            message.playerProps[element]
-                                                .isLeader
-                                    })
-                                } else {
-                                    playerList.push({
-                                        username:
-                                            message.playerProps[element]
-                                                .username,
-                                        id: element,
-                                        profilePicture:
-                                            message.playerProps[element]
-                                                .profilePicture,
-                                        status: 'Bekleniyor',
-                                        isLeader:
-                                            message.playerProps[element]
-                                                .isLeader
-                                    })
-                                }
-                                message.playerProps[element].isLeader === true
-                                    ? this.setState({ isClientLeader: true })
-                                    : this.setState({ isClientLeader: false })
+                    playerList = []
+
+                    playerIds.forEach(element => {
+                        if (message.playerProps[element].readyStatus) {
+                            playerList.push({
+                                username: message.playerProps[element].username,
+                                id: element,
+                                profilePicture:
+                                    message.playerProps[element].profilePicture,
+                                status: 'Hazır',
+                                isLeader: message.playerProps[element].isLeader
                             })
-
-                            this.setState({ groupRoomPlayerList: playerList })
-                            return
-                        case 'start-match':
-                            navigationReset('game', { isHardReset: true })
-                            navigationPush(SCENE_KEYS.gameScreens.groupGame, {
-                                room: room,
-                                client: this.client,
-                                groupRoomPlayerList: this.state
-                                    .groupRoomPlayerList
+                        } else {
+                            playerList.push({
+                                username: message.playerProps[element].username,
+                                id: element,
+                                profilePicture:
+                                    message.playerProps[element].profilePicture,
+                                status: 'Bekleniyor',
+                                isLeader: message.playerProps[element].isLeader
                             })
-                            return
-                    }
-                })
-            })
-            .catch(error => {
-                console.log(error)
-            })
+                        }
+                        message.playerProps[element].isLeader === true
+                            ? this.setState({ isClientLeader: true })
+                            : this.setState({ isClientLeader: false })
+                    })
+
+                    this.setState({ groupRoomPlayerList: playerList })
+                    return
+                case 'start-match':
+                    navigationReset('game', { isHardReset: true })
+                    navigationPush(SCENE_KEYS.gameScreens.groupGame, {
+                        room: this.room,
+                        client: this.client,
+                        groupRoomPlayerList: this.state.groupRoomPlayerList
+                    })
+                    return
+            }
+        })
     }
 
     randomCodeGenerator() {
@@ -194,6 +180,7 @@ class CreateGroupRoom extends React.Component {
 
     shutdownRoutine = () => {
         this.room.leave()
+        this.client.close()
         navigationReset('main')
     }
 
