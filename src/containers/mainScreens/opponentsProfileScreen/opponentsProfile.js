@@ -22,6 +22,7 @@ import { widthPercentageToDP } from 'react-native-responsive-screen'
 
 import { friendshipServices } from '../../../sagas/friendship/'
 import { statisticsServices } from '../../../sagas/statistic/'
+import { userServices } from '../../../sagas/user'
 import { friendActions } from '../../../redux/friends/actions'
 
 class OpponentsProfile extends React.Component {
@@ -29,37 +30,41 @@ class OpponentsProfile extends React.Component {
         super(props)
         this.state = {
             friendshipStatus: 'addFriend',
-            youVersusOpponentTotalGames: 45,
-            yourWinsAgainstOpponent: 0,
-            opponentsWinsAgainstYou: 0,
             // Played games variables
-            gamesPlayed: 0,
-            wonGames: 0,
-            lostGames: 0,
-            drawGames: 0,
+            gamesPlayed: this.props.totalPlayedGames,
+            wonGames: this.props.gamesWon,
+            lostGames: this.props.gamesLost,
+            drawGames: this.props.gamesDraw,
 
-            semiCirclePercentage: 0,
-            totalFriends: 0,
+            semiCirclePercentage: this.props.winPercentage,
+            totalFriends: Object.keys(this.props.friendsList).length,
             // is friend request sent or received?
             isFriendRequestSent: false,
             // Friend games that was played together
-            totalFriendGamesPlayed: 0,
-            clientWinCount: 0,
-            opponentWinCount: 0,
+            totalFriendGamesPlayed: this.props.totalFriendGames,
+            clientWinCount: this.props.clientWinCount,
+            opponentWinCount: this.props.opponentWinCount,
             // We send back deleted friend index for refreshing friedns screen
             deletedFriendIndex: null
         }
     }
 
-    async componentDidMount() {
-        await this.loadUserProfile()
-    }
-
-    loadUserProfile = async () => {
-        await this.loadFriendshipInformation()
-        await this.loadStatistics()
-        await this.loadFriendMatches()
-        await this.loadFriends()
+    componentDidMount() {
+        if (!this.props.isFriends) {
+            if (this.props.isRequesting)
+                this.setState({
+                    friendshipStatus: 'friendRequestSent',
+                    isFriendRequestSent: false
+                })
+            else {
+                if (this.props.isRequested)
+                    this.setState({
+                        friendshipStatus: 'friendRequestSent',
+                        isFriendRequestSent: true
+                    })
+                else this.setState({ friendshipStatus: 'addFriend' })
+            }
+        }
     }
 
     loadFriendshipInformation = async () => {
@@ -629,7 +634,19 @@ const mapStateToProps = state => ({
     clientDBId: state.client.clientDBId,
     clientToken: state.client.clientToken,
     friendIds: state.friends.friendIds,
-    clientInformation: state.client.clientInformation
+    clientInformation: state.client.clientInformation,
+    opponentInformation: state.opponent.opponentInformation,
+    totalPlayedGames: state.opponent.totalPlayedGames,
+    gamesWon: state.opponent.gamesWon,
+    gamesLost: state.opponent.gamesLost,
+    gamesDraw: state.opponent.gamesDraw,
+    isFriends: state.opponent.isFriends,
+    isRequesting: state.opponent.isRequesting,
+    friendsList: state.opponent.friendsList,
+    totalFriendGames: state.opponent.totalFriendGames,
+    opponentWinCount: state.opponent.opponentWinCount,
+    clientWinCount: state.opponent.clientWinCount,
+    winPercentage: state.opponent.winPercentage
 })
 
 const mapDispatchToProps = dispatch => ({

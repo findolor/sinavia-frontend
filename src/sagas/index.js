@@ -1,5 +1,6 @@
-import { takeLatest, all } from 'redux-saga/effects'
+import { takeLatest, all, take } from 'redux-saga/effects'
 import { clientTypes } from '../redux/client/actions'
+import { opponentTypes } from '../redux/opponents/actions'
 import { userSagas } from './user'
 import { questionSagas } from './question'
 
@@ -17,6 +18,10 @@ export default function* root() {
         takeLatest(
             clientTypes.UNFAVOURITE_QUESTION,
             questionSagas.unfavouriteQuestion
+        ),
+        takeLatest(
+            opponentTypes.GET_OPPONENT_FULL_INFORMATION,
+            userSagas.getOpponentFullInformation
         )
     ])
 }
