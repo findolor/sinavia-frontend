@@ -34,9 +34,9 @@ class LoadingScreen extends React.Component {
         this.client.onOpen.add(() => {
             this.joinRoom({
                 create: true,
-                examName: 'LGS',
-                courseName: 'Matematik',
-                subjectName: 'Sayilar',
+                examId: 1,
+                courseId: 1,
+                subjectId: 1,
                 databaseId: this.props.clientDBId
             })
         })

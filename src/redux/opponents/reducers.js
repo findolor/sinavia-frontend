@@ -68,6 +68,11 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 friendsList: action.payload
             }
+        case opponentTypes.SAVE_TOTAL_POINTS:
+            return {
+                ...state,
+                totalPoints: action.payload
+            }
         default:
             return state
     }

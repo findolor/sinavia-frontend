@@ -21,15 +21,14 @@ export function* getOpponentFullInformationSaga(action) {
         action.clientId
     )
     console.log(res)
-
     const opponentWinCount = Object.keys(res.friendGameWins).length
     const clientWinCount = Object.keys(res.friendGameDefeats).length
     const friendMatchDrawCount = Object.keys(res.friendGameDraws).length
     const totalFriendGames =
         opponentWinCount + clientWinCount + friendMatchDrawCount
-    const wonGames = Object.keys(res.wins).length
-    const lostGames = Object.keys(res.defeats).length
-    const drawGames = Object.keys(res.draws).length
+    const wonGames = res.statistics.winCount
+    const lostGames = res.statistics.loseCount
+    const drawGames = res.statistics.drawCount
     const totalPlayedGames = wonGames + lostGames + drawGames
     const winPercentage = (wonGames / totalPlayedGames) * 100
 
@@ -76,6 +75,10 @@ export function* getOpponentFullInformationSaga(action) {
     yield put({
         type: opponentTypes.SAVE_GAMES_DRAW,
         payload: drawGames
+    })
+    yield put({
+        type: opponentTypes.SAVE_TOTAL_POINTS,
+        payload: res.statistics.totalPoints
     })
     yield put({
         type: opponentTypes.SAVE_TOTAL_PLAYED_GAMES,

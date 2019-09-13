@@ -21,8 +21,6 @@ import ALREADY_FRIEND from '../../../assets/mainScreens/alreadyFriend.png'
 import { widthPercentageToDP } from 'react-native-responsive-screen'
 
 import { friendshipServices } from '../../../sagas/friendship/'
-import { statisticsServices } from '../../../sagas/statistic/'
-import { userServices } from '../../../sagas/user'
 import { friendActions } from '../../../redux/friends/actions'
 
 class OpponentsProfile extends React.Component {
@@ -50,6 +48,7 @@ class OpponentsProfile extends React.Component {
     }
 
     componentDidMount() {
+        console.log(this.props.totalPoints)
         if (!this.props.isFriends) {
             if (this.props.isRequesting)
                 this.setState({
@@ -65,92 +64,6 @@ class OpponentsProfile extends React.Component {
                 else this.setState({ friendshipStatus: 'addFriend' })
             }
         }
-    }
-
-    loadFriendshipInformation = async () => {
-        const friendship = await friendshipServices.getFriendship(
-            this.props.clientToken,
-            this.props.clientDBId,
-            this.props.opponentInformation.id
-        )
-
-        if (Object.keys(friendship).length !== 0) {
-            friendship[0].userId === this.props.clientDBId
-                ? this.setState({ isFriendRequestSent: true })
-                : this.setState({ isFriendRequestSent: false })
-            if (friendship[0].friendshipStatus === 'requested')
-                this.setState({ friendshipStatus: 'friendRequestSent' })
-            else this.setState({ friendshipStatus: 'alreadyFriend' })
-        }
-    }
-
-    loadFriendMatches = async () => {
-        const friendMatches = await friendshipServices.getFriendMatches(
-            this.props.clientToken,
-            this.props.clientDBId,
-            this.props.opponentInformation.id
-        )
-
-        let clientWinCount = 0
-        let opponentWinCount = 0
-        let totalFriendGamesPlayed = 0
-
-        friendMatches.forEach(match => {
-            totalFriendGamesPlayed++
-            if (!match.isMatchDraw) {
-                if (match.winnerId === this.props.clientDBId) clientWinCount++
-                else opponentWinCount++
-            }
-        })
-
-        this.setState({
-            totalFriendGamesPlayed: totalFriendGamesPlayed,
-            clientWinCount: clientWinCount,
-            opponentWinCount: opponentWinCount
-        })
-    }
-
-    loadFriends = async () => {
-        const friends = await friendshipServices.getFriends(
-            this.props.clientToken,
-            this.props.opponentInformation.id
-        )
-
-        this.setState({ totalFriends: Object.keys(friends).length })
-    }
-
-    loadStatistics = async () => {
-        const statistics = await statisticsServices.getStatistics(
-            this.props.clientToken,
-            this.props.opponentInformation.id
-        )
-
-        let wonGames = 0
-        let lostGames = 0
-        let drawGames = 0
-
-        statistics.forEach(statistic => {
-            switch (statistic.gameResult) {
-                case 'won':
-                    wonGames++
-                    return
-                case 'lost':
-                    lostGames++
-                    return
-                case 'draw':
-                    drawGames++
-                    return
-            }
-        })
-
-        this.setState({
-            wonGames: wonGames,
-            lostGames: lostGames,
-            drawGames: drawGames,
-            gamesPlayed: Object.keys(statistics).length,
-            semiCirclePercentage:
-                (wonGames / Object.keys(statistics).length) * 100
-        })
     }
 
     // TODO this doesn't refresh the screen upon popping
@@ -317,7 +230,7 @@ class OpponentsProfile extends React.Component {
                                     @{this.props.opponentInformation.username}
                                 </Text>
                                 <Text style={styles.sinaviaScoreText}>
-                                    Sınavia Puanı: 100
+                                    Sınavia Puanı: {this.props.totalPoints}
                                 </Text>
                             </View>
                         </View>
@@ -646,7 +559,8 @@ const mapStateToProps = state => ({
     totalFriendGames: state.opponent.totalFriendGames,
     opponentWinCount: state.opponent.opponentWinCount,
     clientWinCount: state.opponent.clientWinCount,
-    winPercentage: state.opponent.winPercentage
+    winPercentage: state.opponent.winPercentage,
+    totalPoints: state.opponent.totalPoints
 })
 
 const mapDispatchToProps = dispatch => ({

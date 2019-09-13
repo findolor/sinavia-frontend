@@ -11,5 +11,6 @@ export const INITIAL_STATE = {
     totalFriendGames: 0,
     opponentWinCount: 0,
     clientWinCount: 0,
-    winPercentage: 0
+    winPercentage: 0,
+    totalPoints: 0
 }
