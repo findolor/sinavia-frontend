@@ -64,7 +64,7 @@ class ProfileSearch extends React.Component {
                         </Text>
                     </View>
                 </View>
-                {Object.keys(this.state.returnedSearchList).length !== 0 && (
+                {Object.keys(this.state.returnedSearchList).length !== 0 && (<View style={styles.flatListContainer}>
                     <FlatList
                         data={this.state.returnedSearchList}
                         vertical={true}
@@ -108,14 +108,11 @@ class ProfileSearch extends React.Component {
                             )
                         }}
                         keyExtractor={(item, index) => index.toString()}
-                    />
+                    /></View>
                 )}
                 {Object.keys(this.state.returnedSearchList).length === 0 && (
                     <View
-                        style={{
-                            flex: 1,
-                            justifyContent: 'center'
-                        }}
+                        style={styles.noResultsView}
                     >
                         <Text>Sonuç yok</Text>
                     </View>

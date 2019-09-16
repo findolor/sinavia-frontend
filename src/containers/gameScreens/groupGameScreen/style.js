@@ -12,7 +12,7 @@ export default StyleSheet.create({
     },
     topContainer: {
         backgroundColor: '#3FC8D9',
-        height: hp(70),
+        flex: 72,
         width: wp(100),
         borderBottomLeftRadius: 30,
         borderBottomRightRadius: 30,
@@ -22,7 +22,7 @@ export default StyleSheet.create({
         marginBottom: hp(1)
     },
     headerContainer: {
-        height: hp(13),
+        flex: 14,
         width: wp(100),
         flexDirection: 'row',
         justifyContent: 'center',
@@ -30,28 +30,43 @@ export default StyleSheet.create({
     },
     questionContainer: {
         backgroundColor: '#ffffff',
-        height: hp(52),
+        flex: 52,
         width: wp(84),
         marginLeft: wp(8),
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center'
     },
+    questionAndZoomButtonContainer: {
+        flex: 6,
+        width: wp(100),
+        flexDirection: 'row'
+    },
+    spaceContainer: {
+        height: hp(6),
+        width: wp(15)
+    },
     questionInformation: {
         alignItems: 'center',
-        paddingTop: hp(1),
-        height: hp(6)
+        height: hp(6),
+        width: wp(70),
+        justifyContent: 'center'
+    },
+    zoomButtonContainer: {
+        height: hp(6),
+        width: wp(15),
+        justifyContent: 'center'
     },
     questionInformationText: {
         color: '#fff',
         fontFamily: 'Averta-Regular',
-        fontSize: wp(4),
+        fontSize: hp(3),
         fontWeight: '700'
     },
     dummyButtonContainer: {
-        height: hp(17),
+        flex: 16,
         width: wp(100),
-        marginBottom: hp(-1)
+        justifyContent: 'space-evenly'
     },
     topButtonRowContainer: {
         flexDirection: 'row',
@@ -73,7 +88,7 @@ export default StyleSheet.create({
     buttonText: {
         color: '#000',
         fontFamily: 'Averta-Regular',
-        fontSize: wp(5),
+        fontSize: hp(3),
         fontWeight: '700'
     },
     bottomButtonRowContainer: {
@@ -88,15 +103,14 @@ export default StyleSheet.create({
     jokerContainer: {
         backgroundColor: '#F4F6FB',
         width: wp(100),
-        flex: 1,
+        flex: 8,
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         marginTop: hp(1),
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
         shadowOpacity: 1,
         shadowColor: '#adadad',
-        paddingTop: hp(1)
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30
     },
     joker: {
         height: hp(3),
@@ -107,12 +121,13 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     touchableJokerContainer: {
-        flex: 1
+        flex: 1,
+        justifyContent:'center'
     },
     jokerText: {
         color: '#000',
         fontFamily: 'Averta-Regular',
-        fontSize: wp(3),
+        fontSize: hp(2.3),
         fontWeight: '600'
     },
     questionStyle: {
@@ -128,7 +143,8 @@ export default StyleSheet.create({
         width: wp(32)
     },
     seeGroupContainer: {
-        justifyContent: 'center',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
         alignItems: 'center',
         height: hp(13),
         width: wp(32)
@@ -149,7 +165,7 @@ export default StyleSheet.create({
     },
     seeGroupText: {
         fontFamily: 'Averta-Bold',
-        fontSize: wp(4),
+        fontSize: hp(2.5),
         color: '#fff',
         zIndex: 1
     },
@@ -169,13 +185,13 @@ export default StyleSheet.create({
     },
     usernameText: {
         fontFamily: 'Averta-Bold',
-        fontSize: wp(4),
+        fontSize: hp(2.3),
         color: '#fff',
         fontWeight: '800'
     },
     answersText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: wp(4),
+        fontSize: hp(2.3),
         color: '#fff',
         fontWeight: '600'
     },
@@ -184,7 +200,7 @@ export default StyleSheet.create({
         width: wp(20),
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: hp(1)
+        backgroundColor: 'red'
     },
     countdownInnerContainer: {
         height: hp(10),
@@ -197,7 +213,7 @@ export default StyleSheet.create({
     },
     countdownText: {
         fontFamily: 'Averta-Bold',
-        fontSize: hp(4),
+        fontSize: hp(3.5),
         color: '#fff',
         fontWeight: '800'
     },
@@ -211,13 +227,8 @@ export default StyleSheet.create({
     },
     zoomButton: {
         resizeMode: 'contain',
-        height: hp(7),
-        width: wp(7)
-    },
-    zoomButtonContainer: {
-        position: 'absolute',
-        top: hp(64),
-        left: wp(85)
+        height: hp(4),
+        width: hp(4)
     },
     modalContainer: {
         backgroundColor: '#000000d0',

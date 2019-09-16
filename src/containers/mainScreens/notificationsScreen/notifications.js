@@ -372,16 +372,16 @@ class Notifications extends React.Component {
                     </TouchableOpacity>
                 </View>
                 {this.state.selectedNotificationsMode ===
-                    'generalNotifications' && (
+                    'generalNotifications' && (<View style={styles.flatListContainer}>
                     <FlatList
                         data={this.state.generalNotificationsList}
                         vertical={true}
                         showsVerticalScrollIndicator={false}
                         renderItem={this.notificationsListRender}
                         keyExtractor={(item, index) => index.toString()}
-                    />
+                    /></View>
                 )}
-                {this.state.selectedNotificationsMode === 'friendsRequests' && (
+                {this.state.selectedNotificationsMode === 'friendsRequests' && (<View style={styles.flatListContainer}>
                     <FlatList
                         data={this.state.friendRequestsList}
                         vertical={true}
@@ -436,7 +436,7 @@ class Notifications extends React.Component {
                             )
                         }}
                         keyExtractor={(item, index) => index.toString()}
-                    />
+                    /></View>
                 )}
             </View>
         )

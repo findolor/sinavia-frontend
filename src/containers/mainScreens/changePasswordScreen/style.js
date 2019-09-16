@@ -12,11 +12,19 @@ export default StyleSheet.create({
         backgroundColor: '#fcfcfc'
     },
     header: {
-        height: hp(6),
+        flex: 6,
         width: wp(88),
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
+    },
+    textInputsContainer: {
+        flex: 36,
+        width: wp(89),
+        marginTop: hp(1.5)
+    },
+    spaceView: {
+        flex: 54
     },
     returnLogo: {
         height: hp(3.5),
@@ -35,11 +43,6 @@ export default StyleSheet.create({
         fontSize: hp(2.2),
         paddingVertical: hp(0),
         color: '#FFFFFF'
-    },
-    textInputsContainer: {
-        height: hp(36),
-        width: wp(89),
-        marginTop: hp(1.5)
     },
     textInputContainer: {
         height: hp(12),

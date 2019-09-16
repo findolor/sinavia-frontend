@@ -307,6 +307,7 @@ class Register extends React.Component {
                         </Text>
                     </View>
                 </View>
+                <View style={styles.authButtonView}>
                 <AuthButton
                     height={hp(7)}
                     width={wp(85)}
@@ -314,6 +315,7 @@ class Register extends React.Component {
                     buttonText="Kayıt Ol"
                     onPress={this.registerOnPress}
                 />
+                </View>
                 <View style={styles.gotoLoginContainer}>
                     <Text style={styles.gotoLoginTextFirst}>
                         Zaten bir hesabın var mı?

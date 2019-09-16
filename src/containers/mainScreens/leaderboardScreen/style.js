@@ -8,19 +8,29 @@ export default StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'flex-start',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: '#fcfcfc'
+    },
+    scrollViewContainer: {
+        flex: 83.5
     },
     scrollView: {
-        height: hp(80),
+        flex: 1,
+        width: wp(100)
+    },
+    yourOrderTextContainer: {
+        flex: 3.5,
         width: wp(100),
-        marginBottom: hp(13),
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fcfcfc'
     },
     leaderContainer: {
         height: hp(33),
         width: wp(100)
     },
     tabbarContainer: {
-        height: hp(6),
+        flex: 6,
         width: wp(100),
         flexDirection: 'row',
         justifyContent: 'center',
@@ -59,7 +69,7 @@ export default StyleSheet.create({
         color: '#2E313C'
     },
     dropdownsAndImageContainer: {
-        height: hp(18),
+        flex: 18,
         width: wp(100),
         flexDirection: 'row'
     },
@@ -76,7 +86,7 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     nameAndScoreContainer: {
-        height: hp(9),
+        flex: 9,
         width: wp(100),
         justifyContent: 'flex-start',
         alignItems: 'center'
@@ -132,7 +142,7 @@ export default StyleSheet.create({
         color: '#FF6D00'
     },
     continueOrderTextContainer: {
-        height: hp(3.8),
+        height: hp(4),
         width: wp(100),
         flexDirection: 'row',
         justifyContent: 'center',
@@ -142,15 +152,6 @@ export default StyleSheet.create({
         fontFamily: 'Averta-RegularItalic',
         fontSize: wp(3.5),
         color: '#00D9EF'
-    },
-    yourOrderTextContainer: {
-        height: hp(4.5),
-        width: wp(100),
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'absolute',
-        marginTop: hp(87),
-        backgroundColor: '#fcfcfc'
     },
     yourOrderText: {
         fontFamily: 'Averta-RegularItalic',
@@ -162,13 +163,13 @@ export default StyleSheet.create({
         width: wp(100)
     },
     dividedTopTenContainer: {
-        height: hp(15.5),
+        flex: 15.5,
         width: wp(100),
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     topTenUserContainer: {
-        height: hp(15.5),
+        flex: 15.5,
         width: wp(33),
     },
     secondAndThirdUsersFromTopTenPic: {
@@ -201,18 +202,18 @@ export default StyleSheet.create({
         color: '#FF6D00'
     },
     topTenUserPicContainer: {
-        height: hp(11),
+        flex: 11,
         width: wp(33),
         justifyContent: 'flex-end',
         alignItems: 'center'
     },
     topTenUserNameContainer: {
-        height: hp(2.2),
+        flex: 2.2,
         width: wp(33),
         alignItems: 'center'
     },
     topTenUserScoreContainer: {
-        height: hp(2.3),
+        flex: 2.3,
         width: wp(33),
         justifyContent: 'space-between',
         alignItems: 'center'

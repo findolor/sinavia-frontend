@@ -717,6 +717,8 @@ class RankedGame extends React.Component {
                             </View>
                         </View>
                     </Modal>
+                    <View style={styles.questionAndZoomButtonContainer}>
+                        <View style={styles.spaceContainer}/>
                     <View style={styles.questionInformation}>
                         <Text style={styles.questionInformationText}>
                             Soru {this.state.questionNumber + 1} /{' '}
@@ -730,6 +732,7 @@ class RankedGame extends React.Component {
                                 style={styles.zoomButton}
                             />
                         </TouchableOpacity>
+                    </View>
                     </View>
                     <View style={styles.backButtonContainer}>
                         <TouchableOpacity onPress={this.backButtonOnPress}>

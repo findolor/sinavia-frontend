@@ -990,7 +990,6 @@ class Home extends React.Component {
         const visibleView = this.state.visibleView
         return (
             <View style={styles.container}>
-                <NotchView color={'#fcfcfc'} />
                 <Modal
                     visible={this.state.isModalVisible}
                     transparent={true}
@@ -1001,7 +1000,6 @@ class Home extends React.Component {
                     {visibleView === 'GROUP_MODES' && this.groupModesView()}
                     {visibleView === 'JOIN_ROOM' && this.joinRoomView()}
                 </Modal>
-                <View style={{ height: hp(60), marginTop: hp(0) }}>
                     <View style={styles.header}>
                         <View style={styles.profilePicContainer}>
                             <TouchableOpacity onPress={this.profilePicOnPress}>
@@ -1057,13 +1055,14 @@ class Home extends React.Component {
                             }
                         />
                     </View>
+                    <View style={styles.scrollViewContainer}>
                     <ScrollView
                         style={styles.cardsScrollView}
                         showsVerticalScrollIndicator={false}
                     >
                         {card}
                     </ScrollView>
-                </View>
+                    </View>
             </View>
         )
     }

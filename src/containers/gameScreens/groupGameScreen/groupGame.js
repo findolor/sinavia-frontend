@@ -815,6 +815,8 @@ class GroupGame extends React.Component {
                             </View>
                         </View>
                     </Modal>
+                    <View style={styles.questionAndZoomButtonContainer}>
+                        <View style={styles.spaceContainer}/>
                     <View style={styles.questionInformation}>
                         <Text style={styles.questionInformationText}>
                             Soru {this.state.questionNumber + 1} /{' '}
@@ -830,6 +832,7 @@ class GroupGame extends React.Component {
                                 />
                             </TouchableOpacity>
                         )}
+                    </View>
                     </View>
                     <View style={styles.backButtonContainer}>
                         <TouchableOpacity onPress={this.backButtonOnPress}>

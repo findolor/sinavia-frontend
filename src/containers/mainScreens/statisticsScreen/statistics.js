@@ -510,6 +510,7 @@ class Statistics extends React.Component {
                         </View>
                     </View>
                 </View>
+                <View style={styles.spaceView}/>
             </View>
         )
     }

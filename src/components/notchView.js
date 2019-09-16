@@ -11,7 +11,7 @@ export default (NotchView = ({ color }) => {
 
 const styles = StyleSheet.create({
     notchContainer: {
-        height: hp(4),
+        flex: 4,
         width: wp(100)
     }
 })

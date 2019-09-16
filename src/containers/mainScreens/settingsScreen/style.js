@@ -12,11 +12,25 @@ export default StyleSheet.create({
         backgroundColor: '#fcfcfc'
     },
     header: {
-        height: hp(6),
+        flex: 6,
         width: wp(88),
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
+    },
+    profileContainer: {
+        flex: 32,
+        width: wp(100),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    textInputsContainer: {
+        flex: 36,
+        width: wp(89)
+    },
+    buttonsContainer: {
+        flex: 22,
+        width: wp(89)
     },
     returnLogo: {
         height: hp(3.5),
@@ -35,12 +49,6 @@ export default StyleSheet.create({
         fontSize: hp(2.2),
         paddingVertical: hp(0),
         color: '#FFFFFF'
-    },
-    profileContainer: {
-        height: hp(32),
-        width: wp(100),
-        justifyContent: 'center',
-        alignItems: 'center'
     },
     coverPhoto: {
         height: hp(30),
@@ -66,10 +74,6 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    textInputsContainer: {
-        height: hp(36),
-        width: wp(89)
-    },
     textInputContainer: {
         height: hp(12),
         width: wp(89),
@@ -94,10 +98,6 @@ export default StyleSheet.create({
         height: hp(7.5),
         width: wp(17),
         justifyContent: 'center'
-    },
-    buttonsContainer: {
-        height: hp(22),
-        width: wp(89)
     },
     changePasswordButton: {
         height: hp(7.5),

@@ -8,6 +8,8 @@ import {
 } from 'react-native-responsive-screen'
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
 
+import NotchView from '../../components/notchView'
+
 import selectedTrophyIcon from '../../assets/mainScreens/trophy_Dolu.png'
 import emptyTrophyIcon from '../../assets/mainScreens/trophy.png'
 import selectedHomeIcon from '../../assets/mainScreens/home_dolu.png'
@@ -57,9 +59,11 @@ export default class Main extends React.Component {
         const visibleForm = this.state.visibleForm
         return (
             <View style={styles.container}>
-                {visibleForm === 'HOME' && <Home />}
-                {visibleForm === 'LEADERBOARD' && <Leaderboard />}
-                {visibleForm === 'PURCHASE' && <Purchase />}
+                <NotchView color={'#fcfcfc'} />
+                <View style={styles.formContainer}>
+                    {visibleForm === 'HOME' && <Home style={styles.formsStyle}/>}
+                    {visibleForm === 'LEADERBOARD' && <Leaderboard style={styles.formsStyle}/>}
+                </View>
                 <View style={styles.bottomBar}>
                     <TouchableOpacity
                         onPress={() => this.updatePageIcons('TROPHY')}
@@ -94,7 +98,7 @@ export default class Main extends React.Component {
                         />
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={() => this.updatePageIcons('PURCHASE')}
+                        onPress={() => this.updatePageIcons('JOKER')}
                     >
                         <Image
                             source={
@@ -118,18 +122,23 @@ export default class Main extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fcfcfc'
+        backgroundColor: '#fcfcfc',
+        justifyContent: 'flex-end'
+    },
+    formContainer:{
+        flex: 87
+    },
+    formsStyle: {
+        flex: 1
     },
     bottomBar: {
-        height: hp(9),
+        flex: 9,
         width: wp(100),
         borderTopRightRadius: 20,
         borderTopLeftRadius: 20,
         backgroundColor: '#00D9EF',
         alignItems: 'center',
         justifyContent: 'space-around',
-        marginTop: hp(91),
-        flexDirection: 'row',
-        position: 'absolute'
+        flexDirection: 'row'
     }
 })

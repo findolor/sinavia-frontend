@@ -1,7 +1,7 @@
 const api = {
-    host: 'http://localhost:4000/api/',
+    host: 'http://10.253.12.108:4000/api/',
     hostAWS: 'http://sinavia-test.eu-central-1.elasticbeanstalk.com:8080/api/',
-    gameEngine: 'http://localhost:5000',
+    gameEngine: 'http://10.253.12.108:5000',
     gameEngineAWS: 'http://sinavia-test.eu-central-1.elasticbeanstalk.com:5000'
 }
 

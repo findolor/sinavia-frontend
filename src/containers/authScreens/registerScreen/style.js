@@ -12,39 +12,37 @@ export default StyleSheet.create({
         flexDirection: 'column'
     },
     imageContainer: {
-        height: hp(18),
+        flex: 18,
         width: wp(100),
-        backgroundColor: '#fcfcfc',
         justifyContent: 'center',
         alignItems: 'center'
     },
     allTextInputsContainer: {
-        height: hp(58),
+        flex: 58,
         width: wp(100),
         backgroundColor: '#fcfcfc',
         alignItems: 'center',
         justifyContent: 'space-between'
     },
-    textInputBorderContainer: {
-        height: hp(8.14),
+    toggleContainer: {
+        flex: 7,
         width: wp(100),
         backgroundColor: '#fcfcfc',
         alignItems: 'center',
-        justifyContent: 'center'
-    },
-    toggleContainer: {
-        height: hp(5),
-        width: wp(100),
-        backgroundColor: '#fcfcfc',
         flexDirection: 'row'
     },
+    authButtonView:{
+        flex: 7,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: wp(100),
+    },
     gotoLoginContainer: {
-        height: hp(5.7),
+        flex: 6,
         width: wp(85),
         borderColor: '#989696',
-        backgroundColor: '#fcfcfc',
         justifyContent: 'flex-end',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         flexDirection: 'row'
     },
     textInputContainer: {

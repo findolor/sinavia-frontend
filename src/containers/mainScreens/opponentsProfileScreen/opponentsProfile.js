@@ -318,6 +318,7 @@ class OpponentsProfile extends React.Component {
                         </View>
                     </ImageBackground>
                 </View>
+                <View style={styles.scrollViewContainer}>
                 <ScrollView
                     style={styles.boxesScrollView}
                     showsVerticalScrollIndicator={false}
@@ -620,6 +621,7 @@ class OpponentsProfile extends React.Component {
                     </View>
                     <View style={styles.badgesBox} />
                 </ScrollView>
+                </View>
             </View>
         )
     }
