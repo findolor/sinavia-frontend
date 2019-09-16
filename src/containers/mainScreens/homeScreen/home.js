@@ -12,7 +12,7 @@ import {
     FlatList
 } from 'react-native'
 import { connect } from 'react-redux'
-import { clientActions } from '../../../redux/client/actions'
+import { gameContentActions } from '../../../redux/gameContent/actions'
 import { friendActions } from '../../../redux/friends/actions'
 import {
     heightPercentageToDP as hp,
@@ -27,21 +27,8 @@ import {
     itemWidth
 } from '../../../components/mainScreen/carousel/styles/SliderEntry.style'
 import SliderEntry from '../../../components/mainScreen/carousel/components/SliderEntry'
-import carouselStyle from '../../../components/mainScreen/carousel/styles/index.style'
 import styles from './style'
-import {
-    LGS,
-    YKS,
-    KPSS,
-    ALES,
-    DGS,
-    YDS,
-    TUS,
-    DUS,
-    EUS,
-    Ehliyet
-} from '../../../components/mainScreen/carousel/static/exams'
-import * as courses from '../../../components/mainScreen/carousel/static/courses'
+
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
 import AuthButton from '../../../components/authScreen/authButton'
 // Colyseus imports
@@ -71,47 +58,25 @@ import NotchView from '../../../components/notchView'
 
 import SWORD from '../../../assets/sword.png'
 const carouselFirstItem = 0
-const exams = [
-    'YKS',
-    'LGS',
-    'KPSS',
-    'ALES',
-    'DGS',
-    'YDS',
-    'TUS',
-    'DUS',
-    'EUS',
-    'Ehliyet'
-]
-const CLOSE_BUTTON = require('../../../assets/closeButton.png')
-const examList = {
-    YKS: YKS,
-    LGS: LGS,
-    KPSS: KPSS,
-    ALES: ALES,
-    DGS: DGS,
-    YDS: YDS,
-    TUS: TUS,
-    DUS: DUS,
-    EUS: EUS,
-    Ehliyet: Ehliyet
-}
 
 const SELECTED_MODE_COLOR = '#00D9EF'
 const EMPTY_MODE_COLOR = '#A8A8A8'
 
-const RANKED_SELECTED_IMAGE = require('../../../assets/mainScreens/tek_beyaz.png')
+const CLOSE_BUTTON = require('../../../assets/closeButton.png')
 const RANKED_EMPTY_IMAGE = require('../../../assets/mainScreens/tek.png')
-const FRIENDS_SELECTED_IMAGE = require('../../../assets/mainScreens/arkadas.png')
 const FRIENDS_EMPTY_IMAGE = require('../../../assets/mainScreens/arkadas_siyah.png')
-const GROUP_SELECTED_IMAGE = require('../../../assets/mainScreens/group.png')
 const GROUP_EMPTY_IMAGE = require('../../../assets/mainScreens/group_siyah.png')
 
 class Home extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            exam: this.props.choosenExam,
+            // Dropdown default value
+            defaultExam: this.props.choosenExam,
+            // Dropdown exam list
+            examList: [],
+            // Carousel course data
+            carouselCourseData: [],
             subject: '',
             isModalVisible: false,
             // Mode button variables
@@ -140,6 +105,7 @@ class Home extends React.Component {
 
     async componentDidMount() {
         await fcmService.checkPermissions()
+        await this.fillGameContent()
         this.messageListener = firebase.messaging().onMessage(message => {
             console.log(message, 'mes')
             this.fcmMessagePicker(message)
@@ -149,6 +115,17 @@ class Home extends React.Component {
             .onNotification(notification => {
                 console.log(notification, 'not')
             })
+    }
+
+    fillGameContent = () => {
+        new Promise.resolve().then(() => {
+            const examNames = []
+            this.props.examList.forEach((exam, index) => {
+                examNames.push(exam.name)
+            })
+            this.carouselMaker(this.props.choosenExam)
+            this.setState({ examList: examNames })
+        })
     }
 
     componentWillUnmount() {
@@ -287,35 +264,22 @@ class Home extends React.Component {
 
     async pickerSelect(idx, value) {
         this.setState({
-            exam: value
+            defaultExam: value
         })
         await deviceStorage.saveItemToStorage('choosenExam', value)
         this.props.saveChoosenExam(value)
+
+        this.carouselMaker(value)
     }
 
     carouselIndexToCourseName = () => {
-        switch (this.state.exam) {
-            case 'YKS':
-                return YKS[this.state.carouselActiveSlide].courseName
-            case 'LGS':
-                return LGS[this.state.carouselActiveSlide].courseName
-            case 'KPSS':
-                return YKS[this.state.carouselActiveSlide].courseName
-            case 'ALES':
-                return LGS[this.state.carouselActiveSlide].courseName
-            case 'DGS':
-                return YKS[this.state.carouselActiveSlide].courseName
-            case 'YDS':
-                return LGS[this.state.carouselActiveSlide].courseName
-            case 'TUS':
-                return YKS[this.state.carouselActiveSlide].courseName
-            case 'DUS':
-                return LGS[this.state.carouselActiveSlide].courseName
-            case 'EUS':
-                return YKS[this.state.carouselActiveSlide].courseName
-            case 'Ehliyet':
-                return LGS[this.state.carouselActiveSlide].courseName
-        }
+        let index = this.props.examList.findIndex(
+            x => x.name === this.state.defaultExam
+        )
+
+        return this.props.examList[index].courseEntities[
+            this.state.carouselActiveSlide
+        ].name
     }
 
     onPressCard(title) {
@@ -326,194 +290,46 @@ class Home extends React.Component {
         })
     }
 
-    cards(sinav, index) {
-        var choosenSubject
-        var cardList = []
-        if (sinav === 'LGS') {
-            switch (index) {
-                case 0:
-                    choosenSubject = courses.LGS.lgsTurkce
-                    break
-                case 1:
-                    choosenSubject = courses.LGS.lgsMatematik
-                    break
-                case 2:
-                    choosenSubject = courses.LGS.lgsTarih
-                    break
-                case 3:
-                    choosenSubject = courses.LGS.lgsFen
-                    break
-                case 4:
-                    choosenSubject = courses.LGS.lgsIngilizce
-                    break
-                case 5:
-                    choosenSubject = courses.LGS.lgsDin
-                    break
-            }
-        } else if (sinav === 'YKS') {
-            switch (index) {
-                case 0:
-                    choosenSubject = courses.YKS.yksTurkce
-                    break
-                case 1:
-                    choosenSubject = courses.YKS.yksEdebiyat
-                    break
-                case 2:
-                    choosenSubject = courses.YKS.yksCografya
-                    break
-                case 3:
-                    choosenSubject = courses.YKS.yksTarih
-                    break
-                case 4:
-                    choosenSubject = courses.YKS.yksMatematik
-                    break
-                case 5:
-                    choosenSubject = courses.YKS.yksGeometri
-                    break
-                case 6:
-                    choosenSubject = courses.YKS.yksFizik
-                    break
-                case 7:
-                    choosenSubject = courses.YKS.yksKimya
-                    break
-                case 8:
-                    choosenSubject = courses.YKS.yksBiyoloji
-                    break
-                case 9:
-                    choosenSubject = courses.YKS.yksFelsefe
-                    break
-            }
-        } else if (sinav === 'KPSS') {
-            switch (index) {
-                case 0:
-                    choosenSubject = courses.KPSS.kpssSozelBolum
-                    break
-                case 1:
-                    choosenSubject = courses.KPSS.kpssSayisalBolum
-                    break
-                case 2:
-                    choosenSubject = courses.KPSS.kpssTarih
-                    break
-                case 3:
-                    choosenSubject = courses.KPSS.kpssCografya
-                    break
-                case 4:
-                    choosenSubject = courses.KPSS.kpssVatandaslik
-                    break
-                case 5:
-                    choosenSubject = courses.KPSS.kpssEgitimBilimleri
-                    break
-                case 6:
-                    choosenSubject = courses.KPSS.kpssOABT
-                    break
-                case 7:
-                    choosenSubject = courses.KPSS.kpssIsletme
-                    break
-                case 8:
-                    choosenSubject = courses.KPSS.kpssMuhasebe
-                    break
-                case 9:
-                    choosenSubject = courses.KPSS.kpssHukuk
-                    break
-                case 10:
-                    choosenSubject = courses.KPSS.kpssIktisat
-                    break
-                case 11:
-                    choosenSubject = courses.KPSS.kpssMaliye
-                    break
-            }
-        } else if (sinav === 'ALES') {
-            switch (index) {
-                case 0:
-                    choosenSubject = courses.ALES.alesTurkce
-                    break
-                case 1:
-                    choosenSubject = courses.ALES.alesMatematik
-                    break
-                case 2:
-                    choosenSubject = courses.ALES.alesGeometri
-                    break
-            }
-        } else if (sinav === 'DGS') {
-            switch (index) {
-                case 0:
-                    choosenSubject = courses.DGS.dgsTurkce
-                    break
-                case 1:
-                    choosenSubject = courses.DGS.dgsMatematik
-                    break
-                case 2:
-                    choosenSubject = courses.DGS.dgsGeometri
-                    break
-            }
-        } else if (sinav === 'YDS') {
-            switch (index) {
-                case 0:
-                    choosenSubject = courses.YDS.ydsIngilizce
-                    break
-                case 1:
-                    choosenSubject = courses.YDS.ydsAlmanca
-                    break
-                case 2:
-                    choosenSubject = courses.YDS.ydsFransizca
-                    break
-                case 3:
-                    choosenSubject = courses.YDS.ydsRusca
-                    break
-                case 4:
-                    choosenSubject = courses.YDS.ydsArapca
-                    break
-            }
-        } else if (sinav === 'TUS') {
-            switch (index) {
-                case 0:
-                    choosenSubject = courses.TUS.tusTemelBilimler
-                    break
-                case 1:
-                    choosenSubject = courses.TUS.tusKlinikBilimler
-                    break
-            }
-        } else if (sinav === 'DUS') {
-            switch (index) {
-                case 0:
-                    choosenSubject = courses.DUS.dusTemelBilimler
-                    break
-                case 1:
-                    choosenSubject = courses.DUS.dusKlinikBilimler
-                    break
-            }
-        } else if (sinav === 'EUS') {
-            switch (index) {
-                case 0:
-                    choosenSubject = courses.EUS.eusTemelBilimler
-                    break
-                case 1:
-                    choosenSubject = courses.EUS.eusEczacilikBilimleri
-                    break
-            }
-        } else if (sinav === 'Ehliyet') {
-            switch (index) {
-                case 0:
-                    choosenSubject = courses.EHLIYET.ehliyetCikmis
-                    break
-            }
-        }
+    carouselMaker = examName => {
+        let index = this.props.examList.findIndex(x => x.name === examName)
 
-        for (let i = 0; i < choosenSubject.length; i++) {
-            cardList.push(
+        const courseList = []
+
+        this.props.examList[index].courseEntities.forEach(course => {
+            courseList.push({
+                courseName: course.name,
+                illustration: RANKED_EMPTY_IMAGE
+            })
+        })
+
+        this.setState({
+            carouselCourseData: courseList
+        })
+    }
+
+    subjectCardsMaker = (examName, carouselActiveSlide) => {
+        let examIndex
+        let subjectList = []
+        console.log(this.props.examList)
+        examIndex = this.props.examList.findIndex(x => x.name === examName)
+        this.props.examList[examIndex].courseEntities[
+            carouselActiveSlide
+        ].subjectEntities.forEach((subject, index) => {
+            subjectList.push(
                 <TouchableOpacity
                     onPress={() => {
-                        this.onPressCard(choosenSubject[i])
+                        this.onPressCard(subject.name)
                     }}
-                    key={i}
+                    key={index}
                 >
                     <View style={styles.card}>
-                        <Text style={styles.cardText}>{choosenSubject[i]}</Text>
+                        <Text style={styles.cardText}>{subject.name}</Text>
                     </View>
                 </TouchableOpacity>
             )
-        }
-        return cardList
+        })
+
+        return subjectList
     }
 
     closeModalButtonOnPress = () => {
@@ -970,10 +786,24 @@ class Home extends React.Component {
     }
 
     playButtonOnPress = () => {
+        let examIndex
+        let subjectIndex
+
+        examIndex = this.props.examList.findIndex(
+            x => x.name === this.state.defaultExam
+        )
+        subjectIndex = this.props.examList[examIndex].courseEntities[
+            this.state.carouselActiveSlide
+        ].subjectEntities.findIndex(x => x.name === this.state.subject)
+
         navigationReset('game', {
-            examName: this.state.exam,
-            courseName: this.carouselIndexToCourseName(),
-            subjectName: this.state.subject
+            examId: this.props.examList[examIndex].id,
+            courseId: this.props.examList[examIndex].courseEntities[
+                this.state.carouselActiveSlide
+            ].id,
+            subjectId: this.props.examList[examIndex].courseEntities[
+                this.state.carouselActiveSlide
+            ].subjectEntities[subjectIndex].id
         })
     }
 
@@ -986,8 +816,10 @@ class Home extends React.Component {
     }
 
     render() {
-        const card = this.cards(this.state.exam, this.state.carouselActiveSlide)
-        const visibleView = this.state.visibleView
+        const subjectCards = this.subjectCardsMaker(
+            this.state.defaultExam,
+            this.state.carouselActiveSlide
+        )
         return (
             <View style={styles.container}>
                 <NotchView color={'#fcfcfc'} />
@@ -996,10 +828,14 @@ class Home extends React.Component {
                     transparent={true}
                     animationType={'fade'}
                 >
-                    {visibleView === 'GAME_MODES' && this.gameModesView()}
-                    {visibleView === 'FRIEND_ROOM' && this.friendRoomView()}
-                    {visibleView === 'GROUP_MODES' && this.groupModesView()}
-                    {visibleView === 'JOIN_ROOM' && this.joinRoomView()}
+                    {this.state.visibleView === 'GAME_MODES' &&
+                        this.gameModesView()}
+                    {this.state.visibleView === 'FRIEND_ROOM' &&
+                        this.friendRoomView()}
+                    {this.state.visibleView === 'GROUP_MODES' &&
+                        this.groupModesView()}
+                    {this.state.visibleView === 'JOIN_ROOM' &&
+                        this.joinRoomView()}
                 </Modal>
                 <View style={{ height: hp(60), marginTop: hp(0) }}>
                     <View style={styles.header}>
@@ -1020,8 +856,8 @@ class Home extends React.Component {
                                 textStyle={styles.pickerText}
                                 dropdownTextStyle={styles.pickerDropdownText}
                                 dropdownStyle={styles.pickerDropdown}
-                                options={exams}
-                                defaultValue={this.state.exam}
+                                options={this.state.examList}
+                                defaultValue={this.state.defaultExam}
                                 onSelect={(idx, value) =>
                                     this.pickerSelect(idx, value)
                                 }
@@ -1042,7 +878,7 @@ class Home extends React.Component {
                         <Carousel
                             zIndex={1}
                             ref={c => (this._slider1Ref = c)}
-                            data={examList[this.state.exam]}
+                            data={this.state.carouselCourseData}
                             renderItem={this._renderItemWithParallax}
                             sliderHeight={sliderHeight}
                             sliderWidth={sliderWidth}
@@ -1061,7 +897,7 @@ class Home extends React.Component {
                         style={styles.cardsScrollView}
                         showsVerticalScrollIndicator={false}
                     >
-                        {card}
+                        {subjectCards}
                     </ScrollView>
                 </View>
             </View>
@@ -1070,16 +906,17 @@ class Home extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    choosenExam: state.client.choosenExam,
+    choosenExam: state.gameContent.choosenExam,
     clientInformation: state.client.clientInformation,
     clientDBId: state.client.clientDBId,
     clientToken: state.client.clientToken,
-    friendIds: state.friends.friendIds
+    friendIds: state.friends.friendIds,
+    examList: state.gameContent.examList
 })
 
 const mapDispatchToProps = dispatch => ({
     saveChoosenExam: choosenExam =>
-        dispatch(clientActions.saveChoosenExam(choosenExam)),
+        dispatch(gameContentActions.saveChoosenExam(choosenExam)),
     saveFriendIdList: friendList =>
         dispatch(friendActions.saveFriendIds(friendList))
 })

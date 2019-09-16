@@ -5,7 +5,6 @@ export const clientTypes = {
     GET_USER_TOKEN: 'get_user_token',
     CHECK_USER_TOKEN: 'check_user_token',
     LOGIN_USER: 'login_user',
-    SAVE_CHOOSEN_EXAM: 'save_choosen_exam',
     SEARCH_USERS: 'search_users',
     SEARCH_USERS_SUCCESS: 'search_users_success',
     SAVE_CLIENT_INFORMATION: 'save_client_information',
@@ -44,13 +43,6 @@ const loginUser = userCredentials => {
     return {
         type: clientTypes.LOGIN_USER,
         payload: userCredentials
-    }
-}
-
-const saveChoosenExam = choosenExam => {
-    return {
-        type: clientTypes.SAVE_CHOOSEN_EXAM,
-        payload: choosenExam
     }
 }
 
@@ -103,7 +95,6 @@ export const clientActions = {
     fetchUser: fetchUser,
     checkUserToken: checkUserToken,
     loginUser: loginUser,
-    saveChoosenExam: saveChoosenExam,
     searchUsers: searchUsers,
     favouriteQuestion: favouriteQuestion,
     unfavouriteQuestion: unfavouriteQuestion,

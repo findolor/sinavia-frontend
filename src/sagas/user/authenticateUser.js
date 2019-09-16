@@ -9,6 +9,8 @@ import { fcmService } from '../../services/fcmService'
 import { postFCMToken } from '../../services/apiServices/fcmToken/postToken'
 import { getFriends } from '../../services/apiServices/friendship/getFriends'
 import { getUserJokers } from '../../services/apiServices/userJoker/getUserJokers'
+import { gameContentTypes } from '../../redux/gameContent/actions'
+import { getExamList } from '../../services/apiServices/gameContent/getExamList'
 
 async function getFromStorage(key) {
     const item = await deviceStorage.getItemFromStorage(key)
@@ -40,16 +42,6 @@ export function* authenticateUser(action) {
             type: clientTypes.SAVE_CLIENT_INFORMATION,
             payload: clientInformation
         })
-
-        // We get the choosen exam from storage to show the last choosen exam
-        let choosenExam = yield call(getFromStorage, 'choosenExam')
-        // If it isn't null we save it to redux
-        if (choosenExam !== null) {
-            yield put({
-                type: clientTypes.SAVE_CHOOSEN_EXAM,
-                payload: choosenExam
-            })
-        }
 
         // Get favourited questions from storage
         let favouriteQuestions = yield call(
@@ -114,6 +106,37 @@ export function* authenticateUser(action) {
             payload: userJokers
         })
 
+        /* // Getting the exam list from db
+        const examList = yield call(getExamList, action.payload)
+        // Saving it to redux state
+        yield put({
+            type: gameContentTypes.SAVE_EXAM_LIST,
+            payload: examList
+        }) */
+
+        yield put({
+            type: gameContentTypes.GET_ALL_CONTENT,
+            clientToken: action.payload
+        })
+
+        // We get the choosen exam from storage to show the last choosen exam
+        let choosenExam = yield call(getFromStorage, 'choosenExam')
+        // If it isn't null we save it to redux
+        if (choosenExam !== null) {
+            yield put({
+                type: gameContentTypes.SAVE_CHOOSEN_EXAM,
+                payload: choosenExam
+            })
+
+            /* let index = examList.findIndex(x => x.name === choosenExam)
+
+            yield put({
+                type: gameContentTypes.GET_FULL_EXAM_INFORMATION,
+                clientToken: action.payload,
+                examId: examList[index].id
+            }) */
+        }
+
         if (res) goToMainScreen()
     } catch (error) {
         // If we get unauthorized from api
@@ -153,16 +176,6 @@ export function* authenticateUser(action) {
                 type: clientTypes.SAVE_CLIENT_INFORMATION,
                 payload: clientInformation
             })
-
-            // We get the choosen exam from storage to show the last choosen exam
-            choosenExam = yield call(getFromStorage, 'choosenExam')
-            // If it isn't null we save it to redux
-            if (choosenExam !== null) {
-                yield put({
-                    type: clientTypes.SAVE_CHOOSEN_EXAM,
-                    payload: choosenExam
-                })
-            }
 
             // Get favourited questions from storage
             let favouriteQuestions = yield call(
@@ -224,6 +237,24 @@ export function* authenticateUser(action) {
                 type: clientTypes.SAVE_USER_JOKERS,
                 payload: userJokers
             })
+
+            // Getting the exam list from db
+            const examList = yield call(getExamList, action.payload)
+            // Saving it to redux state
+            yield put({
+                type: gameContentTypes.SAVE_EXAM_LIST,
+                payload: examList
+            })
+
+            // We get the choosen exam from storage to show the last choosen exam
+            choosenExam = yield call(getFromStorage, 'choosenExam')
+            // If it isn't null we save it to redux
+            if (choosenExam !== null) {
+                yield put({
+                    type: gameContentTypes.SAVE_CHOOSEN_EXAM,
+                    payload: choosenExam
+                })
+            }
 
             goToMainScreen()
         } catch (error) {

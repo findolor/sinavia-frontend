@@ -1,8 +1,10 @@
 import { takeLatest, all, take } from 'redux-saga/effects'
 import { clientTypes } from '../redux/client/actions'
 import { opponentTypes } from '../redux/opponents/actions'
+import { gameContentTypes } from '../redux/gameContent/actions'
 import { userSagas } from './user'
 import { questionSagas } from './question'
+import { gameContentSagas } from './gameContent'
 
 export default function* root() {
     yield all([
@@ -22,6 +24,14 @@ export default function* root() {
         takeLatest(
             opponentTypes.GET_OPPONENT_FULL_INFORMATION,
             userSagas.getOpponentFullInformation
+        ),
+        takeLatest(
+            gameContentTypes.GET_FULL_EXAM_INFORMATION,
+            gameContentSagas.getFullExamInformation
+        ),
+        takeLatest(
+            gameContentTypes.GET_ALL_CONTENT,
+            gameContentSagas.getAllContent
         )
     ])
 }

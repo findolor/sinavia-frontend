@@ -28,11 +28,6 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 temp: action.payload
             }
-        case clientTypes.SAVE_CHOOSEN_EXAM:
-            return {
-                ...state,
-                choosenExam: action.payload
-            }
         case clientTypes.SEARCH_USERS_SUCCESS:
             return {
                 ...state,
