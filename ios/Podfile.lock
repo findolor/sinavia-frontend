@@ -152,6 +152,8 @@ PODS:
   - React-RCTWebSocket (0.60.3):
     - React-Core (= 0.60.3)
     - React-fishhook (= 0.60.3)
+  - rn-fetch-blob (0.10.16):
+    - React-Core
   - RNFirebase (5.5.6):
     - Firebase/Core
     - React
@@ -161,7 +163,9 @@ PODS:
     - Fabric
     - Firebase/Core
     - React
-  - RNSVG (9.6.2):
+  - RNShare (2.0.0):
+    - React
+  - RNSVG (9.8.5):
     - React
   - yoga (0.60.3.React)
 
@@ -191,7 +195,9 @@ DEPENDENCIES:
   - React-RCTText (from `../node_modules/react-native/Libraries/Text`)
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-RCTWebSocket (from `../node_modules/react-native/Libraries/WebSocket`)
+  - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNFirebase (from `../node_modules/react-native-firebase/ios`)
+  - RNShare (from `../node_modules/react-native-share`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -258,8 +264,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   React-RCTWebSocket:
     :path: "../node_modules/react-native/Libraries/WebSocket"
+  rn-fetch-blob:
+    :path: "../node_modules/rn-fetch-blob"
   RNFirebase:
     :path: "../node_modules/react-native-firebase/ios"
+  RNShare:
+    :path: "../node_modules/react-native-share"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   yoga:
@@ -302,10 +312,12 @@ SPEC CHECKSUMS:
   React-RCTText: b026f8350c2cbe0daeb9880dd9c6e018fce0daf7
   React-RCTVibration: 5d9ed4a968e9d42880ddcc7c29bee3417c745408
   React-RCTWebSocket: 69d8565d66043f244b4129f3d7154c5689fb7d3e
+  rn-fetch-blob: 651b8d076b43d0d7aa294a3d9ec16c00aab8bef9
   RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6
-  RNSVG: ff9b094e39dd4a437ebe17d1c7ceed286e75f426
+  RNShare: 8b171d4b43c1d886917fdd303bf7a4b87167b05c
+  RNSVG: 78e0a8cc8e84c0406b0d6903312884e99f363fa2
   yoga: 843fe25849b56131275bf3e5da2c468e96f68aff
 
-PODFILE CHECKSUM: b7ad862d7130e8793be4decab3f4e52f5df13954
+PODFILE CHECKSUM: b7557a37f5c8d159adcb217fa7d13de41fdb6fb9
 
 COCOAPODS: 1.7.3

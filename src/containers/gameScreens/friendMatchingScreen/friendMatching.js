@@ -100,101 +100,77 @@ class FriendMatchingScreen extends React.Component {
                     <Text style={styles.subjectText}>Paragrafta Anlam</Text>
                 </View>
                 <View style={styles.coversContainer}>
-                <View style={styles.coverContainer}>
-                    <ImageBackground
-                        source={{
-                            uri: this.props.clientInformation.coverPicture
-                        }}
-                        resizeMode={'stretch'}
-                        style={styles.cover}
-                    >
-                        <View style={styles.playerView}>
-                            <View style={styles.userPicContainer}>
-                                <Image
-                                    source={{
-                                        uri: this.props.clientInformation
-                                            .profilePicture
-                                    }}
-                                    style={styles.userPic}
-                                />
+                    <View style={styles.coverContainer}>
+                        <ImageBackground
+                            source={{
+                                uri: this.props.clientInformation.coverPicture
+                            }}
+                            resizeMode={'stretch'}
+                            style={styles.cover}
+                        >
+                            <View style={styles.playerView}>
+                                <View style={styles.userPicContainer}>
+                                    <Image
+                                        source={{
+                                            uri: this.props.clientInformation
+                                                .profilePicture
+                                        }}
+                                        style={styles.userPic}
+                                    />
+                                </View>
+                                <View style={styles.userInfoContainer}>
+                                    <Text style={styles.usernameText}>
+                                        @{this.props.clientInformation.username}
+                                    </Text>
+                                    <Text
+                                        style={
+                                            styles.subjectBasedSinaviaScoreText
+                                        }
+                                    >
+                                        Sınavia Puanı: 20
+                                    </Text>
+                                </View>
                             </View>
-                            <View style={styles.userInfoContainer}>
-                                <Text style={styles.usernameText}>
-                                    @{this.props.clientInformation.username}
-                                </Text>
-                                <Text
-                                    style={styles.subjectBasedSinaviaScoreText}
-                                >
-                                    Sınavia Puanı: 20
-                                </Text>
+                        </ImageBackground>
+                    </View>
+                    <View style={styles.coverContainer}>
+                        <ImageBackground
+                            source={{
+                                uri: this.props.opponentInformation.coverPicture
+                            }}
+                            resizeMode={'stretch'}
+                            style={styles.cover}
+                        >
+                            <View style={styles.playerView}>
+                                <View style={styles.opponentInfoContainer}>
+                                    <Text style={styles.usernameText}>
+                                        @
+                                        {
+                                            this.props.opponentInformation
+                                                .username
+                                        }
+                                    </Text>
+                                    <Text
+                                        style={
+                                            styles.subjectBasedSinaviaScoreText
+                                        }
+                                    >
+                                        Sınavia Puanı: 20
+                                    </Text>
+                                </View>
+                                <View style={styles.opponentPicContainer}>
+                                    <Image
+                                        source={{
+                                            uri: this.props.opponentInformation
+                                                .profilePicture
+                                        }}
+                                        style={styles.opponentPic}
+                                    />
+                                </View>
                             </View>
-                        </View>
-                    </ImageBackground>
+                        </ImageBackground>
+                    </View>
                 </View>
-                <View style={styles.coverContainer}>
-                    <ImageBackground
-                        source={{
-                            uri: this.props.opponentInformation.coverPicture
-                        }}
-                        resizeMode={'stretch'}
-                        style={styles.cover}
-                    >
-                        <View style={styles.playerView}>
-                            <View style={styles.opponentInfoContainer}>
-                                <Text style={styles.usernameText}>
-                                    @{this.props.opponentInformation.username}
-                                </Text>
-                                <Text
-                                    style={styles.subjectBasedSinaviaScoreText}
-                                >
-                                    Sınavia Puanı: 20
-                                </Text>
-                            </View>
-                            <View style={styles.opponentPicContainer}>
-                                <Image
-                                    source={{
-                                        uri: this.props.opponentInformation
-                                            .profilePicture
-                                    }}
-                                    style={styles.opponentPic}
-                                />
-                            </View>
-                        </View>
-                    </ImageBackground>
-                </View>
-<<<<<<< HEAD
-                    <View style={styles.separatorView}>
-                        <View style={styles.separatorLineUser}>
-                            <Text style={styles.winLoseText}>Kazanma Sayısı</Text>
-                            <Text style={styles.winLoseCounterText}>20</Text>
-                        </View>
-                        <View style={styles.separatorCircle}>
-                            {!this.state.isFriendJoined && (
-                                <CountDown
-                                    until={this.state.countDownTime}
-                                    size={countdownProps.size}
-                                    digitStyle={{
-                                        backgroundColor: '#FF9900',
-                                        borderRadius: 100
-                                    }}
-                                    digitTxtStyle={styles.timerText}
-                                    timeToShow={['S']}
-                                    timeLabels={{ s: null }}
-                                    separatorStyle={{ color: '#fff' }}
-                                    showSeparator
-                                    //running={this.state.isCountDownRunning}
-                                    //onFinish={this.countdownOnFinish}
-                                />
-                            )}
-                            {this.state.isFriendJoined && (
-                                <Image source={SWORD} style={styles.swordPic} />
-                            )}
-                        </View>
-                        <View style={styles.separatorLineOpponent}>
-                            <Text style={styles.winLoseText}>Kazanma Sayısı</Text>
-                            <Text style={styles.winLoseCounterText}>20</Text>
-                        </View>
-=======
                 <View style={styles.separatorView}>
                     <View style={styles.separatorLineUser}>
                         <Text style={styles.winLoseText}>Kazanma</Text>
@@ -225,7 +201,6 @@ class FriendMatchingScreen extends React.Component {
                     <View style={styles.separatorLineOpponent}>
                         <Text style={styles.winLoseText}>Kazanma</Text>
                         <Text style={styles.winLoseCounterText}>20</Text>
->>>>>>> 43c39c303d0bc39535e261390fea7f22c0bbe010
                     </View>
                 </View>
             </View>

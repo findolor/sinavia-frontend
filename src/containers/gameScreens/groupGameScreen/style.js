@@ -30,14 +30,8 @@ export default StyleSheet.create({
     },
     questionContainer: {
         backgroundColor: '#ffffff',
-<<<<<<< HEAD
-        flex: 52,
-        width: wp(84),
-        marginLeft: wp(8),
-=======
         height: hp(52),
         marginHorizontal: wp(5),
->>>>>>> 43c39c303d0bc39535e261390fea7f22c0bbe010
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center'
@@ -127,7 +121,7 @@ export default StyleSheet.create({
     },
     touchableJokerContainer: {
         flex: 1,
-        justifyContent:'center'
+        justifyContent: 'center'
     },
     jokerText: {
         color: '#000',
