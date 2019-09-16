@@ -8,6 +8,7 @@ import { friendTypes } from '../../redux/friends/actions'
 import { fcmService } from '../../services/fcmService'
 import { postFCMToken } from '../../services/apiServices/fcmToken/postToken'
 import { getFriends } from '../../services/apiServices/friendship/getFriends'
+import { getUserJokers } from '../../services/apiServices/userJoker/getUserJokers'
 
 async function getFromStorage(key) {
     const item = await deviceStorage.getItemFromStorage(key)
@@ -104,6 +105,14 @@ export function* authenticateUser(action) {
         clientInformation.fcmToken = fcmToken
         // We send a request to api to save our fcm token
         yield call(postFCMToken, action.payload, clientInformation)
+
+        // Getting the user joker info from db
+        const userJokers = yield call(getUserJokers, action.payload, clientDBId)
+        // Saving it to redux state
+        yield put({
+            type: clientTypes.SAVE_USER_JOKERS,
+            payload: userJokers
+        })
 
         if (res) goToMainScreen()
     } catch (error) {
@@ -203,6 +212,18 @@ export function* authenticateUser(action) {
             clientInformation.fcmToken = fcmToken
             // We send a request to api to save our fcm token
             yield call(postFCMToken, res.token, clientInformation)
+
+            // Getting the user joker info from db
+            const userJokers = yield call(
+                getUserJokers,
+                action.payload,
+                clientDBId
+            )
+            // Saving it to redux state
+            yield put({
+                type: clientTypes.SAVE_USER_JOKERS,
+                payload: userJokers
+            })
 
             goToMainScreen()
         } catch (error) {

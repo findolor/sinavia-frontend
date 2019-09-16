@@ -14,7 +14,9 @@ export const clientTypes = {
     SAVE_CLIENT_DB_ID: 'save_client_db_id',
     FAVOURITE_QUESTION: 'favourite_question',
     UNFAVOURITE_QUESTION: 'unfavourite_question',
-    SAVE_FAVOURITE_QUESTIONS: 'save_favourite_questions'
+    SAVE_FAVOURITE_QUESTIONS: 'save_favourite_questions',
+    SAVE_USER_JOKERS: 'save_user_jokers',
+    SUBTRACT_JOKER: 'subtract_joker'
 }
 
 const createUser = userInformation => {
@@ -89,6 +91,13 @@ const unfavouriteQuestion = (
     }
 }
 
+subtractJoker = jokerId => {
+    return {
+        type: clientTypes.SUBTRACT_JOKER,
+        jokerId: jokerId
+    }
+}
+
 export const clientActions = {
     createUser: createUser,
     fetchUser: fetchUser,
@@ -97,5 +106,6 @@ export const clientActions = {
     saveChoosenExam: saveChoosenExam,
     searchUsers: searchUsers,
     favouriteQuestion: favouriteQuestion,
-    unfavouriteQuestion: unfavouriteQuestion
+    unfavouriteQuestion: unfavouriteQuestion,
+    subtractJoker: subtractJoker
 }

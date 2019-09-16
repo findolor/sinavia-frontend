@@ -9,6 +9,7 @@ import { fcmService } from '../../services/fcmService'
 import { postFCMToken } from '../../services/apiServices/fcmToken/postToken'
 import { getFriends } from '../../services/apiServices/friendship/getFriends'
 import { getFavouriteQuestions } from '../../services/apiServices/favouriteQuestion/getFavouriteQuestions'
+import { getUserJokers } from '../../services/apiServices/userJoker/getUserJokers'
 
 export function* loginUser(action) {
     try {
@@ -91,6 +92,14 @@ export function* loginUser(action) {
         yield put({
             type: friendTypes.SAVE_FRIEND_IDS,
             payload: friendsList
+        })
+
+        // Getting the user joker info from db
+        const userJokers = yield call(getUserJokers, action.payload, res.id)
+        // Saving it to redux state
+        yield put({
+            type: clientTypes.SAVE_USER_JOKERS,
+            payload: userJokers
         })
 
         // Going to the main screen
