@@ -9,73 +9,37 @@ import {
 } from 'react-native'
 import styles from './style'
 import NotchView from '../../../components/notchView'
-import PEGEM from '../../../assets/pegem.png'
-import YARGI from '../../../assets/yargi.jpg'
-
-const booksData = [
-    {
-        number: '11',
-        name: 'Hakan Yılmaz',
-        score: '400'
-    },
-    {
-        number: '11',
-        name: 'Hakan Yılmaz',
-        score: '400'
-    },
-    {
-        number: '11',
-        name: 'Hakan Yılmaz',
-        score: '400'
-    },
-    {
-        number: '11',
-        name: 'Hakan Yılmaz',
-        score: '400'
-    },
-    {
-        number: '11',
-        name: 'Hakan Yılmaz',
-        score: '400'
-    },
-    {
-        number: '11',
-        name: 'Hakan Yılmaz',
-        score: '400'
-    }
-]
+import PEGEM from '../../../assets/yargi.jpg'
+import LIDER from '../../../assets/LIDER.png'
 
 const PEGEM_LINK =
-    'https://www.pegem.net/kitabevi/148300-2020-KPSS-Genel-Yetenek-Genel-Kultur-Video-Destekli-Konu-Anlatimli-Moduler-Set-6-Kitap--kitabi.aspx'
-const YARGI_LINK =
-    'https://www.yargiyayinevi.com/kpss-kitaplari/kpss-a-grubu/yargi-yayinlari-kpss-a-grubu-2007-2017-cikmis-sinav-sorulari-10-deneme-seti'
+    'https://www.yargiyayinevi.com/kpss-kitaplari/yargi-yayinlari-kpss-a-grubu-iktisat-konu-anlatimi-2'
+const LIDER_LINK =
+    'https://www.lideryayin.com/index.php?route=product/product&product_id=310'
 
 class PurchaseScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            booksData: booksData,
-            isPegem: true
+            isYargi: true
         }
     }
 
     render() {
-        const images = this.state.isPegem === true ? PEGEM : YARGI
-        const link = this.state.isPegem === true ? PEGEM_LINK : YARGI_LINK
+        const images = this.state.isYargi === true ? PEGEM : LIDER
+        const link = this.state.isYargi === true ? PEGEM_LINK : LIDER_LINK
         const bookUpper =
-            this.state.isPegem === true
-                ? '2020 KPSS Genel'
-                : '2020 KPSS Son 5 Yıl'
+            this.state.isYargi === true
+                ? 'KPSS A Grubu İktisat'
+                : 'KPSS A Grubu İktisat'
         const bookLower =
-            this.state.isPegem === true
-                ? 'Yenenek Genel Kültür'
-                : 'Çıkmış Sorular'
+            this.state.isYargi === true ? 'Konu Anlatımı' : 'Soru Bankası'
         const publisherUpper =
-            this.state.isPegem === true ? 'Pegem Akademi' : 'Yargı Yayınları'
-        const publisherLower = this.state.isPegem === true ? 'Yayıncılık' : ''
-        const actualPrice = this.state.isPegem === true ? '285,00 ₺' : '22,50 ₺'
+            this.state.isYargi === true ? 'Yargı Yayınları' : 'Lider Yayınları'
+        const publisherLower = this.state.isYargi === true ? '' : ''
+        const actualPrice = this.state.isYargi === true ? '99,00 ₺' : '60,20 ₺'
         const discountPrice =
-            this.state.isPegem === true ? '171,00 ₺' : '13,50 ₺'
+            this.state.isYargi === true ? '69,30 ₺' : '39,00 ₺'
 
         return (
             <View style={styles.container}>

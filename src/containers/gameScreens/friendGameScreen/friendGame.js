@@ -106,8 +106,6 @@ class FriendGame extends React.Component {
         this.props.room.onError.add(err => console.log(err))
     }
 
-    componentWillUnmount() {}
-
     shutdownGame = () => {
         // We clear the timeouts on quitting
         clearTimeout(this.startTimeout)

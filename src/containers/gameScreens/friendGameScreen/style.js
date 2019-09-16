@@ -114,8 +114,7 @@ export default StyleSheet.create({
     questionStyle: {
         resizeMode: 'contain',
         height: hp(90),
-        width: wp(90),
-        flex: 1
+        width: wp(90)
     },
     userContainer: {
         justifyContent: 'space-evenly',
@@ -167,7 +166,7 @@ export default StyleSheet.create({
     },
     countdownText: {
         fontFamily: 'Averta-Bold',
-        fontSize: wp(7),
+        fontSize: wp(6),
         color: '#fff',
         fontWeight: '800'
     },

@@ -10,6 +10,7 @@ import {
 import { connect } from 'react-redux'
 
 import { userServices } from '../../../sagas/user/'
+import { opponentActions } from '../../../redux/opponents/actions'
 
 import returnLogo from '../../../assets/return.png'
 
@@ -36,10 +37,11 @@ class ProfileSearch extends React.Component {
     }
 
     userOnPress = searchListIndex => {
-        navigationPush(SCENE_KEYS.mainScreens.opponentsProfile, {
-            opponentInformation: this.state.returnedSearchList[searchListIndex],
-            isWithSearchBar: true
-        })
+        this.props.getOpponentFullInformation(
+            this.state.returnedSearchList[searchListIndex],
+            this.props.clientDBId,
+            this.props.clientToken
+        )
     }
 
     render() {
@@ -127,9 +129,18 @@ const mapStateToProps = state => ({
     clientDBId: state.client.clientDBId
 })
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+    getOpponentFullInformation: (opponentInformation, clientId, clientToken) =>
+        dispatch(
+            opponentActions.getOpponentFullInformation(
+                opponentInformation,
+                clientId,
+                clientToken
+            )
+        )
+})
 
 export default connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
 )(ProfileSearch)

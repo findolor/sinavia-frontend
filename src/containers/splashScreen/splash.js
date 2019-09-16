@@ -20,7 +20,6 @@ class SplashScreen extends React.PureComponent {
     getJWTToken = async () => {
         try {
             const token = await deviceStorage.getItemFromStorage('clientToken')
-
             return token
         } catch (error) {
             console.log(error)

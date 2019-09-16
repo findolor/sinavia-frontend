@@ -11,7 +11,12 @@ export const clientTypes = {
     SAVE_CLIENT_INFORMATION: 'save_client_information',
     SAVE_CLIENT_CREDENTIALS: 'save_client_credentials',
     SAVE_API_TOKEN: 'save_api_token',
-    SAVE_CLIENT_DB_ID: 'save_client_db_id'
+    SAVE_CLIENT_DB_ID: 'save_client_db_id',
+    FAVOURITE_QUESTION: 'favourite_question',
+    UNFAVOURITE_QUESTION: 'unfavourite_question',
+    SAVE_FAVOURITE_QUESTIONS: 'save_favourite_questions',
+    SAVE_USER_JOKERS: 'save_user_jokers',
+    SUBTRACT_JOKER: 'subtract_joker'
 }
 
 const createUser = userInformation => {
@@ -56,11 +61,51 @@ const searchUsers = searchedKeyword => {
     }
 }
 
+const favouriteQuestion = (
+    clientToken,
+    clientId,
+    question,
+    favedQuestionList
+) => {
+    return {
+        type: clientTypes.FAVOURITE_QUESTION,
+        clientToken: clientToken,
+        clientId: clientId,
+        question: question,
+        favedQuestionList: favedQuestionList
+    }
+}
+
+const unfavouriteQuestion = (
+    clientToken,
+    clientId,
+    question,
+    favedQuestionList
+) => {
+    return {
+        type: clientTypes.UNFAVOURITE_QUESTION,
+        clientToken: clientToken,
+        clientId: clientId,
+        question: question,
+        favedQuestionList: favedQuestionList
+    }
+}
+
+subtractJoker = jokerId => {
+    return {
+        type: clientTypes.SUBTRACT_JOKER,
+        jokerId: jokerId
+    }
+}
+
 export const clientActions = {
     createUser: createUser,
     fetchUser: fetchUser,
     checkUserToken: checkUserToken,
     loginUser: loginUser,
     saveChoosenExam: saveChoosenExam,
-    searchUsers: searchUsers
+    searchUsers: searchUsers,
+    favouriteQuestion: favouriteQuestion,
+    unfavouriteQuestion: unfavouriteQuestion,
+    subtractJoker: subtractJoker
 }

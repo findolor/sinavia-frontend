@@ -9,6 +9,9 @@ import {
 } from 'react-native'
 import { navigationReset } from '../../../services/navigationService'
 import { SCENE_KEYS } from '../../../config/'
+import { connect } from 'react-redux'
+import { clientActions } from '../../../redux/client/actions'
+import { deviceStorage } from '../../../services/deviceStorage'
 
 import styles from './style'
 import background from '../../../assets/gameScreens/gameStatsBackground.jpg'
@@ -55,7 +58,7 @@ class GameStatsScreen extends React.Component {
             clientProfilePicture: '',
             opponentProfilePicture: '',
             // Match result logo
-            matchResultLogo: '',
+            matchResultLogo: null,
             // Question position
             questionPosition: 1,
             // A list to feed into the scroll view
@@ -71,7 +74,9 @@ class GameStatsScreen extends React.Component {
             // Replay button disabled
             isReplayButtonDisabled: false,
             // Fav icon selection
-            favIconSelected: false
+            isFaved: false,
+            // Fav icon
+            favouriteIcon: unselectedFav
         }
     }
 
@@ -224,26 +229,48 @@ class GameStatsScreen extends React.Component {
                 correctAnswerPoint: playerCorrect * 20,
                 totalEarnedPoints: totalEarnedPoints
             })
+
+            this.checkFavouriteStatus()
+
             resolve(true)
         })
+    }
+
+    checkFavouriteStatus = () => {
+        const index = this.props.favouriteQuestions.findIndex(
+            x =>
+                x.id ===
+                this.props.fullQuestionList[this.state.questionPosition - 1].id
+        )
+        if (index === -1) {
+            this.setState({
+                favouriteIcon: unselectedFav,
+                isFaved: false
+            })
+        } else {
+            this.setState({ favouriteIcon: selectedFav, isFaved: true })
+        }
     }
 
     // Used for getting the index of questions from scroll view
     handleScrollHorizontal = event => {
         this.scrollX = event.nativeEvent.contentOffset.x
-        this.setState({
-            questionPosition: Math.min(
-                Math.max(
-                    Math.floor(
-                        this.scrollX /
-                            Math.round(Dimensions.get('window').width) +
-                            0.5
-                    ) + 1,
-                    0
-                ),
-                Object.keys(this.props.questionList).length /*Image count*/
-            )
-        })
+        this.setState(
+            {
+                questionPosition: Math.min(
+                    Math.max(
+                        Math.floor(
+                            this.scrollX /
+                                Math.round(Dimensions.get('window').width) +
+                                0.5
+                        ) + 1,
+                        0
+                    ),
+                    Object.keys(this.props.questionList).length /*Image count*/
+                )
+            },
+            this.checkFavouriteStatus()
+        )
     }
 
     // Used for getting the index of screen from scroll view
@@ -323,6 +350,26 @@ class GameStatsScreen extends React.Component {
         this.props.room.leave()
         this.props.client.close()
         navigationReset('main')
+    }
+
+    favouriteOnPress = () => {
+        if (this.state.isFaved) {
+            this.props.unfavouriteQuestion(
+                this.props.clientToken,
+                this.props.clientDBId,
+                this.props.fullQuestionList[this.state.questionPosition - 1],
+                this.props.favouriteQuestions
+            )
+            this.setState({ favouriteIcon: unselectedFav, isFaved: false })
+        } else {
+            this.props.favouriteQuestion(
+                this.props.clientToken,
+                this.props.clientDBId,
+                this.props.fullQuestionList[this.state.questionPosition - 1],
+                this.props.favouriteQuestions
+            )
+            this.setState({ favouriteIcon: selectedFav, isFaved: true })
+        }
     }
 
     render() {
@@ -556,19 +603,9 @@ class GameStatsScreen extends React.Component {
                             <Text style={styles.answerText}>Doğru Cevap</Text>
                         </View>
                         <View style={styles.favIconContainer}>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    this.setState({
-                                        favIconSelected: true
-                                    })
-                                }}
-                            >
+                            <TouchableOpacity onPress={this.favouriteOnPress}>
                                 <Image
-                                    source={
-                                        this.state.favIconSelected === true
-                                            ? selectedFav
-                                            : unselectedFav
-                                    }
+                                    source={this.state.favouriteIcon}
                                     style={styles.favIcon}
                                 />
                             </TouchableOpacity>
@@ -606,4 +643,34 @@ class GameStatsScreen extends React.Component {
     }
 }
 
-export default GameStatsScreen
+const mapStateToProps = state => ({
+    clientDBId: state.client.clientDBId,
+    clientToken: state.client.clientToken,
+    favouriteQuestions: state.client.favouriteQuestions
+})
+
+const mapDispatchToProps = dispatch => ({
+    favouriteQuestion: (clientToken, clientId, question, favedQuestionList) =>
+        dispatch(
+            clientActions.favouriteQuestion(
+                clientToken,
+                clientId,
+                question,
+                favedQuestionList
+            )
+        ),
+    unfavouriteQuestion: (clientToken, clientId, question, favedQuestionList) =>
+        dispatch(
+            clientActions.unfavouriteQuestion(
+                clientToken,
+                clientId,
+                question,
+                favedQuestionList
+            )
+        )
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(GameStatsScreen)

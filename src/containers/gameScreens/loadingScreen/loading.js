@@ -19,15 +19,24 @@ class LoadingScreen extends React.Component {
         this.state = {}
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         if (this.props.isHardReset) return
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
+        // 0.11.0
+        /* this.joinRoom({
+            create: true,
+            examName: 'LGS',
+            courseName: 'Matematik',
+            subjectName: 'Sayilar',
+            databaseId: this.props.clientDBId
+        }) */
+        // 0.10.8
         this.client.onOpen.add(() => {
             this.joinRoom({
                 create: true,
-                examName: 'LGS',
-                courseName: 'Matematik',
-                subjectName: 'Sayilar',
+                examId: 1,
+                courseId: 1,
+                subjectId: 1,
                 databaseId: this.props.clientDBId
             })
         })
@@ -61,7 +70,6 @@ class LoadingScreen extends React.Component {
                     playerCoverPicture = message[element].coverPicture
                 }
             })
-
             this.room.removeAllListeners()
 
             navigationPush(SCENE_KEYS.gameScreens.rankedMatchingScreen, {

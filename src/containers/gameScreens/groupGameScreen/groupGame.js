@@ -141,6 +141,7 @@ class GroupGame extends React.Component {
 
         // Clear room listeners
         this.props.room.removeAllListeners()
+        this.props.client.close()
 
         // Clear other game related things
         this.setState({ isCountDownRunning: false })
@@ -173,7 +174,6 @@ class GroupGame extends React.Component {
     onlyClientMatchQuit = () => {
         Alert.alert('Herkes oyundan ayrıldı!')
         this.shutdownGame()
-        this.props.client.close()
         navigationReset('main')
     }
 

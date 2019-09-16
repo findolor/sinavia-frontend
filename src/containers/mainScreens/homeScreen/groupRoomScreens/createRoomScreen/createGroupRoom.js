@@ -55,13 +55,17 @@ class CreateGroupRoom extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({
-            groupCode: this.randomCodeGenerator()
-        })
-        this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
-        this.client.onOpen.add(() => {
-            this.joinRoom()
-        })
+        this.setState(
+            {
+                groupCode: this.randomCodeGenerator()
+            },
+            () => {
+                this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
+                this.client.onOpen.add(() => {
+                    this.joinRoom()
+                })
+            }
+        )
     }
 
     startGroupGameOnPress = () => {
@@ -81,7 +85,7 @@ class CreateGroupRoom extends React.Component {
         })
     }
 
-    joinRoom = async () => {
+    joinRoom = () => {
         this.room = this.client.join('groupRoom', {
             // These will be props coming from home screen
             examName: 'LGS',
@@ -92,57 +96,49 @@ class CreateGroupRoom extends React.Component {
             create: true
         })
 
-        this.room.onJoin.add(() => {
-            this.room.onMessage.add(message => {
-                switch (message.action) {
-                    case 'player-props':
-                        const playerIds = Object.keys(message.playerProps)
+        this.room.onMessage.add(message => {
+            switch (message.action) {
+                case 'player-props':
+                    const playerIds = Object.keys(message.playerProps)
 
-                        playerList = []
+                    playerList = []
 
-                        playerIds.forEach(element => {
-                            if (message.playerProps[element].readyStatus) {
-                                playerList.push({
-                                    username:
-                                        message.playerProps[element].username,
-                                    id: element,
-                                    profilePicture:
-                                        message.playerProps[element]
-                                            .profilePicture,
-                                    status: 'Hazır',
-                                    isLeader:
-                                        message.playerProps[element].isLeader
-                                })
-                            } else {
-                                playerList.push({
-                                    username:
-                                        message.playerProps[element].username,
-                                    id: element,
-                                    profilePicture:
-                                        message.playerProps[element]
-                                            .profilePicture,
-                                    status: 'Bekleniyor',
-                                    isLeader:
-                                        message.playerProps[element].isLeader
-                                })
-                            }
-                            message.playerProps[element].isLeader === true
-                                ? this.setState({ isClientLeader: true })
-                                : this.setState({ isClientLeader: false })
-                        })
+                    playerIds.forEach(element => {
+                        if (message.playerProps[element].readyStatus) {
+                            playerList.push({
+                                username: message.playerProps[element].username,
+                                id: element,
+                                profilePicture:
+                                    message.playerProps[element].profilePicture,
+                                status: 'Hazır',
+                                isLeader: message.playerProps[element].isLeader
+                            })
+                        } else {
+                            playerList.push({
+                                username: message.playerProps[element].username,
+                                id: element,
+                                profilePicture:
+                                    message.playerProps[element].profilePicture,
+                                status: 'Bekleniyor',
+                                isLeader: message.playerProps[element].isLeader
+                            })
+                        }
+                        message.playerProps[element].isLeader === true
+                            ? this.setState({ isClientLeader: true })
+                            : this.setState({ isClientLeader: false })
+                    })
 
-                        this.setState({ groupRoomPlayerList: playerList })
-                        return
-                    case 'start-match':
-                        navigationReset('game', { isHardReset: true })
-                        navigationPush(SCENE_KEYS.gameScreens.groupGame, {
-                            room: this.room,
-                            client: this.client,
-                            groupRoomPlayerList: this.state.groupRoomPlayerList
-                        })
-                        return
-                }
-            })
+                    this.setState({ groupRoomPlayerList: playerList })
+                    return
+                case 'start-match':
+                    navigationReset('game', { isHardReset: true })
+                    navigationPush(SCENE_KEYS.gameScreens.groupGame, {
+                        room: this.room,
+                        client: this.client,
+                        groupRoomPlayerList: this.state.groupRoomPlayerList
+                    })
+                    return
+            }
         })
     }
 

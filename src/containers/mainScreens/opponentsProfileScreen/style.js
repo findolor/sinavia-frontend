@@ -210,7 +210,8 @@ export default StyleSheet.create({
     },
     totalGameStatsInfosContainer: {
         height: hp(22.5),
-        width: wp(40)
+        width: wp(40),
+        justifyContent: 'center'
     },
     chartContainer: {
         height: hp(22.5),
@@ -222,15 +223,13 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Semibold',
         fontSize: hp(2.3),
         color: '#2E313C',
-        marginLeft: wp(4),
-        marginTop: hp(2)
+        marginLeft: wp(4)
     },
     totalGamesPlayedCounter: {
         fontFamily: 'Averta-Semibold',
         fontSize: hp(4),
         color: '#2E313C',
-        marginLeft: wp(4),
-        marginTop: hp(1)
+        marginLeft: wp(4)
     },
     totalGamesPlayedText: {
         fontFamily: 'Averta-Semibold',
@@ -242,8 +241,7 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Regular',
         fontSize: hp(1.8),
         color: '#6AC259',
-        marginLeft: wp(4),
-        marginTop: hp(1.5)
+        marginLeft: wp(4)
     },
     drawText: {
         fontFamily: 'Averta-Regular',

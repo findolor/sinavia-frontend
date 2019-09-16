@@ -30,9 +30,14 @@ export default StyleSheet.create({
     },
     questionContainer: {
         backgroundColor: '#ffffff',
+<<<<<<< HEAD
         flex: 52,
         width: wp(84),
         marginLeft: wp(8),
+=======
+        height: hp(52),
+        marginHorizontal: wp(5),
+>>>>>>> 43c39c303d0bc39535e261390fea7f22c0bbe010
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center'
@@ -209,7 +214,7 @@ export default StyleSheet.create({
         borderColor: 'white',
         borderRadius: 100,
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     countdownText: {
         fontFamily: 'Averta-Bold',
@@ -330,7 +335,6 @@ export default StyleSheet.create({
         width: hp(7),
         borderRadius: 100,
         backgroundColor: 'white'
-
     }
 })
 
