@@ -189,11 +189,11 @@ class Leaderboard extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                <View style={styles.scrollViewContainer}>
                 <ScrollView
                     style={styles.scrollView}
                     showsVerticalScrollIndicator={false}
                 >
-                    <NotchView color={'#fcfcfc'} />
                     <View style={styles.leaderContainer}>
                         <View style={styles.tabbarContainer}>
                             <TouchableOpacity
@@ -685,6 +685,7 @@ class Leaderboard extends React.Component {
                         keyExtractor={(item, index) => index}
                     />
                 </ScrollView>
+                </View>
                 <View style={styles.yourOrderTextContainer}>
                     <Text style={styles.yourOrderText}>
                         Senin Sıralaman: 300

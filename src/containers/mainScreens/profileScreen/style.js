@@ -12,11 +12,21 @@ export default StyleSheet.create({
         backgroundColor: '#fcfcfc'
     },
     header: {
-        height: hp(6),
+        flex: 6,
         width: wp(88),
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
+    },
+    profileContainer: {
+        flex: 32,
+        width: wp(100),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    boxesContainer: {
+        flex: 58,
+        width: wp(100)
     },
     searchBar: {
         height: hp(5),
@@ -28,22 +38,12 @@ export default StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
     },
-    profileContainer: {
-        height: hp(32),
-        width: wp(100),
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
     profileContainerShadowView:{
         height: hp(30),
         width: wp(90),
         borderRadius: 30,
         alignItems: 'center',
         backgroundColor: "rgba(0,0,0,0.5)"
-    },
-    boxesContainer: {
-        height: hp(58),
-        width: wp(100)
     },
     first2Box: {
         height: hp(29),

@@ -87,7 +87,7 @@ class FriendMatchingScreen extends React.Component {
                     courseName: playerOptions.courseName,
                     subjectName: playerOptions.subjectName
                 })
-            }, 5000)
+            }, 5000000)
         })
     }
 
@@ -99,6 +99,7 @@ class FriendMatchingScreen extends React.Component {
                     <Text style={styles.courseText}>TÜRKÇE</Text>
                     <Text style={styles.subjectText}>Paragrafta Anlam</Text>
                 </View>
+                <View style={styles.coversContainer}>
                 <View style={styles.coverContainer}>
                     <ImageBackground
                         source={{
@@ -161,6 +162,39 @@ class FriendMatchingScreen extends React.Component {
                         </View>
                     </ImageBackground>
                 </View>
+<<<<<<< HEAD
+                    <View style={styles.separatorView}>
+                        <View style={styles.separatorLineUser}>
+                            <Text style={styles.winLoseText}>Kazanma Sayısı</Text>
+                            <Text style={styles.winLoseCounterText}>20</Text>
+                        </View>
+                        <View style={styles.separatorCircle}>
+                            {!this.state.isFriendJoined && (
+                                <CountDown
+                                    until={this.state.countDownTime}
+                                    size={countdownProps.size}
+                                    digitStyle={{
+                                        backgroundColor: '#FF9900',
+                                        borderRadius: 100
+                                    }}
+                                    digitTxtStyle={styles.timerText}
+                                    timeToShow={['S']}
+                                    timeLabels={{ s: null }}
+                                    separatorStyle={{ color: '#fff' }}
+                                    showSeparator
+                                    //running={this.state.isCountDownRunning}
+                                    //onFinish={this.countdownOnFinish}
+                                />
+                            )}
+                            {this.state.isFriendJoined && (
+                                <Image source={SWORD} style={styles.swordPic} />
+                            )}
+                        </View>
+                        <View style={styles.separatorLineOpponent}>
+                            <Text style={styles.winLoseText}>Kazanma Sayısı</Text>
+                            <Text style={styles.winLoseCounterText}>20</Text>
+                        </View>
+=======
                 <View style={styles.separatorView}>
                     <View style={styles.separatorLineUser}>
                         <Text style={styles.winLoseText}>Kazanma</Text>
@@ -191,6 +225,7 @@ class FriendMatchingScreen extends React.Component {
                     <View style={styles.separatorLineOpponent}>
                         <Text style={styles.winLoseText}>Kazanma</Text>
                         <Text style={styles.winLoseCounterText}>20</Text>
+>>>>>>> 43c39c303d0bc39535e261390fea7f22c0bbe010
                     </View>
                 </View>
             </View>

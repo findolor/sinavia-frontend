@@ -41,6 +41,7 @@ class RankedMatchingScreen extends React.Component {
                         {this.props.subjectName}
                     </Text>
                 </View>
+                <View style={styles.coversContainer}>
                 <View style={styles.coverContainer}>
                     <ImageBackground
                         source={{ uri: this.props.playerCoverPicture }}
@@ -93,12 +94,13 @@ class RankedMatchingScreen extends React.Component {
                         </View>
                     </ImageBackground>
                 </View>
-                <View style={styles.separatorView}>
-                    <View style={styles.separatorLine} />
-                    <View style={styles.separatorCircle}>
-                        <Image source={SWORD} style={styles.swordPic} />
+                    <View style={styles.separatorView}>
+                        <View style={styles.separatorLine} />
+                        <View style={styles.separatorCircle}>
+                            <Image source={SWORD} style={styles.swordPic} />
+                        </View>
+                        <View style={styles.separatorLine} />
                     </View>
-                    <View style={styles.separatorLine} />
                 </View>
             </View>
         )

@@ -12,9 +12,17 @@ export default StyleSheet.create({
         backgroundColor: '#fcfcfc'
     },
     header: {
-        height: hp(8),
+        flex: 8,
         width: wp(88),
         flexDirection: 'row'
+    },
+    flatListContainer: {
+        flex: 88,
+        width: wp(88),
+    },
+    noResultsView: {
+        flex: 88,
+        justifyContent: 'center'
     },
     returnLogoContainer: {
         height: hp(6),

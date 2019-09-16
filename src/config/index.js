@@ -1,6 +1,11 @@
 const local = true
 
 const api = {
+<<<<<<< HEAD
+    host: 'http://10.253.12.108:4000/api/',
+    hostAWS: 'http://sinavia-test.eu-central-1.elasticbeanstalk.com:8080/api/',
+    gameEngine: 'http://10.253.12.108:5000',
+=======
     host:
         local === true
             ? 'http://localhost:4000/api/'
@@ -8,6 +13,7 @@ const api = {
     hostAWS: 'http://sinavia-test.eu-central-1.elasticbeanstalk.com:8080/api/',
     gameEngine:
         local === true ? 'http://localhost:5000' : 'http://10.253.12.109:5000',
+>>>>>>> 43c39c303d0bc39535e261390fea7f22c0bbe010
     gameEngineAWS: 'http://sinavia-test.eu-central-1.elasticbeanstalk.com:5000'
 }
 

@@ -11,14 +11,18 @@ export default StyleSheet.create({
         justifyContent: 'center'
     },
     contentContainer: {
-        height: hp(10),
+        flex: 10,
         width: wp(100),
         backgroundColor: '#FF9900',
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
+    coversContainer: {
+        flex: 86,
+        justifyContent: 'center'
+    },
     coverContainer: {
-        height: hp(43),
+        flex: 1,
         width: wp(100)
     },
     separatorContainer: {
@@ -41,10 +45,6 @@ export default StyleSheet.create({
         backgroundColor: '#E2871A',
         borderTopLeftRadius: 10,
         borderBottomLeftRadius: 10
-    },
-    sword: {
-        height: hp(19.5),
-        width: hp(12.75)
     },
     userPicContainer: {
         height: hp(20),
@@ -128,7 +128,6 @@ export default StyleSheet.create({
         height: hp(20),
         width: wp(100),
         position: 'absolute',
-        top: hp(47),
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
@@ -187,10 +186,6 @@ export default StyleSheet.create({
         fontFamily: 'Averta-BoldItalic',
         fontSize: hp(9),
         color: '#FFFFFF'
-    },
-    sword: {
-        height: hp(19.5),
-        width: hp(12.75)
     }
 })
 

@@ -12,11 +12,20 @@ export default StyleSheet.create({
         backgroundColor: '#fcfcfc'
     },
     header: {
-        height: hp(6),
+        flex: 6,
         width: wp(88),
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
+    },
+    profileContainer: {
+        flex: 32,
+        width: wp(100),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    scrollViewContainer: {
+        flex: 58
     },
     searchBar: {
         height: hp(5),
@@ -26,12 +35,6 @@ export default StyleSheet.create({
         borderWidth: hp(0.3),
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
-    },
-    profileContainer: {
-        height: hp(32),
-        width: wp(100),
-        justifyContent: 'center',
         alignItems: 'center'
     },
     boxesContainer: {

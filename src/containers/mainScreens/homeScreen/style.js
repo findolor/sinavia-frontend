@@ -11,18 +11,26 @@ export default StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#fcfcfc'
     },
+    carouselContainer: {
+        flex: 25,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    header: {
+        flex: 8,
+        width: wp(100),
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        flexDirection: 'row'
+    },
     scrollViewContainer: {
-        backgroundColor: 'green',
-        alignItems: 'center'
+        flex: 54
     },
     cardsScrollView: {
-        height: hp(53),
+        flex: 1,
         width: wp(87),
-        marginTop: hp(34),
         marginLeft: wp(6.5),
-        marginRight: wp(6.5),
-        position: 'absolute',
-        backgroundColor: '#fcfcfc'
+        marginRight: wp(6.5)
     },
     card: {
         height: hp(9),
@@ -38,21 +46,6 @@ export default StyleSheet.create({
         fontFamily: 'Averta-SemiboldItalic',
         color: '#00BACD',
         fontSize: hp(3.3)
-    },
-    carouselContainer: {
-        height: hp(25),
-        marginTop: hp(1.5),
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#fcfcfc'
-    },
-    header: {
-        height: hp(7.5),
-        width: wp(100),
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexDirection: 'row',
-        backgroundColor: '#fcfcfc'
     },
     picker: {
         height: hp(6),
@@ -167,21 +160,18 @@ export default StyleSheet.create({
     profilePicContainer: {
         height: hp(7.5),
         width: wp(20),
-        backgroundColor: '#fcfcfc',
         justifyContent: 'center',
         alignItems: 'center'
     },
     pickerContainer: {
         height: hp(7.5),
         width: wp(60),
-        backgroundColor: '#fcfcfc',
         justifyContent: 'center',
         alignItems: 'center'
     },
     notificationLogoContainer: {
         height: hp(7.5),
         width: wp(20),
-        backgroundColor: '#fcfcfc',
         justifyContent: 'center',
         alignItems: 'center'
     },

@@ -12,15 +12,13 @@ export default StyleSheet.create({
         backgroundColor: '#fcfcfc'
     },
     imageContainer: {
-        height: hp(55),
-        backgroundColor: '#fcfcfc',
+        flex: 55,
         justifyContent: 'center',
         alignItems: 'center'
     },
     buttonContainer: {
-        height: hp(18),
+        flex: 20,
         width: wp(100),
-        backgroundColor: '#fcfcfc',
         justifyContent: 'space-evenly',
         alignItems: 'center'
     },
@@ -34,7 +32,7 @@ export default StyleSheet.create({
         flexDirection: 'row',
         marginVertical: hp(0),
         backgroundColor: '#fcfcfc',
-        height: hp(3),
+        flex: 1,
         width: wp(85)
     },
     separatorLine: {
