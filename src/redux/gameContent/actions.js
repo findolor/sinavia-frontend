@@ -5,7 +5,8 @@ export const gameContentTypes = {
     SAVE_EXAM_NAMES_LIST: 'save_exam_names_list',
     SAVE_COURSE_NAMES_LIST: 'save_course_names_list',
     SAVE_SUBJECT_NAMES_LIST: 'save_subject_names_list',
-    GET_ALL_CONTENT: 'get_all_content'
+    GET_ALL_CONTENT: 'get_all_content',
+    SAVE_GAME_CONTENT_MAP: 'save_game_content_map'
 }
 // TODO THINK ABOUT CONTETT LATER IMPORTRRANT
 const saveChoosenExam = choosenExam => {

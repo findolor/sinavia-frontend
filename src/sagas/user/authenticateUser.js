@@ -34,6 +34,11 @@ export function* authenticateUser(action) {
             payload: action.payload
         })
 
+        yield put({
+            type: gameContentTypes.GET_ALL_CONTENT,
+            clientToken: action.payload
+        })
+
         // We get clientInformation from storage
         let client = yield call(getFromStorage, 'clientInformation')
         let clientInformation = JSON.parse(client)
@@ -114,11 +119,6 @@ export function* authenticateUser(action) {
             payload: examList
         }) */
 
-        yield put({
-            type: gameContentTypes.GET_ALL_CONTENT,
-            clientToken: action.payload
-        })
-
         // We get the choosen exam from storage to show the last choosen exam
         let choosenExam = yield call(getFromStorage, 'choosenExam')
         // If it isn't null we save it to redux
@@ -166,6 +166,11 @@ export function* authenticateUser(action) {
             yield put({
                 type: clientTypes.SAVE_CLIENT_DB_ID,
                 payload: res.id
+            })
+
+            yield put({
+                type: gameContentTypes.GET_ALL_CONTENT,
+                clientToken: action.payload
             })
 
             // We get clientInformation from storage
@@ -245,11 +250,6 @@ export function* authenticateUser(action) {
                 type: gameContentTypes.SAVE_EXAM_LIST,
                 payload: examList
             }) */
-
-            yield put({
-                type: gameContentTypes.GET_ALL_CONTENT,
-                clientToken: action.payload
-            })
 
             // We get the choosen exam from storage to show the last choosen exam
             choosenExam = yield call(getFromStorage, 'choosenExam')

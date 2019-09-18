@@ -16,7 +16,7 @@ export const favouriteQuestion = async (userToken, userId, questionId) => {
             }
         )
 
-        return response.data.success
+        return response.data.data
     } catch (err) {
         throw new Error(err.message)
     }

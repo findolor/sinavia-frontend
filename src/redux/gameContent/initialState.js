@@ -12,5 +12,6 @@ export const INITIAL_STATE = {
     subjectList: [],
     examNamesList: [],
     courseNamesList: [],
-    subjectNamesList: []
+    subjectNamesList: [],
+    gameContentMap: {}
 }

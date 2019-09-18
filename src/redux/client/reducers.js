@@ -33,7 +33,7 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 returnedSearchList: action.payload
             }
-        case clientTypes.SAVE_FAVOURITE_QUESTIONS:
+        case clientTypes.SAVE_FAVOURITE_QUESTIONS_SUCCESS:
             return {
                 ...state,
                 favouriteQuestions: action.payload

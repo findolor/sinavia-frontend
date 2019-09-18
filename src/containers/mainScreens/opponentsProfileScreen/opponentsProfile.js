@@ -48,7 +48,6 @@ class OpponentsProfile extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.props.totalPoints)
         if (!this.props.isFriends) {
             if (this.props.isRequesting)
                 this.setState({
@@ -237,308 +236,353 @@ class OpponentsProfile extends React.Component {
                     </ImageBackground>
                 </View>
                 <View style={styles.scrollViewContainer}>
-                <ScrollView
-                    style={styles.boxesScrollView}
-                    showsVerticalScrollIndicator={false}
-                >
-                    <View style={styles.friendsBoxes}>
-                        <View style={styles.opponentsFriendsBox}>
-                            <View style={styles.opponentsFriendsTextView}>
-                                <Text style={styles.opponentsFriendsText}>
-                                    Arkadaşlar
-                                </Text>
-                            </View>
-                            <View style={styles.opponentsFriendsCounterView}>
-                                <Text style={styles.opponentsFriendsCounter}>
-                                    {this.state.totalFriends}
-                                </Text>
-                            </View>
-                        </View>
-                        <TouchableOpacity
-                            onPress={this.friendshipStatusOnPress}
-                        >
-                            <View style={styles.yourFriendshipStatusBox}>
-                                {this.state.friendshipStatus ===
-                                    'addFriend' && (
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <View
-                                            style={
-                                                styles.friendshipLogoContainer
-                                            }
-                                        >
-                                            <Image
-                                                source={ADD_FRIEND}
-                                                style={styles.friendshipLogo}
-                                            />
-                                        </View>
-                                        <View
-                                            style={
-                                                styles.friendshipStatusInfoContainer
-                                            }
-                                        >
-                                            <Text style={styles.addFriendText}>
-                                                Arkadaş
-                                            </Text>
-                                            <Text style={styles.addFriendText}>
-                                                olarak ekle
-                                            </Text>
-                                        </View>
-                                    </View>
-                                )}
-                                {this.state.friendshipStatus ===
-                                    'friendRequestSent' && (
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <View
-                                            style={
-                                                styles.friendshipLogoContainer
-                                            }
-                                        >
-                                            <Image
-                                                source={ADD_FRIEND_REQUESTED}
-                                                style={styles.friendshipLogo}
-                                            />
-                                        </View>
-                                        <View
-                                            style={
-                                                styles.friendshipStatusInfoContainer
-                                            }
-                                        >
-                                            <Text
-                                                style={
-                                                    styles.addFriendRequestedText
-                                                }
-                                            >
-                                                Arkadaşlık isteği
-                                            </Text>
-                                            <Text
-                                                style={
-                                                    styles.addFriendRequestedText
-                                                }
-                                            >
-                                                {this.state
-                                                    .isFriendRequestSent ===
-                                                true
-                                                    ? 'gönderildi'
-                                                    : 'alındı'}
-                                            </Text>
-                                        </View>
-                                    </View>
-                                )}
-                                {this.state.friendshipStatus ===
-                                    'alreadyFriend' && (
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <View
-                                            style={
-                                                styles.friendshipLogoContainer
-                                            }
-                                        >
-                                            <Image
-                                                source={ALREADY_FRIEND}
-                                                style={styles.friendshipLogo}
-                                            />
-                                        </View>
-                                        <View
-                                            style={
-                                                styles.friendshipStatusInfoContainer
-                                            }
-                                        >
-                                            <Text
-                                                style={styles.alreadyFriendText}
-                                            >
-                                                Arkadaşın
-                                            </Text>
-                                        </View>
-                                    </View>
-                                )}
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.totalGameStatsBox}>
-                        <View style={styles.totalGameStatsInfosContainer}>
-                            <Text style={styles.totalGameStatsText}>
-                                Oyun İstatistikleri
-                            </Text>
-                            <Text style={styles.totalGamesPlayedCounter}>
-                                {this.state.gamesPlayed}
-                            </Text>
-                            <Text style={styles.totalGamesPlayedText}>
-                                Oynadığı Oyun
-                            </Text>
-                            <Text style={styles.wonText}>
-                                Kazandığı: {this.state.wonGames}
-                            </Text>
-                            <Text style={styles.drawText}>
-                                Beraberlik: {this.state.drawGames}
-                            </Text>
-                            <Text style={styles.lostText}>
-                                Kaybettiği: {this.state.lostGames}
-                            </Text>
-                        </View>
-                        <View style={styles.chartContainer}>
-                            <SemiCircleProgress
-                                percentage={
-                                    this.state.gamesPlayed !== 0
-                                        ? parseInt(
-                                              this.state.semiCirclePercentage.toFixed(
-                                                  0
-                                              ),
-                                              10
-                                          )
-                                        : 0
-                                }
-                                progressColor={'#00D9EF'}
-                                circleRadius={widthPercentageToDP(22)}
-                                animationSpeed={0.1}
-                                progressWidth={widthPercentageToDP(5)}
-                            >
-                                <Text style={styles.chartPercentageText}>
-                                    {this.state.gamesPlayed !== 0
-                                        ? this.state.semiCirclePercentage.toFixed(
-                                              0
-                                          )
-                                        : 0}
-                                    %
-                                </Text>
-                            </SemiCircleProgress>
-                        </View>
-                    </View>
-                    <View style={styles.versusGameStatsBox}>
-                        <View style={styles.versusGameTextsContainer}>
-                            <View style={styles.versusGameTitleContainer}>
-                                <Text style={styles.versusGameTitleText}>
-                                    Aranızdaki Oyunlar
-                                </Text>
-                            </View>
-                            <View style={styles.versusGameTotalContainer}>
-                                <Text style={styles.versusTotalText}>
-                                    Toplam Oyun{' '}
-                                </Text>
-                                <Text style={styles.versusTotalCounter}>
-                                    {this.state.totalFriendGamesPlayed}
-                                </Text>
-                            </View>
-                        </View>
-                        {this.state.clientWinCount > 0 &&
-                            this.state.opponentWinCount > 0 && (
-                                <View style={styles.versusGameChartContainer}>
-                                    <View
-                                        style={[
-                                            styles.yourWinsView,
-                                            {
-                                                width: widthPercentageToDP(
-                                                    (this.state.clientWinCount /
-                                                        (this.state
-                                                            .clientWinCount +
-                                                            this.state
-                                                                .opponentWinCount)) *
-                                                        82
-                                                )
-                                            }
-                                        ]}
-                                    />
-                                    <View
-                                        style={[
-                                            styles.opponentsWinsView,
-                                            {
-                                                width: widthPercentageToDP(
-                                                    (this.state
-                                                        .opponentWinCount /
-                                                        (this.state
-                                                            .clientWinCount +
-                                                            this.state
-                                                                .opponentWinCount)) *
-                                                        82
-                                                )
-                                            }
-                                        ]}
-                                    />
-                                    <Text style={styles.yourWinsCounter}>
-                                        {this.state.clientWinCount}
-                                    </Text>
-                                    <Text style={styles.opponentWinsCounter}>
-                                        {this.state.opponentWinCount}
+                    <ScrollView
+                        style={styles.boxesScrollView}
+                        showsVerticalScrollIndicator={false}
+                    >
+                        <View style={styles.friendsBoxes}>
+                            <View style={styles.opponentsFriendsBox}>
+                                <View style={styles.opponentsFriendsTextView}>
+                                    <Text style={styles.opponentsFriendsText}>
+                                        Arkadaşlar
                                     </Text>
                                 </View>
-                            )}
-                        {this.state.clientWinCount > 0 &&
-                            this.state.opponentWinCount === 0 && (
-                                <View style={styles.versusGameChartContainer}>
-                                    <View
-                                        style={[
-                                            styles.yourWinsView,
-                                            {
-                                                width: widthPercentageToDP(82),
-                                                borderTopRightRadius: 10,
-                                                borderBottomRightRadius: 10
-                                            }
-                                        ]}
-                                    />
-                                    <Text style={styles.yourWinsCounter}>
-                                        {this.state.clientWinCount}
-                                    </Text>
-                                    <Text style={styles.opponentWinsCounter}>
-                                        {this.state.opponentWinCount}
-                                    </Text>
-                                </View>
-                            )}
-                        {this.state.clientWinCount === 0 &&
-                            this.state.opponentWinCount > 0 && (
-                                <View style={styles.versusGameChartContainer}>
-                                    <View
-                                        style={[
-                                            styles.opponentsWinsView,
-                                            {
-                                                width: widthPercentageToDP(82),
-                                                borderTopLeftRadius: 10,
-                                                borderBottomLeftRadius: 10
-                                            }
-                                        ]}
-                                    />
-                                    <Text style={styles.yourWinsCounter}>
-                                        {this.state.clientWinCount}
-                                    </Text>
-                                    <Text style={styles.opponentWinsCounter}>
-                                        {this.state.opponentWinCount}
-                                    </Text>
-                                </View>
-                            )}
-                        {this.state.clientWinCount === 0 &&
-                            this.state.opponentWinCount === 0 && (
-                                <View style={styles.versusGameChartContainer}>
-                                    <View
-                                        style={[
-                                            styles.noneWinsView,
-                                            {
-                                                width: widthPercentageToDP(82),
-                                                borderTopLeftRadius: 10,
-                                                borderBottomLeftRadius: 10
-                                            }
-                                        ]}
+                                <View
+                                    style={styles.opponentsFriendsCounterView}
+                                >
+                                    <Text
+                                        style={styles.opponentsFriendsCounter}
                                     >
-                                        <Text style={styles.noneWinsInfoText}>
-                                            Henüz kazanan yok, hadi bunu
-                                            değiştir!
+                                        {this.state.totalFriends}
+                                    </Text>
+                                </View>
+                            </View>
+                            <TouchableOpacity
+                                onPress={this.friendshipStatusOnPress}
+                            >
+                                <View style={styles.yourFriendshipStatusBox}>
+                                    {this.state.friendshipStatus ===
+                                        'addFriend' && (
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <View
+                                                style={
+                                                    styles.friendshipLogoContainer
+                                                }
+                                            >
+                                                <Image
+                                                    source={ADD_FRIEND}
+                                                    style={
+                                                        styles.friendshipLogo
+                                                    }
+                                                />
+                                            </View>
+                                            <View
+                                                style={
+                                                    styles.friendshipStatusInfoContainer
+                                                }
+                                            >
+                                                <Text
+                                                    style={styles.addFriendText}
+                                                >
+                                                    Arkadaş
+                                                </Text>
+                                                <Text
+                                                    style={styles.addFriendText}
+                                                >
+                                                    olarak ekle
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    )}
+                                    {this.state.friendshipStatus ===
+                                        'friendRequestSent' && (
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <View
+                                                style={
+                                                    styles.friendshipLogoContainer
+                                                }
+                                            >
+                                                <Image
+                                                    source={
+                                                        ADD_FRIEND_REQUESTED
+                                                    }
+                                                    style={
+                                                        styles.friendshipLogo
+                                                    }
+                                                />
+                                            </View>
+                                            <View
+                                                style={
+                                                    styles.friendshipStatusInfoContainer
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.addFriendRequestedText
+                                                    }
+                                                >
+                                                    Arkadaşlık isteği
+                                                </Text>
+                                                <Text
+                                                    style={
+                                                        styles.addFriendRequestedText
+                                                    }
+                                                >
+                                                    {this.state
+                                                        .isFriendRequestSent ===
+                                                    true
+                                                        ? 'gönderildi'
+                                                        : 'alındı'}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    )}
+                                    {this.state.friendshipStatus ===
+                                        'alreadyFriend' && (
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <View
+                                                style={
+                                                    styles.friendshipLogoContainer
+                                                }
+                                            >
+                                                <Image
+                                                    source={ALREADY_FRIEND}
+                                                    style={
+                                                        styles.friendshipLogo
+                                                    }
+                                                />
+                                            </View>
+                                            <View
+                                                style={
+                                                    styles.friendshipStatusInfoContainer
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.alreadyFriendText
+                                                    }
+                                                >
+                                                    Arkadaşın
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    )}
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.totalGameStatsBox}>
+                            <View style={styles.totalGameStatsInfosContainer}>
+                                <Text style={styles.totalGameStatsText}>
+                                    Oyun İstatistikleri
+                                </Text>
+                                <Text style={styles.totalGamesPlayedCounter}>
+                                    {this.state.gamesPlayed}
+                                </Text>
+                                <Text style={styles.totalGamesPlayedText}>
+                                    Oynadığı Oyun
+                                </Text>
+                                <Text style={styles.wonText}>
+                                    Kazandığı: {this.state.wonGames}
+                                </Text>
+                                <Text style={styles.drawText}>
+                                    Beraberlik: {this.state.drawGames}
+                                </Text>
+                                <Text style={styles.lostText}>
+                                    Kaybettiği: {this.state.lostGames}
+                                </Text>
+                            </View>
+                            <View style={styles.chartContainer}>
+                                <SemiCircleProgress
+                                    percentage={
+                                        this.state.gamesPlayed !== 0
+                                            ? parseInt(
+                                                  this.state.semiCirclePercentage.toFixed(
+                                                      0
+                                                  ),
+                                                  10
+                                              )
+                                            : 0
+                                    }
+                                    progressColor={'#00D9EF'}
+                                    circleRadius={widthPercentageToDP(22)}
+                                    animationSpeed={0.1}
+                                    progressWidth={widthPercentageToDP(5)}
+                                >
+                                    <Text style={styles.chartPercentageText}>
+                                        {this.state.gamesPlayed !== 0
+                                            ? this.state.semiCirclePercentage.toFixed(
+                                                  0
+                                              )
+                                            : 0}
+                                        %
+                                    </Text>
+                                </SemiCircleProgress>
+                            </View>
+                        </View>
+                        <View style={styles.versusGameStatsBox}>
+                            <View style={styles.versusGameTextsContainer}>
+                                <View style={styles.versusGameTitleContainer}>
+                                    <Text style={styles.versusGameTitleText}>
+                                        Aranızdaki Oyunlar
+                                    </Text>
+                                </View>
+                                <View style={styles.versusGameTotalContainer}>
+                                    <Text style={styles.versusTotalText}>
+                                        Toplam Oyun{' '}
+                                    </Text>
+                                    <Text style={styles.versusTotalCounter}>
+                                        {this.state.totalFriendGamesPlayed}
+                                    </Text>
+                                </View>
+                            </View>
+                            {this.state.clientWinCount > 0 &&
+                                this.state.opponentWinCount > 0 && (
+                                    <View
+                                        style={styles.versusGameChartContainer}
+                                    >
+                                        <View
+                                            style={[
+                                                styles.yourWinsView,
+                                                {
+                                                    width: widthPercentageToDP(
+                                                        (this.state
+                                                            .clientWinCount /
+                                                            (this.state
+                                                                .clientWinCount +
+                                                                this.state
+                                                                    .opponentWinCount)) *
+                                                            82
+                                                    )
+                                                }
+                                            ]}
+                                        />
+                                        <View
+                                            style={[
+                                                styles.opponentsWinsView,
+                                                {
+                                                    width: widthPercentageToDP(
+                                                        (this.state
+                                                            .opponentWinCount /
+                                                            (this.state
+                                                                .clientWinCount +
+                                                                this.state
+                                                                    .opponentWinCount)) *
+                                                            82
+                                                    )
+                                                }
+                                            ]}
+                                        />
+                                        <Text style={styles.yourWinsCounter}>
+                                            {this.state.clientWinCount}
+                                        </Text>
+                                        <Text
+                                            style={styles.opponentWinsCounter}
+                                        >
+                                            {this.state.opponentWinCount}
                                         </Text>
                                     </View>
-                                    <Text style={styles.yourWinsCounter}>
-                                        {this.state.clientWinCount}
-                                    </Text>
-                                    <Text style={styles.opponentWinsCounter}>
-                                        {this.state.opponentWinCount}
-                                    </Text>
-                                </View>
-                            )}
-                        <View style={styles.versusGameNamesContainer}>
-                            <Text style={styles.versusGameTitleText}>Sen</Text>
-                            <Text style={styles.versusGameTitleText}>
-                                {this.props.opponentInformation.name +
-                                    ' ' +
-                                    this.props.opponentInformation.lastname}
-                            </Text>
+                                )}
+                            {this.state.clientWinCount > 0 &&
+                                this.state.opponentWinCount === 0 && (
+                                    <View
+                                        style={styles.versusGameChartContainer}
+                                    >
+                                        <View
+                                            style={[
+                                                styles.yourWinsView,
+                                                {
+                                                    width: widthPercentageToDP(
+                                                        82
+                                                    ),
+                                                    borderTopRightRadius: 10,
+                                                    borderBottomRightRadius: 10
+                                                }
+                                            ]}
+                                        />
+                                        <Text style={styles.yourWinsCounter}>
+                                            {this.state.clientWinCount}
+                                        </Text>
+                                        <Text
+                                            style={styles.opponentWinsCounter}
+                                        >
+                                            {this.state.opponentWinCount}
+                                        </Text>
+                                    </View>
+                                )}
+                            {this.state.clientWinCount === 0 &&
+                                this.state.opponentWinCount > 0 && (
+                                    <View
+                                        style={styles.versusGameChartContainer}
+                                    >
+                                        <View
+                                            style={[
+                                                styles.opponentsWinsView,
+                                                {
+                                                    width: widthPercentageToDP(
+                                                        82
+                                                    ),
+                                                    borderTopLeftRadius: 10,
+                                                    borderBottomLeftRadius: 10
+                                                }
+                                            ]}
+                                        />
+                                        <Text style={styles.yourWinsCounter}>
+                                            {this.state.clientWinCount}
+                                        </Text>
+                                        <Text
+                                            style={styles.opponentWinsCounter}
+                                        >
+                                            {this.state.opponentWinCount}
+                                        </Text>
+                                    </View>
+                                )}
+                            {this.state.clientWinCount === 0 &&
+                                this.state.opponentWinCount === 0 && (
+                                    <View
+                                        style={styles.versusGameChartContainer}
+                                    >
+                                        <View
+                                            style={[
+                                                styles.noneWinsView,
+                                                {
+                                                    width: widthPercentageToDP(
+                                                        82
+                                                    ),
+                                                    borderTopLeftRadius: 10,
+                                                    borderBottomLeftRadius: 10
+                                                }
+                                            ]}
+                                        >
+                                            <Text
+                                                style={styles.noneWinsInfoText}
+                                            >
+                                                Henüz kazanan yok, hadi bunu
+                                                değiştir!
+                                            </Text>
+                                        </View>
+                                        <Text style={styles.yourWinsCounter}>
+                                            {this.state.clientWinCount}
+                                        </Text>
+                                        <Text
+                                            style={styles.opponentWinsCounter}
+                                        >
+                                            {this.state.opponentWinCount}
+                                        </Text>
+                                    </View>
+                                )}
+                            <View style={styles.versusGameNamesContainer}>
+                                <Text style={styles.versusGameTitleText}>
+                                    Sen
+                                </Text>
+                                <Text style={styles.versusGameTitleText}>
+                                    {this.props.opponentInformation.name +
+                                        ' ' +
+                                        this.props.opponentInformation.lastname}
+                                </Text>
+                            </View>
                         </View>
-                    </View>
-                    <View style={styles.badgesBox} />
-                </ScrollView>
+                        <View style={styles.badgesBox} />
+                    </ScrollView>
                 </View>
             </View>
         )
