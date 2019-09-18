@@ -27,7 +27,7 @@ class OpponentsProfile extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            friendshipStatus: 'addFriend',
+            friendshipStatus: 'alreadyFriend',
             // Played games variables
             gamesPlayed: this.props.totalPlayedGames,
             wonGames: this.props.gamesWon,
@@ -48,6 +48,7 @@ class OpponentsProfile extends React.Component {
     }
 
     componentDidMount() {
+        console.log(this.props)
         if (!this.props.isFriends) {
             if (this.props.isRequesting)
                 this.setState({
@@ -62,6 +63,12 @@ class OpponentsProfile extends React.Component {
                     })
                 else this.setState({ friendshipStatus: 'addFriend' })
             }
+        } else {
+            if (this.props.isRequesting)
+                this.setState({
+                    isFriendRequestSent: false
+                })
+            else this.setState({ isFriendRequestSent: true })
         }
     }
 
@@ -125,6 +132,7 @@ class OpponentsProfile extends React.Component {
     }
 
     deleteFriendship = () => {
+        console.log(this.state.isFriendRequestSent)
         if (this.state.isFriendRequestSent) {
             friendshipServices.deleteFriendship(
                 this.props.clientToken,
@@ -601,6 +609,7 @@ const mapStateToProps = state => ({
     gamesDraw: state.opponent.gamesDraw,
     isFriends: state.opponent.isFriends,
     isRequesting: state.opponent.isRequesting,
+    isRequested: state.opponent.isRequested,
     friendsList: state.opponent.friendsList,
     totalFriendGames: state.opponent.totalFriendGames,
     opponentWinCount: state.opponent.opponentWinCount,

@@ -8,6 +8,17 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 friendIds: action.payload
             }
+        case friendTypes.SAVE_FRIEND_REQUESTS:
+            return {
+                ...state,
+                friendRequests: action.payload
+            }
+        case friendTypes.REMOVE_FROM_FRIEND_REQUESTS:
+            state.friendRequests.splice(action.payload, 1)
+            return {
+                ...state,
+                friendRequests: state.friendRequests
+            }
         default:
             return state
     }

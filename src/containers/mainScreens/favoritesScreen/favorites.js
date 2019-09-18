@@ -67,7 +67,6 @@ class Favorites extends React.Component {
 
     // Takes the transformed favouriteQuestions and makes the proper ui
     loadScreen = () => {
-        console.log(this.props.favouriteQuestions)
         new Promise.resolve().then(() => {
             const scrollViewList = []
             let itemList

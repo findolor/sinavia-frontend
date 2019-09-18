@@ -5,6 +5,11 @@ import { sendFriendshipRequestService } from './sendFriendshipRequest'
 import { acceptFriendshipRequestService } from './acceptFriendshipRequest'
 import { deleteFriendshipService } from './deleteFriendship'
 import { getFriendRequestsService } from './getFriendRequests'
+import { getFriendRequestsSaga } from './getFriendRequests'
+
+export const friendshipSagas = {
+    getFriendRequests: getFriendRequestsSaga
+}
 
 export const friendshipServices = {
     getFriendship: getFriendshipService,

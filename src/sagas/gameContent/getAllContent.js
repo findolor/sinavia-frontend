@@ -5,7 +5,6 @@ import { gameContentTypes } from '../../redux/gameContent/actions'
 export function* getAllContentSaga(action) {
     const response = yield call(getAllContent, action.clientToken)
 
-    console.log(response)
     const examList = []
 
     // TODO THINK ABOUT CONTETT LATER IMPORTRRANT
