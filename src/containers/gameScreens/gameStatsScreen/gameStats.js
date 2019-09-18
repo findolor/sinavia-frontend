@@ -239,7 +239,7 @@ class GameStatsScreen extends React.Component {
     checkFavouriteStatus = () => {
         const index = this.props.favouriteQuestions.findIndex(
             x =>
-                x.id ===
+                x.question.id ===
                 this.props.fullQuestionList[this.state.questionPosition - 1].id
         )
         if (index === -1) {
@@ -509,7 +509,7 @@ class GameStatsScreen extends React.Component {
                                     {
                                         borderColor: this.state
                                             .replayButtonBorderColor,
-                                        borderWidth: 1
+                                        borderWidth: 2
                                     }
                                 ]}
                             >

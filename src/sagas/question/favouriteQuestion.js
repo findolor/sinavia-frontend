@@ -4,7 +4,7 @@ import { deviceStorage } from '../../services/deviceStorage'
 import { clientTypes } from '../../redux/client/actions'
 
 export function* favouriteQuestionSaga(action) {
-    yield call(
+    const response = yield call(
         favouriteQuestion,
         action.clientToken,
         action.clientId,
@@ -12,7 +12,7 @@ export function* favouriteQuestionSaga(action) {
     )
 
     const favedQuestionList = action.favedQuestionList
-    favedQuestionList.push(action.question)
+    favedQuestionList.push(response)
 
     yield put({
         type: clientTypes.SAVE_FAVOURITE_QUESTIONS,

@@ -65,7 +65,9 @@ class Favorites extends React.Component {
         await this.loadScreen()
     }
 
+    // Takes the transformed favouriteQuestions and makes the proper ui
     loadScreen = () => {
+        console.log(this.props.favouriteQuestions)
         new Promise.resolve().then(() => {
             const scrollViewList = []
             let itemList
@@ -73,27 +75,30 @@ class Favorites extends React.Component {
             let examName
             let courseName
 
-            Object.keys(this.props.favouriteQuestions).forEach(examKey => {
+            let favouriteQuestions = this.mapFavouriteQuestions()
+
+            Object.keys(favouriteQuestions).forEach(examKey => {
                 itemList = []
                 examName = this.props.gameContentMap.exams[examKey - 1].name
-                Object.keys(this.props.favouriteQuestions[examKey]).forEach(
+                Object.keys(favouriteQuestions[examKey]).forEach(
                     (courseKey, index) => {
                         questionList = []
                         courseName = this.props.gameContentMap.courses[
                             courseKey - 1
                         ].name
-                        this.props.favouriteQuestions[examKey][
-                            courseKey
-                        ].forEach((question, index) => {
-                            questionList.push({
-                                source: {
-                                    uri: question.question.questionLink
-                                },
-                                id: index - 1,
-                                correctAnswer: question.question.correctAnswer,
-                                favouriteQuestionId: question.id
-                            })
-                        })
+                        favouriteQuestions[examKey][courseKey].forEach(
+                            (question, index) => {
+                                questionList.push({
+                                    source: {
+                                        uri: question.question.questionLink
+                                    },
+                                    id: index - 1,
+                                    correctAnswer:
+                                        question.question.correctAnswer,
+                                    favouriteQuestionId: question.id
+                                })
+                            }
+                        )
                         itemList.push(
                             <View style={styles.card} key={index}>
                                 <View style={styles.contentContainerWrapper}>
@@ -139,6 +144,49 @@ class Favorites extends React.Component {
             this.setState({ scrollViewList: scrollViewList })
             return true
         })
+    }
+
+    // This function takes favouriteQuestions ( it is an array )
+    // And turns it into an object with first level keys as "exams"
+    // With second level keys as "courses"
+    mapFavouriteQuestions = () => {
+        const favouriteQuestions = {}
+        this.props.favouriteQuestions.forEach(question => {
+            console.log(question)
+            if (favouriteQuestions[question.question.examId] === undefined) {
+                favouriteQuestions[question.question.examId] = {}
+                if (
+                    favouriteQuestions[question.question.examId][
+                        question.question.courseId
+                    ] === undefined
+                ) {
+                    favouriteQuestions[question.question.examId][
+                        question.question.courseId
+                    ] = []
+                    favouriteQuestions[question.question.examId][
+                        question.question.courseId
+                    ].push(question)
+                } else
+                    favouriteQuestions[question.question.examId][
+                        question.question.courseId
+                    ].push(question)
+            } else if (
+                favouriteQuestions[question.question.examId][
+                    question.question.courseId
+                ] === undefined
+            ) {
+                favouriteQuestions[question.question.examId][
+                    question.question.courseId
+                ] = []
+                favouriteQuestions[question.question.examId][
+                    question.question.courseId
+                ].push(question)
+            } else
+                favouriteQuestions[question.question.examId][
+                    question.question.courseId
+                ].push(question)
+        })
+        return favouriteQuestions
     }
 
     returnButtonOnPress = () => {
