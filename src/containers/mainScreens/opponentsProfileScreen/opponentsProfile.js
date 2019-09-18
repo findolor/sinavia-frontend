@@ -8,11 +8,7 @@ import {
     TouchableOpacity,
     View
 } from 'react-native'
-import {
-    SCENE_KEYS,
-    navigationPop,
-    navigationPush
-} from '../../../services/navigationService'
+import { SCENE_KEYS, navigationPop } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import styles from './style'
 import NotchView from '../../../components/notchView'
@@ -25,133 +21,73 @@ import ALREADY_FRIEND from '../../../assets/mainScreens/alreadyFriend.png'
 import { widthPercentageToDP } from 'react-native-responsive-screen'
 
 import { friendshipServices } from '../../../sagas/friendship/'
-import { statisticsServices } from '../../../sagas/statistic/'
-
-import { deviceStorage } from '../../../services/deviceStorage'
+import { friendActions } from '../../../redux/friends/actions'
 
 class OpponentsProfile extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             friendshipStatus: 'addFriend',
-            youVersusOpponentTotalGames: 45,
-            yourWinsAgainstOpponent: 0,
-            opponentsWinsAgainstYou: 0,
             // Played games variables
-            gamesPlayed: 0,
-            wonGames: 0,
-            lostGames: 0,
-            drawGames: 0,
+            gamesPlayed: this.props.totalPlayedGames,
+            wonGames: this.props.gamesWon,
+            lostGames: this.props.gamesLost,
+            drawGames: this.props.gamesDraw,
 
-            semiCirclePercentage: 0,
-            totalFriends: 0,
+            semiCirclePercentage: this.props.winPercentage,
+            totalFriends: Object.keys(this.props.friendsList).length,
             // is friend request sent or received?
             isFriendRequestSent: false,
             // Friend games that was played together
-            totalFriendGamesPlayed: 0,
-            clientWinCount: 0,
-            opponentWinCount: 0
+            totalFriendGamesPlayed: this.props.totalFriendGames,
+            clientWinCount: this.props.clientWinCount,
+            opponentWinCount: this.props.opponentWinCount,
+            // We send back deleted friend index for refreshing friedns screen
+            deletedFriendIndex: null
         }
     }
 
-    async componentDidMount() {
-        this.userId = await deviceStorage.getItemFromStorage('userId')
-
-        await this.loadUserProfile()
-    }
-
-    loadUserProfile = async () => {
-        await this.loadStatistics()
-        await this.loadFriendshipInformation()
-        await this.loadFriendMatches()
-        await this.loadFriends()
-    }
-
-    loadFriendshipInformation = async () => {
-        const friendship = await friendshipServices.getFriendship(
-            this.props.opponentInformation.id
-        )
-
-        if (Object.keys(friendship).length !== 0) {
-            friendship[0].userId === this.userId
-                ? this.setState({ isFriendRequestSent: true })
-                : this.setState({ isFriendRequestSent: false })
-            if (friendship[0].friendshipStatus === 'requested')
-                this.setState({ friendshipStatus: 'friendRequestSent' })
-            else this.setState({ friendshipStatus: 'alreadyFriend' })
+    componentDidMount() {
+        console.log(this.props.totalPoints)
+        if (!this.props.isFriends) {
+            if (this.props.isRequesting)
+                this.setState({
+                    friendshipStatus: 'friendRequestSent',
+                    isFriendRequestSent: false
+                })
+            else {
+                if (this.props.isRequested)
+                    this.setState({
+                        friendshipStatus: 'friendRequestSent',
+                        isFriendRequestSent: true
+                    })
+                else this.setState({ friendshipStatus: 'addFriend' })
+            }
         }
     }
 
-    loadFriendMatches = async () => {
-        const friendMatches = await friendshipServices.getFriendMatches(
-            this.props.opponentInformation.id
-        )
-
-        let clientWinCount = 0
-        let opponentWinCount = 0
-        let totalFriendGamesPlayed = 0
-
-        friendMatches.forEach(match => {
-            totalFriendGamesPlayed++
-            if (!match.isMatchDraw) {
-                if (match.winnerId === this.userId) clientWinCount++
-                else opponentWinCount++
-            }
-        })
-
-        this.setState({
-            totalFriendGamesPlayed: totalFriendGamesPlayed,
-            clientWinCount: clientWinCount,
-            opponentWinCount: opponentWinCount
-        })
-    }
-
-    loadFriends = async () => {
-        const friends = await friendshipServices.getFriends()
-
-        this.setState({ totalFriends: Object.keys(friends).length })
-    }
-
-    loadStatistics = async () => {
-        const statistics = await statisticsServices.getStatistics(
-            this.props.opponentInformation.id
-        )
-
-        let wonGames = 0
-        let lostGames = 0
-        let drawGames = 0
-
-        statistics.forEach(statistic => {
-            switch (statistic.gameResult) {
-                case 'win':
-                    wonGames++
-                    return
-                case 'lose':
-                    lostGames++
-                    return
-                case 'draw':
-                    drawGames++
-                    return
-            }
-        })
-
-        this.setState({
-            wonGames: wonGames,
-            lostGames: lostGames,
-            drawGames: drawGames,
-            gamesPlayed: Object.keys(statistics).length,
-            semiCirclePercentage:
-                (wonGames / Object.keys(statistics).length) * 100
-        })
-    }
-
+    // TODO this doesn't refresh the screen upon popping
     backButtonOnPress = () => {
-        navigationPop()
+        if (
+            !this.props.isWithSearchBar &&
+            this.state.deletedFriendIndex !== null
+        ) {
+            const friendsList = this.props.friendsScreenFriendsList
+            friendsList.splice(this.state.deletedFriendIndex, 1)
+
+            navigationPop(true, {
+                popScreen: SCENE_KEYS.mainScreens.friendsList,
+                friendsList: friendsList
+            })
+        } else navigationPop()
     }
 
     sendFriendshipRequest = () => {
         friendshipServices.sendFriendshipRequest(
-            this.props.opponentInformation.id
+            this.props.clientToken,
+            this.props.clientDBId,
+            this.props.opponentInformation.id,
+            this.props.clientInformation.username
         )
         this.setState({
             friendshipStatus: 'friendRequestSent',
@@ -159,9 +95,20 @@ class OpponentsProfile extends React.Component {
         })
     }
 
+    addToFriendIds = id => {
+        const friendList = this.props.friendIds
+        friendList.push(id)
+
+        this.props.saveFriendIdList(friendList)
+    }
+
     acceptFriendshipRequest = () => {
+        this.addToFriendIds(this.props.opponentInformation.id)
         friendshipServices.acceptFriendshipRequest(
-            this.props.opponentInformation.id
+            this.props.clientToken,
+            this.props.clientDBId,
+            this.props.opponentInformation.id,
+            this.props.clientInformation.username
         )
         this.setState({
             friendshipStatus: 'alreadyFriend',
@@ -169,16 +116,47 @@ class OpponentsProfile extends React.Component {
         })
     }
 
+    removeFromFriendIds = id => {
+        const friendList = this.props.friendIds
+        const index = friendList.indexOf(id)
+
+        friendList.splice(index, 1)
+
+        this.props.saveFriendIdList(friendList)
+    }
+
     deleteFriendship = () => {
-        if (this.state.isFriendRequestSent)
-            friendshipServices.deleteFriendship(this.userId)
-        else
+        if (this.state.isFriendRequestSent) {
             friendshipServices.deleteFriendship(
-                this.props.opponentInformation.id
+                this.props.clientToken,
+                this.props.clientDBId,
+                this.props.opponentInformation.id,
+                true
             )
+        } else {
+            friendshipServices.deleteFriendship(
+                this.props.clientToken,
+                this.props.opponentInformation.id,
+                this.props.clientDBId,
+                false
+            )
+        }
+        this.removeFromFriendIds(this.props.opponentInformation.id)
+
+        let friendIndex
+
+        if (this.props.friendsScreenFriendsList) {
+            this.props.friendsScreenFriendsList.forEach((friend, index) => {
+                if (this.props.opponentInformation.id === friend.id) {
+                    friendIndex = index
+                    return
+                }
+            })
+        }
         this.setState({
             friendshipStatus: 'addFriend',
-            totalFriends: this.state.totalFriends - 1
+            totalFriends: this.state.totalFriends - 1,
+            deletedFriendIndex: friendIndex
         })
     }
 
@@ -205,21 +183,25 @@ class OpponentsProfile extends React.Component {
                     <TouchableOpacity onPress={this.backButtonOnPress}>
                         <Image source={returnLogo} style={styles.returnLogo} />
                     </TouchableOpacity>
-                    <View style={styles.searchBar}>
-                        <View style={styles.textInputView}>
-                            <TextInput
-                                style={styles.searchBarText}
-                                placeholder="Kullanıcı ara..."
-                                placeholderTextColor={'#7B7B7B'}
-                            />
+                    {this.props.isWithSearchBar && (
+                        <View style={styles.searchBar}>
+                            <View style={styles.textInputView}>
+                                <TextInput
+                                    style={styles.searchBarText}
+                                    placeholder="Kullanıcı ara..."
+                                    placeholderTextColor={'#7B7B7B'}
+                                />
+                            </View>
+                            <TouchableOpacity
+                                onPress={this.profileSearchOnPress}
+                            >
+                                <Image
+                                    source={searchlogo}
+                                    style={styles.searchBarLogo}
+                                />
+                            </TouchableOpacity>
                         </View>
-                        <TouchableOpacity onPress={this.profileSearchOnPress}>
-                            <Image
-                                source={searchlogo}
-                                style={styles.searchBarLogo}
-                            />
-                        </TouchableOpacity>
-                    </View>
+                    )}
                 </View>
                 <View style={styles.profileContainer}>
                     <ImageBackground
@@ -227,33 +209,34 @@ class OpponentsProfile extends React.Component {
                             uri: this.props.opponentInformation.coverPicture
                         }}
                         style={styles.coverPhoto}
-                        imageStyle={{ borderRadius: 10 }}
+                        imageStyle={{ borderRadius: 30 }}
                     >
-                        <View style={styles.profilePicView}>
-                            <Image
-                                source={{
-                                    uri: this.props.opponentInformation
-                                        .profilePicture
-                                }}
-                                style={styles.profilePic}
-                            />
-                        </View>
-                        <View style={styles.nameView}>
-                            <View style={styles.nameSurnameContainer}>
-                                <Text style={styles.nameSurnameText}>
-                                    {this.props.opponentInformation.name +
-                                        ' ' +
-                                        this.props.opponentInformation.lastname}
-                                </Text>
+                        <View style={styles.profileContainerShadowView}>
+                            <View style={styles.profilePicView}>
+                                <Image
+                                    source={{
+                                        uri: this.props.opponentInformation
+                                            .profilePicture
+                                    }}
+                                    style={styles.profilePic}
+                                />
                             </View>
-                            <View style={styles.usernameContainer}>
+                            <View style={styles.profileInfoView}>
+                                <Text style={styles.nameSurnameText}>
+                                    {this.props.opponentInformation.name}{' '}
+                                    {this.props.opponentInformation.lastname}
+                                </Text>
                                 <Text style={styles.usernameText}>
                                     @{this.props.opponentInformation.username}
+                                </Text>
+                                <Text style={styles.sinaviaScoreText}>
+                                    Sınavia Puanı: {this.props.totalPoints}
                                 </Text>
                             </View>
                         </View>
                     </ImageBackground>
                 </View>
+                <View style={styles.scrollViewContainer}>
                 <ScrollView
                     style={styles.boxesScrollView}
                     showsVerticalScrollIndicator={false}
@@ -556,9 +539,38 @@ class OpponentsProfile extends React.Component {
                     </View>
                     <View style={styles.badgesBox} />
                 </ScrollView>
+                </View>
             </View>
         )
     }
 }
 
-export default OpponentsProfile
+const mapStateToProps = state => ({
+    clientDBId: state.client.clientDBId,
+    clientToken: state.client.clientToken,
+    friendIds: state.friends.friendIds,
+    clientInformation: state.client.clientInformation,
+    opponentInformation: state.opponent.opponentInformation,
+    totalPlayedGames: state.opponent.totalPlayedGames,
+    gamesWon: state.opponent.gamesWon,
+    gamesLost: state.opponent.gamesLost,
+    gamesDraw: state.opponent.gamesDraw,
+    isFriends: state.opponent.isFriends,
+    isRequesting: state.opponent.isRequesting,
+    friendsList: state.opponent.friendsList,
+    totalFriendGames: state.opponent.totalFriendGames,
+    opponentWinCount: state.opponent.opponentWinCount,
+    clientWinCount: state.opponent.clientWinCount,
+    winPercentage: state.opponent.winPercentage,
+    totalPoints: state.opponent.totalPoints
+})
+
+const mapDispatchToProps = dispatch => ({
+    saveFriendIdList: friendList =>
+        dispatch(friendActions.saveFriendIds(friendList))
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(OpponentsProfile)

@@ -11,15 +11,19 @@ export default StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#fcfcfc'
     },
-    spaceView: {
-        height: hp(1.5)
-    },
     header: {
-        height: hp(6),
+        flex: 6,
         width: wp(88),
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
+    },
+    spaceView: {
+        flex: 1.5
+    },
+    flatListView: {
+        flex: 88.5,
+        width: wp(88)
     },
     returnLogo: {
         height: hp(3.5),
@@ -41,10 +45,6 @@ export default StyleSheet.create({
         fontFamily: 'Averta-BoldItalic',
         fontSize: wp(9),
         color: '#00D9EF'
-    },
-    flatListView: {
-        height: hp(90),
-        width: wp(88)
     },
     searchBar: {
         height: hp(6),

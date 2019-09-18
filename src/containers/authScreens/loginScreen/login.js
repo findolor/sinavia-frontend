@@ -17,7 +17,7 @@ import {
     heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
 import { connect } from 'react-redux'
-import { userActions } from '../../../redux/user/actions'
+import { clientActions } from '../../../redux/client/actions'
 import { AuthButton, AuthTextInput } from '../../../components/authScreen'
 import styles from './style'
 import NotchView from '../../../components/notchView'
@@ -217,16 +217,14 @@ class Login extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({
-    isLoggedIn: state.user.isLoggedIn
-})
+const mapStateToProps = state => ({})
 
 const mapDispatchToProps = dispatch => ({
     loginUser: userCredentials =>
-        dispatch(userActions.loginUser(userCredentials))
+        dispatch(clientActions.loginUser(userCredentials))
 })
 
 export default connect(
-    mapStateToProps,
+    null,
     mapDispatchToProps
 )(Login)

@@ -9,8 +9,8 @@ import {
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 
-import { searchUsers } from '../../../services/apiServices/user/searchUsers'
-import { deviceStorage } from '../../../services/deviceStorage'
+import { userServices } from '../../../sagas/user/'
+import { opponentActions } from '../../../redux/opponents/actions'
 
 import returnLogo from '../../../assets/return.png'
 
@@ -23,22 +23,13 @@ class ProfileSearch extends React.Component {
     }
 
     async componentDidMount() {
-        let userList = await this.getSearchedUsersList()
-
-        this.setState({ returnedSearchList: userList })
-    }
-
-    getSearchedUsersList = async () => {
-        const userToken = await deviceStorage.getItemFromStorage('JWT')
-        const userId = await deviceStorage.getItemFromStorage('userId')
-
-        const returnedSearchList = await searchUsers(
-            userToken,
-            this.props.searchedKeyword,
-            userId
+        let userList = await userServices.searchUsers(
+            this.props.clientToken,
+            this.props.clientDBId,
+            this.props.searchedKeyword
         )
 
-        return returnedSearchList
+        this.setState({ returnedSearchList: userList })
     }
 
     backButtonOnPress = () => {
@@ -46,9 +37,11 @@ class ProfileSearch extends React.Component {
     }
 
     userOnPress = searchListIndex => {
-        navigationPush(SCENE_KEYS.mainScreens.opponentsProfile, {
-            opponentInformation: this.state.returnedSearchList[searchListIndex]
-        })
+        this.props.getOpponentFullInformation(
+            this.state.returnedSearchList[searchListIndex],
+            this.props.clientDBId,
+            this.props.clientToken
+        )
     }
 
     render() {
@@ -73,7 +66,7 @@ class ProfileSearch extends React.Component {
                         </Text>
                     </View>
                 </View>
-                {Object.keys(this.state.returnedSearchList).length !== 0 && (
+                {Object.keys(this.state.returnedSearchList).length !== 0 && (<View style={styles.flatListContainer}>
                     <FlatList
                         data={this.state.returnedSearchList}
                         vertical={true}
@@ -117,14 +110,11 @@ class ProfileSearch extends React.Component {
                             )
                         }}
                         keyExtractor={(item, index) => index.toString()}
-                    />
+                    /></View>
                 )}
                 {Object.keys(this.state.returnedSearchList).length === 0 && (
                     <View
-                        style={{
-                            flex: 1,
-                            justifyContent: 'center'
-                        }}
+                        style={styles.noResultsView}
                     >
                         <Text>Sonuç yok</Text>
                     </View>
@@ -134,11 +124,23 @@ class ProfileSearch extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+    clientToken: state.client.clientToken,
+    clientDBId: state.client.clientDBId
+})
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+    getOpponentFullInformation: (opponentInformation, clientId, clientToken) =>
+        dispatch(
+            opponentActions.getOpponentFullInformation(
+                opponentInformation,
+                clientId,
+                clientToken
+            )
+        )
+})
 
 export default connect(
-    null,
-    null
+    mapStateToProps,
+    mapDispatchToProps
 )(ProfileSearch)

@@ -70,7 +70,6 @@ class GroupGameStatsScreen extends React.Component {
                         replayButtonPressNumber: 1
                     })
                 } else {
-                    console.log(message)
                     setTimeout(() => {
                         this.props.room.removeAllListeners()
 
@@ -504,14 +503,11 @@ class GroupGameStatsScreen extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({
-    username: state.user.username,
-    profilePicture: state.user.profilePicture
-})
+const mapStateToProps = state => ({})
 
 const mapDispatchToProps = dispatch => ({})
 
 export default connect(
-    mapStateToProps,
+    null,
     null
 )(GroupGameStatsScreen)

@@ -1,5 +1,9 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native'
 import { colors } from './index.style'
+import {
+    heightPercentageToDP, hp,
+    widthPercentageToDP
+} from 'react-native-responsive-screen'
 
 const IS_IOS = Platform.OS === 'ios'
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get(
@@ -12,46 +16,36 @@ function wp(percentage) {
 }
 
 const slideHeight = viewportHeight * 0.25
-const slideWidth = wp(60)
+const slideWidth = wp(70)
 const itemHorizontalMargin = wp(1)
 
-export const sliderWidth = viewportWidth
-export const itemWidth = slideWidth + itemHorizontalMargin * 2
+export const sliderHeight = heightPercentageToDP(25)
+export const sliderWidth = widthPercentageToDP(100)
+export const itemHeight = heightPercentageToDP(23)
+export const itemWidth = widthPercentageToDP(60)
 
 const entryBorderRadius = 30
 
 export default StyleSheet.create({
     slideInnerContainer: {
-        width: itemWidth,
-        height: slideHeight,
-        paddingHorizontal: itemHorizontalMargin,
-        paddingBottom: 18 // needed for shadow
+        width: widthPercentageToDP(50),
+        height: heightPercentageToDP(15),
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     shadow: {
-        position: 'absolute',
-        top: 0,
-        left: itemHorizontalMargin,
-        right: itemHorizontalMargin,
-        bottom: 18,
-        shadowColor: colors.black,
-        shadowOpacity: 0.25,
-        shadowOffset: { width: 0, height: 10 },
-        shadowRadius: 10,
-        borderRadius: entryBorderRadius
+        width: widthPercentageToDP(50),
+        height: heightPercentageToDP(15)
     },
     imageContainer: {
-        flex: 1,
-        marginBottom: IS_IOS ? 0 : -1, // Prevent a random Android rendering issue
-        backgroundColor: 'white',
-        borderRadius: entryBorderRadius
+        width: widthPercentageToDP(60),
+        height: heightPercentageToDP(23),
+        backgroundColor: 'blue',
+        borderRadius: 30
     },
     image: {
-        ...StyleSheet.absoluteFillObject,
-        resizeMode: 'cover',
-        borderRadius: IS_IOS ? entryBorderRadius : 0,
-        borderTopLeftRadius: entryBorderRadius,
-        borderTopRightRadius: entryBorderRadius,
-        opacity: 0.5
+        height: heightPercentageToDP(23),
+        width: widthPercentageToDP(60)
     },
     title: {
         ...StyleSheet.absoluteFillObject,
@@ -61,6 +55,14 @@ export default StyleSheet.create({
         letterSpacing: 0.5,
         textAlign: 'center',
         textAlignVertical: 'center'
-    }
+    },
+    radiusMask: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: entryBorderRadius,
+        backgroundColor: 'white'
+    },
     // image's border radius is buggy on iOS; let's hack it!
 })

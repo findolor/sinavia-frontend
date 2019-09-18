@@ -11,14 +11,18 @@ export default StyleSheet.create({
         justifyContent: 'center'
     },
     contentContainer: {
-        height: hp(10),
+        flex: 10,
         width: wp(100),
         backgroundColor: '#FF9900',
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
+    coversContainer: {
+        flex: 86,
+        justifyContent: 'center'
+    },
     coverContainer: {
-        height: hp(43),
+        flex: 1,
         width: wp(100)
     },
     separatorContainer: {
@@ -41,10 +45,6 @@ export default StyleSheet.create({
         backgroundColor: '#E2871A',
         borderTopLeftRadius: 10,
         borderBottomLeftRadius: 10
-    },
-    sword: {
-        height: hp(19.5),
-        width: hp(12.75)
     },
     userPicContainer: {
         height: hp(20),
@@ -122,13 +122,12 @@ export default StyleSheet.create({
         width: wp(100),
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: "rgba(0,0,0,0.5)"
+        backgroundColor: 'rgba(0,0,0,0.5)'
     },
     separatorView: {
         height: hp(20),
         width: wp(100),
         position: 'absolute',
-        top: hp(47),
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
@@ -165,7 +164,7 @@ export default StyleSheet.create({
         borderWidth: hp(1),
         borderColor: 'white',
         borderRadius: 100,
-        backgroundColor: "#FF9900",
+        backgroundColor: '#FF9900',
         zIndex: 1
     },
     swordPic: {
@@ -185,7 +184,11 @@ export default StyleSheet.create({
     },
     timerText: {
         fontFamily: 'Averta-BoldItalic',
-        fontSize: hp(9.5),
+        fontSize: hp(9),
         color: '#FFFFFF'
     }
 })
+
+export const countdownProps = {
+    size: wp(9)
+}

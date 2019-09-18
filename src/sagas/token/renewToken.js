@@ -1,17 +1,19 @@
 import { getToken } from '../../services/apiServices/token/getToken'
 import { deviceStorage } from '../../services/deviceStorage'
+import { store } from '../../redux/createStore'
+import { clientTypes } from '../../redux/client/actions'
 
-export async function renewTokenService() {
-    const info = await deviceStorage.getItemFromStorage('userCredentials')
-
-    const userCredentials = JSON.parse(info)
-
+export async function renewTokenService(clientCredentials) {
     const userToken = getToken({
-        email: userCredentials.email,
-        password: userCredentials.password
+        email: clientCredentials.email,
+        password: clientCredentials.password
     })
 
-    await deviceStorage.saveItemToStorage('JWT', userToken)
+    await deviceStorage.saveItemToStorage('clientToken', userToken)
+    store.dispatch({
+        type: clientTypes.SAVE_API_TOKEN,
+        payload: userToken
+    })
 
     return userToken
 }

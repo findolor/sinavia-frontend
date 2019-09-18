@@ -18,7 +18,6 @@ import {
 import { connect } from 'react-redux'
 import styles from './style'
 import NotchView from '../../../components/notchView'
-import nebula from '../../../assets/cover.jpg'
 import statisticsLogo from '../../../assets/pie_chart.png'
 import friendsLogo from '../../../assets/friends.png'
 import trophyLogo from '../../../assets/trophy.png'
@@ -26,6 +25,9 @@ import favoriteLogo from '../../../assets/favorite.png'
 import returnLogo from '../../../assets/return.png'
 import settingsLogo from '../../../assets/settings.png'
 import searchlogo from '../../../assets/search.png'
+
+import COVER from '../../../assets/cover.jpg'
+import PROFILE_PIC from '../../../assets/profile2.jpg'
 
 class Profile extends React.Component {
     constructor(props) {
@@ -56,7 +58,9 @@ class Profile extends React.Component {
     }
 
     friendsLogoOnPress = () => {
-        navigationPush(SCENE_KEYS.mainScreens.friendsList)
+        navigationPush(SCENE_KEYS.mainScreens.friendsList, {
+            friendsList: []
+        })
     }
 
     statisticsLogoOnPress = () => {
@@ -99,25 +103,32 @@ class Profile extends React.Component {
                 </View>
                 <View style={styles.profileContainer}>
                     <ImageBackground
-                        source={{ uri: this.props.coverPicture }}
+                        source={{
+                            uri: this.props.clientInformation.coverPicture
+                        }}
                         style={styles.coverPhoto}
                         imageStyle={{ borderRadius: 30 }}
                     >
-                        <View style={styles.profilePicView}>
-                            <Image
-                                source={{ uri: this.props.profilePicture }}
-                                style={styles.profilePic}
-                            />
-                        </View>
-                        <View style={styles.nameView}>
-                            <View style={styles.nameSurnameContainer}>
-                                <Text style={styles.nameSurnameText}>
-                                    {this.props.name} {this.props.lastname}
-                                </Text>
+                        <View style={styles.profileContainerShadowView}>
+                            <View style={styles.profilePicView}>
+                                <Image
+                                    source={{
+                                        uri: this.props.clientInformation
+                                            .profilePicture
+                                    }}
+                                    style={styles.profilePic}
+                                />
                             </View>
-                            <View style={styles.usernameContainer}>
+                            <View style={styles.profileInfoView}>
+                                <Text style={styles.nameSurnameText}>
+                                    {this.props.clientInformation.name}{' '}
+                                    {this.props.clientInformation.lastname}
+                                </Text>
                                 <Text style={styles.usernameText}>
-                                    @{this.props.username}
+                                    @{this.props.clientInformation.username}
+                                </Text>
+                                <Text style={styles.sinaviaScoreText}>
+                                    Sınavia Puanı: 100
                                 </Text>
                             </View>
                         </View>
@@ -195,11 +206,7 @@ class Profile extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    username: state.user.username,
-    name: state.user.name,
-    lastname: state.user.lastname,
-    profilePicture: state.user.profilePicture,
-    coverPicture: state.user.coverPicture
+    clientInformation: state.client.clientInformation
 })
 
 const mapDispatchToProps = dispatch => ({})

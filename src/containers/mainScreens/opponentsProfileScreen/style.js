@@ -12,11 +12,20 @@ export default StyleSheet.create({
         backgroundColor: '#fcfcfc'
     },
     header: {
-        height: hp(6),
+        flex: 6,
         width: wp(88),
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
+    },
+    profileContainer: {
+        flex: 32,
+        width: wp(100),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    scrollViewContainer: {
+        flex: 58
     },
     searchBar: {
         height: hp(5),
@@ -28,12 +37,6 @@ export default StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
     },
-    profileContainer: {
-        height: hp(32),
-        width: wp(100),
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
     boxesContainer: {
         height: hp(58),
         width: wp(100)
@@ -42,8 +45,7 @@ export default StyleSheet.create({
         height: hp(30),
         width: wp(90),
         borderRadius: 30,
-        marginTop: hp(0.5),
-        alignItems: 'center'
+        marginTop: hp(1)
     },
     returnLogo: {
         height: hp(3.5),
@@ -66,47 +68,36 @@ export default StyleSheet.create({
         marginLeft: wp(2.7)
     },
     profilePic: {
-        height: hp(15),
-        width: hp(15),
-        marginTop: hp(2.7),
-        borderRadius: 100
+        height: hp(13.5),
+        width: hp(13.5),
+        marginTop: hp(2),
+        borderRadius: 100,
+        borderWidth: hp(0.3),
+        borderColor: '#00D9EF'
     },
     profilePicView: {
-        height: hp(18),
+        height: hp(16.5),
         width: wp(50),
         justifyContent: 'center',
         alignItems: 'center'
     },
-    nameView: {
-        height: hp(10),
+    profileInfoView: {
+        height: hp(12),
         width: wp(70),
         alignItems: 'center',
-        justifyContent: 'space-around'
+        justifyContent: 'center'
     },
     nameSurnameText: {
-        fontFamily: 'Averta-Regular',
+        fontFamily: 'Averta-Bold',
         fontSize: hp(3.5),
-        color: '#2E313C',
+        color: 'white',
         paddingVertical: hp(0)
     },
     usernameText: {
         fontFamily: 'Averta-Regular',
         fontSize: hp(2.4),
-        color: '#2E313C',
+        color: 'white',
         paddingVertical: hp(0)
-    },
-    nameSurnameContainer: {
-        backgroundColor: '#FFFFFF80',
-        width: wp(40),
-        alignItems: 'center',
-        borderRadius: 30
-    },
-    usernameContainer: {
-        backgroundColor: '#FFFFFF80',
-        width: wp(30),
-        height: hp(3.5),
-        alignItems: 'center',
-        borderRadius: 30
     },
     boxesScrollView: {
         height: hp(53),
@@ -219,7 +210,8 @@ export default StyleSheet.create({
     },
     totalGameStatsInfosContainer: {
         height: hp(22.5),
-        width: wp(40)
+        width: wp(40),
+        justifyContent: 'center'
     },
     chartContainer: {
         height: hp(22.5),
@@ -231,15 +223,13 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Semibold',
         fontSize: hp(2.3),
         color: '#2E313C',
-        marginLeft: wp(4),
-        marginTop: hp(2)
+        marginLeft: wp(4)
     },
     totalGamesPlayedCounter: {
         fontFamily: 'Averta-Semibold',
         fontSize: hp(4),
         color: '#2E313C',
-        marginLeft: wp(4),
-        marginTop: hp(1)
+        marginLeft: wp(4)
     },
     totalGamesPlayedText: {
         fontFamily: 'Averta-Semibold',
@@ -251,8 +241,7 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Regular',
         fontSize: hp(1.8),
         color: '#6AC259',
-        marginLeft: wp(4),
-        marginTop: hp(1.5)
+        marginLeft: wp(4)
     },
     drawText: {
         fontFamily: 'Averta-Regular',
@@ -359,5 +348,17 @@ export default StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'flex-start'
     },
-    namesText: {}
+    profileContainerShadowView: {
+        height: hp(30),
+        width: wp(90),
+        borderRadius: 30,
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.5)'
+    },
+    sinaviaScoreText: {
+        fontFamily: 'Averta-RegularItalic',
+        fontSize: hp(2.4),
+        color: '#FF9900',
+        paddingVertical: hp(0)
+    }
 })

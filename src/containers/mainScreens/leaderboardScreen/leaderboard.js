@@ -11,7 +11,7 @@ import {
     View
 } from 'react-native'
 import { connect } from 'react-redux'
-import { userActions } from '../../../redux/user/actions'
+import { clientActions } from '../../../redux/client/actions'
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
 import { LGS, YKS } from '../../../components/mainScreen/carousel/static/exams'
 import * as courses from '../../../components/mainScreen/carousel/static/courses'
@@ -189,11 +189,11 @@ class Leaderboard extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                <View style={styles.scrollViewContainer}>
                 <ScrollView
                     style={styles.scrollView}
                     showsVerticalScrollIndicator={false}
                 >
-                    <NotchView color={'#fcfcfc'} />
                     <View style={styles.leaderContainer}>
                         <View style={styles.tabbarContainer}>
                             <TouchableOpacity
@@ -685,6 +685,7 @@ class Leaderboard extends React.Component {
                         keyExtractor={(item, index) => index}
                     />
                 </ScrollView>
+                </View>
                 <View style={styles.yourOrderTextContainer}>
                     <Text style={styles.yourOrderText}>
                         Senin Sıralaman: 300
@@ -696,7 +697,7 @@ class Leaderboard extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    choosenExam: state.user.choosenExam
+    choosenExam: state.client.choosenExam
 })
 
 const mapDispatchToProps = dispatch => ({})

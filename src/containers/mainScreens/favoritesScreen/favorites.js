@@ -11,8 +11,14 @@ import {
 import { SCENE_KEYS, navigationPop } from '../../../services/navigationService'
 import styles from './style'
 import NotchView from '../../../components/notchView'
-import returnLogo from '../../../assets/return.png'
 import Gallery from 'react-native-image-gallery'
+import Share from 'react-native-share'
+import RNFetchBlob, { Dirs as DIRS } from 'rn-fetch-blob'
+import selectedFav from '../../../assets/favori.png'
+import unselectedFav from '../../../assets/favori_bos.png'
+import backButton from '../../../assets/backButton.png'
+import returnLogo from '../../../assets/return.png'
+import shareLogo from '../../../assets/share.png'
 
 const data = [
     {
@@ -21,13 +27,6 @@ const data = [
                 'http://testicoz.org/wp-content/uploads/2017/09/ygs-dilveanlatim-7-01.png'
         },
         id: 0
-    },
-    {
-        source: {
-            uri:
-                'https://prods3.imgix.net/images/articles/2017_04/Feature-restaurant-butcher-bakery-shops2.jpg?auto=format%2Ccompress&ixjsv=2.2.3'
-        },
-        id: 1
     },
     {
         source: {
@@ -53,7 +52,8 @@ class Favorites extends React.Component {
             data: data,
             isModalVisible: false,
             initialIndex: 0,
-            galleryPosition: 0
+            galleryPosition: 0,
+            favIconSelected: false
         }
     }
 
@@ -67,6 +67,31 @@ class Favorites extends React.Component {
 
     galleryOnScroll = event => {
         this.setState({ galleryPosition: event.position })
+    }
+
+    shareImage = () => {
+        const configOptions = {
+            path: RNFetchBlob.fs.dirs.DownloadDir + '/question.png'
+        }
+        RNFetchBlob.config(configOptions)
+            .fetch(
+                'GET',
+                'http://testicoz.org/wp-content/uploads/2017/09/ygs-dilveanlatim-7-01.png'
+            )
+            .then(async resp => {
+                console.log('The file saved to ', resp.path())
+                console.log('response : ', resp)
+                console.log(resp.data)
+                let filePath = resp.path()
+                let base64image = resp.data
+                let shareOptions = {
+                    url: `file://${configOptions.path}`,
+                    message:
+                        'Merhaba, bu soruyu çözmeme yardımcı olabilir misin?'
+                }
+                Share.open(shareOptions)
+            })
+            .catch(err => console.log(err))
     }
 
     render() {
@@ -87,83 +112,226 @@ class Favorites extends React.Component {
                     </View>
                 </View>
                 <Modal visible={this.state.isModalVisible}>
-                    <TouchableOpacity
-                        onPress={() => this.setState({ isModalVisible: false })}
-                    >
-                        <Text>X</Text>
-                        <Text>
-                            {this.state.galleryPosition + 1}/
-                            {Object.keys(this.state.data).length}
-                        </Text>
-                    </TouchableOpacity>
-                    <Gallery
-                        style={{ flex: 1, backgroundColor: 'black' }}
-                        images={this.state.data}
-                        initialPage={this.state.initialIndex}
-                        onPageScroll={event => this.galleryOnScroll(event)}
-                    />
-                </Modal>
-                <ScrollView
-                    style={styles.cardsScrollView}
-                    showsVerticalScrollIndicator={false}
-                >
-                    <View style={styles.card}>
-                        <View style={styles.contentContainerUp} />
-                        <View style={styles.contentContainerDown} />
-                        <View style={styles.contentContainerWrapper}>
-                            <Text style={styles.contentText}>YKS - TÜRKÇE</Text>
+                    <NotchView color={'#00D9EF'} />
+                    <View style={styles.modalHeader}>
+                        <View style={styles.backButtonContainer}>
+                            <TouchableOpacity
+                                onPress={() =>
+                                    this.setState({ isModalVisible: false })
+                                }
+                            >
+                                <Image
+                                    source={backButton}
+                                    style={styles.backButtonImg}
+                                />
+                            </TouchableOpacity>
                         </View>
-                        <View style={styles.questionsContainer}>
-                            <FlatList
-                                horizontal={true}
-                                data={this.state.data}
-                                showsHorizontalScrollIndicator={false}
-                                renderItem={({ item }) => {
-                                    return (
-                                        <TouchableOpacity
-                                            onPress={() =>
-                                                this.questionOnPress(item)
-                                            }
-                                        >
-                                            <Image
-                                                source={{
-                                                    uri: item.source.uri
-                                                }}
-                                                style={styles.question}
-                                            />
-                                        </TouchableOpacity>
-                                    )
+                        <View style={styles.questionNumberContainer}>
+                            <Text style={styles.questionNumberText}>
+                                Soru {this.state.galleryPosition + 1}/
+                                {Object.keys(this.state.data).length}
+                            </Text>
+                        </View>
+                        <View style={styles.shareButtonView}>
+                            <TouchableOpacity onPress={this.shareImage}>
+                                <Image
+                                    source={shareLogo}
+                                    style={styles.backButtonImg}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={styles.galleryContainer}>
+                        <Gallery
+                            style={styles.galleryView}
+                            images={this.state.data}
+                            initialPage={this.state.initialIndex}
+                            onPageScroll={event => this.galleryOnScroll(event)}
+                        />
+                    </View>
+                    <View style={styles.modalFooter}>
+                        <View style={styles.answerContainer}>
+                            <View
+                                style={[
+                                    styles.correctAnswer,
+                                    { backgroundColor: 'white' }
+                                ]}
+                            >
+                                <Text
+                                    style={[
+                                        styles.optionText,
+                                        { color: '#00D9EF' }
+                                    ]}
+                                >
+                                    C
+                                </Text>
+                            </View>
+                            <Text style={styles.answerText}>Doğru cevap</Text>
+                        </View>
+                        <View style={styles.favIconContainer}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.setState({
+                                        favIconSelected: true
+                                    })
                                 }}
-                                keyExtractor={(item, index) => index}
-                            />
-                        </View>
-                    </View>
-                    <View style={styles.card}>
-                        <View style={styles.contentContainerUp} />
-                        <View style={styles.contentContainerDown} />
-                        <View style={styles.contentContainerWrapper}>
-                            <Text style={styles.contentText}>
-                                YKS - MATEMATİK
+                            >
+                                <Image
+                                    source={
+                                        this.state.favIconSelected === true
+                                            ? selectedFav
+                                            : unselectedFav
+                                    }
+                                    style={styles.favIcon}
+                                />
+                            </TouchableOpacity>
+                            <Text style={styles.answerText}>
+                                Favoriden çıkar
                             </Text>
                         </View>
                     </View>
-                    <View style={styles.card}>
-                        <View style={styles.contentContainerUp} />
-                        <View style={styles.contentContainerDown} />
-                        <View style={styles.contentContainerWrapper}>
-                            <Text style={styles.contentText}>YKS - KİMYA</Text>
+                </Modal>
+                <View style={styles.scrollViewContainer}>
+                    <ScrollView
+                        style={styles.cardsScrollView}
+                        showsVerticalScrollIndicator={false}
+                    >
+                        <View style={styles.card}>
+                            <View style={styles.contentContainerWrapper}>
+                                <Text style={styles.contentText}>
+                                    YKS - TÜRKÇE
+                                </Text>
+                            </View>
+                            <View style={styles.questionsContainer}>
+                                <FlatList
+                                    horizontal={true}
+                                    data={this.state.data}
+                                    showsHorizontalScrollIndicator={false}
+                                    renderItem={({ item }) => {
+                                        return (
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    this.questionOnPress(item)
+                                                }
+                                            >
+                                                <Image
+                                                    source={{
+                                                        uri: item.source.uri
+                                                    }}
+                                                    style={styles.question}
+                                                />
+                                            </TouchableOpacity>
+                                        )
+                                    }}
+                                    keyExtractor={(item, index) =>
+                                        index.toString()
+                                    }
+                                />
+                            </View>
                         </View>
-                    </View>
-                    <View style={styles.card}>
-                        <View style={styles.contentContainerUp} />
-                        <View style={styles.contentContainerDown} />
-                        <View style={styles.contentContainerWrapper}>
-                            <Text style={styles.contentText}>
-                                YKS - BİYOLOJİ
-                            </Text>
+                        <View style={styles.card}>
+                            <View style={styles.contentContainerWrapper}>
+                                <Text style={styles.contentText}>
+                                    YKS - TÜRKÇE
+                                </Text>
+                            </View>
+                            <View style={styles.questionsContainer}>
+                                <FlatList
+                                    horizontal={true}
+                                    data={this.state.data}
+                                    showsHorizontalScrollIndicator={false}
+                                    renderItem={({ item }) => {
+                                        return (
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    this.questionOnPress(item)
+                                                }
+                                            >
+                                                <Image
+                                                    source={{
+                                                        uri: item.source.uri
+                                                    }}
+                                                    style={styles.question}
+                                                />
+                                            </TouchableOpacity>
+                                        )
+                                    }}
+                                    keyExtractor={(item, index) =>
+                                        index.toString()
+                                    }
+                                />
+                            </View>
                         </View>
-                    </View>
-                </ScrollView>
+                        <View style={styles.card}>
+                            <View style={styles.contentContainerUp} />
+                            <View style={styles.contentContainerDown} />
+                            <View style={styles.contentContainerWrapper}>
+                                <Text style={styles.contentText}>
+                                    YKS - TÜRKÇE
+                                </Text>
+                            </View>
+                            <View style={styles.questionsContainer}>
+                                <FlatList
+                                    horizontal={true}
+                                    data={this.state.data}
+                                    showsHorizontalScrollIndicator={false}
+                                    renderItem={({ item }) => {
+                                        return (
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    this.questionOnPress(item)
+                                                }
+                                            >
+                                                <Image
+                                                    source={{
+                                                        uri: item.source.uri
+                                                    }}
+                                                    style={styles.question}
+                                                />
+                                            </TouchableOpacity>
+                                        )
+                                    }}
+                                    keyExtractor={(item, index) =>
+                                        index.toString()
+                                    }
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.card}>
+                            <View style={styles.contentContainerWrapper}>
+                                <Text style={styles.contentText}>
+                                    YKS - TÜRKÇE
+                                </Text>
+                            </View>
+                            <View style={styles.questionsContainer}>
+                                <FlatList
+                                    horizontal={true}
+                                    data={this.state.data}
+                                    showsHorizontalScrollIndicator={false}
+                                    renderItem={({ item }) => {
+                                        return (
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    this.questionOnPress(item)
+                                                }
+                                            >
+                                                <Image
+                                                    source={{
+                                                        uri: item.source.uri
+                                                    }}
+                                                    style={styles.question}
+                                                />
+                                            </TouchableOpacity>
+                                        )
+                                    }}
+                                    keyExtractor={(item, index) =>
+                                        index.toString()
+                                    }
+                                />
+                            </View>
+                        </View>
+                    </ScrollView>
+                </View>
             </View>
         )
     }

@@ -80,10 +80,13 @@ class JoinGroupRoom extends React.Component {
                     this.setState({ groupRoomPlayerList: playerList })
                     return
                 case 'start-match':
+                    this.props.room.removeAllListeners()
+
                     navigationReset('game', { isHardReset: true })
                     navigationPush(SCENE_KEYS.gameScreens.groupGame, {
                         room: this.props.room,
-                        client: this.props.client
+                        client: this.props.client,
+                        groupRoomPlayerList: this.state.groupRoomPlayerList
                     })
                     return
             }
@@ -92,7 +95,7 @@ class JoinGroupRoom extends React.Component {
 
     // Selected question amount is sent to the server
     questionAmountPicker(idx, value) {
-        this.room.send({
+        this.props.room.send({
             action: 'set-question-number',
             questionAmount: value
         })
@@ -139,7 +142,7 @@ class JoinGroupRoom extends React.Component {
 
     shutdownRoutine = () => {
         this.props.room.leave()
-        this.props.client.close()
+        this.props.close()
         navigationReset('main')
     }
 

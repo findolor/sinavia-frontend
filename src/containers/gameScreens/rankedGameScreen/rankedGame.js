@@ -8,10 +8,9 @@ import {
     navigationReset,
     navigationPush
 } from '../../../services/navigationService'
+import { connect } from 'react-redux'
+import { clientActions } from '../../../redux/client/actions'
 
-import SNOOP from '../../../assets/snoop.jpg'
-import DOGE from '../../../assets/doge.jpeg'
-import SORU from '../../../assets/soru.jpg'
 import CLOSE_BUTTON from '../../../assets/closeButton.png'
 import ZOOM_BUTTON from '../../../assets/gameScreens/zoomButton.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
@@ -81,19 +80,28 @@ class RankedGame extends React.Component {
             buttonFiveName: 'E',
             buttonSixName: 'Boş',
             // Joker disable variables
-            isRemoveOptionJokerDisabled: false,
-            isSeeOpponentAnswerJokerDisabled: false,
-            isSecondChanceJokerDisabled: false,
+            isRemoveOptionJokerDisabled: true,
+            isSeeOpponentAnswerJokerDisabled: true,
+            isSecondChanceJokerDisabled: true,
             // Joker active variables
             isSeeOpponentAnswerJokerActive: false,
             isSecondChanceJokerActive: false,
             // Current question answer for second chance
-            questionAnswer: 0
+            questionAnswer: 0,
+            // Contains every information about question
+            fullQuestionList: [],
+            // Joker names
+            firstJokerName: '',
+            secondJokerName: '',
+            thirdJokerName: ''
         }
     }
 
     // We get the room in props
     componentDidMount() {
+        console.log(this.props.userJokers)
+        // We check if the user has enough jokers
+        this.checkJokerAmount()
         // We send ready signal when game screen is loaded
         this.props.room.send({
             action: 'ready'
@@ -109,7 +117,33 @@ class RankedGame extends React.Component {
         this.props.room.onError.add(err => console.log(err))
     }
 
-    componentWillUnmount() {}
+    checkJokerAmount = () => {
+        this.props.userJokers.forEach(userJoker => {
+            switch (userJoker.jokerId) {
+                case 1:
+                    this.setState({
+                        firstJokerName:
+                            userJoker.joker.name + ' ' + userJoker.amount,
+                        isSeeOpponentAnswerJokerDisabled: false
+                    })
+                    break
+                case 2:
+                    this.setState({
+                        secondJokerName:
+                            userJoker.joker.name + ' ' + userJoker.amount,
+                        isRemoveOptionJokerDisabled: false
+                    })
+                    break
+                case 3:
+                    this.setState({
+                        thirdJokerName:
+                            userJoker.joker.name + ' ' + userJoker.amount,
+                        isSecondChanceJokerDisabled: false
+                    })
+                    break
+            }
+        })
+    }
 
     shutdownGame = () => {
         // We clear the timeouts on quitting
@@ -119,7 +153,7 @@ class RankedGame extends React.Component {
 
         // Clear room listeners
         this.props.room.removeAllListeners()
-
+        this.props.client.close()
         // Clear other game related things
         this.setState({ isCountDownRunning: false })
     }
@@ -136,12 +170,15 @@ class RankedGame extends React.Component {
                 return
             case 'client-leaving':
                 // TODO navigate to the game-stats screen
-                Alert.alert(this.state.opponentId, 'oyuncu oyundan ayrildi.')
+                Alert.alert(this.props.opponentUsername, 'oyundan ayrildi.')
 
                 // Do a shutdown routine
                 this.shutdownGame()
 
                 navigationReset('main')
+                return
+            case 'save-questions':
+                this.setState({ fullQuestionList: message.fullQuestionList })
                 return
         }
     }
@@ -176,7 +213,7 @@ class RankedGame extends React.Component {
                         isCountDownRunning: true,
                         start: true
                     })
-                }, 5000)
+                }, 3000)
                 return
             // As soon as someone answers, a result event is fired
             case 'result':
@@ -200,7 +237,7 @@ class RankedGame extends React.Component {
             case 'show-results':
                 // 8 second countdown time for the results
                 this.setState({
-                    countDownTime: 8
+                    countDownTime: 5
                 })
                 this.highlightOpponentButton(
                     rankedState.playerProps[this.state.opponentId].answers[
@@ -208,9 +245,9 @@ class RankedGame extends React.Component {
                     ].answer
                 )
                 this.updateTimeout = setTimeout(() => {
-                    // We wait 2.5 seconds for the reveal
+                    // We wait 1.5 seconds for the reveal
                     this.updatePlayerResults()
-                }, 2500)
+                }, 1500)
                 return
             case 'match-finished':
                 this.shutdownGame()
@@ -223,7 +260,8 @@ class RankedGame extends React.Component {
                     playerProfilePicture: this.props.playerProfilePicture,
                     opponentUsername: this.props.opponentUsername,
                     opponentId: this.props.opponentId,
-                    opponentProfilePicture: this.props.opponentProfilePicture
+                    opponentProfilePicture: this.props.opponentProfilePicture,
+                    fullQuestionList: this.state.fullQuestionList
                 })
                 return
         }
@@ -516,13 +554,16 @@ class RankedGame extends React.Component {
         if (alreadyDisabledButton === 0)
             this.props.room.send({
                 action: 'remove-options-joker',
-                disabledButton: false
+                disabledButton: false,
+                jokerId: 2
             })
         else
             this.props.room.send({
                 action: 'remove-options-joker',
-                disabled: alreadyDisabledButton
+                disabled: alreadyDisabledButton,
+                jokerId: 2
             })
+        this.props.subtractJoker(2)
     }
 
     removeOptions = optionsToRemove => {
@@ -571,6 +612,11 @@ class RankedGame extends React.Component {
             isSeeOpponentAnswerJokerDisabled: true,
             isSeeOpponentAnswerJokerActive: true
         })
+        this.props.room.send({
+            action: 'see-opponent-answer-joker',
+            jokerId: 1
+        })
+        this.props.subtractJoker(1)
 
         // If the user answered the question before we used the joker, we show the answer immediately
         const playerProp = this.state.playerProps[this.state.opponentId]
@@ -592,8 +638,10 @@ class RankedGame extends React.Component {
             isSecondChanceJokerActive: true
         })
         this.props.room.send({
-            action: 'second-chance-joker'
+            action: 'second-chance-joker',
+            jokerId: 3
         })
+        this.props.subtractJoker(3)
     }
 
     render() {
@@ -697,7 +745,7 @@ class RankedGame extends React.Component {
                         animationType={'fade'}
                     >
                         <View style={styles.questionModalContainer}>
-                            <View style={styles.questionImageModalContainer}>
+                            <View>
                                 <Image
                                     source={{
                                         uri: this.state.questionList[
@@ -719,6 +767,8 @@ class RankedGame extends React.Component {
                             </View>
                         </View>
                     </Modal>
+                    <View style={styles.questionAndZoomButtonContainer}>
+                        <View style={styles.spaceContainer}/>
                     <View style={styles.questionInformation}>
                         <Text style={styles.questionInformationText}>
                             Soru {this.state.questionNumber + 1} /{' '}
@@ -732,6 +782,7 @@ class RankedGame extends React.Component {
                                 style={styles.zoomButton}
                             />
                         </TouchableOpacity>
+                    </View>
                     </View>
                     <View style={styles.backButtonContainer}>
                         <TouchableOpacity onPress={this.backButtonOnPress}>
@@ -883,7 +934,7 @@ class RankedGame extends React.Component {
                                     {this.state
                                         .isSeeOpponentAnswerJokerDisabled ===
                                     false
-                                        ? 'Rakibin şıkkını gör'
+                                        ? this.state.firstJokerName
                                         : ''}
                                 </Text>
                             </View>
@@ -908,7 +959,7 @@ class RankedGame extends React.Component {
                                 <Text style={styles.jokerText}>
                                     {this.state.isRemoveOptionJokerDisabled ===
                                     false
-                                        ? 'Şık Ele'
+                                        ? this.state.secondJokerName
                                         : ''}
                                 </Text>
                             </View>
@@ -933,7 +984,7 @@ class RankedGame extends React.Component {
                                 <Text style={styles.jokerText}>
                                     {this.state.isSecondChanceJokerDisabled ===
                                     false
-                                        ? 'İkinci Şans'
+                                        ? this.state.thirdJokerName
                                         : ''}
                                 </Text>
                             </View>
@@ -945,4 +996,15 @@ class RankedGame extends React.Component {
     }
 }
 
-export default RankedGame
+const mapStateToProps = state => ({
+    userJokers: state.client.userJokers
+})
+
+const mapDispatchToProps = dispatch => ({
+    subtractJoker: jokerId => dispatch(clientActions.subtractJoker(jokerId))
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(RankedGame)

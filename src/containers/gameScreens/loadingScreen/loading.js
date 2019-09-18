@@ -11,37 +11,40 @@ import * as Colyseus from 'colyseus.js'
 // App service imports
 import { SCENE_KEYS, navigationPush } from '../../../services/navigationService'
 import { GAME_ENGINE_ENDPOINT } from '../../../config'
-import { deviceStorage } from '../../../services/deviceStorage'
+import { connect } from 'react-redux'
 
 class LoadingScreen extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            gameMode: {
-                ranked: 'rankedRoom',
-                group: 'groupRoom'
-            },
-            isDisabled: true
-        }
+        this.state = {}
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         if (this.props.isHardReset) return
-
-        const userId = await deviceStorage.getItemFromStorage('userId')
-
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
+        // 0.11.0
+        /* this.joinRoom({
+            create: true,
+            examName: 'LGS',
+            courseName: 'Matematik',
+            subjectName: 'Sayilar',
+            databaseId: this.props.clientDBId
+        }) */
+        // 0.10.8
         this.client.onOpen.add(() => {
-            /* setTimeout(() => {
-                this.joinRoom()
-            }, 3000) */
-            this.joinRoom()
+            this.joinRoom({
+                create: true,
+                examId: this.props.examId,
+                courseId: this.props.courseId,
+                subjectId: this.props.subjectId,
+                databaseId: this.props.clientDBId
+            })
         })
     }
 
     // Client sends a ready signal when they join a room successfully
     joinRoom = playerOptions => {
-        this.room = this.client.join(this.state.gameMode.ranked, playerOptions)
+        this.room = this.client.join('rankedRoom', playerOptions)
         // Opponent information
         let opponentUsername
         let opponentId
@@ -67,7 +70,6 @@ class LoadingScreen extends React.Component {
                     playerCoverPicture = message[element].coverPicture
                 }
             })
-
             this.room.removeAllListeners()
 
             navigationPush(SCENE_KEYS.gameScreens.rankedMatchingScreen, {
@@ -115,4 +117,13 @@ class LoadingScreen extends React.Component {
     }
 }
 
-export default LoadingScreen
+const mapStateToProps = state => ({
+    clientDBId: state.client.clientDBId
+})
+
+const mapDispatchToProps = dispatch => ({})
+
+export default connect(
+    mapStateToProps,
+    null
+)(LoadingScreen)

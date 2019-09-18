@@ -11,14 +11,18 @@ export default StyleSheet.create({
         justifyContent: 'center'
     },
     contentContainer: {
-        height: hp(10),
+        flex: 10,
         width: wp(100),
         backgroundColor: '#00D9EF',
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
+    coversContainer: {
+        flex: 86,
+        justifyContent: 'center'
+    },
     coverContainer: {
-        height: hp(43),
+        flex: 1,
         width: wp(100)
     },
     separatorContainer: {
@@ -114,13 +118,12 @@ export default StyleSheet.create({
         width: wp(100),
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: "rgba(0,0,0,0.5)"
+        backgroundColor: 'rgba(0,0,0,0.5)'
     },
     separatorView: {
         height: hp(20),
         width: wp(100),
         position: 'absolute',
-        top: hp(47),
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
@@ -138,7 +141,7 @@ export default StyleSheet.create({
         borderWidth: hp(0.5),
         borderColor: 'white',
         borderRadius: 100,
-        backgroundColor: "rgba(0,0,0,0.5)"
+        backgroundColor: 'rgba(0,0,0,0.5)'
     },
     swordPic: {
         height: wp(19.5),

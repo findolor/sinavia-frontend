@@ -4,7 +4,7 @@ import styles from './style'
 import { navigationReset, SCENE_KEYS } from '../../services/navigationService'
 import { deviceStorage } from '../../services/deviceStorage'
 import { connect } from 'react-redux'
-import { userActions } from '../../redux/user/actions'
+import { clientActions } from '../../redux/client/actions'
 import LottieView from 'lottie-react-native'
 
 const APP_LOGO = require('../../assets/sinavia_logo_cut.png')
@@ -19,8 +19,7 @@ class SplashScreen extends React.PureComponent {
 
     getJWTToken = async () => {
         try {
-            const token = await deviceStorage.getItemFromStorage('JWT')
-
+            const token = await deviceStorage.getItemFromStorage('clientToken')
             return token
         } catch (error) {
             console.log(error)
@@ -43,9 +42,9 @@ class SplashScreen extends React.PureComponent {
 
         // After 8 seconds we logout the user and go to the auth screen
         this.loginInterval = setInterval(async () => {
-            if (++this.state.retryCount === 4) {
+            if (++this.state.retryCount === 3) {
                 Alert.alert('Lütfen tekrar giriş yapınız!')
-                //await deviceStorage.clearDeviceStorage()
+                await deviceStorage.clearDeviceStorage()
                 navigationReset('auth')
             }
         }, 2000)
@@ -58,15 +57,15 @@ class SplashScreen extends React.PureComponent {
     render() {
         return (
             <View style={styles.container}>
-                {/* <View style={styles.logoContainer}>
+                <View style={styles.logoContainer}>
                     <Image source={APP_LOGO} style={styles.appLogo} />
                 </View>
-                <Text style={styles.sinaviaText}>Sınavia</Text> */}
-                <LottieView
+                <Text style={styles.sinaviaText}>Sınavia</Text>
+                {/* <LottieView
                     source={require('../../assets/splashScreen/sinavia.json')}
                     autoPlay
                     loop
-                />
+                /> */}
             </View>
         )
     }
@@ -75,7 +74,7 @@ class SplashScreen extends React.PureComponent {
 const mapStateToProps = state => ({})
 
 const mapDispatchToProps = dispatch => ({
-    authenticateUser: token => dispatch(userActions.checkUserToken(token))
+    authenticateUser: token => dispatch(clientActions.checkUserToken(token))
 })
 
 export default connect(

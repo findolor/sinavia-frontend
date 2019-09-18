@@ -8,12 +8,12 @@ import {
     TouchableOpacity,
     View,
     AsyncStorage,
-    Platform,
     Alert,
     FlatList
 } from 'react-native'
 import { connect } from 'react-redux'
-import { userActions } from '../../../redux/user/actions'
+import { gameContentActions } from '../../../redux/gameContent/actions'
+import { friendActions } from '../../../redux/friends/actions'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
@@ -21,14 +21,14 @@ import {
 import { deviceStorage } from '../../../services/deviceStorage'
 import Carousel from 'react-native-snap-carousel'
 import {
+    sliderHeight,
     sliderWidth,
+    itemHeight,
     itemWidth
 } from '../../../components/mainScreen/carousel/styles/SliderEntry.style'
 import SliderEntry from '../../../components/mainScreen/carousel/components/SliderEntry'
-import carouselStyle from '../../../components/mainScreen/carousel/styles/index.style'
 import styles from './style'
-import { LGS, YKS } from '../../../components/mainScreen/carousel/static/exams'
-import * as courses from '../../../components/mainScreen/carousel/static/courses'
+
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
 import AuthButton from '../../../components/authScreen/authButton'
 // Colyseus imports
@@ -41,6 +41,9 @@ import * as Colyseus from 'colyseus.js'
 import firebase from 'react-native-firebase'
 import { fcmService } from '../../../services/fcmService'
 
+import { friendshipServices } from '../../../sagas/friendship/'
+import { friendGameServices } from '../../../sagas/friendGame/'
+import { userServices } from '../../../sagas/user/'
 import { GAME_ENGINE_ENDPOINT } from '../../../config'
 
 import NOTIFICATION_LOGO from '../../../assets/mainScreens/notification.png'
@@ -53,110 +56,27 @@ import {
 } from '../../../services/navigationService'
 import NotchView from '../../../components/notchView'
 
-import PROFILE_PIC from '../../../assets/profile2.jpg'
 import SWORD from '../../../assets/sword.png'
 const carouselFirstItem = 0
-const exams = [
-    'YKS',
-    'LGS',
-    'KPSS',
-    'ALES',
-    'DGS',
-    'Dil Sınavları',
-    'TUS',
-    'DUS',
-    'EUS',
-    'Ehliyet Sınavları'
-]
-const CLOSE_BUTTON = require('../../../assets/closeButton.png')
-const examList = {
-    YKS: YKS,
-    LGS: LGS
-}
 
 const SELECTED_MODE_COLOR = '#00D9EF'
 const EMPTY_MODE_COLOR = '#A8A8A8'
 
-const RANKED_SELECTED_IMAGE = require('../../../assets/mainScreens/tek_beyaz.png')
+const CLOSE_BUTTON = require('../../../assets/closeButton.png')
 const RANKED_EMPTY_IMAGE = require('../../../assets/mainScreens/tek.png')
-const FRIENDS_SELECTED_IMAGE = require('../../../assets/mainScreens/arkadas.png')
 const FRIENDS_EMPTY_IMAGE = require('../../../assets/mainScreens/arkadas_siyah.png')
-const GROUP_SELECTED_IMAGE = require('../../../assets/mainScreens/group.png')
 const GROUP_EMPTY_IMAGE = require('../../../assets/mainScreens/group_siyah.png')
-
-const friendsListData = [
-    {
-        userPic: PROFILE_PIC,
-        name: 'Nurettin Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Mehmet',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Nakışçı',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Arca Altunsu',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Orkun Külçe',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Ahmet',
-        username: 'ahmetnakisci'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Burak',
-        username: 'ruzgar'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan',
-        username: 'haqotherage'
-    }
-]
 
 class Home extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            exam: this.props.choosenExam,
+            // Dropdown default value
+            defaultExam: this.props.choosenExam,
+            // Dropdown exam list
+            examList: [],
+            // Carousel course data
+            carouselCourseData: [],
             subject: '',
             isModalVisible: false,
             // Mode button variables
@@ -175,59 +95,191 @@ class Home extends React.Component {
             visibleRankedGameStartPress: false,
             opponentUserPic: '',
             opponentName: '',
-            opponentUsername: ''
+            opponentUsername: '',
+            opponentInformation: {},
+            friendList: [],
+            friendListNewData: [],
+            originalFriends: []
         }
     }
 
     async componentDidMount() {
         await fcmService.checkPermissions()
-        /* if (Platform.OS === 'ios') {
-            this.messageListener = firebase.messaging().onMessage(message => {
-                console.log(message)
-            })
-        } else {
-            this.messageListener = firebase
-                .notifications()
-                .onNotification(notification => {
-                    console.log(notification)
-                })
-        } */
+        await this.fillGameContent()
         this.messageListener = firebase.messaging().onMessage(message => {
-            Alert.alert(message.data.body)
+            console.log(message, 'mes')
+            this.fcmMessagePicker(message)
         })
         this.NotificationListener = firebase
             .notifications()
             .onNotification(notification => {
-                console.log(notification)
-                Alert.alert(notification.body)
+                console.log(notification, 'not')
             })
     }
 
-    _renderItemWithParallax({ item, index }, parallaxProps) {
-        return (
-            <SliderEntry
-                data={item}
-                parallax={true}
-                parallaxProps={parallaxProps}
-            />
+    fillGameContent = () => {
+        new Promise.resolve().then(() => {
+            const examNames = []
+            this.props.examList.forEach((exam, index) => {
+                examNames.push(exam.name)
+            })
+            this.carouselMaker(this.props.choosenExam)
+            this.setState({ examList: examNames })
+        })
+    }
+
+    componentWillUnmount() {
+        this.messageListener()
+    }
+
+    fcmMessagePicker = message => {
+        switch (message.data.type) {
+            case 'friendRequest':
+                this.customAlert(
+                    false,
+                    'Arkadaşlık isteği!',
+                    message.data.body,
+                    this.acceptFriendRequest,
+                    {
+                        opponentId: message.data.userId
+                    }
+                )
+                break
+            case 'friendApproved':
+                this.customAlert(
+                    true,
+                    'Arkadaşlık İsteği!',
+                    message.data.body,
+                    this.friendRequestAccepted,
+                    {
+                        opponentId: message.data.userId
+                    }
+                )
+                break
+            case 'friendGameRequest':
+                this.customAlert(
+                    false,
+                    'Oyun İsteği!',
+                    message.data.body,
+                    this.playFriendGame,
+                    {
+                        opponentId: message.data.userId,
+                        roomCode: message.data.roomCode
+                    }
+                )
+                break
+            case 'friendDeleted': {
+                this.friendDeleted({ opponentId: message.data.userId })
+                break
+            }
+        }
+    }
+
+    playFriendGame = async params => {
+        const opponentInformation = await userServices.getUser(
+            this.props.clientToken,
+            params.opponentId
         )
+
+        navigationReset('game', { isHardReset: true })
+        navigationPush(SCENE_KEYS.gameScreens.friendMatchingScreen, {
+            roomCode: params.roomCode,
+            opponentInformation: opponentInformation,
+            isCreateRoom: false
+        })
+    }
+
+    friendRequestAccepted = params => {
+        const friends = this.props.friendIds
+        friends.push(params.opponentId)
+
+        this.props.saveFriendIdList(friends)
+    }
+
+    acceptFriendRequest = params => {
+        const friends = this.props.friendIds
+        friends.push(params.opponentId)
+
+        this.props.saveFriendIdList(friends)
+
+        friendshipServices.acceptFriendshipRequest(
+            this.props.clientToken,
+            this.props.clientDBId,
+            params.opponentId,
+            this.props.clientInformation.username
+        )
+    }
+
+    friendDeleted = params => {
+        const friends = this.props.friendIds
+        const index = friends.indexOf(params.opponentId)
+
+        friends.splice(index, 1)
+        this.props.saveFriendIdList(friends)
+    }
+
+    customAlert = (
+        isTwoButtoned,
+        alertTitle,
+        alertBody,
+        onPressFunction,
+        params
+    ) => {
+        if (isTwoButtoned) {
+            Alert.alert(
+                alertTitle,
+                alertBody,
+                [
+                    {
+                        text: 'Tamam',
+                        onPress: () => onPressFunction(params)
+                    }
+                ],
+                { cancelable: false }
+            )
+        } else {
+            Alert.alert(
+                alertTitle,
+                alertBody,
+                [
+                    {
+                        text: 'Reddet',
+                        onPress: () => {
+                            return
+                        }
+                    },
+                    {
+                        text: 'Kabul et',
+                        onPress: () => onPressFunction(params)
+                    }
+                ],
+                { cancelable: false }
+            )
+        }
+    }
+
+    _renderItemWithParallax({ item }) {
+        return <SliderEntry data={item} />
     }
 
     async pickerSelect(idx, value) {
         this.setState({
-            exam: value
+            defaultExam: value
         })
         await deviceStorage.saveItemToStorage('choosenExam', value)
         this.props.saveChoosenExam(value)
+
+        this.carouselMaker(value)
     }
 
     carouselIndexToCourseName = () => {
-        switch (this.state.exam) {
-            case 'YKS':
-                return YKS[this.state.carouselActiveSlide].courseName
-            case 'LGS':
-                return LGS[this.state.carouselActiveSlide].courseName
-        }
+        let index = this.props.examList.findIndex(
+            x => x.name === this.state.defaultExam
+        )
+
+        return this.props.examList[index].courseEntities[
+            this.state.carouselActiveSlide
+        ].name
     }
 
     onPressCard(title) {
@@ -238,71 +290,46 @@ class Home extends React.Component {
         })
     }
 
-    cards(sinav, index) {
-        var choosenSubject
-        var cardList = []
-        if (sinav === 'LGS') {
-            switch (index) {
-                case 0:
-                    choosenSubject = courses.LGS.turkce
-                    break
-                case 1:
-                    choosenSubject = courses.LGS.matematik
-                    break
-                case 2:
-                    choosenSubject = courses.LGS.tarih
-                    break
-                case 3:
-                    choosenSubject = courses.LGS.fen
-                    break
-                case 4:
-                    choosenSubject = courses.LGS.ingilizce
-                    break
-                case 5:
-                    choosenSubject = courses.LGS.din
-                    break
-            }
-        } else if (sinav === 'YKS') {
-            switch (index) {
-                case 0:
-                    choosenSubject = courses.yksTurkce
-                    break
-                case 1:
-                    choosenSubject = courses.yksCog
-                    break
-                case 2:
-                    choosenSubject = courses.yksTarih
-                    break
-                case 3:
-                    choosenSubject = courses.yksMat
-                    break
-                case 4:
-                    choosenSubject = courses.yksFizik
-                    break
-                case 5:
-                    choosenSubject = courses.yksKimya
-                    break
-                default:
-                    choosenSubject = courses.yksBiyo
-                    break
-            }
-        }
+    // TODO THINK ABOUT CONTETT LATER IMPORTRRANT
+    carouselMaker = examName => {
+        let index = this.props.examList.findIndex(x => x.name === examName)
 
-        for (let i = 0; i < choosenSubject.length; i++) {
-            cardList.push(
+        const courseList = []
+
+        this.props.examList[index].courseEntities.forEach(course => {
+            courseList.push({
+                courseName: course.name,
+                illustration: course.imageLink
+            })
+        })
+
+        this.setState({
+            carouselCourseData: courseList
+        })
+    }
+
+    subjectCardsMaker = (examName, carouselActiveSlide) => {
+        let examIndex
+        let subjectList = []
+        examIndex = this.props.examList.findIndex(x => x.name === examName)
+        this.props.examList[examIndex].courseEntities[
+            carouselActiveSlide
+        ].subjectEntities.forEach((subject, index) => {
+            subjectList.push(
                 <TouchableOpacity
                     onPress={() => {
-                        this.onPressCard(choosenSubject[i])
+                        this.onPressCard(subject.name)
                     }}
-                    key={i}
+                    key={index}
                 >
                     <View style={styles.card}>
-                        <Text style={styles.cardText}>{choosenSubject[i]}</Text>
+                        <Text style={styles.cardText}>{subject.name}</Text>
                     </View>
                 </TouchableOpacity>
             )
-        }
-        return cardList
+        })
+
+        return subjectList
     }
 
     closeModalButtonOnPress = () => {
@@ -425,8 +452,18 @@ class Home extends React.Component {
         navigationPush(SCENE_KEYS.mainScreens.createGroupRoom)
     }
 
-    friendRoomOnPress = () => {
-        this.setState({ visibleView: 'FRIEND_ROOM' })
+    friendRoomOnPress = async () => {
+        if (Object.keys(this.props.friendIds).length === 0) return
+        const friends = await userServices.getUsers(
+            this.props.clientToken,
+            this.props.friendIds
+        )
+
+        this.setState({
+            visibleView: 'FRIEND_ROOM',
+            friendList: friends,
+            originalFriends: friends
+        })
     }
 
     friendRoomAndGameModesBackButtonOnPress = () => {
@@ -471,30 +508,63 @@ class Home extends React.Component {
     }
 
     searchFilterFunction = text => {
+        if (text === '')
+            this.setState({ friendList: this.state.originalFriends })
         this.setState({
             value: text
         })
 
-        const newData = friendsListData.filter(item => {
-            const itemData = `${item.name.toUpperCase()} ${item.username.toUpperCase()}`
+        const newData = this.state.friendList.filter(item => {
+            const itemData = `${item.name.toUpperCase() +
+                ' ' +
+                item.lastname.toUpperCase()} ${item.username.toUpperCase()}`
             const textData = text.toUpperCase()
 
             return itemData.indexOf(textData) > -1
         })
         this.setState({
-            data: newData
+            friendList: newData,
+            friendListNewData: newData
         })
     }
 
     userOnPress(user) {
         this.setState({
-            opponentUserPic: user.userPic,
-            opponentName: user.name,
-            opponentUsername: user.username
+            opponentUserPic: user.profilePicture,
+            opponentName: user.name + ' ' + user.lastname,
+            opponentUsername: user.username,
+            opponentInformation: user
         })
-        console.log(this.state.opponentUserPic)
-        console.log(this.state.opponentName)
-        console.log(this.state.opponentUsername)
+    }
+
+    randomCodeGenerator() {
+        var result = ''
+        var characters = 'ABCDEF0123456789'
+        var charactersLength = characters.length
+        for (var i = 0; i < 6; i++) {
+            result += characters.charAt(
+                Math.floor(Math.random() * charactersLength)
+            )
+        }
+        return result
+    }
+
+    friendGameModeOnPress = async () => {
+        const randomNumber = this.randomCodeGenerator()
+
+        navigationReset('game', { isHardReset: true })
+        navigationPush(SCENE_KEYS.gameScreens.friendMatchingScreen, {
+            roomCode: randomNumber,
+            opponentInformation: this.state.opponentInformation,
+            isCreateRoom: true
+        })
+
+        await friendGameServices.sendFriendGameRequest(
+            this.props.clientToken,
+            this.props.clientInformation,
+            randomNumber,
+            this.state.opponentInformation.fcmToken
+        )
     }
 
     friendRoomView() {
@@ -515,16 +585,21 @@ class Home extends React.Component {
                         <View style={styles.userContainer}>
                             <View style={styles.userPicContainer}>
                                 <Image
-                                    source={PROFILE_PIC}
+                                    source={{
+                                        uri: this.props.clientInformation
+                                            .profilePicture
+                                    }}
                                     style={styles.userPic}
                                 />
                             </View>
                             <View style={styles.nameAndUsernameContainer}>
                                 <Text style={styles.nameAndSurnameText}>
-                                    Nurettin Hakan Yılmaz
+                                    {this.props.clientInformation.name +
+                                        '  ' +
+                                        this.props.clientInformation.lastname}
                                 </Text>
                                 <Text style={styles.userNameText}>
-                                    @haqotherage
+                                    @{this.props.clientInformation.username}
                                 </Text>
                             </View>
                         </View>
@@ -532,7 +607,7 @@ class Home extends React.Component {
                         <View style={styles.userContainer}>
                             <View style={styles.userPicContainer}>
                                 <Image
-                                    source={this.state.opponentUserPic}
+                                    source={{ uri: this.state.opponentUserPic }}
                                     style={styles.userPic}
                                 />
                             </View>
@@ -563,7 +638,7 @@ class Home extends React.Component {
                         </View>
                         <View style={styles.spaceView} />
                         <FlatList
-                            data={this.state.data}
+                            data={this.state.friendList}
                             vertical={true}
                             showsVerticalScrollIndicator={false}
                             renderItem={({ item }) => {
@@ -578,13 +653,17 @@ class Home extends React.Component {
                                                 }
                                             >
                                                 <Image
-                                                    source={item.userPic}
+                                                    source={{
+                                                        uri: item.profilePicture
+                                                    }}
                                                     style={styles.userPicInRow}
                                                 />
                                             </View>
                                             <View style={styles.nameContainer}>
                                                 <Text style={styles.nameText}>
-                                                    {item.name}
+                                                    {item.name +
+                                                        ' ' +
+                                                        item.lastname}
                                                 </Text>
                                                 <Text
                                                     style={styles.userNameText}
@@ -606,6 +685,7 @@ class Home extends React.Component {
                     width={wp(87.5)}
                     color="#00D9EF"
                     buttonText="Başla"
+                    onPress={this.friendGameModeOnPress}
                 />
             </View>
         )
@@ -624,14 +704,12 @@ class Home extends React.Component {
     }
 
     tryJoiningRoom = async () => {
-        const databaseId = await deviceStorage.getItemFromStorage('userId')
-
         this.room = this.client.join('groupRoom', {
             // These will be props coming from home screen
             examName: 'LGS',
             courseName: 'Matematik',
             subjectName: 'Sayilar',
-            databaseId: databaseId,
+            databaseId: this.props.clientDBId,
             roomCode: this.state.groupCodeOnChangeText.toString(),
             // Because we are joining a game, we don't want to create a new room
             create: false
@@ -708,10 +786,24 @@ class Home extends React.Component {
     }
 
     playButtonOnPress = () => {
+        let examIndex
+        let subjectIndex
+
+        examIndex = this.props.examList.findIndex(
+            x => x.name === this.state.defaultExam
+        )
+        subjectIndex = this.props.examList[examIndex].courseEntities[
+            this.state.carouselActiveSlide
+        ].subjectEntities.findIndex(x => x.name === this.state.subject)
+
         navigationReset('game', {
-            examName: this.state.exam,
-            courseName: this.carouselIndexToCourseName(),
-            subjectName: this.state.subject
+            examId: this.props.examList[examIndex].id,
+            courseId: this.props.examList[examIndex].courseEntities[
+                this.state.carouselActiveSlide
+            ].id,
+            subjectId: this.props.examList[examIndex].courseEntities[
+                this.state.carouselActiveSlide
+            ].subjectEntities[subjectIndex].id
         })
     }
 
@@ -724,85 +816,85 @@ class Home extends React.Component {
     }
 
     render() {
-        const card = this.cards(this.state.exam, this.state.carouselActiveSlide)
-        const visibleView = this.state.visibleView
+        const subjectCards = this.subjectCardsMaker(
+            this.state.defaultExam,
+            this.state.carouselActiveSlide
+        )
         return (
             <View style={styles.container}>
-                <NotchView color={'#fcfcfc'} />
                 <Modal
                     visible={this.state.isModalVisible}
                     transparent={true}
                     animationType={'fade'}
                 >
-                    {visibleView === 'GAME_MODES' && this.gameModesView()}
-                    {visibleView === 'FRIEND_ROOM' && this.friendRoomView()}
-                    {visibleView === 'GROUP_MODES' && this.groupModesView()}
-                    {visibleView === 'JOIN_ROOM' && this.joinRoomView()}
+                    {this.state.visibleView === 'GAME_MODES' &&
+                        this.gameModesView()}
+                    {this.state.visibleView === 'FRIEND_ROOM' &&
+                        this.friendRoomView()}
+                    {this.state.visibleView === 'GROUP_MODES' &&
+                        this.groupModesView()}
+                    {this.state.visibleView === 'JOIN_ROOM' &&
+                        this.joinRoomView()}
                 </Modal>
-                <View style={{ height: hp(60), marginTop: hp(0) }}>
-                    <View style={styles.header}>
-                        <View style={styles.profilePicContainer}>
-                            <TouchableOpacity onPress={this.profilePicOnPress}>
-                                <Image
-                                    source={{
-                                        uri: this.props.profilePicture
-                                    }}
-                                    style={styles.profilePic}
-                                />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.pickerContainer}>
-                            <DropDown
-                                style={styles.picker}
-                                textStyle={styles.pickerText}
-                                dropdownTextStyle={styles.pickerDropdownText}
-                                dropdownStyle={styles.pickerDropdown}
-                                options={exams}
-                                defaultValue={this.state.exam}
-                                onSelect={(idx, value) =>
-                                    this.pickerSelect(idx, value)
-                                }
+                <View style={styles.header}>
+                    <View style={styles.profilePicContainer}>
+                        <TouchableOpacity onPress={this.profilePicOnPress}>
+                            <Image
+                                source={{
+                                    uri: this.props.clientInformation
+                                        .profilePicture
+                                }}
+                                style={styles.profilePic}
                             />
-                        </View>
-                        <View style={styles.notificationLogoContainer}>
-                            <TouchableOpacity
-                                onPress={this.notificationPicOnPress}
-                            >
-                                <Image
-                                    source={NOTIFICATION_LOGO}
-                                    style={styles.notificationLogo}
-                                />
-                            </TouchableOpacity>
-                        </View>
+                        </TouchableOpacity>
                     </View>
-                    <View style={styles.carouselContainer}>
-                        <Carousel
-                            zIndex={-1}
-                            ref={c => (this._slider1Ref = c)}
-                            data={examList[this.state.exam]}
-                            renderItem={this._renderItemWithParallax}
-                            sliderWidth={sliderWidth}
-                            itemWidth={itemWidth}
-                            hasParallaxImages={true}
-                            firstItem={carouselFirstItem}
-                            inactiveSlideScale={0.8}
-                            inactiveSlideOpacity={0.65}
-                            // inactiveSlideShift={20}
-                            containerCustomStyle={carouselStyle.slider}
-                            contentContainerCustomStyle={
-                                carouselStyle.sliderContentContainer
-                            }
-                            loop={false}
-                            onSnapToItem={index =>
-                                this.setState({ carouselActiveSlide: index })
+                    <View style={styles.pickerContainer}>
+                        <DropDown
+                            style={styles.picker}
+                            textStyle={styles.pickerText}
+                            dropdownTextStyle={styles.pickerDropdownText}
+                            dropdownStyle={styles.pickerDropdown}
+                            options={this.state.examList}
+                            defaultValue={this.state.defaultExam}
+                            onSelect={(idx, value) =>
+                                this.pickerSelect(idx, value)
                             }
                         />
                     </View>
+                    <View style={styles.notificationLogoContainer}>
+                        <TouchableOpacity onPress={this.notificationPicOnPress}>
+                            <Image
+                                source={NOTIFICATION_LOGO}
+                                style={styles.notificationLogo}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View style={styles.carouselContainer}>
+                    <Carousel
+                        zIndex={1}
+                        ref={c => (this._slider1Ref = c)}
+                        data={this.state.carouselCourseData}
+                        renderItem={this._renderItemWithParallax}
+                        sliderHeight={sliderHeight}
+                        sliderWidth={sliderWidth}
+                        itemHeight={itemHeight}
+                        itemWidth={itemWidth}
+                        firstItem={carouselFirstItem}
+                        inactiveSlideScale={0.8}
+                        inactiveSlideOpacity={0.65}
+                        loop={false}
+                        onSnapToItem={index =>
+                            this.setState({ carouselActiveSlide: index })
+                        }
+                    />
+                </View>
+                <View style={styles.scrollViewContainer}>
                     <ScrollView
                         style={styles.cardsScrollView}
                         showsVerticalScrollIndicator={false}
                     >
-                        {card}
+                        {subjectCards}
                     </ScrollView>
                 </View>
             </View>
@@ -811,13 +903,19 @@ class Home extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    profilePicture: state.user.profilePicture,
-    choosenExam: state.user.choosenExam
+    choosenExam: state.gameContent.choosenExam,
+    clientInformation: state.client.clientInformation,
+    clientDBId: state.client.clientDBId,
+    clientToken: state.client.clientToken,
+    friendIds: state.friends.friendIds,
+    examList: state.gameContent.examList
 })
 
 const mapDispatchToProps = dispatch => ({
     saveChoosenExam: choosenExam =>
-        dispatch(userActions.saveChoosenExam(choosenExam))
+        dispatch(gameContentActions.saveChoosenExam(choosenExam)),
+    saveFriendIdList: friendList =>
+        dispatch(friendActions.saveFriendIds(friendList))
 })
 
 export default connect(

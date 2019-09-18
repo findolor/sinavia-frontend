@@ -12,21 +12,25 @@ export default StyleSheet.create({
         backgroundColor: '#fcfcfc'
     },
     header: {
-        height: hp(6),
+        flex: 6,
         width: wp(88),
         justifyContent: 'center',
         alignItems: 'flex-start'
     },
-    returnLogo: {
-        height: hp(3.5),
-        width: hp(3.5)
-    },
     tabbarContainer: {
-        height: hp(7.5),
+        flex: 7.5,
         width: wp(100),
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    flatListContainer: {
+        flex: 82.5,
+        width: wp(88),
+    },
+    returnLogo: {
+        height: hp(3.5),
+        width: hp(3.5)
     },
     generalNotificationsContainer: {
         height: hp(5.5),

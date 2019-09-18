@@ -12,7 +12,7 @@ export default StyleSheet.create({
     },
     topContainer: {
         backgroundColor: '#3FC8D9',
-        height: hp(70),
+        flex: 72,
         width: wp(100),
         borderBottomLeftRadius: 30,
         borderBottomRightRadius: 30,
@@ -22,33 +22,50 @@ export default StyleSheet.create({
         marginBottom: hp(1)
     },
     headerContainer: {
-        height: hp(13),
+        flex: 14,
+        width: wp(100),
         flexDirection: 'row',
-        justifyContent: 'space-evenly'
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     questionContainer: {
-        backgroundColor: '#fff',
+        backgroundColor: '#ffffff',
         height: hp(52),
         marginHorizontal: wp(5),
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center'
     },
+    questionAndZoomButtonContainer: {
+        flex: 6,
+        width: wp(100),
+        flexDirection: 'row'
+    },
+    spaceContainer: {
+        height: hp(6),
+        width: wp(15)
+    },
     questionInformation: {
         alignItems: 'center',
-        paddingTop: hp(1),
-        height: hp(6)
+        height: hp(6),
+        width: wp(70),
+        justifyContent: 'center'
+    },
+    zoomButtonContainer: {
+        height: hp(6),
+        width: wp(15),
+        justifyContent: 'center'
     },
     questionInformationText: {
         color: '#fff',
         fontFamily: 'Averta-Regular',
-        fontSize: wp(4),
+        fontSize: hp(3),
         fontWeight: '700'
     },
     dummyButtonContainer: {
-        height: hp(17),
+        flex: 16,
         width: wp(100),
-        marginBottom: hp(-1)
+        justifyContent: 'space-evenly'
     },
     topButtonRowContainer: {
         flexDirection: 'row',
@@ -70,7 +87,7 @@ export default StyleSheet.create({
     buttonText: {
         color: '#000',
         fontFamily: 'Averta-Regular',
-        fontSize: wp(5),
+        fontSize: hp(3),
         fontWeight: '700'
     },
     bottomButtonRowContainer: {
@@ -85,15 +102,14 @@ export default StyleSheet.create({
     jokerContainer: {
         backgroundColor: '#F4F6FB',
         width: wp(100),
-        flex: 1,
+        flex: 8,
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         marginTop: hp(1),
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
         shadowOpacity: 1,
         shadowColor: '#adadad',
-        paddingTop: hp(1)
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30
     },
     joker: {
         height: hp(3),
@@ -104,12 +120,13 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     touchableJokerContainer: {
-        flex: 1
+        flex: 1,
+        justifyContent: 'center'
     },
     jokerText: {
         color: '#000',
         fontFamily: 'Averta-Regular',
-        fontSize: wp(3),
+        fontSize: hp(2.3),
         fontWeight: '600'
     },
     questionStyle: {
@@ -119,22 +136,24 @@ export default StyleSheet.create({
         flex: 1
     },
     userContainer: {
-        justifyContent: 'space-evenly',
+        justifyContent: 'center',
         alignItems: 'center',
-        width: wp(25),
-        flex: 1
+        height: hp(13),
+        width: wp(32)
     },
     seeGroupContainer: {
-        justifyContent: 'space-evenly',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
         alignItems: 'center',
-        width: wp(25),
-        flex: 1
+        height: hp(13),
+        width: wp(32)
     },
     seeGroupCircle: {
-        backgroundColor: '#f77502',
-        height: hp(6),
-        width: hp(6),
-        borderRadius: 100,
+        height: hp(10),
+        width: wp(25),
+        borderWidth: hp(0.5),
+        borderColor: '#FFFFFF',
+        borderRadius: 30,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -145,9 +164,9 @@ export default StyleSheet.create({
     },
     seeGroupText: {
         fontFamily: 'Averta-Bold',
-        fontSize: wp(4),
+        fontSize: hp(2.5),
         color: '#fff',
-        fontWeight: '800'
+        zIndex: 1
     },
     userProfilePicture: {
         resizeMode: 'contain',
@@ -165,36 +184,35 @@ export default StyleSheet.create({
     },
     usernameText: {
         fontFamily: 'Averta-Bold',
-        fontSize: wp(4),
+        fontSize: hp(2.3),
         color: '#fff',
         fontWeight: '800'
     },
     answersText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: wp(4),
+        fontSize: hp(2.3),
         color: '#fff',
         fontWeight: '600'
     },
     countdownContainer: {
-        height: hp(9),
-        width: hp(9),
-        backgroundColor: '#fff',
-        borderRadius: 100,
+        height: hp(13),
+        width: wp(20),
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: hp(1)
+        backgroundColor: 'red'
     },
     countdownInnerContainer: {
-        height: hp(7.5),
-        width: hp(7.5),
-        backgroundColor: '#3FC8D9',
+        height: hp(10),
+        width: hp(10),
+        borderWidth: hp(0.5),
+        borderColor: 'white',
         borderRadius: 100,
         justifyContent: 'center',
         alignItems: 'center'
     },
     countdownText: {
         fontFamily: 'Averta-Bold',
-        fontSize: wp(7),
+        fontSize: hp(3.5),
         color: '#fff',
         fontWeight: '800'
     },
@@ -208,13 +226,8 @@ export default StyleSheet.create({
     },
     zoomButton: {
         resizeMode: 'contain',
-        height: hp(7),
-        width: wp(7)
-    },
-    zoomButtonContainer: {
-        position: 'absolute',
-        top: hp(64),
-        left: wp(85)
+        height: hp(4),
+        width: hp(4)
     },
     modalContainer: {
         backgroundColor: '#000000d0',
@@ -238,9 +251,87 @@ export default StyleSheet.create({
         height: hp(7),
         width: wp(7),
         resizeMode: 'contain'
+    },
+    userRow: {
+        height: hp(7),
+        width: wp(82),
+        flexDirection: 'row',
+        borderTopWidth: wp(0.5),
+        borderTopColor: '#CACACA'
+    },
+    orderContainer: {
+        height: hp(7),
+        width: wp(12),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    orderNumberText: {
+        fontFamily: 'Averta-SemiboldItalic',
+        color: '#2E313C',
+        fontSize: hp(3.5)
+    },
+    nameContainer: {
+        height: hp(7),
+        width: wp(43),
+        justifyContent: 'center',
+        alignItems: 'flex-start'
+    },
+    nameText: {
+        fontFamily: 'Averta-Semibold',
+        color: '#2E313C',
+        fontSize: hp(2.5)
+    },
+    optionsContainer: {
+        height: hp(7),
+        width: wp(27),
+        flexDirection: 'row'
+    },
+    optionContainer: {
+        height: hp(7),
+        width: wp(9),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    optionCounterText: {
+        fontFamily: 'Averta-BoldItalic',
+        color: '#FF9900',
+        fontSize: hp(3.5)
+    },
+    orderHeaderText: {
+        fontFamily: 'Averta-ExtraBoldItalic',
+        color: '#FF9900',
+        fontSize: hp(3)
+    },
+    nameHeaderText: {
+        fontFamily: 'Averta-ExtraBoldItalic',
+        color: '#FF9900',
+        fontSize: hp(3)
+    },
+    resultsContainer: {
+        height: hp(52),
+        width: wp(87.8),
+        backgroundColor: '#F2FEFF',
+        marginLeft: wp(6.4),
+        borderRadius: 20,
+        alignItems: 'center'
+    },
+    resultsContainerHeader: {
+        height: hp(6),
+        width: wp(82),
+        flexDirection: 'row'
+    },
+    optionsImg: {
+        height: hp(3),
+        width: hp(3)
+    },
+    seeUsersAndQuestionTextView: {
+        height: hp(7),
+        width: hp(7),
+        borderRadius: 100,
+        backgroundColor: 'white'
     }
 })
 
 export const countdownProps = {
-    size: wp(4)
+    size: hp(2.5)
 }

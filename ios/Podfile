@@ -39,6 +39,8 @@ target 'Sinavia' do
   pod 'Firebase/Messaging', '~> 6.3.0'
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
 
+  pod 'RNShare', :path => '../node_modules/react-native-share'
+
   target 'SinaviaTests' do
     inherit! :search_paths
     # Pods for testing

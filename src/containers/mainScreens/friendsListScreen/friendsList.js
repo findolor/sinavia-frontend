@@ -4,89 +4,37 @@ import {
     FlatList,
     Text,
     TouchableOpacity,
-    View, TextInput
+    View,
+    TextInput
 } from 'react-native'
-import { SCENE_KEYS, navigationPop } from '../../../services/navigationService'
+import {
+    SCENE_KEYS,
+    navigationPop,
+    navigationPush
+} from '../../../services/navigationService'
+import { connect } from 'react-redux'
+import { userServices } from '../../../sagas/user/'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import returnLogo from '../../../assets/return.png'
-import searchlogo from '../../../assets/search.png'
-import PROFILE_PIC from '../../../assets/profile2.jpg'
-
-const friendsListData = [
-    {
-        userPic: PROFILE_PIC,
-        name: 'Nurettin Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Mehmet',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Nakışçı',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Arca Altunsu',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Orkun Külçe',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Ahmet',
-        username: 'ahmetnakisci'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Burak',
-        username: 'ruzgar'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan Yılmaz',
-        username: 'haqotherage'
-    },
-    {
-        userPic: PROFILE_PIC,
-        name: 'Hakan',
-        username: 'haqotherage'
-    }
-]
 
 class FriendsList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            data: friendsListData
+            friendsList: this.props.friendsList,
+            value: ''
         }
+    }
+
+    async componentDidMount() {
+        if (Object.keys(this.props.friendIds).length === 0) return
+        const friends = await userServices.getUsers(
+            this.props.clientToken,
+            this.props.friendIds
+        )
+
+        this.setState({ friendsList: friends })
     }
 
     returnButtonOnPress = () => {
@@ -95,18 +43,28 @@ class FriendsList extends React.Component {
 
     searchFilterFunction = text => {
         this.setState({
-            value: text,
-        });
+            value: text
+        })
 
-        const newData = friendsListData.filter(item => {
-            const itemData = `${item.name.toUpperCase()} ${item.username.toUpperCase()}`;
-            const textData = text.toUpperCase();
+        const newData = this.state.friendsList.filter(item => {
+            const itemData = `${item.name.toUpperCase() +
+                ' ' +
+                item.lastname.toUpperCase()} ${item.username.toUpperCase()}`
+            const textData = text.toUpperCase()
 
-            return itemData.indexOf(textData) > -1;
-        });
+            return itemData.indexOf(textData) > -1
+        })
         this.setState({
-            data: newData,
-        });
+            friendsList: newData
+        })
+    }
+
+    friendOnPress = listIndex => {
+        navigationPush(SCENE_KEYS.mainScreens.opponentsProfile, {
+            opponentInformation: this.state.friendsList[listIndex],
+            isWithSearchBar: false,
+            friendsScreenFriendsList: this.state.friendsList
+        })
     }
 
     render() {
@@ -129,35 +87,41 @@ class FriendsList extends React.Component {
                                 placeholder="Arkadaşını ara..."
                                 placeholderTextColor={'#7B7B7B'}
                                 autoCapitalize={'none'}
-                                onChangeText={text => this.searchFilterFunction(text)}
+                                onChangeText={text =>
+                                    this.searchFilterFunction(text)
+                                }
                                 value={this.state.value}
                             />
                         </View>
                     </View>
                 </View>
-                <View style={styles.spaceView}/>
+                <View style={styles.spaceView} />
                 <View style={styles.flatListView}>
                     <FlatList
-                        data={this.state.data}
+                        data={this.state.friendsList}
                         vertical={true}
                         showsVerticalScrollIndicator={false}
-                        renderItem={({ item }) => {
+                        renderItem={({ item, index }) => {
                             return (
-                                <TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => this.friendOnPress(index)}
+                                >
                                     <View style={styles.userRow}>
                                         <View
-                                            style={
-                                                styles.userPicContainerInRow
-                                            }
+                                            style={styles.userPicContainerInRow}
                                         >
                                             <Image
-                                                source={item.userPic}
+                                                source={{
+                                                    uri: item.profilePicture
+                                                }}
                                                 style={styles.userPic}
                                             />
                                         </View>
                                         <View style={styles.nameContainer}>
                                             <Text style={styles.nameText}>
-                                                {item.name}
+                                                {item.name +
+                                                    ' ' +
+                                                    item.lastname}
                                             </Text>
                                             <Text style={styles.userNameText}>
                                                 @{item.username}
@@ -175,4 +139,14 @@ class FriendsList extends React.Component {
     }
 }
 
-export default FriendsList
+const mapStateToProps = state => ({
+    clientToken: state.client.clientToken,
+    friendIds: state.friends.friendIds
+})
+
+const mapDispatchToProps = dispatch => ({})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(FriendsList)

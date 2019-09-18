@@ -60,6 +60,7 @@ class ChangePassword extends React.Component {
                         <View style={styles.textInputView} />
                     </View>
                 </View>
+                <View style={styles.spaceView}/>
             </View>
         )
     }

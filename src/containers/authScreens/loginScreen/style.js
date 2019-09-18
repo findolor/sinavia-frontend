@@ -12,23 +12,22 @@ export default StyleSheet.create({
         backgroundColor: '#fcfcfc'
     },
     imageContainer: {
-        height: hp(55),
+        flex: 55,
         width: wp(100),
         backgroundColor: '#fcfcfc',
         justifyContent: 'center',
         alignItems: 'center'
     },
     textInputsContainer: {
-        height: hp(20),
+        flex: 20,
         width: wp(100),
         backgroundColor: '#fcfcfc',
         justifyContent: 'space-around',
         alignItems: 'center'
     },
     buttonContainer: {
-        height: hp(22),
+        flex: 21,
         width: wp(100),
-        backgroundColor: '#fcfcfc',
         justifyContent: 'space-around',
         alignItems: 'center'
     },

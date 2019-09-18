@@ -1,14 +1,20 @@
 import axios from 'axios'
 import { API_ENDPOINT } from '../../../config/index'
 
-export const acceptFriendshipRequest = async (userToken, userId, friendId) => {
+export const acceptFriendshipRequest = async (
+    userToken,
+    userId,
+    friendId,
+    clientUsername
+) => {
     try {
         const response = await axios.put(
             API_ENDPOINT + 'friendships/',
             {
                 userId: friendId,
                 friendId: userId,
-                friendshipStatus: 'approved'
+                friendshipStatus: 'approved',
+                username: clientUsername
             },
             {
                 headers: {

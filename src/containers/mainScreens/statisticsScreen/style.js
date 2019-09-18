@@ -12,22 +12,33 @@ export default StyleSheet.create({
         backgroundColor: '#fcfcfc'
     },
     header: {
-        height: hp(6),
+        flex: 6,
         width: wp(88),
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
     },
-    returnLogo: {
-        height: hp(3.5),
-        width: hp(3.5)
-    },
     dropdownsContainer: {
-        height: hp(9),
+        flex: 9,
         width: wp(88),
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-start'
+    },
+    statisticsContainer: {
+        flex: 78,
+        width: wp(88),
+        borderColor: '#FF9900',
+        borderWidth: wp(0.5),
+        borderRadius: 6,
+        alignItems:'center'
+    },
+    spaceView: {
+        flex: 3
+    },
+    returnLogo: {
+        height: hp(3.5),
+        width: hp(3.5)
     },
     picker: {
         height: hp(7),
@@ -67,14 +78,6 @@ export default StyleSheet.create({
         borderRadius: 6,
         marginTop: hp(0.5),
         marginLeft: wp(-0.5)
-    },
-    statisticsContainer: {
-        height: hp(77),
-        width: wp(88),
-        borderColor: '#FF9900',
-        borderWidth: wp(0.5),
-        borderRadius: 6,
-        alignItems:'center'
     },
     percentagesAndCirclesContainer: {
         height: hp(32),
@@ -173,7 +176,7 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     timezoneChartContainer: {
-        height: hp(12),
+        height: hp(15),
         width: wp(88),
         justifyContent: 'center',
         alignItems: 'center'
@@ -181,7 +184,6 @@ export default StyleSheet.create({
     barRheostatContainer: {
         height: hp(6),
         width: wp(75),
-        justifyContent: 'center'
     },
     timezonesTextView: {
         height: hp(6),
