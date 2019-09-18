@@ -31,6 +31,11 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 gameContentIds: state.gameContentIds
             }
+        case gameContentTypes.SAVE_GAME_CONTENT_MAP:
+            return {
+                ...state,
+                gameContentMap: action.payload
+            }
         default:
             return state
     }

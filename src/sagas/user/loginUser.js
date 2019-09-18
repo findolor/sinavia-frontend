@@ -25,6 +25,13 @@ export function* loginUser(action) {
         // We save the token to storage
         deviceStorage.saveItemToStorage('clientToken', res.token)
 
+        // TODO THINK ABOUT CONTETT LATER IMPORTRRANT
+        // Saving the game content to redux state
+        yield put({
+            type: gameContentTypes.GET_ALL_CONTENT,
+            clientToken: res.token
+        })
+
         // We save our user credentials
         deviceStorage.saveItemToStorage(
             'clientCredentials',
@@ -101,12 +108,6 @@ export function* loginUser(action) {
         yield put({
             type: clientTypes.SAVE_USER_JOKERS,
             payload: userJokers
-        })
-        // TODO THINK ABOUT CONTETT LATER IMPORTRRANT
-        // Saving the game content to redux state
-        yield put({
-            type: gameContentTypes.GET_ALL_CONTENT,
-            clientToken: res.token
         })
 
         // Going to the main screen

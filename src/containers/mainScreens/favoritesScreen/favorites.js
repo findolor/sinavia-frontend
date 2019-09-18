@@ -9,6 +9,7 @@ import {
     View
 } from 'react-native'
 import { SCENE_KEYS, navigationPop } from '../../../services/navigationService'
+import { connect } from 'react-redux'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import Gallery from 'react-native-image-gallery'
@@ -33,14 +34,14 @@ const data = [
             uri:
                 'http://testicoz.org/wp-content/uploads/2017/09/ygs-dilveanlatim-7-01.png'
         },
-        id: 2
+        id: 1
     },
     {
         source: {
             uri:
                 'https://prods3.imgix.net/images/articles/2017_04/Feature-restaurant-butcher-bakery-shops2.jpg?auto=format%2Ccompress&ixjsv=2.2.3'
         },
-        id: 3
+        id: 2
     }
 ]
 
@@ -53,8 +54,91 @@ class Favorites extends React.Component {
             isModalVisible: false,
             initialIndex: 0,
             galleryPosition: 0,
-            favIconSelected: false
+            favIconSelected: false,
+            // ScrollView item list
+            scrollViewList: []
         }
+    }
+
+    // TODO REMOVE GALLERY AND THINK OF SOMETHING ELSE
+    async componentDidMount() {
+        await this.loadScreen()
+    }
+
+    loadScreen = () => {
+        new Promise.resolve().then(() => {
+            const scrollViewList = []
+            let itemList
+            let questionList
+            let examName
+            let courseName
+
+            Object.keys(this.props.favouriteQuestions).forEach(examKey => {
+                itemList = []
+                examName = this.props.gameContentMap.exams[examKey - 1].name
+                Object.keys(this.props.favouriteQuestions[examKey]).forEach(
+                    (courseKey, index) => {
+                        questionList = []
+                        courseName = this.props.gameContentMap.courses[
+                            courseKey - 1
+                        ].name
+                        this.props.favouriteQuestions[examKey][
+                            courseKey
+                        ].forEach((question, index) => {
+                            questionList.push({
+                                source: {
+                                    uri: question.question.questionLink
+                                },
+                                id: index - 1,
+                                correctAnswer: question.question.correctAnswer,
+                                favouriteQuestionId: question.id
+                            })
+                        })
+                        itemList.push(
+                            <View style={styles.card} key={index}>
+                                <View style={styles.contentContainerWrapper}>
+                                    <Text style={styles.contentText}>
+                                        {examName} - {courseName}
+                                    </Text>
+                                </View>
+                                <View style={styles.questionsContainer}>
+                                    <FlatList
+                                        horizontal={true}
+                                        data={questionList}
+                                        showsHorizontalScrollIndicator={false}
+                                        renderItem={({ item }) => {
+                                            return (
+                                                <TouchableOpacity
+                                                    onPress={() =>
+                                                        this.questionOnPress(
+                                                            item
+                                                        )
+                                                    }
+                                                >
+                                                    <Image
+                                                        source={{
+                                                            uri: item.source.uri
+                                                        }}
+                                                        style={styles.question}
+                                                    />
+                                                </TouchableOpacity>
+                                            )
+                                        }}
+                                        keyExtractor={(item, index) =>
+                                            index.toString()
+                                        }
+                                    />
+                                </View>
+                            </View>
+                        )
+                    }
+                )
+                scrollViewList.push(itemList)
+            })
+
+            this.setState({ scrollViewList: scrollViewList })
+            return true
+        })
     }
 
     returnButtonOnPress = () => {
@@ -196,7 +280,8 @@ class Favorites extends React.Component {
                         style={styles.cardsScrollView}
                         showsVerticalScrollIndicator={false}
                     >
-                        <View style={styles.card}>
+                        {this.state.scrollViewList}
+                        {/* <View style={styles.card}>
                             <View style={styles.contentContainerWrapper}>
                                 <Text style={styles.contentText}>
                                     YKS - TÜRKÇE
@@ -228,108 +313,7 @@ class Favorites extends React.Component {
                                     }
                                 />
                             </View>
-                        </View>
-                        <View style={styles.card}>
-                            <View style={styles.contentContainerWrapper}>
-                                <Text style={styles.contentText}>
-                                    YKS - TÜRKÇE
-                                </Text>
-                            </View>
-                            <View style={styles.questionsContainer}>
-                                <FlatList
-                                    horizontal={true}
-                                    data={this.state.data}
-                                    showsHorizontalScrollIndicator={false}
-                                    renderItem={({ item }) => {
-                                        return (
-                                            <TouchableOpacity
-                                                onPress={() =>
-                                                    this.questionOnPress(item)
-                                                }
-                                            >
-                                                <Image
-                                                    source={{
-                                                        uri: item.source.uri
-                                                    }}
-                                                    style={styles.question}
-                                                />
-                                            </TouchableOpacity>
-                                        )
-                                    }}
-                                    keyExtractor={(item, index) =>
-                                        index.toString()
-                                    }
-                                />
-                            </View>
-                        </View>
-                        <View style={styles.card}>
-                            <View style={styles.contentContainerUp} />
-                            <View style={styles.contentContainerDown} />
-                            <View style={styles.contentContainerWrapper}>
-                                <Text style={styles.contentText}>
-                                    YKS - TÜRKÇE
-                                </Text>
-                            </View>
-                            <View style={styles.questionsContainer}>
-                                <FlatList
-                                    horizontal={true}
-                                    data={this.state.data}
-                                    showsHorizontalScrollIndicator={false}
-                                    renderItem={({ item }) => {
-                                        return (
-                                            <TouchableOpacity
-                                                onPress={() =>
-                                                    this.questionOnPress(item)
-                                                }
-                                            >
-                                                <Image
-                                                    source={{
-                                                        uri: item.source.uri
-                                                    }}
-                                                    style={styles.question}
-                                                />
-                                            </TouchableOpacity>
-                                        )
-                                    }}
-                                    keyExtractor={(item, index) =>
-                                        index.toString()
-                                    }
-                                />
-                            </View>
-                        </View>
-                        <View style={styles.card}>
-                            <View style={styles.contentContainerWrapper}>
-                                <Text style={styles.contentText}>
-                                    YKS - TÜRKÇE
-                                </Text>
-                            </View>
-                            <View style={styles.questionsContainer}>
-                                <FlatList
-                                    horizontal={true}
-                                    data={this.state.data}
-                                    showsHorizontalScrollIndicator={false}
-                                    renderItem={({ item }) => {
-                                        return (
-                                            <TouchableOpacity
-                                                onPress={() =>
-                                                    this.questionOnPress(item)
-                                                }
-                                            >
-                                                <Image
-                                                    source={{
-                                                        uri: item.source.uri
-                                                    }}
-                                                    style={styles.question}
-                                                />
-                                            </TouchableOpacity>
-                                        )
-                                    }}
-                                    keyExtractor={(item, index) =>
-                                        index.toString()
-                                    }
-                                />
-                            </View>
-                        </View>
+                        </View> */}
                     </ScrollView>
                 </View>
             </View>
@@ -337,4 +321,14 @@ class Favorites extends React.Component {
     }
 }
 
-export default Favorites
+const mapStateToProps = state => ({
+    favouriteQuestions: state.client.favouriteQuestions,
+    gameContentMap: state.gameContent.gameContentMap
+})
+
+const mapDispatchToProps = dispatch => ({})
+
+export default connect(
+    mapStateToProps,
+    null
+)(Favorites)

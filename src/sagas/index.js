@@ -32,6 +32,10 @@ export default function* root() {
         takeLatest(
             gameContentTypes.GET_ALL_CONTENT,
             gameContentSagas.getAllContent
+        ),
+        takeLatest(
+            clientTypes.SAVE_FAVOURITE_QUESTIONS,
+            questionSagas.saveFavouriteQuestions
         )
     ])
 }
