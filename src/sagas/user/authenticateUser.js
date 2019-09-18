@@ -10,7 +10,7 @@ import { postFCMToken } from '../../services/apiServices/fcmToken/postToken'
 import { getFriends } from '../../services/apiServices/friendship/getFriends'
 import { getUserJokers } from '../../services/apiServices/userJoker/getUserJokers'
 import { gameContentTypes } from '../../redux/gameContent/actions'
-import { getExamList } from '../../services/apiServices/gameContent/getExamList'
+//import { getExamList } from '../../services/apiServices/gameContent/getExamList'
 
 async function getFromStorage(key) {
     const item = await deviceStorage.getItemFromStorage(key)
@@ -237,13 +237,18 @@ export function* authenticateUser(action) {
                 type: clientTypes.SAVE_USER_JOKERS,
                 payload: userJokers
             })
-
-            // Getting the exam list from db
+            // TODO THINK ABOUT CONTETT LATER IMPORTRRANT
+            /* // Getting the exam list from db
             const examList = yield call(getExamList, action.payload)
             // Saving it to redux state
             yield put({
                 type: gameContentTypes.SAVE_EXAM_LIST,
                 payload: examList
+            }) */
+
+            yield put({
+                type: gameContentTypes.GET_ALL_CONTENT,
+                clientToken: action.payload
             })
 
             // We get the choosen exam from storage to show the last choosen exam

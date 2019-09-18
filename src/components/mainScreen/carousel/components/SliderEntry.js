@@ -5,20 +5,21 @@ import styles from '../styles/SliderEntry.style'
 
 export default class SliderEntry extends Component {
     static propTypes = {
-        data: PropTypes.object.isRequired,
+        data: PropTypes.object.isRequired
     }
 
     render() {
         const {
-            data: { illustration },
+            data: { illustration }
         } = this.props
 
         return (
             <View>
                 <ImageBackground
-                    source={illustration}
+                    source={{ uri: illustration }}
                     imageStyle={{ borderRadius: 30 }}
-                    style={styles.image}/>
+                    style={styles.image}
+                />
             </View>
         )
     }

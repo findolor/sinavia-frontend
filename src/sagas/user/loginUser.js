@@ -10,6 +10,7 @@ import { postFCMToken } from '../../services/apiServices/fcmToken/postToken'
 import { getFriends } from '../../services/apiServices/friendship/getFriends'
 import { getFavouriteQuestions } from '../../services/apiServices/favouriteQuestion/getFavouriteQuestions'
 import { getUserJokers } from '../../services/apiServices/userJoker/getUserJokers'
+import { gameContentTypes } from '../../redux/gameContent/actions'
 
 export function* loginUser(action) {
     try {
@@ -100,6 +101,12 @@ export function* loginUser(action) {
         yield put({
             type: clientTypes.SAVE_USER_JOKERS,
             payload: userJokers
+        })
+        // TODO THINK ABOUT CONTETT LATER IMPORTRRANT
+        // Saving the game content to redux state
+        yield put({
+            type: gameContentTypes.GET_ALL_CONTENT,
+            clientToken: res.token
         })
 
         // Going to the main screen

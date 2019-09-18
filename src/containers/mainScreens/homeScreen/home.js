@@ -290,6 +290,7 @@ class Home extends React.Component {
         })
     }
 
+    // TODO THINK ABOUT CONTETT LATER IMPORTRRANT
     carouselMaker = examName => {
         let index = this.props.examList.findIndex(x => x.name === examName)
 
@@ -298,7 +299,7 @@ class Home extends React.Component {
         this.props.examList[index].courseEntities.forEach(course => {
             courseList.push({
                 courseName: course.name,
-                illustration: RANKED_EMPTY_IMAGE
+                illustration: course.imageLink
             })
         })
 
@@ -310,7 +311,6 @@ class Home extends React.Component {
     subjectCardsMaker = (examName, carouselActiveSlide) => {
         let examIndex
         let subjectList = []
-        console.log(this.props.examList)
         examIndex = this.props.examList.findIndex(x => x.name === examName)
         this.props.examList[examIndex].courseEntities[
             carouselActiveSlide
@@ -836,69 +836,67 @@ class Home extends React.Component {
                     {this.state.visibleView === 'JOIN_ROOM' &&
                         this.joinRoomView()}
                 </Modal>
-                    <View style={styles.header}>
-                        <View style={styles.profilePicContainer}>
-                            <TouchableOpacity onPress={this.profilePicOnPress}>
-                                <Image
-                                    source={{
-                                        uri: this.props.clientInformation
-                                            .profilePicture
-                                    }}
-                                    style={styles.profilePic}
-                                />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.pickerContainer}>
-                            <DropDown
-                                style={styles.picker}
-                                textStyle={styles.pickerText}
-                                dropdownTextStyle={styles.pickerDropdownText}
-                                dropdownStyle={styles.pickerDropdown}
-                                options={this.state.examList}
-                                defaultValue={this.state.defaultExam}
-                                onSelect={(idx, value) =>
-                                    this.pickerSelect(idx, value)
-                                }
+                <View style={styles.header}>
+                    <View style={styles.profilePicContainer}>
+                        <TouchableOpacity onPress={this.profilePicOnPress}>
+                            <Image
+                                source={{
+                                    uri: this.props.clientInformation
+                                        .profilePicture
+                                }}
+                                style={styles.profilePic}
                             />
-                        </View>
-                        <View style={styles.notificationLogoContainer}>
-                            <TouchableOpacity
-                                onPress={this.notificationPicOnPress}
-                            >
-                                <Image
-                                    source={NOTIFICATION_LOGO}
-                                    style={styles.notificationLogo}
-                                />
-                            </TouchableOpacity>
-                        </View>
+                        </TouchableOpacity>
                     </View>
-                    <View style={styles.carouselContainer}>
-                        <Carousel
-                            zIndex={1}
-                            ref={c => (this._slider1Ref = c)}
-                            data={this.state.carouselCourseData}
-                            renderItem={this._renderItemWithParallax}
-                            sliderHeight={sliderHeight}
-                            sliderWidth={sliderWidth}
-                            itemHeight={itemHeight}
-                            itemWidth={itemWidth}
-                            firstItem={carouselFirstItem}
-                            inactiveSlideScale={0.8}
-                            inactiveSlideOpacity={0.65}
-                            loop={false}
-                            onSnapToItem={index =>
-                                this.setState({ carouselActiveSlide: index })
+                    <View style={styles.pickerContainer}>
+                        <DropDown
+                            style={styles.picker}
+                            textStyle={styles.pickerText}
+                            dropdownTextStyle={styles.pickerDropdownText}
+                            dropdownStyle={styles.pickerDropdown}
+                            options={this.state.examList}
+                            defaultValue={this.state.defaultExam}
+                            onSelect={(idx, value) =>
+                                this.pickerSelect(idx, value)
                             }
                         />
                     </View>
-                    <View style={styles.scrollViewContainer}>
+                    <View style={styles.notificationLogoContainer}>
+                        <TouchableOpacity onPress={this.notificationPicOnPress}>
+                            <Image
+                                source={NOTIFICATION_LOGO}
+                                style={styles.notificationLogo}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View style={styles.carouselContainer}>
+                    <Carousel
+                        zIndex={1}
+                        ref={c => (this._slider1Ref = c)}
+                        data={this.state.carouselCourseData}
+                        renderItem={this._renderItemWithParallax}
+                        sliderHeight={sliderHeight}
+                        sliderWidth={sliderWidth}
+                        itemHeight={itemHeight}
+                        itemWidth={itemWidth}
+                        firstItem={carouselFirstItem}
+                        inactiveSlideScale={0.8}
+                        inactiveSlideOpacity={0.65}
+                        loop={false}
+                        onSnapToItem={index =>
+                            this.setState({ carouselActiveSlide: index })
+                        }
+                    />
+                </View>
+                <View style={styles.scrollViewContainer}>
                     <ScrollView
                         style={styles.cardsScrollView}
                         showsVerticalScrollIndicator={false}
                     >
                         {subjectCards}
                     </ScrollView>
-                    </View>
+                </View>
             </View>
         )
     }
