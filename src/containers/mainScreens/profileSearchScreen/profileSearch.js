@@ -40,7 +40,8 @@ class ProfileSearch extends React.Component {
         this.props.getOpponentFullInformation(
             this.state.returnedSearchList[searchListIndex],
             this.props.clientDBId,
-            this.props.clientToken
+            this.props.clientToken,
+            true
         )
     }
 
@@ -66,56 +67,66 @@ class ProfileSearch extends React.Component {
                         </Text>
                     </View>
                 </View>
-                {Object.keys(this.state.returnedSearchList).length !== 0 && (<View style={styles.flatListContainer}>
-                    <FlatList
-                        data={this.state.returnedSearchList}
-                        vertical={true}
-                        showsVerticalScrollIndicator={false}
-                        renderItem={({ item, index }) => {
-                            return (
-                                <TouchableOpacity
-                                    onPress={() => this.userOnPress(index)}
-                                >
-                                    <View style={styles.userRow}>
-                                        <View
-                                            style={styles.userPicContainerInRow}
-                                        >
-                                            <Image
-                                                source={{
-                                                    uri: item.profilePicture
-                                                }}
-                                                style={styles.userPic}
-                                            />
-                                        </View>
-                                        <View style={styles.namesContainer}>
-                                            <View style={styles.nameContainer}>
-                                                <Text style={styles.nameText}>
-                                                    {item.name +
-                                                        ' ' +
-                                                        item.lastname}
-                                                </Text>
-                                            </View>
+                {Object.keys(this.state.returnedSearchList).length !== 0 && (
+                    <View style={styles.flatListContainer}>
+                        <FlatList
+                            data={this.state.returnedSearchList}
+                            vertical={true}
+                            showsVerticalScrollIndicator={false}
+                            renderItem={({ item, index }) => {
+                                return (
+                                    <TouchableOpacity
+                                        onPress={() => this.userOnPress(index)}
+                                    >
+                                        <View style={styles.userRow}>
                                             <View
-                                                style={styles.usernameContainer}
+                                                style={
+                                                    styles.userPicContainerInRow
+                                                }
                                             >
-                                                <Text
-                                                    style={styles.usernameText}
+                                                <Image
+                                                    source={{
+                                                        uri: item.profilePicture
+                                                    }}
+                                                    style={styles.userPic}
+                                                />
+                                            </View>
+                                            <View style={styles.namesContainer}>
+                                                <View
+                                                    style={styles.nameContainer}
                                                 >
-                                                    @{item.username}
-                                                </Text>
+                                                    <Text
+                                                        style={styles.nameText}
+                                                    >
+                                                        {item.name +
+                                                            ' ' +
+                                                            item.lastname}
+                                                    </Text>
+                                                </View>
+                                                <View
+                                                    style={
+                                                        styles.usernameContainer
+                                                    }
+                                                >
+                                                    <Text
+                                                        style={
+                                                            styles.usernameText
+                                                        }
+                                                    >
+                                                        @{item.username}
+                                                    </Text>
+                                                </View>
                                             </View>
                                         </View>
-                                    </View>
-                                </TouchableOpacity>
-                            )
-                        }}
-                        keyExtractor={(item, index) => index.toString()}
-                    /></View>
+                                    </TouchableOpacity>
+                                )
+                            }}
+                            keyExtractor={(item, index) => index.toString()}
+                        />
+                    </View>
                 )}
                 {Object.keys(this.state.returnedSearchList).length === 0 && (
-                    <View
-                        style={styles.noResultsView}
-                    >
+                    <View style={styles.noResultsView}>
                         <Text>Sonuç yok</Text>
                     </View>
                 )}
@@ -130,12 +141,18 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    getOpponentFullInformation: (opponentInformation, clientId, clientToken) =>
+    getOpponentFullInformation: (
+        opponentInformation,
+        clientId,
+        clientToken,
+        isWithSearchBar
+    ) =>
         dispatch(
             opponentActions.getOpponentFullInformation(
                 opponentInformation,
                 clientId,
-                clientToken
+                clientToken,
+                isWithSearchBar
             )
         )
 })

@@ -19,13 +19,15 @@ export const opponentTypes = {
 const getOpponentFullInformation = (
     opponentInformation,
     clientId,
-    clientToken
+    clientToken,
+    isWithSearchBar
 ) => {
     return {
         type: opponentTypes.GET_OPPONENT_FULL_INFORMATION,
         opponentInformation: opponentInformation,
         clientId: clientId,
-        clientToken: clientToken
+        clientToken: clientToken,
+        isWithSearchBar: isWithSearchBar
     }
 }
 

@@ -20,7 +20,7 @@ export function* getOpponentFullInformationSaga(action) {
         action.opponentInformation.id,
         action.clientId
     )
-    console.log(res)
+
     const opponentWinCount = Object.keys(res.friendGameWins).length
     const clientWinCount = Object.keys(res.friendGameDefeats).length
     const friendMatchDrawCount = Object.keys(res.friendGameDraws).length
@@ -94,6 +94,6 @@ export function* getOpponentFullInformationSaga(action) {
         payload: winPercentage
     })
     navigationPush(SCENE_KEYS.mainScreens.opponentsProfile, {
-        isWithSearchBar: true
+        isWithSearchBar: action.isWithSearchBar
     })
 }

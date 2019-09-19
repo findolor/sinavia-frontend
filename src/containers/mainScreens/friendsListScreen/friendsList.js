@@ -14,6 +14,7 @@ import {
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import { userServices } from '../../../sagas/user/'
+import { opponentActions } from '../../../redux/opponents/actions'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import returnLogo from '../../../assets/return.png'
@@ -59,12 +60,13 @@ class FriendsList extends React.Component {
         })
     }
 
-    friendOnPress = listIndex => {
-        navigationPush(SCENE_KEYS.mainScreens.opponentsProfile, {
-            opponentInformation: this.state.friendsList[listIndex],
-            isWithSearchBar: false,
-            friendsScreenFriendsList: this.state.friendsList
-        })
+    friendOnPress = searchListIndex => {
+        this.props.getOpponentFullInformation(
+            this.state.friendsList[searchListIndex],
+            this.props.clientDBId,
+            this.props.clientToken,
+            false
+        )
     }
 
     render() {
@@ -141,10 +143,26 @@ class FriendsList extends React.Component {
 
 const mapStateToProps = state => ({
     clientToken: state.client.clientToken,
+    clientDBId: state.client.clientDBId,
     friendIds: state.friends.friendIds
 })
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+    getOpponentFullInformation: (
+        opponentInformation,
+        clientId,
+        clientToken,
+        isWithSearchBar
+    ) =>
+        dispatch(
+            opponentActions.getOpponentFullInformation(
+                opponentInformation,
+                clientId,
+                clientToken,
+                isWithSearchBar
+            )
+        )
+})
 
 export default connect(
     mapStateToProps,

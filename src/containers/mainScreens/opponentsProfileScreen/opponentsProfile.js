@@ -48,7 +48,6 @@ class OpponentsProfile extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.props)
         if (!this.props.isFriends) {
             if (this.props.isRequesting)
                 this.setState({
@@ -73,8 +72,9 @@ class OpponentsProfile extends React.Component {
     }
 
     // TODO this doesn't refresh the screen upon popping
+    // TODO Take a close look here
     backButtonOnPress = () => {
-        if (
+        /* if (
             !this.props.isWithSearchBar &&
             this.state.deletedFriendIndex !== null
         ) {
@@ -85,7 +85,8 @@ class OpponentsProfile extends React.Component {
                 popScreen: SCENE_KEYS.mainScreens.friendsList,
                 friendsList: friendsList
             })
-        } else navigationPop()
+        } else navigationPop() */
+        navigationPop()
     }
 
     sendFriendshipRequest = () => {
