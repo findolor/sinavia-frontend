@@ -23,7 +23,9 @@ class FriendsList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            // Flatlist data
             friendsList: this.props.friendsList,
+            // Original friendsList
             value: ''
         }
     }
@@ -35,7 +37,7 @@ class FriendsList extends React.Component {
             this.props.friendIds
         )
 
-        this.setState({ friendsList: friends })
+        this.setState({ friendsList: friends, originalList: friends })
     }
 
     async componentDidUpdate(prevProps, prevState) {
@@ -49,7 +51,7 @@ class FriendsList extends React.Component {
                 this.props.friendIds
             )
 
-            this.setState({ friendsList: friends })
+            this.setState({ friendsList: friends, originalList: friends })
         }
     }
 
@@ -58,10 +60,13 @@ class FriendsList extends React.Component {
     }
 
     searchFilterFunction = text => {
-        if (text === '') this.setState({ friendsList: this.props.friendsList })
         this.setState({
             value: text
         })
+        if (text === '') {
+            this.setState({ friendsList: this.state.originalList })
+            return
+        }
 
         const newData = this.state.friendsList.filter(item => {
             const itemData = `${item.name.toUpperCase() +
@@ -118,6 +123,7 @@ class FriendsList extends React.Component {
                     <FlatList
                         data={this.state.friendsList}
                         vertical={true}
+                        extraData={this.state.friendsList}
                         showsVerticalScrollIndicator={false}
                         renderItem={({ item, index }) => {
                             return (
