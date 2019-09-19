@@ -31,8 +31,9 @@ export function* deleteFriendshipRequestSaga(action) {
 
         let index = action.friendIds.indexOf(action.friendId)
         action.friendIds.splice(index, 1)
+
         yield put({
-            type: opponentTypes.SAVE_FRIENDS_LIST,
+            type: friendTypes.SAVE_FRIEND_IDS,
             payload: action.friendIds
         })
     }

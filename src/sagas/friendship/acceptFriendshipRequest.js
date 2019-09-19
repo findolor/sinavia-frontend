@@ -39,7 +39,7 @@ export function* acceptFriendshipRequestSaga(action) {
         })
         action.friendIds.push(action.friendId)
         yield put({
-            type: opponentTypes.SAVE_FRIENDS_LIST,
+            type: friendTypes.SAVE_FRIEND_IDS,
             payload: action.friendIds
         })
     }

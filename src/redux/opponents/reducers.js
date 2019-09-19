@@ -73,6 +73,22 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 totalPoints: action.payload
             }
+        case opponentTypes.SUBTRACT_FROM_FRIENDS_LIST:
+            let index = state.friendsList.findIndex(
+                x => x.id === action.payload.id
+            )
+            state.friendsList.splice(index, 1)
+
+            return {
+                ...state,
+                friendsList: state.friendsList
+            }
+        case opponentTypes.ADD_TO_FRIENDS_LIST:
+            state.friendsList.push(action.payload)
+            return {
+                ...state,
+                friendsList: state.friendsList
+            }
         default:
             return state
     }

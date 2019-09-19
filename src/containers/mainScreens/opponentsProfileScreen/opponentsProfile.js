@@ -20,8 +20,8 @@ import ADD_FRIEND_REQUESTED from '../../../assets/mainScreens/addFriendRequested
 import ALREADY_FRIEND from '../../../assets/mainScreens/alreadyFriend.png'
 import { widthPercentageToDP } from 'react-native-responsive-screen'
 
-import { friendshipServices } from '../../../sagas/friendship/'
 import { friendActions } from '../../../redux/friends/actions'
+import { opponentActions } from '../../../redux/opponents/actions'
 
 class OpponentsProfile extends React.Component {
     constructor(props) {
@@ -98,6 +98,7 @@ class OpponentsProfile extends React.Component {
             this.props.clientInformation.username,
             this.props.friendIds
         )
+        this.props.addToFriendsList(this.props.opponentInformation)
     }
 
     deleteFriendship = () => {
@@ -118,6 +119,7 @@ class OpponentsProfile extends React.Component {
                 this.props.friendIds
             )
         }
+        this.props.subtractFromFriendsList(this.props.opponentInformation)
 
         // TODO SEE WHAT IS GOING ON HERE
         /* let friendIndex
@@ -642,7 +644,11 @@ const mapDispatchToProps = dispatch => ({
     changeFriendshipStatus: friendshipStatus =>
         dispatch(friendActions.changeFriendshipStatus(friendshipStatus)),
     changeIsFriendRequestSent: isFriendRequestSent =>
-        dispatch(friendActions.changeIsFriendRequestSent(isFriendRequestSent))
+        dispatch(friendActions.changeIsFriendRequestSent(isFriendRequestSent)),
+    subtractFromFriendsList: opponentInformation =>
+        dispatch(opponentActions.subtractFromFriendsList(opponentInformation)),
+    addToFriendsList: opponentInformation =>
+        dispatch(opponentActions.addToFriendsList(opponentInformation))
 })
 
 export default connect(
