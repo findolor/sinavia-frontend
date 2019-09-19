@@ -16,7 +16,7 @@ export function* rejectFriendshipSaga(action) {
         action.friendId
     )
 
-    if (response.success) {
+    /* if (response.success) {
         let index = action.friendshipRequests.findIndex(
             x => x.id === action.userId
         )
@@ -26,5 +26,5 @@ export function* rejectFriendshipSaga(action) {
             type: friendTypes.SAVE_FRIEND_REQUESTS,
             payload: action.friendshipRequests
         })
-    }
+    } */
 }

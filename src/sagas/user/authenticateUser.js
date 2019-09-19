@@ -162,7 +162,7 @@ export function* authenticateUser(action) {
                 payload: res.token
             })
             // We save the token to storage
-            deviceStorage.saveItemToStorage('JWT', res.token)
+            deviceStorage.saveItemToStorage('clientToken', res.token)
             // Save id to redux state
             yield put({
                 type: clientTypes.SAVE_CLIENT_DB_ID,

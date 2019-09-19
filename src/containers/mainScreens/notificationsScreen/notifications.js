@@ -10,7 +10,10 @@ import {
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import returnLogo from '../../../assets/return.png'
-import { navigationPop } from '../../../services/navigationService'
+import {
+    navigationPop,
+    navigationRefresh
+} from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import { friendActions } from '../../../redux/friends/actions'
 
@@ -61,13 +64,13 @@ class Notifications extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            friendRequestsList: [],
             generalNotificationsList: generalNotificationsList,
             selectedNotificationsMode: 'generalNotifications',
             generalNotificationsButtonBackgroundColor: '#FF9900',
             generalNotificationsButtonTextColor: '#FFFFFF',
             friendsRequestsButtonBackgroundColor: '#FFFFFF',
-            friendsRequestsButtonTextColor: '#2E313C'
+            friendsRequestsButtonTextColor: '#2E313C',
+            refreshFlatlist: false
         }
     }
 
@@ -261,16 +264,18 @@ class Notifications extends React.Component {
             this.props.clientInformation.username,
             this.props.friendIds
         )
+        // If we do this step inside the saga it wont refresh
         this.props.removeFromFriendRequests(index)
     }
 
-    rejectFriendRequestOnPress = friendId => {
+    rejectFriendRequestOnPress = (friendId, index) => {
         this.props.rejectFriendshipRequest(
             this.props.clientToken,
             friendId,
             this.props.clientDBId,
             this.props.friendRequests
         )
+        this.props.removeFromFriendRequests(index)
     }
 
     renderEmptyFriendRequests = () => {
@@ -368,10 +373,9 @@ class Notifications extends React.Component {
                     <View style={styles.flatListContainer}>
                         <FlatList
                             data={this.props.friendRequests}
-                            extraData={this.props.friendRequests}
                             vertical={true}
                             showsVerticalScrollIndicator={false}
-                            extraData={this.state}
+                            extraData={this.state.refreshFlatlist}
                             ListEmptyComponent={this.renderEmptyFriendRequests}
                             renderItem={({ item, index }) => {
                                 return (
@@ -399,12 +403,17 @@ class Notifications extends React.Component {
                                             }
                                         >
                                             <TouchableOpacity
-                                                onPress={() =>
+                                                onPress={() => {
+                                                    this.setState({
+                                                        refreshFlatlist: !this
+                                                            .state
+                                                            .refreshFlatlist
+                                                    })
                                                     this.acceptFriendRequestOnPress(
                                                         item.id,
                                                         index
                                                     )
-                                                }
+                                                }}
                                             >
                                                 <Image
                                                     source={ACCEPT_BUTTON}
@@ -414,11 +423,17 @@ class Notifications extends React.Component {
                                                 />
                                             </TouchableOpacity>
                                             <TouchableOpacity
-                                                onPress={() =>
+                                                onPress={() => {
+                                                    this.setState({
+                                                        refreshFlatlist: !this
+                                                            .state
+                                                            .refreshFlatlist
+                                                    })
                                                     this.rejectFriendRequestOnPress(
-                                                        item.id
+                                                        item.id,
+                                                        index
                                                     )
-                                                }
+                                                }}
                                             >
                                                 <Image
                                                     source={REJECT_BUTTON}

@@ -58,6 +58,7 @@ class FriendsList extends React.Component {
     }
 
     searchFilterFunction = text => {
+        if (text === '') this.setState({ friendsList: this.props.friendsList })
         this.setState({
             value: text
         })
