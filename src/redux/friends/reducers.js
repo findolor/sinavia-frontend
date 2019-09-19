@@ -19,6 +19,16 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 friendRequests: state.friendRequests
             }
+        case friendTypes.CHANGE_FRIENDSHIP_STATUS:
+            return {
+                ...state,
+                friendshipStatus: action.friendshipStatus
+            }
+        case friendTypes.CHANGE_IS_FRIEND_REQUEST_SENT:
+            return {
+                ...state,
+                isFriendRequestSent: action.isFriendRequestSent
+            }
         default:
             return state
     }

@@ -38,6 +38,18 @@ export default function* root() {
         takeLatest(
             friendTypes.GET_FRIEND_REQUESTS,
             friendshipSagas.getFriendRequests
+        ),
+        takeLatest(
+            friendTypes.ACCEPT_FRIENDSHIP_REQUEST,
+            friendshipSagas.acceptFriendshipRequest
+        ),
+        takeLatest(
+            friendTypes.SEND_FRIENDSHIP_REQUEST,
+            friendshipSagas.sendFriendshipRequest
+        ),
+        takeLatest(
+            friendTypes.DELETE_FRIENDSHIP_REQUEST,
+            friendshipSagas.deleteFriendshipRequest
         )
     ])
 }

@@ -70,6 +70,7 @@ export function* authenticateUser(action) {
             payload: clientDBId
         })
 
+        // TODO TAKE A LOOK HERE
         // We get all of our friend ids
         let friendsList = yield call(getFriends, action.payload, clientDBId)
         // Get client friends from storage
@@ -232,11 +233,7 @@ export function* authenticateUser(action) {
             yield call(postFCMToken, res.token, clientInformation)
 
             // Getting the user joker info from db
-            const userJokers = yield call(
-                getUserJokers,
-                action.payload,
-                clientDBId
-            )
+            const userJokers = yield call(getUserJokers, action.payload, res.id)
             // Saving it to redux state
             yield put({
                 type: clientTypes.SAVE_USER_JOKERS,

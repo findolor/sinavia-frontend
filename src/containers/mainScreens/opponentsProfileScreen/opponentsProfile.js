@@ -27,47 +27,39 @@ class OpponentsProfile extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            friendshipStatus: 'alreadyFriend',
             // Played games variables
             gamesPlayed: this.props.totalPlayedGames,
             wonGames: this.props.gamesWon,
             lostGames: this.props.gamesLost,
             drawGames: this.props.gamesDraw,
-
+            // Percantage variable
             semiCirclePercentage: this.props.winPercentage,
-            totalFriends: Object.keys(this.props.friendsList).length,
-            // is friend request sent or received?
-            isFriendRequestSent: false,
             // Friend games that was played together
             totalFriendGamesPlayed: this.props.totalFriendGames,
             clientWinCount: this.props.clientWinCount,
             opponentWinCount: this.props.opponentWinCount,
             // We send back deleted friend index for refreshing friedns screen
+            // TODO SEE IF THIS IS NECESSARY
             deletedFriendIndex: null
         }
     }
 
     componentDidMount() {
         if (!this.props.isFriends) {
-            if (this.props.isRequesting)
-                this.setState({
-                    friendshipStatus: 'friendRequestSent',
-                    isFriendRequestSent: false
-                })
-            else {
-                if (this.props.isRequested)
-                    this.setState({
-                        friendshipStatus: 'friendRequestSent',
-                        isFriendRequestSent: true
-                    })
-                else this.setState({ friendshipStatus: 'addFriend' })
+            if (this.props.isRequesting) {
+                this.props.changeFriendshipStatus('friendRequestSent')
+                this.props.changeIsFriendRequestSent(false)
+            } else {
+                if (this.props.isRequested) {
+                    this.props.changeFriendshipStatus('friendRequestSent')
+                    this.props.changeIsFriendRequestSent(true)
+                } else this.props.changeFriendshipStatus('addFriend')
             }
         } else {
+            this.props.changeFriendshipStatus('alreadyFriend')
             if (this.props.isRequesting)
-                this.setState({
-                    isFriendRequestSent: false
-                })
-            else this.setState({ isFriendRequestSent: true })
+                this.props.changeIsFriendRequestSent(false)
+            else this.props.changeIsFriendRequestSent(true)
         }
     }
 
@@ -90,69 +82,45 @@ class OpponentsProfile extends React.Component {
     }
 
     sendFriendshipRequest = () => {
-        friendshipServices.sendFriendshipRequest(
+        this.props.sendFriendshipRequest(
             this.props.clientToken,
             this.props.clientDBId,
             this.props.opponentInformation.id,
             this.props.clientInformation.username
         )
-        this.setState({
-            friendshipStatus: 'friendRequestSent',
-            isFriendRequestSent: true
-        })
-    }
-
-    addToFriendIds = id => {
-        const friendList = this.props.friendIds
-        friendList.push(id)
-
-        this.props.saveFriendIdList(friendList)
     }
 
     acceptFriendshipRequest = () => {
-        this.addToFriendIds(this.props.opponentInformation.id)
-        friendshipServices.acceptFriendshipRequest(
+        this.props.acceptFriendshipRequest(
             this.props.clientToken,
             this.props.clientDBId,
             this.props.opponentInformation.id,
-            this.props.clientInformation.username
+            this.props.clientInformation.username,
+            this.props.friendIds
         )
-        this.setState({
-            friendshipStatus: 'alreadyFriend',
-            totalFriends: this.state.totalFriends + 1
-        })
-    }
-
-    removeFromFriendIds = id => {
-        const friendList = this.props.friendIds
-        const index = friendList.indexOf(id)
-
-        friendList.splice(index, 1)
-
-        this.props.saveFriendIdList(friendList)
     }
 
     deleteFriendship = () => {
-        console.log(this.state.isFriendRequestSent)
-        if (this.state.isFriendRequestSent) {
-            friendshipServices.deleteFriendship(
+        if (this.props.isFriendRequestSent) {
+            this.props.deleteFriendshipRequest(
                 this.props.clientToken,
                 this.props.clientDBId,
                 this.props.opponentInformation.id,
-                true
+                true,
+                this.props.friendIds
             )
         } else {
-            friendshipServices.deleteFriendship(
+            this.props.deleteFriendshipRequest(
                 this.props.clientToken,
                 this.props.opponentInformation.id,
                 this.props.clientDBId,
-                false
+                false,
+                this.props.friendIds
             )
         }
-        this.removeFromFriendIds(this.props.opponentInformation.id)
 
-        let friendIndex
-
+        // TODO SEE WHAT IS GOING ON HERE
+        /* let friendIndex
         if (this.props.friendsScreenFriendsList) {
             this.props.friendsScreenFriendsList.forEach((friend, index) => {
                 if (this.props.opponentInformation.id === friend.id) {
@@ -162,19 +130,17 @@ class OpponentsProfile extends React.Component {
             })
         }
         this.setState({
-            friendshipStatus: 'addFriend',
-            totalFriends: this.state.totalFriends - 1,
             deletedFriendIndex: friendIndex
-        })
+        }) */
     }
 
     friendshipStatusOnPress = () => {
-        switch (this.state.friendshipStatus) {
+        switch (this.props.friendshipStatus) {
             case 'addFriend':
                 this.sendFriendshipRequest()
                 return
             case 'friendRequestSent':
-                if (!this.state.isFriendRequestSent)
+                if (!this.props.isFriendRequestSent)
                     this.acceptFriendshipRequest()
                 return
             case 'alreadyFriend':
@@ -262,7 +228,10 @@ class OpponentsProfile extends React.Component {
                                     <Text
                                         style={styles.opponentsFriendsCounter}
                                     >
-                                        {this.state.totalFriends}
+                                        {
+                                            Object.keys(this.props.friendsList)
+                                                .length
+                                        }
                                     </Text>
                                 </View>
                             </View>
@@ -270,7 +239,7 @@ class OpponentsProfile extends React.Component {
                                 onPress={this.friendshipStatusOnPress}
                             >
                                 <View style={styles.yourFriendshipStatusBox}>
-                                    {this.state.friendshipStatus ===
+                                    {this.props.friendshipStatus ===
                                         'addFriend' && (
                                         <View style={{ flexDirection: 'row' }}>
                                             <View
@@ -303,7 +272,7 @@ class OpponentsProfile extends React.Component {
                                             </View>
                                         </View>
                                     )}
-                                    {this.state.friendshipStatus ===
+                                    {this.props.friendshipStatus ===
                                         'friendRequestSent' && (
                                         <View style={{ flexDirection: 'row' }}>
                                             <View
@@ -337,7 +306,7 @@ class OpponentsProfile extends React.Component {
                                                         styles.addFriendRequestedText
                                                     }
                                                 >
-                                                    {this.state
+                                                    {this.props
                                                         .isFriendRequestSent ===
                                                     true
                                                         ? 'gönderildi'
@@ -346,7 +315,7 @@ class OpponentsProfile extends React.Component {
                                             </View>
                                         </View>
                                     )}
-                                    {this.state.friendshipStatus ===
+                                    {this.props.friendshipStatus ===
                                         'alreadyFriend' && (
                                         <View style={{ flexDirection: 'row' }}>
                                             <View
@@ -616,12 +585,64 @@ const mapStateToProps = state => ({
     opponentWinCount: state.opponent.opponentWinCount,
     clientWinCount: state.opponent.clientWinCount,
     winPercentage: state.opponent.winPercentage,
-    totalPoints: state.opponent.totalPoints
+    totalPoints: state.opponent.totalPoints,
+    friendshipStatus: state.friends.friendshipStatus,
+    isFriendRequestSent: state.friends.isFriendRequestSent
 })
 
 const mapDispatchToProps = dispatch => ({
     saveFriendIdList: friendList =>
-        dispatch(friendActions.saveFriendIds(friendList))
+        dispatch(friendActions.saveFriendIds(friendList)),
+    sendFriendshipRequest: (
+        clientToken,
+        clientId,
+        opponentId,
+        clientUsername
+    ) =>
+        dispatch(
+            friendActions.sendFriendRequest(
+                clientToken,
+                clientId,
+                opponentId,
+                clientUsername
+            )
+        ),
+    acceptFriendshipRequest: (
+        clientToken,
+        clientId,
+        opponentId,
+        clientUsername,
+        friendIdList
+    ) =>
+        dispatch(
+            friendActions.acceptFriendRequest(
+                clientToken,
+                clientId,
+                opponentId,
+                clientUsername,
+                friendIdList
+            )
+        ),
+    deleteFriendshipRequest: (
+        clientToken,
+        clientId,
+        opponentId,
+        isClientUser,
+        friendIdList
+    ) =>
+        dispatch(
+            friendActions.deleteFriendRequest(
+                clientToken,
+                clientId,
+                opponentId,
+                isClientUser,
+                friendIdList
+            )
+        ),
+    changeFriendshipStatus: friendshipStatus =>
+        dispatch(friendActions.changeFriendshipStatus(friendshipStatus)),
+    changeIsFriendRequestSent: isFriendRequestSent =>
+        dispatch(friendActions.changeIsFriendRequestSent(isFriendRequestSent))
 })
 
 export default connect(
