@@ -1,23 +1,17 @@
 import axios from 'axios'
 import { API_ENDPOINT } from '../../../config/index'
 
-export const sendFriendshipRequest = async (
-    userToken,
-    userId,
-    friendId,
-    clientUsername
-) => {
+export const rejectFriendshipRequest = async (userToken, userId, friendId) => {
     try {
-        const response = await axios.post(
-            API_ENDPOINT + 'friendships/',
-            {
-                userId: userId,
-                friendId: friendId,
-                username: clientUsername
-            },
+        const response = await axios.delete(
+            API_ENDPOINT + 'friendships/reject/',
             {
                 headers: {
                     Authorization: 'Bearer ' + userToken
+                },
+                params: {
+                    userId: userId,
+                    friendId: friendId
                 }
             }
         )

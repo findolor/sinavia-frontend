@@ -70,6 +70,7 @@ export function* authenticateUser(action) {
             payload: clientDBId
         })
 
+        // TODO TAKE A LOOK HERE
         // We get all of our friend ids
         let friendsList = yield call(getFriends, action.payload, clientDBId)
         // Get client friends from storage
@@ -161,7 +162,7 @@ export function* authenticateUser(action) {
                 payload: res.token
             })
             // We save the token to storage
-            deviceStorage.saveItemToStorage('JWT', res.token)
+            deviceStorage.saveItemToStorage('clientToken', res.token)
             // Save id to redux state
             yield put({
                 type: clientTypes.SAVE_CLIENT_DB_ID,
@@ -225,18 +226,14 @@ export function* authenticateUser(action) {
             // We get the token for fcm
             const fcmToken = yield call(fcmService.getFcmToken)
             // And save it to storage
-            deviceStorage.saveItemToStorage('fcmToken', fcmToken)
+            deviceStorage.saveItemToStorage('clientToken', fcmToken)
             // We add the token to our client info
             clientInformation.fcmToken = fcmToken
             // We send a request to api to save our fcm token
             yield call(postFCMToken, res.token, clientInformation)
 
             // Getting the user joker info from db
-            const userJokers = yield call(
-                getUserJokers,
-                action.payload,
-                clientDBId
-            )
+            const userJokers = yield call(getUserJokers, action.payload, res.id)
             // Saving it to redux state
             yield put({
                 type: clientTypes.SAVE_USER_JOKERS,

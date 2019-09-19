@@ -56,7 +56,7 @@ export function* loginUser(action) {
         )
         // Saving the favs to redux state
         yield put({
-            type: clientTypes.SAVE_FAVOURITE_QUESTIONS_SUCCESS,
+            type: clientTypes.SAVE_FAVOURITE_QUESTIONS,
             payload: favouriteQuestions
         })
 

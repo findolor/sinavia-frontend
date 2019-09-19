@@ -14,6 +14,7 @@ import {
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import { userServices } from '../../../sagas/user/'
+import { opponentActions } from '../../../redux/opponents/actions'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import returnLogo from '../../../assets/return.png'
@@ -22,7 +23,9 @@ class FriendsList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            // Flatlist data
             friendsList: this.props.friendsList,
+            // Original friendsList
             value: ''
         }
     }
@@ -34,7 +37,22 @@ class FriendsList extends React.Component {
             this.props.friendIds
         )
 
-        this.setState({ friendsList: friends })
+        this.setState({ friendsList: friends, originalList: friends })
+    }
+
+    async componentDidUpdate(prevProps, prevState) {
+        if (prevProps !== this.props) {
+            if (Object.keys(this.props.friendIds).length === 0) {
+                this.setState({ friendsList: [] })
+                return
+            }
+            const friends = await userServices.getUsers(
+                this.props.clientToken,
+                this.props.friendIds
+            )
+
+            this.setState({ friendsList: friends, originalList: friends })
+        }
     }
 
     returnButtonOnPress = () => {
@@ -45,6 +63,10 @@ class FriendsList extends React.Component {
         this.setState({
             value: text
         })
+        if (text === '') {
+            this.setState({ friendsList: this.state.originalList })
+            return
+        }
 
         const newData = this.state.friendsList.filter(item => {
             const itemData = `${item.name.toUpperCase() +
@@ -59,12 +81,13 @@ class FriendsList extends React.Component {
         })
     }
 
-    friendOnPress = listIndex => {
-        navigationPush(SCENE_KEYS.mainScreens.opponentsProfile, {
-            opponentInformation: this.state.friendsList[listIndex],
-            isWithSearchBar: false,
-            friendsScreenFriendsList: this.state.friendsList
-        })
+    friendOnPress = searchListIndex => {
+        this.props.getOpponentFullInformation(
+            this.state.friendsList[searchListIndex],
+            this.props.clientDBId,
+            this.props.clientToken,
+            false
+        )
     }
 
     render() {
@@ -100,6 +123,7 @@ class FriendsList extends React.Component {
                     <FlatList
                         data={this.state.friendsList}
                         vertical={true}
+                        extraData={this.state.friendsList}
                         showsVerticalScrollIndicator={false}
                         renderItem={({ item, index }) => {
                             return (
@@ -141,10 +165,26 @@ class FriendsList extends React.Component {
 
 const mapStateToProps = state => ({
     clientToken: state.client.clientToken,
+    clientDBId: state.client.clientDBId,
     friendIds: state.friends.friendIds
 })
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+    getOpponentFullInformation: (
+        opponentInformation,
+        clientId,
+        clientToken,
+        isWithSearchBar
+    ) =>
+        dispatch(
+            opponentActions.getOpponentFullInformation(
+                opponentInformation,
+                clientId,
+                clientToken,
+                isWithSearchBar
+            )
+        )
+})
 
 export default connect(
     mapStateToProps,

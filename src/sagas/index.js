@@ -5,6 +5,8 @@ import { gameContentTypes } from '../redux/gameContent/actions'
 import { userSagas } from './user'
 import { questionSagas } from './question'
 import { gameContentSagas } from './gameContent'
+import { friendTypes } from '../redux/friends/actions'
+import { friendshipSagas } from './friendship'
 
 export default function* root() {
     yield all([
@@ -32,6 +34,26 @@ export default function* root() {
         takeLatest(
             gameContentTypes.GET_ALL_CONTENT,
             gameContentSagas.getAllContent
+        ),
+        takeLatest(
+            friendTypes.GET_FRIEND_REQUESTS,
+            friendshipSagas.getFriendRequests
+        ),
+        takeLatest(
+            friendTypes.ACCEPT_FRIENDSHIP_REQUEST,
+            friendshipSagas.acceptFriendshipRequest
+        ),
+        takeLatest(
+            friendTypes.SEND_FRIENDSHIP_REQUEST,
+            friendshipSagas.sendFriendshipRequest
+        ),
+        takeLatest(
+            friendTypes.DELETE_FRIENDSHIP_REQUEST,
+            friendshipSagas.deleteFriendshipRequest
+        ),
+        takeLatest(
+            friendTypes.REJECT_FRIENDSHIP_REQUEST,
+            friendshipSagas.rejectFriendshipRequest
         )
     ])
 }

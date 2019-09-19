@@ -20,7 +20,7 @@ export function* getOpponentFullInformationSaga(action) {
         action.opponentInformation.id,
         action.clientId
     )
-    console.log(res)
+
     const opponentWinCount = Object.keys(res.friendGameWins).length
     const clientWinCount = Object.keys(res.friendGameDefeats).length
     const friendMatchDrawCount = Object.keys(res.friendGameDraws).length
@@ -31,6 +31,11 @@ export function* getOpponentFullInformationSaga(action) {
     const drawGames = res.statistics.drawCount
     const totalPlayedGames = wonGames + lostGames + drawGames
     const winPercentage = (wonGames / totalPlayedGames) * 100
+    const friendsList = []
+    res.friendships.forEach(friendship => {
+        if (friendship.friendshipStatus !== 'requested')
+            friendsList.push(friendship)
+    })
 
     yield put({
         type: opponentTypes.SAVE_OPPONENT_INFORMATION,
@@ -62,7 +67,7 @@ export function* getOpponentFullInformationSaga(action) {
     })
     yield put({
         type: opponentTypes.SAVE_FRIENDS_LIST,
-        payload: res.friendships
+        payload: friendsList
     })
     yield put({
         type: opponentTypes.SAVE_GAMES_WON,
@@ -89,6 +94,6 @@ export function* getOpponentFullInformationSaga(action) {
         payload: winPercentage
     })
     navigationPush(SCENE_KEYS.mainScreens.opponentsProfile, {
-        isWithSearchBar: true
+        isWithSearchBar: action.isWithSearchBar
     })
 }

@@ -14,7 +14,6 @@ export const clientTypes = {
     FAVOURITE_QUESTION: 'favourite_question',
     UNFAVOURITE_QUESTION: 'unfavourite_question',
     SAVE_FAVOURITE_QUESTIONS: 'save_favourite_questions',
-    SAVE_FAVOURITE_QUESTIONS_SUCCESS: 'save_favourite_questions_success',
     SAVE_USER_JOKERS: 'save_user_jokers',
     SUBTRACT_JOKER: 'subtract_joker'
 }

@@ -10,9 +10,10 @@ import {
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import returnLogo from '../../../assets/return.png'
-import { navigationPop } from '../../../services/navigationService'
-import { friendshipServices } from '../../../sagas/friendship/'
-import { userServices } from '../../../sagas/user'
+import {
+    navigationPop,
+    navigationRefresh
+} from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import { friendActions } from '../../../redux/friends/actions'
 
@@ -63,13 +64,13 @@ class Notifications extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            friendRequestsList: [],
             generalNotificationsList: generalNotificationsList,
             selectedNotificationsMode: 'generalNotifications',
             generalNotificationsButtonBackgroundColor: '#FF9900',
             generalNotificationsButtonTextColor: '#FFFFFF',
             friendsRequestsButtonBackgroundColor: '#FFFFFF',
-            friendsRequestsButtonTextColor: '#2E313C'
+            friendsRequestsButtonTextColor: '#2E313C',
+            refreshFlatlist: false
         }
     }
 
@@ -103,7 +104,7 @@ class Notifications extends React.Component {
         navigationPop()
     }
 
-    friendsRequestsOnPress = async () => {
+    friendsRequestsOnPress = () => {
         this.setState({
             selectedNotificationsMode: 'friendsRequests',
             generalNotificationsButtonBackgroundColor: '#FFFFFF',
@@ -112,36 +113,14 @@ class Notifications extends React.Component {
             friendsRequestsButtonTextColor: '#FFFFFF'
         })
 
-        await this.loadFriendRequests()
+        this.loadFriendRequests()
     }
 
-    loadFriendRequests = async () => {
-        const friendRequests = await friendshipServices.getFriendRequests(
+    loadFriendRequests = () => {
+        this.props.getFriendRequests(
             this.props.clientToken,
             this.props.clientDBId
         )
-
-        const userIdList = []
-
-        friendRequests.forEach(request => {
-            userIdList.push(request.userId)
-        })
-
-        if (Object.keys(userIdList).length === 0) {
-            this.setState({ friendRequestsList: [] })
-            return
-        }
-
-        await this.getUserInformations(userIdList)
-    }
-
-    getUserInformations = async idList => {
-        const userInformations = await userServices.getUsers(
-            this.props.clientToken,
-            idList
-        )
-
-        this.setState({ friendRequestsList: userInformations })
     }
 
     notificationsListRender({ item }) {
@@ -277,29 +256,36 @@ class Notifications extends React.Component {
         }
     }
 
-    addToFriendIds = id => {
-        const friendList = this.props.friendIds
-        friendList.push(id)
-
-        this.props.saveFriendIdList(friendList)
-    }
-
     acceptFriendRequestOnPress = (friendId, index) => {
-        this.addToFriendIds(friendId)
-
-        friendshipServices.acceptFriendshipRequest(
+        this.props.acceptFriendshipRequest(
             this.props.clientToken,
             this.props.clientDBId,
             friendId,
-            this.props.clientInformation.username
+            this.props.clientInformation.username,
+            this.props.friendIds
         )
+        // If we do this step inside the saga it wont refresh
+        this.props.removeFromFriendRequests(index)
+    }
 
-        let friendRequestsList = this.state.friendRequestsList
-        friendRequestsList.splice(index, 1)
+    rejectFriendRequestOnPress = (friendId, index) => {
+        this.props.rejectFriendshipRequest(
+            this.props.clientToken,
+            friendId,
+            this.props.clientDBId,
+            this.props.friendRequests
+        )
+        this.props.removeFromFriendRequests(index)
+    }
 
-        this.setState({
-            friendRequestsList: friendRequestsList
-        })
+    renderEmptyFriendRequests = () => {
+        return (
+            <View style={styles.emptyFlatListContainer}>
+                <Text style={styles.emptyFlatListText}>
+                    Henüz arkadaşlık isteğin yok!
+                </Text>
+            </View>
+        )
     }
 
     render() {
@@ -372,71 +358,97 @@ class Notifications extends React.Component {
                     </TouchableOpacity>
                 </View>
                 {this.state.selectedNotificationsMode ===
-                    'generalNotifications' && (<View style={styles.flatListContainer}>
-                    <FlatList
-                        data={this.state.generalNotificationsList}
-                        vertical={true}
-                        showsVerticalScrollIndicator={false}
-                        renderItem={this.notificationsListRender}
-                        keyExtractor={(item, index) => index.toString()}
-                    /></View>
+                    'generalNotifications' && (
+                    <View style={styles.flatListContainer}>
+                        <FlatList
+                            data={this.state.generalNotificationsList}
+                            vertical={true}
+                            showsVerticalScrollIndicator={false}
+                            renderItem={this.notificationsListRender}
+                            keyExtractor={(item, index) => index.toString()}
+                        />
+                    </View>
                 )}
-                {this.state.selectedNotificationsMode === 'friendsRequests' && (<View style={styles.flatListContainer}>
-                    <FlatList
-                        data={this.state.friendRequestsList}
-                        vertical={true}
-                        showsVerticalScrollIndicator={false}
-                        extraData={this.state}
-                        renderItem={({ item, index }) => {
-                            return (
-                                <View style={styles.userRow}>
-                                    <View style={styles.userPicContainerInRow}>
-                                        <Image
-                                            source={{
-                                                uri: item.profilePicture
-                                            }}
-                                            style={styles.userPic}
-                                        />
-                                    </View>
-                                    <View style={styles.nameContainer}>
-                                        <Text style={styles.nameText}>
-                                            {item.name + ' ' + item.lastname}
-                                        </Text>
-                                    </View>
-                                    <View
-                                        style={
-                                            styles.friendshipButtonsContainer
-                                        }
-                                    >
-                                        <TouchableOpacity
-                                            onPress={() =>
-                                                this.acceptFriendRequestOnPress(
-                                                    item.id,
-                                                    index
-                                                )
-                                            }
+                {this.state.selectedNotificationsMode === 'friendsRequests' && (
+                    <View style={styles.flatListContainer}>
+                        <FlatList
+                            data={this.props.friendRequests}
+                            vertical={true}
+                            showsVerticalScrollIndicator={false}
+                            extraData={this.state.refreshFlatlist}
+                            ListEmptyComponent={this.renderEmptyFriendRequests}
+                            renderItem={({ item, index }) => {
+                                return (
+                                    <View style={styles.userRow}>
+                                        <View
+                                            style={styles.userPicContainerInRow}
                                         >
                                             <Image
-                                                source={ACCEPT_BUTTON}
-                                                style={styles.friendshipButtons}
+                                                source={{
+                                                    uri: item.profilePicture
+                                                }}
+                                                style={styles.userPic}
                                             />
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            onPress={
-                                                this.rejectFriendRequestOnPress
+                                        </View>
+                                        <View style={styles.nameContainer}>
+                                            <Text style={styles.nameText}>
+                                                {item.name +
+                                                    ' ' +
+                                                    item.lastname}
+                                            </Text>
+                                        </View>
+                                        <View
+                                            style={
+                                                styles.friendshipButtonsContainer
                                             }
                                         >
-                                            <Image
-                                                source={REJECT_BUTTON}
-                                                style={styles.friendshipButtons}
-                                            />
-                                        </TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    this.setState({
+                                                        refreshFlatlist: !this
+                                                            .state
+                                                            .refreshFlatlist
+                                                    })
+                                                    this.acceptFriendRequestOnPress(
+                                                        item.id,
+                                                        index
+                                                    )
+                                                }}
+                                            >
+                                                <Image
+                                                    source={ACCEPT_BUTTON}
+                                                    style={
+                                                        styles.friendshipButtons
+                                                    }
+                                                />
+                                            </TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    this.setState({
+                                                        refreshFlatlist: !this
+                                                            .state
+                                                            .refreshFlatlist
+                                                    })
+                                                    this.rejectFriendRequestOnPress(
+                                                        item.id,
+                                                        index
+                                                    )
+                                                }}
+                                            >
+                                                <Image
+                                                    source={REJECT_BUTTON}
+                                                    style={
+                                                        styles.friendshipButtons
+                                                    }
+                                                />
+                                            </TouchableOpacity>
+                                        </View>
                                     </View>
-                                </View>
-                            )
-                        }}
-                        keyExtractor={(item, index) => index.toString()}
-                    /></View>
+                                )
+                            }}
+                            keyExtractor={(item, index) => index.toString()}
+                        />
+                    </View>
                 )}
             </View>
         )
@@ -447,12 +459,42 @@ const mapStateToProps = state => ({
     clientDBId: state.client.clientDBId,
     clientToken: state.client.clientToken,
     friendIds: state.friends.friendIds,
-    clientInformation: state.client.clientInformation
+    clientInformation: state.client.clientInformation,
+    friendRequests: state.friends.friendRequests
 })
 
 const mapDispatchToProps = dispatch => ({
     saveFriendIdList: friendList =>
-        dispatch(friendActions.saveFriendIds(friendList))
+        dispatch(friendActions.saveFriendIds(friendList)),
+    getFriendRequests: (clientToken, clientId) =>
+        dispatch(friendActions.getFriendRequests(clientToken, clientId)),
+    removeFromFriendRequests: index =>
+        dispatch(friendActions.removeFromFriendRequests(index)),
+    acceptFriendshipRequest: (
+        clientToken,
+        clientId,
+        opponentId,
+        clientUsername,
+        friendIdList
+    ) =>
+        dispatch(
+            friendActions.acceptFriendRequest(
+                clientToken,
+                clientId,
+                opponentId,
+                clientUsername,
+                friendIdList
+            )
+        ),
+    rejectFriendshipRequest: (clientToken, userId, friendId, friendRequests) =>
+        dispatch(
+            friendActions.rejectFriendshipRequest(
+                clientToken,
+                userId,
+                friendId,
+                friendRequests
+            )
+        )
 })
 
 export default connect(

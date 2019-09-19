@@ -20,9 +20,15 @@ export const navigationPop = (isWantedRefresh, params) => {
             case SCENE_KEYS.mainScreens.friendsList:
                 Actions.pop()
                 setTimeout(() => {
-                    Actions.refresh({ friendsList: params.friendsList })
+                    Actions.refresh({ friendsList: params.friendIds })
                 }, 700)
-            //Actions.refresh({ friendsList: params.friendsList })
+                break
+            case SCENE_KEYS.mainScreens.profileSearch:
+                Actions.pop()
+                setTimeout(() => {
+                    Actions.refresh({ searchedKeyword: params.searchedKeyword })
+                }, 700)
+                break
         }
     } else Actions.pop()
 }

@@ -67,7 +67,6 @@ class Favorites extends React.Component {
 
     // Takes the transformed favouriteQuestions and makes the proper ui
     loadScreen = () => {
-        console.log(this.props.favouriteQuestions)
         new Promise.resolve().then(() => {
             const scrollViewList = []
             let itemList
@@ -152,7 +151,6 @@ class Favorites extends React.Component {
     mapFavouriteQuestions = () => {
         const favouriteQuestions = {}
         this.props.favouriteQuestions.forEach(question => {
-            console.log(question)
             if (favouriteQuestions[question.question.examId] === undefined) {
                 favouriteQuestions[question.question.examId] = {}
                 if (

@@ -18,7 +18,7 @@ export const deleteFriendship = async (
                 isClientUser: isClientUser
             }
         })
-        return response.data.data
+        return response.data
     } catch (err) {
         console.log(err)
         return err.response

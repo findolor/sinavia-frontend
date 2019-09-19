@@ -26,7 +26,7 @@ export default StyleSheet.create({
     },
     flatListContainer: {
         flex: 82.5,
-        width: wp(88),
+        width: wp(88)
     },
     returnLogo: {
         height: hp(3.5),
@@ -179,5 +179,15 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Bold',
         fontSize: hp(1.5),
         color: '#FFFFFF'
+    },
+    emptyFlatListContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: hp(75)
+    },
+    emptyFlatListText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(3),
+        color: '#000'
     }
 })

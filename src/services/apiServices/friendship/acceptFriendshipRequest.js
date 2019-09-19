@@ -22,7 +22,7 @@ export const acceptFriendshipRequest = async (
                 }
             }
         )
-        return response.data.data
+        return response.data
     } catch (err) {
         console.log(err.response)
         return err.response
