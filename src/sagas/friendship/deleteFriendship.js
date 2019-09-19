@@ -22,7 +22,7 @@ export function* deleteFriendshipRequestSaga(action) {
         action.friendId,
         action.isClientUser
     )
-    console.log(response)
+
     if (response.success) {
         yield put({
             type: friendTypes.CHANGE_FRIENDSHIP_STATUS,

@@ -11,7 +11,6 @@ import styles from './style'
 import NotchView from '../../../components/notchView'
 import returnLogo from '../../../assets/return.png'
 import { navigationPop } from '../../../services/navigationService'
-import { friendshipServices } from '../../../sagas/friendship/'
 import { connect } from 'react-redux'
 import { friendActions } from '../../../redux/friends/actions'
 
@@ -254,24 +253,24 @@ class Notifications extends React.Component {
         }
     }
 
-    addToFriendIds = id => {
-        const friendList = this.props.friendIds
-        friendList.push(id)
-
-        this.props.saveFriendIdList(friendList)
-    }
-
     acceptFriendRequestOnPress = (friendId, index) => {
-        this.addToFriendIds(friendId)
-
-        friendshipServices.acceptFriendshipRequest(
+        this.props.acceptFriendshipRequest(
             this.props.clientToken,
             this.props.clientDBId,
             friendId,
-            this.props.clientInformation.username
+            this.props.clientInformation.username,
+            this.props.friendIds
         )
-
         this.props.removeFromFriendRequests(index)
+    }
+
+    rejectFriendRequestOnPress = friendId => {
+        this.props.rejectFriendshipRequest(
+            this.props.clientToken,
+            friendId,
+            this.props.clientDBId,
+            this.props.friendRequests
+        )
     }
 
     renderEmptyFriendRequests = () => {
@@ -415,9 +414,10 @@ class Notifications extends React.Component {
                                                 />
                                             </TouchableOpacity>
                                             <TouchableOpacity
-                                                onPress={
-                                                    this
-                                                        .rejectFriendRequestOnPress
+                                                onPress={() =>
+                                                    this.rejectFriendRequestOnPress(
+                                                        item.id
+                                                    )
                                                 }
                                             >
                                                 <Image
@@ -454,7 +454,32 @@ const mapDispatchToProps = dispatch => ({
     getFriendRequests: (clientToken, clientId) =>
         dispatch(friendActions.getFriendRequests(clientToken, clientId)),
     removeFromFriendRequests: index =>
-        dispatch(friendActions.removeFromFriendRequests(index))
+        dispatch(friendActions.removeFromFriendRequests(index)),
+    acceptFriendshipRequest: (
+        clientToken,
+        clientId,
+        opponentId,
+        clientUsername,
+        friendIdList
+    ) =>
+        dispatch(
+            friendActions.acceptFriendRequest(
+                clientToken,
+                clientId,
+                opponentId,
+                clientUsername,
+                friendIdList
+            )
+        ),
+    rejectFriendshipRequest: (clientToken, userId, friendId, friendRequests) =>
+        dispatch(
+            friendActions.rejectFriendshipRequest(
+                clientToken,
+                userId,
+                friendId,
+                friendRequests
+            )
+        )
 })
 
 export default connect(

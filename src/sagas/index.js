@@ -50,6 +50,10 @@ export default function* root() {
         takeLatest(
             friendTypes.DELETE_FRIENDSHIP_REQUEST,
             friendshipSagas.deleteFriendshipRequest
+        ),
+        takeLatest(
+            friendTypes.REJECT_FRIENDSHIP_REQUEST,
+            friendshipSagas.rejectFriendshipRequest
         )
     ])
 }

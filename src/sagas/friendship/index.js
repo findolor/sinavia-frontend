@@ -9,12 +9,17 @@ import { getFriendRequestsSaga } from './getFriendRequests'
 import { acceptFriendshipRequestSaga } from './acceptFriendshipRequest'
 import { deleteFriendshipRequestSaga } from './deleteFriendship'
 import { sendFriendshipRequestSaga } from './sendFriendshipRequest'
+import {
+    rejectFriendshipService,
+    rejectFriendshipSaga
+} from './rejectFriendship'
 
 export const friendshipSagas = {
     getFriendRequests: getFriendRequestsSaga,
     acceptFriendshipRequest: acceptFriendshipRequestSaga,
     deleteFriendshipRequest: deleteFriendshipRequestSaga,
-    sendFriendshipRequest: sendFriendshipRequestSaga
+    sendFriendshipRequest: sendFriendshipRequestSaga,
+    rejectFriendshipRequest: rejectFriendshipSaga
 }
 
 export const friendshipServices = {
@@ -24,5 +29,6 @@ export const friendshipServices = {
     sendFriendshipRequest: sendFriendshipRequestService,
     acceptFriendshipRequest: acceptFriendshipRequestService,
     deleteFriendship: deleteFriendshipService,
-    getFriendRequests: getFriendRequestsService
+    getFriendRequests: getFriendRequestsService,
+    rejectFriendshipRequest: rejectFriendshipService
 }
