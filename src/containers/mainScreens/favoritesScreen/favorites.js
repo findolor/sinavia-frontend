@@ -151,7 +151,6 @@ class Favorites extends React.Component {
     mapFavouriteQuestions = () => {
         const favouriteQuestions = {}
         this.props.favouriteQuestions.forEach(question => {
-            console.log(question)
             if (favouriteQuestions[question.question.examId] === undefined) {
                 favouriteQuestions[question.question.examId] = {}
                 if (

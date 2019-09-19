@@ -226,7 +226,7 @@ export function* authenticateUser(action) {
             // We get the token for fcm
             const fcmToken = yield call(fcmService.getFcmToken)
             // And save it to storage
-            deviceStorage.saveItemToStorage('fcmToken', fcmToken)
+            deviceStorage.saveItemToStorage('clientToken', fcmToken)
             // We add the token to our client info
             clientInformation.fcmToken = fcmToken
             // We send a request to api to save our fcm token
