@@ -38,6 +38,21 @@ class FriendsList extends React.Component {
         this.setState({ friendsList: friends })
     }
 
+    async componentDidUpdate(prevProps, prevState) {
+        if (prevProps !== this.props) {
+            if (Object.keys(this.props.friendIds).length === 0) {
+                this.setState({ friendsList: [] })
+                return
+            }
+            const friends = await userServices.getUsers(
+                this.props.clientToken,
+                this.props.friendIds
+            )
+
+            this.setState({ friendsList: friends })
+        }
+    }
+
     returnButtonOnPress = () => {
         navigationPop()
     }

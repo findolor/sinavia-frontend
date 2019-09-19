@@ -38,9 +38,8 @@ class OpponentsProfile extends React.Component {
             totalFriendGamesPlayed: this.props.totalFriendGames,
             clientWinCount: this.props.clientWinCount,
             opponentWinCount: this.props.opponentWinCount,
-            // We send back deleted friend index for refreshing friedns screen
-            // TODO SEE IF THIS IS NECESSARY
-            deletedFriendIndex: null,
+            // See if we deleted the friend
+            isFriendDeleted: false,
             // Friend search text
             searchText: ''
         }
@@ -68,19 +67,12 @@ class OpponentsProfile extends React.Component {
     // TODO this doesn't refresh the screen upon popping
     // TODO Take a close look here
     backButtonOnPress = () => {
-        /* if (
-            !this.props.isWithSearchBar &&
-            this.state.deletedFriendIndex !== null
-        ) {
-            const friendsList = this.props.friendsScreenFriendsList
-            friendsList.splice(this.state.deletedFriendIndex, 1)
-
+        if (!this.props.isWithSearchBar && this.state.isFriendDeleted) {
             navigationPop(true, {
                 popScreen: SCENE_KEYS.mainScreens.friendsList,
-                friendsList: friendsList
+                friendIds: this.props.friendIds
             })
-        } else navigationPop() */
-        navigationPop()
+        } else navigationPop()
     }
 
     sendFriendshipRequest = () => {
@@ -122,20 +114,7 @@ class OpponentsProfile extends React.Component {
             )
         }
         this.props.subtractFromFriendsList(this.props.opponentInformation)
-
-        // TODO SEE WHAT IS GOING ON HERE
-        /* let friendIndex
-        if (this.props.friendsScreenFriendsList) {
-            this.props.friendsScreenFriendsList.forEach((friend, index) => {
-                if (this.props.opponentInformation.id === friend.id) {
-                    friendIndex = index
-                    return
-                }
-            })
-        }
-        this.setState({
-            deletedFriendIndex: friendIndex
-        }) */
+        this.setState({ isFriendDeleted: true })
     }
 
     friendshipStatusOnPress = () => {
