@@ -40,7 +40,9 @@ class OpponentsProfile extends React.Component {
             opponentWinCount: this.props.opponentWinCount,
             // We send back deleted friend index for refreshing friedns screen
             // TODO SEE IF THIS IS NECESSARY
-            deletedFriendIndex: null
+            deletedFriendIndex: null,
+            // Friend search text
+            searchText: ''
         }
     }
 
@@ -151,6 +153,14 @@ class OpponentsProfile extends React.Component {
         }
     }
 
+    profileSearchOnPress = () => {
+        if (this.state.searchText === '') return
+        navigationPop(true, {
+            searchedKeyword: this.state.searchText,
+            popScreen: SCENE_KEYS.mainScreens.profileSearch
+        })
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -166,6 +176,10 @@ class OpponentsProfile extends React.Component {
                                     style={styles.searchBarText}
                                     placeholder="Kullanıcı ara..."
                                     placeholderTextColor={'#7B7B7B'}
+                                    onChangeText={text =>
+                                        this.setState({ searchText: text })
+                                    }
+                                    autoCapitalize={'none'}
                                 />
                             </View>
                             <TouchableOpacity

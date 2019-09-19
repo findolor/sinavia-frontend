@@ -22,7 +22,13 @@ export const navigationPop = (isWantedRefresh, params) => {
                 setTimeout(() => {
                     Actions.refresh({ friendsList: params.friendsList })
                 }, 700)
-            //Actions.refresh({ friendsList: params.friendsList })
+                break
+            case SCENE_KEYS.mainScreens.profileSearch:
+                Actions.pop()
+                setTimeout(() => {
+                    Actions.refresh({ searchedKeyword: params.searchedKeyword })
+                }, 700)
+                break
         }
     } else Actions.pop()
 }

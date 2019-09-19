@@ -32,6 +32,18 @@ class ProfileSearch extends React.Component {
         this.setState({ returnedSearchList: userList })
     }
 
+    async componentDidUpdate(prevProps, prevState) {
+        if (this.props !== prevProps) {
+            let userList = await userServices.searchUsers(
+                this.props.clientToken,
+                this.props.clientDBId,
+                this.props.searchedKeyword
+            )
+
+            this.setState({ returnedSearchList: userList })
+        }
+    }
+
     backButtonOnPress = () => {
         navigationPop()
     }
