@@ -11,13 +11,10 @@ export function* createUser(action) {
         const res = yield call(postUser, action.payload)
 
         // Saving the credentials to storage
-        deviceStorage.saveItemToStorage(
-            'clientCredentials',
-            JSON.stringify({
-                email: action.payload.email,
-                password: action.payload.password
-            })
-        )
+        deviceStorage.saveItemToStorage('clientCredentials', {
+            email: action.payload.email,
+            password: action.payload.password
+        })
         // Saving credentials to redux state
         yield put({
             type: clientTypes.SAVE_CLIENT_CREDENTIALS,
@@ -50,10 +47,7 @@ export function* createUser(action) {
 
         // Saving information to storage
         delete action.payload.password
-        deviceStorage.saveItemToStorage(
-            'clientInformation',
-            JSON.stringify(action.payload)
-        )
+        deviceStorage.saveItemToStorage('clientInformation', action.payload)
         // Saving client information to redux state
         yield put({
             type: clientTypes.SAVE_CLIENT_INFORMATION,

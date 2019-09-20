@@ -21,8 +21,5 @@ export function* unfavouriteQuestionSaga(action) {
         payload: favedQuestionList
     })
 
-    deviceStorage.saveItemToStorage(
-        'favouriteQuestions',
-        JSON.stringify(favedQuestionList)
-    )
+    deviceStorage.saveItemToStorage('favouriteQuestions', favedQuestionList)
 }
