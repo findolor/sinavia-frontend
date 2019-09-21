@@ -8,13 +8,15 @@ import {
     getOpponentFullInformationService,
     getOpponentFullInformationSaga
 } from './getOpponentFullInformation'
+import { updateUserSaga } from './updateUser'
 
 export const userSagas = {
     createUser: createUser,
     fetchUser: fetchUser,
     authenticateUser: authenticateUser,
     loginUser: loginUser,
-    getOpponentFullInformation: getOpponentFullInformationSaga
+    getOpponentFullInformation: getOpponentFullInformationSaga,
+    updateUser: updateUserSaga
 }
 
 export const userServices = {

@@ -34,6 +34,17 @@ export function* authenticateUser(action) {
             payload: action.payload
         })
 
+        // We get the client credentials from device storage
+        const clientCredentials = yield call(
+            getFromStorage,
+            'clientCredentials'
+        )
+        // Save credential state to redux
+        yield put({
+            type: clientTypes.SAVE_CLIENT_CREDENTIALS,
+            payload: clientCredentials
+        })
+
         yield put({
             type: gameContentTypes.GET_ALL_CONTENT,
             clientToken: action.payload

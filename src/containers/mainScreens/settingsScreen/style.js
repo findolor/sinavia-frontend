@@ -145,5 +145,10 @@ export default StyleSheet.create({
         fontSize: wp(4),
         paddingVertical: hp(0),
         color: 'black'
+    },
+    textInputStyle: {
+        height: hp(7),
+        width: wp(72),
+        paddingHorizontal: wp(3)
     }
 })

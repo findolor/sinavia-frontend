@@ -68,5 +68,10 @@ export default StyleSheet.create({
         height: hp(12),
         width: wp(17),
         justifyContent: 'center'
+    },
+    textInputStyle: {
+        height: hp(7),
+        width: wp(72),
+        paddingHorizontal: wp(3)
     }
 })

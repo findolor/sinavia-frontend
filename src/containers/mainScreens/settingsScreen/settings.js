@@ -4,7 +4,8 @@ import {
     Text,
     TouchableOpacity,
     Image,
-    ImageBackground
+    ImageBackground,
+    TextInput
 } from 'react-native'
 import styles from './style'
 import NotchView from '../../../components/notchView'
@@ -18,8 +19,6 @@ import { deviceStorage } from '../../../services/deviceStorage'
 import { connect } from 'react-redux'
 // Picture imports
 import returnLogo from '../../../assets/return.png'
-import nebula from '../../../assets/cover.jpg'
-import PROFILE_PIC from '../../../assets/profile2.jpg'
 import EDIT from '../../../assets/edit.png'
 
 class Settings extends React.Component {
@@ -95,20 +94,56 @@ class Settings extends React.Component {
                             <Text style={styles.textInputTitle}>Ad</Text>
                             <Text style={styles.textInputTitle}>Soyad</Text>
                         </View>
-                        <View style={styles.textInputView} />
+                        <View style={styles.textInputView}>
+                            <TextInput
+                                placeholder={
+                                    this.props.clientInformation.name +
+                                    ' ' +
+                                    this.props.clientInformation.lastname
+                                }
+                                style={styles.textInputStyle}
+                                placeholderTextColor="#8A8888"
+                                /* onChangeText={email =>
+                                    this.emailOnChange(email)
+                                } */
+                            />
+                        </View>
                     </View>
                     <View style={styles.textInputContainer}>
                         <View style={styles.textInputTitleContainer}>
                             <Text style={styles.textInputTitle}>Şehir</Text>
                         </View>
-                        <View style={styles.textInputView} />
+                        <View style={styles.textInputView}>
+                            <TextInput
+                                placeholder={this.props.clientInformation.city}
+                                style={styles.textInputStyle}
+                                placeholderTextColor="#8A8888"
+                                /* onChangeText={email =>
+                                    this.emailOnChange(email)
+                                } */
+                            />
+                        </View>
                     </View>
                     <View style={styles.textInputContainer}>
                         <View style={styles.textInputTitleContainer}>
                             <Text style={styles.textInputTitle}>Doğum</Text>
                             <Text style={styles.textInputTitle}>Tarihi</Text>
                         </View>
-                        <View style={styles.textInputView} />
+                        <View style={styles.textInputView}>
+                            {
+                                // TODO turn this into the same thing in register screen
+                            }
+                            <TextInput
+                                placeholder={
+                                    this.props.clientInformation.birthDate
+                                }
+                                style={styles.textInputStyle}
+                                placeholderTextColor="#8A8888"
+                                /* onChangeText={email =>
+                                    this.emailOnChange(email)
+                                } */
+                            />
+                        </View>
                     </View>
                 </View>
                 <View style={styles.buttonsContainer}>

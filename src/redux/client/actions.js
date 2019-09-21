@@ -15,7 +15,8 @@ export const clientTypes = {
     UNFAVOURITE_QUESTION: 'unfavourite_question',
     SAVE_FAVOURITE_QUESTIONS: 'save_favourite_questions',
     SAVE_USER_JOKERS: 'save_user_jokers',
-    SUBTRACT_JOKER: 'subtract_joker'
+    SUBTRACT_JOKER: 'subtract_joker',
+    UPDATE_USER: 'update_user'
 }
 
 const createUser = userInformation => {
@@ -90,6 +91,16 @@ subtractJoker = jokerId => {
     }
 }
 
+updateUser = (clientToken, clientId, clientInformation, isPasswordChange) => {
+    return {
+        type: clientTypes.UPDATE_USER,
+        clientToken: clientToken,
+        clientId: clientId,
+        clientInformation: clientInformation,
+        isPasswordChange: isPasswordChange
+    }
+}
+
 export const clientActions = {
     createUser: createUser,
     fetchUser: fetchUser,
@@ -98,5 +109,6 @@ export const clientActions = {
     searchUsers: searchUsers,
     favouriteQuestion: favouriteQuestion,
     unfavouriteQuestion: unfavouriteQuestion,
-    subtractJoker: subtractJoker
+    subtractJoker: subtractJoker,
+    updateUser: updateUser
 }
