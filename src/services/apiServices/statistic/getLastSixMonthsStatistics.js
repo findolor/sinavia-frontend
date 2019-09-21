@@ -9,7 +9,7 @@ export const getLastSixMonthsStatistics = async (userToken, userId, params) => {
                 headers: {
                     Authorization: 'Bearer ' + userToken
                 },
-                params
+                params: params
             }
         )
         return response.data.data
