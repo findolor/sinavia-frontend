@@ -40,8 +40,7 @@ export function* authenticateUser(action) {
         })
 
         // We get clientInformation from storage
-        let client = yield call(getFromStorage, 'clientInformation')
-        let clientInformation = JSON.parse(client)
+        let clientInformation = yield call(getFromStorage, 'clientInformation')
         // Then we save it as redux state
         yield put({
             type: clientTypes.SAVE_CLIENT_INFORMATION,
@@ -53,7 +52,6 @@ export function* authenticateUser(action) {
             getFromStorage,
             'favouriteQuestions'
         )
-        favouriteQuestions = JSON.parse(favouriteQuestions)
         // Save it to redux state
         if (favouriteQuestions !== null && favouriteQuestions !== []) {
             yield put({
@@ -75,13 +73,9 @@ export function* authenticateUser(action) {
         let friendsList = yield call(getFriends, action.payload, clientDBId)
         // Get client friends from storage
         let friends = yield call(getFromStorage, 'clientFriends')
-        friends = JSON.parse(friends)
         // We check if cached friends is the same as db
         if (Object.keys(friendsList).length !== Object.keys(friends).length) {
-            deviceStorage.saveItemToStorage(
-                'clientFriends',
-                JSON.stringify(friendsList)
-            )
+            deviceStorage.saveItemToStorage('clientFriends', friendsList)
             // We save clients friends ids to redux state
             yield put({
                 type: friendTypes.SAVE_FRIEND_IDS,
@@ -137,14 +131,15 @@ export function* authenticateUser(action) {
                 examId: examList[index].id
             }) */
         }
-
         if (res) goToMainScreen()
     } catch (error) {
         // If we get unauthorized from api
         try {
             // We get the client credentials from device storage
-            const info = yield call(getFromStorage, 'clientCredentials')
-            const clientCredentials = JSON.parse(info)
+            const clientCredentials = yield call(
+                getFromStorage,
+                'clientCredentials'
+            )
             // Save credential state to redux
             yield put({
                 type: clientTypes.SAVE_CLIENT_CREDENTIALS,
@@ -175,8 +170,10 @@ export function* authenticateUser(action) {
             })
 
             // We get clientInformation from storage
-            let client = yield call(getFromStorage, 'clientInformation')
-            let clientInformation = JSON.parse(client)
+            let clientInformation = yield call(
+                getFromStorage,
+                'clientInformation'
+            )
             // Then we save it as redux state
             yield put({
                 type: clientTypes.SAVE_CLIENT_INFORMATION,
@@ -188,7 +185,6 @@ export function* authenticateUser(action) {
                 getFromStorage,
                 'favouriteQuestions'
             )
-            favouriteQuestions = JSON.parse(favouriteQuestions)
             // Save it to redux state
             if (favouriteQuestions !== null && favouriteQuestions !== []) {
                 yield put({
@@ -201,15 +197,11 @@ export function* authenticateUser(action) {
             let friendsList = yield call(getFriends, res.token, res.id)
             // Get client friends from storage
             let friends = yield call(getFromStorage, 'clientFriends')
-            friends = JSON.parse(friends)
             // We check if cached friends is the same as db
             if (
                 Object.keys(friendsList).length !== Object.keys(friends).length
             ) {
-                deviceStorage.saveItemToStorage(
-                    'clientFriends',
-                    JSON.stringify(friendsList)
-                )
+                deviceStorage.saveItemToStorage('clientFriends', friendsList)
                 // We save clients friends ids to redux state
                 yield put({
                     type: friendTypes.SAVE_FRIEND_IDS,
@@ -226,7 +218,7 @@ export function* authenticateUser(action) {
             // We get the token for fcm
             const fcmToken = yield call(fcmService.getFcmToken)
             // And save it to storage
-            deviceStorage.saveItemToStorage('clientToken', fcmToken)
+            deviceStorage.saveItemToStorage('fcmToken', fcmToken)
             // We add the token to our client info
             clientInformation.fcmToken = fcmToken
             // We send a request to api to save our fcm token

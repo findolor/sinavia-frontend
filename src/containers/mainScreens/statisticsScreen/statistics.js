@@ -1,11 +1,12 @@
 import React from 'react'
 import { ProgressCircle } from 'react-native-svg-charts'
 import Rheostat from 'react-native-rheostat'
-import { Image, Text, TouchableOpacity, View, SafeAreaView } from 'react-native'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
+import { statisticsServices } from '../../../sagas/statistic'
 import styles from '../statisticsScreen/style'
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
 import NotchView from '../../../components/notchView'
@@ -14,24 +15,9 @@ import { navigationPop } from '../../../services/navigationService'
 import Moment from 'moment'
 import 'moment/locale/tr'
 import SemiCircleProgress from '../../../components/semiCircleProgress'
-import { LGS } from '../../../components/mainScreen/carousel/static/exams'
-import * as courses from '../../../components/mainScreen/carousel/static/courses'
 import { connect } from 'react-redux'
-import { quizList } from './exampleQuizzes'
 
-const timezonesList = ['Bu hafta', 'Bu ay', 'Son 3 ay', 'Son 6 ay', 'Ay seçin']
-
-const quizResult = {
-    examName: 'YKS',
-    courseName: 'Türkçe',
-    subjectName: 'Paragrafta Anlam',
-    correctNumber: '3',
-    incorrectNumber: '1',
-    unansweredNumber: '1',
-    earnedPoints: '',
-    gameResult: 'won',
-    createdAt: '1566086400'
-}
+const timezonesList = ['Bu hafta', 'Bu ay', 'Son 6 ay', 'Ay seçin']
 
 class Statistics extends React.Component {
     constructor(props) {
@@ -39,21 +25,14 @@ class Statistics extends React.Component {
         this.state = {
             thisWeek: { values: [0, 6] },
             thisMonth: { values: [0, 30] },
-            last3Month: { values: [0, 12] },
-            last6Month: { values: [0, 24] },
-            courseLeaderboardList: ['Genel'],
-            subjectLeaderboardList: [],
-            subjectLeaderboardListDefaultValue: '',
+            lastSixMonths: { values: [0, 5] },
+            courseList: [],
+            subjectList: [],
+            subjectListDefaultValue: '',
             isSubjectDropdownVisible: false,
-            timezone: 'Bu ay',
-            startDate: Moment.utc()
-                .startOf('month')
-                .add(0, 'days')
-                .format('YYYY-MM-DD'),
-            endDate: Moment.utc()
-                .startOf('month')
-                .add(1, 'days')
-                .format('YYYY-MM-DD'),
+            timezone: 'Bu hafta',
+            startDate: null,
+            endDate: null,
             wons: 0,
             losts: 0,
             draws: 0,
@@ -63,120 +42,437 @@ class Statistics extends React.Component {
             wonPercentage: 0,
             correctPercentage: 0,
             incorrectPercentage: 0,
-            unansweredPercentage: 0
+            unansweredPercentage: 0,
+            // Choosen game contents
+            choosenExamId: null,
+            choosenCourseId: null,
+            choosenSubjectId: null,
+            // User statistics lists
+            originalWeeklyStatList: [],
+            weeklyStatList: [],
+            originalMonthlyStatList: [],
+            monthlyStatList: [],
+            originalSixMonthsStatList: [],
+            sixMonthsStatList: [],
+            // Variables to check if we fetched the other times
+            isMonthlyFetched: false,
+            isSixMonthsFetched: false
         }
     }
 
-    componentDidMount() {
-        const courseList = this.state.courseLeaderboardList
-
-        this.courseSwitchPicker(courseList)
-    }
-
-    courseSwitchPicker = courseList => {
-        switch (this.props.choosenExam) {
-            case 'LGS':
-                LGS.forEach(course => {
-                    courseList.push(course.courseName)
+    async componentDidMount() {
+        this.setChoosenExamId().then(() => {
+            this.fetchStatistics().then(data => {
+                this.makeStatistics(data, this.weeklyRheostatValueUpdate, {
+                    max: 6,
+                    min: 0,
+                    values: [0, 6]
                 })
-                return
-        }
-        this.setState({ courseLeaderboardList: courseList })
+            })
+        })
+
+        this.courseListMaker()
     }
 
+    makeStatistics = (data, rheostatFunction, rheostatFunctionParams) => {
+        const statisticsList = []
+        data.forEach(statistic => {
+            delete statistic.earnedPoints
+            statistic.createdAt = Moment(statistic.createdAt).format(
+                'YYYY-MM-DD'
+            )
+            statisticsList.push(statistic)
+        })
+        switch (this.state.timezone) {
+            case 'Bu hafta':
+                this.setState(
+                    {
+                        weeklyStatList: statisticsList,
+                        originalWeeklyStatList: statisticsList
+                    },
+                    () => {
+                        setTimeout(() => {
+                            rheostatFunction(rheostatFunctionParams)
+                        }, 50)
+                    }
+                )
+                break
+            case 'Bu ay':
+                this.setState(
+                    {
+                        monthlyStatList: statisticsList,
+                        originalMonthlyStatList: statisticsList
+                    },
+                    () => {
+                        setTimeout(() => {
+                            rheostatFunction(rheostatFunctionParams)
+                        }, 50)
+                    }
+                )
+                break
+            case 'Son 6 ay':
+                this.setState(
+                    {
+                        sixMonthsStatList: statisticsList,
+                        originalSixMonthsStatList: statisticsList
+                    },
+                    () => {
+                        setTimeout(() => {
+                            rheostatFunction(rheostatFunctionParams)
+                        }, 50)
+                    }
+                )
+                break
+        }
+    }
+
+    // Fetching the statistics based on the selected time
+    fetchStatistics = async () => {
+        switch (this.state.timezone) {
+            case 'Bu hafta':
+                return statisticsServices.getWeeklyStatistics(
+                    this.props.clientToken,
+                    this.props.clientDBId,
+                    { examId: this.state.choosenExamId }
+                )
+            case 'Bu ay':
+                return statisticsServices.getMonthlyStatistics(
+                    this.props.clientToken,
+                    this.props.clientDBId,
+                    { examId: this.state.choosenExamId }
+                )
+            case 'Son 6 ay':
+                return statisticsServices.getLastSixMonthsStatistics(
+                    this.props.clientToken,
+                    this.props.clientDBId,
+                    { examId: this.state.choosenExamId }
+                )
+        }
+    }
+
+    // This function runs when the screen is opened
+    courseListMaker = () => {
+        const courseList = ['Genel']
+        let index = this.props.gameContentMap.exams.findIndex(
+            x => x.name === this.props.choosenExam
+        )
+        let examId = this.props.gameContentMap.exams[index].id
+        this.props.gameContentMap.courses.forEach(course => {
+            if (course.examId === examId) courseList.push(course.name)
+        })
+
+        this.setState({ courseList: courseList })
+    }
+
+    // We set the choosen exam id based on users choosen exam
+    setChoosenExamId = async () => {
+        new Promise.resolve().then(() => {
+            let index = this.props.gameContentMap.exams.findIndex(
+                x => x.name === this.props.choosenExam
+            )
+            let examId = this.props.gameContentMap.exams[index].id
+            this.setState(
+                {
+                    choosenExamId: examId
+                },
+                () => {
+                    return
+                }
+            )
+        })
+    }
+
+    // Course name selector for dropdown
     pickerSelectCourse = (idx, value) => {
         this.setState({ isSubjectDropdownVisible: false })
         setTimeout(() => {
-            this.subjectSwitchPicker(value)
-        }, 300)
+            this.selectCourseDropdown(idx)
+        }, 200)
     }
 
-    pickerSelectSubject = (idx, value) => {}
-
-    subjectSwitchPicker = selectedCourse => {
-        switch (this.props.choosenExam) {
-            case 'LGS':
-                switch (selectedCourse) {
-                    case 'Genel':
-                        this.setState({
-                            subjectLeaderboardList: [],
-                            subjectLeaderboardListDefaultValue: ''
-                        })
-                        return
-                    case 'Türkçe':
-                        this.setState({
-                            subjectLeaderboardList: courses.LGS.turkce,
-                            subjectLeaderboardListDefaultValue: 'Hepsi',
-                            isSubjectDropdownVisible: true
-                        })
-                        return
-                    case 'Matematik':
-                        this.setState({
-                            subjectLeaderboardList: courses.LGS.matematik,
-                            subjectLeaderboardListDefaultValue: 'Hepsi',
-                            isSubjectDropdownVisible: true
-                        })
-                        return
-                    case 'Tarih':
-                        this.setState({
-                            subjectLeaderboardList: courses.LGS.tarih,
-                            subjectLeaderboardListDefaultValue: 'Hepsi',
-                            isSubjectDropdownVisible: true
-                        })
-                        return
-                    case 'Fen Bilimleri':
-                        this.setState({
-                            subjectLeaderboardList: courses.LGS.fen,
-                            subjectLeaderboardListDefaultValue: 'Hepsi',
-                            isSubjectDropdownVisible: true
-                        })
-                        return
-                    case 'İngilizce':
-                        this.setState({
-                            subjectLeaderboardList: courses.LGS.ingilizce,
-                            subjectLeaderboardListDefaultValue: 'Hepsi',
-                            isSubjectDropdownVisible: true
-                        })
-                        return
-                    case 'Din Kültürü':
-                        this.setState({
-                            subjectLeaderboardList: courses.LGS.din,
-                            subjectLeaderboardListDefaultValue: 'Hepsi',
-                            isSubjectDropdownVisible: true
-                        })
-                        return
-                }
-                return
+    selectSubjectDropdown = (idx, value) => {
+        let index = parseInt(idx, 10)
+        if (index === 0) {
+            this.setState({ subjectList: [], choosenSubjectId: null }, () => {
+                this.refreshSubjectStatistics(true)
+            })
+            return
+        } else {
+            this.setState({ choosenSubjectId: index }, () => {
+                this.refreshSubjectStatistics(false)
+            })
         }
+    }
+
+    refreshCourseStatistics = isGeneral => {
+        let statisticsList = []
+        switch (this.state.timezone) {
+            case 'Bu hafta':
+                if (isGeneral) {
+                    this.setState({
+                        weeklyStatList: this.state.originalWeeklyStatList
+                    })
+                } else {
+                    this.state.originalWeeklyStatList.forEach(statistic => {
+                        if (statistic.courseId === this.state.choosenCourseId) {
+                            statisticsList.push(statistic)
+                        }
+                    })
+                    this.setState({ weeklyStatList: statisticsList })
+                }
+                setTimeout(() => {
+                    this.weeklyRheostatValueUpdate({
+                        max: 6,
+                        min: 0,
+                        values: [0, 6]
+                    })
+                }, 50)
+                break
+            case 'Bu ay':
+                if (isGeneral) {
+                    this.setState({
+                        monthlyStatList: this.state.originalMonthlyStatList
+                    })
+                } else {
+                    this.state.originalMonthlyStatList.forEach(statistic => {
+                        if (statistic.courseId === this.state.choosenCourseId) {
+                            statisticsList.push(statistic)
+                        }
+                    })
+                    this.setState({ monthlyStatList: statisticsList })
+                }
+                setTimeout(() => {
+                    this.monthlyRheostatValUpdated({
+                        max: 30,
+                        min: 0,
+                        values: [0, 30]
+                    })
+                }, 50)
+                break
+            case 'Son 6 ay':
+                if (isGeneral) {
+                    this.setState({
+                        sixMonthsStatList: this.state.originalSixMonthsStatList
+                    })
+                } else {
+                    this.state.originalSixMonthsStatList.forEach(statistic => {
+                        if (statistic.courseId === this.state.choosenCourseId) {
+                            statisticsList.push(statistic)
+                        }
+                    })
+                    this.setState({ sixMonthsStatList: statisticsList })
+                }
+                setTimeout(() => {
+                    this.sixMonthsRheostatValUpdated({
+                        max: 5,
+                        min: 0,
+                        values: [0, 5]
+                    })
+                }, 50)
+                break
+        }
+    }
+
+    refreshSubjectStatistics = isGeneral => {
+        let statisticsList = []
+        switch (this.state.timezone) {
+            case 'Bu hafta':
+                if (isGeneral) {
+                    this.selectCourseDropdown(this.state.choosenCourseId)
+                } else {
+                    this.state.originalWeeklyStatList.forEach(statistic => {
+                        if (
+                            statistic.subjectId ===
+                                this.state.choosenSubjectId &&
+                            statistic.courseId === this.state.choosenCourseId
+                        ) {
+                            statisticsList.push(statistic)
+                        }
+                    })
+                    this.setState({ weeklyStatList: statisticsList })
+                }
+                setTimeout(() => {
+                    this.weeklyRheostatValueUpdate({
+                        max: 6,
+                        min: 0,
+                        values: [0, 6]
+                    })
+                }, 50)
+                break
+            case 'Bu ay':
+                if (isGeneral) {
+                    this.selectCourseDropdown(this.state.choosenCourseId)
+                } else {
+                    this.state.originalMonthlyStatList.forEach(statistic => {
+                        if (
+                            statistic.subjectId ===
+                                this.state.choosenSubjectId &&
+                            statistic.courseId === this.state.choosenCourseId
+                        ) {
+                            statisticsList.push(statistic)
+                        }
+                    })
+                    this.setState({ monthlyStatList: statisticsList })
+                }
+                setTimeout(() => {
+                    this.monthlyRheostatValUpdated({
+                        max: 30,
+                        min: 0,
+                        values: [0, 30]
+                    })
+                }, 50)
+                break
+            case 'Son 6 ay':
+                if (isGeneral) {
+                    this.selectCourseDropdown(this.state.choosenCourseId)
+                } else {
+                    this.state.originalSixMonthsStatList.forEach(statistic => {
+                        if (
+                            statistic.subjectId ===
+                                this.state.choosenSubjectId &&
+                            statistic.courseId === this.state.choosenCourseId
+                        ) {
+                            statisticsList.push(statistic)
+                        }
+                    })
+                    this.setState({ sixMonthsStatList: statisticsList })
+                }
+                setTimeout(() => {
+                    this.sixMonthsRheostatValUpdated({
+                        max: 5,
+                        min: 0,
+                        values: [0, 5]
+                    })
+                }, 50)
+                break
+        }
+    }
+
+    // this index is the course id in gameContentMap
+    selectCourseDropdown = index => {
+        index = parseInt(index, 10)
+        if (index === 0) {
+            this.setState(
+                {
+                    subjectList: [],
+                    choosenCourseId: null,
+                    choosenSubjectId: null
+                },
+                () => {
+                    this.refreshCourseStatistics(true)
+                }
+            )
+            return
+        }
+        const subjectList = ['Hepsi']
+        this.props.gameContentMap.subjects.forEach(subject => {
+            if (subject.courseId === index) subjectList.push(subject.name)
+        })
+        this.setState(
+            {
+                subjectList: subjectList,
+                subjectListDefaultValue: 'Hepsi',
+                isSubjectDropdownVisible: true,
+                choosenCourseId: index
+            },
+            () => {
+                this.refreshCourseStatistics(false)
+            }
+        )
     }
 
     timezoneSelect = (idx, value) => {
         switch (value) {
+            // Because we fetched this week at the start
+            // We just use the same list and update the results again
             case 'Bu hafta':
-                this.setState({
-                    timezone: 'Bu hafta'
+                this.setState({ timezone: 'Bu hafta' }, () => {
+                    if (this.state.choosenCourseId !== null) {
+                        if (this.state.choosenSubjectId !== null) {
+                            this.refreshSubjectStatistics(false)
+                        } else {
+                            this.refreshCourseStatistics(false)
+                        }
+                    } else this.refreshCourseStatistics(true)
                 })
-                return
+                break
             case 'Bu ay':
-                this.setState({
-                    timezone: 'Bu ay'
+                this.setState({ timezone: 'Bu ay' }, () => {
+                    // If we have fetched monthly list
+                    // We dont fetch it again and use the same list
+                    if (this.state.isMonthlyFetched) {
+                        if (this.state.choosenCourseId !== null) {
+                            if (this.state.choosenSubjectId !== null) {
+                                this.refreshSubjectStatistics(false)
+                            } else {
+                                this.refreshCourseStatistics(false)
+                            }
+                        } else this.refreshCourseStatistics(true)
+                    }
+                    // If we havent fetched it before we get the results
+                    else
+                        this.fetchStatistics().then(data => {
+                            this.setState({ isMonthlyFetched: true })
+                            this.makeStatistics(
+                                data,
+                                this.monthlyRheostatValUpdated,
+                                {
+                                    max: 30,
+                                    min: 0,
+                                    values: [0, 30]
+                                }
+                            )
+                            if (this.state.choosenCourseId !== null) {
+                                if (this.state.choosenSubjectId !== null) {
+                                    this.refreshSubjectStatistics(false)
+                                } else {
+                                    this.refreshCourseStatistics(false)
+                                }
+                            }
+                        })
                 })
-                return
-            case 'Son 3 ay':
-                this.setState({
-                    timezone: 'Son 3 ay'
-                })
-                return
+                break
             case 'Son 6 ay':
-                this.setState({
-                    timezone: 'Son 6 ay'
+                this.setState({ timezone: 'Son 6 ay' }, () => {
+                    // If we have fetched three months list
+                    // We dont fetch it again and use the same list
+                    if (this.state.isSixMonthsFetched) {
+                        if (this.state.choosenCourseId !== null) {
+                            if (this.state.choosenSubjectId !== null) {
+                                this.refreshSubjectStatistics(false)
+                            } else {
+                                this.refreshCourseStatistics(false)
+                            }
+                        } else this.refreshCourseStatistics(true)
+                    }
+                    // If we havent fetched it before we get the results
+                    else
+                        this.fetchStatistics().then(data => {
+                            this.setState({ isSixMonthsFetched: true })
+                            this.makeStatistics(
+                                data,
+                                this.sixMonthsRheostatValUpdated,
+                                {
+                                    max: 5,
+                                    min: 0,
+                                    values: [0, 5]
+                                }
+                            )
+                            if (this.state.choosenCourseId !== null) {
+                                if (this.state.choosenSubjectId !== null) {
+                                    this.refreshSubjectStatistics(false)
+                                } else {
+                                    this.refreshCourseStatistics(false)
+                                }
+                            }
+                        })
                 })
-                return
+                break
             case 'Ay seçin':
                 this.setState({
                     timezone: 'Ay Seçin'
                 })
-                return
+                break
         }
     }
 
@@ -184,7 +480,7 @@ class Statistics extends React.Component {
         navigationPop()
     }
 
-    thisWeekOnRheostatValUpdated = payload => {
+    weeklyRheostatValueUpdate = payload => {
         let wonsCounter = 0,
             lostsCounter = 0,
             drawsCounter = 0,
@@ -202,23 +498,25 @@ class Statistics extends React.Component {
                 .add(payload.values[1], 'days')
                 .format('YYYY-MM-DD')
         })
-        for (let i = 0; i < quizList.length; i++) {
+        this.state.weeklyStatList.forEach(statistic => {
             if (
-                quizList[i].createdAt >= this.state.startDate &&
-                quizList[i].createdAt <= this.state.endDate
+                statistic.createdAt >= this.state.startDate &&
+                statistic.createdAt <= this.state.endDate
             ) {
-                if (quizList[i].gameResult === 'won') {
+                if (statistic.gameResult === 'won') {
                     wonsCounter++
-                } else if (quizList[i].gameResult === 'lost') {
+                } else if (statistic.gameResult === 'lost') {
                     lostsCounter++
                 } else {
                     drawsCounter++
                 }
-                correctsCounter += quizList[i].correctNumber
-                incorrectsCounter += quizList[i].incorrectNumber
-                unansweredsCounter += quizList[i].unansweredNumber
+                correctsCounter += statistic.correctNumber
+                incorrectsCounter += statistic.incorrectNumber
+                unansweredsCounter += statistic.unansweredNumber
             }
-        }
+        })
+        let totalSolved =
+            correctsCounter + incorrectsCounter + unansweredsCounter
         this.setState({
             wons: wonsCounter,
             losts: lostsCounter,
@@ -230,29 +528,15 @@ class Statistics extends React.Component {
                 (wonsCounter / (wonsCounter + lostsCounter + drawsCounter)) *
                 100,
             correctPercentage:
-                (correctsCounter /
-                    (correctsCounter +
-                        incorrectsCounter +
-                        unansweredsCounter)) *
-                100,
+                totalSolved === 0 ? 0 : (correctsCounter / totalSolved) * 100,
             incorrectPercentage:
-                (incorrectsCounter /
-                    (correctsCounter +
-                        incorrectsCounter +
-                        unansweredsCounter)) *
-                100,
+                totalSolved === 0 ? 0 : (incorrectsCounter / totalSolved) * 100,
             unansweredPercentage:
-                (unansweredsCounter /
-                    (correctsCounter +
-                        incorrectsCounter +
-                        unansweredsCounter)) *
-                100
+                totalSolved === 0 ? 0 : (unansweredsCounter / totalSolved) * 100
         })
-        console.log(this.state.startDate)
-        console.log(payload)
     }
 
-    thisMonthOnRheostatValUpdated = payload => {
+    monthlyRheostatValUpdated = payload => {
         let wonsCounter = 0,
             lostsCounter = 0,
             drawsCounter = 0,
@@ -270,23 +554,25 @@ class Statistics extends React.Component {
                 .add(payload.values[1], 'days')
                 .format('YYYY-MM-DD')
         })
-        for (let i = 0; i < quizList.length; i++) {
+        this.state.monthlyStatList.forEach(statistic => {
             if (
-                quizList[i].createdAt >= this.state.startDate &&
-                quizList[i].createdAt <= this.state.endDate
+                statistic.createdAt >= this.state.startDate &&
+                statistic.createdAt <= this.state.endDate
             ) {
-                if (quizList[i].gameResult === 'won') {
+                if (statistic.gameResult === 'won') {
                     wonsCounter++
-                } else if (quizList[i].gameResult === 'lost') {
+                } else if (statistic.gameResult === 'lost') {
                     lostsCounter++
                 } else {
                     drawsCounter++
                 }
-                correctsCounter += quizList[i].correctNumber
-                incorrectsCounter += quizList[i].incorrectNumber
-                unansweredsCounter += quizList[i].unansweredNumber
+                correctsCounter += statistic.correctNumber
+                incorrectsCounter += statistic.incorrectNumber
+                unansweredsCounter += statistic.unansweredNumber
             }
-        }
+        })
+        let totalSolved =
+            correctsCounter + incorrectsCounter + unansweredsCounter
         this.setState({
             wons: wonsCounter,
             losts: lostsCounter,
@@ -298,115 +584,71 @@ class Statistics extends React.Component {
                 (wonsCounter / (wonsCounter + lostsCounter + drawsCounter)) *
                 100,
             correctPercentage:
-                (correctsCounter /
-                    (correctsCounter +
-                        incorrectsCounter +
-                        unansweredsCounter)) *
-                100,
+                totalSolved === 0 ? 0 : (correctsCounter / totalSolved) * 100,
             incorrectPercentage:
-                (incorrectsCounter /
-                    (correctsCounter +
-                        incorrectsCounter +
-                        unansweredsCounter)) *
-                100,
+                totalSolved === 0 ? 0 : (incorrectsCounter / totalSolved) * 100,
             unansweredPercentage:
-                (unansweredsCounter /
-                    (correctsCounter +
-                        incorrectsCounter +
-                        unansweredsCounter)) *
-                100
+                totalSolved === 0 ? 0 : (unansweredsCounter / totalSolved) * 100
         })
-        console.log(payload)
-        console.log(this.state.startDate)
     }
 
-    last3MonthOnRheostatValUpdated = payload => {
+    sixMonthsRheostatValUpdated = payload => {
+        let wonsCounter = 0,
+            lostsCounter = 0,
+            drawsCounter = 0,
+            correctsCounter = 0,
+            incorrectsCounter = 0,
+            unansweredsCounter = 0
         this.setState({
-            last3Month: payload
+            lastSixMonths: payload,
+            startDate: Moment.utc()
+                .startOf('month')
+                .subtract(5 - payload.values[0], 'months')
+                .format('YYYY-MM-DD'),
+            endDate: Moment.utc()
+                .endOf('month')
+                .subtract(5 - payload.values[1], 'months')
+                .format('YYYY-MM-DD')
         })
-        console.log(payload)
-    }
-
-    last6MonthOnRheostatValUpdated = payload => {
+        this.state.sixMonthsStatList.forEach(statistic => {
+            if (
+                statistic.createdAt >= this.state.startDate &&
+                statistic.createdAt <= this.state.endDate
+            ) {
+                if (statistic.gameResult === 'won') {
+                    wonsCounter++
+                } else if (statistic.gameResult === 'lost') {
+                    lostsCounter++
+                } else {
+                    drawsCounter++
+                }
+                correctsCounter += statistic.correctNumber
+                incorrectsCounter += statistic.incorrectNumber
+                unansweredsCounter += statistic.unansweredNumber
+            }
+        })
+        let totalSolved =
+            correctsCounter + incorrectsCounter + unansweredsCounter
         this.setState({
-            last6Month: payload
+            wons: wonsCounter,
+            losts: lostsCounter,
+            draws: drawsCounter,
+            corrects: correctsCounter,
+            incorrects: incorrectsCounter,
+            unanswereds: unansweredsCounter,
+            wonPercentage:
+                (wonsCounter / (wonsCounter + lostsCounter + drawsCounter)) *
+                100,
+            correctPercentage:
+                totalSolved === 0 ? 0 : (correctsCounter / totalSolved) * 100,
+            incorrectPercentage:
+                totalSolved === 0 ? 0 : (incorrectsCounter / totalSolved) * 100,
+            unansweredPercentage:
+                totalSolved === 0 ? 0 : (unansweredsCounter / totalSolved) * 100
         })
-        console.log(payload)
     }
 
     render() {
-        const wons = this.state.wons
-        const losts = this.state.losts
-        const draws = this.state.draws
-        const corrects = this.state.corrects
-        const incorrects = this.state.incorrects
-        const unanswereds = this.state.unanswereds
-        const thisWeekData = [50, 180, 40, 85, 85, 35, 53]
-        const thisMonthData = [
-            50,
-            10,
-            40,
-            85,
-            85,
-            35,
-            53,
-            24,
-            35,
-            100,
-            50,
-            10,
-            40,
-            85,
-            85,
-            35,
-            53,
-            24,
-            35,
-            100,
-            50,
-            10,
-            40,
-            85,
-            85,
-            35,
-            53,
-            24,
-            35,
-            100,
-            50
-        ]
-        const last3MonthData = [50, 10, 40, 85, 85, 35, 53, 24, 35, 100, 75, 45]
-        const last6MonthData = [
-            50,
-            180,
-            40,
-            85,
-            85,
-            35,
-            53,
-            24,
-            35,
-            100,
-            75,
-            45,
-            50,
-            10,
-            40,
-            85,
-            85,
-            35,
-            53,
-            24,
-            35,
-            100,
-            75,
-            45
-        ]
-
-        const thisWeek = [0, 6]
-        const thisMonth = [0, 30]
-        const last3Month = [0, 11]
-        const last6Month = [0, 23]
         return (
             <View style={styles.container}>
                 <NotchView />
@@ -422,7 +664,7 @@ class Statistics extends React.Component {
                         dropdownTextStyle={styles.pickerDropdownText}
                         dropdownStyle={styles.pickerDropdown}
                         defaultValue={'Genel'}
-                        options={this.state.courseLeaderboardList}
+                        options={this.state.courseList}
                         onSelect={(idx, value) =>
                             this.pickerSelectCourse(idx, value)
                         }
@@ -435,12 +677,11 @@ class Statistics extends React.Component {
                                 dropdownTextStyle={styles.pickerDropdownText}
                                 dropdownStyle={styles.pickerDropdown}
                                 defaultValue={
-                                    this.state
-                                        .subjectLeaderboardListDefaultValue
+                                    this.state.subjectListDefaultValue
                                 }
-                                options={this.state.subjectLeaderboardList}
+                                options={this.state.subjectList}
                                 onSelect={(idx, value) =>
-                                    this.pickerSelectSubject(idx, value)
+                                    this.selectSubjectDropdown(idx, value)
                                 }
                             />
                         </View>
@@ -467,7 +708,9 @@ class Statistics extends React.Component {
                                     styles.totalGamesPlayedAndSolvedQuestionsCounter
                                 }
                             >
-                                {wons + draws + losts}
+                                {this.state.wons +
+                                    this.state.draws +
+                                    this.state.losts}
                             </Text>
                             <Text
                                 style={
@@ -489,7 +732,11 @@ class Statistics extends React.Component {
                         <View style={styles.semiCircleContainer}>
                             <SemiCircleProgress
                                 percentage={
-                                    (wons / (wons + losts + draws)) * 100
+                                    (this.state.wons /
+                                        (this.state.wons +
+                                            this.state.losts +
+                                            this.state.draws)) *
+                                    100
                                 }
                                 progressColor={'#00D9EF'}
                                 circleRadius={wp(20)}
@@ -497,10 +744,16 @@ class Statistics extends React.Component {
                                 progressWidth={wp(5)}
                             >
                                 <Text style={styles.chartPercentageText}>
-                                    {wons + losts + draws === 0
+                                    {this.state.wons +
+                                        this.state.losts +
+                                        this.state.draws ===
+                                    0
                                         ? '0'
                                         : (
-                                              (wons / (wons + losts + draws)) *
+                                              (this.state.wons /
+                                                  (this.state.wons +
+                                                      this.state.losts +
+                                                      this.state.draws)) *
                                               100
                                           ).toFixed(0)}
                                     %
@@ -516,7 +769,9 @@ class Statistics extends React.Component {
                                         styles.totalGamesPlayedAndSolvedQuestionsCounter
                                     }
                                 >
-                                    {corrects + incorrects + unanswereds}
+                                    {this.state.corrects +
+                                        this.state.incorrects +
+                                        this.state.unanswereds}
                                 </Text>
                                 <Text
                                     style={
@@ -533,7 +788,7 @@ class Statistics extends React.Component {
                                         DOĞRU
                                     </Text>
                                     <Text style={styles.percentagesText}>
-                                        {corrects} -{' '}
+                                        {this.state.corrects} -{' '}
                                         {this.state.correctPercentage.toFixed(
                                             2
                                         )}
@@ -548,7 +803,7 @@ class Statistics extends React.Component {
                                         YANLIŞ
                                     </Text>
                                     <Text style={styles.percentagesText}>
-                                        {incorrects} -{' '}
+                                        {this.state.incorrects} -{' '}
                                         {this.state.incorrectPercentage.toFixed(
                                             2
                                         )}
@@ -561,7 +816,7 @@ class Statistics extends React.Component {
                                 <View style={styles.percentagesTextView}>
                                     <Text style={styles.optionsText}>BOŞ</Text>
                                     <Text style={styles.percentagesText}>
-                                        {unanswereds} -{' '}
+                                        {this.state.unanswereds} -{' '}
                                         {this.state.unansweredPercentage.toFixed(
                                             2
                                         )}
@@ -574,8 +829,10 @@ class Statistics extends React.Component {
                             <ProgressCircle
                                 style={styles.correctCircle}
                                 progress={
-                                    corrects /
-                                    (corrects + incorrects + unanswereds)
+                                    this.state.corrects /
+                                    (this.state.corrects +
+                                        this.state.incorrects +
+                                        this.state.unanswereds)
                                 }
                                 progressColor={'#6AC259'}
                                 strokeWidth={hp(2.2)}
@@ -584,8 +841,10 @@ class Statistics extends React.Component {
                             <ProgressCircle
                                 style={styles.incorrectCircle}
                                 progress={
-                                    incorrects /
-                                    (corrects + incorrects + unanswereds)
+                                    this.state.incorrects /
+                                    (this.state.corrects +
+                                        this.state.incorrects +
+                                        this.state.unanswereds)
                                 }
                                 progressColor={'#B72A2A'}
                                 strokeWidth={hp(2.2)}
@@ -594,8 +853,10 @@ class Statistics extends React.Component {
                             <ProgressCircle
                                 style={styles.unansweredCircle}
                                 progress={
-                                    unanswereds /
-                                    (corrects + incorrects + unanswereds)
+                                    this.state.unanswereds /
+                                    (this.state.corrects +
+                                        this.state.incorrects +
+                                        this.state.unanswereds)
                                 }
                                 progressColor={'#00D9EF'}
                                 strokeWidth={hp(2.2)}
@@ -643,89 +904,34 @@ class Statistics extends React.Component {
                                         .format('LL')}
                                 </Text>
                             )}
-                            {this.state.timezone === 'Son 3 ay' && (
-                                <Text style={styles.timezonesTextLastMonths}>
-                                    {Moment.utc()
-                                        .startOf('today')
-                                        .add(
-                                            this.state.last3Month.values[0] -
-                                                12,
-                                            'weeks'
-                                        )
-                                        .format('DD MMM')}
-                                    -
-                                    {Moment.utc()
-                                        .startOf('today')
-                                        .add(
-                                            this.state.last3Month.values[0] -
-                                                11,
-                                            'weeks'
-                                        )
-                                        .format('DD MMM YYYY')}
-                                    /
-                                    {Moment.utc()
-                                        .startOf('today')
-                                        .add(
-                                            this.state.last3Month.values[1] -
-                                                13,
-                                            'weeks'
-                                        )
-                                        .format('DD MMM')}
-                                    -
-                                    {Moment.utc()
-                                        .startOf('today')
-                                        .add(
-                                            this.state.last3Month.values[1] -
-                                                12,
-                                            'weeks'
-                                        )
-                                        .format('DD MMM YYYY')}
-                                </Text>
-                            )}
                             {this.state.timezone === 'Son 6 ay' && (
                                 <Text style={styles.timezonesTextLastMonths}>
                                     {Moment.utc()
-                                        .startOf('today')
-                                        .add(
-                                            this.state.last6Month.values[0] -
-                                                24,
-                                            'weeks'
+                                        .startOf('month')
+                                        .subtract(
+                                            5 -
+                                                this.state.lastSixMonths
+                                                    .values[0],
+                                            'months'
                                         )
-                                        .format('DD MMM')}
-                                    -
-                                    {Moment.utc()
-                                        .startOf('today')
-                                        .add(
-                                            this.state.last6Month.values[0] -
-                                                23,
-                                            'weeks'
-                                        )
-                                        .format('DD MMM YYYY')}
+                                        .format('MMM YYYY')}
                                     /
                                     {Moment.utc()
-                                        .startOf('today')
-                                        .add(
-                                            this.state.last6Month.values[1] -
-                                                25,
-                                            'weeks'
+                                        .startOf('month')
+                                        .subtract(
+                                            5 -
+                                                this.state.lastSixMonths
+                                                    .values[1],
+                                            'months'
                                         )
-                                        .format('DD MMM')}
-                                    -
-                                    {Moment.utc()
-                                        .startOf('today')
-                                        .add(
-                                            this.state.last6Month.values[1] -
-                                                24,
-                                            'weeks'
-                                        )
-                                        .format('DD MMM YYYY')}
+                                        .format('MMM YYYY')}
                                 </Text>
                             )}
                         </View>
                         <View style={styles.barRheostatContainer}>
                             {this.state.timezone === 'Bu hafta' && (
                                 <Rheostat
-                                    values={thisWeek}
+                                    values={[0, 6]}
                                     min={0}
                                     max={6}
                                     theme={{
@@ -736,13 +942,13 @@ class Statistics extends React.Component {
                                     }}
                                     snap={false}
                                     onValuesUpdated={
-                                        this.thisWeekOnRheostatValUpdated
+                                        this.weeklyRheostatValueUpdate
                                     }
                                 />
                             )}
                             {this.state.timezone === 'Bu ay' && (
                                 <Rheostat
-                                    values={thisMonth}
+                                    values={[0, 30]}
                                     min={0}
                                     max={30}
                                     theme={{
@@ -753,32 +959,15 @@ class Statistics extends React.Component {
                                     }}
                                     snap={false}
                                     onValuesUpdated={
-                                        this.thisMonthOnRheostatValUpdated
-                                    }
-                                />
-                            )}
-                            {this.state.timezone === 'Son 3 ay' && (
-                                <Rheostat
-                                    values={last3Month}
-                                    min={0}
-                                    max={11}
-                                    theme={{
-                                        rheostat: {
-                                            themeColor: '#00D9EF',
-                                            grey: '#CACACA'
-                                        }
-                                    }}
-                                    snap={true}
-                                    onValuesUpdated={
-                                        this.last3MonthOnRheostatValUpdated
+                                        this.monthlyRheostatValUpdated
                                     }
                                 />
                             )}
                             {this.state.timezone === 'Son 6 ay' && (
                                 <Rheostat
-                                    values={last6Month}
+                                    values={[0, 5]}
                                     min={0}
-                                    max={23}
+                                    max={5}
                                     theme={{
                                         rheostat: {
                                             themeColor: '#00D9EF',
@@ -787,21 +976,24 @@ class Statistics extends React.Component {
                                     }}
                                     snap={true}
                                     onValuesUpdated={
-                                        this.last6MonthOnRheostatValUpdated
+                                        this.sixMonthsRheostatValUpdated
                                     }
                                 />
                             )}
                         </View>
                     </View>
                 </View>
-                <View style={styles.spaceView}/>
+                <View style={styles.spaceView} />
             </View>
         )
     }
 }
 
 const mapStateToProps = state => ({
-    choosenExam: state.client.choosenExam
+    choosenExam: state.gameContent.choosenExam,
+    gameContentMap: state.gameContent.gameContentMap,
+    clientToken: state.client.clientToken,
+    clientDBId: state.client.clientDBId
 })
 
 const mapDispatchToProps = dispatch => ({})

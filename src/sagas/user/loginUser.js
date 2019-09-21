@@ -33,10 +33,7 @@ export function* loginUser(action) {
         })
 
         // We save our user credentials
-        deviceStorage.saveItemToStorage(
-            'clientCredentials',
-            JSON.stringify(action.payload)
-        )
+        deviceStorage.saveItemToStorage('clientCredentials', action.payload)
         // Save credential state to redux
         yield put({
             type: clientTypes.SAVE_CLIENT_CREDENTIALS,
@@ -52,7 +49,7 @@ export function* loginUser(action) {
         // Saving to device storage
         deviceStorage.saveItemToStorage(
             'favouriteQuestions',
-            JSON.stringify(favouriteQuestions)
+            favouriteQuestions
         )
         // Saving the favs to redux state
         yield put({
@@ -63,10 +60,7 @@ export function* loginUser(action) {
         // Then we get our user information
         const clientInformation = yield call(getUser, res.token, res.id)
         // We save the user information
-        deviceStorage.saveItemToStorage(
-            'clientInformation',
-            JSON.stringify(clientInformation)
-        )
+        deviceStorage.saveItemToStorage('clientInformation', clientInformation)
         // Then we save it as redux state
         yield put({
             type: clientTypes.SAVE_CLIENT_INFORMATION,
@@ -92,10 +86,7 @@ export function* loginUser(action) {
 
         // We get all of our friend ids
         const friendsList = yield call(getFriends, res.token, res.id)
-        deviceStorage.saveItemToStorage(
-            'clientFriends',
-            JSON.stringify(friendsList)
-        )
+        deviceStorage.saveItemToStorage('clientFriends', friendsList)
         // We save clients friends ids to redux state
         yield put({
             type: friendTypes.SAVE_FRIEND_IDS,
