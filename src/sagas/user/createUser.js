@@ -47,6 +47,7 @@ export function* createUser(action) {
 
         // Saving information to storage
         delete action.payload.password
+        action.payload.id = response.id
         deviceStorage.saveItemToStorage('clientInformation', action.payload)
         // Saving client information to redux state
         yield put({

@@ -3,7 +3,6 @@ import { API_ENDPOINT } from '../../../config/index'
 
 export const getWeeklyStatistics = async (userToken, userId, params) => {
     try {
-        console.log(params)
         const response = await axios.get(
             API_ENDPOINT + 'statistics/weekly/' + userId,
             {

@@ -140,10 +140,17 @@ export default StyleSheet.create({
         width: hp(11),
         alignItems: 'flex-end'
     },
-    editText: {
-        fontFamily: 'Averta-Semibold',
-        fontSize: wp(4),
-        paddingVertical: hp(0),
-        color: 'black'
+    textInputStyle: {
+        fontFamily: 'Averta-Regular',
+        height: hp(7),
+        width: wp(72),
+        paddingHorizontal: wp(3)
+    },
+    dateTimeTextStyle: {
+        fontFamily: 'Averta-Regular',
+        paddingHorizontal: wp(3),
+        paddingTop: hp(2),
+        fontSize: hp(2),
+        color: '#7A7878'
     }
 })

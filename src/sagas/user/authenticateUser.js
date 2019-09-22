@@ -34,6 +34,17 @@ export function* authenticateUser(action) {
             payload: action.payload
         })
 
+        // We get the client credentials from device storage
+        const clientCredentials = yield call(
+            getFromStorage,
+            'clientCredentials'
+        )
+        // Save credential state to redux
+        yield put({
+            type: clientTypes.SAVE_CLIENT_CREDENTIALS,
+            payload: clientCredentials
+        })
+
         yield put({
             type: gameContentTypes.GET_ALL_CONTENT,
             clientToken: action.payload
@@ -197,6 +208,7 @@ export function* authenticateUser(action) {
             let friendsList = yield call(getFriends, res.token, res.id)
             // Get client friends from storage
             let friends = yield call(getFromStorage, 'clientFriends')
+            if (friends === null) friends = []
             // We check if cached friends is the same as db
             if (
                 Object.keys(friendsList).length !== Object.keys(friends).length

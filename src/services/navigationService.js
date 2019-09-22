@@ -29,6 +29,12 @@ export const navigationPop = (isWantedRefresh, params) => {
                     Actions.refresh({ searchedKeyword: params.searchedKeyword })
                 }, 700)
                 break
+            case SCENE_KEYS.mainScreens.profile:
+                Actions.pop()
+                setTimeout(() => {
+                    Actions.refresh({ random: Math.random() })
+                }, 700)
+                break
         }
     } else Actions.pop()
 }
