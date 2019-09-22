@@ -26,9 +26,7 @@ class ChangePassword extends React.Component {
         }
     }
 
-    componentDidMount() {
-        console.log(this.props.clientInformation)
-    }
+    componentDidMount() {}
 
     backButtonOnPress = () => {
         navigationPop()

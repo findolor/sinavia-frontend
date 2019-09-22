@@ -265,7 +265,6 @@ export function* authenticateUser(action) {
             goToMainScreen()
         } catch (error) {
             console.log(error)
-            console.log(error.message)
         }
     }
 }

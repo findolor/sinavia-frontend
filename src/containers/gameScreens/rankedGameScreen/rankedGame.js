@@ -99,7 +99,6 @@ class RankedGame extends React.Component {
 
     // We get the room in props
     componentDidMount() {
-        console.log(this.props.userJokers)
         // We check if the user has enough jokers
         this.checkJokerAmount()
         // We send ready signal when game screen is loaded
@@ -768,21 +767,21 @@ class RankedGame extends React.Component {
                         </View>
                     </Modal>
                     <View style={styles.questionAndZoomButtonContainer}>
-                        <View style={styles.spaceContainer}/>
-                    <View style={styles.questionInformation}>
-                        <Text style={styles.questionInformationText}>
-                            Soru {this.state.questionNumber + 1} /{' '}
-                            {Object.keys(this.state.questionList).length}
-                        </Text>
-                    </View>
-                    <View style={styles.zoomButtonContainer}>
-                        <TouchableOpacity onPress={this.zoomButtonOnPress}>
-                            <Image
-                                source={ZOOM_BUTTON}
-                                style={styles.zoomButton}
-                            />
-                        </TouchableOpacity>
-                    </View>
+                        <View style={styles.spaceContainer} />
+                        <View style={styles.questionInformation}>
+                            <Text style={styles.questionInformationText}>
+                                Soru {this.state.questionNumber + 1} /{' '}
+                                {Object.keys(this.state.questionList).length}
+                            </Text>
+                        </View>
+                        <View style={styles.zoomButtonContainer}>
+                            <TouchableOpacity onPress={this.zoomButtonOnPress}>
+                                <Image
+                                    source={ZOOM_BUTTON}
+                                    style={styles.zoomButton}
+                                />
+                            </TouchableOpacity>
+                        </View>
                     </View>
                     <View style={styles.backButtonContainer}>
                         <TouchableOpacity onPress={this.backButtonOnPress}>
