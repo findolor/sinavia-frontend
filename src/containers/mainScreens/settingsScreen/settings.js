@@ -35,7 +35,8 @@ class Settings extends React.Component {
             city: null,
             birthDate: null,
             birthDateUI: moment(
-                new Date(this.props.clientInformation.birthDate)
+                this.props.clientInformation.birthDate,
+                'YYYY-MM-DD HH:mm'
             ).format('DD-MM-YYYY'),
             dateColor: '#7A7878'
         }
