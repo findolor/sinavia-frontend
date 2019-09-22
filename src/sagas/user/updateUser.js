@@ -1,12 +1,11 @@
 import { put, call } from 'redux-saga/effects'
 import { putUser } from '../../services/apiServices/user/updateUser'
 import { deviceStorage } from '../../services/deviceStorage'
-import { navigationPop } from '../../services/navigationService'
+import { navigationPop, SCENE_KEYS } from '../../services/navigationService'
 import { clientTypes } from '../../redux/client/actions'
 
 export function* updateUserSaga(action) {
     try {
-        console.log(action)
         const response = yield call(
             putUser,
             action.clientToken,
@@ -14,7 +13,6 @@ export function* updateUserSaga(action) {
             action.clientInformation
         )
         console.log(response)
-
         if (action.isPasswordChange) {
             // First save the credentials to storage
             deviceStorage.saveItemToStorage('clientCredentials', {
@@ -37,12 +35,22 @@ export function* updateUserSaga(action) {
             'clientInformation',
             action.clientInformation
         )
-        yield put({
-            type: clientTypes.SAVE_CLIENT_INFORMATION,
-            payload: action.clientInformation
-        })
 
-        navigationPop()
+        if (!action.isPasswordChange) {
+            navigationPop(true, {
+                popScreen: SCENE_KEYS.mainScreens.profile
+            })
+            yield put({
+                type: clientTypes.SAVE_CLIENT_INFORMATION,
+                payload: action.clientInformation
+            })
+        } else {
+            yield put({
+                type: clientTypes.SAVE_CLIENT_INFORMATION,
+                payload: action.clientInformation
+            })
+            navigationPop()
+        }
     } catch (error) {
         // TODO remove console.log later
         console.log(error)
