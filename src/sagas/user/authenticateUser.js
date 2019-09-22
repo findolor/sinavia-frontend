@@ -208,6 +208,7 @@ export function* authenticateUser(action) {
             let friendsList = yield call(getFriends, res.token, res.id)
             // Get client friends from storage
             let friends = yield call(getFromStorage, 'clientFriends')
+            if (friends === null) friends = []
             // We check if cached friends is the same as db
             if (
                 Object.keys(friendsList).length !== Object.keys(friends).length
@@ -264,6 +265,7 @@ export function* authenticateUser(action) {
             goToMainScreen()
         } catch (error) {
             console.log(error)
+            console.log(error.message)
         }
     }
 }
