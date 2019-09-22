@@ -41,6 +41,7 @@ class Settings extends React.Component {
         }
     }
 
+    // TODO STILL NEED TO GET PHOTOS AND UPLOAD THOSE TO OUR SERVER
     componentDidMount() {}
 
     backButtonOnPress = () => {
