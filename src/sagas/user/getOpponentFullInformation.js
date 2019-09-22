@@ -82,10 +82,6 @@ export function* getOpponentFullInformationSaga(action) {
         payload: drawGames
     })
     yield put({
-        type: opponentTypes.SAVE_TOTAL_POINTS,
-        payload: res.statistics.totalPoints
-    })
-    yield put({
         type: opponentTypes.SAVE_TOTAL_PLAYED_GAMES,
         payload: totalPlayedGames
     })
