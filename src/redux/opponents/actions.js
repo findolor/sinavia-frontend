@@ -13,7 +13,6 @@ export const opponentTypes = {
     SAVE_CLIENT_WIN_COUNT: 'save_client_win_count',
     SAVE_WIN_PERCENTAGE: 'save_win_percentage',
     SAVE_FRIENDS_LIST: 'save_friends_list',
-    SAVE_TOTAL_POINTS: 'save_total_points',
     SUBTRACT_FROM_FRIENDS_LIST: 'subtract_from_friends_list',
     ADD_TO_FRIENDS_LIST: 'add_to_friends_list'
 }

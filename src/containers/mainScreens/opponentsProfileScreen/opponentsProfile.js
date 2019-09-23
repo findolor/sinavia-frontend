@@ -199,7 +199,8 @@ class OpponentsProfile extends React.Component {
                                     @{this.props.opponentInformation.username}
                                 </Text>
                                 <Text style={styles.sinaviaScoreText}>
-                                    Sınavia Puanı: {this.props.totalPoints}
+                                    Sınavia Puanı:{' '}
+                                    {this.props.opponentInformation.totalPoints}
                                 </Text>
                             </View>
                         </View>

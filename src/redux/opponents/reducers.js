@@ -68,11 +68,6 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 friendsList: action.payload
             }
-        case opponentTypes.SAVE_TOTAL_POINTS:
-            return {
-                ...state,
-                totalPoints: action.payload
-            }
         case opponentTypes.SUBTRACT_FROM_FRIENDS_LIST:
             let index = state.friendsList.findIndex(
                 x => x.id === action.payload.id

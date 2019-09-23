@@ -128,7 +128,8 @@ class Profile extends React.Component {
                                     @{this.props.clientInformation.username}
                                 </Text>
                                 <Text style={styles.sinaviaScoreText}>
-                                    Sınavia Puanı: 100
+                                    Sınavia Puanı:{' '}
+                                    {this.props.clientInformation.totalPoints}
                                 </Text>
                             </View>
                         </View>
