@@ -17,6 +17,7 @@ import {
     navigationPush
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
+import { clientActions } from '../../../redux/client/actions'
 
 import CLOSE_BUTTON from '../../../assets/closeButton.png'
 import ZOOM_BUTTON from '../../../assets/gameScreens/zoomButton.png'
@@ -82,8 +83,8 @@ class GroupGame extends React.Component {
             buttonFiveName: 'E',
             buttonSixName: 'Boş',
             // Joker disable variables
-            isRemoveOptionJokerDisabled: false,
-            isSecondChanceJokerDisabled: false,
+            isRemoveOptionJokerDisabled: true,
+            isSecondChanceJokerDisabled: true,
             // Joker active variables
             isSecondChanceJokerActive: false,
             // Current question answer for second chance joker
@@ -91,12 +92,17 @@ class GroupGame extends React.Component {
             // Question visible variable
             isQuestionVisible: true,
             // Group leaderboard
-            groupLeaderboard: []
+            groupLeaderboard: [],
+            // Joker names
+            secondJokerName: '',
+            thirdJokerName: ''
         }
     }
 
     // We get the room in props
     async componentDidMount() {
+        // We check if the user has enough jokers
+        this.checkJokerAmount()
         await this.initializeLeaderboard()
         // We send ready signal when game screen is loaded
         this.props.room.send({
@@ -111,6 +117,27 @@ class GroupGame extends React.Component {
             this.chooseMessageAction(message)
         })
         this.props.room.onError.add(err => console.log(err))
+    }
+
+    checkJokerAmount = () => {
+        this.props.userJokers.forEach(userJoker => {
+            switch (userJoker.jokerId) {
+                case 2:
+                    this.setState({
+                        secondJokerName:
+                            userJoker.joker.name + ' ' + userJoker.amount,
+                        isRemoveOptionJokerDisabled: false
+                    })
+                    break
+                case 3:
+                    this.setState({
+                        thirdJokerName:
+                            userJoker.joker.name + ' ' + userJoker.amount,
+                        isSecondChanceJokerDisabled: false
+                    })
+                    break
+            }
+        })
     }
 
     initializeLeaderboard = () => {
@@ -519,13 +546,16 @@ class GroupGame extends React.Component {
         if (alreadyDisabledButton === 0)
             this.props.room.send({
                 action: 'remove-options-joker',
-                disabledButton: false
+                disabledButton: false,
+                jokerId: 2
             })
         else
             this.props.room.send({
                 action: 'remove-options-joker',
-                disabled: alreadyDisabledButton
+                disabled: alreadyDisabledButton,
+                jokerId: 2
             })
+        this.props.subtractJoker(2)
     }
 
     removeOptions = optionsToRemove => {
@@ -575,8 +605,10 @@ class GroupGame extends React.Component {
             isSecondChanceJokerActive: true
         })
         this.props.room.send({
-            action: 'second-chance-joker'
+            action: 'second-chance-joker',
+            jokerId: 3
         })
+        this.props.subtractJoker(3)
     }
 
     changeQuestionLeaderboard = () => {
@@ -816,23 +848,25 @@ class GroupGame extends React.Component {
                         </View>
                     </Modal>
                     <View style={styles.questionAndZoomButtonContainer}>
-                        <View style={styles.spaceContainer}/>
-                    <View style={styles.questionInformation}>
-                        <Text style={styles.questionInformationText}>
-                            Soru {this.state.questionNumber + 1} /{' '}
-                            {Object.keys(this.state.questionList).length}
-                        </Text>
-                    </View>
-                    <View style={styles.zoomButtonContainer}>
-                        {this.state.isQuestionVisible === true && (
-                            <TouchableOpacity onPress={this.zoomButtonOnPress}>
-                                <Image
-                                    source={ZOOM_BUTTON}
-                                    style={styles.zoomButton}
-                                />
-                            </TouchableOpacity>
-                        )}
-                    </View>
+                        <View style={styles.spaceContainer} />
+                        <View style={styles.questionInformation}>
+                            <Text style={styles.questionInformationText}>
+                                Soru {this.state.questionNumber + 1} /{' '}
+                                {Object.keys(this.state.questionList).length}
+                            </Text>
+                        </View>
+                        <View style={styles.zoomButtonContainer}>
+                            {this.state.isQuestionVisible === true && (
+                                <TouchableOpacity
+                                    onPress={this.zoomButtonOnPress}
+                                >
+                                    <Image
+                                        source={ZOOM_BUTTON}
+                                        style={styles.zoomButton}
+                                    />
+                                </TouchableOpacity>
+                            )}
+                        </View>
                     </View>
                     <View style={styles.backButtonContainer}>
                         <TouchableOpacity onPress={this.backButtonOnPress}>
@@ -969,10 +1003,21 @@ class GroupGame extends React.Component {
                         >
                             <View style={styles.jokerAndTextContainer}>
                                 <Image
-                                    source={FIFTY_FIFTY}
+                                    source={
+                                        this.state
+                                            .isRemoveOptionJokerDisabled ===
+                                        false
+                                            ? FIFTY_FIFTY
+                                            : null
+                                    }
                                     style={styles.joker}
                                 />
-                                <Text style={styles.jokerText}>Şık Ele</Text>
+                                <Text style={styles.jokerText}>
+                                    {this.state.isRemoveOptionJokerDisabled ===
+                                    false
+                                        ? this.state.secondJokerName
+                                        : ''}
+                                </Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -983,11 +1028,20 @@ class GroupGame extends React.Component {
                         >
                             <View style={styles.jokerAndTextContainer}>
                                 <Image
-                                    source={SECOND_CHANCE}
+                                    source={
+                                        this.state
+                                            .isSecondChanceJokerDisabled ===
+                                        false
+                                            ? SECOND_CHANCE
+                                            : null
+                                    }
                                     style={styles.joker}
                                 />
                                 <Text style={styles.jokerText}>
-                                    İkinci Şans
+                                    {this.state.isSecondChanceJokerDisabled ===
+                                    false
+                                        ? this.state.thirdJokerName
+                                        : ''}
                                 </Text>
                             </View>
                         </TouchableOpacity>
@@ -999,12 +1053,15 @@ class GroupGame extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    clientInformation: state.client.clientInformation
+    clientInformation: state.client.clientInformation,
+    userJokers: state.client.userJokers
 })
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+    subtractJoker: jokerId => dispatch(clientActions.subtractJoker(jokerId))
+})
 
 export default connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
 )(GroupGame)

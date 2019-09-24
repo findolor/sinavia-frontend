@@ -586,7 +586,7 @@ class FriendGameStatsScreen extends React.Component {
                                     {
                                         borderColor: this.state
                                             .replayButtonBorderColor,
-                                        borderWidth: 1
+                                        borderWidth: 2
                                     }
                                 ]}
                             >

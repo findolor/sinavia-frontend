@@ -198,8 +198,7 @@ export default StyleSheet.create({
         height: hp(13),
         width: wp(20),
         justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'red'
+        alignItems: 'center'
     },
     countdownInnerContainer: {
         height: hp(10),

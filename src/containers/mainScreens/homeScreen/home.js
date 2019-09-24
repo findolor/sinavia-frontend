@@ -449,7 +449,10 @@ class Home extends React.Component {
         this.setState({
             isModalVisible: false
         })
-        navigationPush(SCENE_KEYS.mainScreens.createGroupRoom)
+        navigationPush(
+            SCENE_KEYS.mainScreens.createGroupRoom,
+            this.calculateContentIds()
+        )
     }
 
     friendRoomOnPress = async () => {
@@ -552,11 +555,16 @@ class Home extends React.Component {
     friendGameModeOnPress = async () => {
         const randomNumber = this.randomCodeGenerator()
 
+        const Ids = this.calculateContentIds()
+
         navigationReset('game', { isHardReset: true })
         navigationPush(SCENE_KEYS.gameScreens.friendMatchingScreen, {
             roomCode: randomNumber,
             opponentInformation: this.state.opponentInformation,
-            isCreateRoom: true
+            isCreateRoom: true,
+            examId: Ids.examId,
+            courseId: Ids.courseId,
+            subjectId: Ids.subjectId
         })
 
         await friendGameServices.sendFriendGameRequest(
@@ -705,10 +713,6 @@ class Home extends React.Component {
 
     tryJoiningRoom = async () => {
         this.room = this.client.join('groupRoom', {
-            // These will be props coming from home screen
-            examName: 'LGS',
-            courseName: 'Matematik',
-            subjectName: 'Sayilar',
             databaseId: this.props.clientDBId,
             roomCode: this.state.groupCodeOnChangeText.toString(),
             // Because we are joining a game, we don't want to create a new room
@@ -786,6 +790,10 @@ class Home extends React.Component {
     }
 
     playButtonOnPress = () => {
+        navigationReset('game', this.calculateContentIds())
+    }
+
+    calculateContentIds = () => {
         let examIndex
         let subjectIndex
 
@@ -796,7 +804,7 @@ class Home extends React.Component {
             this.state.carouselActiveSlide
         ].subjectEntities.findIndex(x => x.name === this.state.subject)
 
-        navigationReset('game', {
+        return {
             examId: this.props.examList[examIndex].id,
             courseId: this.props.examList[examIndex].courseEntities[
                 this.state.carouselActiveSlide
@@ -804,7 +812,7 @@ class Home extends React.Component {
             subjectId: this.props.examList[examIndex].courseEntities[
                 this.state.carouselActiveSlide
             ].subjectEntities[subjectIndex].id
-        })
+        }
     }
 
     profilePicOnPress = () => {

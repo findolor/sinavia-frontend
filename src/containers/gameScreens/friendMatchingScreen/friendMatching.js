@@ -29,9 +29,9 @@ class FriendMatchingScreen extends React.Component {
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
         this.client.onOpen.add(() => {
             this.joinRoom({
-                examName: 'LGS',
-                courseName: 'Matematik',
-                subjectName: 'Sayilar',
+                examId: this.props.examId,
+                courseId: this.props.courseId,
+                subjectId: this.props.subjectId,
                 databaseId: this.props.clientDBId,
                 roomCode: this.props.roomCode,
                 create: this.props.isCreateRoom
@@ -70,24 +70,22 @@ class FriendMatchingScreen extends React.Component {
 
             this.room.removeAllListeners()
 
-            setTimeout(() => {
-                navigationPush(SCENE_KEYS.gameScreens.friendGame, {
-                    // These are necessary for the game logic
-                    room: this.room,
-                    client: this.client,
-                    // These can be used in both screens
-                    playerUsername: playerUsername,
-                    playerProfilePicture: playerProfilePicture,
-                    playerCoverPicture: playerCoverPicture,
-                    opponentUsername: opponentUsername,
-                    opponentId: opponentId,
-                    opponentProfilePicture: opponentProfilePicture,
-                    opponentCoverPicture: opponentCoverPicture,
-                    // These are used in the match intro screen
-                    courseName: playerOptions.courseName,
-                    subjectName: playerOptions.subjectName
-                })
-            }, 5000000)
+            navigationPush(SCENE_KEYS.gameScreens.friendGame, {
+                // These are necessary for the game logic
+                room: this.room,
+                client: this.client,
+                // These can be used in both screens
+                playerUsername: playerUsername,
+                playerProfilePicture: playerProfilePicture,
+                playerCoverPicture: playerCoverPicture,
+                opponentUsername: opponentUsername,
+                opponentId: opponentId,
+                opponentProfilePicture: opponentProfilePicture,
+                opponentCoverPicture: opponentCoverPicture,
+                // These are used in the match intro screen
+                courseName: playerOptions.courseName,
+                subjectName: playerOptions.subjectName
+            })
         })
     }
 
