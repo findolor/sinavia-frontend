@@ -125,8 +125,8 @@ export default StyleSheet.create({
     },
     questionStyle: {
         resizeMode: 'contain',
-        height: hp(90),
-        width: wp(90),
+        height: hp(84),
+        width: wp(84),
         flex: 1
     },
     userContainer: {
@@ -229,5 +229,5 @@ export default StyleSheet.create({
 })
 
 export const countdownProps = {
-    size: hp(2)
+    size: hp(2.5)
 }

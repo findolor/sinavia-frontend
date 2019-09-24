@@ -142,7 +142,7 @@ class JoinGroupRoom extends React.Component {
 
     shutdownRoutine = () => {
         this.props.room.leave()
-        this.props.close()
+        this.props.client.close()
         navigationReset('main')
     }
 

@@ -449,7 +449,10 @@ class Home extends React.Component {
         this.setState({
             isModalVisible: false
         })
-        navigationPush(SCENE_KEYS.mainScreens.createGroupRoom)
+        navigationPush(
+            SCENE_KEYS.mainScreens.createGroupRoom,
+            this.calculateContentIds()
+        )
     }
 
     friendRoomOnPress = async () => {
@@ -710,10 +713,6 @@ class Home extends React.Component {
 
     tryJoiningRoom = async () => {
         this.room = this.client.join('groupRoom', {
-            // These will be props coming from home screen
-            examName: 'LGS',
-            courseName: 'Matematik',
-            subjectName: 'Sayilar',
             databaseId: this.props.clientDBId,
             roomCode: this.state.groupCodeOnChangeText.toString(),
             // Because we are joining a game, we don't want to create a new room

@@ -88,9 +88,9 @@ class CreateGroupRoom extends React.Component {
     joinRoom = () => {
         this.room = this.client.join('groupRoom', {
             // These will be props coming from home screen
-            examName: 'LGS',
-            courseName: 'Matematik',
-            subjectName: 'Sayilar',
+            examId: this.props.examId,
+            courseId: this.props.courseId,
+            subjectId: this.props.subjectId,
             databaseId: this.props.clientDBId,
             roomCode: this.state.groupCode,
             create: true
