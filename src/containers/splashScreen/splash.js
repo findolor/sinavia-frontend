@@ -27,6 +27,16 @@ class SplashScreen extends React.PureComponent {
     }
 
     async componentDidMount() {
+        const netInfo = await global.fetchNetwokInfo()
+        if (!netInfo.isConnected) {
+            Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+            await deviceStorage.clearDeviceStorage()
+            navigationReset('auth')
+            return
+        }
+        /*  NetInfo.fetch().then(state => {
+            console.log(state)
+        }) */
         let token = await this.getJWTToken()
 
         // If we don't have any token saved, we go to the auth screen
