@@ -6,7 +6,8 @@ import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Image, StyleSheet, TouchableOpacity, View, Alert } from 'react-native'
+import { connect } from 'react-redux'
 
 import NotchView from '../../components/notchView'
 
@@ -17,7 +18,7 @@ import emptyHomeIcon from '../../assets/mainScreens/home.png'
 import selectedJokerIcon from '../../assets/mainScreens/joker_dolu.png'
 import emptyJokerIcon from '../../assets/mainScreens/joker.png'
 
-export default class Main extends React.Component {
+class Main extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -33,6 +34,11 @@ export default class Main extends React.Component {
     }
 
     updatePageIcons = pageName => {
+        if (!this.props.isNetworkConnected) {
+            Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+            return
+        }
+
         switch (pageName) {
             case 'HOME':
                 this.setVisibleForm('HOME')
@@ -61,8 +67,12 @@ export default class Main extends React.Component {
             <View style={styles.container}>
                 <NotchView color={'#fcfcfc'} />
                 <View style={styles.formContainer}>
-                    {visibleForm === 'HOME' && <Home style={styles.formsStyle}/>}
-                    {visibleForm === 'LEADERBOARD' && <Leaderboard style={styles.formsStyle}/>}
+                    {visibleForm === 'HOME' && (
+                        <Home style={styles.formsStyle} />
+                    )}
+                    {visibleForm === 'LEADERBOARD' && (
+                        <Leaderboard style={styles.formsStyle} />
+                    )}
                 </View>
                 <View style={styles.bottomBar}>
                     <TouchableOpacity
@@ -119,13 +129,22 @@ export default class Main extends React.Component {
     }
 }
 
+const mapStateToProps = state => ({
+    isNetworkConnected: state.app.isNetworkConnected
+})
+
+export default connect(
+    mapStateToProps,
+    null
+)(Main)
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fcfcfc',
         justifyContent: 'flex-end'
     },
-    formContainer:{
+    formContainer: {
         flex: 87
     },
     formsStyle: {
