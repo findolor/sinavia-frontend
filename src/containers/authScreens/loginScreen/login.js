@@ -100,6 +100,11 @@ class Login extends React.Component {
     }
 
     loginOnPress = () => {
+        if (!this.props.isNetworkConnected) {
+            Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+            return
+        }
+
         let userCredentials = {
             email: this.state.email,
             password: this.state.password
@@ -217,7 +222,9 @@ class Login extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+    isNetworkConnected: state.app.isNetworkConnected
+})
 
 const mapDispatchToProps = dispatch => ({
     loginUser: userCredentials =>
@@ -225,6 +232,6 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(Login)

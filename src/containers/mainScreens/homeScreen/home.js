@@ -54,7 +54,6 @@ import {
     navigationReset,
     SCENE_KEYS
 } from '../../../services/navigationService'
-import NotchView from '../../../components/notchView'
 
 import SWORD from '../../../assets/sword.png'
 const carouselFirstItem = 0
@@ -446,6 +445,11 @@ class Home extends React.Component {
     }
 
     createGroupRoomOnPress = () => {
+        if (!this.props.isNetworkConnected) {
+            Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+            return
+        }
+
         this.setState({
             isModalVisible: false
         })
@@ -553,6 +557,11 @@ class Home extends React.Component {
     }
 
     friendGameModeOnPress = async () => {
+        if (!this.props.isNetworkConnected) {
+            Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+            return
+        }
+
         const randomNumber = this.randomCodeGenerator()
 
         const Ids = this.calculateContentIds()
@@ -700,6 +709,11 @@ class Home extends React.Component {
     }
 
     joinGroupRoomOnPress = () => {
+        if (!this.props.isNetworkConnected) {
+            Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+            return
+        }
+
         if (
             this.state.groupCodeOnChangeText === '' ||
             this.state.groupCodeOnChangeText.length !== 6
@@ -790,6 +804,11 @@ class Home extends React.Component {
     }
 
     playButtonOnPress = () => {
+        if (!this.props.isNetworkConnected) {
+            Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+            return
+        }
+
         navigationReset('game', this.calculateContentIds())
     }
 
@@ -816,10 +835,20 @@ class Home extends React.Component {
     }
 
     profilePicOnPress = () => {
+        if (!this.props.isNetworkConnected) {
+            Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+            return
+        }
+
         navigationPush(SCENE_KEYS.mainScreens.profile)
     }
 
     notificationPicOnPress = () => {
+        if (!this.props.isNetworkConnected) {
+            Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+            return
+        }
+
         navigationPush(SCENE_KEYS.mainScreens.notifications)
     }
 
@@ -916,7 +945,8 @@ const mapStateToProps = state => ({
     clientDBId: state.client.clientDBId,
     clientToken: state.client.clientToken,
     friendIds: state.friends.friendIds,
-    examList: state.gameContent.examList
+    examList: state.gameContent.examList,
+    isNetworkConnected: state.app.isNetworkConnected
 })
 
 const mapDispatchToProps = dispatch => ({

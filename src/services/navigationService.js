@@ -43,4 +43,8 @@ export const navigationRefresh = () => {
     Actions.refresh()
 }
 
+export const getCurrentScreen = () => {
+    return Actions.currentScene
+}
+
 export { SCENE_KEYS }

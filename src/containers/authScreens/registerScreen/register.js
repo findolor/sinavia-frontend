@@ -146,6 +146,11 @@ class Register extends React.Component {
     }
 
     registerOnPress = () => {
+        if (!this.props.isNetworkConnected) {
+            Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+            return
+        }
+
         let userInformation = {
             username: this.state.username,
             name: this.state.name,
@@ -308,13 +313,13 @@ class Register extends React.Component {
                     </View>
                 </View>
                 <View style={styles.authButtonView}>
-                <AuthButton
-                    height={hp(7)}
-                    width={wp(85)}
-                    color="#00D9EF"
-                    buttonText="Kayıt Ol"
-                    onPress={this.registerOnPress}
-                />
+                    <AuthButton
+                        height={hp(7)}
+                        width={wp(85)}
+                        color="#00D9EF"
+                        buttonText="Kayıt Ol"
+                        onPress={this.registerOnPress}
+                    />
                 </View>
                 <View style={styles.gotoLoginContainer}>
                     <Text style={styles.gotoLoginTextFirst}>
@@ -335,7 +340,9 @@ class Register extends React.Component {
     }
 }
 
-const mapStateToProps = state => {}
+const mapStateToProps = state => ({
+    isNetworkConnected: state.app.isNetworkConnected
+})
 
 const mapDispatchToProps = dispatch => ({
     createUser: userInformation =>
@@ -343,6 +350,6 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(Register)
