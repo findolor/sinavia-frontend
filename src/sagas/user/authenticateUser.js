@@ -10,7 +10,8 @@ import { postFCMToken } from '../../services/apiServices/fcmToken/postToken'
 import { getFriends } from '../../services/apiServices/friendship/getFriends'
 import { getUserJokers } from '../../services/apiServices/userJoker/getUserJokers'
 import { gameContentTypes } from '../../redux/gameContent/actions'
-//import { getExamList } from '../../services/apiServices/gameContent/getExamList'
+import DeviceInfo from 'react-native-device-info'
+import { Alert } from 'react-native'
 
 async function getFromStorage(key) {
     const item = await deviceStorage.getItemFromStorage(key)
@@ -25,9 +26,30 @@ function goToMainScreen() {
 
 export function* authenticateUser(action) {
     try {
+        // We get the unique device id
+        const deviceId = yield call(DeviceInfo.getUniqueId)
+
+        // Get client id from storage
+        let clientDBId = yield call(getFromStorage, 'clientDBId')
+        // Save it to redux state
+        yield put({
+            type: clientTypes.SAVE_CLIENT_DB_ID,
+            payload: clientDBId
+        })
+
         // We first check if the token is valid.
         // If the response is true we continue to the main screen
-        let res = yield call(checkToken, action.payload)
+        let res = yield call(checkToken, action.payload, clientDBId, deviceId)
+        // If the response is false that means the user is logged in on another device
+        // We dont log them in and reset to the auth screen
+        if (!res) {
+            Alert.alert(
+                'Başka bir cihazdan oturum açıldı. Tekrar giriş yapınız.'
+            )
+            yield call(deviceStorage.clearDeviceStorage)
+            navigationReset('auth')
+            return
+        }
         // Saving the api token to redux state
         yield put({
             type: clientTypes.SAVE_API_TOKEN,
@@ -70,14 +92,6 @@ export function* authenticateUser(action) {
                 payload: favouriteQuestions
             })
         }
-
-        // Get client id from storage
-        let clientDBId = yield call(getFromStorage, 'clientDBId')
-        // Save it to redux state
-        yield put({
-            type: clientTypes.SAVE_CLIENT_DB_ID,
-            payload: clientDBId
-        })
 
         // TODO TAKE A LOOK HERE
         // We get all of our friend ids
