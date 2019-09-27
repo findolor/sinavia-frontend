@@ -11,15 +11,12 @@ import { getFriends } from '../../services/apiServices/friendship/getFriends'
 import { getFavouriteQuestions } from '../../services/apiServices/favouriteQuestion/getFavouriteQuestions'
 import { getUserJokers } from '../../services/apiServices/userJoker/getUserJokers'
 import { gameContentTypes } from '../../redux/gameContent/actions'
-import DeviceInfo from 'react-native-device-info'
 
 export function* loginUser(action) {
     try {
-        const deviceId = yield call(DeviceInfo.getUniqueId)
-
         // We get our token from the api
         // action.payload is our email and password
-        const res = yield call(getToken, action.payload, deviceId)
+        const res = yield call(getToken, action.payload)
         // Saving the api token to redux state
         yield put({
             type: clientTypes.SAVE_API_TOKEN,
