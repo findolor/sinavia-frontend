@@ -185,7 +185,6 @@ class GroupGame extends React.Component {
                 this.setState({ questionAnswer: message.questionAnswer })
                 return
             case 'client-leaving':
-                // TODO navigate to the game-stats screen
                 Alert.alert(this.state.opponentId, 'oyuncu oyundan ayrildi.')
                 return
             case 'only-client':
@@ -206,6 +205,7 @@ class GroupGame extends React.Component {
 
     // TODO Move these actions to their functions
     chooseStateAction = groupState => {
+        console.log(groupState)
         // We check the action that happened
         switch (groupState.stateInformation) {
             // Setting up question number and resetting the buttons
@@ -231,11 +231,11 @@ class GroupGame extends React.Component {
                         start: true
                     })
                 }, 3000)
-                return
+                break
             // As soon as someone answers, a result event is fired
             case 'result':
                 this.setState({ playerProps: groupState.playerProps })
-                return
+                break
             case 'show-results':
                 // 8 second countdown time for the results
                 this.setState({
@@ -245,7 +245,7 @@ class GroupGame extends React.Component {
                     // We wait 2.5 seconds for the reveal
                     this.updatePlayerResults()
                 }, 2500)
-                return
+                break
             case 'match-finished':
                 this.shutdownGame()
                 navigationPush(SCENE_KEYS.gameScreens.groupGameStats, {
@@ -255,7 +255,12 @@ class GroupGame extends React.Component {
                     questionList: this.state.questionList,
                     examName: groupState.matchInformation.examName
                 })
-                return
+                break
+            case 'player-props':
+                this.setState({ playerProps: groupState.playerProps }, () => {
+                    this.updateGroupLeaderboard()
+                })
+                break
         }
     }
     // TODO add a list here that has all the answers
@@ -281,6 +286,7 @@ class GroupGame extends React.Component {
         let username = ''
 
         playerIds.forEach(playerId => {
+            console.log(playerProps[playerId])
             if (!playerProps[playerId].isLeft) {
                 username = playerProps[playerId].username
                 playerProps[playerId].answers.forEach(result => {
@@ -752,6 +758,7 @@ class GroupGame extends React.Component {
                                 vertical={true}
                                 showsVerticalScrollIndicator={false}
                                 nestedScrollEnabled={true}
+                                extraData={this.state.playerProps}
                                 renderItem={({ item, index }) => {
                                     return (
                                         <View style={styles.userRow}>
