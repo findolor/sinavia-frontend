@@ -1,14 +1,11 @@
 import axios from 'axios'
 import { API_ENDPOINT } from '../../../config/index'
 
-export const checkToken = async (userToken, clientId, deviceId) => {
+export const checkToken = async userToken => {
     try {
-        const response = await axios.get(API_ENDPOINT + 'token/' + clientId, {
+        const response = await axios.get(API_ENDPOINT + 'token/', {
             headers: {
                 Authorization: 'Bearer ' + userToken
-            },
-            params: {
-                deviceId: deviceId
             }
         })
 
