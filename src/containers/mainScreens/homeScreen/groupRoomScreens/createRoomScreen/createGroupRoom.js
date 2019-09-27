@@ -131,6 +131,8 @@ class CreateGroupRoom extends React.Component {
                     this.setState({ groupRoomPlayerList: playerList })
                     return
                 case 'start-match':
+                    this.room.removeAllListeners()
+
                     navigationReset('game', { isHardReset: true })
                     navigationPush(SCENE_KEYS.gameScreens.groupGame, {
                         room: this.room,

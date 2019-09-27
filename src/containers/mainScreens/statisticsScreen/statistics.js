@@ -56,7 +56,9 @@ class Statistics extends React.Component {
             sixMonthsStatList: [],
             // Variables to check if we fetched the other times
             isMonthlyFetched: false,
-            isSixMonthsFetched: false
+            isSixMonthsFetched: false,
+            // Total solved questions
+            totalSolvedQuestions: 0
         }
     }
 
@@ -486,7 +488,8 @@ class Statistics extends React.Component {
             drawsCounter = 0,
             correctsCounter = 0,
             incorrectsCounter = 0,
-            unansweredsCounter = 0
+            unansweredsCounter = 0,
+            totalSolvedQuestions = 0
         this.setState({
             thisWeek: payload,
             startDate: Moment.utc()
@@ -503,12 +506,17 @@ class Statistics extends React.Component {
                 statistic.createdAt >= this.state.startDate &&
                 statistic.createdAt <= this.state.endDate
             ) {
-                if (statistic.gameResult === 'won') {
-                    wonsCounter++
-                } else if (statistic.gameResult === 'lost') {
-                    lostsCounter++
-                } else {
-                    drawsCounter++
+                totalSolvedQuestions++
+                switch (statistic.gameResult) {
+                    case 'won':
+                        wonsCounter++
+                        break
+                    case 'lost':
+                        lostsCounter++
+                        break
+                    case 'draw':
+                        drawsCounter++
+                        break
                 }
                 correctsCounter += statistic.correctNumber
                 incorrectsCounter += statistic.incorrectNumber
@@ -521,6 +529,7 @@ class Statistics extends React.Component {
             wons: wonsCounter,
             losts: lostsCounter,
             draws: drawsCounter,
+            totalSolvedQuestions: totalSolvedQuestions,
             corrects: correctsCounter,
             incorrects: incorrectsCounter,
             unanswereds: unansweredsCounter,
@@ -559,12 +568,17 @@ class Statistics extends React.Component {
                 statistic.createdAt >= this.state.startDate &&
                 statistic.createdAt <= this.state.endDate
             ) {
-                if (statistic.gameResult === 'won') {
-                    wonsCounter++
-                } else if (statistic.gameResult === 'lost') {
-                    lostsCounter++
-                } else {
-                    drawsCounter++
+                switch (statistic.gameResult) {
+                    case 'won':
+                        wonsCounter++
+                        break
+                    case 'lost':
+                        lostsCounter++
+                        break
+                    case 'draw':
+                        drawsCounter++
+                        break
+                    case null:
                 }
                 correctsCounter += statistic.correctNumber
                 incorrectsCounter += statistic.incorrectNumber
@@ -615,12 +629,16 @@ class Statistics extends React.Component {
                 statistic.createdAt >= this.state.startDate &&
                 statistic.createdAt <= this.state.endDate
             ) {
-                if (statistic.gameResult === 'won') {
-                    wonsCounter++
-                } else if (statistic.gameResult === 'lost') {
-                    lostsCounter++
-                } else {
-                    drawsCounter++
+                switch (statistic.gameResult) {
+                    case 'won':
+                        wonsCounter++
+                        break
+                    case 'lost':
+                        lostsCounter++
+                        break
+                    case 'draw':
+                        drawsCounter++
+                        break
                 }
                 correctsCounter += statistic.correctNumber
                 incorrectsCounter += statistic.incorrectNumber
@@ -708,9 +726,7 @@ class Statistics extends React.Component {
                                     styles.totalGamesPlayedAndSolvedQuestionsCounter
                                 }
                             >
-                                {this.state.wons +
-                                    this.state.draws +
-                                    this.state.losts}
+                                {this.state.totalSolvedQuestions}
                             </Text>
                             <Text
                                 style={
