@@ -22,6 +22,7 @@
         "react": "16.8.6",
         "react-native": "0.60.3",
         "react-native-countdown-component": "^2.5.2",
+        "react-native-device-info": "^3.1.4",
         "react-native-firebase": "~5.5.6",
         "react-native-image-gallery": "^2.1.5",
         "react-native-modal-datetime-picker": "^7.5.0",
