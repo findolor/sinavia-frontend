@@ -97,7 +97,6 @@ class Home extends React.Component {
             opponentUsername: '',
             opponentInformation: {},
             friendList: [],
-            friendListNewData: [],
             originalFriends: []
         }
     }
@@ -515,11 +514,13 @@ class Home extends React.Component {
     }
 
     searchFilterFunction = text => {
-        if (text === '')
-            this.setState({ friendList: this.state.originalFriends })
         this.setState({
             value: text
         })
+        if (text === '') {
+            this.setState({ friendList: this.state.originalFriends })
+            return
+        }
 
         const newData = this.state.friendList.filter(item => {
             const itemData = `${item.name.toUpperCase() +
@@ -530,8 +531,7 @@ class Home extends React.Component {
             return itemData.indexOf(textData) > -1
         })
         this.setState({
-            friendList: newData,
-            friendListNewData: newData
+            friendList: newData
         })
     }
 
