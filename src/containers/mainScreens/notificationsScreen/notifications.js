@@ -23,12 +23,12 @@ import REJECT_BUTTON from '../../../assets/gameScreens/incorrect.png'
 
 const generalNotificationsList = [
     {
-        generalNotificationType: 'acceptedFriendship',
+        generalNotificationType: 'friendshipAccepted',
         userPic: PROFILE_PIC,
         friendsName: 'Hakan Yılmaz'
     },
     {
-        generalNotificationType: 'requestedGame',
+        generalNotificationType: 'gameRequest',
         userPic: PROFILE_PIC,
         friendsName: 'Hakan Yılmaz',
         examName: 'YKS',
@@ -36,26 +36,98 @@ const generalNotificationsList = [
         subjectName: 'Paragrafta Anlam'
     },
     {
-        generalNotificationType: 'yourOrder',
+        generalNotificationType: 'nationalPlace',
         timePeriod: 'haftaki',
         order: '2789'
     },
     {
-        generalNotificationType: 'yourSinaviaScore',
+        generalNotificationType: 'earnedScore',
         timePeriod: 'hafta',
         examName: 'YKS',
         courseName: 'Türkçe',
         sinaviaScore: 12500
     },
     {
-        generalNotificationType: 'yourSuccessPercentage',
+        generalNotificationType: 'successPercentage',
         examName: 'YKS',
         courseName: 'Türkçe',
         subjectName: 'Paragrafta Anlam',
         successPercentage: 33
     },
     {
-        generalNotificationType: 'yourStatistics',
+        generalNotificationType: 'statistics',
+        timePeriod: 'haftaki'
+    },
+    {
+        generalNotificationType: 'friendshipAccepted',
+        userPic: PROFILE_PIC,
+        friendsName: 'Hakan Yılmaz'
+    },
+    {
+        generalNotificationType: 'gameRequest',
+        userPic: PROFILE_PIC,
+        friendsName: 'Hakan Yılmaz',
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        subjectName: 'Paragrafta Anlam'
+    },
+    {
+        generalNotificationType: 'nationalPlace',
+        timePeriod: 'haftaki',
+        order: '2789'
+    },
+    {
+        generalNotificationType: 'earnedScore',
+        timePeriod: 'hafta',
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        sinaviaScore: 12500
+    },
+    {
+        generalNotificationType: 'successPercentage',
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        subjectName: 'Paragrafta Anlam',
+        successPercentage: 33
+    },
+    {
+        generalNotificationType: 'statistics',
+        timePeriod: 'haftaki'
+    },
+    {
+        generalNotificationType: 'friendshipAccepted',
+        userPic: PROFILE_PIC,
+        friendsName: 'Hakan Yılmaz'
+    },
+    {
+        generalNotificationType: 'gameRequest',
+        userPic: PROFILE_PIC,
+        friendsName: 'Hakan Yılmaz',
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        subjectName: 'Paragrafta Anlam'
+    },
+    {
+        generalNotificationType: 'nationalPlace',
+        timePeriod: 'haftaki',
+        order: '2789'
+    },
+    {
+        generalNotificationType: 'earnedScore',
+        timePeriod: 'hafta',
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        sinaviaScore: 12500
+    },
+    {
+        generalNotificationType: 'successPercentage',
+        examName: 'YKS',
+        courseName: 'Türkçe',
+        subjectName: 'Paragrafta Anlam',
+        successPercentage: 33
+    },
+    {
+        generalNotificationType: 'statistics',
         timePeriod: 'haftaki'
     }
 ]
@@ -125,7 +197,7 @@ class Notifications extends React.Component {
 
     notificationsListRender({ item }) {
         switch (item.generalNotificationType) {
-            case 'acceptedFriendship':
+            case 'friendshipAccepted':
                 return (
                     <TouchableOpacity>
                         <View style={styles.userRow}>
@@ -144,7 +216,7 @@ class Notifications extends React.Component {
                         </View>
                     </TouchableOpacity>
                 )
-            case 'requestedGame':
+            case 'gameRequest':
                 return (
                     <View style={styles.userRow}>
                         <View style={styles.userPicContainerInRow}>
@@ -197,7 +269,7 @@ class Notifications extends React.Component {
                         </View>
                     </View>
                 )
-            case 'yourOrder':
+            case 'nationalPlace':
                 return (
                     <View style={styles.userRow}>
                         <Text style={styles.notificationRowsText}>
@@ -209,7 +281,7 @@ class Notifications extends React.Component {
                         </Text>
                     </View>
                 )
-            case 'yourSinaviaScore':
+            case 'earnedScore':
                 return (
                     <View style={styles.userRow}>
                         <Text style={styles.notificationRowsText}>
@@ -223,7 +295,7 @@ class Notifications extends React.Component {
                         </Text>
                     </View>
                 )
-            case 'yourSuccessPercentage':
+            case 'successPercentage':
                 return (
                     <View style={styles.userRow}>
                         <Text style={styles.notificationRowsText}>
@@ -239,7 +311,7 @@ class Notifications extends React.Component {
                         </Text>
                     </View>
                 )
-            case 'yourStatistics':
+            case 'statistics':
                 return (
                     <TouchableOpacity>
                         <View style={styles.userRow}>
