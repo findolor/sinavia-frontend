@@ -300,7 +300,8 @@ export default StyleSheet.create({
     },
     joinGameCodeTextInput: {
         fontFamily: 'Averta-Regular',
-        fontSize: wp(5)
+        fontSize: wp(5),
+        textAlign: 'center'
     },
     quitView: {
         backgroundColor: '#ffffff',

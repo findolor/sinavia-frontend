@@ -47,7 +47,7 @@ class LoadingScreen extends React.Component {
         this.room = this.client.join('rankedRoom', playerOptions)
 
         // Initiate the bot game after 10 seconds
-        setTimeout(() => {
+        this.botTimeout = setTimeout(() => {
             this.room.send({
                 action: 'start-with-bot'
             })
@@ -79,6 +79,7 @@ class LoadingScreen extends React.Component {
                 }
             })
             this.room.removeAllListeners()
+            clearTimeout(this.botTimeout)
 
             navigationPush(SCENE_KEYS.gameScreens.rankedMatchingScreen, {
                 // These are necessary for the game logic
