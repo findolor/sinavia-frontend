@@ -162,11 +162,11 @@ class RankedGame extends React.Component {
             // Which options to remove comes from the server
             case 'remove-options-joker':
                 this.removeOptions(message.optionsToRemove)
-                return
+                break
             // Question answer comes from the server
             case 'second-chance-joker':
                 this.setState({ questionAnswer: message.questionAnswer })
-                return
+                break
             case 'client-leaving':
                 // TODO navigate to the game-stats screen
                 Alert.alert(this.props.opponentUsername, 'oyundan ayrildi.')
@@ -175,10 +175,15 @@ class RankedGame extends React.Component {
                 this.shutdownGame()
 
                 navigationReset('main')
-                return
+                break
             case 'save-questions':
                 this.setState({ fullQuestionList: message.fullQuestionList })
-                return
+                break
+            case 'resend-finished':
+                this.props.room.send({
+                    action: 'finished'
+                })
+                break
         }
     }
 

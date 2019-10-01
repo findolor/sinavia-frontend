@@ -11,7 +11,6 @@ import { navigationReset } from '../../../services/navigationService'
 import { SCENE_KEYS } from '../../../config/'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
-import { deviceStorage } from '../../../services/deviceStorage'
 
 import styles from './style'
 import background from '../../../assets/gameScreens/gameStatsBackground.jpg'
@@ -53,7 +52,7 @@ class GameStatsScreen extends React.Component {
             // Match result text
             matchResultText: '',
             // Total earned points
-            totalEarnedPoints: 180,
+            totalEarnedPoints: 0,
             // Player profile pictures
             clientProfilePicture: '',
             opponentProfilePicture: '',
@@ -145,6 +144,7 @@ class GameStatsScreen extends React.Component {
             let totalEarnedPoints = 20
 
             playerIds.forEach(element => {
+                if (element === 'matchInformation') return
                 if (this.props.client.id !== element) {
                     opponentUsername = playerProps[element].username
                     opponentProfilePicture = playerProps[element].profilePicture
@@ -178,13 +178,24 @@ class GameStatsScreen extends React.Component {
                 }
             })
 
-            if (playerCorrect < opponentCorrect) {
+            let playerNet
+            let opponentNet
+
+            if (playerProps.matchInformation.examId !== 1) {
+                playerNet = playerCorrect - playerIncorrect / 4
+                opponentNet = opponentCorrect - opponentIncorrect / 4
+            } else {
+                playerNet = playerCorrect - playerIncorrect / 3
+                opponentNet = opponentCorrect - opponentIncorrect / 3
+            }
+
+            if (playerNet < opponentNet) {
                 this.setState({
                     matchResultLogo: YOU_LOSE_LOGO,
                     matchResultText: 'Kaybettin',
                     matchResultPoint: 0
                 })
-            } else if (playerCorrect === opponentCorrect) {
+            } else if (playerNet === opponentNet) {
                 this.setState({
                     matchResultLogo: DRAW_LOGO,
                     matchResultText: 'Berabere',
