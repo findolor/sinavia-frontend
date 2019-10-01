@@ -45,6 +45,14 @@ class LoadingScreen extends React.Component {
     // Client sends a ready signal when they join a room successfully
     joinRoom = playerOptions => {
         this.room = this.client.join('rankedRoom', playerOptions)
+
+        // Initiate the bot game after 10 seconds
+        setTimeout(() => {
+            this.room.send({
+                action: 'start-with-bot'
+            })
+        }, 10000)
+
         // Opponent information
         let opponentUsername
         let opponentId
