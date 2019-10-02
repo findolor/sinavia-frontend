@@ -11,177 +11,217 @@ import {
     View
 } from 'react-native'
 import { connect } from 'react-redux'
-import { clientActions } from '../../../redux/client/actions'
+import { leaderboardServices } from '../../../sagas/leaderboard/'
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
-import { LGS, YKS } from '../../../components/mainScreen/carousel/static/exams'
-import * as courses from '../../../components/mainScreen/carousel/static/courses'
 import styles from './style'
-import NotchView from '../../../components/notchView'
-import PROFILE_PIC from '../../../assets/profile2.jpg'
+
 import FIRST_TITLE from '../../../assets/firstTitle.png'
 import SECOND_TITLE from '../../../assets/secondTitle.png'
 import THIRD_TITLE from '../../../assets/thirdTitle.png'
 import SLIDE_DOWN from '../../../assets/slide_down.png'
 
-const data = [
-    {
-        number: '11',
-        name: 'Hakan Yılmaz',
-        score: '400'
-    },
-    {
-        number: '11',
-        name: 'Hakan Yılmaz',
-        score: '400'
-    },
-    {
-        number: '11',
-        name: 'Hakan Yılmaz',
-        score: '400'
-    },
-    {
-        number: '11',
-        name: 'Hakan Yılmaz',
-        score: '400'
-    },
-    {
-        number: '11',
-        name: 'Hakan Yılmaz',
-        score: '400'
-    },
-    {
-        number: '11',
-        name: 'Hakan Yılmaz',
-        score: '400'
-    }
-]
-
 class Leaderboard extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            data: data,
-            selectedOrderMode: 'global',
+            rankingMode: 'global',
             globalButtonBackgroundColor: '#FF6D00',
             globalButtonTextColor: '#FFFFFF',
             friendsButtonBackgroundColor: '#FFFFFF',
             friendsButtonTextColor: '#2E313C',
             // Dropwodn list variables
-            courseLeaderboardList: ['Genel'],
-            subjectLeaderboardList: [],
-            subjectLeaderboardListDefaultValue: '',
-            isSubjectDropdownVisible: false
+            courseList: [],
+            subjectList: [],
+            subjectListDefaultValue: '',
+            isSubjectDropdownVisible: false,
+            // Choosen game contents
+            choosenExamId: null,
+            choosenCourseId: null,
+            choosenSubjectId: null,
+            // User's attributes
+            topTenUsernames: [],
+            remainingUsernames: [],
+            topTenPoints: [],
+            remainingPoints: [],
+            topTenProfilePictures: [],
+            remainingProfilePictures: [],
+            // Flatlist user list ( 90 users )
+            remainingUsersFlatList: [],
+            // Client ranking
+            clientRanking: 0
         }
     }
 
     componentDidMount() {
-        const courseList = this.state.courseLeaderboardList
+        this.setChoosenExamId().then(() => {
+            this.fetchLeaderboard().then(data => {
+                let userList = []
+                let userUsernames = []
+                let topTenUsernames = []
+                let remainingUsernames = []
+                let userPoints = []
+                let topTenPoints = []
+                let remainingPoints = []
+                let userProfilePictures = []
+                let topTenProfilePictures = []
+                let remainingProfilePictures = []
 
-        this.courseSwitchPicker(courseList)
-    }
+                data.userList.forEach(user => {
+                    user = JSON.parse(user)
 
-    courseSwitchPicker = courseList => {
-        switch (this.props.choosenExam) {
-            case 'LGS':
-                LGS.forEach(course => {
-                    courseList.push(course.courseName)
+                    userList.push(user)
+                    userUsernames.push(user.user.username)
+                    userPoints.push(user.totalPoints)
+                    userProfilePictures.push(user.user.profilePicture)
                 })
-                return
-        }
-        this.setState({ courseLeaderboardList: courseList })
+
+                // Getting the top ten names to a list and save the rest
+                remainingUsernames = userUsernames
+                topTenUsernames = remainingUsernames.splice(0, 10)
+                remainingUsernames = remainingUsernames.slice(0, 90)
+                // Getting the top ten points to a list and save the rest
+                remainingPoints = userPoints
+                topTenPoints = remainingPoints.splice(0, 10)
+                remainingPoints = remainingPoints.slice(0, 90)
+                // Getting the top ten profile pictures to a list and save the rest
+                remainingProfilePictures = userProfilePictures
+                topTenProfilePictures = remainingProfilePictures.splice(0, 10)
+                remainingProfilePictures = remainingProfilePictures.slice(0, 90)
+
+                // Putting the remaining usernames and points
+                let remainingUsersFlatList = []
+                for (i = 0; i < 90; i++) {
+                    remainingUsersFlatList.push({
+                        name: remainingUsernames[i],
+                        totalPoints: remainingPoints[i]
+                    })
+                }
+
+                let clientIndex = userList.findIndex(
+                    x => x.userId === this.props.clientDBId
+                )
+
+                this.setState({
+                    topTenUsernames: topTenUsernames,
+                    remainingUsernames: remainingUsernames,
+                    topTenPoints: topTenPoints,
+                    remainingPoints: remainingPoints,
+                    topTenProfilePictures: topTenProfilePictures,
+                    remainingProfilePictures: remainingProfilePictures,
+                    remainingUsersFlatList: remainingUsersFlatList,
+                    clientRanking: clientIndex + 1
+                })
+            })
+        })
+
+        this.courseListMaker()
     }
 
-    updateOrderCategoryButtonUI = orderMode => {
-        switch (orderMode) {
+    // We set the choosen exam id based on users choosen exam
+    setChoosenExamId = async () => {
+        new Promise.resolve().then(() => {
+            let index = this.props.gameContentMap.exams.findIndex(
+                x => x.name === this.props.choosenExam
+            )
+            let examId = this.props.gameContentMap.exams[index].id
+            this.setState(
+                {
+                    choosenExamId: examId
+                },
+                () => {
+                    return
+                }
+            )
+        })
+    }
+
+    // This function runs when the screen is opened
+    courseListMaker = () => {
+        const courseList = ['Genel']
+        let index = this.props.gameContentMap.exams.findIndex(
+            x => x.name === this.props.choosenExam
+        )
+        let examId = this.props.gameContentMap.exams[index].id
+        this.props.gameContentMap.courses.forEach(course => {
+            if (course.examId === examId) courseList.push(course.name)
+        })
+
+        this.setState({ courseList: courseList })
+    }
+
+    // Course name selector for dropdown
+    pickerSelectCourse = (idx, value) => {
+        this.setState({ isSubjectDropdownVisible: false })
+        setTimeout(() => {
+            this.selectCourseDropdown(idx)
+        }, 200)
+    }
+
+    // this index is the course id in gameContentMap
+    selectCourseDropdown = index => {
+        index = parseInt(index, 10)
+        if (index === 0) {
+            this.setState({
+                subjectList: [],
+                choosenCourseId: null,
+                choosenSubjectId: null
+            })
+            return
+        }
+        const subjectList = ['Hepsi']
+        this.props.gameContentMap.subjects.forEach(subject => {
+            if (subject.courseId === index) subjectList.push(subject.name)
+        })
+        this.setState({
+            subjectList: subjectList,
+            subjectListDefaultValue: 'Hepsi',
+            isSubjectDropdownVisible: true,
+            choosenCourseId: index
+        })
+    }
+
+    selectSubjectDropdown = (idx, value) => {
+        let index = parseInt(idx, 10)
+        if (index === 0) {
+            this.setState({ subjectList: [], choosenSubjectId: null })
+            return
+        } else {
+            this.setState({ choosenSubjectId: index })
+        }
+    }
+
+    // Fetching the leaderboard based on the selected mode
+    fetchLeaderboard = async () => {
+        switch (this.state.rankingMode) {
+            case 'global':
+                return leaderboardServices.getLeaderboard(
+                    this.props.clientToken,
+                    { examId: this.state.choosenExamId }
+                )
+        }
+    }
+
+    orderCategoryButtonOnPress = selectedMode => {
+        switch (selectedMode) {
             case 'globalOrder':
-                if (this.state.selectedOrderMode === orderMode) return
+                if (this.state.rankingMode === selectedMode) return
                 this.setState({
                     globalButtonBackgroundColor: '#FF6D00',
                     globalButtonTextColor: '#FFFFFF',
                     friendsButtonBackgroundColor: '#FFFFFF',
                     friendsButtonTextColor: '#2E313C'
                 })
-                this.setState({ selectedGameMode: orderMode })
+                this.setState({ selectedGameMode: selectedMode })
                 return
             case 'friendsOrder':
-                if (this.state.selectedOrderMode === orderMode) return
+                if (this.state.rankingMode === selectedMode) return
                 this.setState({
                     globalButtonBackgroundColor: '#FFFFFF',
                     globalButtonTextColor: '#2E313C',
                     friendsButtonBackgroundColor: '#FF6D00',
                     friendsButtonTextColor: '#FFFFFF'
                 })
-                this.setState({ selectedGameMode: orderMode })
-                return
-        }
-    }
-
-    orderCategoryButtonOnPress = selectedMode => {
-        this.updateOrderCategoryButtonUI(selectedMode)
-    }
-
-    pickerSelectCourse = (idx, value) => {
-        this.setState({ isSubjectDropdownVisible: false })
-        setTimeout(() => {
-            this.subjectSwitchPicker(value)
-        }, 300)
-    }
-
-    pickerSelectSubject = (idx, value) => {}
-
-    subjectSwitchPicker = selectedCourse => {
-        switch (this.props.choosenExam) {
-            case 'LGS':
-                switch (selectedCourse) {
-                    case 'Genel':
-                        this.setState({
-                            subjectLeaderboardList: [],
-                            subjectLeaderboardListDefaultValue: ''
-                        })
-                        return
-                    case 'Türkçe':
-                        this.setState({
-                            subjectLeaderboardList: courses.LGS.turkce,
-                            subjectLeaderboardListDefaultValue: 'Hepsi',
-                            isSubjectDropdownVisible: true
-                        })
-                        return
-                    case 'Matematik':
-                        this.setState({
-                            subjectLeaderboardList: courses.LGS.matematik,
-                            subjectLeaderboardListDefaultValue: 'Hepsi',
-                            isSubjectDropdownVisible: true
-                        })
-                        return
-                    case 'Tarih':
-                        this.setState({
-                            subjectLeaderboardList: courses.LGS.tarih,
-                            subjectLeaderboardListDefaultValue: 'Hepsi',
-                            isSubjectDropdownVisible: true
-                        })
-                        return
-                    case 'Fen Bilimleri':
-                        this.setState({
-                            subjectLeaderboardList: courses.LGS.fen,
-                            subjectLeaderboardListDefaultValue: 'Hepsi',
-                            isSubjectDropdownVisible: true
-                        })
-                        return
-                    case 'İngilizce':
-                        this.setState({
-                            subjectLeaderboardList: courses.LGS.ingilizce,
-                            subjectLeaderboardListDefaultValue: 'Hepsi',
-                            isSubjectDropdownVisible: true
-                        })
-                        return
-                    case 'Din Kültürü':
-                        this.setState({
-                            subjectLeaderboardList: courses.LGS.din,
-                            subjectLeaderboardListDefaultValue: 'Hepsi',
-                            isSubjectDropdownVisible: true
-                        })
-                        return
-                }
+                this.setState({ selectedGameMode: selectedMode })
                 return
         }
     }
@@ -190,105 +230,72 @@ class Leaderboard extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={styles.scrollViewContainer}>
-                <ScrollView
-                    style={styles.scrollView}
-                    showsVerticalScrollIndicator={false}
-                >
-                    <View style={styles.leaderContainer}>
-                        <View style={styles.tabbarContainer}>
-                            <TouchableOpacity
-                                onPress={() =>
-                                    this.orderCategoryButtonOnPress(
-                                        'globalOrder'
-                                    )
-                                }
-                            >
-                                <View
-                                    style={[
-                                        styles.globalTabContainer,
-                                        {
-                                            backgroundColor: this.state
-                                                .globalButtonBackgroundColor
-                                        }
-                                    ]}
+                    <ScrollView
+                        style={styles.scrollView}
+                        showsVerticalScrollIndicator={false}
+                    >
+                        <View style={styles.leaderContainer}>
+                            <View style={styles.tabbarContainer}>
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        this.orderCategoryButtonOnPress(
+                                            'globalOrder'
+                                        )
+                                    }
                                 >
-                                    <Text
+                                    <View
                                         style={[
-                                            styles.tabbarGlobalText,
+                                            styles.globalTabContainer,
                                             {
-                                                color: this.state
-                                                    .globalButtonTextColor
+                                                backgroundColor: this.state
+                                                    .globalButtonBackgroundColor
                                             }
                                         ]}
                                     >
-                                        Global
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() =>
-                                    this.orderCategoryButtonOnPress(
-                                        'friendsOrder'
-                                    )
-                                }
-                            >
-                                <View
-                                    style={[
-                                        styles.friendsTabContainer,
-                                        {
-                                            backgroundColor: this.state
-                                                .friendsButtonBackgroundColor
-                                        }
-                                    ]}
-                                >
-                                    <Text
-                                        style={[
-                                            styles.tabbarFriendsText,
-                                            {
-                                                color: this.state
-                                                    .friendsButtonTextColor
-                                            }
-                                        ]}
-                                    >
-                                        Arkadaş
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.dropdownsAndImageContainer}>
-                            <View style={styles.dropdownContainer}>
-                                <DropDown
-                                    style={styles.picker}
-                                    textStyle={styles.pickerText}
-                                    dropdownTextStyle={
-                                        styles.pickerDropdownText
-                                    }
-                                    dropdownStyle={styles.pickerDropdown}
-                                    defaultValue={'Genel'}
-                                    options={this.state.courseLeaderboardList}
-                                    onSelect={(idx, value) =>
-                                        this.pickerSelectCourse(idx, value)
-                                    }
-                                />
-                            </View>
-                            <View style={styles.leaderImageContainer}>
-                                <ImageBackground
-                                    source={PROFILE_PIC}
-                                    style={styles.firstUserPic}
-                                    imageStyle={{ borderRadius: 100 }}
-                                >
-                                    <Image
-                                        source={FIRST_TITLE}
-                                        style={styles.firstUserTitlePic}
-                                    />
-                                    <View style={styles.firstUserOrderView}>
-                                        <Text style={styles.topTenOrderNumber}>
-                                            1
+                                        <Text
+                                            style={[
+                                                styles.tabbarGlobalText,
+                                                {
+                                                    color: this.state
+                                                        .globalButtonTextColor
+                                                }
+                                            ]}
+                                        >
+                                            Global
                                         </Text>
                                     </View>
-                                </ImageBackground>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        this.orderCategoryButtonOnPress(
+                                            'friendsOrder'
+                                        )
+                                    }
+                                >
+                                    <View
+                                        style={[
+                                            styles.friendsTabContainer,
+                                            {
+                                                backgroundColor: this.state
+                                                    .friendsButtonBackgroundColor
+                                            }
+                                        ]}
+                                    >
+                                        <Text
+                                            style={[
+                                                styles.tabbarFriendsText,
+                                                {
+                                                    color: this.state
+                                                        .friendsButtonTextColor
+                                                }
+                                            ]}
+                                        >
+                                            Arkadaş
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
                             </View>
-                            {this.state.isSubjectDropdownVisible && (
+                            <View style={styles.dropdownsAndImageContainer}>
                                 <View style={styles.dropdownContainer}>
                                     <DropDown
                                         style={styles.picker}
@@ -297,398 +304,697 @@ class Leaderboard extends React.Component {
                                             styles.pickerDropdownText
                                         }
                                         dropdownStyle={styles.pickerDropdown}
-                                        defaultValue={
-                                            this.state
-                                                .subjectLeaderboardListDefaultValue
-                                        }
-                                        options={
-                                            this.state.subjectLeaderboardList
-                                        }
+                                        defaultValue={'Genel'}
+                                        options={this.state.courseList}
                                         onSelect={(idx, value) =>
-                                            this.pickerSelectSubject(idx, value)
+                                            this.pickerSelectCourse(idx, value)
                                         }
                                     />
                                 </View>
-                            )}
+                                <View style={styles.leaderImageContainer}>
+                                    <ImageBackground
+                                        source={{
+                                            uri:
+                                                this.state
+                                                    .topTenProfilePictures[0] !==
+                                                undefined
+                                                    ? this.state
+                                                          .topTenProfilePictures[0]
+                                                    : null
+                                        }}
+                                        style={styles.firstUserPic}
+                                        imageStyle={{ borderRadius: 100 }}
+                                    >
+                                        <Image
+                                            source={FIRST_TITLE}
+                                            style={styles.firstUserTitlePic}
+                                        />
+                                        <View style={styles.firstUserOrderView}>
+                                            <Text
+                                                style={styles.topTenOrderNumber}
+                                            >
+                                                1
+                                            </Text>
+                                        </View>
+                                    </ImageBackground>
+                                </View>
+                                {this.state.isSubjectDropdownVisible && (
+                                    <View style={styles.dropdownContainer}>
+                                        <DropDown
+                                            style={styles.picker}
+                                            textStyle={styles.pickerText}
+                                            dropdownTextStyle={
+                                                styles.pickerDropdownText
+                                            }
+                                            dropdownStyle={
+                                                styles.pickerDropdown
+                                            }
+                                            defaultValue={
+                                                this.state
+                                                    .subjectListDefaultValue
+                                            }
+                                            options={this.state.subjectList}
+                                            onSelect={(idx, value) =>
+                                                this.selectSubjectDropdown(
+                                                    idx,
+                                                    value
+                                                )
+                                            }
+                                        />
+                                    </View>
+                                )}
+                            </View>
+                            <View style={styles.nameAndScoreContainer}>
+                                <Text style={styles.nameText}>
+                                    {this.state.topTenUsernames[0] !==
+                                        undefined &&
+                                        this.state.topTenUsernames[0]}
+                                    {this.state.topTenUsernames[0] ===
+                                        undefined && ''}
+                                </Text>
+                                <Text style={styles.scoreText}>
+                                    Puan:{' '}
+                                    {this.state.topTenPoints[0] !== undefined &&
+                                        this.state.topTenPoints[0]}
+                                    {this.state.topTenPoints[0] === undefined &&
+                                        ''}
+                                </Text>
+                            </View>
                         </View>
-                        <View style={styles.nameAndScoreContainer}>
-                            <Text style={styles.nameText}>Hakan Yılmaz</Text>
-                            <Text style={styles.scoreText}>
-                                Sınavia Puanı: 400
+                        <View style={styles.topTenContainer}>
+                            <View style={styles.dividedTopTenContainer}>
+                                <View style={styles.topTenUserContainer}>
+                                    <View style={styles.topTenUserPicContainer}>
+                                        <ImageBackground
+                                            source={{
+                                                uri:
+                                                    this.state
+                                                        .topTenProfilePictures[1] !==
+                                                    undefined
+                                                        ? this.state
+                                                              .topTenProfilePictures[1]
+                                                        : null
+                                            }}
+                                            style={
+                                                styles.secondAndThirdUsersFromTopTenPic
+                                            }
+                                            imageStyle={{ borderRadius: 100 }}
+                                        >
+                                            <Image
+                                                source={SECOND_TITLE}
+                                                style={
+                                                    styles.secondAndThirdTitlePic
+                                                }
+                                            />
+                                            <View
+                                                style={
+                                                    styles.secondToTenUsersOrderView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.topTenOrderNumber
+                                                    }
+                                                >
+                                                    2
+                                                </Text>
+                                            </View>
+                                        </ImageBackground>
+                                    </View>
+                                    <View
+                                        style={styles.topTenUserNameContainer}
+                                    >
+                                        <Text style={styles.topTenUserNameText}>
+                                            {this.state.topTenUsernames[1] !==
+                                                undefined &&
+                                                this.state.topTenUsernames[1]}
+                                            {this.state.topTenUsernames[1] ===
+                                                undefined && ''}
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={styles.topTenUserScoreContainer}
+                                    >
+                                        <Text
+                                            style={styles.topTenUserScoreText}
+                                        >
+                                            Puan:{' '}
+                                            {this.state.topTenPoints[1] !==
+                                                undefined &&
+                                                this.state.topTenPoints[1]}
+                                            {this.state.topTenPoints[1] ===
+                                                undefined && ''}
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={styles.topTenUserContainer}>
+                                    <View style={styles.topTenUserPicContainer}>
+                                        <ImageBackground
+                                            source={{
+                                                uri:
+                                                    this.state
+                                                        .topTenProfilePictures[2] !==
+                                                    undefined
+                                                        ? this.state
+                                                              .topTenProfilePictures[2]
+                                                        : null
+                                            }}
+                                            style={
+                                                styles.secondAndThirdUsersFromTopTenPic
+                                            }
+                                            imageStyle={{ borderRadius: 100 }}
+                                        >
+                                            <Image
+                                                source={THIRD_TITLE}
+                                                style={
+                                                    styles.secondAndThirdTitlePic
+                                                }
+                                            />
+                                            <View
+                                                style={
+                                                    styles.secondToTenUsersOrderView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.topTenOrderNumber
+                                                    }
+                                                >
+                                                    3
+                                                </Text>
+                                            </View>
+                                        </ImageBackground>
+                                    </View>
+                                    <View
+                                        style={styles.topTenUserNameContainer}
+                                    >
+                                        <Text style={styles.topTenUserNameText}>
+                                            {this.state.topTenUsernames[2] !==
+                                                undefined &&
+                                                this.state.topTenUsernames[2]}
+                                            {this.state.topTenUsernames[2] ===
+                                                undefined && ''}
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={styles.topTenUserScoreContainer}
+                                    >
+                                        <Text
+                                            style={styles.topTenUserScoreText}
+                                        >
+                                            Puan:{' '}
+                                            {this.state.topTenPoints[2] !==
+                                                undefined &&
+                                                this.state.topTenPoints[2]}
+                                            {this.state.topTenPoints[2] ===
+                                                undefined && ''}
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={styles.topTenUserContainer}>
+                                    <View style={styles.topTenUserPicContainer}>
+                                        <ImageBackground
+                                            source={{
+                                                uri:
+                                                    this.state
+                                                        .topTenProfilePictures[3] !==
+                                                    undefined
+                                                        ? this.state
+                                                              .topTenProfilePictures[3]
+                                                        : null
+                                            }}
+                                            style={
+                                                styles.otherUsersFromTopTenPic
+                                            }
+                                            imageStyle={{ borderRadius: 100 }}
+                                        >
+                                            <View
+                                                style={
+                                                    styles.secondToTenUsersOrderView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.topTenOrderNumber
+                                                    }
+                                                >
+                                                    4
+                                                </Text>
+                                            </View>
+                                        </ImageBackground>
+                                    </View>
+                                    <View
+                                        style={styles.topTenUserNameContainer}
+                                    >
+                                        <Text style={styles.topTenUserNameText}>
+                                            {this.state.topTenUsernames[3] !==
+                                                undefined &&
+                                                this.state.topTenUsernames[3]}
+                                            {this.state.topTenUsernames[3] ===
+                                                undefined && ''}
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={styles.topTenUserScoreContainer}
+                                    >
+                                        <Text
+                                            style={styles.topTenUserScoreText}
+                                        >
+                                            Puan:{' '}
+                                            {this.state.topTenPoints[3] !==
+                                                undefined &&
+                                                this.state.topTenPoints[3]}
+                                            {this.state.topTenPoints[3] ===
+                                                undefined && ''}
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={styles.dividedTopTenContainer}>
+                                <View style={styles.topTenUserContainer}>
+                                    <View style={styles.topTenUserPicContainer}>
+                                        <ImageBackground
+                                            source={{
+                                                uri:
+                                                    this.state
+                                                        .topTenProfilePictures[4] !==
+                                                    undefined
+                                                        ? this.state
+                                                              .topTenProfilePictures[4]
+                                                        : null
+                                            }}
+                                            style={
+                                                styles.otherUsersFromTopTenPic
+                                            }
+                                            imageStyle={{ borderRadius: 100 }}
+                                        >
+                                            <View
+                                                style={
+                                                    styles.secondToTenUsersOrderView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.topTenOrderNumber
+                                                    }
+                                                >
+                                                    5
+                                                </Text>
+                                            </View>
+                                        </ImageBackground>
+                                    </View>
+                                    <View
+                                        style={styles.topTenUserNameContainer}
+                                    >
+                                        <Text style={styles.topTenUserNameText}>
+                                            {this.state.topTenUsernames[4] !==
+                                                undefined &&
+                                                this.state.topTenUsernames[4]}
+                                            {this.state.topTenUsernames[4] ===
+                                                undefined && ''}
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={styles.topTenUserScoreContainer}
+                                    >
+                                        <Text
+                                            style={styles.topTenUserScoreText}
+                                        >
+                                            Puan:{' '}
+                                            {this.state.topTenPoints[4] !==
+                                                undefined &&
+                                                this.state.topTenPoints[4]}
+                                            {this.state.topTenPoints[4] ===
+                                                undefined && ''}
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={styles.topTenUserContainer}>
+                                    <View style={styles.topTenUserPicContainer}>
+                                        <ImageBackground
+                                            source={{
+                                                uri:
+                                                    this.state
+                                                        .topTenProfilePictures[5] !==
+                                                    undefined
+                                                        ? this.state
+                                                              .topTenProfilePictures[5]
+                                                        : null
+                                            }}
+                                            style={
+                                                styles.otherUsersFromTopTenPic
+                                            }
+                                            imageStyle={{ borderRadius: 100 }}
+                                        >
+                                            <View
+                                                style={
+                                                    styles.secondToTenUsersOrderView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.topTenOrderNumber
+                                                    }
+                                                >
+                                                    6
+                                                </Text>
+                                            </View>
+                                        </ImageBackground>
+                                    </View>
+                                    <View
+                                        style={styles.topTenUserNameContainer}
+                                    >
+                                        <Text style={styles.topTenUserNameText}>
+                                            {this.state.topTenUsernames[5] !==
+                                                undefined &&
+                                                this.state.topTenUsernames[5]}
+                                            {this.state.topTenUsernames[5] ===
+                                                undefined && ''}
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={styles.topTenUserScoreContainer}
+                                    >
+                                        <Text
+                                            style={styles.topTenUserScoreText}
+                                        >
+                                            Puan:{' '}
+                                            {this.state.topTenPoints[5] !==
+                                                undefined &&
+                                                this.state.topTenPoints[5]}
+                                            {this.state.topTenPoints[5] ===
+                                                undefined && ''}
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={styles.topTenUserContainer}>
+                                    <View style={styles.topTenUserPicContainer}>
+                                        <ImageBackground
+                                            source={{
+                                                uri:
+                                                    this.state
+                                                        .topTenProfilePictures[6] !==
+                                                    undefined
+                                                        ? this.state
+                                                              .topTenProfilePictures[6]
+                                                        : null
+                                            }}
+                                            style={
+                                                styles.otherUsersFromTopTenPic
+                                            }
+                                            imageStyle={{ borderRadius: 100 }}
+                                        >
+                                            <View
+                                                style={
+                                                    styles.secondToTenUsersOrderView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.topTenOrderNumber
+                                                    }
+                                                >
+                                                    7
+                                                </Text>
+                                            </View>
+                                        </ImageBackground>
+                                    </View>
+                                    <View
+                                        style={styles.topTenUserNameContainer}
+                                    >
+                                        <Text style={styles.topTenUserNameText}>
+                                            {this.state.topTenUsernames[6] !==
+                                                undefined &&
+                                                this.state.topTenUsernames[6]}
+                                            {this.state.topTenUsernames[6] ===
+                                                undefined && ''}
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={styles.topTenUserScoreContainer}
+                                    >
+                                        <Text
+                                            style={styles.topTenUserScoreText}
+                                        >
+                                            Puan:{' '}
+                                            {this.state.topTenPoints[6] !==
+                                                undefined &&
+                                                this.state.topTenPoints[6]}
+                                            {this.state.topTenPoints[6] ===
+                                                undefined && ''}
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={styles.dividedTopTenContainer}>
+                                <View style={styles.topTenUserContainer}>
+                                    <View style={styles.topTenUserPicContainer}>
+                                        <ImageBackground
+                                            source={{
+                                                uri:
+                                                    this.state
+                                                        .topTenProfilePictures[7] !==
+                                                    undefined
+                                                        ? this.state
+                                                              .topTenProfilePictures[7]
+                                                        : null
+                                            }}
+                                            style={
+                                                styles.otherUsersFromTopTenPic
+                                            }
+                                            imageStyle={{ borderRadius: 100 }}
+                                        >
+                                            <View
+                                                style={
+                                                    styles.secondToTenUsersOrderView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.topTenOrderNumber
+                                                    }
+                                                >
+                                                    8
+                                                </Text>
+                                            </View>
+                                        </ImageBackground>
+                                    </View>
+                                    <View
+                                        style={styles.topTenUserNameContainer}
+                                    >
+                                        <Text style={styles.topTenUserNameText}>
+                                            {this.state.topTenUsernames[7] !==
+                                                undefined &&
+                                                this.state.topTenUsernames[7]}
+                                            {this.state.topTenUsernames[7] ===
+                                                undefined && ''}
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={styles.topTenUserScoreContainer}
+                                    >
+                                        <Text
+                                            style={styles.topTenUserScoreText}
+                                        >
+                                            Puan:{' '}
+                                            {this.state.topTenPoints[7] !==
+                                                undefined &&
+                                                this.state.topTenPoints[7]}
+                                            {this.state.topTenPoints[7] ===
+                                                undefined && ''}
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={styles.topTenUserContainer}>
+                                    <View style={styles.topTenUserPicContainer}>
+                                        <ImageBackground
+                                            source={{
+                                                uri:
+                                                    this.state
+                                                        .topTenProfilePictures[8] !==
+                                                    undefined
+                                                        ? this.state
+                                                              .topTenProfilePictures[8]
+                                                        : null
+                                            }}
+                                            style={
+                                                styles.otherUsersFromTopTenPic
+                                            }
+                                            imageStyle={{ borderRadius: 100 }}
+                                        >
+                                            <View
+                                                style={
+                                                    styles.secondToTenUsersOrderView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.topTenOrderNumber
+                                                    }
+                                                >
+                                                    9
+                                                </Text>
+                                            </View>
+                                        </ImageBackground>
+                                    </View>
+                                    <View
+                                        style={styles.topTenUserNameContainer}
+                                    >
+                                        <Text style={styles.topTenUserNameText}>
+                                            {this.state.topTenUsernames[8] !==
+                                                undefined &&
+                                                this.state.topTenUsernames[8]}
+                                            {this.state.topTenUsernames[8] ===
+                                                undefined && ''}
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={styles.topTenUserScoreContainer}
+                                    >
+                                        <Text
+                                            style={styles.topTenUserScoreText}
+                                        >
+                                            Puan:{' '}
+                                            {this.state.topTenPoints[8] !==
+                                                undefined &&
+                                                this.state.topTenPoints[8]}
+                                            {this.state.topTenPoints[8] ===
+                                                undefined && ''}
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={styles.topTenUserContainer}>
+                                    <View style={styles.topTenUserPicContainer}>
+                                        <ImageBackground
+                                            source={{
+                                                uri:
+                                                    this.state
+                                                        .topTenProfilePictures[9] !==
+                                                    undefined
+                                                        ? this.state
+                                                              .topTenProfilePictures[9]
+                                                        : null
+                                            }}
+                                            style={
+                                                styles.otherUsersFromTopTenPic
+                                            }
+                                            imageStyle={{ borderRadius: 100 }}
+                                        >
+                                            <View
+                                                style={
+                                                    styles.secondToTenUsersOrderView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.topTenOrderNumber
+                                                    }
+                                                >
+                                                    10
+                                                </Text>
+                                            </View>
+                                        </ImageBackground>
+                                    </View>
+                                    <View
+                                        style={styles.topTenUserNameContainer}
+                                    >
+                                        <Text style={styles.topTenUserNameText}>
+                                            {this.state.topTenUsernames[9] !==
+                                                undefined &&
+                                                this.state.topTenUsernames[9]}
+                                            {this.state.topTenUsernames[9] ===
+                                                undefined && ''}
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={styles.topTenUserScoreContainer}
+                                    >
+                                        <Text
+                                            style={styles.topTenUserScoreText}
+                                        >
+                                            Puan:{' '}
+                                            {this.state.topTenPoints[9] !==
+                                                undefined &&
+                                                this.state.topTenPoints[9]}
+                                            {this.state.topTenPoints[9] ===
+                                                undefined && ''}
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </View>
+                        <View style={styles.continueOrderTextContainer}>
+                            <Image
+                                source={SLIDE_DOWN}
+                                style={styles.slideDownLeftImg}
+                            />
+                            <Text style={styles.continueOrderText}>
+                                Sıralamanın devamı için kaydır
                             </Text>
+                            <Image
+                                source={SLIDE_DOWN}
+                                style={styles.slideDownRightImg}
+                            />
                         </View>
-                    </View>
-                    <View style={styles.topTenContainer}>
-                        <View style={styles.dividedTopTenContainer}>
-                            <View style={styles.topTenUserContainer}>
-                                <View style={styles.topTenUserPicContainer}>
-                                    <ImageBackground
-                                        source={PROFILE_PIC}
-                                        style={
-                                            styles.secondAndThirdUsersFromTopTenPic
-                                        }
-                                        imageStyle={{ borderRadius: 100 }}
-                                    >
-                                        <Image
-                                            source={SECOND_TITLE}
-                                            style={
-                                                styles.secondAndThirdTitlePic
-                                            }
-                                        />
+                        <FlatList
+                            data={this.state.remainingUsersFlatList}
+                            showsHorizontalScrollIndicator={false}
+                            renderItem={({ item, index }) => {
+                                return (
+                                    <View style={styles.tenToHundredUserRow}>
                                         <View
                                             style={
-                                                styles.secondToTenUsersOrderView
+                                                styles.tenToHundredUserOrderContainer
                                             }
                                         >
                                             <Text
-                                                style={styles.topTenOrderNumber}
+                                                style={
+                                                    styles.tenToHundredUserOrderText
+                                                }
                                             >
-                                                2
+                                                {index + 11}
                                             </Text>
                                         </View>
-                                    </ImageBackground>
-                                </View>
-                                <View style={styles.topTenUserNameContainer}>
-                                    <Text style={styles.topTenUserNameText}>
-                                        Hakan Yılmaz
-                                    </Text>
-                                </View>
-                                <View style={styles.topTenUserScoreContainer}>
-                                    <Text style={styles.topTenUserScoreText}>
-                                        400
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style={styles.topTenUserContainer}>
-                                <View style={styles.topTenUserPicContainer}>
-                                    <ImageBackground
-                                        source={PROFILE_PIC}
-                                        style={
-                                            styles.secondAndThirdUsersFromTopTenPic
-                                        }
-                                        imageStyle={{ borderRadius: 100 }}
-                                    >
-                                        <Image
-                                            source={THIRD_TITLE}
-                                            style={
-                                                styles.secondAndThirdTitlePic
-                                            }
-                                        />
                                         <View
                                             style={
-                                                styles.secondToTenUsersOrderView
+                                                styles.tenToHundredUserNameContainer
                                             }
                                         >
                                             <Text
-                                                style={styles.topTenOrderNumber}
+                                                style={
+                                                    styles.tenToHundredUserNameText
+                                                }
                                             >
-                                                3
+                                                {item !== undefined &&
+                                                    item.name}
+                                                {item === undefined && ''}
                                             </Text>
                                         </View>
-                                    </ImageBackground>
-                                </View>
-                                <View style={styles.topTenUserNameContainer}>
-                                    <Text style={styles.topTenUserNameText}>
-                                        Hakan Yılmaz
-                                    </Text>
-                                </View>
-                                <View style={styles.topTenUserScoreContainer}>
-                                    <Text style={styles.topTenUserScoreText}>
-                                        400
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style={styles.topTenUserContainer}>
-                                <View style={styles.topTenUserPicContainer}>
-                                    <ImageBackground
-                                        source={PROFILE_PIC}
-                                        style={styles.otherUsersFromTopTenPic}
-                                        imageStyle={{ borderRadius: 100 }}
-                                    >
                                         <View
                                             style={
-                                                styles.secondToTenUsersOrderView
+                                                styles.tenToHundredUserScoreContainer
                                             }
                                         >
                                             <Text
-                                                style={styles.topTenOrderNumber}
+                                                style={
+                                                    styles.tenToHundredUserScoreText
+                                                }
                                             >
-                                                4
+                                                {item !== undefined &&
+                                                    item.totalPoints}
+                                                {item === undefined && ''}
                                             </Text>
                                         </View>
-                                    </ImageBackground>
-                                </View>
-                                <View style={styles.topTenUserNameContainer}>
-                                    <Text style={styles.topTenUserNameText}>
-                                        Hakan Yılmaz
-                                    </Text>
-                                </View>
-                                <View style={styles.topTenUserScoreContainer}>
-                                    <Text style={styles.topTenUserScoreText}>
-                                        400
-                                    </Text>
-                                </View>
-                            </View>
-                        </View>
-                        <View style={styles.dividedTopTenContainer}>
-                            <View style={styles.topTenUserContainer}>
-                                <View style={styles.topTenUserPicContainer}>
-                                    <ImageBackground
-                                        source={PROFILE_PIC}
-                                        style={styles.otherUsersFromTopTenPic}
-                                        imageStyle={{ borderRadius: 100 }}
-                                    >
-                                        <View
-                                            style={
-                                                styles.secondToTenUsersOrderView
-                                            }
-                                        >
-                                            <Text
-                                                style={styles.topTenOrderNumber}
-                                            >
-                                                5
-                                            </Text>
-                                        </View>
-                                    </ImageBackground>
-                                </View>
-                                <View style={styles.topTenUserNameContainer}>
-                                    <Text style={styles.topTenUserNameText}>
-                                        Hakan Yılmaz
-                                    </Text>
-                                </View>
-                                <View style={styles.topTenUserScoreContainer}>
-                                    <Text style={styles.topTenUserScoreText}>
-                                        400
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style={styles.topTenUserContainer}>
-                                <View style={styles.topTenUserPicContainer}>
-                                    <ImageBackground
-                                        source={PROFILE_PIC}
-                                        style={styles.otherUsersFromTopTenPic}
-                                        imageStyle={{ borderRadius: 100 }}
-                                    >
-                                        <View
-                                            style={
-                                                styles.secondToTenUsersOrderView
-                                            }
-                                        >
-                                            <Text
-                                                style={styles.topTenOrderNumber}
-                                            >
-                                                6
-                                            </Text>
-                                        </View>
-                                    </ImageBackground>
-                                </View>
-                                <View style={styles.topTenUserNameContainer}>
-                                    <Text style={styles.topTenUserNameText}>
-                                        Hakan Yılmaz
-                                    </Text>
-                                </View>
-                                <View style={styles.topTenUserScoreContainer}>
-                                    <Text style={styles.topTenUserScoreText}>
-                                        400
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style={styles.topTenUserContainer}>
-                                <View style={styles.topTenUserPicContainer}>
-                                    <ImageBackground
-                                        source={PROFILE_PIC}
-                                        style={styles.otherUsersFromTopTenPic}
-                                        imageStyle={{ borderRadius: 100 }}
-                                    >
-                                        <View
-                                            style={
-                                                styles.secondToTenUsersOrderView
-                                            }
-                                        >
-                                            <Text
-                                                style={styles.topTenOrderNumber}
-                                            >
-                                                7
-                                            </Text>
-                                        </View>
-                                    </ImageBackground>
-                                </View>
-                                <View style={styles.topTenUserNameContainer}>
-                                    <Text style={styles.topTenUserNameText}>
-                                        Hakan Yılmaz
-                                    </Text>
-                                </View>
-                                <View style={styles.topTenUserScoreContainer}>
-                                    <Text style={styles.topTenUserScoreText}>
-                                        400
-                                    </Text>
-                                </View>
-                            </View>
-                        </View>
-                        <View style={styles.dividedTopTenContainer}>
-                            <View style={styles.topTenUserContainer}>
-                                <View style={styles.topTenUserPicContainer}>
-                                    <ImageBackground
-                                        source={PROFILE_PIC}
-                                        style={styles.otherUsersFromTopTenPic}
-                                        imageStyle={{ borderRadius: 100 }}
-                                    >
-                                        <View
-                                            style={
-                                                styles.secondToTenUsersOrderView
-                                            }
-                                        >
-                                            <Text
-                                                style={styles.topTenOrderNumber}
-                                            >
-                                                8
-                                            </Text>
-                                        </View>
-                                    </ImageBackground>
-                                </View>
-                                <View style={styles.topTenUserNameContainer}>
-                                    <Text style={styles.topTenUserNameText}>
-                                        Hakan Yılmaz
-                                    </Text>
-                                </View>
-                                <View style={styles.topTenUserScoreContainer}>
-                                    <Text style={styles.topTenUserScoreText}>
-                                        400
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style={styles.topTenUserContainer}>
-                                <View style={styles.topTenUserPicContainer}>
-                                    <ImageBackground
-                                        source={PROFILE_PIC}
-                                        style={styles.otherUsersFromTopTenPic}
-                                        imageStyle={{ borderRadius: 100 }}
-                                    >
-                                        <View
-                                            style={
-                                                styles.secondToTenUsersOrderView
-                                            }
-                                        >
-                                            <Text
-                                                style={styles.topTenOrderNumber}
-                                            >
-                                                9
-                                            </Text>
-                                        </View>
-                                    </ImageBackground>
-                                </View>
-                                <View style={styles.topTenUserNameContainer}>
-                                    <Text style={styles.topTenUserNameText}>
-                                        Hakan Yılmaz
-                                    </Text>
-                                </View>
-                                <View style={styles.topTenUserScoreContainer}>
-                                    <Text style={styles.topTenUserScoreText}>
-                                        400
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style={styles.topTenUserContainer}>
-                                <View style={styles.topTenUserPicContainer}>
-                                    <ImageBackground
-                                        source={PROFILE_PIC}
-                                        style={styles.otherUsersFromTopTenPic}
-                                        imageStyle={{ borderRadius: 100 }}
-                                    >
-                                        <View
-                                            style={
-                                                styles.secondToTenUsersOrderView
-                                            }
-                                        >
-                                            <Text
-                                                style={styles.topTenOrderNumber}
-                                            >
-                                                10
-                                            </Text>
-                                        </View>
-                                    </ImageBackground>
-                                </View>
-                                <View style={styles.topTenUserNameContainer}>
-                                    <Text style={styles.topTenUserNameText}>
-                                        Hakan Yılmaz
-                                    </Text>
-                                </View>
-                                <View style={styles.topTenUserScoreContainer}>
-                                    <Text style={styles.topTenUserScoreText}>
-                                        400
-                                    </Text>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.continueOrderTextContainer}>
-                        <Image
-                            source={SLIDE_DOWN}
-                            style={styles.slideDownLeftImg}
+                                    </View>
+                                )
+                            }}
+                            keyExtractor={(item, index) => index.toString()}
                         />
-                        <Text style={styles.continueOrderText}>
-                            Sıralamanın devamı için kaydır
-                        </Text>
-                        <Image
-                            source={SLIDE_DOWN}
-                            style={styles.slideDownRightImg}
-                        />
-                    </View>
-                    <FlatList
-                        data={this.state.data}
-                        showsHorizontalScrollIndicator={false}
-                        renderItem={({ item }) => {
-                            return (
-                                <View style={styles.tenToHundredUserRow}>
-                                    <View
-                                        style={
-                                            styles.tenToHundredUserOrderContainer
-                                        }
-                                    >
-                                        <Text
-                                            style={
-                                                styles.tenToHundredUserOrderText
-                                            }
-                                        >
-                                            {item.number}
-                                        </Text>
-                                    </View>
-                                    <View
-                                        style={
-                                            styles.tenToHundredUserNameContainer
-                                        }
-                                    >
-                                        <Text
-                                            style={
-                                                styles.tenToHundredUserNameText
-                                            }
-                                        >
-                                            {item.name}
-                                        </Text>
-                                    </View>
-                                    <View
-                                        style={
-                                            styles.tenToHundredUserScoreContainer
-                                        }
-                                    >
-                                        <Text
-                                            style={
-                                                styles.tenToHundredUserScoreText
-                                            }
-                                        >
-                                            {item.score}
-                                        </Text>
-                                    </View>
-                                </View>
-                            )
-                        }}
-                        keyExtractor={(item, index) => index}
-                    />
-                </ScrollView>
+                    </ScrollView>
                 </View>
                 <View style={styles.yourOrderTextContainer}>
                     <Text style={styles.yourOrderText}>
-                        Senin Sıralaman: 300
+                        Senin Sıralaman: {this.state.clientRanking}
                     </Text>
                 </View>
             </View>
@@ -697,7 +1003,10 @@ class Leaderboard extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    choosenExam: state.client.choosenExam
+    clientToken: state.client.clientToken,
+    clientDBId: state.client.clientDBId,
+    choosenExam: state.gameContent.choosenExam,
+    gameContentMap: state.gameContent.gameContentMap
 })
 
 const mapDispatchToProps = dispatch => ({})

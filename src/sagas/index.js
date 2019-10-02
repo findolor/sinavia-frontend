@@ -7,8 +7,6 @@ import { questionSagas } from './question'
 import { gameContentSagas } from './gameContent'
 import { friendTypes } from '../redux/friends/actions'
 import { friendshipSagas } from './friendship'
-import { leaderboardSagas } from './leaderboard'
-import { appTypes } from '../redux/app/actions'
 
 export default function* root() {
     yield all([
@@ -57,7 +55,6 @@ export default function* root() {
             friendTypes.REJECT_FRIENDSHIP_REQUEST,
             friendshipSagas.rejectFriendshipRequest
         ),
-        takeLatest(clientTypes.UPDATE_USER, userSagas.updateUser),
-        takeLatest(appTypes.GET_LEADERBOARD, leaderboardSagas.getLeaderboard)
+        takeLatest(clientTypes.UPDATE_USER, userSagas.updateUser)
     ])
 }

@@ -14,3 +14,7 @@ export function* getLeaderboardSaga(action) {
 
     console.log(response)
 }
+
+export const getLeaderboardService = async (clientToken, params) => {
+    return getLeaderboard(clientToken, params)
+}
