@@ -55,6 +55,7 @@ class Leaderboard extends React.Component {
         }
     }
 
+    // TODO WRITE FETCH FUNCTIONS FOR FETHING WHEN THE COURSE SUBJECT CHANGES
     componentDidMount() {
         this.setChoosenExamId().then(() => {
             this.fetchLeaderboard().then(data => {
