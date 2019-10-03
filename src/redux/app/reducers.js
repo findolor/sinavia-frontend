@@ -8,6 +8,16 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 isNetworkConnected: action.payload
             }
+        case appTypes.GET_LEADERBOARD_SUCCESS:
+            return {
+                ...state,
+                leaderboardUserList: action.payload
+            }
+        case appTypes.SAVE_CLIENT_RANKING:
+            return {
+                ...state,
+                clientRanking: action.payload
+            }
         default:
             return state
     }

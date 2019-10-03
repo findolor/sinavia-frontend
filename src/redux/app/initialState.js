@@ -1,3 +1,5 @@
 export const INITIAL_STATE = {
-    isNetworkConnected: null
+    isNetworkConnected: null,
+    leaderboardUserList: null,
+    clientRanking: null
 }

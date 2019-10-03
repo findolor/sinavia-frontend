@@ -62,7 +62,7 @@ class Statistics extends React.Component {
         }
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         this.setChoosenExamId().then(() => {
             this.fetchStatistics().then(data => {
                 this.makeStatistics(data, this.weeklyRheostatValueUpdate, {
