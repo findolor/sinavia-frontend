@@ -216,7 +216,8 @@ class Leaderboard extends React.Component {
             case 'friends':
                 return leaderboardServices.getFriendScores(
                     this.props.clientToken,
-                    this.props.friendIds
+                    this.props.friendIds,
+                    this.props.clientDBId
                 )
         }
     }
