@@ -105,6 +105,7 @@ class Leaderboard extends React.Component {
         // Putting the remaining usernames and points
         let remainingUsersFlatList = []
         for (i = 0; i < 90; i++) {
+            if (remainingUsernames[i] === undefined) continue
             remainingUsersFlatList.push({
                 name: remainingUsernames[i],
                 totalPoints: remainingPoints[i]
@@ -230,36 +231,59 @@ class Leaderboard extends React.Component {
                     friendsButtonBackgroundColor: '#FFFFFF',
                     friendsButtonTextColor: '#2E313C'
                 })
-                this.setState({ rankingMode: selectedMode })
+                if (
+                    Object.keys(this.state.originalGlobalLeaderboardList)
+                        .length === 0
+                ) {
+                    this.setState({ rankingMode: selectedMode }, () => {
+                        this.fetchLeaderboard().then(data => {
+                            // We populate the list again
+                            this.makeLeaderboardLists(data)
+                        })
+                    })
+                } else {
+                    this.setState({ rankingMode: selectedMode }, () => {
+                        this.makeLeaderboardLists(
+                            this.state.originalGlobalLeaderboardList
+                        )
+                    })
+                }
                 return
             case 'friends':
                 if (this.state.rankingMode === selectedMode) return
-                // TODO THINK ABOUT THE LOGIC HERE
+                this.setState({
+                    globalButtonBackgroundColor: '#FFFFFF',
+                    globalButtonTextColor: '#2E313C',
+                    friendsButtonBackgroundColor: '#FF6D00',
+                    friendsButtonTextColor: '#FFFFFF'
+                })
                 if (
                     Object.keys(this.state.originalFriendsLeaderboardList)
                         .length === 0
                 ) {
-                    this.setState({
-                        globalButtonBackgroundColor: '#FFFFFF',
-                        globalButtonTextColor: '#2E313C',
-                        friendsButtonBackgroundColor: '#FF6D00',
-                        friendsButtonTextColor: '#FFFFFF'
-                    })
                     this.setState({ rankingMode: selectedMode }, () => {
                         // We dont send the request if the user don't have any friends
                         if (Object.keys(this.props.friendIds).length === 0)
                             return
                         this.fetchLeaderboard().then(data => {
-                            console.log(data)
+                            // We populate the list again
                             this.makeLeaderboardLists(data)
                         })
                     })
                 } else {
+                    this.setState({ rankingMode: selectedMode }, () => {
+                        this.makeLeaderboardLists(
+                            this.state.originalFriendsLeaderboardList
+                        )
+                    })
                 }
                 return
         }
     }
 
+    // TODO CHANGE THE TOP THEN TO FLAT LIST
+    // COMMENT OUT THE CODE HERE AND ADD THE NEW ONE
+    // WILL USE THE OLD CODE FOR HELP LATER
     render() {
         return (
             <View style={styles.container}>
