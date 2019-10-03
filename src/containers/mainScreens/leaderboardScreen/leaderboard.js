@@ -48,7 +48,10 @@ class Leaderboard extends React.Component {
             // Flatlist user list ( 90 users )
             remainingUsersFlatList: [],
             // Client ranking
-            clientRanking: 0
+            clientRanking: 0,
+            // Original lists
+            originalGlobalLeaderboardList: [],
+            originalFriendsLeaderboardList: []
         }
     }
 
@@ -56,65 +59,76 @@ class Leaderboard extends React.Component {
         this.setChoosenExamId().then(() => {
             this.fetchLeaderboard().then(data => {
                 let userList = []
-                let userUsernames = []
-                let topTenUsernames = []
-                let remainingUsernames = []
-                let userPoints = []
-                let topTenPoints = []
-                let remainingPoints = []
-                let userProfilePictures = []
-                let topTenProfilePictures = []
-                let remainingProfilePictures = []
 
                 data.userList.forEach(user => {
                     user = JSON.parse(user)
-
                     userList.push(user)
-                    userUsernames.push(user.user.username)
-                    userPoints.push(user.totalPoints)
-                    userProfilePictures.push(user.user.profilePicture)
                 })
 
-                // Getting the top ten names to a list and save the rest
-                remainingUsernames = userUsernames
-                topTenUsernames = remainingUsernames.splice(0, 10)
-                remainingUsernames = remainingUsernames.slice(0, 90)
-                // Getting the top ten points to a list and save the rest
-                remainingPoints = userPoints
-                topTenPoints = remainingPoints.splice(0, 10)
-                remainingPoints = remainingPoints.slice(0, 90)
-                // Getting the top ten profile pictures to a list and save the rest
-                remainingProfilePictures = userProfilePictures
-                topTenProfilePictures = remainingProfilePictures.splice(0, 10)
-                remainingProfilePictures = remainingProfilePictures.slice(0, 90)
-
-                // Putting the remaining usernames and points
-                let remainingUsersFlatList = []
-                for (i = 0; i < 90; i++) {
-                    remainingUsersFlatList.push({
-                        name: remainingUsernames[i],
-                        totalPoints: remainingPoints[i]
-                    })
-                }
-
-                let clientIndex = userList.findIndex(
-                    x => x.userId === this.props.clientDBId
-                )
-
-                this.setState({
-                    topTenUsernames: topTenUsernames,
-                    remainingUsernames: remainingUsernames,
-                    topTenPoints: topTenPoints,
-                    remainingPoints: remainingPoints,
-                    topTenProfilePictures: topTenProfilePictures,
-                    remainingProfilePictures: remainingProfilePictures,
-                    remainingUsersFlatList: remainingUsersFlatList,
-                    clientRanking: clientIndex + 1
-                })
+                this.makeLeaderboardLists(userList)
             })
         })
 
         this.courseListMaker()
+    }
+
+    makeLeaderboardLists = userList => {
+        let userUsernames = []
+        let topTenUsernames = []
+        let remainingUsernames = []
+        let userPoints = []
+        let topTenPoints = []
+        let remainingPoints = []
+        let userProfilePictures = []
+        let topTenProfilePictures = []
+        let remainingProfilePictures = []
+
+        userList.forEach(user => {
+            userUsernames.push(user.user.username)
+            userPoints.push(user.totalPoints)
+            userProfilePictures.push(user.user.profilePicture)
+        })
+
+        // Getting the top ten names to a list and save the rest
+        remainingUsernames = userUsernames
+        topTenUsernames = remainingUsernames.splice(0, 10)
+        remainingUsernames = remainingUsernames.slice(0, 90)
+        // Getting the top ten points to a list and save the rest
+        remainingPoints = userPoints
+        topTenPoints = remainingPoints.splice(0, 10)
+        remainingPoints = remainingPoints.slice(0, 90)
+        // Getting the top ten profile pictures to a list and save the rest
+        remainingProfilePictures = userProfilePictures
+        topTenProfilePictures = remainingProfilePictures.splice(0, 10)
+        remainingProfilePictures = remainingProfilePictures.slice(0, 90)
+
+        // Putting the remaining usernames and points
+        let remainingUsersFlatList = []
+        for (i = 0; i < 90; i++) {
+            remainingUsersFlatList.push({
+                name: remainingUsernames[i],
+                totalPoints: remainingPoints[i]
+            })
+        }
+
+        let clientIndex = userList.findIndex(
+            x => x.userId === this.props.clientDBId
+        )
+
+        // Saving the original userList based on the ranking mode
+        this.state.rankingMode === 'global'
+            ? this.setState({ originalGlobalLeaderboardList: userList })
+            : this.setState({ originalFriendsLeaderboardList: userList })
+        this.setState({
+            topTenUsernames: topTenUsernames,
+            remainingUsernames: remainingUsernames,
+            topTenPoints: topTenPoints,
+            remainingPoints: remainingPoints,
+            topTenProfilePictures: topTenProfilePictures,
+            remainingProfilePictures: remainingProfilePictures,
+            remainingUsersFlatList: remainingUsersFlatList,
+            clientRanking: clientIndex + 1
+        })
     }
 
     // We set the choosen exam id based on users choosen exam
@@ -198,12 +212,17 @@ class Leaderboard extends React.Component {
                     this.props.clientToken,
                     { examId: this.state.choosenExamId }
                 )
+            case 'friends':
+                return leaderboardServices.getFriendScores(
+                    this.props.clientToken,
+                    this.props.friendIds
+                )
         }
     }
 
     orderCategoryButtonOnPress = selectedMode => {
         switch (selectedMode) {
-            case 'globalOrder':
+            case 'global':
                 if (this.state.rankingMode === selectedMode) return
                 this.setState({
                     globalButtonBackgroundColor: '#FF6D00',
@@ -211,17 +230,32 @@ class Leaderboard extends React.Component {
                     friendsButtonBackgroundColor: '#FFFFFF',
                     friendsButtonTextColor: '#2E313C'
                 })
-                this.setState({ selectedGameMode: selectedMode })
+                this.setState({ rankingMode: selectedMode })
                 return
-            case 'friendsOrder':
+            case 'friends':
                 if (this.state.rankingMode === selectedMode) return
-                this.setState({
-                    globalButtonBackgroundColor: '#FFFFFF',
-                    globalButtonTextColor: '#2E313C',
-                    friendsButtonBackgroundColor: '#FF6D00',
-                    friendsButtonTextColor: '#FFFFFF'
-                })
-                this.setState({ selectedGameMode: selectedMode })
+                // TODO THINK ABOUT THE LOGIC HERE
+                if (
+                    Object.keys(this.state.originalFriendsLeaderboardList)
+                        .length === 0
+                ) {
+                    this.setState({
+                        globalButtonBackgroundColor: '#FFFFFF',
+                        globalButtonTextColor: '#2E313C',
+                        friendsButtonBackgroundColor: '#FF6D00',
+                        friendsButtonTextColor: '#FFFFFF'
+                    })
+                    this.setState({ rankingMode: selectedMode }, () => {
+                        // We dont send the request if the user don't have any friends
+                        if (Object.keys(this.props.friendIds).length === 0)
+                            return
+                        this.fetchLeaderboard().then(data => {
+                            console.log(data)
+                            this.makeLeaderboardLists(data)
+                        })
+                    })
+                } else {
+                }
                 return
         }
     }
@@ -239,7 +273,7 @@ class Leaderboard extends React.Component {
                                 <TouchableOpacity
                                     onPress={() =>
                                         this.orderCategoryButtonOnPress(
-                                            'globalOrder'
+                                            'global'
                                         )
                                     }
                                 >
@@ -268,7 +302,7 @@ class Leaderboard extends React.Component {
                                 <TouchableOpacity
                                     onPress={() =>
                                         this.orderCategoryButtonOnPress(
-                                            'friendsOrder'
+                                            'friends'
                                         )
                                     }
                                 >
@@ -1006,7 +1040,8 @@ const mapStateToProps = state => ({
     clientToken: state.client.clientToken,
     clientDBId: state.client.clientDBId,
     choosenExam: state.gameContent.choosenExam,
-    gameContentMap: state.gameContent.gameContentMap
+    gameContentMap: state.gameContent.gameContentMap,
+    friendIds: state.friends.friendIds
 })
 
 const mapDispatchToProps = dispatch => ({})

@@ -1,9 +1,7 @@
-import { getLeaderboardSaga, getLeaderboardService } from './getLeaderboard'
-
-export const leaderboardSagas = {
-    getLeaderboard: getLeaderboardSaga
-}
+import { getLeaderboardService } from './getLeaderboard'
+import { getFriendScoresService } from './getFriendScores'
 
 export const leaderboardServices = {
-    getLeaderboard: getLeaderboardService
+    getLeaderboard: getLeaderboardService,
+    getFriendScores: getFriendScoresService
 }
