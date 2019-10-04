@@ -10,7 +10,7 @@ export const sendGameRequest = async (
 ) => {
     try {
         const response = await axios.post(
-            API_ENDPOINT + 'friendGames/',
+            API_ENDPOINT + 'friendGames/request',
             {
                 id: userId,
                 username: username,
