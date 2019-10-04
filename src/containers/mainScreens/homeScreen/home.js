@@ -556,7 +556,7 @@ class Home extends React.Component {
         return result
     }
 
-    friendGameModeOnPress = async () => {
+    friendGameModeOnPress = () => {
         if (!this.props.isNetworkConnected) {
             Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
             return
@@ -573,10 +573,11 @@ class Home extends React.Component {
             isCreateRoom: true,
             examId: Ids.examId,
             courseId: Ids.courseId,
-            subjectId: Ids.subjectId
+            subjectId: Ids.subjectId,
+            invitedFriendId: this.state.opponentInformation.id
         })
 
-        await friendGameServices.sendFriendGameRequest(
+        friendGameServices.sendFriendGameRequest(
             this.props.clientToken,
             this.props.clientInformation,
             randomNumber,
