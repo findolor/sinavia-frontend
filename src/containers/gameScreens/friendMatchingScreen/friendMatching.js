@@ -53,11 +53,9 @@ class FriendMatchingScreen extends React.Component {
         let opponentUsername
         let opponentId
         let opponentProfilePicture
-        let opponentCoverPicture
         // Client information
         let playerUsername
         let playerProfilePicture
-        let playerCoverPicture
         this.room.onMessage.add(message => {
             // Message is playerProps
             const playerIds = Object.keys(message)
@@ -68,11 +66,9 @@ class FriendMatchingScreen extends React.Component {
                     opponentUsername = message[element].username
                     opponentId = element
                     opponentProfilePicture = message[element].profilePicture
-                    opponentCoverPicture = message[element].coverPicture
                 } else {
                     playerUsername = message[element].username
                     playerProfilePicture = message[element].profilePicture
-                    playerCoverPicture = message[element].coverPicture
                 }
             })
 
@@ -85,14 +81,9 @@ class FriendMatchingScreen extends React.Component {
                 // These can be used in both screens
                 playerUsername: playerUsername,
                 playerProfilePicture: playerProfilePicture,
-                playerCoverPicture: playerCoverPicture,
                 opponentUsername: opponentUsername,
                 opponentId: opponentId,
-                opponentProfilePicture: opponentProfilePicture,
-                opponentCoverPicture: opponentCoverPicture,
-                // These are used in the match intro screen
-                courseName: playerOptions.courseName,
-                subjectName: playerOptions.subjectName
+                opponentProfilePicture: opponentProfilePicture
             })
         })
     }
@@ -104,6 +95,17 @@ class FriendMatchingScreen extends React.Component {
     playAheadOnPress = () => {
         this.room.send({
             action: 'start-ahead'
+        })
+
+        this.room.removeAllListeners()
+
+        navigationPush(SCENE_KEYS.gameScreens.soloGameScreen, {
+            // These are necessary for the game logic
+            room: this.room,
+            client: this.client,
+            // These can be used in both screens
+            playerUsername: this.props.clientInformation.username,
+            playerProfilePicture: this.props.clientInformation.profilePicture
         })
     }
 
