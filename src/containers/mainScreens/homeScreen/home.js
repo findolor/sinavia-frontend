@@ -92,6 +92,7 @@ class Home extends React.Component {
             visibleView: '',
             // Variable for making start button when pressed ranked
             visibleRankedGameStartPress: false,
+            friendSelected: false,
             opponentUserPic: '',
             opponentName: '',
             opponentUsername: '',
@@ -332,7 +333,12 @@ class Home extends React.Component {
 
     closeModalButtonOnPress = () => {
         this.setState({
-            isModalVisible: false
+            isModalVisible: false,
+            friendSelected: false,
+            opponentUserPic: '',
+            opponentName: '',
+            opponentUsername: '',
+            opponentInformation: {}
         })
     }
 
@@ -473,7 +479,14 @@ class Home extends React.Component {
     }
 
     friendRoomAndGameModesBackButtonOnPress = () => {
-        this.setState({ visibleView: 'GAME_MODES' })
+        this.setState({
+            visibleView: 'GAME_MODES',
+            friendSelected: false,
+            opponentUserPic: '',
+            opponentName: '',
+            opponentUsername: '',
+            opponentInformation: {}
+        })
     }
 
     groupModesView() {
@@ -540,7 +553,8 @@ class Home extends React.Component {
             opponentUserPic: user.profilePicture,
             opponentName: user.name + ' ' + user.lastname,
             opponentUsername: user.username,
-            opponentInformation: user
+            opponentInformation: user,
+            friendSelected: true
         })
     }
 
@@ -561,6 +575,8 @@ class Home extends React.Component {
             Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
             return
         }
+
+        if (!this.state.friendSelected) return
 
         const randomNumber = this.randomCodeGenerator()
 
