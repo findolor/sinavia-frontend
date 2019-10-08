@@ -10,7 +10,7 @@ export function* getFriendRequestsSaga(action) {
         action.clientId
     )
 
-    if (Object.keys(requestIds).length === 0) return
+    if (requestIds === undefined || Object.keys(requestIds).length === 0) return
 
     const users = yield call(getUsers, action.clientToken, requestIds)
 

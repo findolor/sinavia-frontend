@@ -1,5 +1,12 @@
 import React from 'react'
-import { View, Text, Image, ImageBackground, AsyncStorage } from 'react-native'
+import {
+    View,
+    Text,
+    Image,
+    ImageBackground,
+    AsyncStorage,
+    TouchableOpacity
+} from 'react-native'
 import styles, { countdownProps } from './style'
 import NotchView from '../../../components/notchView'
 import CountDown from 'react-native-countdown-component'
@@ -21,7 +28,8 @@ class FriendMatchingScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            countDownTime: 30
+            countDownTime: 2,
+            isCoundownFinished: false
         }
     }
 
@@ -34,7 +42,9 @@ class FriendMatchingScreen extends React.Component {
                 subjectId: this.props.subjectId,
                 databaseId: this.props.clientDBId,
                 roomCode: this.props.roomCode,
-                create: this.props.isCreateRoom
+                create: this.props.isCreateRoom,
+                userId: this.props.clientDBId,
+                friendId: this.props.invitedFriendId
             })
         })
     }
@@ -45,11 +55,9 @@ class FriendMatchingScreen extends React.Component {
         let opponentUsername
         let opponentId
         let opponentProfilePicture
-        let opponentCoverPicture
         // Client information
         let playerUsername
         let playerProfilePicture
-        let playerCoverPicture
         this.room.onMessage.add(message => {
             // Message is playerProps
             const playerIds = Object.keys(message)
@@ -60,11 +68,9 @@ class FriendMatchingScreen extends React.Component {
                     opponentUsername = message[element].username
                     opponentId = element
                     opponentProfilePicture = message[element].profilePicture
-                    opponentCoverPicture = message[element].coverPicture
                 } else {
                     playerUsername = message[element].username
                     playerProfilePicture = message[element].profilePicture
-                    playerCoverPicture = message[element].coverPicture
                 }
             })
 
@@ -77,15 +83,31 @@ class FriendMatchingScreen extends React.Component {
                 // These can be used in both screens
                 playerUsername: playerUsername,
                 playerProfilePicture: playerProfilePicture,
-                playerCoverPicture: playerCoverPicture,
                 opponentUsername: opponentUsername,
                 opponentId: opponentId,
-                opponentProfilePicture: opponentProfilePicture,
-                opponentCoverPicture: opponentCoverPicture,
-                // These are used in the match intro screen
-                courseName: playerOptions.courseName,
-                subjectName: playerOptions.subjectName
+                opponentProfilePicture: opponentProfilePicture
             })
+        })
+    }
+
+    countdownOnFinish = () => {
+        this.setState({ isCoundownFinished: true })
+    }
+
+    playAheadOnPress = () => {
+        this.room.send({
+            action: 'start-ahead'
+        })
+
+        this.room.removeAllListeners()
+
+        navigationPush(SCENE_KEYS.gameScreens.soloGameScreen, {
+            // These are necessary for the game logic
+            room: this.room,
+            client: this.client,
+            // These can be used in both screens
+            playerUsername: this.props.clientInformation.username,
+            playerProfilePicture: this.props.clientInformation.profilePicture
         })
     }
 
@@ -175,23 +197,32 @@ class FriendMatchingScreen extends React.Component {
                         <Text style={styles.winLoseCounterText}>20</Text>
                     </View>
                     <View style={styles.separatorCircle}>
-                        {!this.state.isFriendJoined && (
-                            <CountDown
-                                until={this.state.countDownTime}
-                                size={countdownProps.size}
-                                digitStyle={{
-                                    backgroundColor: '#FF9900',
-                                    borderRadius: 100
-                                }}
-                                digitTxtStyle={styles.timerText}
-                                timeToShow={['S']}
-                                timeLabels={{ s: null }}
-                                separatorStyle={{ color: '#fff' }}
-                                showSeparator
-                                //running={this.state.isCountDownRunning}
-                                //onFinish={this.countdownOnFinish}
-                            />
-                        )}
+                        {!this.state.isFriendJoined &&
+                            !this.state.isCoundownFinished && (
+                                <CountDown
+                                    until={this.state.countDownTime}
+                                    size={countdownProps.size}
+                                    digitStyle={{
+                                        backgroundColor: '#FF9900',
+                                        borderRadius: 100
+                                    }}
+                                    digitTxtStyle={styles.timerText}
+                                    timeToShow={['S']}
+                                    timeLabels={{ s: null }}
+                                    separatorStyle={{ color: '#fff' }}
+                                    showSeparator
+                                    //running={!this.state.isCoundownFinished}
+                                    onFinish={this.countdownOnFinish}
+                                />
+                            )}
+                        {!this.state.isFriendJoined &&
+                            this.state.isCoundownFinished && (
+                                <TouchableOpacity
+                                    onPress={this.playAheadOnPress}
+                                >
+                                    <Text>ÖNDEN OYNA</Text>
+                                </TouchableOpacity>
+                            )}
                         {this.state.isFriendJoined && (
                             <Image source={SWORD} style={styles.swordPic} />
                         )}

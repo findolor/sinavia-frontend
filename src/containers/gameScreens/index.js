@@ -8,6 +8,7 @@ import GroupGame from './groupGameScreen/groupGame'
 import FriendGameStatsScreen from './friendGameStatsScreen/friendGameStats'
 import GroupGameStatsScreen from './groupGameStatsScreen/groupGameStats'
 import FriendGame from './friendGameScreen/friendGame'
+import SoloGameScreen from './soloGameScreen/soloGameScreen'
 
 export {
     RankedGame,
@@ -19,5 +20,6 @@ export {
     FriendMatchingScreen,
     GroupGame,
     GroupGameStatsScreen,
-    FriendGame
+    FriendGame,
+    SoloGameScreen
 }

@@ -18,6 +18,21 @@ import emptyHomeIcon from '../../assets/mainScreens/home.png'
 import selectedJokerIcon from '../../assets/mainScreens/joker_dolu.png'
 import emptyJokerIcon from '../../assets/mainScreens/joker.png'
 
+// TODO DELETE THIS LATER
+// FOR TESTING
+import { Buffer } from 'buffer'
+import { AsyncStorage } from 'react-native'
+window.localStorage = AsyncStorage
+global.Buffer = Buffer
+import * as Colyseus from 'colyseus.js'
+import { GAME_ENGINE_ENDPOINT } from '../../config'
+import {
+    navigationPush,
+    navigationReset,
+    SCENE_KEYS
+} from '../../services/navigationService'
+/// FOR TESTING
+
 class Main extends React.Component {
     constructor(props) {
         super(props)
@@ -57,6 +72,34 @@ class Main extends React.Component {
                 this.setState({ trophyIconSelected: false })
                 this.setState({ homeIconSelected: false })
                 this.setState({ jokerIconSelected: true })
+                // TODO DELETE THIS LATER
+                // FOR TESTING
+                this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
+                this.client.onOpen.add(() => {
+                    // ids will come from the notification
+                    // or we can put it inside the model???
+                    this.room = this.client.join('friendSoloRoom', {
+                        databaseId: this.props.clientDBId,
+                        ongoingMatchId: 2,
+                        examId: 1,
+                        courseId: 1,
+                        subjectId: 1
+                    })
+
+                    this.room.onJoin.add(() => {
+                        this.room.removeAllListeners()
+                        navigationReset('game', { isHardReset: true })
+                        navigationPush(SCENE_KEYS.gameScreens.soloGameScreen, {
+                            client: this.client,
+                            room: this.room,
+                            playerUsername: this.props.clientInformation
+                                .username,
+                            playerProfilePicture: this.props.clientInformation
+                                .profilePicture
+                        })
+                    })
+                })
+                // FOR TESTING
                 return
         }
     }
@@ -108,7 +151,7 @@ class Main extends React.Component {
                         />
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={() => this.updatePageIcons('JOKER')}
+                        onPress={() => this.updatePageIcons('PURCHASE')}
                     >
                         <Image
                             source={
@@ -130,7 +173,9 @@ class Main extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    isNetworkConnected: state.app.isNetworkConnected
+    isNetworkConnected: state.app.isNetworkConnected,
+    clientDBId: state.client.clientDBId,
+    clientInformation: state.client.clientInformation
 })
 
 export default connect(
