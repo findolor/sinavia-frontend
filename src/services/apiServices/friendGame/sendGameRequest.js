@@ -6,7 +6,8 @@ export const sendGameRequest = async (
     userId,
     username,
     roomCode,
-    requestedUserFCMToken
+    requestedUserFCMToken,
+    matchInformation
 ) => {
     try {
         const response = await axios.post(
@@ -15,7 +16,8 @@ export const sendGameRequest = async (
                 id: userId,
                 username: username,
                 roomCode: roomCode,
-                requestedUserFCMToken: requestedUserFCMToken
+                requestedUserFCMToken: requestedUserFCMToken,
+                matchInformation: matchInformation
             },
             {
                 headers: {

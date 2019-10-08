@@ -4,14 +4,16 @@ export async function sendFriendGameRequestService(
     clientToken,
     clientInformation,
     roomCode,
-    requestedUserFCMToken
+    requestedUserFCMToken,
+    matchInformation
 ) {
     const res = sendGameRequest(
         clientToken,
         clientInformation.id,
         clientInformation.username,
         roomCode,
-        requestedUserFCMToken
+        requestedUserFCMToken,
+        matchInformation
     )
 
     return res

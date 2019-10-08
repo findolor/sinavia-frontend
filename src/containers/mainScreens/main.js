@@ -80,7 +80,7 @@ class Main extends React.Component {
                     // or we can put it inside the model???
                     this.room = this.client.join('friendSoloRoom', {
                         databaseId: this.props.clientDBId,
-                        ongoingMatchId: 2,
+                        ongoingMatchId: 8,
                         examId: 1,
                         courseId: 1,
                         subjectId: 1

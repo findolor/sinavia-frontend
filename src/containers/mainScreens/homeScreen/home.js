@@ -163,7 +163,10 @@ class Home extends React.Component {
                     this.playFriendGame,
                     {
                         opponentId: message.data.userId,
-                        roomCode: message.data.roomCode
+                        roomCode: message.data.roomCode,
+                        examId: parseInt(message.data.examId, 10),
+                        courseId: parseInt(message.data.courseId, 10),
+                        subjectId: parseInt(message.data.subjectId, 10)
                     }
                 )
                 break
@@ -184,7 +187,10 @@ class Home extends React.Component {
         navigationPush(SCENE_KEYS.gameScreens.friendMatchingScreen, {
             roomCode: params.roomCode,
             opponentInformation: opponentInformation,
-            isCreateRoom: false
+            isCreateRoom: false,
+            examId: params.examId,
+            courseId: params.courseId,
+            subjectId: params.subjectId
         })
     }
 
@@ -597,7 +603,12 @@ class Home extends React.Component {
             this.props.clientToken,
             this.props.clientInformation,
             randomNumber,
-            this.state.opponentInformation.fcmToken
+            this.state.opponentInformation.fcmToken,
+            {
+                examId: Ids.examId,
+                courseId: Ids.courseId,
+                subjectId: Ids.subjectId
+            }
         )
     }
 

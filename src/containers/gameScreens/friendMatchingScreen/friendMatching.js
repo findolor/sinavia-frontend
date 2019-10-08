@@ -32,7 +32,7 @@ class FriendMatchingScreen extends React.Component {
         }
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
         this.client.onOpen.add(() => {
             this.joinRoom({
