@@ -29,7 +29,7 @@ export function* getOpponentFullInformationSaga(action) {
     const wonGames = res.statistics.winCount
     const lostGames = res.statistics.loseCount
     const drawGames = res.statistics.drawCount
-    const totalPlayedGames = wonGames + lostGames + drawGames
+    const totalPlayedGames = res.statistics.totalGameCount
     const winPercentage = (wonGames / totalPlayedGames) * 100
     const friendsList = []
     res.friendships.forEach(friendship => {

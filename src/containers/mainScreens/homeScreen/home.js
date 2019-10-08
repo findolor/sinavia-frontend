@@ -92,6 +92,7 @@ class Home extends React.Component {
             visibleView: '',
             // Variable for making start button when pressed ranked
             visibleRankedGameStartPress: false,
+            friendSelected: false,
             opponentUserPic: '',
             opponentName: '',
             opponentUsername: '',
@@ -162,7 +163,10 @@ class Home extends React.Component {
                     this.playFriendGame,
                     {
                         opponentId: message.data.userId,
-                        roomCode: message.data.roomCode
+                        roomCode: message.data.roomCode,
+                        examId: parseInt(message.data.examId, 10),
+                        courseId: parseInt(message.data.courseId, 10),
+                        subjectId: parseInt(message.data.subjectId, 10)
                     }
                 )
                 break
@@ -183,7 +187,10 @@ class Home extends React.Component {
         navigationPush(SCENE_KEYS.gameScreens.friendMatchingScreen, {
             roomCode: params.roomCode,
             opponentInformation: opponentInformation,
-            isCreateRoom: false
+            isCreateRoom: false,
+            examId: params.examId,
+            courseId: params.courseId,
+            subjectId: params.subjectId
         })
     }
 
@@ -332,17 +339,20 @@ class Home extends React.Component {
 
     closeModalButtonOnPress = () => {
         this.setState({
-            isModalVisible: false
+            isModalVisible: false,
+            friendSelected: false,
+            opponentUserPic: '',
+            opponentName: '',
+            opponentUsername: '',
+            opponentInformation: {},
+            rankedModeButtonBorderColor: EMPTY_MODE_COLOR
         })
     }
 
     rankedGameModeOnPress = () => {
         this.setState({
             visibleRankedGameStartPress: true,
-            rankedModeButtonBorderColor:
-                this.state.rankedModeButtonBorderColor === EMPTY_MODE_COLOR
-                    ? SELECTED_MODE_COLOR
-                    : EMPTY_MODE_COLOR
+            rankedModeButtonBorderColor: SELECTED_MODE_COLOR
         })
     }
 
@@ -459,6 +469,8 @@ class Home extends React.Component {
     }
 
     friendRoomOnPress = async () => {
+        this.setState({ rankedModeButtonBorderColor: EMPTY_MODE_COLOR })
+
         if (Object.keys(this.props.friendIds).length === 0) return
         const friends = await userServices.getUsers(
             this.props.clientToken,
@@ -473,7 +485,14 @@ class Home extends React.Component {
     }
 
     friendRoomAndGameModesBackButtonOnPress = () => {
-        this.setState({ visibleView: 'GAME_MODES' })
+        this.setState({
+            visibleView: 'GAME_MODES',
+            friendSelected: false,
+            opponentUserPic: '',
+            opponentName: '',
+            opponentUsername: '',
+            opponentInformation: {}
+        })
     }
 
     groupModesView() {
@@ -540,7 +559,8 @@ class Home extends React.Component {
             opponentUserPic: user.profilePicture,
             opponentName: user.name + ' ' + user.lastname,
             opponentUsername: user.username,
-            opponentInformation: user
+            opponentInformation: user,
+            friendSelected: true
         })
     }
 
@@ -562,6 +582,8 @@ class Home extends React.Component {
             return
         }
 
+        if (!this.state.friendSelected) return
+
         const randomNumber = this.randomCodeGenerator()
 
         const Ids = this.calculateContentIds()
@@ -581,7 +603,12 @@ class Home extends React.Component {
             this.props.clientToken,
             this.props.clientInformation,
             randomNumber,
-            this.state.opponentInformation.fcmToken
+            this.state.opponentInformation.fcmToken,
+            {
+                examId: Ids.examId,
+                courseId: Ids.courseId,
+                subjectId: Ids.subjectId
+            }
         )
     }
 
@@ -813,6 +840,7 @@ class Home extends React.Component {
         navigationReset('game', this.calculateContentIds())
     }
 
+    // Gets the exam/content/subject ids based on selected subject
     calculateContentIds = () => {
         let examIndex
         let subjectIndex
