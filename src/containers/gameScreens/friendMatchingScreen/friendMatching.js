@@ -19,7 +19,6 @@ window.localStorage = AsyncStorage
 global.Buffer = Buffer
 import * as Colyseus from 'colyseus.js'
 
-import { deviceStorage } from '../../../services/deviceStorage'
 import { GAME_ENGINE_ENDPOINT } from '../../../config'
 
 import SWORD from '../../../assets/sword.png'
@@ -116,8 +115,20 @@ class FriendMatchingScreen extends React.Component {
             <View style={styles.container}>
                 <NotchView color={'#FF9900'} />
                 <View style={styles.contentContainer}>
-                    <Text style={styles.courseText}>TÜRKÇE</Text>
-                    <Text style={styles.subjectText}>Paragrafta Anlam</Text>
+                    <Text style={styles.courseText}>
+                        {
+                            this.props.gameContentMap.courses[
+                                this.props.courseId - 1
+                            ].name
+                        }
+                    </Text>
+                    <Text style={styles.subjectText}>
+                        {
+                            this.props.gameContentMap.subjects[
+                                this.props.subjectId - 1
+                            ].name
+                        }
+                    </Text>
                 </View>
                 <View style={styles.coversContainer}>
                     <View style={styles.coverContainer}>
@@ -239,7 +250,8 @@ class FriendMatchingScreen extends React.Component {
 
 const mapStateToProps = state => ({
     clientInformation: state.client.clientInformation,
-    clientDBId: state.client.clientDBId
+    clientDBId: state.client.clientDBId,
+    gameContentMap: state.gameContent.gameContentMap
 })
 
 const mapDispatchToProps = dispatch => ({})

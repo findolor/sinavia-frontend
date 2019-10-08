@@ -94,8 +94,12 @@ class LoadingScreen extends React.Component {
                 opponentProfilePicture: opponentProfilePicture,
                 opponentCoverPicture: opponentCoverPicture,
                 // These are used in the match intro screen
-                courseName: playerOptions.courseName,
-                subjectName: playerOptions.subjectName
+                courseName: this.props.gameContentMap.courses[
+                    this.props.courseId - 1
+                ].name,
+                subjectName: this.props.gameContentMap.subjects[
+                    this.props.subjectId - 1
+                ].name
             })
         })
     }
@@ -127,7 +131,8 @@ class LoadingScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    clientDBId: state.client.clientDBId
+    clientDBId: state.client.clientDBId,
+    gameContentMap: state.gameContent.gameContentMap
 })
 
 const mapDispatchToProps = dispatch => ({})
