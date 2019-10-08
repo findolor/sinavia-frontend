@@ -76,6 +76,8 @@ class Main extends React.Component {
                 // FOR TESTING
                 this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
                 this.client.onOpen.add(() => {
+                    // ids will come from the notification
+                    // or we can put it inside the model???
                     this.room = this.client.join('friendSoloRoom', {
                         databaseId: this.props.clientDBId,
                         ongoingMatchId: 2,
