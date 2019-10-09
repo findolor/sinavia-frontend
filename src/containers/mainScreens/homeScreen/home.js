@@ -145,15 +145,9 @@ class Home extends React.Component {
                 )
                 break
             case 'friendApproved':
-                this.customAlert(
-                    true,
-                    'Arkadaşlık İsteği!',
-                    message.data.body,
-                    this.friendRequestAccepted,
-                    {
-                        opponentId: message.data.userId
-                    }
-                )
+                this.friendRequestAccepted({
+                    opponentId: message.data.userId
+                })
                 break
             case 'friendGameRequest':
                 this.customAlert(
