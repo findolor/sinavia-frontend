@@ -205,7 +205,6 @@ class GroupGame extends React.Component {
 
     // TODO Move these actions to their functions
     chooseStateAction = groupState => {
-        console.log(groupState)
         // We check the action that happened
         switch (groupState.stateInformation) {
             // Setting up question number and resetting the buttons
@@ -286,7 +285,6 @@ class GroupGame extends React.Component {
         let username = ''
 
         playerIds.forEach(playerId => {
-            console.log(playerProps[playerId])
             if (!playerProps[playerId].isLeft) {
                 username = playerProps[playerId].username
                 playerProps[playerId].answers.forEach(result => {

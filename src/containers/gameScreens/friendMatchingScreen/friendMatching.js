@@ -43,7 +43,17 @@ class FriendMatchingScreen extends React.Component {
                 roomCode: this.props.roomCode,
                 create: this.props.isCreateRoom,
                 userId: this.props.clientDBId,
-                friendId: this.props.invitedFriendId
+                friendId: this.props.invitedFriendId,
+                userUsername: this.props.clientInformation.username,
+                userProfilePicture: this.props.clientInformation.profilePicture,
+                examName: this.props.gameContentMap.exams[this.props.examId - 1]
+                    .name,
+                courseName: this.props.gameContentMap.courses[
+                    this.props.courseId - 1
+                ].name,
+                subjectName: this.props.gameContentMap.subjects[
+                    this.props.subjectId - 1
+                ].name
             })
         })
     }
