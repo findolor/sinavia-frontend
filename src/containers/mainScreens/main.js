@@ -35,7 +35,13 @@ class Main extends React.Component {
 
     updatePageIcons = pageName => {
         if (!this.props.isNetworkConnected) {
-            Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+            showMessage({
+                message: 'Lütfen internet bağlantınızı kontrol ediniz',
+                type: 'danger',
+                duration: 2000,
+                titleStyle: styles.networkErrorStyle,
+                icon: 'auto'
+            })
             return
         }
 

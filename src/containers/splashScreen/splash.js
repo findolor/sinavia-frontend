@@ -13,7 +13,7 @@ import { clientActions } from '../../redux/client/actions'
 import LottieView from 'lottie-react-native'
 import { appActions } from '../../redux/app/actions'
 import { AuthButton } from '../../components/authScreen'
-import { showMessage, hideMessage } from 'react-native-flash-message'
+import { showMessage } from 'react-native-flash-message'
 
 class SplashScreen extends React.PureComponent {
     constructor(props) {
@@ -35,7 +35,7 @@ class SplashScreen extends React.PureComponent {
                 !netInfo.isConnected
             ) {
                 showMessage({
-                    message: 'Lütfen internet bağlantısını kontrol ediniz!',
+                    message: 'Lütfen internet bağlantınızı kontrol ediniz',
                     type: 'danger',
                     duration: 2000,
                     titleStyle: styles.networkErrorStyle,
