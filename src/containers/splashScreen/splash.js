@@ -75,7 +75,7 @@ class SplashScreen extends React.PureComponent {
                 this.props.authenticateUser(token)
                 this.loginInterval = setTimeout(() => {
                     this.setState({ shouldTryAgain: true })
-                }, 5000)
+                }, 10000)
             }
         })
     }
