@@ -9,8 +9,16 @@ export function* getNotificationsSaga(action) {
         action.clientId
     )
 
-    if (notifications === undefined || Object.keys(notifications).length === 0)
+    if (
+        notifications === undefined ||
+        Object.keys(notifications).length === 0
+    ) {
+        yield put({
+            type: appTypes.SAVE_NOTIFICATIONS,
+            payload: null
+        })
         return
+    }
 
     notifications.forEach(notification => {
         notification.notificationData = JSON.parse(

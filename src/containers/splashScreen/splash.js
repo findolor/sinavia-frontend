@@ -27,7 +27,6 @@ class SplashScreen extends React.PureComponent {
             this.props.setNetworkConnectionInfo(netInfo.isConnected)
             if (
                 getCurrentScreen() !== 'splash' &&
-                getCurrentScreen() !== 'main' &&
                 getCurrentScreen() !== 'register' &&
                 getCurrentScreen() !== 'login' &&
                 getCurrentScreen() !== 'opening' &&
@@ -41,7 +40,7 @@ class SplashScreen extends React.PureComponent {
                     titleStyle: styles.networkErrorStyle,
                     icon: 'auto'
                 })
-                navigationReset('main')
+                if (getCurrentScreen() !== 'main') navigationReset('main')
             }
         })
     }

@@ -10,7 +10,13 @@ export function* getFriendRequestsSaga(action) {
         action.clientId
     )
 
-    if (requestIds === undefined || Object.keys(requestIds).length === 0) return
+    if (requestIds === undefined || Object.keys(requestIds).length === 0) {
+        yield put({
+            type: friendTypes.SAVE_FRIEND_REQUESTS,
+            payload: null
+        })
+        return
+    }
 
     const users = yield call(getUsers, action.clientToken, requestIds)
 
