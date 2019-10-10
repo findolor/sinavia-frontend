@@ -13,6 +13,7 @@ import { clientActions } from '../../redux/client/actions'
 import LottieView from 'lottie-react-native'
 import { appActions } from '../../redux/app/actions'
 import { AuthButton } from '../../components/authScreen'
+import { showMessage, hideMessage } from 'react-native-flash-message'
 
 class SplashScreen extends React.PureComponent {
     constructor(props) {
@@ -33,7 +34,13 @@ class SplashScreen extends React.PureComponent {
                 getCurrentScreen() !== 'resetPassword' &&
                 !netInfo.isConnected
             ) {
-                Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+                showMessage({
+                    message: 'Lütfen internet bağlantısını kontrol ediniz!',
+                    type: 'danger',
+                    duration: 2000,
+                    titleStyle: styles.networkErrorStyle,
+                    icon: 'auto'
+                })
                 navigationReset('main')
             }
         })
@@ -87,7 +94,7 @@ class SplashScreen extends React.PureComponent {
         this.props.authenticateUser(this.state.clientToken)
         this.loginInterval = setTimeout(() => {
             this.setState({ shouldTryAgain: true })
-        }, 5000)
+        }, 10000)
     }
 
     render() {

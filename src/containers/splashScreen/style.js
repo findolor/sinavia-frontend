@@ -37,5 +37,9 @@ export default StyleSheet.create({
     tryAgainButtonContainer: {
         flex: 2,
         alignItems: 'center'
+    },
+    networkErrorStyle: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(2.5)
     }
 })
