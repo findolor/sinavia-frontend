@@ -28,6 +28,7 @@ import {
 } from '../../../components/mainScreen/carousel/styles/SliderEntry.style'
 import SliderEntry from '../../../components/mainScreen/carousel/components/SliderEntry'
 import styles from './style'
+import { showMessage } from 'react-native-flash-message'
 
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
 import AuthButton from '../../../components/authScreen/authButton'
@@ -449,7 +450,13 @@ class Home extends React.Component {
 
     createGroupRoomOnPress = () => {
         if (!this.props.isNetworkConnected) {
-            Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+            showMessage({
+                message: 'Lütfen internet bağlantınızı kontrol ediniz',
+                type: 'danger',
+                duration: 2000,
+                titleStyle: styles.networkErrorStyle,
+                icon: 'auto'
+            })
             return
         }
 
@@ -572,7 +579,13 @@ class Home extends React.Component {
 
     friendGameModeOnPress = () => {
         if (!this.props.isNetworkConnected) {
-            Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+            showMessage({
+                message: 'Lütfen internet bağlantınızı kontrol ediniz',
+                type: 'danger',
+                duration: 2000,
+                titleStyle: styles.networkErrorStyle,
+                icon: 'auto'
+            })
             return
         }
 
@@ -732,7 +745,13 @@ class Home extends React.Component {
 
     joinGroupRoomOnPress = () => {
         if (!this.props.isNetworkConnected) {
-            Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+            showMessage({
+                message: 'Lütfen internet bağlantınızı kontrol ediniz',
+                type: 'danger',
+                duration: 2000,
+                titleStyle: styles.networkErrorStyle,
+                icon: 'auto'
+            })
             return
         }
 
@@ -827,7 +846,13 @@ class Home extends React.Component {
 
     playButtonOnPress = () => {
         if (!this.props.isNetworkConnected) {
-            Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+            showMessage({
+                message: 'Lütfen internet bağlantınızı kontrol ediniz',
+                type: 'danger',
+                duration: 2000,
+                titleStyle: styles.networkErrorStyle,
+                icon: 'auto'
+            })
             return
         }
 
@@ -859,7 +884,13 @@ class Home extends React.Component {
 
     profilePicOnPress = () => {
         if (!this.props.isNetworkConnected) {
-            Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+            showMessage({
+                message: 'Lütfen internet bağlantınızı kontrol ediniz',
+                type: 'danger',
+                duration: 2000,
+                titleStyle: styles.networkErrorStyle,
+                icon: 'auto'
+            })
             return
         }
 
@@ -868,7 +899,13 @@ class Home extends React.Component {
 
     notificationPicOnPress = () => {
         if (!this.props.isNetworkConnected) {
-            Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+            showMessage({
+                message: 'Lütfen internet bağlantınızı kontrol ediniz',
+                type: 'danger',
+                duration: 2000,
+                titleStyle: styles.networkErrorStyle,
+                icon: 'auto'
+            })
             return
         }
 

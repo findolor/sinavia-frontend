@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Image, Text, Alert } from 'react-native'
-import styles from './style'
+import styles, { hp, wp } from './style'
 import {
     navigationReset,
     getCurrentScreen,
@@ -12,14 +12,15 @@ import { connect } from 'react-redux'
 import { clientActions } from '../../redux/client/actions'
 import LottieView from 'lottie-react-native'
 import { appActions } from '../../redux/app/actions'
-
-const APP_LOGO = require('../../assets/sinavia_logo_cut.png')
+import { AuthButton } from '../../components/authScreen'
+import { showMessage } from 'react-native-flash-message'
 
 class SplashScreen extends React.PureComponent {
     constructor(props) {
         super(props)
         this.state = {
-            retryCount: 0
+            shouldTryAgain: false,
+            clientToken: null
         }
         // We add a listener for monitoring internet connection
         NetInfo.addEventListener(netInfo => {
@@ -33,7 +34,13 @@ class SplashScreen extends React.PureComponent {
                 getCurrentScreen() !== 'resetPassword' &&
                 !netInfo.isConnected
             ) {
-                Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+                showMessage({
+                    message: 'Lütfen internet bağlantınızı kontrol ediniz',
+                    type: 'danger',
+                    duration: 2000,
+                    titleStyle: styles.networkErrorStyle,
+                    icon: 'auto'
+                })
                 navigationReset('main')
             }
         })
@@ -60,11 +67,15 @@ class SplashScreen extends React.PureComponent {
             }
             // We check if the token is valid. If not we get a new token
             else {
+                this.setState({ clientToken: token })
                 if (!this.props.isNetworkConnected) {
-                    Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+                    this.setState({ shouldTryAgain: true })
                     return
                 }
                 this.props.authenticateUser(token)
+                this.loginInterval = setTimeout(() => {
+                    this.setState({ shouldTryAgain: true })
+                }, 5000)
             }
         })
     }
@@ -73,21 +84,56 @@ class SplashScreen extends React.PureComponent {
         clearInterval(this.loginInterval)
     }
 
-    // This will be the button for trying the connection again
-    tryConnectingAgain = () => {}
+    // This is the button for trying the connection again
+    tryConnectingAgain = () => {
+        this.setState({ shouldTryAgain: false })
+        if (!this.props.isNetworkConnected) {
+            this.setState({ shouldTryAgain: true })
+            return
+        }
+        this.props.authenticateUser(this.state.clientToken)
+        this.loginInterval = setTimeout(() => {
+            this.setState({ shouldTryAgain: true })
+        }, 10000)
+    }
 
     render() {
         return (
             <View style={styles.container}>
-                {/* <View style={styles.logoContainer}>
-                    <Image source={APP_LOGO} style={styles.appLogo} />
-                </View>
-                <Text style={styles.sinaviaText}>Sınavia</Text> */}
-                <LottieView
-                    source={require('../../assets/splashScreen/sinavia.json')}
-                    autoPlay
-                    loop
-                />
+                {!this.state.shouldTryAgain && (
+                    <LottieView
+                        source={require('../../assets/splashScreen/sinavia.json')}
+                        autoPlay
+                        loop
+                    />
+                )}
+                {this.state.shouldTryAgain && (
+                    <View style={{ flex: 1 }}>
+                        <View style={{ flex: 1.2 }}></View>
+                        <View style={styles.tryAgainTextContainer}>
+                            <Text style={styles.tryAgainText}>:(</Text>
+                            <Text
+                                style={[
+                                    styles.tryAgainText,
+                                    { fontSize: hp(4) }
+                                ]}
+                            >
+                                Bağlantı problemi
+                            </Text>
+                        </View>
+                        <View style={styles.tryAgainButtonContainer}>
+                            <AuthButton
+                                height={hp(8)}
+                                width={wp(50)}
+                                color="#2E313C"
+                                buttonText="Yeniden Dene"
+                                borderRadius={50}
+                                fontSize={hp(3)}
+                                onPress={this.tryConnectingAgain}
+                            />
+                        </View>
+                    </View>
+                )}
             </View>
         )
     }

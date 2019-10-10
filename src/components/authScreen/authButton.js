@@ -5,7 +5,7 @@ import {
     heightPercentageToDP as hp
 } from 'react-native-responsive-screen'
 
-export default (AuthButton = ({
+export default AuthButton = ({
     height,
     width,
     color,
@@ -14,7 +14,9 @@ export default (AuthButton = ({
     buttonText,
     onPress,
     marginTop,
-    marginBottom
+    marginBottom,
+    borderRadius,
+    fontSize
 }) => {
     return (
         <TouchableOpacity
@@ -24,14 +26,17 @@ export default (AuthButton = ({
                 { marginTop: marginTop },
                 { marginBottom: marginBottom },
                 { height: height },
-                { width: width }
+                { width: width },
+                { borderRadius: borderRadius }
             ]}
             onPress={onPress}
         >
-            <Text style={styles.buttonText}>{buttonText}</Text>
+            <Text style={[styles.buttonText, { fontSize: fontSize }]}>
+                {buttonText}
+            </Text>
         </TouchableOpacity>
     )
-})
+}
 
 const styles = StyleSheet.create({
     buttonContainer: {

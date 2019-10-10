@@ -21,6 +21,7 @@ import { clientActions } from '../../../redux/client/actions'
 import { AuthButton, AuthTextInput } from '../../../components/authScreen'
 import styles from './style'
 import NotchView from '../../../components/notchView'
+import { showMessage } from 'react-native-flash-message'
 
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
 import EYE from '../../../assets/eye.png'
@@ -101,7 +102,13 @@ class Login extends React.Component {
 
     loginOnPress = () => {
         if (!this.props.isNetworkConnected) {
-            Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+            showMessage({
+                message: 'Lütfen internet bağlantınızı kontrol ediniz',
+                type: 'danger',
+                duration: 2000,
+                titleStyle: styles.networkErrorStyle,
+                icon: 'auto'
+            })
             return
         }
 

@@ -8,6 +8,7 @@ import {
 } from 'react-native-responsive-screen'
 import { Image, StyleSheet, TouchableOpacity, View, Alert } from 'react-native'
 import { connect } from 'react-redux'
+import { showMessage } from 'react-native-flash-message'
 
 import NotchView from '../../components/notchView'
 
@@ -35,7 +36,13 @@ class Main extends React.Component {
 
     updatePageIcons = pageName => {
         if (!this.props.isNetworkConnected) {
-            Alert.alert('Lütfen internet bağlantınızı kontrol ediniz!')
+            showMessage({
+                message: 'Lütfen internet bağlantınızı kontrol ediniz',
+                type: 'danger',
+                duration: 2000,
+                titleStyle: styles.networkErrorStyle,
+                icon: 'auto'
+            })
             return
         }
 
