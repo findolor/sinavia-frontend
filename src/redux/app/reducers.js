@@ -18,6 +18,17 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 clientRanking: action.payload
             }
+        case appTypes.SAVE_NOTIFICATIONS:
+            return {
+                ...state,
+                userNotificationList: action.payload
+            }
+        case appTypes.REMOVE_FROM_NOTIFICATIONS:
+            state.userNotificationList.splice(action.payload, 1)
+            return {
+                ...state,
+                userNotificationList: state.userNotificationList
+            }
         default:
             return state
     }

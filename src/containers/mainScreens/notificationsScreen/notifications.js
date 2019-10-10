@@ -1,25 +1,31 @@
 import React from 'react'
-import {
-    FlatList,
-    View,
-    Text,
-    TouchableOpacity,
-    Image,
-    TextInput
-} from 'react-native'
+import { FlatList, View, Text, TouchableOpacity, Image } from 'react-native'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import returnLogo from '../../../assets/return.png'
 import {
     navigationPop,
-    navigationRefresh
+    navigationPush,
+    navigationReset
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import { friendActions } from '../../../redux/friends/actions'
+import { appActions } from '../../../redux/app/actions'
+import { opponentActions } from '../../../redux/opponents/actions'
+import { getUserService } from '../../../sagas/user/fetchUser'
+import { notificationServices } from '../../../sagas/notification/'
 
 import PROFILE_PIC from '../../../assets/profile2.jpg'
 import ACCEPT_BUTTON from '../../../assets/gameScreens/correct.png'
 import REJECT_BUTTON from '../../../assets/gameScreens/incorrect.png'
+
+// Colyseus imports
+import { Buffer } from 'buffer'
+import { AsyncStorage } from 'react-native'
+window.localStorage = AsyncStorage
+global.Buffer = Buffer
+import * as Colyseus from 'colyseus.js'
+import { GAME_ENGINE_ENDPOINT, SCENE_KEYS } from '../../../config'
 
 const generalNotificationsList = [
     {
@@ -136,7 +142,6 @@ class Notifications extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            generalNotificationsList: generalNotificationsList,
             selectedNotificationsMode: 'generalNotifications',
             generalNotificationsButtonBackgroundColor: '#FF9900',
             generalNotificationsButtonTextColor: '#FFFFFF',
@@ -146,18 +151,16 @@ class Notifications extends React.Component {
         }
     }
 
+    componentDidMount() {
+        this.loadNotifications()
+    }
+
     updateNotificationsCategoryButtonUI = notificationsMode => {
         switch (notificationsMode) {
             case 'generalNotifications':
                 if (this.state.selectedNotificationsMode === notificationsMode)
                     return
-                this.setState({
-                    selectedNotificationsMode: 'generalNotifications',
-                    generalNotificationsButtonBackgroundColor: '#FF9900',
-                    generalNotificationsButtonTextColor: '#FFFFFF',
-                    friendsRequestsButtonBackgroundColor: '#FFFFFF',
-                    friendsRequestsButtonTextColor: '#2E313C'
-                })
+                this.notificationsOnPress()
                 return
             case 'friendsRequests':
                 if (this.state.selectedNotificationsMode === notificationsMode)
@@ -188,6 +191,18 @@ class Notifications extends React.Component {
         this.loadFriendRequests()
     }
 
+    notificationsOnPress = () => {
+        this.setState({
+            selectedNotificationsMode: 'generalNotifications',
+            generalNotificationsButtonBackgroundColor: '#FF9900',
+            generalNotificationsButtonTextColor: '#FFFFFF',
+            friendsRequestsButtonBackgroundColor: '#FFFFFF',
+            friendsRequestsButtonTextColor: '#2E313C'
+        })
+
+        this.loadNotifications()
+    }
+
     loadFriendRequests = () => {
         this.props.getFriendRequests(
             this.props.clientToken,
@@ -195,22 +210,37 @@ class Notifications extends React.Component {
         )
     }
 
-    notificationsListRender({ item }) {
-        switch (item.generalNotificationType) {
+    loadNotifications = () => {
+        this.props.getNotifications(
+            this.props.clientToken,
+            this.props.clientDBId
+        )
+    }
+
+    notificationsListRender({ item, index }) {
+        switch (item.notificationType) {
             case 'friendshipAccepted':
                 return (
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() =>
+                            this.friendshipAcceptedOnPress(
+                                item.notificationData.userId
+                            )
+                        }
+                    >
                         <View style={styles.userRow}>
                             <View style={styles.userPicContainerInRow}>
                                 <Image
-                                    source={item.userPic}
+                                    source={{
+                                        uri:
+                                            item.notificationData.profilePicture
+                                    }}
                                     style={styles.userPic}
                                 />
                             </View>
                             <View style={styles.textsinRowWithPic}>
                                 <Text style={styles.notificationRowsText}>
-                                    {item.friendsName} arkadaşlık isteğini kabul
-                                    etti.
+                                    {item.notificationData.message}
                                 </Text>
                             </View>
                         </View>
@@ -221,29 +251,42 @@ class Notifications extends React.Component {
                     <View style={styles.userRow}>
                         <View style={styles.userPicContainerInRow}>
                             <Image
-                                source={item.userPic}
+                                source={{
+                                    uri: item.notificationData.profilePicture
+                                }}
                                 style={styles.userPic}
                             />
                         </View>
                         <View style={styles.gameContentsContainer}>
                             <Text style={styles.gameContentText}>
-                                {item.examName}
+                                {item.notificationData.examName}
                             </Text>
                             <Text style={styles.gameContentText}>
-                                {item.courseName}
+                                {item.notificationData.courseName}
                             </Text>
                             <Text style={styles.gameContentText}>
-                                {item.subjectName}
+                                {item.notificationData.subjectName}
                             </Text>
                         </View>
                         <View style={styles.gameRequestContainer}>
                             <View style={styles.gameRequestTextContainer}>
                                 <Text style={styles.gameRequestText}>
-                                    {item.friendsName} oyun isteği gönderdi.
+                                    {item.notificationData.message}
                                 </Text>
                             </View>
                             <View style={styles.gameRequestButtonsContainer}>
-                                <TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        this.setState({
+                                            refreshFlatlist: !this.state
+                                                .refreshFlatlist
+                                        })
+                                        this.acceptGameRequestOnPress(
+                                            item,
+                                            index
+                                        )
+                                    }}
+                                >
                                     <View style={styles.acceptButton}>
                                         <Text
                                             style={
@@ -328,6 +371,57 @@ class Notifications extends React.Component {
         }
     }
 
+    friendshipAcceptedOnPress = userId => {
+        getUserService(this.props.clientToken, userId).then(userInformation => {
+            this.props.getOpponentFullInformation(
+                userInformation,
+                this.props.clientDBId,
+                this.props.clientToken,
+                false
+            )
+        })
+    }
+
+    acceptGameRequestOnPress = (notification, notificationIndex) => {
+        this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
+        this.client.onOpen.add(() => {
+            // ids will come from the notification
+            // or we can put it inside the model???
+            this.room = this.client.join('friendSoloRoom', {
+                databaseId: this.props.clientDBId,
+                ongoingMatchId: notification.notificationData.ongoingMatchId,
+                examId: notification.notificationData.examId,
+                courseId: notification.notificationData.courseId,
+                subjectId: notification.notificationData.subjectId
+            })
+
+            this.room.onJoin.add(() => {
+                notification.read = true
+                notification.notificationData = JSON.stringify(
+                    notification.notificationData
+                )
+
+                notificationServices.markNotificationRead(
+                    this.props.clientToken,
+                    notification
+                )
+                this.props.removeFromNotifications(notificationIndex)
+
+                this.room.removeAllListeners()
+                navigationReset('game', { isHardReset: true })
+                navigationPush(SCENE_KEYS.gameScreens.soloGameScreen, {
+                    client: this.client,
+                    room: this.room,
+                    playerUsername: this.props.clientInformation.username,
+                    playerProfilePicture: this.props.clientInformation
+                        .profilePicture
+                })
+            })
+        })
+    }
+
+    rejectGameRequestOnPress = () => {}
+
     acceptFriendRequestOnPress = (friendId, index) => {
         this.props.acceptFriendshipRequest(
             this.props.clientToken,
@@ -355,6 +449,16 @@ class Notifications extends React.Component {
             <View style={styles.emptyFlatListContainer}>
                 <Text style={styles.emptyFlatListText}>
                     Henüz arkadaşlık isteğin yok!
+                </Text>
+            </View>
+        )
+    }
+
+    renderEmptyNotifications = () => {
+        return (
+            <View style={styles.emptyFlatListContainer}>
+                <Text style={styles.emptyFlatListText}>
+                    Henüz bir bildirimin yok!
                 </Text>
             </View>
         )
@@ -433,10 +537,14 @@ class Notifications extends React.Component {
                     'generalNotifications' && (
                     <View style={styles.flatListContainer}>
                         <FlatList
-                            data={this.state.generalNotificationsList}
+                            data={this.props.userNotificationList}
                             vertical={true}
                             showsVerticalScrollIndicator={false}
-                            renderItem={this.notificationsListRender}
+                            renderItem={({ item, index }) =>
+                                this.notificationsListRender({ item, index })
+                            }
+                            extraData={this.state.refreshFlatlist}
+                            ListEmptyComponent={this.renderEmptyNotifications}
                             keyExtractor={(item, index) => index.toString()}
                         />
                     </View>
@@ -532,7 +640,8 @@ const mapStateToProps = state => ({
     clientToken: state.client.clientToken,
     friendIds: state.friends.friendIds,
     clientInformation: state.client.clientInformation,
-    friendRequests: state.friends.friendRequests
+    friendRequests: state.friends.friendRequests,
+    userNotificationList: state.app.userNotificationList
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -565,6 +674,24 @@ const mapDispatchToProps = dispatch => ({
                 userId,
                 friendId,
                 friendRequests
+            )
+        ),
+    getNotifications: (clientToken, clientId) =>
+        dispatch(appActions.getNotifications(clientToken, clientId)),
+    removeFromNotifications: index =>
+        dispatch(appActions.removeFromNotifications(index)),
+    getOpponentFullInformation: (
+        opponentInformation,
+        clientId,
+        clientToken,
+        isWithSearchBar
+    ) =>
+        dispatch(
+            opponentActions.getOpponentFullInformation(
+                opponentInformation,
+                clientId,
+                clientToken,
+                isWithSearchBar
             )
         )
 })
