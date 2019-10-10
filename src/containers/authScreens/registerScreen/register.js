@@ -325,6 +325,7 @@ class Register extends React.Component {
                         width={wp(85)}
                         color="#00D9EF"
                         buttonText="Kayıt Ol"
+                        borderRadius={10}
                         onPress={this.registerOnPress}
                     />
                 </View>

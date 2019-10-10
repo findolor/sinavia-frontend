@@ -268,6 +268,7 @@ class JoinGroupRoom extends React.Component {
                     buttonText={
                         this.state.isClientLeader === true ? 'Başlat' : 'Hazır'
                     }
+                    borderRadius={10}
                     onPress={this.groupGameReadyOnPress}
                 />
                 <Modal visible={this.state.isQuitGameModalVisible}>
@@ -286,6 +287,7 @@ class JoinGroupRoom extends React.Component {
                                 width={wp(42)}
                                 color="#00D9EF"
                                 buttonText="Evet"
+                                borderRadius={10}
                                 onPress={this.quitGameYes}
                             />
                             <AuthButton
@@ -293,6 +295,7 @@ class JoinGroupRoom extends React.Component {
                                 width={wp(42)}
                                 color="#00D9EF"
                                 buttonText="Hayır"
+                                borderRadius={10}
                                 onPress={this.quitGameNo}
                             />
                         </View>

@@ -35,6 +35,7 @@ export default class Opening extends React.Component {
                         color="#00D9EF"
                         underlayColor="#1a5d63"
                         buttonText="Giriş Yap"
+                        borderRadius={10}
                         onPress={() => {
                             navigationPush(SCENE_KEYS.authScreens.login)
                         }}
@@ -45,6 +46,7 @@ export default class Opening extends React.Component {
                         color="#00D9EF"
                         underlayColor="#1a5d63"
                         buttonText="Kayıt Ol"
+                        borderRadius={10}
                         onPress={() => {
                             navigationPush(SCENE_KEYS.authScreens.register)
                         }}
@@ -60,12 +62,14 @@ export default class Opening extends React.Component {
                         height={hp(7)}
                         width={wp(85)}
                         color="#4267B2"
+                        borderRadius={10}
                         buttonText="Facebook ile Bağlan"
                     />
                     <AuthButton
                         height={hp(7)}
                         width={wp(85)}
                         color="#0F9D58"
+                        borderRadius={10}
                         buttonText="Google ile Bağlan"
                     />
                 </View>

@@ -114,6 +114,7 @@ export default class ResetPassword extends React.Component {
                         width={wp(85)}
                         marginBottom={hp(6)}
                         color="#00D9EF"
+                        borderRadius={10}
                         buttonText="Giriş Yap"
                     />
                 </View>

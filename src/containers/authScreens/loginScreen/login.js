@@ -221,6 +221,7 @@ class Login extends React.Component {
                         marginBottom={hp(6)}
                         color="#00D9EF"
                         buttonText="Giriş Yap"
+                        borderRadius={10}
                         onPress={this.loginOnPress}
                     />
                 </View>

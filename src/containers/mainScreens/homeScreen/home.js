@@ -441,6 +441,7 @@ class Home extends React.Component {
                         width={wp(87.5)}
                         color="#00D9EF"
                         buttonText="Başlat"
+                        borderRadius={10}
                         onPress={this.playButtonOnPress}
                     />
                 )}
@@ -516,6 +517,7 @@ class Home extends React.Component {
                             width={wp(60)}
                             color="#00D9EF"
                             buttonText="Oyun kur"
+                            borderRadius={10}
                             onPress={this.createGroupRoomOnPress}
                         />
                         <AuthButton
@@ -523,6 +525,7 @@ class Home extends React.Component {
                             width={wp(60)}
                             color="#00D9EF"
                             buttonText="Oyuna katıl"
+                            borderRadius={10}
                             onPress={() =>
                                 this.setState({ visibleView: 'JOIN_ROOM' })
                             }
@@ -737,6 +740,7 @@ class Home extends React.Component {
                     width={wp(87.5)}
                     color="#00D9EF"
                     buttonText="Başla"
+                    borderRadius={10}
                     onPress={this.friendGameModeOnPress}
                 />
             </View>
@@ -838,6 +842,7 @@ class Home extends React.Component {
                     width={wp(87.5)}
                     color="#00D9EF"
                     buttonText="Onayla"
+                    borderRadius={10}
                     onPress={this.joinGroupRoomOnPress}
                 />
             </View>

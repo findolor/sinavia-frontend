@@ -299,6 +299,7 @@ class CreateGroupRoom extends React.Component {
                     width={wp(87.5)}
                     color="#00D9EF"
                     buttonText="Başla"
+                    borderRadius={10}
                     onPress={this.startGroupGameOnPress}
                 />
                 <Modal visible={this.state.isQuitGameModalVisible}>
@@ -317,6 +318,7 @@ class CreateGroupRoom extends React.Component {
                                 width={wp(42)}
                                 color="#00D9EF"
                                 buttonText="Evet"
+                                borderRadius={10}
                                 onPress={this.quitGameYes}
                             />
                             <AuthButton
@@ -324,6 +326,7 @@ class CreateGroupRoom extends React.Component {
                                 width={wp(42)}
                                 color="#00D9EF"
                                 buttonText="Hayır"
+                                borderRadius={10}
                                 onPress={this.quitGameNo}
                             />
                         </View>
