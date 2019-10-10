@@ -8,6 +8,7 @@ import {
 } from 'react-native-responsive-screen'
 import { Image, StyleSheet, TouchableOpacity, View, Alert } from 'react-native'
 import { connect } from 'react-redux'
+import { showMessage } from 'react-native-flash-message'
 
 import NotchView from '../../components/notchView'
 

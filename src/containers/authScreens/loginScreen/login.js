@@ -21,6 +21,7 @@ import { clientActions } from '../../../redux/client/actions'
 import { AuthButton, AuthTextInput } from '../../../components/authScreen'
 import styles from './style'
 import NotchView from '../../../components/notchView'
+import { showMessage } from 'react-native-flash-message'
 
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
 import EYE from '../../../assets/eye.png'
