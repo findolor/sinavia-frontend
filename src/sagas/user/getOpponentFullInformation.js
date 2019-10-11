@@ -21,16 +21,27 @@ export function* getOpponentFullInformationSaga(action) {
         action.clientId
     )
 
+    // Calculating friend matches
     const opponentWinCount = Object.keys(res.friendGameWins).length
     const clientWinCount = Object.keys(res.friendGameDefeats).length
     const friendMatchDrawCount = Object.keys(res.friendGameDraws).length
-    const totalFriendGames =
+    const totalFriendMatchesCount =
         opponentWinCount + clientWinCount + friendMatchDrawCount
-    const wonGames = res.statistics.winCount
-    const lostGames = res.statistics.loseCount
-    const drawGames = res.statistics.drawCount
-    const totalPlayedGames = res.statistics.totalGameCount
-    const winPercentage = (wonGames / totalPlayedGames) * 100
+
+    // Calculating ranked statistics
+    const totalRankedWin = res.statistics.rankedWinCount
+    const totalRankedLose = res.statistics.rankedLoseCount
+    const totalRankedDraw = res.statistics.rankedDrawCount
+    const totalRankedGames = totalRankedWin + totalRankedLose + totalRankedDraw
+    const rankedWinPercentage = (totalRankedWin / totalRankedGames) * 100
+
+    // Calculating friend statistics
+    const totalFriendWin = res.statistics.friendWinCount
+    const totalFriendLose = res.statistics.friendLoseCount
+    const totalFriendDraw = res.statistics.friendDrawCount
+    const totalFriendGames = totalFriendWin + totalFriendLose + totalFriendDraw
+    const friendWinPercentage = (totalFriendWin / totalFriendGames) * 100
+
     const friendsList = []
     res.friendships.forEach(friendship => {
         if (friendship.friendshipStatus !== 'requested')
@@ -62,32 +73,52 @@ export function* getOpponentFullInformationSaga(action) {
         payload: clientWinCount
     })
     yield put({
-        type: opponentTypes.SAVE_TOTAL_FRIEND_GAMES,
-        payload: totalFriendGames
+        type: opponentTypes.SAVE_TOTAL_FRIEND_MATCHES_COUNT,
+        payload: totalFriendMatchesCount
     })
     yield put({
         type: opponentTypes.SAVE_FRIENDS_LIST,
         payload: friendsList
     })
     yield put({
-        type: opponentTypes.SAVE_GAMES_WON,
-        payload: wonGames
+        type: opponentTypes.SAVE_TOTAL_RANKED_WIN,
+        payload: totalRankedWin
     })
     yield put({
-        type: opponentTypes.SAVE_GAMES_LOST,
-        payload: lostGames
+        type: opponentTypes.SAVE_TOTAL_RANKED_LOSE,
+        payload: totalRankedLose
     })
     yield put({
-        type: opponentTypes.SAVE_GAMES_DRAW,
-        payload: drawGames
+        type: opponentTypes.SAVE_TOTAL_RANKED_DRAW,
+        payload: totalRankedDraw
     })
     yield put({
-        type: opponentTypes.SAVE_TOTAL_PLAYED_GAMES,
-        payload: totalPlayedGames
+        type: opponentTypes.SAVE_TOTAL_RANKED_GAMES,
+        payload: totalRankedGames
     })
     yield put({
-        type: opponentTypes.SAVE_WIN_PERCENTAGE,
-        payload: winPercentage
+        type: opponentTypes.SAVE_TOTAL_FRIEND_WIN,
+        payload: totalFriendWin
+    })
+    yield put({
+        type: opponentTypes.SAVE_TOTAL_FRIEND_LOSE,
+        payload: totalFriendLose
+    })
+    yield put({
+        type: opponentTypes.SAVE_TOTAL_FRIEND_DRAW,
+        payload: totalFriendDraw
+    })
+    yield put({
+        type: opponentTypes.SAVE_TOTAL_FRIEND_GAMES,
+        payload: totalFriendGames
+    })
+    yield put({
+        type: opponentTypes.SAVE_RANKED_WIN_PERCENTAGE,
+        payload: rankedWinPercentage
+    })
+    yield put({
+        type: opponentTypes.SAVE_FRIEND_WIN_PERCENTAGE,
+        payload: friendWinPercentage
     })
     navigationPush(SCENE_KEYS.mainScreens.opponentsProfile, {
         isWithSearchBar: action.isWithSearchBar

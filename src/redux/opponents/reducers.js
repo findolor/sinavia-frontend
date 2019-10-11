@@ -8,25 +8,55 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 opponentInformation: action.payload
             }
-        case opponentTypes.SAVE_TOTAL_PLAYED_GAMES:
+        case opponentTypes.SAVE_TOTAL_RANKED_WIN:
             return {
                 ...state,
-                totalPlayedGames: action.payload
+                totalRankedWin: action.payload
             }
-        case opponentTypes.SAVE_GAMES_WON:
+        case opponentTypes.SAVE_TOTAL_RANKED_LOSE:
             return {
                 ...state,
-                gamesWon: action.payload
+                totalRankedLose: action.payload
             }
-        case opponentTypes.SAVE_GAMES_LOST:
+        case opponentTypes.SAVE_TOTAL_RANKED_DRAW:
             return {
                 ...state,
-                gamesLost: action.payload
+                totalRankedDraw: action.payload
             }
-        case opponentTypes.SAVE_GAMES_DRAW:
+        case opponentTypes.SAVE_TOTAL_RANKED_GAMES:
             return {
                 ...state,
-                gamesDraw: action.payload
+                totalRankedGames: action.payload
+            }
+        case opponentTypes.SAVE_TOTAL_FRIEND_WIN:
+            return {
+                ...state,
+                totalFriendWin: action.payload
+            }
+        case opponentTypes.SAVE_TOTAL_FRIEND_LOSE:
+            return {
+                ...state,
+                totalFriendLose: action.payload
+            }
+        case opponentTypes.SAVE_TOTAL_FRIEND_DRAW:
+            return {
+                ...state,
+                totalFriendDraw: action.payload
+            }
+        case opponentTypes.SAVE_TOTAL_FRIEND_GAMES:
+            return {
+                ...state,
+                totalFriendGames: action.payload
+            }
+        case opponentTypes.SAVE_RANKED_WIN_PERCENTAGE:
+            return {
+                ...state,
+                rankedWinPercentage: action.payload
+            }
+        case opponentTypes.SAVE_FRIEND_WIN_PERCENTAGE:
+            return {
+                ...state,
+                friendWinPercentage: action.payload
             }
         case opponentTypes.SAVE_IS_FRIENDS:
             return {
@@ -43,10 +73,10 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 isRequested: action.payload
             }
-        case opponentTypes.SAVE_TOTAL_FRIEND_GAMES:
+        case opponentTypes.SAVE_TOTAL_FRIEND_MATCHES_COUNT:
             return {
                 ...state,
-                totalFriendGames: action.payload
+                totalFriendMatchesCount: action.payload
             }
         case opponentTypes.SAVE_OPPONENT_WIN_COUNT:
             return {
@@ -57,11 +87,6 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 clientWinCount: action.payload
-            }
-        case opponentTypes.SAVE_WIN_PERCENTAGE:
-            return {
-                ...state,
-                winPercentage: action.payload
             }
         case opponentTypes.SAVE_FRIENDS_LIST:
             return {
