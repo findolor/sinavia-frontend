@@ -48,6 +48,7 @@ class LoadingScreen extends React.Component {
     joinRoom = playerOptions => {
         this.room = this.client.join('rankedRoom', playerOptions)
 
+        // TODO REMOVE THE COMMENTS
         // Initiate the bot game after 10 seconds
         /* this.botTimeout = setTimeout(() => {
             this.room.send({
