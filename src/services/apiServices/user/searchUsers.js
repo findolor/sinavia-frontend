@@ -15,7 +15,6 @@ export const searchUsers = async (userToken, keyword, userId) => {
 
         return response.data.data
     } catch (err) {
-        console.log(err.response)
-        return err.response
+        throw err
     }
 }
