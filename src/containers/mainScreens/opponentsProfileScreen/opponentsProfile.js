@@ -349,12 +349,12 @@ class OpponentsProfile extends React.Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
-                        <ScrollView
-                            horizontal
-                            showsHorizontalScrollIndicator={false}
-                            pagingEnabled
-                        >
-                            <View style={styles.totalGameStatsBox}>
+                        <View style={styles.totalGameStatsBox}>
+                            <ScrollView
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                                pagingEnabled
+                            >
                                 <View
                                     style={styles.totalGameStatsInfosContainer}
                                 >
@@ -408,8 +408,6 @@ class OpponentsProfile extends React.Component {
                                         </Text>
                                     </SemiCircleProgress>
                                 </View>
-                            </View>
-                            <View style={styles.totalGameStatsBox}>
                                 <View
                                     style={styles.totalGameStatsInfosContainer}
                                 >
@@ -463,8 +461,8 @@ class OpponentsProfile extends React.Component {
                                         </Text>
                                     </SemiCircleProgress>
                                 </View>
-                            </View>
-                        </ScrollView>
+                            </ScrollView>
+                        </View>
                         <View style={styles.versusGameStatsBox}>
                             <View style={styles.versusGameTextsContainer}>
                                 <View style={styles.versusGameTitleContainer}>
