@@ -167,7 +167,7 @@ class GroupGame extends React.Component {
         clearTimeout(this.finishedTimeout)
 
         // Clear room listeners
-        this.props.room.removeAllListeners()
+        this.props.room.leave()
         this.props.client.close()
 
         // Clear other game related things

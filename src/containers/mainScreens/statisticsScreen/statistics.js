@@ -1,7 +1,7 @@
 import React from 'react'
 import { ProgressCircle } from 'react-native-svg-charts'
 import Rheostat from 'react-native-rheostat'
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { Image, Text, TouchableOpacity, View, ScrollView } from 'react-native'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
@@ -33,16 +33,37 @@ class Statistics extends React.Component {
             timezone: 'Bu hafta',
             startDate: null,
             endDate: null,
-            wons: 0,
-            losts: 0,
-            draws: 0,
-            corrects: 0,
-            incorrects: 0,
-            unanswereds: 0,
-            wonPercentage: 0,
-            correctPercentage: 0,
-            incorrectPercentage: 0,
-            unansweredPercentage: 0,
+            // Ranked game variables
+            totalRankedWin: 0,
+            totalRankedLose: 0,
+            totalRankedDraw: 0,
+            totalRankedGames: 0,
+            rankedWinPercentage: 0,
+            totalRankedCorrect: 0,
+            totalRankedIncorrect: 0,
+            totalRankedUnanswered: 0,
+            rankedTotalSolved: 0,
+            rankedCorrectPercentage: 0,
+            rankedIncorrectPercentage: 0,
+            rankedUnansweredPercentage: 0,
+            // Friend game variables
+            totalFriendWin: 0,
+            totalFriendLose: 0,
+            totalFriendDraw: 0,
+            totalFriendGames: 0,
+            friendWinPercentage: 0,
+            totalFriendCorrect: 0,
+            totalFriendIncorrect: 0,
+            totalFriendUnanswered: 0,
+            friendTotalSolved: 0,
+            friendCorrectPercentage: 0,
+            friendIncorrectPercentage: 0,
+            friendUnansweredPercentage: 0,
+            // Question variables
+            totalCorrect: 0,
+            totalIncorrect: 0,
+            totalUnanswered: 0,
+            totalQuestionsSolved: 0,
             // Choosen game contents
             choosenExamId: null,
             choosenCourseId: null,
@@ -56,9 +77,7 @@ class Statistics extends React.Component {
             sixMonthsStatList: [],
             // Variables to check if we fetched the other times
             isMonthlyFetched: false,
-            isSixMonthsFetched: false,
-            // Total solved questions
-            totalSolvedQuestions: 0
+            isSixMonthsFetched: false
         }
     }
 
@@ -79,7 +98,6 @@ class Statistics extends React.Component {
     makeStatistics = (data, rheostatFunction, rheostatFunctionParams) => {
         const statisticsList = []
         data.forEach(statistic => {
-            delete statistic.earnedPoints
             statistic.createdAt = Moment(statistic.createdAt).format(
                 'YYYY-MM-DD'
             )
@@ -483,13 +501,30 @@ class Statistics extends React.Component {
     }
 
     weeklyRheostatValueUpdate = payload => {
-        let wonsCounter = 0,
-            lostsCounter = 0,
-            drawsCounter = 0,
-            correctsCounter = 0,
-            incorrectsCounter = 0,
-            unansweredsCounter = 0,
-            totalSolvedQuestions = 0
+        // Ranked
+        let rankedWinCounter = 0,
+            rankedLoseCounter = 0,
+            rankedDrawCounter = 0,
+            rankedCorrectCounter = 0,
+            rankedIncorrectCounter = 0,
+            rankedUnansweredCounter = 0,
+            rankedTotalGames = 0,
+            rankedTotalSolved = 0
+        // Friend
+        let friendWinCounter = 0,
+            friendLoseCounter = 0,
+            friendDrawCounter = 0,
+            friendCorrectCounter = 0,
+            friendIncorrectCounter = 0,
+            friendUnansweredCounter = 0,
+            friendTotalGames = 0,
+            friendTotalSolved = 0
+        // Question counters
+        let correctCounter = 0,
+            incorrectCounter = 0,
+            unansweredCounter = 0,
+            totalQuestionsSolved = 0
+
         this.setState({
             thisWeek: payload,
             startDate: Moment.utc()
@@ -506,52 +541,135 @@ class Statistics extends React.Component {
                 statistic.createdAt >= this.state.startDate &&
                 statistic.createdAt <= this.state.endDate
             ) {
-                totalSolvedQuestions++
-                switch (statistic.gameResult) {
-                    case 'won':
-                        wonsCounter++
-                        break
-                    case 'lost':
-                        lostsCounter++
-                        break
-                    case 'draw':
-                        drawsCounter++
-                        break
+                if (statistic.gameResult && statistic.earnedPoints) {
+                    rankedTotalGames++
+                    switch (statistic.gameResult) {
+                        case 'won':
+                            rankedWinCounter++
+                            break
+                        case 'lost':
+                            rankedLoseCounter++
+                            break
+                        case 'draw':
+                            rankedDrawCounter++
+                            break
+                    }
+                    correctCounter += statistic.correctNumber
+                    incorrectCounter += statistic.incorrectNumber
+                    unansweredCounter += statistic.unansweredNumber
+                    rankedCorrectCounter += statistic.correctNumber
+                    rankedIncorrectCounter += statistic.incorrectNumber
+                    rankedUnansweredCounter += statistic.unansweredNumber
+                } else if (statistic.gameResult) {
+                    friendTotalGames++
+                    switch (statistic.gameResult) {
+                        case 'won':
+                            friendWinCounter++
+                            break
+                        case 'lost':
+                            friendLoseCounter++
+                            break
+                        case 'draw':
+                            friendDrawCounter++
+                            break
+                    }
+                    correctCounter += statistic.correctNumber
+                    incorrectCounter += statistic.incorrectNumber
+                    unansweredCounter += statistic.unansweredNumber
+                    friendCorrectCounter += statistic.correctNumber
+                    friendIncorrectCounter += statistic.incorrectNumber
+                    friendUnansweredCounter += statistic.unansweredNumber
                 }
-                correctsCounter += statistic.correctNumber
-                incorrectsCounter += statistic.incorrectNumber
-                unansweredsCounter += statistic.unansweredNumber
             }
         })
-        let totalSolved =
-            correctsCounter + incorrectsCounter + unansweredsCounter
+        rankedTotalSolved =
+            rankedCorrectCounter +
+            rankedIncorrectCounter +
+            rankedUnansweredCounter
+        friendTotalSolved =
+            friendCorrectCounter +
+            friendIncorrectCounter +
+            friendUnansweredCounter
+        totalQuestionsSolved =
+            correctCounter + incorrectCounter + unansweredCounter
+
         this.setState({
-            wons: wonsCounter,
-            losts: lostsCounter,
-            draws: drawsCounter,
-            totalSolvedQuestions: totalSolvedQuestions,
-            corrects: correctsCounter,
-            incorrects: incorrectsCounter,
-            unanswereds: unansweredsCounter,
-            wonPercentage:
-                (wonsCounter / (wonsCounter + lostsCounter + drawsCounter)) *
-                100,
-            correctPercentage:
-                totalSolved === 0 ? 0 : (correctsCounter / totalSolved) * 100,
-            incorrectPercentage:
-                totalSolved === 0 ? 0 : (incorrectsCounter / totalSolved) * 100,
-            unansweredPercentage:
-                totalSolved === 0 ? 0 : (unansweredsCounter / totalSolved) * 100
+            // Ranked game variables
+            totalRankedWin: rankedWinCounter,
+            totalRankedLose: rankedLoseCounter,
+            totalRankedDraw: rankedDrawCounter,
+            totalRankedGames: rankedTotalGames,
+            rankedWinPercentage: (rankedWinCounter / rankedTotalGames) * 100,
+            rankedCorrectPercentage:
+                rankedTotalSolved === 0
+                    ? 0
+                    : (rankedCorrectCounter / rankedTotalSolved) * 100,
+            rankedIncorrectPercentage:
+                rankedTotalSolved === 0
+                    ? 0
+                    : (rankedIncorrectCounter / rankedTotalSolved) * 100,
+            rankedUnansweredPercentage:
+                rankedTotalSolved === 0
+                    ? 0
+                    : (rankedUnansweredCounter / rankedTotalSolved) * 100,
+            rankedTotalSolved: rankedTotalSolved,
+            totalRankedCorrect: rankedCorrectCounter,
+            totalRankedIncorrect: rankedIncorrectCounter,
+            totalRankedUnanswered: rankedUnansweredCounter,
+            // Friend game variables
+            totalFriendWin: friendWinCounter,
+            totalFriendLose: friendLoseCounter,
+            totalFriendDraw: friendDrawCounter,
+            totalFriendGames: friendTotalGames,
+            friendWinPercentage: (friendWinCounter / friendTotalGames) * 100,
+            friendCorrectPercentage:
+                friendTotalSolved === 0
+                    ? 0
+                    : (friendCorrectCounter / friendTotalSolved) * 100,
+            friendIncorrectPercentage:
+                friendTotalSolved === 0
+                    ? 0
+                    : (friendIncorrectCounter / friendTotalSolved) * 100,
+            friendUnansweredPercentage:
+                friendTotalSolved === 0
+                    ? 0
+                    : (friendUnansweredCounter / friendTotalSolved) * 100,
+            totalFriendCorrect: friendCorrectCounter,
+            totalFriendIncorrect: friendIncorrectCounter,
+            totalFriendUnanswered: friendUnansweredCounter,
+            // Question variables
+            totalCorrect: correctCounter,
+            totalIncorrect: incorrectCounter,
+            totalUnanswered: unansweredCounter,
+            totalQuestionsSolved: totalQuestionsSolved
         })
     }
 
     monthlyRheostatValUpdated = payload => {
-        let wonsCounter = 0,
-            lostsCounter = 0,
-            drawsCounter = 0,
-            correctsCounter = 0,
-            incorrectsCounter = 0,
-            unansweredsCounter = 0
+        // Ranked
+        let rankedWinCounter = 0,
+            rankedLoseCounter = 0,
+            rankedDrawCounter = 0,
+            rankedCorrectCounter = 0,
+            rankedIncorrectCounter = 0,
+            rankedUnansweredCounter = 0,
+            rankedTotalGames = 0,
+            rankedTotalSolved = 0
+        // Friend
+        let friendWinCounter = 0,
+            friendLoseCounter = 0,
+            friendDrawCounter = 0,
+            friendCorrectCounter = 0,
+            friendIncorrectCounter = 0,
+            friendUnansweredCounter = 0,
+            friendTotalGames = 0,
+            friendTotalSolved = 0
+        // Question counters
+        let correctCounter = 0,
+            incorrectCounter = 0,
+            unansweredCounter = 0,
+            totalQuestionsSolved = 0
+
         this.setState({
             thisMonth: payload,
             startDate: Moment.utc()
@@ -568,51 +686,135 @@ class Statistics extends React.Component {
                 statistic.createdAt >= this.state.startDate &&
                 statistic.createdAt <= this.state.endDate
             ) {
-                switch (statistic.gameResult) {
-                    case 'won':
-                        wonsCounter++
-                        break
-                    case 'lost':
-                        lostsCounter++
-                        break
-                    case 'draw':
-                        drawsCounter++
-                        break
-                    case null:
+                if (statistic.gameResult && statistic.earnedPoints) {
+                    rankedTotalGames++
+                    switch (statistic.gameResult) {
+                        case 'won':
+                            rankedWinCounter++
+                            break
+                        case 'lost':
+                            rankedLoseCounter++
+                            break
+                        case 'draw':
+                            rankedDrawCounter++
+                            break
+                    }
+                    correctCounter += statistic.correctNumber
+                    incorrectCounter += statistic.incorrectNumber
+                    unansweredCounter += statistic.unansweredNumber
+                    rankedCorrectCounter += statistic.correctNumber
+                    rankedIncorrectCounter += statistic.incorrectNumber
+                    rankedUnansweredCounter += statistic.unansweredNumber
+                } else if (statistic.gameResult) {
+                    friendTotalGames++
+                    switch (statistic.gameResult) {
+                        case 'won':
+                            friendWinCounter++
+                            break
+                        case 'lost':
+                            friendLoseCounter++
+                            break
+                        case 'draw':
+                            friendDrawCounter++
+                            break
+                    }
+                    correctCounter += statistic.correctNumber
+                    incorrectCounter += statistic.incorrectNumber
+                    unansweredCounter += statistic.unansweredNumber
+                    friendCorrectCounter += statistic.correctNumber
+                    friendIncorrectCounter += statistic.incorrectNumber
+                    friendUnansweredCounter += statistic.unansweredNumber
                 }
-                correctsCounter += statistic.correctNumber
-                incorrectsCounter += statistic.incorrectNumber
-                unansweredsCounter += statistic.unansweredNumber
             }
         })
-        let totalSolved =
-            correctsCounter + incorrectsCounter + unansweredsCounter
+        rankedTotalSolved =
+            rankedCorrectCounter +
+            rankedIncorrectCounter +
+            rankedUnansweredCounter
+        friendTotalSolved =
+            friendCorrectCounter +
+            friendIncorrectCounter +
+            friendUnansweredCounter
+        totalQuestionsSolved =
+            correctCounter + incorrectCounter + unansweredCounter
+
         this.setState({
-            wons: wonsCounter,
-            losts: lostsCounter,
-            draws: drawsCounter,
-            corrects: correctsCounter,
-            incorrects: incorrectsCounter,
-            unanswereds: unansweredsCounter,
-            wonPercentage:
-                (wonsCounter / (wonsCounter + lostsCounter + drawsCounter)) *
-                100,
-            correctPercentage:
-                totalSolved === 0 ? 0 : (correctsCounter / totalSolved) * 100,
-            incorrectPercentage:
-                totalSolved === 0 ? 0 : (incorrectsCounter / totalSolved) * 100,
-            unansweredPercentage:
-                totalSolved === 0 ? 0 : (unansweredsCounter / totalSolved) * 100
+            // Ranked game variables
+            totalRankedWin: rankedWinCounter,
+            totalRankedLose: rankedLoseCounter,
+            totalRankedDraw: rankedDrawCounter,
+            totalRankedGames: rankedTotalGames,
+            rankedWinPercentage: (rankedWinCounter / rankedTotalGames) * 100,
+            rankedCorrectPercentage:
+                rankedTotalSolved === 0
+                    ? 0
+                    : (rankedCorrectCounter / rankedTotalSolved) * 100,
+            rankedIncorrectPercentage:
+                rankedTotalSolved === 0
+                    ? 0
+                    : (rankedIncorrectCounter / rankedTotalSolved) * 100,
+            rankedUnansweredPercentage:
+                rankedTotalSolved === 0
+                    ? 0
+                    : (rankedUnansweredCounter / rankedTotalSolved) * 100,
+            rankedTotalSolved: rankedTotalSolved,
+            totalRankedCorrect: rankedCorrectCounter,
+            totalRankedIncorrect: rankedIncorrectCounter,
+            totalRankedUnanswered: rankedUnansweredCounter,
+            // Friend game variables
+            totalFriendWin: friendWinCounter,
+            totalFriendLose: friendLoseCounter,
+            totalFriendDraw: friendDrawCounter,
+            totalFriendGames: friendTotalGames,
+            friendWinPercentage: (friendWinCounter / friendTotalGames) * 100,
+            friendCorrectPercentage:
+                friendTotalSolved === 0
+                    ? 0
+                    : (friendCorrectCounter / friendTotalSolved) * 100,
+            friendIncorrectPercentage:
+                friendTotalSolved === 0
+                    ? 0
+                    : (friendIncorrectCounter / friendTotalSolved) * 100,
+            friendUnansweredPercentage:
+                friendTotalSolved === 0
+                    ? 0
+                    : (friendUnansweredCounter / friendTotalSolved) * 100,
+            totalFriendCorrect: friendCorrectCounter,
+            totalFriendIncorrect: friendIncorrectCounter,
+            totalFriendUnanswered: friendUnansweredCounter,
+            // Question variables
+            totalCorrect: correctCounter,
+            totalIncorrect: incorrectCounter,
+            totalUnanswered: unansweredCounter,
+            totalQuestionsSolved: totalQuestionsSolved
         })
     }
 
     sixMonthsRheostatValUpdated = payload => {
-        let wonsCounter = 0,
-            lostsCounter = 0,
-            drawsCounter = 0,
-            correctsCounter = 0,
-            incorrectsCounter = 0,
-            unansweredsCounter = 0
+        // Ranked
+        let rankedWinCounter = 0,
+            rankedLoseCounter = 0,
+            rankedDrawCounter = 0,
+            rankedCorrectCounter = 0,
+            rankedIncorrectCounter = 0,
+            rankedUnansweredCounter = 0,
+            rankedTotalGames = 0,
+            rankedTotalSolved = 0
+        // Friend
+        let friendWinCounter = 0,
+            friendLoseCounter = 0,
+            friendDrawCounter = 0,
+            friendCorrectCounter = 0,
+            friendIncorrectCounter = 0,
+            friendUnansweredCounter = 0,
+            friendTotalGames = 0,
+            friendTotalSolved = 0
+        // Question counters
+        let correctCounter = 0,
+            incorrectCounter = 0,
+            unansweredCounter = 0,
+            totalQuestionsSolved = 0
+
         this.setState({
             lastSixMonths: payload,
             startDate: Moment.utc()
@@ -629,40 +831,107 @@ class Statistics extends React.Component {
                 statistic.createdAt >= this.state.startDate &&
                 statistic.createdAt <= this.state.endDate
             ) {
-                switch (statistic.gameResult) {
-                    case 'won':
-                        wonsCounter++
-                        break
-                    case 'lost':
-                        lostsCounter++
-                        break
-                    case 'draw':
-                        drawsCounter++
-                        break
+                if (statistic.gameResult && statistic.earnedPoints) {
+                    rankedTotalGames++
+                    switch (statistic.gameResult) {
+                        case 'won':
+                            rankedWinCounter++
+                            break
+                        case 'lost':
+                            rankedLoseCounter++
+                            break
+                        case 'draw':
+                            rankedDrawCounter++
+                            break
+                    }
+                    correctCounter += statistic.correctNumber
+                    incorrectCounter += statistic.incorrectNumber
+                    unansweredCounter += statistic.unansweredNumber
+                    rankedCorrectCounter += statistic.correctNumber
+                    rankedIncorrectCounter += statistic.incorrectNumber
+                    rankedUnansweredCounter += statistic.unansweredNumber
+                } else if (statistic.gameResult) {
+                    friendTotalGames++
+                    switch (statistic.gameResult) {
+                        case 'won':
+                            friendWinCounter++
+                            break
+                        case 'lost':
+                            friendLoseCounter++
+                            break
+                        case 'draw':
+                            friendDrawCounter++
+                            break
+                    }
+                    correctCounter += statistic.correctNumber
+                    incorrectCounter += statistic.incorrectNumber
+                    unansweredCounter += statistic.unansweredNumber
+                    friendCorrectCounter += statistic.correctNumber
+                    friendIncorrectCounter += statistic.incorrectNumber
+                    friendUnansweredCounter += statistic.unansweredNumber
                 }
-                correctsCounter += statistic.correctNumber
-                incorrectsCounter += statistic.incorrectNumber
-                unansweredsCounter += statistic.unansweredNumber
             }
         })
-        let totalSolved =
-            correctsCounter + incorrectsCounter + unansweredsCounter
+        rankedTotalSolved =
+            rankedCorrectCounter +
+            rankedIncorrectCounter +
+            rankedUnansweredCounter
+        friendTotalSolved =
+            friendCorrectCounter +
+            friendIncorrectCounter +
+            friendUnansweredCounter
+        totalQuestionsSolved =
+            correctCounter + incorrectCounter + unansweredCounter
+
         this.setState({
-            wons: wonsCounter,
-            losts: lostsCounter,
-            draws: drawsCounter,
-            corrects: correctsCounter,
-            incorrects: incorrectsCounter,
-            unanswereds: unansweredsCounter,
-            wonPercentage:
-                (wonsCounter / (wonsCounter + lostsCounter + drawsCounter)) *
-                100,
-            correctPercentage:
-                totalSolved === 0 ? 0 : (correctsCounter / totalSolved) * 100,
-            incorrectPercentage:
-                totalSolved === 0 ? 0 : (incorrectsCounter / totalSolved) * 100,
-            unansweredPercentage:
-                totalSolved === 0 ? 0 : (unansweredsCounter / totalSolved) * 100
+            // Ranked game variables
+            totalRankedWin: rankedWinCounter,
+            totalRankedLose: rankedLoseCounter,
+            totalRankedDraw: rankedDrawCounter,
+            totalRankedGames: rankedTotalGames,
+            rankedWinPercentage: (rankedWinCounter / rankedTotalGames) * 100,
+            rankedCorrectPercentage:
+                rankedTotalSolved === 0
+                    ? 0
+                    : (rankedCorrectCounter / rankedTotalSolved) * 100,
+            rankedIncorrectPercentage:
+                rankedTotalSolved === 0
+                    ? 0
+                    : (rankedIncorrectCounter / rankedTotalSolved) * 100,
+            rankedUnansweredPercentage:
+                rankedTotalSolved === 0
+                    ? 0
+                    : (rankedUnansweredCounter / rankedTotalSolved) * 100,
+            rankedTotalSolved: rankedTotalSolved,
+            totalRankedCorrect: rankedCorrectCounter,
+            totalRankedIncorrect: rankedIncorrectCounter,
+            totalRankedUnanswered: rankedUnansweredCounter,
+            // Friend game variables
+            totalFriendWin: friendWinCounter,
+            totalFriendLose: friendLoseCounter,
+            totalFriendDraw: friendDrawCounter,
+            totalFriendGames: friendTotalGames,
+            friendWinPercentage: (friendWinCounter / friendTotalGames) * 100,
+            friendCorrectPercentage:
+                friendTotalSolved === 0
+                    ? 0
+                    : (friendCorrectCounter / friendTotalSolved) * 100,
+            friendIncorrectPercentage:
+                friendTotalSolved === 0
+                    ? 0
+                    : (friendIncorrectCounter / friendTotalSolved) * 100,
+            friendUnansweredPercentage:
+                friendTotalSolved === 0
+                    ? 0
+                    : (friendUnansweredCounter / friendTotalSolved) * 100,
+            totalFriendCorrect: friendCorrectCounter,
+            totalFriendIncorrect: friendIncorrectCounter,
+            totalFriendUnanswered: friendUnansweredCounter,
+            // Question variables
+            totalCorrect: correctCounter,
+            totalIncorrect: incorrectCounter,
+            totalUnanswered: unansweredCounter,
+            totalQuestionsSolved: totalQuestionsSolved
         })
     }
 
@@ -719,64 +988,117 @@ class Statistics extends React.Component {
                             }
                         />
                     </View>
-                    <View style={styles.totalGameStatsContainer}>
-                        <View style={styles.totalGameStatsInfosContainer}>
-                            <Text
-                                style={
-                                    styles.totalGamesPlayedAndSolvedQuestionsCounter
-                                }
-                            >
-                                {this.state.totalSolvedQuestions}
-                            </Text>
-                            <Text
-                                style={
-                                    styles.totalGamesPlayedAndSolvedQuestionsText
-                                }
-                            >
-                                Oynadığın Oyun
-                            </Text>
-                            <Text style={styles.wonText}>
-                                Kazandığı: {this.state.wons}
-                            </Text>
-                            <Text style={styles.drawText}>
-                                Beraberlik: {this.state.draws}
-                            </Text>
-                            <Text style={styles.lostText}>
-                                Kaybettiği: {this.state.losts}
-                            </Text>
-                        </View>
-                        <View style={styles.semiCircleContainer}>
-                            <SemiCircleProgress
-                                percentage={
-                                    (this.state.wons /
-                                        (this.state.wons +
-                                            this.state.losts +
-                                            this.state.draws)) *
-                                    100
-                                }
-                                progressColor={'#00D9EF'}
-                                circleRadius={wp(20)}
-                                animationSpeed={0.1}
-                                progressWidth={wp(5)}
-                            >
-                                <Text style={styles.chartPercentageText}>
-                                    {this.state.wons +
-                                        this.state.losts +
-                                        this.state.draws ===
-                                    0
-                                        ? '0'
-                                        : (
-                                              (this.state.wons /
-                                                  (this.state.wons +
-                                                      this.state.losts +
-                                                      this.state.draws)) *
-                                              100
-                                          ).toFixed(0)}
-                                    %
+                    <ScrollView
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        pagingEnabled
+                        style={styles.scrollViewContainer}
+                    >
+                        <View style={styles.totalGameStatsContainer}>
+                            <View style={styles.totalGameStatsInfosContainer}>
+                                <Text
+                                    style={
+                                        styles.totalGamesPlayedAndSolvedQuestionsCounter
+                                    }
+                                >
+                                    {this.state.totalRankedGames}
                                 </Text>
-                            </SemiCircleProgress>
+                                <Text
+                                    style={
+                                        styles.totalGamesPlayedAndSolvedQuestionsText
+                                    }
+                                >
+                                    Dereceli Mod Oynadığın Oyun
+                                </Text>
+                                <Text style={styles.wonText}>
+                                    Kazandığı: {this.state.totalRankedWin}
+                                </Text>
+                                <Text style={styles.drawText}>
+                                    Beraberlik: {this.state.totalRankedDraw}
+                                </Text>
+                                <Text style={styles.lostText}>
+                                    Kaybettiği: {this.state.totalRankedLose}
+                                </Text>
+                            </View>
+                            <View style={styles.semiCircleContainer}>
+                                <SemiCircleProgress
+                                    percentage={
+                                        (this.state.totalRankedWin /
+                                            this.state.totalRankedGames) *
+                                        100
+                                    }
+                                    progressColor={'#00D9EF'}
+                                    circleRadius={wp(20)}
+                                    animationSpeed={0.1}
+                                    progressWidth={wp(5)}
+                                >
+                                    <Text style={styles.chartPercentageText}>
+                                        {this.state.totalRankedGames === 0
+                                            ? '0'
+                                            : (
+                                                  (this.state.totalRankedWin /
+                                                      this.state
+                                                          .totalRankedGames) *
+                                                  100
+                                              ).toFixed(0)}
+                                        %
+                                    </Text>
+                                </SemiCircleProgress>
+                            </View>
                         </View>
-                    </View>
+                        <View style={styles.totalGameStatsContainer}>
+                            <View style={styles.totalGameStatsInfosContainer}>
+                                <Text
+                                    style={
+                                        styles.totalGamesPlayedAndSolvedQuestionsCounter
+                                    }
+                                >
+                                    {this.state.totalFriendGames}
+                                </Text>
+                                <Text
+                                    style={
+                                        styles.totalGamesPlayedAndSolvedQuestionsText
+                                    }
+                                >
+                                    Arkadaş Modu Oynadığın Oyun
+                                </Text>
+                                <Text style={styles.wonText}>
+                                    Kazandığı: {this.state.totalFriendWin}
+                                </Text>
+                                <Text style={styles.drawText}>
+                                    Beraberlik: {this.state.totalFriendDraw}
+                                </Text>
+                                <Text style={styles.lostText}>
+                                    Kaybettiği: {this.state.totalFriendLose}
+                                </Text>
+                            </View>
+                            <View style={styles.semiCircleContainer}>
+                                <SemiCircleProgress
+                                    percentage={
+                                        (this.state.totalFriendWin /
+                                            this.state.totalFriendGames) *
+                                        100
+                                    }
+                                    progressColor={'#00D9EF'}
+                                    circleRadius={wp(20)}
+                                    animationSpeed={0.1}
+                                    progressWidth={wp(5)}
+                                >
+                                    <Text style={styles.chartPercentageText}>
+                                        {this.state.totalFriendGames === 0
+                                            ? '0'
+                                            : (
+                                                  (this.state.totalFriendWin /
+                                                      this.state
+                                                          .totalFriendGames) *
+                                                  100
+                                              ).toFixed(0)}
+                                        %
+                                    </Text>
+                                </SemiCircleProgress>
+                            </View>
+                        </View>
+                    </ScrollView>
                     <View style={styles.percentagesAndCirclesContainer}>
                         <View style={styles.percentagesContainer}>
                             <View style={styles.totalQuestionsSolvedContainer}>
@@ -785,9 +1107,7 @@ class Statistics extends React.Component {
                                         styles.totalGamesPlayedAndSolvedQuestionsCounter
                                     }
                                 >
-                                    {this.state.corrects +
-                                        this.state.incorrects +
-                                        this.state.unanswereds}
+                                    {this.state.rankedTotalSolved}
                                 </Text>
                                 <Text
                                     style={
@@ -804,8 +1124,8 @@ class Statistics extends React.Component {
                                         DOĞRU
                                     </Text>
                                     <Text style={styles.percentagesText}>
-                                        {this.state.corrects} -{' '}
-                                        {this.state.correctPercentage.toFixed(
+                                        {this.state.totalRankedCorrect} -{' '}
+                                        {this.state.rankedCorrectPercentage.toFixed(
                                             2
                                         )}
                                         %
@@ -819,8 +1139,8 @@ class Statistics extends React.Component {
                                         YANLIŞ
                                     </Text>
                                     <Text style={styles.percentagesText}>
-                                        {this.state.incorrects} -{' '}
-                                        {this.state.incorrectPercentage.toFixed(
+                                        {this.state.totalRankedIncorrect} -{' '}
+                                        {this.state.rankedIncorrectPercentage.toFixed(
                                             2
                                         )}
                                         %
@@ -832,8 +1152,8 @@ class Statistics extends React.Component {
                                 <View style={styles.percentagesTextView}>
                                     <Text style={styles.optionsText}>BOŞ</Text>
                                     <Text style={styles.percentagesText}>
-                                        {this.state.unanswereds} -{' '}
-                                        {this.state.unansweredPercentage.toFixed(
+                                        {this.state.totalRankedUnanswered} -{' '}
+                                        {this.state.rankedUnansweredPercentage.toFixed(
                                             2
                                         )}
                                         %
@@ -845,10 +1165,8 @@ class Statistics extends React.Component {
                             <ProgressCircle
                                 style={styles.correctCircle}
                                 progress={
-                                    this.state.corrects /
-                                    (this.state.corrects +
-                                        this.state.incorrects +
-                                        this.state.unanswereds)
+                                    this.state.totalRankedCorrect /
+                                    this.state.rankedTotalSolved
                                 }
                                 progressColor={'#6AC259'}
                                 strokeWidth={hp(2.2)}
@@ -857,10 +1175,8 @@ class Statistics extends React.Component {
                             <ProgressCircle
                                 style={styles.incorrectCircle}
                                 progress={
-                                    this.state.incorrects /
-                                    (this.state.corrects +
-                                        this.state.incorrects +
-                                        this.state.unanswereds)
+                                    this.state.totalRankedIncorrect /
+                                    this.state.rankedTotalSolved
                                 }
                                 progressColor={'#B72A2A'}
                                 strokeWidth={hp(2.2)}
@@ -869,10 +1185,8 @@ class Statistics extends React.Component {
                             <ProgressCircle
                                 style={styles.unansweredCircle}
                                 progress={
-                                    this.state.unanswereds /
-                                    (this.state.corrects +
-                                        this.state.incorrects +
-                                        this.state.unanswereds)
+                                    this.state.totalRankedUnanswered /
+                                    this.state.rankedTotalSolved
                                 }
                                 progressColor={'#00D9EF'}
                                 strokeWidth={hp(2.2)}

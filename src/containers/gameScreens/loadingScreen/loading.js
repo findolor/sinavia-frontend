@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, Button } from 'react-native'
 import styles from './style'
 import NotchView from '../../../components/notchView'
+import LottieView from 'lottie-react-native'
 // Colyseus imports
 import { Buffer } from 'buffer'
 import { AsyncStorage } from 'react-native'
@@ -12,6 +13,7 @@ import * as Colyseus from 'colyseus.js'
 import { SCENE_KEYS, navigationPush } from '../../../services/navigationService'
 import { GAME_ENGINE_ENDPOINT } from '../../../config'
 import { connect } from 'react-redux'
+import { wp } from '../../splashScreen/style'
 
 class LoadingScreen extends React.Component {
     constructor(props) {
@@ -46,12 +48,13 @@ class LoadingScreen extends React.Component {
     joinRoom = playerOptions => {
         this.room = this.client.join('rankedRoom', playerOptions)
 
+        // TODO REMOVE THE COMMENTS
         // Initiate the bot game after 10 seconds
-        this.botTimeout = setTimeout(() => {
+        /* this.botTimeout = setTimeout(() => {
             this.room.send({
                 action: 'start-with-bot'
             })
-        }, 10000)
+        }, 10000) */
 
         // Opponent information
         let opponentUsername
@@ -107,7 +110,7 @@ class LoadingScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <NotchView color={'#fffs'} />
+                {/* <NotchView color={'#fffs'} />
                 <View
                     style={{
                         flex: 1,
@@ -124,7 +127,16 @@ class LoadingScreen extends React.Component {
                     >
                         Rakip Bekleniyor...
                     </Text>
-                </View>
+                </View> */}
+                {
+                    // TODO FIX THIS
+                }
+                <LottieView
+                    source={require('../../../assets/gameScreens/rankedLoading.json')}
+                    autoPlay
+                    loop
+                    style={{ width: wp(50), aspectRatio: 1 }}
+                />
             </View>
         )
     }

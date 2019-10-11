@@ -31,7 +31,7 @@ export default StyleSheet.create({
         borderColor: '#FF9900',
         borderWidth: wp(0.5),
         borderRadius: 6,
-        alignItems:'center'
+        alignItems: 'center'
     },
     spaceView: {
         flex: 3
@@ -183,7 +183,7 @@ export default StyleSheet.create({
     },
     barRheostatContainer: {
         height: hp(6),
-        width: wp(75),
+        width: wp(75)
     },
     timezonesTextView: {
         height: hp(6),
@@ -244,7 +244,7 @@ export default StyleSheet.create({
         color: '#B72A2A',
         marginLeft: wp(8.5)
     },
-    semiCircleContainer :{
+    semiCircleContainer: {
         height: hp(16),
         width: wp(54),
         justifyContent: 'center',
@@ -263,5 +263,8 @@ export default StyleSheet.create({
         alignItems: 'center',
         borderBottomWidth: wp(0.3),
         borderColor: '#CACACA'
+    },
+    scrollViewContainer: {
+        width: wp(82)
     }
 })

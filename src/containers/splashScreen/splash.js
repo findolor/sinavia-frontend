@@ -100,10 +100,12 @@ class SplashScreen extends React.PureComponent {
         return (
             <View style={styles.container}>
                 {!this.state.shouldTryAgain && (
+                    // TODO CHANGE THIS TO SPLASH SCREEN
                     <LottieView
-                        source={require('../../assets/splashScreen/sinavia.json')}
+                        source={require('../../assets/gameScreens/rankedLoading.json')}
                         autoPlay
                         loop
+                        style={{ width: wp(100), aspectRatio: 1.1 }}
                     />
                 )}
                 {this.state.shouldTryAgain && (

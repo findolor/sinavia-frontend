@@ -1,15 +1,20 @@
 export const INITIAL_STATE = {
     opponentInformation: {},
-    totalPlayedGames: 0,
-    gamesWon: 0,
-    gamesLost: 0,
-    gamesDraw: 0,
+    totalRankedWin: 0,
+    totalRankedLose: 0,
+    totalRankedDraw: 0,
+    totalFriendWin: 0,
+    totalFriendLose: 0,
+    totalFriendDraw: 0,
+    totalRankedGames: 0,
+    totalFriendGames: 0,
+    rankedWinPercentage: 0,
+    friendWinPercentage: 0,
     isFriends: false,
     isRequesting: false,
     isRequested: false,
     friendsList: [],
-    totalFriendGames: 0,
+    totalFriendMatchesCount: 0,
     opponentWinCount: 0,
-    clientWinCount: 0,
-    winPercentage: 0
+    clientWinCount: 0
 }

@@ -22,25 +22,29 @@ class ProfileSearch extends React.Component {
         }
     }
 
-    async componentDidMount() {
-        let userList = await userServices.searchUsers(
-            this.props.clientToken,
-            this.props.clientDBId,
-            this.props.searchedKeyword
-        )
-
-        this.setState({ returnedSearchList: userList })
-    }
-
-    async componentDidUpdate(prevProps, prevState) {
-        if (this.props !== prevProps) {
-            let userList = await userServices.searchUsers(
+    componentDidMount() {
+        userServices
+            .searchUsers(
                 this.props.clientToken,
                 this.props.clientDBId,
                 this.props.searchedKeyword
             )
+            .then(userList => this.setState({ returnedSearchList: userList }))
+            .catch(err => console.log(err))
+    }
 
-            this.setState({ returnedSearchList: userList })
+    async componentDidUpdate(prevProps, prevState) {
+        if (this.props !== prevProps) {
+            userServices
+                .searchUsers(
+                    this.props.clientToken,
+                    this.props.clientDBId,
+                    this.props.searchedKeyword
+                )
+                .then(userList =>
+                    this.setState({ returnedSearchList: userList })
+                )
+                .catch(err => console.log(err))
         }
     }
 
