@@ -4,6 +4,8 @@ import {
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
 
+export { hp, wp }
+
 export default StyleSheet.create({
     container: {
         flex: 1,
