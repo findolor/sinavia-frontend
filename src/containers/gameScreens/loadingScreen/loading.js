@@ -13,7 +13,7 @@ import * as Colyseus from 'colyseus.js'
 import { SCENE_KEYS, navigationPush } from '../../../services/navigationService'
 import { GAME_ENGINE_ENDPOINT } from '../../../config'
 import { connect } from 'react-redux'
-import { wp } from '../../splashScreen/style'
+import { wp, hp } from '../../splashScreen/style'
 
 class LoadingScreen extends React.Component {
     constructor(props) {
@@ -131,12 +131,14 @@ class LoadingScreen extends React.Component {
                 {
                     // TODO FIX THIS
                 }
-                <LottieView
-                    source={require('../../../assets/gameScreens/rankedLoading.json')}
-                    autoPlay
-                    loop
-                    style={{ width: wp(50), aspectRatio: 1 }}
-                />
+                <View style={{ marginTop: hp(15) }}>
+                    <LottieView
+                        source={require('../../../assets/gameScreens/rankedLoading.json')}
+                        autoPlay
+                        loop
+                        style={{ width: wp(100), aspectRatio: 0.8 }}
+                    />
+                </View>
             </View>
         )
     }
