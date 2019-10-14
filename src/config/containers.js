@@ -2,7 +2,8 @@ import {
     Opening,
     Login,
     Register,
-    ResetPassword
+    ResetPassword,
+    GetInfo
 } from '../containers/authScreens'
 
 import {
@@ -40,7 +41,8 @@ export const authScreens = {
     opening: Opening,
     login: Login,
     register: Register,
-    resetPassword: ResetPassword
+    resetPassword: ResetPassword,
+    getInfo: GetInfo
 }
 
 export const mainScreens = {

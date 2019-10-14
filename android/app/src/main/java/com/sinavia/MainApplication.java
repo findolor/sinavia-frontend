@@ -13,6 +13,7 @@ import com.horcrux.svg.SvgPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage; // <-- Add this line
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage; // <-- Add this line
+import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;

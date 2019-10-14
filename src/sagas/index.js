@@ -13,7 +13,7 @@ import { notificationSagas } from './notification'
 export default function* root() {
     yield all([
         // User Sagas
-        takeLatest(clientTypes.CREATE_USER, userSagas.createUser),
+        takeLatest(clientTypes.USER_SIGN_UP, userSagas.userSignUp),
         takeLatest(clientTypes.FETCH_USER, userSagas.fetchUser),
         takeLatest(clientTypes.CHECK_USER_TOKEN, userSagas.authenticateUser),
         takeLatest(clientTypes.LOGIN_USER, userSagas.loginUser),
@@ -61,6 +61,7 @@ export default function* root() {
         takeLatest(
             appTypes.GET_NOTIFICATIONS,
             notificationSagas.getNotification
-        )
+        ),
+        takeLatest(clientTypes.CREATE_USER, userSagas.createUser)
     ])
 }

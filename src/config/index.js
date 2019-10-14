@@ -16,7 +16,8 @@ const scene_keys = {
         opening: 'opening',
         login: 'login',
         register: 'register',
-        resetPassword: 'resetPassword'
+        resetPassword: 'resetPassword',
+        getInfo: 'getInfo'
     },
     gameScreens: {
         rankedGame: 'rankedGame',

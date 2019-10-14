@@ -1,4 +1,4 @@
-import { createUser } from './createUser'
+import { userSignUp } from './userSignUp'
 import { fetchUser, getUserService } from './fetchUser'
 import { authenticateUser } from './authenticateUser'
 import { loginUser } from './loginUser'
@@ -9,14 +9,16 @@ import {
     getOpponentFullInformationSaga
 } from './getOpponentFullInformation'
 import { updateUserSaga } from './updateUser'
+import { createUser } from './createUser'
 
 export const userSagas = {
-    createUser: createUser,
+    userSignUp: userSignUp,
     fetchUser: fetchUser,
     authenticateUser: authenticateUser,
     loginUser: loginUser,
     getOpponentFullInformation: getOpponentFullInformationSaga,
-    updateUser: updateUserSaga
+    updateUser: updateUserSaga,
+    createUser: createUser
 }
 
 export const userServices = {
