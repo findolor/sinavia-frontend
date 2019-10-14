@@ -13,7 +13,7 @@ import * as Colyseus from 'colyseus.js'
 import { SCENE_KEYS, navigationPush } from '../../../services/navigationService'
 import { GAME_ENGINE_ENDPOINT } from '../../../config'
 import { connect } from 'react-redux'
-import { wp } from '../../splashScreen/style'
+import { wp, hp } from '../../splashScreen/style'
 
 class LoadingScreen extends React.Component {
     constructor(props) {
@@ -48,13 +48,12 @@ class LoadingScreen extends React.Component {
     joinRoom = playerOptions => {
         this.room = this.client.join('rankedRoom', playerOptions)
 
-        // TODO REMOVE THE COMMENTS
         // Initiate the bot game after 10 seconds
-        /* this.botTimeout = setTimeout(() => {
+        this.botTimeout = setTimeout(() => {
             this.room.send({
                 action: 'start-with-bot'
             })
-        }, 10000) */
+        }, 10000)
 
         // Opponent information
         let opponentUsername
@@ -110,33 +109,15 @@ class LoadingScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                {/* <NotchView color={'#fffs'} />
-                <View
-                    style={{
-                        flex: 1,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}
-                >
-                    <Text
-                        style={{
-                            fontFamily: 'Averta-BoldItalic',
-                            fontSize: 30,
-                            color: '#00d9ef'
-                        }}
-                    >
-                        Rakip Bekleniyor...
-                    </Text>
-                </View> */}
-                {
-                    // TODO FIX THIS
-                }
-                <LottieView
-                    source={require('../../../assets/gameScreens/rankedLoading.json')}
-                    autoPlay
-                    loop
-                    style={{ width: wp(50), aspectRatio: 1 }}
-                />
+                <View style={{ marginTop: hp(-8) }}>
+                    <LottieView
+                        source={require('../../../assets/gameScreens/rankedLoading.json')}
+                        autoPlay
+                        loop
+                        style={{ width: wp(100), aspectRatio: 0.5 }}
+                        speed={1.1}
+                    />
+                </View>
             </View>
         )
     }

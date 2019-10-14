@@ -5,12 +5,17 @@ import {
     Image,
     ImageBackground,
     AsyncStorage,
-    TouchableOpacity
+    TouchableOpacity,
+    Alert
 } from 'react-native'
 import styles, { countdownProps } from './style'
 import NotchView from '../../../components/notchView'
 import CountDown from 'react-native-countdown-component'
-import { SCENE_KEYS, navigationPush } from '../../../services/navigationService'
+import {
+    SCENE_KEYS,
+    navigationPush,
+    navigationReset
+} from '../../../services/navigationService'
 import { connect } from 'react-redux'
 
 // Colyseus imports
@@ -27,7 +32,7 @@ class FriendMatchingScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            countDownTime: 2,
+            countDownTime: 30,
             isCoundownFinished: false
         }
     }
@@ -68,6 +73,12 @@ class FriendMatchingScreen extends React.Component {
         let playerUsername
         let playerProfilePicture
         this.room.onMessage.add(message => {
+            if (message.action === 'game-reject') {
+                Alert.alert('Arkadaşın oyunu reddetti!')
+                this.room.removeAllListeners()
+                this.client.close()
+                navigationReset('main')
+            }
             // Message is playerProps
             const playerIds = Object.keys(message)
 

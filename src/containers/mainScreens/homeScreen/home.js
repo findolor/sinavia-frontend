@@ -136,7 +136,7 @@ class Home extends React.Component {
         switch (message.data.type) {
             case 'friendRequest':
                 this.customAlert(
-                    false,
+                    true,
                     'Arkadaşlık isteği!',
                     message.data.body,
                     this.acceptFriendRequest,
@@ -151,18 +151,36 @@ class Home extends React.Component {
                 })
                 break
             case 'friendGameRequest':
-                this.customAlert(
-                    false,
+                Alert.alert(
                     'Oyun İsteği!',
                     message.data.body,
-                    this.playFriendGame,
-                    {
-                        opponentId: message.data.userId,
-                        roomCode: message.data.roomCode,
-                        examId: parseInt(message.data.examId, 10),
-                        courseId: parseInt(message.data.courseId, 10),
-                        subjectId: parseInt(message.data.subjectId, 10)
-                    }
+                    [
+                        {
+                            text: 'Reddet',
+                            onPress: () =>
+                                this.rejectFriendGame({
+                                    roomCode: message.data.roomCode
+                                })
+                        },
+                        {
+                            text: 'Kabul et',
+                            onPress: () =>
+                                this.playFriendGame({
+                                    opponentId: message.data.userId,
+                                    roomCode: message.data.roomCode,
+                                    examId: parseInt(message.data.examId, 10),
+                                    courseId: parseInt(
+                                        message.data.courseId,
+                                        10
+                                    ),
+                                    subjectId: parseInt(
+                                        message.data.subjectId,
+                                        10
+                                    )
+                                })
+                        }
+                    ],
+                    { cancelable: false }
                 )
                 break
             case 'friendDeleted': {
@@ -186,6 +204,22 @@ class Home extends React.Component {
             examId: params.examId,
             courseId: params.courseId,
             subjectId: params.subjectId
+        })
+    }
+
+    rejectFriendGame = params => {
+        const client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
+        client.onOpen.add(() => {
+            const room = client.join('friendRoom', {
+                roomCode: params.roomCode,
+                // Because we are joining a game, we don't want to create a new room
+                create: false,
+                rejectGame: true
+            })
+            setTimeout(() => {
+                room.leave()
+                client.close()
+            }, 3000)
         })
     }
 
@@ -225,7 +259,7 @@ class Home extends React.Component {
         onPressFunction,
         params
     ) => {
-        if (isTwoButtoned) {
+        if (!isTwoButtoned) {
             Alert.alert(
                 alertTitle,
                 alertBody,
@@ -244,9 +278,7 @@ class Home extends React.Component {
                 [
                     {
                         text: 'Reddet',
-                        onPress: () => {
-                            return
-                        }
+                        onPress: () => onPressFunction(params)
                     },
                     {
                         text: 'Kabul et',

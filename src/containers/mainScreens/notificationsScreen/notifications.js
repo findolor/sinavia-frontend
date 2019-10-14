@@ -297,7 +297,18 @@ class Notifications extends React.Component {
                                         </Text>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        this.setState({
+                                            refreshFlatlist: !this.state
+                                                .refreshFlatlist
+                                        })
+                                        this.rejectGameRequestOnPress(
+                                            item,
+                                            index
+                                        )
+                                    }}
+                                >
                                     <View style={styles.rejectButton}>
                                         <Text
                                             style={
@@ -420,7 +431,28 @@ class Notifications extends React.Component {
         })
     }
 
-    rejectGameRequestOnPress = () => {}
+    rejectGameRequestOnPress = (notification, notificationIndex) => {
+        notificationServices
+            .rejectOngingMatch(
+                this.props.clientToken,
+                notification.notificationData.ongoingMatchId
+            )
+            .then(() => {
+                notification.read = true
+                notification.notificationData = JSON.stringify(
+                    notification.notificationData
+                )
+
+                notificationServices
+                    .markNotificationRead(this.props.clientToken, notification)
+                    .then(() => {
+                        this.props.removeFromNotifications(notificationIndex)
+                        this.setState({
+                            refreshFlatlist: !this.state.refreshFlatlist
+                        })
+                    })
+            })
+    }
 
     acceptFriendRequestOnPress = (friendId, index) => {
         this.props.acceptFriendshipRequest(
@@ -604,11 +636,6 @@ class Notifications extends React.Component {
                                             </TouchableOpacity>
                                             <TouchableOpacity
                                                 onPress={() => {
-                                                    this.setState({
-                                                        refreshFlatlist: !this
-                                                            .state
-                                                            .refreshFlatlist
-                                                    })
                                                     this.rejectFriendRequestOnPress(
                                                         item.id,
                                                         index
