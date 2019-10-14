@@ -31,12 +31,12 @@ import EYE from '../../../assets/eye.png'
 
 const ANIMATION_DURATION = 100
 
-class Register extends React.Component {
+class GetInfo extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             // Register related stuff
-            birthDateUI: 'Doğum Tarihi  (Opsiyonel)',
+            birthDateUI: 'Doğum Tarihi',
             isDateTimePickerVisible: false,
             switchValue: false,
             showPasswordEyeFirst: false,
@@ -96,18 +96,6 @@ class Register extends React.Component {
         ]).start()
     }
 
-    managePasswordVisibility = () => {
-        this.setState({ hidePasswordFirst: !this.state.hidePasswordFirst })
-    }
-
-    managePasswordVisibility2 = () => {
-        this.setState({ hidePasswordSecond: !this.state.hidePasswordSecond })
-    }
-
-    toggleSwitch = value => {
-        this.setState({ switchValue: value })
-    }
-
     showDateTimePicker = () => {
         this.setState({ isDateTimePickerVisible: true })
     }
@@ -142,10 +130,6 @@ class Register extends React.Component {
         this.setState({ city: text })
     }
 
-    emailOnChange = text => {
-        this.setState({ email: text })
-    }
-
     registerOnPress = () => {
         if (!this.props.isNetworkConnected) {
             showMessage({
@@ -159,13 +143,13 @@ class Register extends React.Component {
         }
 
         let userInformation = {
-            //username: this.state.username,
-            //name: this.state.name,
-            //lastname: this.state.lastname,
-            email: this.state.email,
-            //city: this.state.city,
-            //birthDate: this.state.birthDate,
-            password: this.state.password
+            username: this.state.username,
+            name: this.state.name,
+            lastname: this.state.lastname,
+            email: this.props.email,
+            city: this.state.city,
+            birthDate: this.state.birthDate,
+            password: this.props.password
         }
 
         let userInformationKeys = Object.keys(userInformation)
@@ -173,14 +157,18 @@ class Register extends React.Component {
         let wrongInformationString = 'Yanlış alanlar! ->'
 
         userInformationKeys.forEach(element => {
-            if (userInformation[element] === '') {
+            if (
+                userInformation[element] === '' &&
+                element !== 'birthDate' &&
+                element !== 'city'
+            ) {
                 wrongInformationList.push(element)
                 wrongInformationString += `${element}, `
             }
         })
 
         if (Object.keys(wrongInformationList).length === 0)
-            this.props.userSignUp(userInformation)
+            this.props.createUser(userInformation)
         else Alert.alert(wrongInformationString)
     }
 
@@ -202,18 +190,19 @@ class Register extends React.Component {
                         }}
                     />
                 </View>
+                <Text>*Doldurulması zorunlu alanlar</Text>
                 <View style={styles.allTextInputsContainer}>
-                    {/* <AuthTextInput
-                        placeholder="Kullanıcı Adı                                                                          "
+                    <AuthTextInput
+                        placeholder="Kullanıcı Adı*"
                         placeholderTextColor="#8A8888"
                         onChangeText={this.usernameOnChange}
-                    /> */}
-                    {/* <AuthTextInput
-                        placeholder="Ad Soyad                                                                               "
+                    />
+                    <AuthTextInput
+                        placeholder="Ad Soyad*"
                         placeholderTextColor="#8A8888"
                         onChangeText={this.nameLastameOnChange}
-                    /> */}
-                    {/* <TouchableOpacity onPress={this.showDateTimePicker}>
+                    />
+                    <TouchableOpacity onPress={this.showDateTimePicker}>
                         <View style={styles.textInputContainer}>
                             <Text
                                 style={[
@@ -224,120 +213,27 @@ class Register extends React.Component {
                                 {this.state.birthDateUI}
                             </Text>
                         </View>
-                    </TouchableOpacity> */}
-                    {/* <DateTimePicker
+                    </TouchableOpacity>
+                    <DateTimePicker
                         isVisible={this.state.isDateTimePickerVisible}
                         onConfirm={this.handleDatePicked}
                         onCancel={this.hideDateTimePicker}
-                    /> */}
-                    {/* <AuthTextInput
-                        placeholder="Şehir  (Opsiyonel)                                                                         "
+                    />
+                    <AuthTextInput
+                        placeholder="Şehir"
                         placeholderTextColor="#8A8888"
                         onChangeText={this.cityOnChange}
-                    /> */}
-                    <AuthTextInput
-                        placeholder="E-Posta                                                                                "
-                        placeholderTextColor="#8A8888"
-                        onChangeText={this.emailOnChange}
                     />
-                    <View style={styles.textInputContainer}>
-                        <TextInput
-                            style={styles.textInput}
-                            secureTextEntry={this.state.hidePasswordFirst}
-                            placeholder="Şifre                                                                              "
-                            placeholderTextColor={'#8A8888'}
-                            onChangeText={text => {
-                                if (text === '') {
-                                    this.setState({
-                                        showPasswordEyeFirst: false
-                                    })
-                                } else {
-                                    this.setState({
-                                        showPasswordEyeFirst: true,
-                                        password: text
-                                    })
-                                }
-                            }}
-                        />
-                        {this.state.showPasswordEyeFirst && (
-                            <View style={styles.eyeContainer}>
-                                <TouchableOpacity
-                                    onPress={this.managePasswordVisibility}
-                                >
-                                    <Image
-                                        source={EYE}
-                                        style={{
-                                            height: hp(3),
-                                            width: wp(9)
-                                        }}
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                        )}
-                    </View>
-                    <View style={styles.textInputContainer}>
-                        <TextInput
-                            style={styles.textInput}
-                            secureTextEntry={this.state.hidePasswordSecond}
-                            placeholder="Şifre (Tekrar)                                                                     "
-                            placeholderTextColor={'#8A8888'}
-                            onChangeText={text => {
-                                if (text === '') {
-                                    this.setState({
-                                        showPasswordEyeSecond: false
-                                    })
-                                } else {
-                                    if (this.state.password !== text) {
-                                    }
-                                    this.setState({
-                                        showPasswordEyeSecond: true,
-                                        secondPassword: text
-                                    })
-                                }
-                            }}
-                        />
-                    </View>
-                </View>
-                <View style={styles.toggleContainer}>
-                    <Switch
-                        style={{
-                            marginLeft: wp(7.5),
-                            transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }]
-                        }}
-                        onValueChange={this.toggleSwitch}
-                        value={this.state.switchValue}
-                        trackColor="#00D9EF"
-                        thumbColor="#00D9EF"
-                    />
-                    <View style={styles.licenseTextContainer}>
-                        <Text style={styles.toggleText}>
-                            Kullanıcı sözleşmesini okudum ve kabul ediyorum.
-                        </Text>
-                    </View>
                 </View>
                 <View style={styles.authButtonView}>
                     <AuthButton
                         height={hp(7)}
                         width={wp(85)}
                         color="#00D9EF"
-                        buttonText="Kayıt Ol"
+                        buttonText="Onayla"
                         borderRadius={10}
                         onPress={this.registerOnPress}
                     />
-                </View>
-                <View style={styles.gotoLoginContainer}>
-                    <Text style={styles.gotoLoginTextFirst}>
-                        Zaten bir hesabın var mı?
-                    </Text>
-                    <TouchableOpacity
-                        onPress={() => {
-                            navigationPush(SCENE_KEYS.authScreens.login)
-                        }}
-                    >
-                        <Text style={styles.gotoLoginTextSecond}>
-                            Giriş Yap
-                        </Text>
-                    </TouchableOpacity>
                 </View>
             </Animated.View>
         )
@@ -349,11 +245,11 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    userSignUp: userInformation =>
-        dispatch(clientActions.userSignUp(userInformation))
+    createUser: userInformation =>
+        dispatch(clientActions.createUser(userInformation))
 })
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Register)
+)(GetInfo)

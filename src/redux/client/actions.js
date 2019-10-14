@@ -1,5 +1,5 @@
 export const clientTypes = {
-    CREATE_USER: 'create_user',
+    USER_SIGN_UP: 'user_sign_up',
     FETCH_USER: 'fetch_user',
     FETCH_USER_SUCCESS: 'fetch_user_success',
     GET_USER_TOKEN: 'get_user_token',
@@ -16,7 +16,15 @@ export const clientTypes = {
     SAVE_FAVOURITE_QUESTIONS: 'save_favourite_questions',
     SAVE_USER_JOKERS: 'save_user_jokers',
     SUBTRACT_JOKER: 'subtract_joker',
-    UPDATE_USER: 'update_user'
+    UPDATE_USER: 'update_user',
+    CREATE_USER: 'create_user'
+}
+
+const userSignUp = userInformation => {
+    return {
+        type: clientTypes.USER_SIGN_UP,
+        payload: userInformation
+    }
 }
 
 const createUser = userInformation => {
@@ -102,7 +110,7 @@ updateUser = (clientToken, clientId, clientInformation, isPasswordChange) => {
 }
 
 export const clientActions = {
-    createUser: createUser,
+    userSignUp: userSignUp,
     fetchUser: fetchUser,
     checkUserToken: checkUserToken,
     loginUser: loginUser,
@@ -110,5 +118,6 @@ export const clientActions = {
     favouriteQuestion: favouriteQuestion,
     unfavouriteQuestion: unfavouriteQuestion,
     subtractJoker: subtractJoker,
-    updateUser: updateUser
+    updateUser: updateUser,
+    createUser: createUser
 }

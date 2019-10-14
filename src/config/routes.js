@@ -18,6 +18,28 @@ const RouterComp = () => {
                         component={splashScreen}
                     />
                 </Scene>
+                <Scene key="auth" hideNavBar={true}>
+                    <Scene
+                        key={SCENE_KEYS.authScreens.opening}
+                        component={authScreens.opening}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.authScreens.login}
+                        component={authScreens.login}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.authScreens.register}
+                        component={authScreens.register}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.authScreens.resetPassword}
+                        component={authScreens.resetPassword}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.authScreens.getInfo}
+                        component={authScreens.getInfo}
+                    />
+                </Scene>
                 <Scene key="main" hideNavBar={true}>
                     <Scene
                         key={SCENE_KEYS.mainScreens.main}
@@ -66,24 +88,6 @@ const RouterComp = () => {
                     <Scene
                         key={SCENE_KEYS.mainScreens.statistics}
                         component={mainScreens.statistics}
-                    />
-                </Scene>
-                <Scene key="auth" hideNavBar={true}>
-                    <Scene
-                        key={SCENE_KEYS.authScreens.opening}
-                        component={authScreens.opening}
-                    />
-                    <Scene
-                        key={SCENE_KEYS.authScreens.login}
-                        component={authScreens.login}
-                    />
-                    <Scene
-                        key={SCENE_KEYS.authScreens.register}
-                        component={authScreens.register}
-                    />
-                    <Scene
-                        key={SCENE_KEYS.authScreens.resetPassword}
-                        component={authScreens.resetPassword}
                     />
                 </Scene>
                 <Scene key="game" hideNavBar={true}>

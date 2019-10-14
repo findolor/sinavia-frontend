@@ -20,6 +20,7 @@ import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import moment from 'moment'
+import firebase from 'react-native-firebase'
 // Picture imports
 import returnLogo from '../../../assets/return.png'
 import EDIT from '../../../assets/edit.png'
@@ -56,9 +57,17 @@ class Settings extends React.Component {
         navigationPush(SCENE_KEYS.mainScreens.changePassword)
     }
 
-    logoutButtonOnPress = async () => {
-        await deviceStorage.clearDeviceStorage()
-        navigationReset('auth')
+    logoutButtonOnPress = () => {
+        firebase
+            .auth()
+            .signOut()
+            .then(() => {
+                deviceStorage.clearDeviceStorage()
+                navigationReset('auth')
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     showHideDatePicker = () => {

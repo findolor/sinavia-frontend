@@ -12,6 +12,7 @@ import { getUserJokers } from '../../services/apiServices/userJoker/getUserJoker
 import { gameContentTypes } from '../../redux/gameContent/actions'
 import DeviceInfo from 'react-native-device-info'
 import { Alert } from 'react-native'
+import firebase from 'react-native-firebase'
 
 async function getFromStorage(key) {
     const item = await deviceStorage.getItemFromStorage(key)
@@ -24,8 +25,26 @@ function goToMainScreen() {
     }, 3000)
 }
 
+function firebaseSignIn() {
+    return Promise.resolve().then(async () => {
+        const credentials = await deviceStorage.getItemFromStorage(
+            'clientCredentials'
+        )
+        return firebase
+            .auth()
+            .signInWithEmailAndPassword(credentials.email, credentials.password)
+    })
+}
+
 export function* authenticateUser(action) {
     try {
+        try {
+            yield call(firebaseSignIn)
+        } catch (error) {
+            console.log(error)
+            return
+        }
+
         // We get the unique device id
         const deviceId = yield call(DeviceInfo.getUniqueId)
 

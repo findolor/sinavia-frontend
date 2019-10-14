@@ -4,12 +4,37 @@ import { getToken } from '../../services/apiServices/token/getToken'
 import { deviceStorage } from '../../services/deviceStorage'
 import { navigationReset } from '../../services/navigationService'
 import { clientTypes } from '../../redux/client/actions'
-import { gameContentTypes } from '../../redux/gameContent/actions'
 import DeviceInfo from 'react-native-device-info'
+import firebase from 'react-native-firebase'
+import { Alert } from 'react-native'
 
-export function* createUser(action) {
+function firebaseSignUp() {
+    return Promise.resolve().then(async () => {
+        return firebase
+            .auth()
+            .createUserWithEmailAndPassword(this.email, this.password)
+    })
+}
+
+export function* userSignUp(action) {
     try {
-        // We get the unique device id
+        this.email = action.payload.email
+        this.password = action.payload.password
+
+        try {
+            const firebaseResponse = yield call(firebaseSignUp)
+            firebaseResponse.user.sendEmailVerification().then(() => {
+                Alert.alert('Lütfen e-postanızı onaylayınız.')
+                navigationReset('auth')
+            })
+        } catch (error) {
+            console.log(error.code)
+            if (error.code === 'auth/email-already-in-use')
+                Alert.alert('Bu e-posta başka bir kullanıcıya aittir.')
+            return
+        }
+
+        /* // We get the unique device id
         const deviceId = yield call(DeviceInfo.getUniqueId)
 
         action.payload.deviceId = deviceId
@@ -60,14 +85,7 @@ export function* createUser(action) {
         yield put({
             type: clientTypes.SAVE_CLIENT_INFORMATION,
             payload: action.payload
-        })
-
-        yield put({
-            type: gameContentTypes.GET_ALL_CONTENT,
-            clientToken: response.token
-        })
-
-        navigationReset('main')
+        }) */
     } catch (error) {
         // TODO remove console.log later
         console.log(error)
