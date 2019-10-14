@@ -53,7 +53,7 @@ class LoadingScreen extends React.Component {
             this.room.send({
                 action: 'start-with-bot'
             })
-        }, 10000)
+        }, 20000)
 
         // Opponent information
         let opponentUsername

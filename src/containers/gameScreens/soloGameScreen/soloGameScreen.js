@@ -133,7 +133,7 @@ class SoloGameScreen extends React.Component {
         clearTimeout(this.finishedTimeout)
 
         // Clear room listeners
-        this.props.room.removeAllListeners()
+        this.props.room.leave()
         this.props.client.close()
         // Clear other game related things
         this.setState({ isCountDownRunning: false })
@@ -428,8 +428,8 @@ class SoloGameScreen extends React.Component {
     }
 
     backButtonOnPress = () => {
-        this.props.room.removeAllListeners()
         this.props.room.leave()
+        this.props.client.close()
         navigationReset('main')
     }
 
