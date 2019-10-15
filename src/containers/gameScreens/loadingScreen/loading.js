@@ -60,10 +60,13 @@ class LoadingScreen extends React.Component {
         let opponentId
         let opponentProfilePicture
         let opponentCoverPicture
+        let opponentTotalPoints
         // Client information
         let playerUsername
         let playerProfilePicture
         let playerCoverPicture
+        let playerTotalPoints
+
         this.room.onMessage.add(message => {
             // Message is playerProps
             const playerIds = Object.keys(message)
@@ -74,10 +77,12 @@ class LoadingScreen extends React.Component {
                     opponentId = element
                     opponentProfilePicture = message[element].profilePicture
                     opponentCoverPicture = message[element].coverPicture
+                    opponentTotalPoints = message[element].totalPoints
                 } else {
                     playerUsername = message[element].username
                     playerProfilePicture = message[element].profilePicture
                     playerCoverPicture = message[element].coverPicture
+                    playerTotalPoints = message[element].totalPoints
                 }
             })
             this.room.removeAllListeners()
@@ -101,7 +106,9 @@ class LoadingScreen extends React.Component {
                 ].name,
                 subjectName: this.props.gameContentMap.subjects[
                     this.props.subjectId - 1
-                ].name
+                ].name,
+                clientPoints: playerTotalPoints,
+                opponentPoints: opponentTotalPoints
             })
         })
     }

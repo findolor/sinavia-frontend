@@ -7,6 +7,7 @@ import firebase from 'react-native-firebase'
 
 export function* updateUserSaga(action) {
     try {
+        delete action.clientInformation.totalPoints
         const response = yield call(
             putUser,
             action.clientToken,

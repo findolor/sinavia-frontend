@@ -42,58 +42,60 @@ class RankedMatchingScreen extends React.Component {
                     </Text>
                 </View>
                 <View style={styles.coversContainer}>
-                <View style={styles.coverContainer}>
-                    <ImageBackground
-                        source={{ uri: this.props.playerCoverPicture }}
-                        resizeMode={'stretch'}
-                        style={styles.cover}
-                    >
-                        <View style={styles.playerView}>
-                            <View style={styles.userPicContainer}>
-                                <Image
-                                    source={{
-                                        uri: this.props.playerProfilePicture
-                                    }}
-                                    style={styles.playerPic}
-                                />
+                    <View style={styles.coverContainer}>
+                        <ImageBackground
+                            source={{ uri: this.props.playerCoverPicture }}
+                            resizeMode={'stretch'}
+                            style={styles.cover}
+                        >
+                            <View style={styles.playerView}>
+                                <View style={styles.userPicContainer}>
+                                    <Image
+                                        source={{
+                                            uri: this.props.playerProfilePicture
+                                        }}
+                                        style={styles.playerPic}
+                                    />
+                                </View>
+                                <View style={styles.userInfoContainer}>
+                                    <Text style={styles.usernameText}>
+                                        @{this.props.playerUsername}
+                                    </Text>
+                                    <Text style={styles.sinaviaScoreText}>
+                                        Sınavia Puanı: {this.props.clientPoints}
+                                    </Text>
+                                </View>
                             </View>
-                            <View style={styles.userInfoContainer}>
-                                <Text style={styles.usernameText}>
-                                    @{this.props.playerUsername}
-                                </Text>
-                                <Text style={styles.sinaviaScoreText}>
-                                    Sınavia Puanı: 20
-                                </Text>
+                        </ImageBackground>
+                    </View>
+                    <View style={styles.coverContainer}>
+                        <ImageBackground
+                            source={{ uri: this.props.opponentCoverPicture }}
+                            resizeMode={'stretch'}
+                            style={styles.cover}
+                        >
+                            <View style={styles.playerView}>
+                                <View style={styles.opponentInfoContainer}>
+                                    <Text style={styles.usernameText}>
+                                        @{this.props.opponentUsername}
+                                    </Text>
+                                    <Text style={styles.sinaviaScoreText}>
+                                        Sınavia Puanı:{' '}
+                                        {this.props.opponentPoints}
+                                    </Text>
+                                </View>
+                                <View style={styles.opponentPicContainer}>
+                                    <Image
+                                        source={{
+                                            uri: this.props
+                                                .opponentProfilePicture
+                                        }}
+                                        style={styles.playerPic}
+                                    />
+                                </View>
                             </View>
-                        </View>
-                    </ImageBackground>
-                </View>
-                <View style={styles.coverContainer}>
-                    <ImageBackground
-                        source={{ uri: this.props.opponentCoverPicture }}
-                        resizeMode={'stretch'}
-                        style={styles.cover}
-                    >
-                        <View style={styles.playerView}>
-                            <View style={styles.opponentInfoContainer}>
-                                <Text style={styles.usernameText}>
-                                    @{this.props.opponentUsername}
-                                </Text>
-                                <Text style={styles.sinaviaScoreText}>
-                                    Sınavia Puanı: 20
-                                </Text>
-                            </View>
-                            <View style={styles.opponentPicContainer}>
-                                <Image
-                                    source={{
-                                        uri: this.props.opponentProfilePicture
-                                    }}
-                                    style={styles.playerPic}
-                                />
-                            </View>
-                        </View>
-                    </ImageBackground>
-                </View>
+                        </ImageBackground>
+                    </View>
                     <View style={styles.separatorView}>
                         <View style={styles.separatorLine} />
                         <View style={styles.separatorCircle}>
