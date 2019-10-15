@@ -103,7 +103,7 @@ export default StyleSheet.create({
     separatorContainer: {
         alignItems: 'center',
         flexDirection: 'row',
-        backgroundColor: '#fcfcfc',
+        backgroundColor: '#ffffff',
         height: hp(3),
         width: wp(75)
     },

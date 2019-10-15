@@ -61,6 +61,7 @@ export function* createUser(action) {
             payload: action.payload
         })
 
+        // This action will navigate to main screen
         yield put({
             type: gameContentTypes.GET_ALL_CONTENT,
             clientToken: response.token
