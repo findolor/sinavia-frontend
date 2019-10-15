@@ -3,8 +3,8 @@ import { getUserScores } from '../../services/apiServices/leaderboard/getUserSco
 export const getFriendScoresService = async (
     clientToken,
     userIdList,
-    clientId
+    clientId,
+    params
 ) => {
-    userIdList.push(clientId)
-    return getUserScores(clientToken, userIdList)
+    return getUserScores(clientToken, userIdList, clientId, params)
 }

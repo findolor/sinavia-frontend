@@ -1,7 +1,12 @@
 import axios from 'axios'
 import { API_ENDPOINT } from '../../../config/index'
 
-export const getUserScores = async (userToken, userIdList) => {
+export const getUserScores = async (
+    userToken,
+    userIdList,
+    clientId,
+    params
+) => {
     try {
         const response = await axios.get(
             API_ENDPOINT + 'leaderboards/friends/',
@@ -10,7 +15,11 @@ export const getUserScores = async (userToken, userIdList) => {
                     Authorization: 'Bearer ' + userToken
                 },
                 params: {
-                    userIdList: userIdList
+                    userIdList: userIdList,
+                    clientId: clientId,
+                    examId: params.examId,
+                    courseId: params.courseId,
+                    subjectId: params.subjectId
                 }
             }
         )

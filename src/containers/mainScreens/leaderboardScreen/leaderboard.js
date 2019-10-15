@@ -61,10 +61,11 @@ class Leaderboard extends React.Component {
             this.fetchLeaderboard().then(data => {
                 let userList = []
 
-                data.userList.forEach(user => {
-                    user = JSON.parse(user)
-                    userList.push(user)
-                })
+                if (data !== null)
+                    data.userList.forEach(user => {
+                        user = JSON.parse(user)
+                        userList.push(user)
+                    })
 
                 this.makeLeaderboardLists(userList)
             })
@@ -177,32 +178,86 @@ class Leaderboard extends React.Component {
     selectCourseDropdown = index => {
         index = parseInt(index, 10)
         if (index === 0) {
-            this.setState({
-                subjectList: [],
-                choosenCourseId: null,
-                choosenSubjectId: null
-            })
+            this.setState(
+                {
+                    subjectList: [],
+                    choosenCourseId: null,
+                    choosenSubjectId: null
+                },
+                () => {
+                    this.fetchLeaderboard().then(data => {
+                        let userList = []
+
+                        if (data !== null)
+                            data.userList.forEach(user => {
+                                user = JSON.parse(user)
+                                userList.push(user)
+                            })
+
+                        this.makeLeaderboardLists(userList)
+                    })
+                }
+            )
             return
         }
         const subjectList = ['Hepsi']
         this.props.gameContentMap.subjects.forEach(subject => {
             if (subject.courseId === index) subjectList.push(subject.name)
         })
-        this.setState({
-            subjectList: subjectList,
-            subjectListDefaultValue: 'Hepsi',
-            isSubjectDropdownVisible: true,
-            choosenCourseId: index
-        })
+        this.setState(
+            {
+                subjectList: subjectList,
+                subjectListDefaultValue: 'Hepsi',
+                isSubjectDropdownVisible: true,
+                choosenCourseId: index
+            },
+            () =>
+                this.fetchLeaderboard().then(data => {
+                    console.log(data)
+                    let userList = []
+
+                    if (data !== null)
+                        data.userList.forEach(user => {
+                            user = JSON.parse(user)
+                            userList.push(user)
+                        })
+
+                    this.makeLeaderboardLists(userList)
+                })
+        )
     }
 
     selectSubjectDropdown = (idx, value) => {
         let index = parseInt(idx, 10)
         if (index === 0) {
-            this.setState({ subjectList: [], choosenSubjectId: null })
+            this.setState({ subjectList: [], choosenSubjectId: null }, () =>
+                this.fetchLeaderboard().then(data => {
+                    let userList = []
+
+                    if (data !== null)
+                        data.userList.forEach(user => {
+                            user = JSON.parse(user)
+                            userList.push(user)
+                        })
+
+                    this.makeLeaderboardLists(userList)
+                })
+            )
             return
         } else {
-            this.setState({ choosenSubjectId: index })
+            this.setState({ choosenSubjectId: index }, () =>
+                this.fetchLeaderboard().then(data => {
+                    let userList = []
+
+                    if (data !== null)
+                        data.userList.forEach(user => {
+                            user = JSON.parse(user)
+                            userList.push(user)
+                        })
+
+                    this.makeLeaderboardLists(userList)
+                })
+            )
         }
     }
 
@@ -210,16 +265,59 @@ class Leaderboard extends React.Component {
     fetchLeaderboard = async () => {
         switch (this.state.rankingMode) {
             case 'global':
-                return leaderboardServices.getLeaderboard(
-                    this.props.clientToken,
-                    { examId: this.state.choosenExamId }
-                )
+                if (this.state.choosenCourseId) {
+                    if (this.state.choosenSubjectId) {
+                        return leaderboardServices.getLeaderboard(
+                            this.props.clientToken,
+                            {
+                                examId: this.state.choosenExamId,
+                                courseId: this.state.choosenCourseId,
+                                subjectId: this.state.choosenSubjectId
+                            }
+                        )
+                    } else
+                        return leaderboardServices.getLeaderboard(
+                            this.props.clientToken,
+                            {
+                                examId: this.state.choosenExamId,
+                                courseId: this.state.choosenCourseId
+                            }
+                        )
+                } else
+                    return leaderboardServices.getLeaderboard(
+                        this.props.clientToken,
+                        { examId: this.state.choosenExamId }
+                    )
             case 'friends':
-                return leaderboardServices.getFriendScores(
-                    this.props.clientToken,
-                    this.props.friendIds,
-                    this.props.clientDBId
-                )
+                if (this.state.choosenCourseId) {
+                    if (this.state.choosenSubjectId) {
+                        return leaderboardServices.getFriendScores(
+                            this.props.clientToken,
+                            this.props.friendIds,
+                            this.props.clientDBId,
+                            {
+                                examId: this.state.choosenExamId,
+                                courseId: this.state.choosenCourseId,
+                                subjectId: this.state.choosenSubjectId
+                            }
+                        )
+                    } else
+                        return leaderboardServices.getFriendScores(
+                            this.props.clientToken,
+                            this.props.friendIds,
+                            this.props.clientDBId,
+                            {
+                                examId: this.state.choosenExamId,
+                                courseId: this.state.choosenCourseId
+                            }
+                        )
+                } else
+                    return leaderboardServices.getFriendScores(
+                        this.props.clientToken,
+                        this.props.friendIds,
+                        this.props.clientDBId,
+                        { examId: this.state.choosenExamId }
+                    )
         }
     }
 
