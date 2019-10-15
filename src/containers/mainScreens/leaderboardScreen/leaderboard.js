@@ -230,7 +230,7 @@ class Leaderboard extends React.Component {
     selectSubjectDropdown = (idx, value) => {
         let index = parseInt(idx, 10)
         if (index === 0) {
-            this.setState({ subjectList: [], choosenSubjectId: null }, () =>
+            this.setState({ choosenSubjectId: null }, () =>
                 this.fetchLeaderboard().then(data => {
                     let userList = []
 
