@@ -3,6 +3,7 @@ import { putUser } from '../../services/apiServices/user/updateUser'
 import { deviceStorage } from '../../services/deviceStorage'
 import { navigationPop, SCENE_KEYS } from '../../services/navigationService'
 import { clientTypes } from '../../redux/client/actions'
+import firebase from 'react-native-firebase'
 
 export function* updateUserSaga(action) {
     try {
@@ -12,7 +13,7 @@ export function* updateUserSaga(action) {
             action.clientId,
             action.clientInformation
         )
-        console.log(response)
+
         if (action.isPasswordChange) {
             // First save the credentials to storage
             deviceStorage.saveItemToStorage('clientCredentials', {
@@ -27,6 +28,14 @@ export function* updateUserSaga(action) {
                     password: action.clientInformation.password
                 }
             })
+
+            const firebaseUser = firebase.auth().currentUser
+            firebaseUser
+                .updatePassword(action.clientInformation.password)
+                .then(() => {})
+                .catch(error => {
+                    console.log(error)
+                })
 
             delete action.clientInformation.password
         }

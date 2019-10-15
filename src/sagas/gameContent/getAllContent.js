@@ -1,6 +1,7 @@
 import { getAllContent } from '../../services/apiServices/gameContent/getAllContent'
 import { put, call } from 'redux-saga/effects'
 import { gameContentTypes } from '../../redux/gameContent/actions'
+import { navigationReset } from '../../services/navigationService'
 
 export function* getAllContentSaga(action) {
     const response = yield call(getAllContent, action.clientToken)
@@ -21,4 +22,8 @@ export function* getAllContentSaga(action) {
         type: gameContentTypes.SAVE_GAME_CONTENT_MAP,
         payload: response.gameContentMap
     })
+
+    // This is the last step in creating a use
+    // We navigate to the main screen
+    navigationReset('main')
 }

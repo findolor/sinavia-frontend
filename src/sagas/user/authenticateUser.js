@@ -118,7 +118,10 @@ export function* authenticateUser(action) {
         // Get client friends from storage
         let friends = yield call(getFromStorage, 'clientFriends')
         // We check if cached friends is the same as db
-        if (Object.keys(friendsList).length !== Object.keys(friends).length) {
+        if (
+            friends === null ||
+            Object.keys(friendsList).length !== Object.keys(friends).length
+        ) {
             deviceStorage.saveItemToStorage('clientFriends', friendsList)
             // We save clients friends ids to redux state
             yield put({
