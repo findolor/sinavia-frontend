@@ -9,6 +9,7 @@ import { fcmService } from '../../services/fcmService'
 import { postFCMToken } from '../../services/apiServices/fcmToken/postToken'
 import { getFriends } from '../../services/apiServices/friendship/getFriends'
 import { getUserJokers } from '../../services/apiServices/userJoker/getUserJokers'
+import { getUser } from '../../services/apiServices/user/getUser'
 import { gameContentTypes } from '../../redux/gameContent/actions'
 import DeviceInfo from 'react-native-device-info'
 import { Alert } from 'react-native'
@@ -17,12 +18,6 @@ import firebase from 'react-native-firebase'
 async function getFromStorage(key) {
     const item = await deviceStorage.getItemFromStorage(key)
     return item
-}
-
-function goToMainScreen() {
-    setTimeout(() => {
-        navigationReset('main')
-    }, 3000)
 }
 
 function firebaseSignIn() {
@@ -86,13 +81,16 @@ export function* authenticateUser(action) {
             payload: clientCredentials
         })
 
-        yield put({
-            type: gameContentTypes.GET_ALL_CONTENT,
-            clientToken: action.payload
-        })
-
-        // We get clientInformation from storage
-        let clientInformation = yield call(getFromStorage, 'clientInformation')
+        // Then we get our user information
+        const clientInformation = yield call(
+            getUser,
+            action.payload,
+            clientDBId
+        )
+        // We save the user information
+        deviceStorage.saveItemToStorage('clientInformation', clientInformation)
+        /* // We get clientInformation from storage
+        let clientInformation = yield call(getFromStorage, 'clientInformation') */
         // Then we save it as redux state
         yield put({
             type: clientTypes.SAVE_CLIENT_INFORMATION,
@@ -178,7 +176,11 @@ export function* authenticateUser(action) {
                 examId: examList[index].id
             }) */
         }
-        if (res) goToMainScreen()
+
+        yield put({
+            type: gameContentTypes.GET_ALL_CONTENT,
+            clientToken: action.payload
+        })
     } catch (error) {
         // If we get unauthorized from api
         try {
@@ -211,16 +213,18 @@ export function* authenticateUser(action) {
                 payload: res.id
             })
 
-            yield put({
-                type: gameContentTypes.GET_ALL_CONTENT,
-                clientToken: action.payload
-            })
-
-            // We get clientInformation from storage
+            // Then we get our user information
+            const clientInformation = yield call(getUser, res.token, res.id)
+            // We save the user information
+            deviceStorage.saveItemToStorage(
+                'clientInformation',
+                clientInformation
+            )
+            /* // We get clientInformation from storage
             let clientInformation = yield call(
                 getFromStorage,
                 'clientInformation'
-            )
+            ) */
             // Then we save it as redux state
             yield put({
                 type: clientTypes.SAVE_CLIENT_INFORMATION,
@@ -298,7 +302,10 @@ export function* authenticateUser(action) {
                 })
             }
 
-            goToMainScreen()
+            yield put({
+                type: gameContentTypes.GET_ALL_CONTENT,
+                clientToken: res.token
+            })
         } catch (error) {
             console.log(error)
         }

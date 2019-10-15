@@ -213,6 +213,8 @@ class GameStatsScreen extends React.Component {
 
             totalEarnedPoints += playerCorrect * 20
 
+            this.props.updateTotalPoints(totalEarnedPoints)
+
             for (i = 0; i < Object.keys(this.props.questionList).length; i++) {
                 this.state.allQuestionsList.push(
                     <View style={styles.scrollQuestionContainer} key={i}>
@@ -678,7 +680,9 @@ const mapDispatchToProps = dispatch => ({
                 question,
                 favedQuestionList
             )
-        )
+        ),
+    updateTotalPoints: totalEarnedPoints =>
+        dispatch(clientActions.updateTotalPoints(totalEarnedPoints))
 })
 
 export default connect(

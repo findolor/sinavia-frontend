@@ -17,7 +17,8 @@ export const clientTypes = {
     SAVE_USER_JOKERS: 'save_user_jokers',
     SUBTRACT_JOKER: 'subtract_joker',
     UPDATE_USER: 'update_user',
-    CREATE_USER: 'create_user'
+    CREATE_USER: 'create_user',
+    UPDATE_TOTAL_POINTS: 'update_total_points'
 }
 
 const userSignUp = userInformation => {
@@ -92,20 +93,32 @@ const unfavouriteQuestion = (
     }
 }
 
-subtractJoker = jokerId => {
+const subtractJoker = jokerId => {
     return {
         type: clientTypes.SUBTRACT_JOKER,
         jokerId: jokerId
     }
 }
 
-updateUser = (clientToken, clientId, clientInformation, isPasswordChange) => {
+const updateUser = (
+    clientToken,
+    clientId,
+    clientInformation,
+    isPasswordChange
+) => {
     return {
         type: clientTypes.UPDATE_USER,
         clientToken: clientToken,
         clientId: clientId,
         clientInformation: clientInformation,
         isPasswordChange: isPasswordChange
+    }
+}
+
+const updateTotalPoints = totalEarnedPoints => {
+    return {
+        type: clientTypes.UPDATE_TOTAL_POINTS,
+        totalEarnedPoints: totalEarnedPoints
     }
 }
 
@@ -119,5 +132,6 @@ export const clientActions = {
     unfavouriteQuestion: unfavouriteQuestion,
     subtractJoker: subtractJoker,
     updateUser: updateUser,
-    createUser: createUser
+    createUser: createUser,
+    updateTotalPoints: updateTotalPoints
 }

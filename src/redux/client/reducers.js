@@ -53,6 +53,13 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 userJokers: userJokers
             }
+        case clientTypes.UPDATE_TOTAL_POINTS:
+            const clientInformation = state.clientInformation
+            clientInformation.totalPoints += action.totalEarnedPoints
+            return {
+                ...state,
+                clientInformation: clientInformation
+            }
         default:
             return state
     }
