@@ -2,7 +2,6 @@ import { put, call } from 'redux-saga/effects'
 import { postUser } from '../../services/apiServices/user/postUser'
 import { getToken } from '../../services/apiServices/token/getToken'
 import { deviceStorage } from '../../services/deviceStorage'
-import { navigationReset } from '../../services/navigationService'
 import { clientTypes } from '../../redux/client/actions'
 import { gameContentTypes } from '../../redux/gameContent/actions'
 import DeviceInfo from 'react-native-device-info'
@@ -66,8 +65,6 @@ export function* createUser(action) {
             type: gameContentTypes.GET_ALL_CONTENT,
             clientToken: response.token
         })
-
-        navigationReset('main')
     } catch (error) {
         // TODO remove console.log later
         console.log(error)
