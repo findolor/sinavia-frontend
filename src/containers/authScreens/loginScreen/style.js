@@ -44,7 +44,8 @@ export default StyleSheet.create({
     },
     textInput: {
         marginLeft: wp(4),
-        fontSize: hp(2)
+        fontSize: hp(2),
+        color: '#000'
     },
     forgetPasswordContainer: {
         backgroundColor: '#fcfcfc',
