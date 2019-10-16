@@ -14,7 +14,7 @@ export const getOpponentFullInformation = async (
                     Authorization: 'Bearer ' + userToken
                 },
                 params: {
-                    clientId: clientId
+                    friendId: clientId
                 }
             }
         )

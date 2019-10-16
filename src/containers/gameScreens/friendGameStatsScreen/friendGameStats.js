@@ -7,13 +7,11 @@ import {
     View,
     Dimensions
 } from 'react-native'
-import {
-    navigationReset,
-    navigationPush
-} from '../../../services/navigationService'
+import { navigationReset } from '../../../services/navigationService'
 import { SCENE_KEYS } from '../../../config/'
-
 import styles from './style'
+import { connect } from 'react-redux'
+
 import background from '../../../assets/gameScreens/gameStatsBackground.jpg'
 import slideUp from '../../../assets/gameScreens/slideUp.png'
 import slideDown from '../../../assets/gameScreens/slideDown.png'
@@ -70,10 +68,10 @@ class FriendGameStatsScreen extends React.Component {
             isReplayButtonDisabled: false,
             // Fav icon selection
             favIconSelected: false,
-
-            totalFriendGamesPlayed: 0,
-            clientWinCount: 10,
-            opponentWinCount: 10
+            // Matches between the users
+            playerFriendMatchWinCount: 0,
+            opponentFriendMatchWinCount: 0,
+            friendMatchesCount: 0
         }
     }
 
@@ -136,12 +134,17 @@ class FriendGameStatsScreen extends React.Component {
             let opponentUnanswered = 0
             let opponentUsername = ''
             let opponentProfilePicture = ''
+            let opponentFriendMatchWinCount = 0
 
             let playerCorrect = 0
             let playerIncorrect = 0
             let playerUnanswered = 0
             let playerUsername = ''
             let playerProfilePicture = ''
+            let playerFriendMatchWinCount = 0
+
+            let friendMatchesCount =
+                Object.keys(this.props.friendMatches).length + 1
 
             playerIds.forEach(element => {
                 if (element === 'matchInformation') return
@@ -192,24 +195,36 @@ class FriendGameStatsScreen extends React.Component {
                 opponentNet = opponentCorrect - opponentIncorrect / 3
             }
 
+            this.props.friendMatches.forEach(friendMatch => {
+                if (!friendMatch.isMatchDraw) {
+                    if (friendMatch.winnerId === this.props.clientDBId)
+                        playerFriendMatchWinCount++
+                    else opponentFriendMatchWinCount++
+                }
+            })
+
             if (this.props.isMatchFinished) {
                 if (playerNet < opponentNet) {
                     this.setState({
                         matchResultLogo: YOU_LOSE_LOGO,
                         matchResultText: 'Kaybettin'
                     })
+                    opponentFriendMatchWinCount++
                 } else if (playerNet === opponentNet) {
                     this.setState({
                         matchResultLogo: DRAW_LOGO,
                         matchResultText: 'Berabere'
                     })
+                    friendMatchesCount++
                 } else {
                     this.setState({
                         matchResultLogo: YOU_WIN_LOGO,
                         matchResultText: 'Kazandın'
                     })
+                    playerFriendMatchWinCount++
                 }
             } else {
+                playerFriendMatchWinCount++
                 this.setState({
                     matchResultLogo: YOU_WIN_LOGO,
                     matchResultText: 'Kazandın',
@@ -254,7 +269,10 @@ class FriendGameStatsScreen extends React.Component {
                 clientProfilePicture: playerProfilePicture,
                 opponentProfilePicture: opponentProfilePicture,
                 clientUsername: playerUsername,
-                opponentUsername: opponentUsername
+                opponentUsername: opponentUsername,
+                playerFriendMatchWinCount: playerFriendMatchWinCount,
+                opponentFriendMatchWinCount: opponentFriendMatchWinCount,
+                friendMatchesCount: friendMatchesCount
             })
             resolve(true)
         })
@@ -466,7 +484,7 @@ class FriendGameStatsScreen extends React.Component {
                                             Toplam Oyun{' '}
                                         </Text>
                                         <Text style={styles.versusTotalCounter}>
-                                            {this.state.totalFriendGamesPlayed}
+                                            {this.state.friendMatchesCount}
                                         </Text>
                                     </View>
                                 </View>
@@ -512,14 +530,20 @@ class FriendGameStatsScreen extends React.Component {
                                             <Text
                                                 style={styles.yourWinsCounter}
                                             >
-                                                {this.state.clientWinCount}
+                                                {
+                                                    this.state
+                                                        .playerFriendMatchWinCount
+                                                }
                                             </Text>
                                             <Text
                                                 style={
                                                     styles.opponentWinsCounter
                                                 }
                                             >
-                                                {this.state.opponentWinCount}
+                                                {
+                                                    this.state
+                                                        .opponentFriendMatchWinCount
+                                                }
                                             </Text>
                                         </View>
                                     )}
@@ -545,14 +569,20 @@ class FriendGameStatsScreen extends React.Component {
                                             <Text
                                                 style={styles.yourWinsCounter}
                                             >
-                                                {this.state.clientWinCount}
+                                                {
+                                                    this.state
+                                                        .playerFriendMatchWinCount
+                                                }
                                             </Text>
                                             <Text
                                                 style={
                                                     styles.opponentWinsCounter
                                                 }
                                             >
-                                                {this.state.opponentWinCount}
+                                                {
+                                                    this.state
+                                                        .opponentFriendMatchWinCount
+                                                }
                                             </Text>
                                         </View>
                                     )}
@@ -578,14 +608,20 @@ class FriendGameStatsScreen extends React.Component {
                                             <Text
                                                 style={styles.yourWinsCounter}
                                             >
-                                                {this.state.clientWinCount}
+                                                {
+                                                    this.state
+                                                        .playerFriendMatchWinCount
+                                                }
                                             </Text>
                                             <Text
                                                 style={
                                                     styles.opponentWinsCounter
                                                 }
                                             >
-                                                {this.state.opponentWinCount}
+                                                {
+                                                    this.state
+                                                        .opponentFriendMatchWinCount
+                                                }
                                             </Text>
                                         </View>
                                     )}
@@ -744,4 +780,13 @@ class FriendGameStatsScreen extends React.Component {
     }
 }
 
-export default FriendGameStatsScreen
+const mapStateToProps = state => ({
+    clientDBId: state.client.clientDBId
+})
+
+const mapDispatch = dispatch => ({})
+
+export default connect(
+    mapStateToProps,
+    null
+)(FriendGameStatsScreen)

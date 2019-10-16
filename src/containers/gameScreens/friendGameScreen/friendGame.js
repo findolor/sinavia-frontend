@@ -93,7 +93,9 @@ class FriendGame extends React.Component {
             // Joker names
             firstJokerName: '',
             secondJokerName: '',
-            thirdJokerName: ''
+            thirdJokerName: '',
+            // Friend matches that was played before
+            friendMatches: []
         }
     }
 
@@ -190,8 +192,12 @@ class FriendGame extends React.Component {
                     opponentId: this.props.opponentId,
                     opponentProfilePicture: this.props.opponentProfilePicture,
                     fullQuestionList: message.fullQuestionList,
-                    isMatchFinished: false
+                    isMatchFinished: false,
+                    friendMatches: message.friendMatches
                 })
+                break
+            case 'friend-matches':
+                this.setState({ friendMatches: message.friendMatches })
                 break
         }
     }
@@ -275,7 +281,8 @@ class FriendGame extends React.Component {
                     opponentId: this.props.opponentId,
                     opponentProfilePicture: this.props.opponentProfilePicture,
                     fullQuestionList: this.state.fullQuestionList,
-                    isMatchFinished: true
+                    isMatchFinished: true,
+                    friendMatches: this.state.friendMatches
                 })
                 break
             case 'save-questions':
