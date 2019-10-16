@@ -185,12 +185,14 @@ class GetInfo extends React.Component {
                     <Image
                         source={SINAVIA_LOGO}
                         style={{
-                            height: hp(15),
+                            height: hp(36),
                             resizeMode: 'contain'
                         }}
                     />
                 </View>
-                <Text>*Doldurulması zorunlu alanlar</Text>
+                <View style={styles.compulsoryTextContainer}>
+                    <Text style={styles.compulsoryText}>*Doldurulması zorunlu alanlar</Text>
+                </View>
                 <View style={styles.allTextInputsContainer}>
                     <AuthTextInput
                         placeholder="Kullanıcı Adı*"
@@ -232,6 +234,7 @@ class GetInfo extends React.Component {
                         color="#00D9EF"
                         buttonText="Onayla"
                         borderRadius={10}
+                        marginTop={hp(2)}
                         onPress={this.registerOnPress}
                     />
                 </View>

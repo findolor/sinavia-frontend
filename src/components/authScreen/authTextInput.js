@@ -32,13 +32,15 @@ const styles = StyleSheet.create({
         borderWidth: wp(0.3),
         borderRadius: 10,
         borderColor: '#989696',
-        backgroundColor: 'white',
         alignItems: 'flex-start',
         justifyContent: 'center'
     },
     textInput: {
         fontFamily: 'Averta-Regular',
-        marginLeft: wp(4),
-        fontSize: hp(2)
+        fontSize: hp(2),
+        height: hp(7),
+        width: wp(85),
+        borderRadius: 10,
+        paddingHorizontal: wp(4)
     }
 })

@@ -43,11 +43,12 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     textInput: {
-        marginLeft: wp(4),
+        height: hp(7),
+        width: wp(85),
+        paddingHorizontal: wp(4),
         fontSize: hp(2)
     },
     forgetPasswordContainer: {
-        backgroundColor: '#fcfcfc',
         height: hp(6),
         width: wp(50),
         flexDirection: 'row',
@@ -58,13 +59,11 @@ export default StyleSheet.create({
         position: 'absolute'
     },
     eyeContainer: {
-        backgroundColor: '#fcfcfc',
-        height: hp(6.5),
-        width: wp(18),
+        height: hp(7),
+        width: wp(15),
         justifyContent: 'center',
-        alignItems: 'center',
-        marginLeft: wp(63),
-        marginBottom: wp(0.4),
+        alignItems: 'flex-end',
+        marginLeft: wp(66),
         position: 'absolute'
     },
     forgetPasswordText: {

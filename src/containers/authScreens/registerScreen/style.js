@@ -25,7 +25,7 @@ export default StyleSheet.create({
     },
     toggleContainer: {
         flex: 7,
-        width: wp(85),
+        width: wp(100),
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row'
@@ -85,18 +85,19 @@ export default StyleSheet.create({
         alignItems: 'flex-start'
     },
     eyeContainer: {
-        height: hp(6.5),
+        height: hp(7),
         width: wp(15),
-        justifyContent: 'center',
-        alignItems: 'center',
         marginLeft: wp(66),
-        marginBottom: wp(0.4),
+        justifyContent: 'center',
+        alignItems: 'flex-end',
         position: 'absolute'
     },
     textInput: {
         fontFamily: 'Averta-Regular',
-        marginLeft: wp(4),
         fontSize: hp(2),
-        color: '#7A7878'
+        color: '#7A7878',
+        height: hp(7),
+        width: wp(85),
+        paddingHorizontal: wp(4)
     }
 })

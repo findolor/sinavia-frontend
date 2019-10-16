@@ -12,38 +12,28 @@ export default StyleSheet.create({
         flexDirection: 'column'
     },
     imageContainer: {
-        flex: 18,
+        flex: 41,
         width: wp(100),
         justifyContent: 'center',
         alignItems: 'center'
     },
+    compulsoryTextContainer: {
+        flex: 5,
+        width: wp(85),
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end'
+    },
     allTextInputsContainer: {
-        flex: 58,
+        flex: 33,
         width: wp(100),
-        backgroundColor: '#fcfcfc',
         alignItems: 'center',
         justifyContent: 'space-between'
     },
-    toggleContainer: {
-        flex: 7,
-        width: wp(100),
-        backgroundColor: '#fcfcfc',
-        alignItems: 'center',
-        flexDirection: 'row'
-    },
     authButtonView:{
-        flex: 7,
-        justifyContent: 'center',
+        flex: 17,
+        justifyContent: 'flex-start',
         alignItems: 'center',
         width: wp(100),
-    },
-    gotoLoginContainer: {
-        flex: 6,
-        width: wp(85),
-        borderColor: '#989696',
-        justifyContent: 'flex-end',
-        alignItems: 'flex-start',
-        flexDirection: 'row'
     },
     textInputContainer: {
         height: hp(7),
@@ -51,7 +41,6 @@ export default StyleSheet.create({
         borderWidth: wp(0.3),
         borderRadius: 10,
         borderColor: '#989696',
-        backgroundColor: '#fcfcfc',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
@@ -75,13 +64,6 @@ export default StyleSheet.create({
         marginTop: hp(1),
         marginRight: wp(1)
     },
-    licenseTextContainer: {
-        backgroundColor: '#fcfcfc',
-        height: hp(5),
-        width: wp(72),
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
     eyeContainer: {
         backgroundColor: '#fcfcfc',
         height: hp(6.5),
@@ -97,5 +79,11 @@ export default StyleSheet.create({
         marginLeft: wp(4),
         fontSize: hp(2),
         color: '#7A7878'
+    },
+    compulsoryText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(1.75),
+        color: '#7A7878',
+        marginBottom: hp(1)
     }
 })

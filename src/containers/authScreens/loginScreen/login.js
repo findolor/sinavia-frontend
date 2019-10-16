@@ -157,7 +157,7 @@ class Login extends React.Component {
                 </View>
                 <View style={styles.textInputsContainer}>
                     <AuthTextInput
-                        placeholder="Kullanıcı Adı veya E-Posta                                                                 "
+                        placeholder="Kullanıcı Adı veya E-Posta"
                         placeholderTextColor="#8A8888"
                         onChangeText={email => this.emailOnChange(email)}
                     />
@@ -165,7 +165,7 @@ class Login extends React.Component {
                         <TextInput
                             style={styles.textInput}
                             secureTextEntry={this.state.hidePassword}
-                            placeholder="Şifre                                                                                  "
+                            placeholder="Şifre"
                             placeholderTextColor="#8A8888"
                             onChangeText={text => {
                                 if (text === '') {
