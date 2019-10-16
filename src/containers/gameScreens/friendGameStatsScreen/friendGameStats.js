@@ -47,14 +47,8 @@ class FriendGameStatsScreen extends React.Component {
             // Opponent username
             clientUsername: '',
             opponentUsername: '',
-            // Match point variables
-            finishedGamePoint: 20,
-            correctAnswerPoint: 0,
-            matchResultPoint: 0,
             // Match result text
             matchResultText: '',
-            // Total earned points
-            totalEarnedPoints: 180,
             // Player profile pictures
             clientProfilePicture: '',
             opponentProfilePicture: '',
@@ -133,6 +127,10 @@ class FriendGameStatsScreen extends React.Component {
             const playerProps = this.props.playerProps
             const playerIds = Object.keys(playerProps)
 
+            // If one of the users leave the game early
+            // We mark number of questions they played in the match and delete the rest
+            let undefinedQuestionIndex = -1
+
             let opponentCorrect = 0
             let opponentIncorrect = 0
             let opponentUnanswered = 0
@@ -145,9 +143,8 @@ class FriendGameStatsScreen extends React.Component {
             let playerUsername = ''
             let playerProfilePicture = ''
 
-            let totalEarnedPoints = 20
-
             playerIds.forEach(element => {
+                if (element === 'matchInformation') return
                 if (this.props.client.id !== element) {
                     opponentUsername = playerProps[element].username
                     opponentProfilePicture = playerProps[element].profilePicture
@@ -167,7 +164,7 @@ class FriendGameStatsScreen extends React.Component {
                 } else {
                     playerUsername = playerProps[element].username
                     playerProfilePicture = playerProps[element].profilePicture
-                    playerProps[element].answers.forEach(result => {
+                    playerProps[element].answers.forEach((result, index) => {
                         switch (result.result) {
                             case null:
                                 playerUnanswered++
@@ -179,33 +176,60 @@ class FriendGameStatsScreen extends React.Component {
                                 playerIncorrect++
                                 break
                         }
+                        undefinedQuestionIndex = index
                     })
                 }
             })
 
-            if (playerCorrect < opponentCorrect) {
-                this.setState({
-                    matchResultLogo: YOU_LOSE_LOGO,
-                    matchResultText: 'Kaybettin',
-                    matchResultPoint: 0
-                })
-            } else if (playerCorrect === opponentCorrect) {
-                this.setState({
-                    matchResultLogo: DRAW_LOGO,
-                    matchResultText: 'Berabere',
-                    matchResultPoint: 50
-                })
-                totalEarnedPoints += 50
+            let playerNet
+            let opponentNet
+
+            if (playerProps.matchInformation.examId !== 1) {
+                playerNet = playerCorrect - playerIncorrect / 4
+                opponentNet = opponentCorrect - opponentIncorrect / 4
+            } else {
+                playerNet = playerCorrect - playerIncorrect / 3
+                opponentNet = opponentCorrect - opponentIncorrect / 3
+            }
+
+            if (this.props.isMatchFinished) {
+                if (playerNet < opponentNet) {
+                    this.setState({
+                        matchResultLogo: YOU_LOSE_LOGO,
+                        matchResultText: 'Kaybettin'
+                    })
+                } else if (playerNet === opponentNet) {
+                    this.setState({
+                        matchResultLogo: DRAW_LOGO,
+                        matchResultText: 'Berabere'
+                    })
+                } else {
+                    this.setState({
+                        matchResultLogo: YOU_WIN_LOGO,
+                        matchResultText: 'Kazandın'
+                    })
+                }
             } else {
                 this.setState({
                     matchResultLogo: YOU_WIN_LOGO,
                     matchResultText: 'Kazandın',
-                    matchResultPoint: 100
+                    isReplayButtonDisabled: true,
+                    replayButtonBorderColor: REPLAY_DEACTIVE_BORDER
                 })
-                totalEarnedPoints += 100
-            }
 
-            totalEarnedPoints += playerCorrect * 20
+                this.props.fullQuestionList.splice(
+                    undefinedQuestionIndex + 1,
+                    Object.keys(this.props.fullQuestionList).length -
+                        undefinedQuestionIndex +
+                        1
+                )
+                this.props.questionList.splice(
+                    undefinedQuestionIndex + 1,
+                    Object.keys(this.props.questionList).length -
+                        undefinedQuestionIndex +
+                        1
+                )
+            }
 
             for (i = 0; i < Object.keys(this.props.questionList).length; i++) {
                 this.state.allQuestionsList.push(
@@ -230,9 +254,7 @@ class FriendGameStatsScreen extends React.Component {
                 clientProfilePicture: playerProfilePicture,
                 opponentProfilePicture: opponentProfilePicture,
                 clientUsername: playerUsername,
-                opponentUsername: opponentUsername,
-                correctAnswerPoint: playerCorrect * 20,
-                totalEarnedPoints: totalEarnedPoints
+                opponentUsername: opponentUsername
             })
             resolve(true)
         })

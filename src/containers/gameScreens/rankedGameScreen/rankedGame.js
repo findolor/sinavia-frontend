@@ -167,7 +167,6 @@ class RankedGame extends React.Component {
                 this.setState({ questionAnswer: message.questionAnswer })
                 break
             case 'client-leaving':
-                // TODO navigate to the game-stats screen
                 Alert.alert(this.props.opponentUsername, 'oyundan ayrildi.')
                 // If the client hasn't answered any of the questions, we just navigate him to main screen
                 if (
