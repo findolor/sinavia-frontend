@@ -488,8 +488,9 @@ class FriendGameStatsScreen extends React.Component {
                                         </Text>
                                     </View>
                                 </View>
-                                {this.state.clientWinCount > 0 &&
-                                    this.state.opponentWinCount > 0 && (
+                                {this.state.playerFriendMatchWinCount > 0 &&
+                                    this.state.opponentFriendMatchWinCount >
+                                        0 && (
                                         <View
                                             style={
                                                 styles.versusGameChartContainer
@@ -547,8 +548,9 @@ class FriendGameStatsScreen extends React.Component {
                                             </Text>
                                         </View>
                                     )}
-                                {this.state.clientWinCount > 0 &&
-                                    this.state.opponentWinCount === 0 && (
+                                {this.state.playerFriendMatchWinCount > 0 &&
+                                    this.state.opponentFriendMatchWinCount ===
+                                        0 && (
                                         <View
                                             style={
                                                 styles.versusGameChartContainer
@@ -586,8 +588,9 @@ class FriendGameStatsScreen extends React.Component {
                                             </Text>
                                         </View>
                                     )}
-                                {this.state.clientWinCount === 0 &&
-                                    this.state.opponentWinCount > 0 && (
+                                {this.state.playerFriendMatchWinCount === 0 &&
+                                    this.state.opponentFriendMatchWinCount >
+                                        0 && (
                                         <View
                                             style={
                                                 styles.versusGameChartContainer
