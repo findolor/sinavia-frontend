@@ -75,7 +75,9 @@ class GameStatsScreen extends React.Component {
             // Fav icon selection
             isFaved: false,
             // Fav icon
-            favouriteIcon: unselectedFav
+            favouriteIcon: unselectedFav,
+            // Current match information
+            matchInformation: {}
         }
     }
 
@@ -148,7 +150,10 @@ class GameStatsScreen extends React.Component {
             let totalEarnedPoints = 20
 
             playerIds.forEach(element => {
-                if (element === 'matchInformation') return
+                if (element === 'matchInformation') {
+                    this.setState({ matchInformation: playerProps[element] })
+                    return
+                }
                 if (this.props.client.id !== element) {
                     opponentUsername = playerProps[element].username
                     opponentProfilePicture = playerProps[element].profilePicture
@@ -388,7 +393,7 @@ class GameStatsScreen extends React.Component {
 
     newOpponentButtonOnPress = () => {
         this.props.room.leave()
-        navigationReset('game')
+        navigationReset('game', this.state.matchInformation)
     }
 
     mainScreenButtonOnPress = () => {
