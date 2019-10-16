@@ -26,13 +26,6 @@ export default (AuthTextInput = ({
 })
 
 const styles = StyleSheet.create({
-    textInputBorderContainer: {
-        height: hp(9),
-        width: wp(100),
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
     textInputContainer: {
         height: hp(7),
         width: wp(85),

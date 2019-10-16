@@ -12,38 +12,36 @@ export default StyleSheet.create({
         flexDirection: 'column'
     },
     imageContainer: {
-        flex: 18,
+        flex: 46,
         width: wp(100),
         justifyContent: 'center',
         alignItems: 'center'
     },
     allTextInputsContainer: {
-        flex: 58,
+        flex: 25,
         width: wp(100),
-        backgroundColor: '#fcfcfc',
         alignItems: 'center',
         justifyContent: 'space-between'
     },
     toggleContainer: {
         flex: 7,
-        width: wp(100),
-        backgroundColor: '#fcfcfc',
+        width: wp(85),
+        justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row'
     },
     authButtonView:{
-        flex: 7,
+        flex: 8,
         justifyContent: 'center',
         alignItems: 'center',
-        width: wp(100),
+        width: wp(100)
     },
     gotoLoginContainer: {
-        flex: 6,
+        flex: 10,
         width: wp(85),
         borderColor: '#989696',
-        justifyContent: 'flex-end',
-        alignItems: 'flex-start',
-        flexDirection: 'row'
+        justifyContent: 'flex-start',
+        alignItems: 'flex-end'
     },
     textInputContainer: {
         height: hp(7),
@@ -51,7 +49,6 @@ export default StyleSheet.create({
         borderWidth: wp(0.3),
         borderRadius: 10,
         borderColor: '#989696',
-        backgroundColor: '#fcfcfc',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
@@ -75,15 +72,19 @@ export default StyleSheet.create({
         marginTop: hp(1),
         marginRight: wp(1)
     },
-    licenseTextContainer: {
-        backgroundColor: '#fcfcfc',
-        height: hp(5),
-        width: wp(72),
+    switchView: {
+        height: hp(7),
+        width: wp(15),
         justifyContent: 'center',
         alignItems: 'center'
     },
+    licenseTextContainer: {
+        height: hp(7),
+        width: wp(70),
+        justifyContent: 'center',
+        alignItems: 'flex-start'
+    },
     eyeContainer: {
-        backgroundColor: '#fcfcfc',
         height: hp(6.5),
         width: wp(15),
         justifyContent: 'center',

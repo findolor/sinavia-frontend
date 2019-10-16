@@ -186,10 +186,9 @@ class Register extends React.Component {
 
     render() {
         return (
-            <Animated.View
+            <View
                 style={[
                     styles.container,
-                    { paddingBottom: this.keyboardHeight }
                 ]}
             >
                 <NotchView color={'#fcfcfc'} />
@@ -197,7 +196,8 @@ class Register extends React.Component {
                     <Image
                         source={SINAVIA_LOGO}
                         style={{
-                            height: hp(15),
+                            height: hp(36),
+                            marginBottom: hp(2),
                             resizeMode: 'contain'
                         }}
                     />
@@ -299,19 +299,22 @@ class Register extends React.Component {
                     </View>
                 </View>
                 <View style={styles.toggleContainer}>
-                    <Switch
-                        style={{
-                            marginLeft: wp(7.5),
-                            transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }]
-                        }}
-                        onValueChange={this.toggleSwitch}
-                        value={this.state.switchValue}
-                        trackColor="#00D9EF"
-                        thumbColor="#00D9EF"
-                    />
+                    <View style={styles.switchView}>
+                        <Switch
+                            style={{
+                                transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }]
+                            }}
+                            onValueChange={this.toggleSwitch}
+                            value={this.state.switchValue}
+                            trackColor="#00D9EF"
+                            thumbColor="#00D9EF"
+                        />
+                    </View>
                     <View style={styles.licenseTextContainer}>
                         <Text style={styles.toggleText}>
-                            Kullanıcı sözleşmesini okudum ve kabul ediyorum.
+                            <Text onPress={() =>
+                            {alert('Model gelecek');}}
+                                  style={{color: '#00D9EF'}}>Kullanıcı sözleşmesi</Text>ni okudum ve kabul ediyorum.
                         </Text>
                     </View>
                 </View>
@@ -327,19 +330,12 @@ class Register extends React.Component {
                 </View>
                 <View style={styles.gotoLoginContainer}>
                     <Text style={styles.gotoLoginTextFirst}>
-                        Zaten bir hesabın var mı?
+                        Zaten bir hesabın var mı? <Text  onPress={() => {
+                        navigationPush(SCENE_KEYS.authScreens.login)
+                    }} style={styles.gotoLoginTextSecond}>Giriş Yap</Text>
                     </Text>
-                    <TouchableOpacity
-                        onPress={() => {
-                            navigationPush(SCENE_KEYS.authScreens.login)
-                        }}
-                    >
-                        <Text style={styles.gotoLoginTextSecond}>
-                            Giriş Yap
-                        </Text>
-                    </TouchableOpacity>
                 </View>
-            </Animated.View>
+            </View>
         )
     }
 }
