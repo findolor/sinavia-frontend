@@ -9,7 +9,9 @@ import {
     Animated,
     Keyboard,
     Platform,
-    Alert
+    Alert,
+    TouchableWithoutFeedback,
+    KeyboardAvoidingView
 } from 'react-native'
 import { navigationPush } from '../../../services/navigationService'
 import { SCENE_KEYS } from '../../../config/index'
@@ -174,12 +176,13 @@ class GetInfo extends React.Component {
 
     render() {
         return (
-            <Animated.View
-                style={[
-                    styles.container,
-                    { paddingBottom: this.keyboardHeight }
-                ]}
-            >
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+                <KeyboardAvoidingView
+                    style={[
+                        styles.container,
+                    ]}
+                    behavior={'position'}
+                >
                 <NotchView color={'#fcfcfc'} />
                 <View style={styles.imageContainer}>
                     <Image
@@ -238,7 +241,8 @@ class GetInfo extends React.Component {
                         onPress={this.registerOnPress}
                     />
                 </View>
-            </Animated.View>
+                </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
         )
     }
 }

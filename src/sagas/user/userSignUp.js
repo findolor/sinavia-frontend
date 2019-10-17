@@ -29,6 +29,7 @@ export function* userSignUp(action) {
             })
         } catch (error) {
             console.log(error.code)
+            console.log(error)
             if (error.code === 'auth/email-already-in-use')
                 Alert.alert('Bu e-posta başka bir kullanıcıya aittir.')
             return

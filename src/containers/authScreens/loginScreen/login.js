@@ -8,7 +8,9 @@ import {
     Keyboard,
     Animated,
     Platform,
-    Alert
+    Alert,
+    TouchableWithoutFeedback,
+    KeyboardAvoidingView
 } from 'react-native'
 import { navigationPush } from '../../../services/navigationService'
 import { SCENE_KEYS } from '../../../config/index'
@@ -135,12 +137,13 @@ class Login extends React.Component {
 
     render() {
         return (
-            <Animated.View
-                style={[
-                    styles.container,
-                    { paddingBottom: this.keyboardHeight }
-                ]}
-            >
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+                <KeyboardAvoidingView
+                    style={[
+                        styles.container,
+                    ]}
+                    behavior={'position'}
+                >
                 <NotchView color={'#fcfcfc'} />
                 <View style={styles.imageContainer}>
                     <Animated.Image
@@ -225,7 +228,8 @@ class Login extends React.Component {
                         onPress={this.loginOnPress}
                     />
                 </View>
-            </Animated.View>
+                </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
         )
     }
 }

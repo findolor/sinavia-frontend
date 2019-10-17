@@ -101,6 +101,7 @@ class Register extends React.Component {
 
     managePasswordVisibility = () => {
         this.setState({ hidePasswordFirst: !this.state.hidePasswordFirst })
+        console.log(this.state.password)
     }
 
     managePasswordVisibility2 = () => {
