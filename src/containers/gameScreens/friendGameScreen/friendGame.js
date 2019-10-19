@@ -175,10 +175,11 @@ class FriendGame extends React.Component {
                     Object.keys(message.playerProps[message.clientId].answers)
                         .length === 0
                 ) {
+                    this.shutdownGame()
+                    this.props.client.close()
                     navigationReset('main')
                     break
                 }
-
                 // Do a shutdown routine
                 this.shutdownGame()
                 navigationReplace(SCENE_KEYS.gameScreens.friendGameStats, {
@@ -549,8 +550,8 @@ class FriendGame extends React.Component {
     }
 
     backButtonOnPress = () => {
-        this.props.room.removeAllListeners()
         this.props.room.leave()
+        this.props.client.close()
         navigationReset('main')
     }
 

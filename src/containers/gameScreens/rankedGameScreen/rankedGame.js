@@ -170,10 +170,11 @@ class RankedGame extends React.Component {
                 Alert.alert(this.props.opponentUsername, 'oyundan ayrildi.')
                 // If the client hasn't answered any of the questions, we just navigate him to main screen
                 if (
-                    Object.keys(
-                        this.state.playerProps[message.clientId].answers
-                    ).length === 0
+                    Object.keys(message.playerProps[message.clientId].answers)
+                        .length === 0
                 ) {
+                    this.shutdownGame()
+                    this.props.client.close()
                     navigationReset('main')
                     break
                 }
@@ -550,8 +551,8 @@ class RankedGame extends React.Component {
     }
 
     backButtonOnPress = () => {
-        this.props.room.removeAllListeners()
         this.props.room.leave()
+        this.props.client.close()
 
         // If the client has some correct answeres before leaving, we add them
         const totalEarnedPoints = this.state.playerOneCorrect * 20

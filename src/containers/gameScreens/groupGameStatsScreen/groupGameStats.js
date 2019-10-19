@@ -96,14 +96,14 @@ class GroupGameStatsScreen extends React.Component {
         }
     }
 
-    // TODO Tidy up this code block
-    // These could be implemented better
     loadScreen() {
         new Promise(resolve => {
             const playerList = []
 
             const playerProps = this.props.playerProps
             const playerIds = Object.keys(playerProps)
+
+            let undefinedQuestionIndex = -1
 
             let correct = 0
             let incorrect = 0
@@ -112,10 +112,11 @@ class GroupGameStatsScreen extends React.Component {
             let profilePicture = ''
 
             playerIds.forEach(playerId => {
+                if (playerId === 'matchInformation') return
                 if (!playerProps[playerId].isLeft) {
                     username = playerProps[playerId].username
                     profilePicture = playerProps[playerId].profilePicture
-                    playerProps[playerId].answers.forEach(result => {
+                    playerProps[playerId].answers.forEach((result, index) => {
                         switch (result.result) {
                             case null:
                                 unanswered++
@@ -126,10 +127,11 @@ class GroupGameStatsScreen extends React.Component {
                             case false:
                                 incorrect++
                         }
+                        undefinedQuestionIndex = index
                     })
                     let net
 
-                    if (this.props.examName !== 'LGS')
+                    if (playerProps.matchInformation.examId !== 1)
                         net = correct - incorrect / 4
                     else net = correct - incorrect / 3
 
@@ -146,6 +148,21 @@ class GroupGameStatsScreen extends React.Component {
                     unanswered = 0
                 }
             })
+
+            if (!this.props.isMatchFinished) {
+                this.props.fullQuestionList.splice(
+                    undefinedQuestionIndex + 1,
+                    Object.keys(this.props.fullQuestionList).length -
+                        undefinedQuestionIndex +
+                        1
+                )
+                this.props.questionList.splice(
+                    undefinedQuestionIndex + 1,
+                    Object.keys(this.props.questionList).length -
+                        undefinedQuestionIndex +
+                        1
+                )
+            }
 
             for (i = 0; i < Object.keys(this.props.questionList).length; i++) {
                 this.state.allQuestionsList.push(
@@ -261,6 +278,7 @@ class GroupGameStatsScreen extends React.Component {
                 pagingEnabled={true}
                 showsVerticalScrollIndicator={false}
                 onScroll={this.handleScrollVertical}
+                scrollEventThrottle={8}
             >
                 <View style={styles.container}>
                     <Image source={background} style={styles.background} />

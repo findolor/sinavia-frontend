@@ -6,7 +6,7 @@ import NotchView from '../../../components/notchView'
 import { SCENE_KEYS } from '../../../config'
 import {
     navigationReset,
-    navigationPush
+    navigationReplace
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
@@ -199,7 +199,7 @@ class SoloGameScreen extends React.Component {
                 return
             case 'match-finished':
                 this.shutdownGame()
-                navigationPush(SCENE_KEYS.gameScreens.friendGameStats, {
+                navigationReplace(SCENE_KEYS.gameScreens.friendGameStats, {
                     playerProps: this.state.playerProps,
                     room: this.props.room,
                     client: this.props.client,

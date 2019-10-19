@@ -689,7 +689,10 @@ class Statistics extends React.Component {
                 statistic.createdAt >= this.state.startDate &&
                 statistic.createdAt <= this.state.endDate
             ) {
-                if (statistic.gameResult && statistic.earnedPoints) {
+                if (
+                    statistic.gameResult &&
+                    (statistic.earnedPoints || statistic.earnedPoints === 0)
+                ) {
                     rankedTotalGames++
                     switch (statistic.gameResult) {
                         case 'won':
@@ -834,7 +837,10 @@ class Statistics extends React.Component {
                 statistic.createdAt >= this.state.startDate &&
                 statistic.createdAt <= this.state.endDate
             ) {
-                if (statistic.gameResult && statistic.earnedPoints) {
+                if (
+                    statistic.gameResult &&
+                    (statistic.earnedPoints || statistic.earnedPoints === 0)
+                ) {
                     rankedTotalGames++
                     switch (statistic.gameResult) {
                         case 'won':
