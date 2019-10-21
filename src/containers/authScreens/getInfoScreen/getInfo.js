@@ -172,6 +172,7 @@ class GetInfo extends React.Component {
         if (Object.keys(wrongInformationList).length === 0)
             this.props.createUser(userInformation)
         else Alert.alert(wrongInformationString)
+        console.log(userInformation)
     }
 
     render() {

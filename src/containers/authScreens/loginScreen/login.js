@@ -68,6 +68,10 @@ class Login extends React.Component {
         this.keyboardHideSub.remove()
     }
 
+    forgotPasswordOnPress = () => {
+        navigationPush(SCENE_KEYS.authScreens.resetPassword)
+    }
+
     keyboardShow = event => {
         Animated.parallel([
             Animated.timing(this.keyboardHeight, {
@@ -146,15 +150,14 @@ class Login extends React.Component {
                 >
                 <NotchView color={'#fcfcfc'} />
                 <View style={styles.imageContainer}>
-                    <Animated.Image
+                    <Image
                         source={SINAVIA_LOGO}
                         style={[
                             {
                                 height: hp(45),
                                 resizeMode: 'contain',
                                 marginTop: hp(3)
-                            },
-                            { height: this.imageHeight }
+                            }
                         ]}
                     />
                 </View>
@@ -188,11 +191,7 @@ class Login extends React.Component {
                         {this.state.showForgotPasswordText && (
                             <View style={styles.forgetPasswordContainer}>
                                 <TouchableOpacity
-                                    onPress={() => {
-                                        navigationPush(
-                                            SCENE_KEYS.authScreens.resetPassword
-                                        )
-                                    }}
+                                    onPress={this.forgotPasswordOnPress}
                                 >
                                     <Text style={styles.forgetPasswordText}>
                                         Şifremi Unuttum

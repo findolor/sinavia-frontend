@@ -80,7 +80,13 @@ export default class ResetPassword extends React.Component {
 
     render() {
         return (
-            <View>
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+                <KeyboardAvoidingView
+                    style={[
+                        styles.container,
+                    ]}
+                    behavior={'position'}
+                >
                 <View style={styles.imageContainer}>
                     <Image
                         source={SINAVIA_LOGO}
@@ -89,8 +95,7 @@ export default class ResetPassword extends React.Component {
                                 height: hp(45),
                                 resizeMode: 'contain',
                                 marginTop: hp(7)
-                            },
-                            { height: this.imageHeight }
+                            }
                         ]}
                     />
                 </View>
@@ -116,7 +121,8 @@ export default class ResetPassword extends React.Component {
                         buttonText="Giriş Yap"
                     />
                 </View>
-            </View>
+                </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
         )
     }
 }

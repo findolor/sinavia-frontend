@@ -28,22 +28,22 @@ export default StyleSheet.create({
         color: '#00D9EF'
     },
     separatorContainer: {
+        justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',
         marginVertical: hp(0),
-        backgroundColor: '#fcfcfc',
         flex: 1,
         width: wp(85)
     },
     separatorLine: {
-        flex: 1,
         borderWidth: wp(0.1),
         height: hp(0.1),
+        width: wp(35),
         borderColor: '#9B9FA4'
     },
     separatorOr: {
         fontFamily: 'Averta-Semibold',
         color: '#9B9FA4',
-        marginHorizontal: 8
+        marginBottom: hp(0.25)
     }
 })
