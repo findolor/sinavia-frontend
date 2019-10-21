@@ -102,6 +102,7 @@ export function* authenticateUser(action) {
             getFromStorage,
             'favouriteQuestions'
         )
+        // TODO FETCH THE USER QUESTIONS HERE???
         // Save it to redux state
         if (favouriteQuestions !== null && favouriteQuestions !== []) {
             yield put({

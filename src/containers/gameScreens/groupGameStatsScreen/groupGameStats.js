@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 import styles from './style'
 import { connect } from 'react-redux'
+import { clientActions } from '../../../redux/client/actions'
 import {
     SCENE_KEYS,
     navigationReset
@@ -49,7 +50,10 @@ class GroupGameStatsScreen extends React.Component {
             // Players list
             allPlayersResults: [],
             isQuestionModalVisible: false,
-            favIconSelected: false
+            // Fav icon selection
+            isFaved: false,
+            // Fav icon
+            favouriteIcon: unselectedFav
         }
     }
 
@@ -185,6 +189,23 @@ class GroupGameStatsScreen extends React.Component {
         })
     }
 
+    checkFavouriteStatus = () => {
+        const index = this.props.favouriteQuestions.findIndex(
+            x =>
+                x.question.id ===
+                this.props.fullQuestionList[this.state.questionPosition - 1].id
+        )
+
+        if (index === -1) {
+            this.setState({
+                favouriteIcon: unselectedFav,
+                isFaved: false
+            })
+        } else {
+            this.setState({ favouriteIcon: selectedFav, isFaved: true })
+        }
+    }
+
     // Used for getting the index of questions from scroll view
     handleScrollHorizontal = event => {
         this.scrollX = event.nativeEvent.contentOffset.x
@@ -201,6 +222,7 @@ class GroupGameStatsScreen extends React.Component {
                 Object.keys(this.props.questionList).length /*Image count*/
             )
         })
+        this.checkFavouriteStatus()
     }
 
     // Used for getting the index of screen from scroll view
@@ -270,6 +292,26 @@ class GroupGameStatsScreen extends React.Component {
         this.props.room.leave()
         this.props.client.close()
         navigationReset('main')
+    }
+
+    favouriteOnPress = () => {
+        if (this.state.isFaved) {
+            this.props.unfavouriteQuestion(
+                this.props.clientToken,
+                this.props.clientDBId,
+                this.props.fullQuestionList[this.state.questionPosition - 1],
+                this.props.favouriteQuestions
+            )
+            this.setState({ favouriteIcon: unselectedFav, isFaved: false })
+        } else {
+            this.props.favouriteQuestion(
+                this.props.clientToken,
+                this.props.clientDBId,
+                this.props.fullQuestionList[this.state.questionPosition - 1],
+                this.props.favouriteQuestions
+            )
+            this.setState({ favouriteIcon: selectedFav, isFaved: true })
+        }
     }
 
     render() {
@@ -471,19 +513,9 @@ class GroupGameStatsScreen extends React.Component {
                             <Text style={styles.answerText}>Doğru Cevap</Text>
                         </View>
                         <View style={styles.favIconContainer}>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    this.setState({
-                                        favIconSelected: true
-                                    })
-                                }}
-                            >
+                            <TouchableOpacity onPress={this.favouriteOnPress}>
                                 <Image
-                                    source={
-                                        this.state.favIconSelected === true
-                                            ? selectedFav
-                                            : unselectedFav
-                                    }
+                                    source={this.state.favouriteIcon}
                                     style={styles.favIcon}
                                 />
                             </TouchableOpacity>
@@ -521,11 +553,34 @@ class GroupGameStatsScreen extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+    clientDBId: state.client.clientDBId,
+    clientToken: state.client.clientToken,
+    favouriteQuestions: state.client.favouriteQuestions
+})
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+    favouriteQuestion: (clientToken, clientId, question, favedQuestionList) =>
+        dispatch(
+            clientActions.favouriteQuestion(
+                clientToken,
+                clientId,
+                question,
+                favedQuestionList
+            )
+        ),
+    unfavouriteQuestion: (clientToken, clientId, question, favedQuestionList) =>
+        dispatch(
+            clientActions.unfavouriteQuestion(
+                clientToken,
+                clientId,
+                question,
+                favedQuestionList
+            )
+        )
+})
 
 export default connect(
-    null,
-    null
+    mapStateToProps,
+    mapDispatchToProps
 )(GroupGameStatsScreen)
