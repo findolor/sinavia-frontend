@@ -85,10 +85,10 @@ class Leaderboard extends React.Component {
         let topTenProfilePictures = []
         let remainingProfilePictures = []
 
-        userList.forEach(user => {
-            userUsernames.push(user.user.username)
-            userPoints.push(user.totalPoints)
-            userProfilePictures.push(user.user.profilePicture)
+        userList.forEach(leaderboardEntity => {
+            userUsernames.push(leaderboardEntity.username)
+            userPoints.push(leaderboardEntity.totalPoints)
+            userProfilePictures.push(leaderboardEntity.profilePicture)
         })
 
         // Getting the top ten names to a list and save the rest
