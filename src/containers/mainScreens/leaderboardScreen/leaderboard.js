@@ -114,7 +114,7 @@ class Leaderboard extends React.Component {
         }
 
         let clientIndex = userList.findIndex(
-            x => x.userId === this.props.clientDBId
+            x => x.id === this.props.clientDBId
         )
 
         // Saving the original userList based on the ranking mode
