@@ -10,7 +10,10 @@ window.localStorage = AsyncStorage
 global.Buffer = Buffer
 import * as Colyseus from 'colyseus.js'
 // App service imports
-import { SCENE_KEYS, navigationPush } from '../../../services/navigationService'
+import {
+    SCENE_KEYS,
+    navigationReplace
+} from '../../../services/navigationService'
 import { GAME_ENGINE_ENDPOINT } from '../../../config'
 import { connect } from 'react-redux'
 import { wp, hp } from '../../splashScreen/style'
@@ -88,7 +91,7 @@ class LoadingScreen extends React.Component {
             this.room.removeAllListeners()
             clearTimeout(this.botTimeout)
 
-            navigationPush(SCENE_KEYS.gameScreens.rankedMatchingScreen, {
+            navigationReplace(SCENE_KEYS.gameScreens.rankedMatchingScreen, {
                 // These are necessary for the game logic
                 room: this.room,
                 client: this.client,
@@ -114,19 +117,21 @@ class LoadingScreen extends React.Component {
     }
 
     render() {
-        return (
-            <View style={styles.container}>
-                <View style={{ marginTop: hp(-8) }}>
-                    <LottieView
-                        source={require('../../../assets/gameScreens/rankedLoading.json')}
-                        autoPlay
-                        loop
-                        style={{ width: wp(100), aspectRatio: 0.5 }}
-                        speed={1.1}
-                    />
+        if (this.props.isHardReset) return null
+        else
+            return (
+                <View style={styles.container}>
+                    <View style={{ marginTop: hp(-8) }}>
+                        <LottieView
+                            source={require('../../../assets/gameScreens/rankedLoading.json')}
+                            autoPlay
+                            loop
+                            style={{ width: wp(100), aspectRatio: 0.5 }}
+                            speed={1.1}
+                        />
+                    </View>
                 </View>
-            </View>
-        )
+            )
     }
 }
 

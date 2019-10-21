@@ -6,7 +6,7 @@ import NotchView from '../../../components/notchView'
 import { SCENE_KEYS } from '../../../config/'
 import {
     navigationReset,
-    navigationPush
+    navigationReplace
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
@@ -48,6 +48,8 @@ class FriendGame extends React.Component {
             isMatchOver: false,
             // Question image list
             questionList: [],
+            // Full question list with props
+            fullQuestionList: [],
             // Button border colors
             buttonOneBorderColor: NORMAL_BUTTON_COLOR,
             buttonTwoBorderColor: NORMAL_BUTTON_COLOR,
@@ -91,7 +93,9 @@ class FriendGame extends React.Component {
             // Joker names
             firstJokerName: '',
             secondJokerName: '',
-            thirdJokerName: ''
+            thirdJokerName: '',
+            // Friend matches that was played before
+            friendMatches: []
         }
     }
 
@@ -150,7 +154,6 @@ class FriendGame extends React.Component {
 
         // Clear room listeners
         this.props.room.removeAllListeners()
-        this.props.client.close()
         // Clear other game related things
         this.setState({ isCountDownRunning: false })
     }
@@ -160,20 +163,43 @@ class FriendGame extends React.Component {
             // Which options to remove comes from the server
             case 'remove-options-joker':
                 this.removeOptions(message.optionsToRemove)
-                return
+                break
             // Question answer comes from the server
             case 'second-chance-joker':
                 this.setState({ questionAnswer: message.questionAnswer })
-                return
+                break
             case 'client-leaving':
-                // TODO navigate to the game-stats screen
                 Alert.alert(this.props.opponentUsername, 'oyundan ayrildi.')
-
+                // If the client hasn't answered any of the questions, we just navigate him to main screen
+                if (
+                    Object.keys(message.playerProps[message.clientId].answers)
+                        .length === 0
+                ) {
+                    this.shutdownGame()
+                    this.props.client.close()
+                    navigationReset('main')
+                    break
+                }
                 // Do a shutdown routine
                 this.shutdownGame()
-
-                navigationReset('main')
-                return
+                navigationReplace(SCENE_KEYS.gameScreens.friendGameStats, {
+                    playerProps: message.playerProps,
+                    room: this.props.room,
+                    client: this.props.client,
+                    questionList: this.state.questionList,
+                    playerUsername: this.props.playerUsername,
+                    playerProfilePicture: this.props.playerProfilePicture,
+                    opponentUsername: this.props.opponentUsername,
+                    opponentId: this.props.opponentId,
+                    opponentProfilePicture: this.props.opponentProfilePicture,
+                    fullQuestionList: message.fullQuestionList,
+                    isMatchFinished: false,
+                    friendMatches: message.friendMatches
+                })
+                break
+            case 'friend-matches':
+                this.setState({ friendMatches: message.friendMatches })
+                break
         }
     }
 
@@ -245,7 +271,7 @@ class FriendGame extends React.Component {
                 return
             case 'match-finished':
                 this.shutdownGame()
-                navigationPush(SCENE_KEYS.gameScreens.friendGameStats, {
+                navigationReplace(SCENE_KEYS.gameScreens.friendGameStats, {
                     playerProps: this.state.playerProps,
                     room: this.props.room,
                     client: this.props.client,
@@ -254,9 +280,15 @@ class FriendGame extends React.Component {
                     playerProfilePicture: this.props.playerProfilePicture,
                     opponentUsername: this.props.opponentUsername,
                     opponentId: this.props.opponentId,
-                    opponentProfilePicture: this.props.opponentProfilePicture
+                    opponentProfilePicture: this.props.opponentProfilePicture,
+                    fullQuestionList: this.state.fullQuestionList,
+                    isMatchFinished: true,
+                    friendMatches: this.state.friendMatches
                 })
-                return
+                break
+            case 'save-questions':
+                this.setState({ fullQuestionList: message.fullQuestionList })
+                break
         }
     }
 
@@ -518,8 +550,8 @@ class FriendGame extends React.Component {
     }
 
     backButtonOnPress = () => {
-        this.props.room.removeAllListeners()
         this.props.room.leave()
+        this.props.client.close()
         navigationReset('main')
     }
 

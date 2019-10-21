@@ -2,7 +2,10 @@ import React from 'react'
 import { View, Text, Image, ImageBackground } from 'react-native'
 import styles from './style'
 import NotchView from '../../../components/notchView'
-import { SCENE_KEYS, navigationPush } from '../../../services/navigationService'
+import {
+    SCENE_KEYS,
+    navigationReplace
+} from '../../../services/navigationService'
 
 import SWORD from '../../../assets/sword.png'
 
@@ -15,7 +18,7 @@ class RankedMatchingScreen extends React.Component {
     componentDidMount() {
         // Waits for 5 sec and moves onto game screen
         setTimeout(() => {
-            navigationPush(SCENE_KEYS.gameScreens.rankedGame, {
+            navigationReplace(SCENE_KEYS.gameScreens.rankedGame, {
                 room: this.props.room,
                 client: this.props.client,
                 playerUsername: this.props.playerUsername,
