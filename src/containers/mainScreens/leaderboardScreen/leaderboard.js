@@ -55,7 +55,6 @@ class Leaderboard extends React.Component {
         }
     }
 
-    // TODO WRITE FETCH FUNCTIONS FOR FETHING WHEN THE COURSE SUBJECT CHANGES
     componentDidMount() {
         this.setChoosenExamId().then(() => {
             this.fetchLeaderboard().then(data => {
@@ -213,7 +212,6 @@ class Leaderboard extends React.Component {
             },
             () =>
                 this.fetchLeaderboard().then(data => {
-                    console.log(data)
                     let userList = []
 
                     if (data !== null)
@@ -337,8 +335,15 @@ class Leaderboard extends React.Component {
                 ) {
                     this.setState({ rankingMode: selectedMode }, () => {
                         this.fetchLeaderboard().then(data => {
+                            let userList = []
+
+                            if (data !== null)
+                                data.userList.forEach(user => {
+                                    user = JSON.parse(user)
+                                    userList.push(user)
+                                })
                             // We populate the list again
-                            this.makeLeaderboardLists(data)
+                            this.makeLeaderboardLists(userList)
                         })
                     })
                 } else {
@@ -366,8 +371,15 @@ class Leaderboard extends React.Component {
                         if (Object.keys(this.props.friendIds).length === 0)
                             return
                         this.fetchLeaderboard().then(data => {
+                            let userList = []
+
+                            if (data !== null)
+                                data.userList.forEach(user => {
+                                    user = JSON.parse(user)
+                                    userList.push(user)
+                                })
                             // We populate the list again
-                            this.makeLeaderboardLists(data)
+                            this.makeLeaderboardLists(userList)
                         })
                     })
                 } else {
