@@ -26,14 +26,16 @@ const getOpponentFullInformation = (
     opponentInformation,
     clientId,
     clientToken,
-    isWithSearchBar
+    isWithSearchBar,
+    isFromOpponentScreen
 ) => {
     return {
         type: opponentTypes.GET_OPPONENT_FULL_INFORMATION,
         opponentInformation: opponentInformation,
         clientId: clientId,
         clientToken: clientToken,
-        isWithSearchBar: isWithSearchBar
+        isWithSearchBar: isWithSearchBar,
+        isFromOpponentScreen: isFromOpponentScreen
     }
 }
 

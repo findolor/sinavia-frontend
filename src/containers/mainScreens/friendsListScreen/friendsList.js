@@ -32,11 +32,18 @@ class FriendsList extends React.Component {
 
     async componentDidMount() {
         if (Object.keys(this.props.friendIds).length === 0) return
-        const friends = await userServices.getUsers(
-            this.props.clientToken,
-            this.props.friendIds
-        )
-
+        let friends
+        if (!this.props.isOpponentFriends) {
+            friends = await userServices.getUsers(
+                this.props.clientToken,
+                this.props.friendIds
+            )
+        } else {
+            friends = await userServices.getUsers(
+                this.props.clientToken,
+                this.props.opponentFriendIds
+            )
+        }
         this.setState({ friendsList: friends, originalList: friends })
     }
 
@@ -86,7 +93,8 @@ class FriendsList extends React.Component {
             this.state.friendsList[searchListIndex],
             this.props.clientDBId,
             this.props.clientToken,
-            false
+            false,
+            this.props.isOpponentFriends
         )
     }
 
@@ -107,7 +115,11 @@ class FriendsList extends React.Component {
                         <View style={styles.textInputView}>
                             <TextInput
                                 style={styles.searchBarText}
-                                placeholder="Arkadaşını ara..."
+                                placeholder={
+                                    this.props.isFromOpponentScreen === true
+                                        ? 'Arkadaşını ara...'
+                                        : 'Arkadaş ara...'
+                                }
                                 placeholderTextColor={'#7B7B7B'}
                                 autoCapitalize={'none'}
                                 onChangeText={text =>
@@ -174,14 +186,16 @@ const mapDispatchToProps = dispatch => ({
         opponentInformation,
         clientId,
         clientToken,
-        isWithSearchBar
+        isWithSearchBar,
+        isFromOpponentScreen
     ) =>
         dispatch(
             opponentActions.getOpponentFullInformation(
                 opponentInformation,
                 clientId,
                 clientToken,
-                isWithSearchBar
+                isWithSearchBar,
+                isFromOpponentScreen
             )
         )
 })

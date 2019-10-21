@@ -8,7 +8,11 @@ import {
     TouchableOpacity,
     View
 } from 'react-native'
-import { SCENE_KEYS, navigationPop } from '../../../services/navigationService'
+import {
+    SCENE_KEYS,
+    navigationPop,
+    navigationPush
+} from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import styles from './style'
 import NotchView from '../../../components/notchView'
@@ -72,7 +76,11 @@ class OpponentsProfile extends React.Component {
     // TODO this doesn't refresh the screen upon popping
     // TODO Take a close look here
     backButtonOnPress = () => {
-        if (!this.props.isWithSearchBar && this.state.isFriendDeleted) {
+        if (
+            !this.props.isWithSearchBar &&
+            this.state.isFriendDeleted &&
+            !this.props.isFromOpponentScreen
+        ) {
             navigationPop(true, {
                 popScreen: SCENE_KEYS.mainScreens.friendsList,
                 friendIds: this.props.friendIds
@@ -142,6 +150,13 @@ class OpponentsProfile extends React.Component {
         navigationPop(true, {
             searchedKeyword: this.state.searchText,
             popScreen: SCENE_KEYS.mainScreens.profileSearch
+        })
+    }
+
+    opponentFriendsOnPress = () => {
+        navigationPush(SCENE_KEYS.mainScreens.friendsList, {
+            opponentFriendIds: this.props.friendsList,
+            isOpponentFriends: true
         })
     }
 
@@ -217,7 +232,10 @@ class OpponentsProfile extends React.Component {
                         showsVerticalScrollIndicator={false}
                     >
                         <View style={styles.friendsBoxes}>
-                            <View style={styles.opponentsFriendsBox}>
+                            <TouchableOpacity
+                                style={styles.opponentsFriendsBox}
+                                onPress={this.opponentFriendsOnPress}
+                            >
                                 <View style={styles.opponentsFriendsTextView}>
                                     <Text style={styles.opponentsFriendsText}>
                                         Arkadaşlar
@@ -235,7 +253,7 @@ class OpponentsProfile extends React.Component {
                                         }
                                     </Text>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={this.friendshipStatusOnPress}
                             >

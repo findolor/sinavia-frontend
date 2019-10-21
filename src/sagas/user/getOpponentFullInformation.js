@@ -45,7 +45,9 @@ export function* getOpponentFullInformationSaga(action) {
     const friendsList = []
     res.friendships.forEach(friendship => {
         if (friendship.friendshipStatus !== 'requested')
-            friendsList.push(friendship)
+            if (action.opponentInformation.id === friendship.userId)
+                friendsList.push(friendship.friendId)
+            else friendsList.push(friendship.userId)
     })
 
     yield put({
@@ -121,6 +123,7 @@ export function* getOpponentFullInformationSaga(action) {
         payload: friendWinPercentage
     })
     navigationPush(SCENE_KEYS.mainScreens.opponentsProfile, {
-        isWithSearchBar: action.isWithSearchBar
+        isWithSearchBar: action.isWithSearchBar,
+        isFromOpponentScreen: action.isFromOpponentScreen
     })
 }
