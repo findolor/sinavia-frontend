@@ -12,15 +12,18 @@ export default StyleSheet.create({
         backgroundColor: '#fcfcfc'
     },
     imageContainer: {
-        flex: 55,
+        flex: 53,
         justifyContent: 'center',
         alignItems: 'center'
     },
     buttonContainer: {
-        flex: 20,
+        flex: 19,
         width: wp(100),
         justifyContent: 'space-evenly',
         alignItems: 'center'
+    },
+    spaceView: {
+        flex: 2
     },
     sinaviaText: {
         fontFamily: 'Averta-ExtraBoldItalic',
@@ -32,7 +35,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         marginVertical: hp(0),
-        flex: 1,
+        flex: 3,
         width: wp(85)
     },
     separatorLine: {
@@ -41,9 +44,14 @@ export default StyleSheet.create({
         width: wp(35),
         borderColor: '#9B9FA4'
     },
-    separatorOr: {
+    separatorOrView: {
+        height: hp(3),
+        width: wp(15),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    separatorOrText: {
         fontFamily: 'Averta-Semibold',
-        color: '#9B9FA4',
-        marginBottom: hp(0.25)
+        color: '#9B9FA4'
     }
 })
