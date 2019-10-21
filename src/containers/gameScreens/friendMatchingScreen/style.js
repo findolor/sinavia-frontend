@@ -186,6 +186,16 @@ export default StyleSheet.create({
         fontFamily: 'Averta-BoldItalic',
         fontSize: hp(9),
         color: '#FFFFFF'
+    },
+    backButtonContainer: {
+        paddingBottom: hp(88),
+        paddingLeft: wp(6),
+        paddingTop: hp(3),
+        position: 'absolute'
+    },
+    backButton: {
+        height: hp(3.5),
+        width: hp(3.5)
     }
 })
 

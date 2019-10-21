@@ -12,7 +12,6 @@ import styles, { countdownProps } from './style'
 import NotchView from '../../../components/notchView'
 import CountDown from 'react-native-countdown-component'
 import {
-    SCENE_KEYS,
     navigationReplace,
     navigationReset
 } from '../../../services/navigationService'
@@ -24,9 +23,10 @@ window.localStorage = AsyncStorage
 global.Buffer = Buffer
 import * as Colyseus from 'colyseus.js'
 
-import { GAME_ENGINE_ENDPOINT } from '../../../config'
+import { GAME_ENGINE_ENDPOINT, SCENE_KEYS } from '../../../config'
 
 import SWORD from '../../../assets/sword.png'
+import BACK_BUTTON from '../../../assets/backButton.png'
 
 class FriendMatchingScreen extends React.Component {
     constructor(props) {
@@ -63,8 +63,12 @@ class FriendMatchingScreen extends React.Component {
         })
     }
 
+    // TODO Implement logic for the closed game
+    // If the user closes the game
+    // Friend should not be able to enter the game
     joinRoom = playerOptions => {
         this.room = this.client.join('friendRoom', playerOptions)
+
         // Opponent information
         let opponentUsername
         let opponentId
@@ -78,6 +82,7 @@ class FriendMatchingScreen extends React.Component {
                 this.room.removeAllListeners()
                 this.client.close()
                 navigationReset('main')
+                return
             }
             // Message is playerProps
             const playerIds = Object.keys(message)
@@ -129,6 +134,12 @@ class FriendMatchingScreen extends React.Component {
             playerUsername: this.props.clientInformation.username,
             playerProfilePicture: this.props.clientInformation.profilePicture
         })
+    }
+
+    backButtonOnPress = () => {
+        this.room.leave()
+        this.client.close()
+        navigationReset('main')
     }
 
     render() {
@@ -263,6 +274,11 @@ class FriendMatchingScreen extends React.Component {
                         <Text style={styles.winLoseText}>Kazanma</Text>
                         <Text style={styles.winLoseCounterText}>20</Text>
                     </View>
+                </View>
+                <View style={styles.backButtonContainer}>
+                    <TouchableOpacity onPress={this.backButtonOnPress}>
+                        <Image source={BACK_BUTTON} style={styles.backButton} />
+                    </TouchableOpacity>
                 </View>
             </View>
         )

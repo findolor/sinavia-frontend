@@ -1,7 +1,6 @@
 import React from 'react'
-import { View, Text, Button } from 'react-native'
+import { View, TouchableOpacity, Image } from 'react-native'
 import styles from './style'
-import NotchView from '../../../components/notchView'
 import LottieView from 'lottie-react-native'
 // Colyseus imports
 import { Buffer } from 'buffer'
@@ -11,12 +10,13 @@ global.Buffer = Buffer
 import * as Colyseus from 'colyseus.js'
 // App service imports
 import {
-    SCENE_KEYS,
-    navigationReplace
+    navigationReplace,
+    navigationReset
 } from '../../../services/navigationService'
-import { GAME_ENGINE_ENDPOINT } from '../../../config'
+import { GAME_ENGINE_ENDPOINT, SCENE_KEYS } from '../../../config'
 import { connect } from 'react-redux'
 import { wp, hp } from '../../splashScreen/style'
+import BACK_BUTTON from '../../../assets/return.png'
 
 class LoadingScreen extends React.Component {
     constructor(props) {
@@ -116,11 +116,25 @@ class LoadingScreen extends React.Component {
         })
     }
 
+    backButtonOnPress = () => {
+        this.room.leave()
+        this.client.close()
+        navigationReset('main')
+    }
+
     render() {
         if (this.props.isHardReset) return null
         else
             return (
                 <View style={styles.container}>
+                    <View style={styles.backButtonContainer}>
+                        <TouchableOpacity onPress={this.backButtonOnPress}>
+                            <Image
+                                source={BACK_BUTTON}
+                                style={styles.backButton}
+                            />
+                        </TouchableOpacity>
+                    </View>
                     <View style={{ marginTop: hp(-8) }}>
                         <LottieView
                             source={require('../../../assets/gameScreens/rankedLoading.json')}

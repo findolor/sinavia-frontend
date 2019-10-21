@@ -10,5 +10,14 @@ export default StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff'
+    },
+    backButtonContainer: {
+        paddingLeft: wp(6),
+        paddingTop: hp(3),
+        zIndex: 1
+    },
+    backButton: {
+        height: hp(3.5),
+        width: hp(3.5)
     }
 })
