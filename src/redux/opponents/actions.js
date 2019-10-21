@@ -19,21 +19,25 @@ export const opponentTypes = {
     SAVE_CLIENT_WIN_COUNT: 'save_client_win_count',
     SAVE_FRIENDS_LIST: 'save_friends_list',
     SUBTRACT_FROM_FRIENDS_LIST: 'subtract_from_friends_list',
-    ADD_TO_FRIENDS_LIST: 'add_to_friends_list'
+    ADD_TO_FRIENDS_LIST: 'add_to_friends_list',
+    ADD_TO_OPPONENT_LIST: 'add_to_opponent_list',
+    REMOVE_FROM_OPPONENT_LIST: 'remove_from_opponent_list'
 }
 
 const getOpponentFullInformation = (
     opponentInformation,
     clientId,
     clientToken,
-    isWithSearchBar
+    isWithSearchBar,
+    isFromOpponentScreen
 ) => {
     return {
         type: opponentTypes.GET_OPPONENT_FULL_INFORMATION,
         opponentInformation: opponentInformation,
         clientId: clientId,
         clientToken: clientToken,
-        isWithSearchBar: isWithSearchBar
+        isWithSearchBar: isWithSearchBar,
+        isFromOpponentScreen: isFromOpponentScreen
     }
 }
 
@@ -51,8 +55,15 @@ const addToFriendsList = opponentInformation => {
     }
 }
 
+const removeFromOpponentList = () => {
+    return {
+        type: opponentTypes.REMOVE_FROM_OPPONENT_LIST
+    }
+}
+
 export const opponentActions = {
     getOpponentFullInformation: getOpponentFullInformation,
     subtractFromFriendsList: subtractFromFriendsList,
-    addToFriendsList: addToFriendsList
+    addToFriendsList: addToFriendsList,
+    removeFromOpponentList: removeFromOpponentList
 }

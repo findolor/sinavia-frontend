@@ -59,7 +59,8 @@ class Profile extends React.Component {
 
     friendsLogoOnPress = () => {
         navigationPush(SCENE_KEYS.mainScreens.friendsList, {
-            friendsList: []
+            friendsList: [],
+            isOpponentFriends: false
         })
     }
 
