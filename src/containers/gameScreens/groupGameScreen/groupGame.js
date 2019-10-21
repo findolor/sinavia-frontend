@@ -14,7 +14,7 @@ import NotchView from '../../../components/notchView'
 import { SCENE_KEYS } from '../../../config/'
 import {
     navigationReset,
-    navigationPush
+    navigationReplace
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
@@ -95,7 +95,9 @@ class GroupGame extends React.Component {
             groupLeaderboard: [],
             // Joker names
             secondJokerName: '',
-            thirdJokerName: ''
+            thirdJokerName: '',
+            // Full question list for favouriting
+            fullQuestionList: []
         }
     }
 
@@ -167,8 +169,7 @@ class GroupGame extends React.Component {
         clearTimeout(this.finishedTimeout)
 
         // Clear room listeners
-        this.props.room.leave()
-        this.props.client.close()
+        this.props.room.removeAllListeners()
 
         // Clear other game related things
         this.setState({ isCountDownRunning: false })
@@ -179,27 +180,52 @@ class GroupGame extends React.Component {
             // Which options to remove comes from the server
             case 'remove-options-joker':
                 this.removeOptions(message.optionsToRemove)
-                return
+                break
             // Question answer comes from the server
             case 'second-chance-joker':
                 this.setState({ questionAnswer: message.questionAnswer })
-                return
+                break
             case 'client-leaving':
-                Alert.alert(this.state.opponentId, 'oyuncu oyundan ayrildi.')
-                return
+                Alert.alert(
+                    this.state.opponentId,
+                    `${message.username} oyundan ayrildi.`
+                )
+                break
             case 'only-client':
-                this.onlyClientMatchQuit()
-                return
+                Alert.alert('Herkes oyundan ayrıldı!')
+                // If the client hasn't answered any of the questions, we just navigate him to main screen
+                if (
+                    Object.keys(message.playerProps[message.clientId].answers)
+                        .length === 0
+                ) {
+                    this.onlyClientMatchQuit()
+                    break
+                }
+                // Do a shutdown routine
+                this.shutdownGame()
+                navigationReplace(SCENE_KEYS.gameScreens.groupGameStats, {
+                    playerProps: message.playerProps,
+                    room: this.props.room,
+                    client: this.props.client,
+                    questionList: this.state.questionList,
+                    fullQuestionList: message.fullQuestionList,
+                    isMatchFinished: false
+                })
+                break
             case 'finished-resend':
                 this.props.room.send({
                     action: 'finished'
                 })
+                break
+            case 'save-questions':
+                this.setState({ fullQuestionList: message.fullQuestionList })
+                break
         }
     }
 
     onlyClientMatchQuit = () => {
-        Alert.alert('Herkes oyundan ayrıldı!')
         this.shutdownGame()
+        this.props.client.close()
         navigationReset('main')
     }
 
@@ -247,12 +273,13 @@ class GroupGame extends React.Component {
                 break
             case 'match-finished':
                 this.shutdownGame()
-                navigationPush(SCENE_KEYS.gameScreens.groupGameStats, {
+                navigationReplace(SCENE_KEYS.gameScreens.groupGameStats, {
                     playerProps: this.state.playerProps,
                     room: this.props.room,
                     client: this.props.client,
                     questionList: this.state.questionList,
-                    examName: groupState.matchInformation.examName
+                    fullQuestionList: this.state.fullQuestionList,
+                    isMatchFinished: false
                 })
                 break
             case 'player-props':
@@ -287,28 +314,30 @@ class GroupGame extends React.Component {
         playerIds.forEach(playerId => {
             if (!playerProps[playerId].isLeft) {
                 username = playerProps[playerId].username
-                playerProps[playerId].answers.forEach(result => {
-                    switch (result.result) {
-                        case null:
-                            unanswered++
-                            return
-                        case true:
-                            correct++
-                            return
-                        case false:
-                            incorrect++
-                    }
-                })
+                if (playerProps[playerId].answers !== undefined) {
+                    playerProps[playerId].answers.forEach(result => {
+                        switch (result.result) {
+                            case null:
+                                unanswered++
+                                return
+                            case true:
+                                correct++
+                                return
+                            case false:
+                                incorrect++
+                        }
+                    })
 
-                playerList.push({
-                    username: username,
-                    correct: correct,
-                    incorrect: incorrect,
-                    unanswered: unanswered
-                })
-                correct = 0
-                incorrect = 0
-                unanswered = 0
+                    playerList.push({
+                        username: username,
+                        correct: correct,
+                        incorrect: incorrect,
+                        unanswered: unanswered
+                    })
+                    correct = 0
+                    incorrect = 0
+                    unanswered = 0
+                }
             }
         })
         this.setState({ groupLeaderboard: playerList })
@@ -521,8 +550,8 @@ class GroupGame extends React.Component {
     }
 
     backButtonOnPress = () => {
-        this.props.room.removeAllListeners()
         this.props.room.leave()
+        this.props.client.close()
         navigationReset('main')
     }
 

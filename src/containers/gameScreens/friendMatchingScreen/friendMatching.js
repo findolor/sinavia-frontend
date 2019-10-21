@@ -13,7 +13,7 @@ import NotchView from '../../../components/notchView'
 import CountDown from 'react-native-countdown-component'
 import {
     SCENE_KEYS,
-    navigationPush,
+    navigationReplace,
     navigationReset
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
@@ -96,7 +96,7 @@ class FriendMatchingScreen extends React.Component {
 
             this.room.removeAllListeners()
 
-            navigationPush(SCENE_KEYS.gameScreens.friendGame, {
+            navigationReplace(SCENE_KEYS.gameScreens.friendGame, {
                 // These are necessary for the game logic
                 room: this.room,
                 client: this.client,
@@ -121,7 +121,7 @@ class FriendMatchingScreen extends React.Component {
 
         this.room.removeAllListeners()
 
-        navigationPush(SCENE_KEYS.gameScreens.soloGameScreen, {
+        navigationReplace(SCENE_KEYS.gameScreens.soloGameScreen, {
             // These are necessary for the game logic
             room: this.room,
             client: this.client,

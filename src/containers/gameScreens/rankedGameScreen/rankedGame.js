@@ -6,7 +6,7 @@ import NotchView from '../../../components/notchView'
 import { SCENE_KEYS } from '../../../config/'
 import {
     navigationReset,
-    navigationPush
+    navigationReplace
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
@@ -152,7 +152,6 @@ class RankedGame extends React.Component {
 
         // Clear room listeners
         this.props.room.removeAllListeners()
-        this.props.client.close()
         // Clear other game related things
         this.setState({ isCountDownRunning: false })
     }
@@ -168,13 +167,32 @@ class RankedGame extends React.Component {
                 this.setState({ questionAnswer: message.questionAnswer })
                 break
             case 'client-leaving':
-                // TODO navigate to the game-stats screen
                 Alert.alert(this.props.opponentUsername, 'oyundan ayrildi.')
-
+                // If the client hasn't answered any of the questions, we just navigate him to main screen
+                if (
+                    Object.keys(message.playerProps[message.clientId].answers)
+                        .length === 0
+                ) {
+                    this.shutdownGame()
+                    this.props.client.close()
+                    navigationReset('main')
+                    break
+                }
                 // Do a shutdown routine
                 this.shutdownGame()
-
-                navigationReset('main')
+                navigationReplace(SCENE_KEYS.gameScreens.gameStats, {
+                    playerProps: message.playerProps,
+                    room: this.props.room,
+                    client: this.props.client,
+                    questionList: this.state.questionList,
+                    playerUsername: this.props.playerUsername,
+                    playerProfilePicture: this.props.playerProfilePicture,
+                    opponentUsername: this.props.opponentUsername,
+                    opponentId: this.props.opponentId,
+                    opponentProfilePicture: this.props.opponentProfilePicture,
+                    fullQuestionList: message.fullQuestionList,
+                    isMatchFinished: false
+                })
                 break
             case 'save-questions':
                 this.setState({ fullQuestionList: message.fullQuestionList })
@@ -183,6 +201,9 @@ class RankedGame extends React.Component {
                 this.props.room.send({
                     action: 'finished'
                 })
+                break
+            case 'player-props':
+                this.setState({ playerProps: message.playerProps })
                 break
         }
     }
@@ -218,7 +239,7 @@ class RankedGame extends React.Component {
                         start: true
                     })
                 }, 3000)
-                return
+                break
             // As soon as someone answers, a result event is fired
             case 'result':
                 if (
@@ -237,7 +258,7 @@ class RankedGame extends React.Component {
                     )
                 }
                 this.setState({ playerProps: rankedState.playerProps })
-                return
+                break
             case 'show-results':
                 // 8 second countdown time for the results
                 this.setState({
@@ -252,10 +273,10 @@ class RankedGame extends React.Component {
                     // We wait 1.5 seconds for the reveal
                     this.updatePlayerResults()
                 }, 1500)
-                return
+                break
             case 'match-finished':
                 this.shutdownGame()
-                navigationPush(SCENE_KEYS.gameScreens.gameStats, {
+                navigationReplace(SCENE_KEYS.gameScreens.gameStats, {
                     playerProps: this.state.playerProps,
                     room: this.props.room,
                     client: this.props.client,
@@ -265,7 +286,8 @@ class RankedGame extends React.Component {
                     opponentUsername: this.props.opponentUsername,
                     opponentId: this.props.opponentId,
                     opponentProfilePicture: this.props.opponentProfilePicture,
-                    fullQuestionList: this.state.fullQuestionList
+                    fullQuestionList: this.state.fullQuestionList,
+                    isMatchFinished: true
                 })
                 return
         }
@@ -529,8 +551,13 @@ class RankedGame extends React.Component {
     }
 
     backButtonOnPress = () => {
-        this.props.room.removeAllListeners()
         this.props.room.leave()
+        this.props.client.close()
+
+        // If the client has some correct answeres before leaving, we add them
+        const totalEarnedPoints = this.state.playerOneCorrect * 20
+        this.props.updateTotalPoints(totalEarnedPoints)
+
         navigationReset('main')
     }
 
@@ -1005,7 +1032,9 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    subtractJoker: jokerId => dispatch(clientActions.subtractJoker(jokerId))
+    subtractJoker: jokerId => dispatch(clientActions.subtractJoker(jokerId)),
+    updateTotalPoints: totalEarnedPoints =>
+        dispatch(clientActions.updateTotalPoints(totalEarnedPoints))
 })
 
 export default connect(

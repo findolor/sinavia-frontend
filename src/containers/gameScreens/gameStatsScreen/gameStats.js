@@ -75,7 +75,9 @@ class GameStatsScreen extends React.Component {
             // Fav icon selection
             isFaved: false,
             // Fav icon
-            favouriteIcon: unselectedFav
+            favouriteIcon: unselectedFav,
+            // Current match information
+            matchInformation: {}
         }
     }
 
@@ -129,6 +131,10 @@ class GameStatsScreen extends React.Component {
             const playerProps = this.props.playerProps
             const playerIds = Object.keys(playerProps)
 
+            // If one of the users leave the game early
+            // We mark number of questions they played in the match and delete the rest
+            let undefinedQuestionIndex = -1
+
             let opponentCorrect = 0
             let opponentIncorrect = 0
             let opponentUnanswered = 0
@@ -144,7 +150,10 @@ class GameStatsScreen extends React.Component {
             let totalEarnedPoints = 20
 
             playerIds.forEach(element => {
-                if (element === 'matchInformation') return
+                if (element === 'matchInformation') {
+                    this.setState({ matchInformation: playerProps[element] })
+                    return
+                }
                 if (this.props.client.id !== element) {
                     opponentUsername = playerProps[element].username
                     opponentProfilePicture = playerProps[element].profilePicture
@@ -163,7 +172,7 @@ class GameStatsScreen extends React.Component {
                 } else {
                     playerUsername = playerProps[element].username
                     playerProfilePicture = playerProps[element].profilePicture
-                    playerProps[element].answers.forEach(result => {
+                    playerProps[element].answers.forEach((result, index) => {
                         switch (result.result) {
                             case null:
                                 playerUnanswered++
@@ -174,6 +183,7 @@ class GameStatsScreen extends React.Component {
                             case false:
                                 playerIncorrect++
                         }
+                        undefinedQuestionIndex = index
                     })
                 }
             })
@@ -189,26 +199,52 @@ class GameStatsScreen extends React.Component {
                 opponentNet = opponentCorrect - opponentIncorrect / 3
             }
 
-            if (playerNet < opponentNet) {
-                this.setState({
-                    matchResultLogo: YOU_LOSE_LOGO,
-                    matchResultText: 'Kaybettin',
-                    matchResultPoint: 0
-                })
-            } else if (playerNet === opponentNet) {
-                this.setState({
-                    matchResultLogo: DRAW_LOGO,
-                    matchResultText: 'Berabere',
-                    matchResultPoint: 50
-                })
-                totalEarnedPoints += 50
+            if (this.props.isMatchFinished) {
+                if (playerNet < opponentNet) {
+                    this.setState({
+                        matchResultLogo: YOU_LOSE_LOGO,
+                        matchResultText: 'Kaybettin',
+                        matchResultPoint: 0
+                    })
+                } else if (playerNet === opponentNet) {
+                    this.setState({
+                        matchResultLogo: DRAW_LOGO,
+                        matchResultText: 'Berabere',
+                        matchResultPoint: 50
+                    })
+                    totalEarnedPoints += 50
+                } else {
+                    this.setState({
+                        matchResultLogo: YOU_WIN_LOGO,
+                        matchResultText: 'Kazandın',
+                        matchResultPoint: 100
+                    })
+                    totalEarnedPoints += 100
+                }
             } else {
                 this.setState({
                     matchResultLogo: YOU_WIN_LOGO,
                     matchResultText: 'Kazandın',
-                    matchResultPoint: 100
+                    matchResultPoint: 100,
+                    finishedGamePoint: 0,
+                    isReplayButtonDisabled: true,
+                    replayButtonBorderColor: REPLAY_DEACTIVE_BORDER
                 })
-                totalEarnedPoints += 100
+                // We add 80 because we take away the finished match point
+                totalEarnedPoints += 80
+
+                this.props.fullQuestionList.splice(
+                    undefinedQuestionIndex + 1,
+                    Object.keys(this.props.fullQuestionList).length -
+                        undefinedQuestionIndex +
+                        1
+                )
+                this.props.questionList.splice(
+                    undefinedQuestionIndex + 1,
+                    Object.keys(this.props.questionList).length -
+                        undefinedQuestionIndex +
+                        1
+                )
             }
 
             totalEarnedPoints += playerCorrect * 20
@@ -216,16 +252,17 @@ class GameStatsScreen extends React.Component {
             this.props.updateTotalPoints(totalEarnedPoints)
 
             for (i = 0; i < Object.keys(this.props.questionList).length; i++) {
-                this.state.allQuestionsList.push(
-                    <View style={styles.scrollQuestionContainer} key={i}>
-                        <View style={styles.questionContainer}>
-                            <Image
-                                source={{ uri: this.props.questionList[i] }}
-                                style={styles.questionStyle}
-                            />
+                if (this.props.playerProps)
+                    this.state.allQuestionsList.push(
+                        <View style={styles.scrollQuestionContainer} key={i}>
+                            <View style={styles.questionContainer}>
+                                <Image
+                                    source={{ uri: this.props.questionList[i] }}
+                                    style={styles.questionStyle}
+                                />
+                            </View>
                         </View>
-                    </View>
-                )
+                    )
             }
 
             this.setState({
@@ -356,7 +393,7 @@ class GameStatsScreen extends React.Component {
 
     newOpponentButtonOnPress = () => {
         this.props.room.leave()
-        navigationReset('game')
+        navigationReset('game', this.state.matchInformation)
     }
 
     mainScreenButtonOnPress = () => {

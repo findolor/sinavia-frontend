@@ -5,7 +5,7 @@ import {
 } from 'react-native-responsive-screen'
 import React from 'react'
 
-export default (AuthTextInput = ({
+export default AuthTextInput = ({
     placeholder,
     placeholderTextColor,
     onChangeText,
@@ -23,7 +23,7 @@ export default (AuthTextInput = ({
             />
         </View>
     )
-})
+}
 
 const styles = StyleSheet.create({
     textInputContainer: {
