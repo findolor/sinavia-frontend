@@ -55,7 +55,6 @@ class Leaderboard extends React.Component {
         }
     }
 
-    // TODO WRITE FETCH FUNCTIONS FOR FETHING WHEN THE COURSE SUBJECT CHANGES
     componentDidMount() {
         this.setChoosenExamId().then(() => {
             this.fetchLeaderboard().then(data => {
@@ -85,10 +84,10 @@ class Leaderboard extends React.Component {
         let topTenProfilePictures = []
         let remainingProfilePictures = []
 
-        userList.forEach(user => {
-            userUsernames.push(user.user.username)
-            userPoints.push(user.totalPoints)
-            userProfilePictures.push(user.user.profilePicture)
+        userList.forEach(leaderboardEntity => {
+            userUsernames.push(leaderboardEntity.username)
+            userPoints.push(leaderboardEntity.totalPoints)
+            userProfilePictures.push(leaderboardEntity.profilePicture)
         })
 
         // Getting the top ten names to a list and save the rest
@@ -115,7 +114,7 @@ class Leaderboard extends React.Component {
         }
 
         let clientIndex = userList.findIndex(
-            x => x.userId === this.props.clientDBId
+            x => x.id === this.props.clientDBId
         )
 
         // Saving the original userList based on the ranking mode
@@ -213,7 +212,6 @@ class Leaderboard extends React.Component {
             },
             () =>
                 this.fetchLeaderboard().then(data => {
-                    console.log(data)
                     let userList = []
 
                     if (data !== null)
@@ -337,8 +335,15 @@ class Leaderboard extends React.Component {
                 ) {
                     this.setState({ rankingMode: selectedMode }, () => {
                         this.fetchLeaderboard().then(data => {
+                            let userList = []
+
+                            if (data !== null)
+                                data.userList.forEach(user => {
+                                    user = JSON.parse(user)
+                                    userList.push(user)
+                                })
                             // We populate the list again
-                            this.makeLeaderboardLists(data)
+                            this.makeLeaderboardLists(userList)
                         })
                     })
                 } else {
@@ -366,8 +371,15 @@ class Leaderboard extends React.Component {
                         if (Object.keys(this.props.friendIds).length === 0)
                             return
                         this.fetchLeaderboard().then(data => {
+                            let userList = []
+
+                            if (data !== null)
+                                data.userList.forEach(user => {
+                                    user = JSON.parse(user)
+                                    userList.push(user)
+                                })
                             // We populate the list again
-                            this.makeLeaderboardLists(data)
+                            this.makeLeaderboardLists(userList)
                         })
                     })
                 } else {
