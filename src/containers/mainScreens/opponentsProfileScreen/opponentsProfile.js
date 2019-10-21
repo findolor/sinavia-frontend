@@ -85,7 +85,10 @@ class OpponentsProfile extends React.Component {
                 popScreen: SCENE_KEYS.mainScreens.friendsList,
                 friendIds: this.props.friendIds
             })
-        } else navigationPop()
+        } else {
+            this.props.removeFromOpponentList()
+            navigationPop()
+        }
     }
 
     sendFriendshipRequest = () => {
@@ -656,25 +659,63 @@ const mapStateToProps = state => ({
     clientToken: state.client.clientToken,
     friendIds: state.friends.friendIds,
     clientInformation: state.client.clientInformation,
-    opponentInformation: state.opponent.opponentInformation,
-    totalRankedWin: state.opponent.totalRankedWin,
-    totalRankedLose: state.opponent.totalRankedLose,
-    totalRankedDraw: state.opponent.totalRankedDraw,
-    totalRankedGames: state.opponent.totalRankedGames,
-    totalFriendWin: state.opponent.totalFriendWin,
-    totalFriendLose: state.opponent.totalFriendLose,
-    totalFriendDraw: state.opponent.totalFriendDraw,
-    totalFriendGames: state.opponent.totalFriendGames,
-    rankedWinPercentage: state.opponent.rankedWinPercentage,
-    friendWinPercentage: state.opponent.friendWinPercentage,
-    isFriends: state.opponent.isFriends,
-    isRequesting: state.opponent.isRequesting,
-    isRequested: state.opponent.isRequested,
-    friendsList: state.opponent.friendsList,
-    totalFriendMatchesCount: state.opponent.totalFriendMatchesCount,
-    opponentWinCount: state.opponent.opponentWinCount,
-    clientWinCount: state.opponent.clientWinCount,
-    totalPoints: state.opponent.totalPoints,
+    opponentInformation:
+        state.opponent.opponentList[state.opponent.opponentListLenght - 1]
+            .opponentInformation,
+    totalRankedWin:
+        state.opponent.opponentList[state.opponent.opponentListLenght - 1]
+            .totalRankedWin,
+    totalRankedLose:
+        state.opponent.opponentList[state.opponent.opponentListLenght - 1]
+            .totalRankedLose,
+    totalRankedDraw:
+        state.opponent.opponentList[state.opponent.opponentListLenght - 1]
+            .totalRankedDraw,
+    totalRankedGames:
+        state.opponent.opponentList[state.opponent.opponentListLenght - 1]
+            .totalRankedGames,
+    totalFriendWin:
+        state.opponent.opponentList[state.opponent.opponentListLenght - 1]
+            .totalFriendWin,
+    totalFriendLose:
+        state.opponent.opponentList[state.opponent.opponentListLenght - 1]
+            .totalFriendLose,
+    totalFriendDraw:
+        state.opponent.opponentList[state.opponent.opponentListLenght - 1]
+            .totalFriendDraw,
+    totalFriendGames:
+        state.opponent.opponentList[state.opponent.opponentListLenght - 1]
+            .totalFriendGames,
+    rankedWinPercentage:
+        state.opponent.opponentList[state.opponent.opponentListLenght - 1]
+            .rankedWinPercentage,
+    friendWinPercentage:
+        state.opponent.opponentList[state.opponent.opponentListLenght - 1]
+            .friendWinPercentage,
+    isFriends:
+        state.opponent.opponentList[state.opponent.opponentListLenght - 1]
+            .isFriends,
+    isRequesting:
+        state.opponent.opponentList[state.opponent.opponentListLenght - 1]
+            .isRequesting,
+    isRequested:
+        state.opponent.opponentList[state.opponent.opponentListLenght - 1]
+            .isRequested,
+    friendsList:
+        state.opponent.opponentList[state.opponent.opponentListLenght - 1]
+            .friendsList,
+    totalFriendMatchesCount:
+        state.opponent.opponentList[state.opponent.opponentListLenght - 1]
+            .totalFriendMatchesCount,
+    opponentWinCount:
+        state.opponent.opponentList[state.opponent.opponentListLenght - 1]
+            .opponentWinCount,
+    clientWinCount:
+        state.opponent.opponentList[state.opponent.opponentListLenght - 1]
+            .clientWinCount,
+    totalPoints:
+        state.opponent.opponentList[state.opponent.opponentListLenght - 1]
+            .totalPoints,
     friendshipStatus: state.friends.friendshipStatus,
     isFriendRequestSent: state.friends.isFriendRequestSent
 })
@@ -735,7 +776,9 @@ const mapDispatchToProps = dispatch => ({
     subtractFromFriendsList: opponentInformation =>
         dispatch(opponentActions.subtractFromFriendsList(opponentInformation)),
     addToFriendsList: opponentInformation =>
-        dispatch(opponentActions.addToFriendsList(opponentInformation))
+        dispatch(opponentActions.addToFriendsList(opponentInformation)),
+    removeFromOpponentList: () =>
+        dispatch(opponentActions.removeFromOpponentList())
 })
 
 export default connect(

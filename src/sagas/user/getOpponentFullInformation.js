@@ -122,6 +122,9 @@ export function* getOpponentFullInformationSaga(action) {
         type: opponentTypes.SAVE_FRIEND_WIN_PERCENTAGE,
         payload: friendWinPercentage
     })
+    yield put({
+        type: opponentTypes.ADD_TO_OPPONENT_LIST
+    })
     navigationPush(SCENE_KEYS.mainScreens.opponentsProfile, {
         isWithSearchBar: action.isWithSearchBar,
         isFromOpponentScreen: action.isFromOpponentScreen

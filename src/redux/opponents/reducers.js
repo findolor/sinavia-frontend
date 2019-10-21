@@ -109,6 +109,21 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 friendsList: state.friendsList
             }
+        case opponentTypes.ADD_TO_OPPONENT_LIST: {
+            const opponentState = state
+            state.opponentList.push(opponentState)
+            state.opponentListLenght++
+            return {
+                ...state
+            }
+        }
+        case opponentTypes.REMOVE_FROM_OPPONENT_LIST: {
+            state.opponentList.pop()
+            state.opponentListLenght--
+            return {
+                ...state
+            }
+        }
         default:
             return state
     }
