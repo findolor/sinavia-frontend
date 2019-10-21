@@ -502,11 +502,11 @@ class FriendGameStatsScreen extends React.Component {
                                                     {
                                                         width: widthPercentageToDP(
                                                             (this.state
-                                                                .clientWinCount /
+                                                                .playerFriendMatchWinCount /
                                                                 (this.state
-                                                                    .clientWinCount +
+                                                                    .playerFriendMatchWinCount +
                                                                     this.state
-                                                                        .opponentWinCount)) *
+                                                                        .opponentFriendMatchWinCount)) *
                                                                 82
                                                         )
                                                     }
@@ -518,11 +518,11 @@ class FriendGameStatsScreen extends React.Component {
                                                     {
                                                         width: widthPercentageToDP(
                                                             (this.state
-                                                                .opponentWinCount /
+                                                                .opponentFriendMatchWinCount /
                                                                 (this.state
-                                                                    .clientWinCount +
+                                                                    .playerFriendMatchWinCount +
                                                                     this.state
-                                                                        .opponentWinCount)) *
+                                                                        .opponentFriendMatchWinCount)) *
                                                                 82
                                                         )
                                                     }
