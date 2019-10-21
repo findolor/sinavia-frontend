@@ -12,7 +12,9 @@ export function* unfavouriteQuestionSaga(action) {
     )
 
     const favedQuestionList = action.favedQuestionList
-    const index = favedQuestionList.findIndex(x => x.id === action.question.id)
+    const index = favedQuestionList.findIndex(
+        x => x.questionId === action.question.id
+    )
 
     favedQuestionList.splice(index, 1)
 
