@@ -9,7 +9,9 @@ import {
     Animated,
     Keyboard,
     Platform,
-    Alert
+    Alert,
+    TouchableWithoutFeedback,
+    KeyboardAvoidingView
 } from 'react-native'
 import { navigationPush } from '../../../services/navigationService'
 import { SCENE_KEYS } from '../../../config/index'
@@ -170,27 +172,31 @@ class GetInfo extends React.Component {
         if (Object.keys(wrongInformationList).length === 0)
             this.props.createUser(userInformation)
         else Alert.alert(wrongInformationString)
+        console.log(userInformation)
     }
 
     render() {
         return (
-            <Animated.View
-                style={[
-                    styles.container,
-                    { paddingBottom: this.keyboardHeight }
-                ]}
-            >
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+                <KeyboardAvoidingView
+                    style={[
+                        styles.container,
+                    ]}
+                    behavior={'position'}
+                >
                 <NotchView color={'#fcfcfc'} />
                 <View style={styles.imageContainer}>
                     <Image
                         source={SINAVIA_LOGO}
                         style={{
-                            height: hp(15),
+                            height: hp(36),
                             resizeMode: 'contain'
                         }}
                     />
                 </View>
-                <Text>*Doldurulması zorunlu alanlar</Text>
+                <View style={styles.compulsoryTextContainer}>
+                    <Text style={styles.compulsoryText}>*Doldurulması zorunlu alanlar</Text>
+                </View>
                 <View style={styles.allTextInputsContainer}>
                     <AuthTextInput
                         placeholder="Kullanıcı Adı*"
@@ -232,10 +238,12 @@ class GetInfo extends React.Component {
                         color="#00D9EF"
                         buttonText="Onayla"
                         borderRadius={10}
+                        marginTop={hp(2)}
                         onPress={this.registerOnPress}
                     />
                 </View>
-            </Animated.View>
+                </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
         )
     }
 }

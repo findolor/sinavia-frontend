@@ -9,7 +9,9 @@ import {
     Animated,
     Keyboard,
     Platform,
-    Alert
+    Alert,
+    TouchableWithoutFeedback,
+    KeyboardAvoidingView
 } from 'react-native'
 import { navigationPush } from '../../../services/navigationService'
 import { SCENE_KEYS } from '../../../config/index'
@@ -27,7 +29,8 @@ import NotchView from '../../../components/notchView'
 import { showMessage } from 'react-native-flash-message'
 
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
-import EYE from '../../../assets/eye.png'
+import OPENED_EYE from '../../../assets/openedEye.png'
+import CLOSED_EYE from '../../../assets/closedEye.png'
 
 const ANIMATION_DURATION = 100
 
@@ -98,6 +101,7 @@ class Register extends React.Component {
 
     managePasswordVisibility = () => {
         this.setState({ hidePasswordFirst: !this.state.hidePasswordFirst })
+        console.log(this.state.password)
     }
 
     managePasswordVisibility2 = () => {
@@ -114,6 +118,10 @@ class Register extends React.Component {
 
     hideDateTimePicker = () => {
         this.setState({ isDateTimePickerVisible: false })
+    }
+
+    goToLoginScreen = () => {
+        navigationPush(SCENE_KEYS.authScreens.login)
     }
 
     handleDatePicked = date => {
@@ -186,57 +194,27 @@ class Register extends React.Component {
 
     render() {
         return (
-            <Animated.View
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+            <KeyboardAvoidingView
                 style={[
                     styles.container,
-                    { paddingBottom: this.keyboardHeight }
                 ]}
+                behavior={'position'}
             >
                 <NotchView color={'#fcfcfc'} />
                 <View style={styles.imageContainer}>
                     <Image
                         source={SINAVIA_LOGO}
                         style={{
-                            height: hp(15),
+                            height: hp(36),
+                            marginBottom: hp(2),
                             resizeMode: 'contain'
                         }}
                     />
                 </View>
                 <View style={styles.allTextInputsContainer}>
-                    {/* <AuthTextInput
-                        placeholder="Kullanıcı Adı                                                                          "
-                        placeholderTextColor="#8A8888"
-                        onChangeText={this.usernameOnChange}
-                    /> */}
-                    {/* <AuthTextInput
-                        placeholder="Ad Soyad                                                                               "
-                        placeholderTextColor="#8A8888"
-                        onChangeText={this.nameLastameOnChange}
-                    /> */}
-                    {/* <TouchableOpacity onPress={this.showDateTimePicker}>
-                        <View style={styles.textInputContainer}>
-                            <Text
-                                style={[
-                                    styles.textInput,
-                                    { color: this.state.dateColor }
-                                ]}
-                            >
-                                {this.state.birthDateUI}
-                            </Text>
-                        </View>
-                    </TouchableOpacity> */}
-                    {/* <DateTimePicker
-                        isVisible={this.state.isDateTimePickerVisible}
-                        onConfirm={this.handleDatePicked}
-                        onCancel={this.hideDateTimePicker}
-                    /> */}
-                    {/* <AuthTextInput
-                        placeholder="Şehir  (Opsiyonel)                                                                         "
-                        placeholderTextColor="#8A8888"
-                        onChangeText={this.cityOnChange}
-                    /> */}
                     <AuthTextInput
-                        placeholder="E-Posta                                                                                "
+                        placeholder="E-Posta"
                         placeholderTextColor="#8A8888"
                         onChangeText={this.emailOnChange}
                     />
@@ -244,7 +222,7 @@ class Register extends React.Component {
                         <TextInput
                             style={styles.textInput}
                             secureTextEntry={this.state.hidePasswordFirst}
-                            placeholder="Şifre                                                                              "
+                            placeholder="Şifre"
                             placeholderTextColor={'#8A8888'}
                             onChangeText={text => {
                                 if (text === '') {
@@ -259,18 +237,29 @@ class Register extends React.Component {
                                 }
                             }}
                         />
-                        {this.state.showPasswordEyeFirst && (
+                        {this.state.showPasswordEyeFirst && this.state.showPasswordEyeFirst === true && (
                             <View style={styles.eyeContainer}>
                                 <TouchableOpacity
                                     onPress={this.managePasswordVisibility}
                                 >
+                                    {this.state.hidePasswordFirst === true && (
+                                        <Image
+                                            source={CLOSED_EYE}
+                                            style={{
+                                                height: hp(3),
+                                                width: hp(5)
+                                            }}
+                                        />
+                                    )}
+                                    {this.state.hidePasswordFirst === false && (
                                     <Image
-                                        source={EYE}
+                                        source={OPENED_EYE}
                                         style={{
                                             height: hp(3),
-                                            width: wp(9)
+                                            width: hp(5)
                                         }}
                                     />
+                                    )}
                                 </TouchableOpacity>
                             </View>
                         )}
@@ -296,22 +285,51 @@ class Register extends React.Component {
                                 }
                             }}
                         />
+                        {this.state.showPasswordEyeSecond && this.state.showPasswordEyeSecond === true && (
+                            <View style={styles.eyeContainer}>
+                                <TouchableOpacity
+                                    onPress={this.managePasswordVisibility2}
+                                >
+                                    {this.state.hidePasswordSecond === true && (
+                                        <Image
+                                            source={CLOSED_EYE}
+                                            style={{
+                                                height: hp(3),
+                                                width: hp(5)
+                                            }}
+                                        />
+                                    )}
+                                    {this.state.hidePasswordSecond === false && (
+                                        <Image
+                                            source={OPENED_EYE}
+                                            style={{
+                                                height: hp(3),
+                                                width: hp(5)
+                                            }}
+                                        />
+                                    )}
+                                </TouchableOpacity>
+                            </View>
+                        )}
                     </View>
                 </View>
                 <View style={styles.toggleContainer}>
-                    <Switch
-                        style={{
-                            marginLeft: wp(7.5),
-                            transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }]
-                        }}
-                        onValueChange={this.toggleSwitch}
-                        value={this.state.switchValue}
-                        trackColor="#00D9EF"
-                        thumbColor="#00D9EF"
-                    />
+                    <View style={styles.switchView}>
+                        <Switch
+                            style={{
+                                transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }]
+                            }}
+                            onValueChange={this.toggleSwitch}
+                            value={this.state.switchValue}
+                            trackColor="#00D9EF"
+                            thumbColor="#00D9EF"
+                        />
+                    </View>
                     <View style={styles.licenseTextContainer}>
                         <Text style={styles.toggleText}>
-                            Kullanıcı sözleşmesini okudum ve kabul ediyorum.
+                            <Text onPress={() =>
+                            {alert('Model gelecek');}}
+                                  style={{color: '#00D9EF'}}>Kullanıcı sözleşmesi</Text>ni okudum ve kabul ediyorum.
                         </Text>
                     </View>
                 </View>
@@ -327,19 +345,11 @@ class Register extends React.Component {
                 </View>
                 <View style={styles.gotoLoginContainer}>
                     <Text style={styles.gotoLoginTextFirst}>
-                        Zaten bir hesabın var mı?
+                        Zaten bir hesabın var mı? <Text onPress={this.goToLoginScreen} style={styles.gotoLoginTextSecond}>Giriş Yap</Text>
                     </Text>
-                    <TouchableOpacity
-                        onPress={() => {
-                            navigationPush(SCENE_KEYS.authScreens.login)
-                        }}
-                    >
-                        <Text style={styles.gotoLoginTextSecond}>
-                            Giriş Yap
-                        </Text>
-                    </TouchableOpacity>
                 </View>
-            </Animated.View>
+            </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
         )
     }
 }

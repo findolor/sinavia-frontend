@@ -33,7 +33,8 @@ export default StyleSheet.create({
         flex: 8,
         width: wp(85),
         justifyContent: 'center',
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        marginLeft: wp(7.5)
     },
     textStyle: {
         fontFamily: 'Averta-Regular',

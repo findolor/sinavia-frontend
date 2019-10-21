@@ -5,7 +5,10 @@ import {
     Text,
     Keyboard,
     Animated,
-    Platform
+    Platform,
+    TouchableWithoutFeedback,
+    KeyboardAvoidingView,
+    Image
 } from 'react-native'
 import {
     widthPercentageToDP as wp,
@@ -77,22 +80,22 @@ export default class ResetPassword extends React.Component {
 
     render() {
         return (
-            <Animated.View
-                style={[
-                    styles.container,
-                    { paddingBottom: this.keyboardHeight }
-                ]}
-            >
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+                <KeyboardAvoidingView
+                    style={[
+                        styles.container,
+                    ]}
+                    behavior={'position'}
+                >
                 <View style={styles.imageContainer}>
-                    <Animated.Image
+                    <Image
                         source={SINAVIA_LOGO}
                         style={[
                             {
                                 height: hp(45),
                                 resizeMode: 'contain',
                                 marginTop: hp(7)
-                            },
-                            { height: this.imageHeight }
+                            }
                         ]}
                     />
                 </View>
@@ -118,7 +121,8 @@ export default class ResetPassword extends React.Component {
                         buttonText="Giriş Yap"
                     />
                 </View>
-            </Animated.View>
+                </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
         )
     }
 }

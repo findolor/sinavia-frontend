@@ -26,27 +26,21 @@ export default AuthTextInput = ({
 }
 
 const styles = StyleSheet.create({
-    textInputBorderContainer: {
-        height: hp(9),
-        width: wp(100),
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
     textInputContainer: {
         height: hp(7),
         width: wp(85),
         borderWidth: wp(0.3),
         borderRadius: 10,
         borderColor: '#989696',
-        backgroundColor: 'white',
         alignItems: 'flex-start',
         justifyContent: 'center'
     },
     textInput: {
         fontFamily: 'Averta-Regular',
-        marginLeft: wp(4),
         fontSize: hp(2),
-        color: '#000'
+        height: hp(7),
+        width: wp(85),
+        borderRadius: 10,
+        paddingHorizontal: wp(4)
     }
 })

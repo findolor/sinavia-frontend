@@ -8,7 +8,9 @@ import {
     Keyboard,
     Animated,
     Platform,
-    Alert
+    Alert,
+    TouchableWithoutFeedback,
+    KeyboardAvoidingView
 } from 'react-native'
 import { navigationPush } from '../../../services/navigationService'
 import { SCENE_KEYS } from '../../../config/index'
@@ -64,6 +66,10 @@ class Login extends React.Component {
     componentWillUnmount() {
         this.keyboardShowSub.remove()
         this.keyboardHideSub.remove()
+    }
+
+    forgotPasswordOnPress = () => {
+        navigationPush(SCENE_KEYS.authScreens.resetPassword)
     }
 
     keyboardShow = event => {
@@ -135,29 +141,29 @@ class Login extends React.Component {
 
     render() {
         return (
-            <Animated.View
-                style={[
-                    styles.container,
-                    { paddingBottom: this.keyboardHeight }
-                ]}
-            >
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+                <KeyboardAvoidingView
+                    style={[
+                        styles.container,
+                    ]}
+                    behavior={'position'}
+                >
                 <NotchView color={'#fcfcfc'} />
                 <View style={styles.imageContainer}>
-                    <Animated.Image
+                    <Image
                         source={SINAVIA_LOGO}
                         style={[
                             {
                                 height: hp(45),
                                 resizeMode: 'contain',
                                 marginTop: hp(3)
-                            },
-                            { height: this.imageHeight }
+                            }
                         ]}
                     />
                 </View>
                 <View style={styles.textInputsContainer}>
                     <AuthTextInput
-                        placeholder="Kullanıcı Adı veya E-Posta                                                                 "
+                        placeholder="Kullanıcı Adı veya E-Posta"
                         placeholderTextColor="#8A8888"
                         onChangeText={email => this.emailOnChange(email)}
                     />
@@ -165,7 +171,7 @@ class Login extends React.Component {
                         <TextInput
                             style={styles.textInput}
                             secureTextEntry={this.state.hidePassword}
-                            placeholder="Şifre                                                                                  "
+                            placeholder="Şifre"
                             placeholderTextColor="#8A8888"
                             onChangeText={text => {
                                 if (text === '') {
@@ -185,11 +191,7 @@ class Login extends React.Component {
                         {this.state.showForgotPasswordText && (
                             <View style={styles.forgetPasswordContainer}>
                                 <TouchableOpacity
-                                    onPress={() => {
-                                        navigationPush(
-                                            SCENE_KEYS.authScreens.resetPassword
-                                        )
-                                    }}
+                                    onPress={this.forgotPasswordOnPress}
                                 >
                                     <Text style={styles.forgetPasswordText}>
                                         Şifremi Unuttum
@@ -225,7 +227,8 @@ class Login extends React.Component {
                         onPress={this.loginOnPress}
                     />
                 </View>
-            </Animated.View>
+                </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
         )
     }
 }
