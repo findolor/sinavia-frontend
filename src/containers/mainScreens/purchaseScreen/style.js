@@ -11,11 +11,10 @@ export default StyleSheet.create({
         backgroundColor: '#fcfcfc'
     },
     premiumContainer: {
-        flex: 44,
+        flex: 43,
         width: wp(100),
         justifyContent: 'flex-end',
-        alignItems: 'center',
-        backgroundColor: 'white'
+        alignItems: 'center'
     },
     adsContainer: {
         flex: 11,
@@ -25,9 +24,9 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     bundlesContainer: {
-        flex: 21,
+        flex: 22,
         width: wp(100),
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         alignItems: 'center'
     },
     yourPremiumAndJokersContainer: {
@@ -38,7 +37,7 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     premiumUpperView: {
-        height: hp(35),
+        height: hp(34),
         width: wp(93),
         borderWidth: hp(0.4),
         borderColor: '#CC7A00',
@@ -47,7 +46,7 @@ export default StyleSheet.create({
         overflow: 'hidden'
     },
     premiumBottomView: {
-        height: hp(8),
+        height: hp(9),
         width: wp(93),
         borderBottomWidth: hp(0.4),
         borderLeftWidth: hp(0.4),
@@ -91,7 +90,7 @@ export default StyleSheet.create({
         width: wp(93)
     },
     linearGradientBottomView: {
-        height: hp(8),
+        height: hp(9),
         width: wp(93),
         justifyContent: 'center',
         alignItems: 'center',
@@ -111,7 +110,9 @@ export default StyleSheet.create({
         marginTop: hp(0.5),
         borderRadius: 10,
         borderColor: '#750000',
-        backgroundColor: '#D94141'
+        backgroundColor: '#D94141',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     adView: {
         height: hp(8),
@@ -270,8 +271,7 @@ export default StyleSheet.create({
         backgroundColor: '#FF9900',
         borderWidth: hp(0.35),
         borderColor: '#fcfcfc',
-        borderRadius: 30,
-        marginTop: hp(1)
+        borderRadius: 30
     },
     premiumButtonText: {
         fontFamily: 'Averta-Bold',
@@ -292,15 +292,15 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     premiumSwiperHeaderView: {
-        height: hp(6),
+        height: hp(7),
         width: wp(93),
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         alignItems: 'center'
     },
     premiumSwiperInfoView: {
-        height: hp(9),
+        height: hp(8),
         width: wp(65),
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         alignItems: 'center'
     },
     premiumImg: {
@@ -318,5 +318,75 @@ export default StyleSheet.create({
         fontSize: hp(2.2),
         textAlign: 'center',
         color: '#565656'
+    },
+    totalJokerAmountView: {
+        height: hp(4),
+        width: wp(27),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    jokersView: {
+        height: hp(5.5),
+        width: wp(27),
+        flexDirection: 'row'
+    },
+    jokerPricesView: {
+        height: hp(4),
+        width: wp(16),
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    purchaseJokerButtonView: {
+        height: hp(4.5),
+        width: wp(27),
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    jokerView: {
+        height: hp(5.5),
+        width: wp(9),
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    purchaseJokerButton: {
+        height: hp(3.5),
+        width: wp(22),
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 20,
+        backgroundColor: '#00C72C'
+    },
+    normalPriceText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(3),
+        textAlign: 'center',
+        color: 'white',
+        textDecorationLine: 'line-through',
+        textDecorationStyle: 'solid'
+    },
+    discountPriceText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(2),
+        textAlign: 'center',
+        color: 'white'
+    },
+    discountText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(2),
+        textAlign: 'center',
+        color: 'white'
+    },
+    jokerAmountsText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(2.5),
+        textAlign: 'center',
+        color: 'white'
+    },
+    jokerAmountText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(1.5),
+        textAlign: 'center',
+        color: 'white'
     }
 })

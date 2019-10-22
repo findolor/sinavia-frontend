@@ -111,9 +111,10 @@ class Main extends React.Component {
                         ref="swiper"
                         index={this.state.currentPage}
                         onIndexChanged={index => this.updatePageIcons(index)}
-                            loop={false}
-                            showsPagination={false}
-                            loadMinimal={false}>
+                        loop={false}
+                        showsPagination={false}
+                        loadMinimal={true}
+                        loadMinimalSize={0}>
                         <Leaderboard style={styles.formsStyle} />
                         <Home style={styles.formsStyle} />
                         <Purchase style={styles.formsStyle} />

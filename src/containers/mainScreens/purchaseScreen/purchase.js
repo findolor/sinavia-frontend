@@ -39,6 +39,139 @@ class PurchaseScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                <View style={styles.bundlesContainer}>
+                    <View style={styles.bundlesView}>
+                        <Swiper loop={true}
+                                paginationStyle={{ bottom: hp(0) }}
+                                activeDotColor={'#750000'}>
+                            <View style={styles.swiperView}>
+                                <View style={styles.bundleView}>
+                                    <View style={styles.totalJokerAmountView}>
+                                        <Text style={styles.jokerAmountsText}>30 Joker</Text>
+                                    </View>
+                                    <View style={styles.jokersView}>
+                                        <View style={styles.jokerView}>
+                                            <Image source={JOKER_1} style={styles.jokerImg}/>
+                                            <Text style={styles.jokerAmountText}>x10</Text>
+                                        </View>
+                                        <View style={styles.jokerView}>
+                                            <Image source={JOKER_2} style={styles.jokerImg}/>
+                                            <Text style={styles.jokerAmountText}>x10</Text>
+                                        </View>
+                                        <View style={styles.jokerView}>
+                                            <Image source={JOKER_3} style={styles.jokerImg}/>
+                                            <Text style={styles.jokerAmountText}>x10</Text>
+                                        </View>
+                                    </View>
+                                    <View style={styles.jokerPricesView}>
+                                        <Text style={styles.normalPriceText}>9</Text>
+                                        <Text style={styles.discountText}>yerine</Text>
+                                    </View>
+                                    <View style={styles.purchaseJokerButtonView}>
+                                        <TouchableOpacity style={styles.purchaseJokerButton}>
+                                            <Text style={styles.discountPriceText}>6 TL</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                                <View style={styles.bundleView}>
+                                    <View style={styles.totalJokerAmountView}>
+                                        <Text style={styles.jokerAmountsText}>90 Joker</Text>
+                                    </View>
+                                    <View style={styles.jokersView}>
+                                        <View style={styles.jokerView}>
+                                            <Image source={JOKER_1} style={styles.jokerImg}/>
+                                            <Text style={styles.jokerAmountText}>x10</Text>
+                                        </View>
+                                        <View style={styles.jokerView}>
+                                            <Image source={JOKER_2} style={styles.jokerImg}/>
+                                            <Text style={styles.jokerAmountText}>x10</Text>
+                                        </View>
+                                        <View style={styles.jokerView}>
+                                            <Image source={JOKER_3} style={styles.jokerImg}/>
+                                            <Text style={styles.jokerAmountText}>x10</Text>
+                                        </View>
+                                    </View>
+                                    <View style={styles.jokerPricesView}>
+                                        <Text style={styles.normalPriceText}>9</Text>
+                                        <Text style={styles.discountText}>yerine</Text>
+                                    </View>
+                                    <View style={styles.purchaseJokerButtonView}>
+                                        <TouchableOpacity style={styles.purchaseJokerButton}>
+                                            <Text style={styles.discountPriceText}>6 TL</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                                <View style={styles.bundleView}>
+                                    <View style={styles.totalJokerAmountView}>
+                                        <Text style={styles.jokerAmountsText}>180 Joker</Text>
+                                    </View>
+                                    <View style={styles.jokersView}>
+                                        <View style={styles.jokerView}>
+                                            <Image source={JOKER_1} style={styles.jokerImg}/>
+                                            <Text style={styles.jokerAmountText}>x10</Text>
+                                        </View>
+                                        <View style={styles.jokerView}>
+                                            <Image source={JOKER_2} style={styles.jokerImg}/>
+                                            <Text style={styles.jokerAmountText}>x10</Text>
+                                        </View>
+                                        <View style={styles.jokerView}>
+                                            <Image source={JOKER_3} style={styles.jokerImg}/>
+                                            <Text style={styles.jokerAmountText}>x10</Text>
+                                        </View>
+                                    </View>
+                                    <View style={styles.jokerPricesView}>
+                                        <Text style={styles.normalPriceText}>9</Text>
+                                        <Text style={styles.discountText}>yerine</Text>
+                                    </View>
+                                    <View style={styles.purchaseJokerButtonView}>
+                                        <TouchableOpacity style={styles.purchaseJokerButton}>
+                                            <Text style={styles.discountPriceText}>6 TL</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={styles.swiperView}>
+                                <View style={styles.bundleView}/>
+                                <View style={styles.bundleView}/>
+                                <View style={styles.bundleView}/>
+                            </View>
+                            <View style={styles.swiperView}>
+                                <View style={styles.bundleView}/>
+                                <View style={styles.bundleView}/>
+                                <View style={styles.bundleView}/>
+                            </View>
+                        </Swiper>
+                    </View>
+                </View>
+                <View style={styles.adsContainer}>
+                    <TouchableOpacity style={styles.adContainer}>
+                        <ImageBackground source={JOKER_ADS} style={styles.adView} imageStyle={{ blurRadius: 10 }}>
+                            <Text style={styles.adText}>JOKER</Text>
+                        </ImageBackground>
+                        <View style={styles.playButtonContainer}>
+                            <Image source={PLAY_BUTTON} style={styles.playButtonImg}/>
+                        </View>
+                        <View style={styles.watchTextContainer}>
+                            <Text style={styles.watchText}>İZLE &</Text>
+                            <Text style={styles.watchText}>KAZAN</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.adContainer}>
+                        <View style={styles.adView}>
+                            <ImageBackground source={FAVORITE} style={styles.adView} imageStyle={{ blurRadius: 10 }}>
+                                <Text style={styles.adText}>OYUN</Text>
+                                <Text style={styles.adText}>HAKKI</Text>
+                            </ImageBackground>
+                        </View>
+                        <View style={styles.playButtonContainer}>
+                            <Image source={PLAY_BUTTON} style={styles.playButtonImg}/>
+                        </View>
+                        <View style={styles.watchTextContainer}>
+                            <Text style={styles.watchText}>İZLE &</Text>
+                            <Text style={styles.watchText}>KAZAN</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.premiumContainer}>
                     <View style={styles.premiumUpperView}>
                         <LinearGradient colors={['white', '#F3CE97']} style={styles.linearGradientUpperView}>
@@ -46,8 +179,8 @@ class PurchaseScreen extends React.Component {
                                 <Swiper autoplay={true}
                                         loop={true}
                                         loadMinimal={false}
-                                        paginationStyle={{ bottom: hp(0.5) }}
-                                        activeDotColor={'#CC7A00'}>
+                                        showsPagination={false}
+                                        scrollEnabled={false}>
                                     <View style={styles.premiumSwiperView}>
                                         <View style={styles.premiumSwiperImgView}>
                                             <Image source={PREMIUM_ADS} style={styles.premiumImg}/>
@@ -118,58 +251,6 @@ class PurchaseScreen extends React.Component {
                             <Text style={styles.earnPremiumWithInviteText}>1 Haftalık Elit Öğrenci Paketi Kazan!</Text>
                         </View>
                     </TouchableOpacity>
-                </View>
-                <View style={styles.adsContainer}>
-                    <TouchableOpacity style={styles.adContainer}>
-                        <ImageBackground source={JOKER_ADS} style={styles.adView} imageStyle={{ blurRadius: 10 }}>
-                            <Text style={styles.adText}>JOKER</Text>
-                        </ImageBackground>
-                        <View style={styles.playButtonContainer}>
-                            <Image source={PLAY_BUTTON} style={styles.playButtonImg}/>
-                        </View>
-                        <View style={styles.watchTextContainer}>
-                            <Text style={styles.watchText}>İZLE &</Text>
-                            <Text style={styles.watchText}>KAZAN</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.adContainer}>
-                        <View style={styles.adView}>
-                            <ImageBackground source={FAVORITE} style={styles.adView} imageStyle={{ blurRadius: 10 }}>
-                                <Text style={styles.adText}>OYUN</Text>
-                                <Text style={styles.adText}>HAKKI</Text>
-                            </ImageBackground>
-                        </View>
-                        <View style={styles.playButtonContainer}>
-                            <Image source={PLAY_BUTTON} style={styles.playButtonImg}/>
-                        </View>
-                        <View style={styles.watchTextContainer}>
-                            <Text style={styles.watchText}>İZLE &</Text>
-                            <Text style={styles.watchText}>KAZAN</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.bundlesContainer}>
-                    <View style={styles.bundlesView}>
-                        <Swiper loop={true}
-                                paginationStyle={{ bottom: hp(0) }}
-                                activeDotColor={'#750000'}>
-                            <View style={styles.swiperView}>
-                                <View style={styles.bundleView}/>
-                                <View style={styles.bundleView}/>
-                                <View style={styles.bundleView}/>
-                            </View>
-                            <View style={styles.swiperView}>
-                                <View style={styles.bundleView}/>
-                                <View style={styles.bundleView}/>
-                                <View style={styles.bundleView}/>
-                            </View>
-                            <View style={styles.swiperView}>
-                                <View style={styles.bundleView}/>
-                                <View style={styles.bundleView}/>
-                                <View style={styles.bundleView}/>
-                            </View>
-                        </Swiper>
-                    </View>
                 </View>
                 <View style={styles.yourPremiumAndJokersContainer}>
                     <View style={styles.yourPremiumContainer}>
