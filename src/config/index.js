@@ -1,13 +1,13 @@
-const local = true
+const local = false
 
 const api = {
     host:
         local === true
             ? 'http://localhost:4000/api/'
-            : 'http://192.168.1.32:4000/api/',
+            : 'http://10.253.12.109:4000/api/',
     hostAWS: 'http://sinavia-test.eu-central-1.elasticbeanstalk.com:4000/api/',
     gameEngine:
-        local === true ? 'http://localhost:5000' : 'http://192.168.1.32:5000',
+        local === true ? 'http://localhost:5000' : 'http://10.253.12.109:5000',
     gameEngineAWS: 'http://sinavia-test.eu-central-1.elasticbeanstalk.com:5000'
 }
 

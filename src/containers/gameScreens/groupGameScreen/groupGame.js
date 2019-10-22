@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     Modal,
     Alert,
-    FlatList
+    FlatList,
+    BackHandler
 } from 'react-native'
 import styles, { countdownProps } from './style'
 import CountDown from 'react-native-countdown-component'
@@ -103,6 +104,12 @@ class GroupGame extends React.Component {
 
     // We get the room in props
     async componentDidMount() {
+        this.backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            () => {
+                this.backButtonOnPress()
+            }
+        )
         // We check if the user has enough jokers
         this.checkJokerAmount()
         await this.initializeLeaderboard()
@@ -119,6 +126,10 @@ class GroupGame extends React.Component {
             this.chooseMessageAction(message)
         })
         this.props.room.onError.add(err => console.log(err))
+    }
+
+    componentWillUnmount() {
+        this.backHandler.remove()
     }
 
     checkJokerAmount = () => {
