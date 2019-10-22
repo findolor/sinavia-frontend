@@ -345,7 +345,7 @@ class Home extends React.Component {
         let examIndex
         let subjectList = []
         examIndex = this.props.examList.findIndex(x => x.name === examName)
-        if (this.props.clientInformation.isPremium)
+        if (!this.props.clientInformation.isPremium)
             subjectList.push(
                 <View style={styles.card}>
                     <Text style={styles.cardText}>
@@ -393,11 +393,22 @@ class Home extends React.Component {
     }
 
     groupGameModeOnPress = () => {
-        this.setState({
-            visibleView: 'GROUP_MODES',
-            visibleRankedGameStartPress: false,
-            rankedModeButtonBorderColor: EMPTY_MODE_COLOR
-        })
+        if (this.props.clientInformation.isPremium) {
+            this.setState({
+                visibleView: 'GROUP_MODES',
+                visibleRankedGameStartPress: false,
+                rankedModeButtonBorderColor: EMPTY_MODE_COLOR
+            })
+        } else if (this.props.energyAmount !== 0)
+            this.setState({
+                visibleView: 'GROUP_MODES',
+                visibleRankedGameStartPress: false,
+                rankedModeButtonBorderColor: EMPTY_MODE_COLOR
+            })
+        else {
+            this.setState({ visibleRankedGameStartPress: false })
+            Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
+        }
     }
 
     gameModesView() {
@@ -514,17 +525,34 @@ class Home extends React.Component {
     friendRoomOnPress = async () => {
         this.setState({ rankedModeButtonBorderColor: EMPTY_MODE_COLOR })
 
-        if (Object.keys(this.props.friendIds).length === 0) return
-        const friends = await userServices.getUsers(
-            this.props.clientToken,
-            this.props.friendIds
-        )
+        if (this.props.clientInformation.isPremium) {
+            if (Object.keys(this.props.friendIds).length === 0) return
+            const friends = await userServices.getUsers(
+                this.props.clientToken,
+                this.props.friendIds
+            )
 
-        this.setState({
-            visibleView: 'FRIEND_ROOM',
-            friendList: friends,
-            originalFriends: friends
-        })
+            this.setState({
+                visibleView: 'FRIEND_ROOM',
+                friendList: friends,
+                originalFriends: friends
+            })
+        } else if (this.props.energyAmount !== 0) {
+            if (Object.keys(this.props.friendIds).length === 0) return
+            const friends = await userServices.getUsers(
+                this.props.clientToken,
+                this.props.friendIds
+            )
+
+            this.setState({
+                visibleView: 'FRIEND_ROOM',
+                friendList: friends,
+                originalFriends: friends
+            })
+        } else {
+            this.setState({ visibleRankedGameStartPress: false })
+            Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
+        }
     }
 
     friendRoomAndGameModesBackButtonOnPress = () => {
@@ -904,7 +932,17 @@ class Home extends React.Component {
             return
         }
 
-        navigationReset('game', this.calculateContentIds())
+        if (this.props.clientInformation.isPremium) {
+            navigationReset('game', this.calculateContentIds())
+        } else if (this.props.energyAmount !== 0)
+            navigationReset('game', this.calculateContentIds())
+        else {
+            this.setState({
+                visibleRankedGameStartPress: false,
+                rankedModeButtonBorderColor: EMPTY_MODE_COLOR
+            })
+            Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
+        }
     }
 
     // Gets the exam/content/subject ids based on selected subject
