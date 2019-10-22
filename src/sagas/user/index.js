@@ -10,6 +10,7 @@ import {
 } from './getOpponentFullInformation'
 import { updateUserSaga } from './updateUser'
 import { createUser } from './createUser'
+import { resetPassword } from './resetPassword'
 
 export const userSagas = {
     userSignUp: userSignUp,
@@ -25,5 +26,6 @@ export const userServices = {
     getUsers: getUsersService,
     getUser: getUserService,
     searchUsers: searchUsersService,
-    getOpponentFullInformation: getOpponentFullInformationService
+    getOpponentFullInformation: getOpponentFullInformationService,
+    resetPassword: resetPassword
 }
