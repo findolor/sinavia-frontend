@@ -72,7 +72,8 @@ export default StyleSheet.create({
         borderWidth: hp(0.25),
         borderColor: '#750000',
         borderRadius: 10,
-        backgroundColor: '#FFD2D2'
+        backgroundColor: '#FFD2D2',
+        overflow: 'hidden'
     },
     yourPremiumContainer: {
         height: hp(11),
@@ -91,7 +92,10 @@ export default StyleSheet.create({
     },
     linearGradientBottomView: {
         height: hp(8),
-        width: wp(93)
+        width: wp(93),
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F3CE97'
     },
     swiperView: {
         height: hp(21),
@@ -233,5 +237,86 @@ export default StyleSheet.create({
         textAlign: 'center',
         color: 'white',
         marginBottom: hp(0.25)
+    },
+    inviteText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(2),
+        textAlign: 'center',
+        color: 'black',
+        marginBottom: hp(0.25)
+    },
+    earnPremiumWithInviteText: {
+        fontFamily: 'Averta-ExtraBold',
+        fontSize: hp(2.5),
+        textAlign: 'center',
+        color: 'white',
+        marginBottom: hp(0.25)
+    },
+    premiumSwiperContainer: {
+        height: hp(26),
+        width: wp(93)
+    },
+    premiumButtonView: {
+        height: hp(9),
+        width: wp(93),
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    premiumButton: {
+        height: hp(5.75),
+        width: wp(75),
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#FF9900',
+        borderWidth: hp(0.35),
+        borderColor: '#fcfcfc',
+        borderRadius: 30,
+        marginTop: hp(1)
+    },
+    premiumButtonText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(2),
+        textAlign: 'center',
+        color: 'white'
+    },
+    premiumSwiperView: {
+        height: hp(26),
+        width: wp(93),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    premiumSwiperImgView: {
+        height: hp(11),
+        width: wp(93),
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    premiumSwiperHeaderView: {
+        height: hp(6),
+        width: wp(93),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    premiumSwiperInfoView: {
+        height: hp(9),
+        width: wp(65),
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    premiumImg: {
+        height: hp(8),
+        width: hp(8)
+    },
+    premiumHeaderText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(4),
+        textAlign: 'center',
+        color: 'black'
+    },
+    premiumInfoText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(2.2),
+        textAlign: 'center',
+        color: '#565656'
     }
 })

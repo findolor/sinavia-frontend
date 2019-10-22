@@ -27,6 +27,8 @@ import JOKER_1 from '../../../assets/gameScreens/jokers/secondChance.png'
 import JOKER_2 from '../../../assets/gameScreens/jokers/fiftyFifty.png'
 import JOKER_3 from '../../../assets/gameScreens/jokers/opponentsAnswer.png'
 
+import PREMIUM_ADS from '../../../assets/premiumAds.png'
+
 class PurchaseScreen extends React.Component {
     constructor(props) {
         super(props)
@@ -39,10 +41,82 @@ class PurchaseScreen extends React.Component {
             <View style={styles.container}>
                 <View style={styles.premiumContainer}>
                     <View style={styles.premiumUpperView}>
-                        <LinearGradient colors={['white', '#F3CE97']} style={styles.linearGradientUpperView}/>
+                        <LinearGradient colors={['white', '#F3CE97']} style={styles.linearGradientUpperView}>
+                            <View style={styles.premiumSwiperContainer}>
+                                <Swiper autoplay={true}
+                                        loop={true}
+                                        loadMinimal={false}
+                                        paginationStyle={{ bottom: hp(0.5) }}
+                                        activeDotColor={'#CC7A00'}>
+                                    <View style={styles.premiumSwiperView}>
+                                        <View style={styles.premiumSwiperImgView}>
+                                            <Image source={PREMIUM_ADS} style={styles.premiumImg}/>
+                                        </View>
+                                        <View style={styles.premiumSwiperHeaderView}>
+                                            <Text style={styles.premiumHeaderText}>Reklam Yok!</Text>
+                                        </View>
+                                        <View style={styles.premiumSwiperInfoView}>
+                                            <Text style={styles.premiumInfoText}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                        </View>
+                                    </View>
+                                    <View style={styles.premiumSwiperView}>
+                                        <View style={styles.premiumSwiperImgView}>
+                                            <Image source={PREMIUM_ADS} style={styles.premiumImg}/>
+                                        </View>
+                                        <View style={styles.premiumSwiperHeaderView}>
+                                            <Text style={styles.premiumHeaderText}>Reklam Yok!</Text>
+                                        </View>
+                                        <View style={styles.premiumSwiperInfoView}>
+                                            <Text style={styles.premiumInfoText}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                        </View>
+                                    </View>
+                                    <View style={styles.premiumSwiperView}>
+                                        <View style={styles.premiumSwiperImgView}>
+                                            <Image source={PREMIUM_ADS} style={styles.premiumImg}/>
+                                        </View>
+                                        <View style={styles.premiumSwiperHeaderView}>
+                                            <Text style={styles.premiumHeaderText}>Reklam Yok!</Text>
+                                        </View>
+                                        <View style={styles.premiumSwiperInfoView}>
+                                            <Text style={styles.premiumInfoText}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                        </View>
+                                    </View>
+                                    <View style={styles.premiumSwiperView}>
+                                        <View style={styles.premiumSwiperImgView}>
+                                            <Image source={PREMIUM_ADS} style={styles.premiumImg}/>
+                                        </View>
+                                        <View style={styles.premiumSwiperHeaderView}>
+                                            <Text style={styles.premiumHeaderText}>Reklam Yok!</Text>
+                                        </View>
+                                        <View style={styles.premiumSwiperInfoView}>
+                                            <Text style={styles.premiumInfoText}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                        </View>
+                                    </View>
+                                    <View style={styles.premiumSwiperView}>
+                                        <View style={styles.premiumSwiperImgView}>
+                                            <Image source={PREMIUM_ADS} style={styles.premiumImg}/>
+                                        </View>
+                                        <View style={styles.premiumSwiperHeaderView}>
+                                            <Text style={styles.premiumHeaderText}>Reklam Yok!</Text>
+                                        </View>
+                                        <View style={styles.premiumSwiperInfoView}>
+                                            <Text style={styles.premiumInfoText}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                        </View>
+                                    </View>
+                                </Swiper>
+                            </View>
+                            <View style={styles.premiumButtonView}>
+                                <View style={styles.premiumButton}>
+                                    <Text style={styles.premiumButtonText}>ELİT ÖĞRENCİ PAKETİ'Nİ ŞİMDİ AL</Text>
+                                </View>
+                            </View>
+                        </LinearGradient>
                     </View>
                     <TouchableOpacity style={styles.premiumBottomView}>
-                        <LinearGradient colors={['white', '#F3CE97']} style={styles.linearGradientBottomView}/>
+                        <View style={styles.linearGradientBottomView}>
+                            <Text style={styles.inviteText}>Arkadaşını davet et</Text>
+                            <Text style={styles.earnPremiumWithInviteText}>1 Haftalık Elit Öğrenci Paketi Kazan!</Text>
+                        </View>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.adsContainer}>
@@ -75,9 +149,8 @@ class PurchaseScreen extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.bundlesContainer}>
+                    <View style={styles.bundlesView}>
                         <Swiper loop={true}
-                                loadMinimal={true}
-                                containerStyle={styles.bundlesView}
                                 paginationStyle={{ bottom: hp(0) }}
                                 activeDotColor={'#750000'}>
                             <View style={styles.swiperView}>
@@ -96,6 +169,7 @@ class PurchaseScreen extends React.Component {
                                 <View style={styles.bundleView}/>
                             </View>
                         </Swiper>
+                    </View>
                 </View>
                 <View style={styles.yourPremiumAndJokersContainer}>
                     <View style={styles.yourPremiumContainer}>
