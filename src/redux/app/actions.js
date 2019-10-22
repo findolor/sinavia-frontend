@@ -5,7 +5,8 @@ export const appTypes = {
     SAVE_CLIENT_RANKING: 'save_client_ranking',
     GET_NOTIFICATIONS: 'get_notifications',
     SAVE_NOTIFICATIONS: 'save_notifications',
-    REMOVE_FROM_NOTIFICATIONS: 'remove_from_notifications'
+    REMOVE_FROM_NOTIFICATIONS: 'remove_from_notifications',
+    REMOVE_ONE_ENERGY: 'remove_one_energy'
 }
 
 const setNetworkConnectionInfo = isNetworkConnected => {
@@ -40,9 +41,16 @@ const removeFromNotifications = index => {
     }
 }
 
+const removeOneEnergy = () => {
+    return {
+        type: appTypes.REMOVE_ONE_ENERGY
+    }
+}
+
 export const appActions = {
     setNetworkConnectionInfo: setNetworkConnectionInfo,
     getLeaderboard: getLeaderboard,
     getNotifications: getNotifications,
-    removeFromNotifications: removeFromNotifications
+    removeFromNotifications: removeFromNotifications,
+    removeOneEnergy: removeOneEnergy
 }

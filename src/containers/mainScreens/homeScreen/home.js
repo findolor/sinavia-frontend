@@ -345,6 +345,14 @@ class Home extends React.Component {
         let examIndex
         let subjectList = []
         examIndex = this.props.examList.findIndex(x => x.name === examName)
+        if (this.props.clientInformation.isPremium)
+            subjectList.push(
+                <View style={styles.card}>
+                    <Text style={styles.cardText}>
+                        Kalan enerji sayısı: {this.props.energyAmount}
+                    </Text>
+                </View>
+            )
         this.props.examList[examIndex].courseEntities[
             carouselActiveSlide
         ].subjectEntities.forEach((subject, index) => {
@@ -1046,7 +1054,8 @@ const mapStateToProps = state => ({
     clientToken: state.client.clientToken,
     friendIds: state.friends.friendIds,
     examList: state.gameContent.examList,
-    isNetworkConnected: state.app.isNetworkConnected
+    isNetworkConnected: state.app.isNetworkConnected,
+    energyAmount: state.app.energyAmount
 })
 
 const mapDispatchToProps = dispatch => ({
