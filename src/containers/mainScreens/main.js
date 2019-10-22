@@ -7,6 +7,7 @@ import {
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
 import { Image, StyleSheet, TouchableOpacity, View, Alert } from 'react-native'
+import Swiper from 'react-native-swiper'
 import { connect } from 'react-redux'
 import { showMessage } from 'react-native-flash-message'
 
@@ -74,12 +75,12 @@ class Main extends React.Component {
             <View style={styles.container}>
                 <NotchView color={'#fcfcfc'} />
                 <View style={styles.formContainer}>
-                    {visibleForm === 'HOME' && (
-                        <Home style={styles.formsStyle} />
-                    )}
-                    {visibleForm === 'LEADERBOARD' && (
+                    <Swiper showsPagination={false}
+                            loadMinimal={true}>
                         <Leaderboard style={styles.formsStyle} />
-                    )}
+                        <Home style={styles.formsStyle} />
+                        <Purchase style={styles.formsStyle} />
+                    </Swiper>
                 </View>
                 <View style={styles.bottomBar}>
                     <TouchableOpacity

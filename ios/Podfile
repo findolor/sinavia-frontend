@@ -42,6 +42,8 @@ target 'Sinavia' do
 
   pod 'RNShare', :path => '../node_modules/react-native-share'
 
+  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+
   target 'SinaviaTests' do
     inherit! :search_paths
     # Pods for testing

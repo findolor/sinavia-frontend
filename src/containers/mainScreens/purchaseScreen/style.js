@@ -10,94 +10,228 @@ export default StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#fcfcfc'
     },
-    booksScrollView: {
-        height: hp(86),
+    premiumContainer: {
+        flex: 44,
         width: wp(100),
-        marginTop: hp(5),
-        position: 'absolute'
-    },
-    booksRowView: {
-        height: hp(43),
-        width: wp(100),
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        alignItems: 'center'
-    },
-    bookView: {
-        height: hp(40),
-        width: wp(42),
+        justifyContent: 'flex-end',
         alignItems: 'center',
-        borderWidth: hp(0.3),
-        borderRadius: 6,
-        borderColor: '#CACACA'
+        backgroundColor: 'white'
     },
-    bookImgContainer: {
-        height: hp(20),
-        width: wp(42),
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    bookImgStyle: {
-        height: hp(16.9),
-        width: hp(13)
-    },
-    bookInfoContainer: {
-        height: hp(5),
-        width: wp(42),
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    bookPublisherContainer: {
-        height: hp(5),
-        width: wp(42),
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    bookCostContainer: {
-        height: hp(4),
-        width: wp(35),
+    adsContainer: {
+        flex: 11,
+        width: wp(93),
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
     },
-    bookBuyButtonContainer: {
-        height: hp(6),
-        width: wp(42),
-        justifyContent: 'flex-start',
+    bundlesContainer: {
+        flex: 21,
+        width: wp(100),
+        justifyContent: 'center',
         alignItems: 'center'
     },
-    bookBuyButton: {
+    yourPremiumAndJokersContainer: {
+        flex: 11,
+        width: wp(93),
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    premiumUpperView: {
+        height: hp(35),
+        width: wp(93),
+        borderWidth: hp(0.4),
+        borderColor: '#CC7A00',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        overflow: 'hidden'
+    },
+    premiumBottomView: {
+        height: hp(8),
+        width: wp(93),
+        borderBottomWidth: hp(0.4),
+        borderLeftWidth: hp(0.4),
+        borderRightWidth: hp(0.4),
+        borderColor: '#CC7A00',
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        overflow: 'hidden'
+    },
+    adContainer: {
+        height: hp(8),
+        width: wp(45),
+        borderRadius: 10,
+        backgroundColor: '#00D9EF',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    bundlesView: {
+        height: hp(21),
+        width: wp(93),
+        borderWidth: hp(0.25),
+        borderColor: '#750000',
+        borderRadius: 10,
+        backgroundColor: '#FFD2D2'
+    },
+    yourPremiumContainer: {
+        height: hp(11),
+        width: wp(40)
+    },
+    yourJokersContainer: {
+        height: hp(11),
+        width: wp(52),
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    linearGradientUpperView: {
+        height: hp(35),
+        width: wp(93)
+    },
+    linearGradientBottomView: {
+        height: hp(8),
+        width: wp(93)
+    },
+    swiperView: {
+        height: hp(21),
+        width: wp(93),
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignItems: 'flex-start'
+    },
+    bundleView: {
+        height: hp(18),
+        width: wp(27),
+        borderWidth: hp(0.4),
+        marginTop: hp(0.5),
+        borderRadius: 10,
+        borderColor: '#750000',
+        backgroundColor: '#D94141'
+    },
+    adView: {
+        height: hp(8),
+        width: wp(17.5),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    playButtonContainer: {
+        height: hp(8),
+        width: wp(10),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    watchTextContainer: {
+        height: hp(8),
+        width: wp(17.5),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    playButtonImg: {
         height: hp(4.5),
-        width: wp(36),
+        width: hp(4.5)
+    },
+    adImg: {
+        height: hp(3.75),
+        width: hp(3.75)
+    },
+    adText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(1.75),
+        textAlign: 'center',
+        color: 'white'
+    },
+    watchText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(2),
+        color: 'white'
+    },
+    yourPremiumTextView: {
+        height: hp(6.5),
+        width: wp(40),
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    yourPremiumCounterView: {
+        height: hp(4.5),
+        width: wp(40),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    yourPremiumText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(2),
+        textAlign: 'center',
+        color: 'black'
+    },
+    yourPremiumCounterText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(1.75),
+        textAlign: 'center',
+        color: '#565656'
+    },
+    yourPremiumCounterNumbersText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(2.75),
+        textAlign: 'center',
+        color: '#FF9900'
+    },
+    jokerContainer: {
+        height: hp(11),
+        width: wp(16.5),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    jokerImageContainer: {
+        height: hp(8),
+        width: wp(16.5),
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    jokerImageView: {
+        height: hp(6.75),
+        width: hp(6.75),
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#B72A2A',
-        borderRadius: 6
+        borderWidth: hp(0.25),
+        borderRadius: 100,
+        borderColor: '#FF9900'
     },
-    bookInfoText: {
-        fontFamily: 'Averta-Semibold',
-        color: 'black',
-        fontSize: hp(1.8)
+    jokerCounterView: {
+        position: 'absolute',
+        height: hp(4),
+        width: hp(4),
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'red',
+        borderWidth: hp(0.35),
+        borderRadius: 100,
+        borderColor: '#fcfcfc',
+        bottom: hp(2.75),
+        right: wp(7.5),
+        zIndex: 1
     },
-    bookPublisherText: {
-        fontFamily: 'Averta-Semibold',
-        color: '#929292',
-        fontSize: hp(1.8)
+    jokerNameContainer: {
+        height: hp(3),
+        width: wp(16.5),
+        justifyContent: 'center',
+        alignItems: 'center'
     },
-    bookCostWithoutSaleText: {
-        fontFamily: 'Averta-Semibold',
-        color: '#929292',
-        fontSize: hp(1.8),
-        textDecorationLine: 'line-through'
+    jokerNameText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(1.5),
+        textAlign: 'center',
+        color: 'black'
     },
-    bookSalePercentageText: {
-        fontFamily: 'Averta-Semibold',
-        color: 'black',
-        fontSize: hp(1.8)
+    jokerImg: {
+        height: hp(3),
+        width: hp(3)
     },
-    bookCostWithSaleText: {
-        fontFamily: 'Averta-Semibold',
+    jokerCounterText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(2),
+        textAlign: 'center',
         color: 'white',
-        fontSize: hp(2.5)
+        marginBottom: hp(0.25)
     }
 })
