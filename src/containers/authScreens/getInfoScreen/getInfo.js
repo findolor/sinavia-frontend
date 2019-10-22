@@ -29,9 +29,6 @@ import NotchView from '../../../components/notchView'
 import { showMessage } from 'react-native-flash-message'
 
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
-import EYE from '../../../assets/eye.png'
-
-const ANIMATION_DURATION = 100
 
 class GetInfo extends React.Component {
     constructor(props) {
@@ -55,47 +52,6 @@ class GetInfo extends React.Component {
             password: '',
             birthDate: ''
         }
-
-        this.keyboardHeight = new Animated.Value(0)
-    }
-
-    componentDidMount() {
-        let keyboardShowEvent =
-            Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow'
-        let keyboardHideEvent =
-            Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide'
-
-        this.keyboardShowSub = Keyboard.addListener(
-            keyboardShowEvent,
-            this.keyboardShow
-        )
-        this.keyboardHideSub = Keyboard.addListener(
-            keyboardHideEvent,
-            this.keyboardHide
-        )
-    }
-
-    componentWillUnmount() {
-        this.keyboardShowSub.remove()
-        this.keyboardHideSub.remove()
-    }
-
-    keyboardShow = event => {
-        Animated.parallel([
-            Animated.timing(this.keyboardHeight, {
-                duration: ANIMATION_DURATION,
-                toValue: event.endCoordinates.height - hp(3)
-            })
-        ]).start()
-    }
-
-    keyboardHide = event => {
-        Animated.parallel([
-            Animated.timing(this.keyboardHeight, {
-                duration: ANIMATION_DURATION,
-                toValue: 0
-            })
-        ]).start()
     }
 
     showDateTimePicker = () => {
@@ -177,71 +133,75 @@ class GetInfo extends React.Component {
 
     render() {
         return (
-            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+            <TouchableWithoutFeedback
+                onPress={() => {
+                    Keyboard.dismiss()
+                }}
+            >
                 <KeyboardAvoidingView
-                    style={[
-                        styles.container,
-                    ]}
+                    style={[styles.container]}
                     behavior={'position'}
                 >
-                <NotchView color={'#fcfcfc'} />
-                <View style={styles.imageContainer}>
-                    <Image
-                        source={SINAVIA_LOGO}
-                        style={{
-                            height: hp(36),
-                            resizeMode: 'contain'
-                        }}
-                    />
-                </View>
-                <View style={styles.compulsoryTextContainer}>
-                    <Text style={styles.compulsoryText}>*Doldurulması zorunlu alanlar</Text>
-                </View>
-                <View style={styles.allTextInputsContainer}>
-                    <AuthTextInput
-                        placeholder="Kullanıcı Adı*"
-                        placeholderTextColor="#8A8888"
-                        onChangeText={this.usernameOnChange}
-                    />
-                    <AuthTextInput
-                        placeholder="Ad Soyad*"
-                        placeholderTextColor="#8A8888"
-                        onChangeText={this.nameLastameOnChange}
-                    />
-                    <TouchableOpacity onPress={this.showDateTimePicker}>
-                        <View style={styles.textInputContainer}>
-                            <Text
-                                style={[
-                                    styles.textInput,
-                                    { color: this.state.dateColor }
-                                ]}
-                            >
-                                {this.state.birthDateUI}
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                    <DateTimePicker
-                        isVisible={this.state.isDateTimePickerVisible}
-                        onConfirm={this.handleDatePicked}
-                        onCancel={this.hideDateTimePicker}
-                    />
-                    <AuthTextInput
-                        placeholder="Şehir"
-                        placeholderTextColor="#8A8888"
-                        onChangeText={this.cityOnChange}
-                    />
-                </View>
-                <View style={styles.authButtonView}>
-                    <AuthButton
-                        height={hp(7)}
-                        width={wp(85)}
-                        color="#00D9EF"
-                        buttonText="Onayla"
-                        borderRadius={10}
-                        marginTop={hp(2)}
-                        onPress={this.registerOnPress}
-                    />
-                </View>
+                    <NotchView color={'#fcfcfc'} />
+                    <View style={styles.imageContainer}>
+                        <Image
+                            source={SINAVIA_LOGO}
+                            style={{
+                                height: hp(36),
+                                resizeMode: 'contain'
+                            }}
+                        />
+                    </View>
+                    <View style={styles.compulsoryTextContainer}>
+                        <Text style={styles.compulsoryText}>
+                            *Doldurulması zorunlu alanlar
+                        </Text>
+                    </View>
+                    <View style={styles.allTextInputsContainer}>
+                        <AuthTextInput
+                            placeholder="Kullanıcı Adı*"
+                            placeholderTextColor="#8A8888"
+                            onChangeText={this.usernameOnChange}
+                        />
+                        <AuthTextInput
+                            placeholder="Ad Soyad*"
+                            placeholderTextColor="#8A8888"
+                            onChangeText={this.nameLastameOnChange}
+                        />
+                        <TouchableOpacity onPress={this.showDateTimePicker}>
+                            <View style={styles.textInputContainer}>
+                                <Text
+                                    style={[
+                                        styles.textInput,
+                                        { color: this.state.dateColor }
+                                    ]}
+                                >
+                                    {this.state.birthDateUI}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                        <DateTimePicker
+                            isVisible={this.state.isDateTimePickerVisible}
+                            onConfirm={this.handleDatePicked}
+                            onCancel={this.hideDateTimePicker}
+                        />
+                        <AuthTextInput
+                            placeholder="Şehir"
+                            placeholderTextColor="#8A8888"
+                            onChangeText={this.cityOnChange}
+                        />
+                    </View>
+                    <View style={styles.authButtonView}>
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(85)}
+                            color="#00D9EF"
+                            buttonText="Onayla"
+                            borderRadius={10}
+                            marginTop={hp(2)}
+                            onPress={this.registerOnPress}
+                        />
+                    </View>
                 </KeyboardAvoidingView>
             </TouchableWithoutFeedback>
         )

@@ -6,9 +6,7 @@ import {
     TouchableOpacity,
     Switch,
     TextInput,
-    Animated,
     Keyboard,
-    Platform,
     Alert,
     TouchableWithoutFeedback,
     KeyboardAvoidingView
@@ -32,8 +30,6 @@ import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
 import OPENED_EYE from '../../../assets/openedEye.png'
 import CLOSED_EYE from '../../../assets/closedEye.png'
 
-const ANIMATION_DURATION = 100
-
 class Register extends React.Component {
     constructor(props) {
         super(props)
@@ -56,47 +52,6 @@ class Register extends React.Component {
             password: '',
             birthDate: ''
         }
-
-        this.keyboardHeight = new Animated.Value(0)
-    }
-
-    componentDidMount() {
-        let keyboardShowEvent =
-            Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow'
-        let keyboardHideEvent =
-            Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide'
-
-        this.keyboardShowSub = Keyboard.addListener(
-            keyboardShowEvent,
-            this.keyboardShow
-        )
-        this.keyboardHideSub = Keyboard.addListener(
-            keyboardHideEvent,
-            this.keyboardHide
-        )
-    }
-
-    componentWillUnmount() {
-        this.keyboardShowSub.remove()
-        this.keyboardHideSub.remove()
-    }
-
-    keyboardShow = event => {
-        Animated.parallel([
-            Animated.timing(this.keyboardHeight, {
-                duration: ANIMATION_DURATION,
-                toValue: event.endCoordinates.height - hp(3)
-            })
-        ]).start()
-    }
-
-    keyboardHide = event => {
-        Animated.parallel([
-            Animated.timing(this.keyboardHeight, {
-                duration: ANIMATION_DURATION,
-                toValue: 0
-            })
-        ]).start()
     }
 
     managePasswordVisibility = () => {
@@ -194,161 +149,188 @@ class Register extends React.Component {
 
     render() {
         return (
-            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
-            <KeyboardAvoidingView
-                style={[
-                    styles.container,
-                ]}
-                behavior={'position'}
+            <TouchableWithoutFeedback
+                onPress={() => {
+                    Keyboard.dismiss()
+                }}
             >
-                <NotchView color={'#fcfcfc'} />
-                <View style={styles.imageContainer}>
-                    <Image
-                        source={SINAVIA_LOGO}
-                        style={{
-                            height: hp(36),
-                            marginBottom: hp(2),
-                            resizeMode: 'contain'
-                        }}
-                    />
-                </View>
-                <View style={styles.allTextInputsContainer}>
-                    <AuthTextInput
-                        placeholder="E-Posta"
-                        placeholderTextColor="#8A8888"
-                        onChangeText={this.emailOnChange}
-                    />
-                    <View style={styles.textInputContainer}>
-                        <TextInput
-                            style={styles.textInput}
-                            secureTextEntry={this.state.hidePasswordFirst}
-                            placeholder="Şifre"
-                            placeholderTextColor={'#8A8888'}
-                            onChangeText={text => {
-                                if (text === '') {
-                                    this.setState({
-                                        showPasswordEyeFirst: false
-                                    })
-                                } else {
-                                    this.setState({
-                                        showPasswordEyeFirst: true,
-                                        password: text
-                                    })
-                                }
-                            }}
-                        />
-                        {this.state.showPasswordEyeFirst && this.state.showPasswordEyeFirst === true && (
-                            <View style={styles.eyeContainer}>
-                                <TouchableOpacity
-                                    onPress={this.managePasswordVisibility}
-                                >
-                                    {this.state.hidePasswordFirst === true && (
-                                        <Image
-                                            source={CLOSED_EYE}
-                                            style={{
-                                                height: hp(3),
-                                                width: hp(5)
-                                            }}
-                                        />
-                                    )}
-                                    {this.state.hidePasswordFirst === false && (
-                                    <Image
-                                        source={OPENED_EYE}
-                                        style={{
-                                            height: hp(3),
-                                            width: hp(5)
-                                        }}
-                                    />
-                                    )}
-                                </TouchableOpacity>
-                            </View>
-                        )}
-                    </View>
-                    <View style={styles.textInputContainer}>
-                        <TextInput
-                            style={styles.textInput}
-                            secureTextEntry={this.state.hidePasswordSecond}
-                            placeholder="Şifre (Tekrar)                                                                     "
-                            placeholderTextColor={'#8A8888'}
-                            onChangeText={text => {
-                                if (text === '') {
-                                    this.setState({
-                                        showPasswordEyeSecond: false
-                                    })
-                                } else {
-                                    if (this.state.password !== text) {
-                                    }
-                                    this.setState({
-                                        showPasswordEyeSecond: true,
-                                        secondPassword: text
-                                    })
-                                }
-                            }}
-                        />
-                        {this.state.showPasswordEyeSecond && this.state.showPasswordEyeSecond === true && (
-                            <View style={styles.eyeContainer}>
-                                <TouchableOpacity
-                                    onPress={this.managePasswordVisibility2}
-                                >
-                                    {this.state.hidePasswordSecond === true && (
-                                        <Image
-                                            source={CLOSED_EYE}
-                                            style={{
-                                                height: hp(3),
-                                                width: hp(5)
-                                            }}
-                                        />
-                                    )}
-                                    {this.state.hidePasswordSecond === false && (
-                                        <Image
-                                            source={OPENED_EYE}
-                                            style={{
-                                                height: hp(3),
-                                                width: hp(5)
-                                            }}
-                                        />
-                                    )}
-                                </TouchableOpacity>
-                            </View>
-                        )}
-                    </View>
-                </View>
-                <View style={styles.toggleContainer}>
-                    <View style={styles.switchView}>
-                        <Switch
+                <KeyboardAvoidingView
+                    style={[styles.container]}
+                    behavior={'position'}
+                >
+                    <NotchView color={'#fcfcfc'} />
+                    <View style={styles.imageContainer}>
+                        <Image
+                            source={SINAVIA_LOGO}
                             style={{
-                                transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }]
+                                height: hp(36),
+                                marginBottom: hp(2),
+                                resizeMode: 'contain'
                             }}
-                            onValueChange={this.toggleSwitch}
-                            value={this.state.switchValue}
-                            trackColor="#00D9EF"
-                            thumbColor="#00D9EF"
                         />
                     </View>
-                    <View style={styles.licenseTextContainer}>
-                        <Text style={styles.toggleText}>
-                            <Text onPress={() =>
-                            {alert('Model gelecek');}}
-                                  style={{color: '#00D9EF'}}>Kullanıcı sözleşmesi</Text>ni okudum ve kabul ediyorum.
+                    <View style={styles.allTextInputsContainer}>
+                        <AuthTextInput
+                            placeholder="E-Posta"
+                            placeholderTextColor="#8A8888"
+                            onChangeText={this.emailOnChange}
+                        />
+                        <View style={styles.textInputContainer}>
+                            <TextInput
+                                style={styles.textInput}
+                                secureTextEntry={this.state.hidePasswordFirst}
+                                placeholder="Şifre"
+                                placeholderTextColor={'#8A8888'}
+                                onChangeText={text => {
+                                    if (text === '') {
+                                        this.setState({
+                                            showPasswordEyeFirst: false
+                                        })
+                                    } else {
+                                        this.setState({
+                                            showPasswordEyeFirst: true,
+                                            password: text
+                                        })
+                                    }
+                                }}
+                            />
+                            {this.state.showPasswordEyeFirst &&
+                                this.state.showPasswordEyeFirst === true && (
+                                    <View style={styles.eyeContainer}>
+                                        <TouchableOpacity
+                                            onPress={
+                                                this.managePasswordVisibility
+                                            }
+                                        >
+                                            {this.state.hidePasswordFirst ===
+                                                true && (
+                                                <Image
+                                                    source={CLOSED_EYE}
+                                                    style={{
+                                                        height: hp(3),
+                                                        width: hp(5)
+                                                    }}
+                                                />
+                                            )}
+                                            {this.state.hidePasswordFirst ===
+                                                false && (
+                                                <Image
+                                                    source={OPENED_EYE}
+                                                    style={{
+                                                        height: hp(3),
+                                                        width: hp(5)
+                                                    }}
+                                                />
+                                            )}
+                                        </TouchableOpacity>
+                                    </View>
+                                )}
+                        </View>
+                        <View style={styles.textInputContainer}>
+                            <TextInput
+                                style={styles.textInput}
+                                secureTextEntry={this.state.hidePasswordSecond}
+                                placeholder="Şifre (Tekrar)                                                                     "
+                                placeholderTextColor={'#8A8888'}
+                                onChangeText={text => {
+                                    if (text === '') {
+                                        this.setState({
+                                            showPasswordEyeSecond: false
+                                        })
+                                    } else {
+                                        if (this.state.password !== text) {
+                                        }
+                                        this.setState({
+                                            showPasswordEyeSecond: true,
+                                            secondPassword: text
+                                        })
+                                    }
+                                }}
+                            />
+                            {this.state.showPasswordEyeSecond &&
+                                this.state.showPasswordEyeSecond === true && (
+                                    <View style={styles.eyeContainer}>
+                                        <TouchableOpacity
+                                            onPress={
+                                                this.managePasswordVisibility2
+                                            }
+                                        >
+                                            {this.state.hidePasswordSecond ===
+                                                true && (
+                                                <Image
+                                                    source={CLOSED_EYE}
+                                                    style={{
+                                                        height: hp(3),
+                                                        width: hp(5)
+                                                    }}
+                                                />
+                                            )}
+                                            {this.state.hidePasswordSecond ===
+                                                false && (
+                                                <Image
+                                                    source={OPENED_EYE}
+                                                    style={{
+                                                        height: hp(3),
+                                                        width: hp(5)
+                                                    }}
+                                                />
+                                            )}
+                                        </TouchableOpacity>
+                                    </View>
+                                )}
+                        </View>
+                    </View>
+                    <View style={styles.toggleContainer}>
+                        <View style={styles.switchView}>
+                            <Switch
+                                style={{
+                                    transform: [
+                                        { scaleX: 0.8 },
+                                        { scaleY: 0.8 }
+                                    ]
+                                }}
+                                onValueChange={this.toggleSwitch}
+                                value={this.state.switchValue}
+                                trackColor="#00D9EF"
+                                thumbColor="#00D9EF"
+                            />
+                        </View>
+                        <View style={styles.licenseTextContainer}>
+                            <Text style={styles.toggleText}>
+                                <Text
+                                    onPress={() => {
+                                        alert('Model gelecek')
+                                    }}
+                                    style={{ color: '#00D9EF' }}
+                                >
+                                    Kullanıcı sözleşmesi
+                                </Text>
+                                ni okudum ve kabul ediyorum.
+                            </Text>
+                        </View>
+                    </View>
+                    <View style={styles.authButtonView}>
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(85)}
+                            color="#00D9EF"
+                            buttonText="Kayıt Ol"
+                            borderRadius={10}
+                            onPress={this.registerOnPress}
+                        />
+                    </View>
+                    <View style={styles.gotoLoginContainer}>
+                        <Text style={styles.gotoLoginTextFirst}>
+                            Zaten bir hesabın var mı?{' '}
+                            <Text
+                                onPress={this.goToLoginScreen}
+                                style={styles.gotoLoginTextSecond}
+                            >
+                                Giriş Yap
+                            </Text>
                         </Text>
                     </View>
-                </View>
-                <View style={styles.authButtonView}>
-                    <AuthButton
-                        height={hp(7)}
-                        width={wp(85)}
-                        color="#00D9EF"
-                        buttonText="Kayıt Ol"
-                        borderRadius={10}
-                        onPress={this.registerOnPress}
-                    />
-                </View>
-                <View style={styles.gotoLoginContainer}>
-                    <Text style={styles.gotoLoginTextFirst}>
-                        Zaten bir hesabın var mı? <Text onPress={this.goToLoginScreen} style={styles.gotoLoginTextSecond}>Giriş Yap</Text>
-                    </Text>
-                </View>
-            </KeyboardAvoidingView>
+                </KeyboardAvoidingView>
             </TouchableWithoutFeedback>
         )
     }

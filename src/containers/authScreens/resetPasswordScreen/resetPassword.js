@@ -1,14 +1,12 @@
 import React from 'react'
 import {
     View,
-    StatusBar,
     Text,
     Keyboard,
-    Animated,
-    Platform,
     TouchableWithoutFeedback,
     KeyboardAvoidingView,
-    Image
+    Image,
+    Alert
 } from 'react-native'
 import {
     widthPercentageToDP as wp,
@@ -16,111 +14,83 @@ import {
 } from 'react-native-responsive-screen'
 import { AuthButton, AuthTextInput } from '../../../components/authScreen'
 import styles from './style'
+import firebase from 'react-native-firebase'
+import { userServices } from '../../../sagas/user'
 
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
-
-const IMAGE_HEIGHT = hp(45)
-const IMAGE_HEIGHT_SMALL = hp(35)
-const ANIMATION_DURATION = 100
+import { navigationReset } from '../../../services/navigationService'
 
 export default class ResetPassword extends React.Component {
     constructor(props) {
         super(props)
-
-        this.keyboardHeight = new Animated.Value(0)
-        this.imageHeight = new Animated.Value(IMAGE_HEIGHT)
+        this.state = {
+            email: ''
+        }
     }
 
-    componentDidMount() {
-        let keyboardShowEvent =
-            Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow'
-        let keyboardHideEvent =
-            Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide'
-
-        this.keyboardShowSub = Keyboard.addListener(
-            keyboardShowEvent,
-            this.keyboardShow
-        )
-        this.keyboardHideSub = Keyboard.addListener(
-            keyboardHideEvent,
-            this.keyboardHide
-        )
+    emailOnChange = email => {
+        this.setState({ email: email })
     }
 
-    componentWillUnmount() {
-        this.keyboardShowSub.remove()
-        this.keyboardHideSub.remove()
-    }
-
-    keyboardShow = event => {
-        Animated.parallel([
-            Animated.timing(this.keyboardHeight, {
-                duration: ANIMATION_DURATION,
-                toValue: event.endCoordinates.height - hp(15)
-            }),
-            Animated.timing(this.imageHeight, {
-                duration: ANIMATION_DURATION,
-                toValue: IMAGE_HEIGHT_SMALL
+    sendLinkOnPress = () => {
+        userServices
+            .resetPassword(this.state.email)
+            .then(data => {
+                Alert.alert('Yeni şifren e-postana gönderildi!')
+                navigationReset('auth')
             })
-        ]).start()
-    }
-
-    keyboardHide = event => {
-        Animated.parallel([
-            Animated.timing(this.keyboardHeight, {
-                duration: ANIMATION_DURATION,
-                toValue: 0
-            }),
-            Animated.timing(this.imageHeight, {
-                duration: ANIMATION_DURATION,
-                toValue: IMAGE_HEIGHT
+            .catch(error => {
+                Alert.alert('E-postayı kontrol et!')
             })
-        ]).start()
     }
 
     render() {
         return (
-            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+            <TouchableWithoutFeedback
+                onPress={() => {
+                    Keyboard.dismiss()
+                }}
+            >
                 <KeyboardAvoidingView
-                    style={[
-                        styles.container,
-                    ]}
+                    style={[styles.container]}
                     behavior={'position'}
                 >
-                <View style={styles.imageContainer}>
-                    <Image
-                        source={SINAVIA_LOGO}
-                        style={[
-                            {
-                                height: hp(45),
-                                resizeMode: 'contain',
-                                marginTop: hp(7)
-                            }
-                        ]}
-                    />
-                </View>
-                <View style={styles.textInputsContainer}>
-                    <AuthTextInput
-                        placeholder="Kullanıcı Adı veya E-posta   "
-                        placeholderTextColor="#8A8888"
-                    />
-                </View>
-                <View style={styles.textContainer}>
-                    <Text style={styles.textStyle}>
-                        Uygulamada kullanmakta olduğun e-posta'nı gir, biz de
-                        sana şifreni yenilemen için bir link gönderelim.
-                    </Text>
-                </View>
-                <View style={styles.buttonContainer}>
-                    <AuthButton
-                        height={hp(7)}
-                        width={wp(85)}
-                        marginBottom={hp(6)}
-                        color="#00D9EF"
-                        borderRadius={10}
-                        buttonText="Giriş Yap"
-                    />
-                </View>
+                    <View style={styles.imageContainer}>
+                        <Image
+                            source={SINAVIA_LOGO}
+                            style={[
+                                {
+                                    height: hp(45),
+                                    resizeMode: 'contain',
+                                    marginTop: hp(7)
+                                }
+                            ]}
+                        />
+                    </View>
+                    <View style={styles.textInputsContainer}>
+                        <AuthTextInput
+                            placeholder="E-posta"
+                            placeholderTextColor="#8A8888"
+                            onChangeText={email => this.emailOnChange(email)}
+                        />
+                    </View>
+                    <View style={styles.textContainer}>
+                        <Text style={styles.textStyle}>
+                            Uygulamada kullanmakta olduğun e-posta'nı gir, biz
+                            de sana şifreni yenilemen için bir link gönderelim.
+                        </Text>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(85)}
+                            marginBottom={hp(6)}
+                            color="#00D9EF"
+                            borderRadius={10}
+                            buttonText="Gönder"
+                            onPress={this.sendLinkOnPress}
+                        />
+                    </View>
                 </KeyboardAvoidingView>
             </TouchableWithoutFeedback>
         )

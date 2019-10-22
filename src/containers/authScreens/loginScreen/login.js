@@ -6,8 +6,6 @@ import {
     TextInput,
     TouchableOpacity,
     Keyboard,
-    Animated,
-    Platform,
     Alert,
     TouchableWithoutFeedback,
     KeyboardAvoidingView
@@ -28,10 +26,6 @@ import { showMessage } from 'react-native-flash-message'
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
 import EYE from '../../../assets/eye.png'
 
-const IMAGE_HEIGHT = hp(40)
-const IMAGE_HEIGHT_SMALL = hp(25)
-const ANIMATION_DURATION = 100
-
 class Login extends React.Component {
     constructor(props) {
         super(props)
@@ -42,60 +36,10 @@ class Login extends React.Component {
             email: '',
             password: ''
         }
-
-        this.keyboardHeight = new Animated.Value(0)
-        this.imageHeight = new Animated.Value(IMAGE_HEIGHT)
-    }
-
-    componentDidMount() {
-        let keyboardShowEvent =
-            Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow'
-        let keyboardHideEvent =
-            Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide'
-
-        this.keyboardShowSub = Keyboard.addListener(
-            keyboardShowEvent,
-            this.keyboardShow
-        )
-        this.keyboardHideSub = Keyboard.addListener(
-            keyboardHideEvent,
-            this.keyboardHide
-        )
-    }
-
-    componentWillUnmount() {
-        this.keyboardShowSub.remove()
-        this.keyboardHideSub.remove()
     }
 
     forgotPasswordOnPress = () => {
         navigationPush(SCENE_KEYS.authScreens.resetPassword)
-    }
-
-    keyboardShow = event => {
-        Animated.parallel([
-            Animated.timing(this.keyboardHeight, {
-                duration: ANIMATION_DURATION,
-                toValue: event.endCoordinates.height - hp(12)
-            }),
-            Animated.timing(this.imageHeight, {
-                duration: ANIMATION_DURATION,
-                toValue: IMAGE_HEIGHT_SMALL
-            })
-        ]).start()
-    }
-
-    keyboardHide = event => {
-        Animated.parallel([
-            Animated.timing(this.keyboardHeight, {
-                duration: ANIMATION_DURATION,
-                toValue: 0
-            }),
-            Animated.timing(this.imageHeight, {
-                duration: ANIMATION_DURATION,
-                toValue: IMAGE_HEIGHT
-            })
-        ]).start()
     }
 
     managePasswordVisibility = () => {
@@ -141,92 +85,94 @@ class Login extends React.Component {
 
     render() {
         return (
-            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+            <TouchableWithoutFeedback
+                onPress={() => {
+                    Keyboard.dismiss()
+                }}
+            >
                 <KeyboardAvoidingView
-                    style={[
-                        styles.container,
-                    ]}
+                    style={[styles.container]}
                     behavior={'position'}
                 >
-                <NotchView color={'#fcfcfc'} />
-                <View style={styles.imageContainer}>
-                    <Image
-                        source={SINAVIA_LOGO}
-                        style={[
-                            {
-                                height: hp(45),
-                                resizeMode: 'contain',
-                                marginTop: hp(3)
-                            }
-                        ]}
-                    />
-                </View>
-                <View style={styles.textInputsContainer}>
-                    <AuthTextInput
-                        placeholder="Kullanıcı Adı veya E-Posta"
-                        placeholderTextColor="#8A8888"
-                        onChangeText={email => this.emailOnChange(email)}
-                    />
-                    <View style={styles.textInputContainer}>
-                        <TextInput
-                            style={styles.textInput}
-                            secureTextEntry={this.state.hidePassword}
-                            placeholder="Şifre"
-                            placeholderTextColor="#8A8888"
-                            onChangeText={text => {
-                                if (text === '') {
-                                    this.setState({
-                                        showForgotPasswordText: true,
-                                        showPasswordEye: false
-                                    })
-                                } else {
-                                    this.setState({
-                                        showForgotPasswordText: false,
-                                        showPasswordEye: true,
-                                        password: text
-                                    })
+                    <NotchView color={'#fcfcfc'} />
+                    <View style={styles.imageContainer}>
+                        <Image
+                            source={SINAVIA_LOGO}
+                            style={[
+                                {
+                                    height: hp(45),
+                                    resizeMode: 'contain',
+                                    marginTop: hp(3)
                                 }
-                            }}
+                            ]}
                         />
-                        {this.state.showForgotPasswordText && (
-                            <View style={styles.forgetPasswordContainer}>
-                                <TouchableOpacity
-                                    onPress={this.forgotPasswordOnPress}
-                                >
-                                    <Text style={styles.forgetPasswordText}>
-                                        Şifremi Unuttum
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                        )}
-                        {this.state.showPasswordEye && (
-                            <View style={styles.eyeContainer}>
-                                <TouchableOpacity
-                                    onPress={this.managePasswordVisibility}
-                                >
-                                    <Image
-                                        source={EYE}
-                                        style={{
-                                            height: hp(3),
-                                            width: wp(9)
-                                        }}
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                        )}
                     </View>
-                </View>
-                <View style={styles.buttonContainer}>
-                    <AuthButton
-                        height={hp(7)}
-                        width={wp(85)}
-                        marginBottom={hp(6)}
-                        color="#00D9EF"
-                        buttonText="Giriş Yap"
-                        borderRadius={10}
-                        onPress={this.loginOnPress}
-                    />
-                </View>
+                    <View style={styles.textInputsContainer}>
+                        <AuthTextInput
+                            placeholder="Kullanıcı Adı veya E-Posta"
+                            placeholderTextColor="#8A8888"
+                            onChangeText={email => this.emailOnChange(email)}
+                        />
+                        <View style={styles.textInputContainer}>
+                            <TextInput
+                                style={styles.textInput}
+                                secureTextEntry={this.state.hidePassword}
+                                placeholder="Şifre"
+                                placeholderTextColor="#8A8888"
+                                onChangeText={text => {
+                                    if (text === '') {
+                                        this.setState({
+                                            showForgotPasswordText: true,
+                                            showPasswordEye: false
+                                        })
+                                    } else {
+                                        this.setState({
+                                            showForgotPasswordText: false,
+                                            showPasswordEye: true,
+                                            password: text
+                                        })
+                                    }
+                                }}
+                            />
+                            {this.state.showForgotPasswordText && (
+                                <View style={styles.forgetPasswordContainer}>
+                                    <TouchableOpacity
+                                        onPress={this.forgotPasswordOnPress}
+                                    >
+                                        <Text style={styles.forgetPasswordText}>
+                                            Şifremi Unuttum
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            )}
+                            {this.state.showPasswordEye && (
+                                <View style={styles.eyeContainer}>
+                                    <TouchableOpacity
+                                        onPress={this.managePasswordVisibility}
+                                    >
+                                        <Image
+                                            source={EYE}
+                                            style={{
+                                                height: hp(3),
+                                                width: wp(9)
+                                            }}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                            )}
+                        </View>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(85)}
+                            marginBottom={hp(6)}
+                            color="#00D9EF"
+                            buttonText="Giriş Yap"
+                            borderRadius={10}
+                            onPress={this.loginOnPress}
+                        />
+                    </View>
                 </KeyboardAvoidingView>
             </TouchableWithoutFeedback>
         )
