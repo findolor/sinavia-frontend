@@ -11,7 +11,7 @@ import DropDown from '../../../../../components/mainScreen/dropdown/dropdown'
 import AuthButton from '../../../../../components/authScreen/authButton'
 import styles from './style'
 import {
-    navigationPush,
+    navigationReplace,
     navigationReset,
     SCENE_KEYS
 } from '../../../../../services/navigationService'
@@ -134,7 +134,7 @@ class CreateGroupRoom extends React.Component {
                     this.room.removeAllListeners()
 
                     navigationReset('game', { isHardReset: true })
-                    navigationPush(SCENE_KEYS.gameScreens.groupGame, {
+                    navigationReplace(SCENE_KEYS.gameScreens.groupGame, {
                         room: this.room,
                         client: this.client,
                         groupRoomPlayerList: this.state.groupRoomPlayerList

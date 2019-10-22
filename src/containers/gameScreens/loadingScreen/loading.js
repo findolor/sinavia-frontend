@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, TouchableOpacity, Image } from 'react-native'
+import { View, TouchableOpacity, Image, BackHandler } from 'react-native'
 import styles from './style'
 import LottieView from 'lottie-react-native'
 // Colyseus imports
@@ -26,6 +26,12 @@ class LoadingScreen extends React.Component {
 
     componentDidMount() {
         if (this.props.isHardReset) return
+        this.backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            () => {
+                this.backButtonOnPress()
+            }
+        )
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
         // 0.11.0
         /* this.joinRoom({
@@ -47,10 +53,14 @@ class LoadingScreen extends React.Component {
         })
     }
 
+    componentWillUnmount() {
+        if (!this.props.isHardReset) this.backHandler.remove()
+    }
+
     // Client sends a ready signal when they join a room successfully
     joinRoom = playerOptions => {
         this.room = this.client.join('rankedRoom', playerOptions)
-
+        console.log(this.room)
         // Initiate the bot game after 10 seconds
         this.botTimeout = setTimeout(() => {
             this.room.send({

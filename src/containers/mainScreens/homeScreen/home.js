@@ -53,7 +53,8 @@ import BACK_BUTTON from '../../../assets/backButton.png'
 import {
     navigationPush,
     navigationReset,
-    SCENE_KEYS
+    SCENE_KEYS,
+    navigationReplace
 } from '../../../services/navigationService'
 
 import SWORD from '../../../assets/sword.png'
@@ -94,7 +95,7 @@ class Home extends React.Component {
             // Variable for making start button when pressed ranked
             visibleRankedGameStartPress: false,
             friendSelected: false,
-            opponentUserPic: '',
+            opponentUserPic: null,
             opponentName: '',
             opponentUsername: '',
             opponentInformation: {},
@@ -197,7 +198,7 @@ class Home extends React.Component {
         )
 
         navigationReset('game', { isHardReset: true })
-        navigationPush(SCENE_KEYS.gameScreens.friendMatchingScreen, {
+        navigationReplace(SCENE_KEYS.gameScreens.friendMatchingScreen, {
             roomCode: params.roomCode,
             opponentInformation: opponentInformation,
             isCreateRoom: false,
@@ -496,7 +497,7 @@ class Home extends React.Component {
         this.setState({
             isModalVisible: false
         })
-        navigationPush(
+        navigationReplace(
             SCENE_KEYS.mainScreens.createGroupRoom,
             this.calculateContentIds()
         )
@@ -522,7 +523,7 @@ class Home extends React.Component {
         this.setState({
             visibleView: 'GAME_MODES',
             friendSelected: false,
-            opponentUserPic: '',
+            opponentUserPic: null,
             opponentName: '',
             opponentUsername: '',
             opponentInformation: {}
@@ -631,7 +632,7 @@ class Home extends React.Component {
         const Ids = this.calculateContentIds()
 
         navigationReset('game', { isHardReset: true })
-        navigationPush(SCENE_KEYS.gameScreens.friendMatchingScreen, {
+        navigationReplace(SCENE_KEYS.gameScreens.friendMatchingScreen, {
             roomCode: randomNumber,
             opponentInformation: this.state.opponentInformation,
             isCreateRoom: true,
@@ -641,17 +642,19 @@ class Home extends React.Component {
             invitedFriendId: this.state.opponentInformation.id
         })
 
-        friendGameServices.sendFriendGameRequest(
-            this.props.clientToken,
-            this.props.clientInformation,
-            randomNumber,
-            this.state.opponentInformation.fcmToken,
-            {
-                examId: Ids.examId,
-                courseId: Ids.courseId,
-                subjectId: Ids.subjectId
-            }
-        )
+        friendGameServices
+            .sendFriendGameRequest(
+                this.props.clientToken,
+                this.props.clientInformation,
+                randomNumber,
+                this.state.opponentInformation.fcmToken,
+                {
+                    examId: Ids.examId,
+                    courseId: Ids.courseId,
+                    subjectId: Ids.subjectId
+                }
+            )
+            .then(data => console.log(data))
     }
 
     friendRoomView() {
@@ -813,7 +816,7 @@ class Home extends React.Component {
         this.room.onJoin.add(() => {
             this.setState({ isModalVisible: false })
             this.room.removeAllListeners()
-            navigationPush(SCENE_KEYS.mainScreens.joinGroupRoom, {
+            navigationReplace(SCENE_KEYS.mainScreens.joinGroupRoom, {
                 client: this.client,
                 room: this.room,
                 roomCode: this.state.groupCodeOnChangeText

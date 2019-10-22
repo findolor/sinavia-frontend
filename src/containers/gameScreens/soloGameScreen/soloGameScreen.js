@@ -1,5 +1,12 @@
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, Modal, Alert } from 'react-native'
+import {
+    View,
+    Text,
+    Image,
+    TouchableOpacity,
+    Modal,
+    BackHandler
+} from 'react-native'
 import styles, { countdownProps } from './style'
 import CountDown from 'react-native-countdown-component'
 import NotchView from '../../../components/notchView'
@@ -88,6 +95,12 @@ class SoloGameScreen extends React.Component {
 
     // We get the room in props
     componentDidMount() {
+        this.backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            () => {
+                this.backButtonOnPress()
+            }
+        )
         // We check if the user has enough jokers
         this.checkJokerAmount()
         // We send ready signal when game screen is loaded
@@ -103,6 +116,10 @@ class SoloGameScreen extends React.Component {
             this.chooseMessageAction(message)
         })
         this.props.room.onError.add(err => console.log(err))
+    }
+
+    componentWillUnmount() {
+        this.backHandler.remove()
     }
 
     checkJokerAmount = () => {

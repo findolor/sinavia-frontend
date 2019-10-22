@@ -51,16 +51,24 @@ class FriendMatchingScreen extends React.Component {
                 friendId: this.props.invitedFriendId,
                 userUsername: this.props.clientInformation.username,
                 userProfilePicture: this.props.clientInformation.profilePicture,
-                examName: this.props.gameContentMap.exams[this.props.examId - 1]
-                    .name,
-                courseName: this.props.gameContentMap.courses[
-                    this.props.courseId - 1
-                ].name,
-                subjectName: this.props.gameContentMap.subjects[
-                    this.props.subjectId - 1
-                ].name
+                examName: this.convertSpacesToUnderscore(
+                    this.props.gameContentMap.exams[this.props.examId - 1].name
+                ),
+                courseName: this.convertSpacesToUnderscore(
+                    this.props.gameContentMap.courses[this.props.courseId - 1]
+                        .name
+                ),
+                subjectName: this.convertSpacesToUnderscore(
+                    this.props.gameContentMap.subjects[this.props.subjectId - 1]
+                        .name
+                )
             })
         })
+    }
+
+    // If we dont convert the spaces we get an error from the wss uri
+    convertSpacesToUnderscore = text => {
+        return text.replace(' ', '_')
     }
 
     // TODO Implement logic for the closed game

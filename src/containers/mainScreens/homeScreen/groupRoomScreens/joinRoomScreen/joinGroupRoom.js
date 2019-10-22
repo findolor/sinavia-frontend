@@ -10,7 +10,7 @@ import {
 import AuthButton from '../../../../../components/authScreen/authButton'
 import styles from './style'
 import {
-    navigationPush,
+    navigationReplace,
     navigationReset,
     SCENE_KEYS
 } from '../../../../../services/navigationService'
@@ -83,7 +83,7 @@ class JoinGroupRoom extends React.Component {
                     this.props.room.removeAllListeners()
 
                     navigationReset('game', { isHardReset: true })
-                    navigationPush(SCENE_KEYS.gameScreens.groupGame, {
+                    navigationReplace(SCENE_KEYS.gameScreens.groupGame, {
                         room: this.props.room,
                         client: this.props.client,
                         groupRoomPlayerList: this.state.groupRoomPlayerList
