@@ -25,6 +25,7 @@ import BACK_BUTTON from '../../../assets/backButton.png'
 import OPPONENTS_ANSWER from '../../../assets/gameScreens/jokers/opponentsAnswer.png'
 import FIFTY_FIFTY from '../../../assets/gameScreens/jokers/fiftyFifty.png'
 import SECOND_CHANCE from '../../../assets/gameScreens/jokers/secondChance.png'
+import { appActions } from '../../../redux/app/actions'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
@@ -115,6 +116,8 @@ class FriendGame extends React.Component {
                 this.backButtonOnPress()
             }
         )
+        // Removing one energy when the match starts
+        this.props.removeOneEnergy()
         // We check if the user has enough jokers
         this.checkJokerAmount()
         // We send ready signal when game screen is loaded
@@ -1041,7 +1044,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    subtractJoker: jokerId => dispatch(clientActions.subtractJoker(jokerId))
+    subtractJoker: jokerId => dispatch(clientActions.subtractJoker(jokerId)),
+    removeOneEnergy: () => dispatch(appActions.removeOneEnergy())
 })
 
 export default connect(
