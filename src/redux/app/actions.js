@@ -6,7 +6,8 @@ export const appTypes = {
     GET_NOTIFICATIONS: 'get_notifications',
     SAVE_NOTIFICATIONS: 'save_notifications',
     REMOVE_FROM_NOTIFICATIONS: 'remove_from_notifications',
-    REMOVE_ONE_ENERGY: 'remove_one_energy'
+    REMOVE_ONE_ENERGY: 'remove_one_energy',
+    SAVE_ENERGY_AMOUNT: 'save_energy_amount'
 }
 
 const setNetworkConnectionInfo = isNetworkConnected => {
@@ -47,10 +48,18 @@ const removeOneEnergy = () => {
     }
 }
 
+const saveEnergyAmount = energyAmount => {
+    return {
+        type: appTypes.SAVE_ENERGY_AMOUNT,
+        energyAmount: energyAmount
+    }
+}
+
 export const appActions = {
     setNetworkConnectionInfo: setNetworkConnectionInfo,
     getLeaderboard: getLeaderboard,
     getNotifications: getNotifications,
     removeFromNotifications: removeFromNotifications,
-    removeOneEnergy: removeOneEnergy
+    removeOneEnergy: removeOneEnergy,
+    saveEnergyAmount: saveEnergyAmount
 }
