@@ -1,13 +1,12 @@
 import { put, call } from 'redux-saga/effects'
 import { getToken } from '../../services/apiServices/token/getToken'
 import { getUser } from '../../services/apiServices/user/getUser'
+import { getGameEnergy } from '../../services/apiServices/gameEnergy/getGameEnergy'
 import { deviceStorage } from '../../services/deviceStorage'
-import {
-    navigationReset,
-    navigationReplace
-} from '../../services/navigationService'
+import { navigationReplace } from '../../services/navigationService'
 import { clientTypes } from '../../redux/client/actions'
 import { friendTypes } from '../../redux/friends/actions'
+import { appTypes } from '../../redux/app/actions'
 import { fcmService } from '../../services/fcmService'
 import { postFCMToken } from '../../services/apiServices/fcmToken/postToken'
 import { getFriends } from '../../services/apiServices/friendship/getFriends'
@@ -142,6 +141,18 @@ export function* loginUser(action) {
                     yield put({
                         type: clientTypes.SAVE_USER_JOKERS,
                         payload: userJokers
+                    })
+
+                    // We get the user's game energy info
+                    let gameEnergy = yield call(
+                        getGameEnergy,
+                        res.token,
+                        res.id
+                    )
+                    // Saving the energy amount to redux
+                    yield put({
+                        type: appTypes.SAVE_ENERGY_AMOUNT,
+                        payload: gameEnergy.energyAmount
                     })
 
                     // Saving the game content to redux state

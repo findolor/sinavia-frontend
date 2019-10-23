@@ -1,8 +1,10 @@
 import { put, call } from 'redux-saga/effects'
 import { postUser } from '../../services/apiServices/user/postUser'
 import { getToken } from '../../services/apiServices/token/getToken'
+import { getGameEnergy } from '../../services/apiServices/gameEnergy/getGameEnergy'
 import { deviceStorage } from '../../services/deviceStorage'
 import { clientTypes } from '../../redux/client/actions'
+import { appTypes } from '../../redux/app/actions'
 import { gameContentTypes } from '../../redux/gameContent/actions'
 import DeviceInfo from 'react-native-device-info'
 
@@ -59,6 +61,14 @@ export function* createUser(action) {
         yield put({
             type: clientTypes.SAVE_CLIENT_INFORMATION,
             payload: action.payload
+        })
+
+        // We get the user's game energy info
+        let gameEnergy = yield call(getGameEnergy, response.token, response.id)
+        // Saving the energy amount to redux
+        yield put({
+            type: appTypes.SAVE_ENERGY_AMOUNT,
+            payload: gameEnergy.energyAmount
         })
 
         // This action will navigate to main screen

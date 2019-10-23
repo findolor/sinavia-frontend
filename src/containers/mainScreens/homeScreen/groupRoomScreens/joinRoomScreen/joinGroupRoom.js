@@ -15,6 +15,9 @@ import {
     SCENE_KEYS
 } from '../../../../../services/navigationService'
 import DropDown from '../../../../../components/mainScreen/dropdown/dropdown'
+import { connect } from 'react-redux'
+import { appActions } from '../../../../../redux/app/actions'
+import { gameEnergyServices } from '../../../../../sagas/gameEnergy'
 // Styling imports
 import {
     heightPercentageToDP as hp,
@@ -78,17 +81,44 @@ class JoinGroupRoom extends React.Component {
                     })
 
                     this.setState({ groupRoomPlayerList: playerList })
-                    return
+                    break
                 case 'start-match':
                     this.props.room.removeAllListeners()
 
-                    navigationReset('game', { isHardReset: true })
-                    navigationReplace(SCENE_KEYS.gameScreens.groupGame, {
-                        room: this.props.room,
-                        client: this.props.client,
-                        groupRoomPlayerList: this.state.groupRoomPlayerList
-                    })
-                    return
+                    if (this.props.clientInformation.isPremium) {
+                        navigationReset('game', { isHardReset: true })
+                        navigationReplace(SCENE_KEYS.gameScreens.groupGame, {
+                            room: this.props.room,
+                            client: this.props.client,
+                            groupRoomPlayerList: this.state.groupRoomPlayerList
+                        })
+                    } else {
+                        gameEnergyServices
+                            .subtractGameEnergy(
+                                this.props.clientToken,
+                                this.props.clientDBId
+                            )
+                            .then(() => {
+                                // Removing one energy when the match starts
+                                this.props.removeOneEnergy()
+
+                                navigationReset('game', { isHardReset: true })
+                                navigationReplace(
+                                    SCENE_KEYS.gameScreens.groupGame,
+                                    {
+                                        room: this.props.room,
+                                        client: this.props.client,
+                                        groupRoomPlayerList: this.state
+                                            .groupRoomPlayerList
+                                    }
+                                )
+                            })
+                            .catch(error => {
+                                console.log(error)
+                                this.shutdownRoutine()
+                            })
+                    }
+                    break
             }
         })
     }
@@ -306,4 +336,17 @@ class JoinGroupRoom extends React.Component {
     }
 }
 
-export default JoinGroupRoom
+const mapStateToProps = state => ({
+    clientDBId: state.client.clientDBId,
+    clientToken: state.client.clientToken,
+    clientInformation: state.client.clientInformation
+})
+
+const mapDispatchToProps = dispatch => ({
+    removeOneEnergy: () => dispatch(appActions.removeOneEnergy())
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(JoinGroupRoom)

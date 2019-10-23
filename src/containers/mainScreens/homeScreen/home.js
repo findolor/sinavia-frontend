@@ -14,6 +14,7 @@ import {
 import { connect } from 'react-redux'
 import { gameContentActions } from '../../../redux/gameContent/actions'
 import { friendActions } from '../../../redux/friends/actions'
+import { appActions } from '../../../redux/app/actions'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
@@ -45,6 +46,7 @@ import { fcmService } from '../../../services/fcmService'
 import { friendshipServices } from '../../../sagas/friendship/'
 import { friendGameServices } from '../../../sagas/friendGame/'
 import { userServices } from '../../../sagas/user/'
+import { gameEnergyServices } from '../../../sagas/gameEnergy/'
 import { GAME_ENGINE_ENDPOINT } from '../../../config'
 
 import NOTIFICATION_LOGO from '../../../assets/mainScreens/notification.png'
@@ -165,20 +167,66 @@ class Home extends React.Component {
                         },
                         {
                             text: 'Kabul et',
-                            onPress: () =>
-                                this.playFriendGame({
-                                    opponentId: message.data.userId,
-                                    roomCode: message.data.roomCode,
-                                    examId: parseInt(message.data.examId, 10),
-                                    courseId: parseInt(
-                                        message.data.courseId,
-                                        10
-                                    ),
-                                    subjectId: parseInt(
-                                        message.data.subjectId,
-                                        10
-                                    )
-                                })
+                            onPress: () => {
+                                if (this.props.clientInformation.isPremium) {
+                                    this.playFriendGame({
+                                        opponentId: message.data.userId,
+                                        roomCode: message.data.roomCode,
+                                        examId: parseInt(
+                                            message.data.examId,
+                                            10
+                                        ),
+                                        courseId: parseInt(
+                                            message.data.courseId,
+                                            10
+                                        ),
+                                        subjectId: parseInt(
+                                            message.data.subjectId,
+                                            10
+                                        )
+                                    })
+                                } else {
+                                    gameEnergyServices
+                                        .subtractGameEnergy(
+                                            this.props.clientToken,
+                                            this.props.clientDBId
+                                        )
+                                        .then(() => {
+                                            // Removing one energy when the match starts
+                                            this.props.removeOneEnergy()
+
+                                            this.playFriendGame({
+                                                opponentId: message.data.userId,
+                                                roomCode: message.data.roomCode,
+                                                examId: parseInt(
+                                                    message.data.examId,
+                                                    10
+                                                ),
+                                                courseId: parseInt(
+                                                    message.data.courseId,
+                                                    10
+                                                ),
+                                                subjectId: parseInt(
+                                                    message.data.subjectId,
+                                                    10
+                                                )
+                                            })
+                                        })
+                                        .catch(error => {
+                                            console.log(error)
+                                            Alert.alert(
+                                                'Üzgünüm ama oyun hakkın bitti :('
+                                            )
+                                            this.rejectFriendGame({
+                                                roomCode: message.data.roomCode
+                                            })
+                                        })
+                                }
+                            }
+                        },
+                        ,
+                        {
+                            text: 'Tamam'
                         }
                     ],
                     { cancelable: false }
@@ -345,6 +393,14 @@ class Home extends React.Component {
         let examIndex
         let subjectList = []
         examIndex = this.props.examList.findIndex(x => x.name === examName)
+        if (!this.props.clientInformation.isPremium)
+            subjectList.push(
+                <View style={styles.card}>
+                    <Text style={styles.cardText}>
+                        Kalan enerji sayısı: {this.props.energyAmount}
+                    </Text>
+                </View>
+            )
         this.props.examList[examIndex].courseEntities[
             carouselActiveSlide
         ].subjectEntities.forEach((subject, index) => {
@@ -385,11 +441,22 @@ class Home extends React.Component {
     }
 
     groupGameModeOnPress = () => {
-        this.setState({
-            visibleView: 'GROUP_MODES',
-            visibleRankedGameStartPress: false,
-            rankedModeButtonBorderColor: EMPTY_MODE_COLOR
-        })
+        if (this.props.clientInformation.isPremium) {
+            this.setState({
+                visibleView: 'GROUP_MODES',
+                visibleRankedGameStartPress: false,
+                rankedModeButtonBorderColor: EMPTY_MODE_COLOR
+            })
+        } else if (this.props.energyAmount !== 0)
+            this.setState({
+                visibleView: 'GROUP_MODES',
+                visibleRankedGameStartPress: false,
+                rankedModeButtonBorderColor: EMPTY_MODE_COLOR
+            })
+        else {
+            this.setState({ visibleRankedGameStartPress: false })
+            Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
+        }
     }
 
     gameModesView() {
@@ -506,17 +573,34 @@ class Home extends React.Component {
     friendRoomOnPress = async () => {
         this.setState({ rankedModeButtonBorderColor: EMPTY_MODE_COLOR })
 
-        if (Object.keys(this.props.friendIds).length === 0) return
-        const friends = await userServices.getUsers(
-            this.props.clientToken,
-            this.props.friendIds
-        )
+        if (this.props.clientInformation.isPremium) {
+            if (Object.keys(this.props.friendIds).length === 0) return
+            const friends = await userServices.getUsers(
+                this.props.clientToken,
+                this.props.friendIds
+            )
 
-        this.setState({
-            visibleView: 'FRIEND_ROOM',
-            friendList: friends,
-            originalFriends: friends
-        })
+            this.setState({
+                visibleView: 'FRIEND_ROOM',
+                friendList: friends,
+                originalFriends: friends
+            })
+        } else if (this.props.energyAmount !== 0) {
+            if (Object.keys(this.props.friendIds).length === 0) return
+            const friends = await userServices.getUsers(
+                this.props.clientToken,
+                this.props.friendIds
+            )
+
+            this.setState({
+                visibleView: 'FRIEND_ROOM',
+                friendList: friends,
+                originalFriends: friends
+            })
+        } else {
+            this.setState({ visibleRankedGameStartPress: false })
+            Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
+        }
     }
 
     friendRoomAndGameModesBackButtonOnPress = () => {
@@ -896,7 +980,17 @@ class Home extends React.Component {
             return
         }
 
-        navigationReset('game', this.calculateContentIds())
+        if (this.props.clientInformation.isPremium) {
+            navigationReset('game', this.calculateContentIds())
+        } else if (this.props.energyAmount !== 0)
+            navigationReset('game', this.calculateContentIds())
+        else {
+            this.setState({
+                visibleRankedGameStartPress: false,
+                rankedModeButtonBorderColor: EMPTY_MODE_COLOR
+            })
+            Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
+        }
     }
 
     // Gets the exam/content/subject ids based on selected subject
@@ -1046,14 +1140,16 @@ const mapStateToProps = state => ({
     clientToken: state.client.clientToken,
     friendIds: state.friends.friendIds,
     examList: state.gameContent.examList,
-    isNetworkConnected: state.app.isNetworkConnected
+    isNetworkConnected: state.app.isNetworkConnected,
+    energyAmount: state.app.energyAmount
 })
 
 const mapDispatchToProps = dispatch => ({
     saveChoosenExam: choosenExam =>
         dispatch(gameContentActions.saveChoosenExam(choosenExam)),
     saveFriendIdList: friendList =>
-        dispatch(friendActions.saveFriendIds(friendList))
+        dispatch(friendActions.saveFriendIds(friendList)),
+    removeOneEnergy: () => dispatch(appActions.removeOneEnergy())
 })
 
 export default connect(

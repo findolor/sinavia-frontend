@@ -29,6 +29,16 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 userNotificationList: state.userNotificationList
             }
+        case appTypes.REMOVE_ONE_ENERGY:
+            state.energyAmount--
+            return {
+                ...state
+            }
+        case appTypes.SAVE_ENERGY_AMOUNT:
+            return {
+                ...state,
+                energyAmount: action.payload
+            }
         default:
             return state
     }
