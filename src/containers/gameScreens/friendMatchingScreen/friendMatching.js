@@ -112,17 +112,19 @@ class FriendMatchingScreen extends React.Component {
             this.room.removeAllListeners()
 
             if (this.props.clientInformation.isPremium) {
-                navigationReplace(SCENE_KEYS.gameScreens.friendGame, {
-                    // These are necessary for the game logic
-                    room: this.room,
-                    client: this.client,
-                    // These can be used in both screens
-                    playerUsername: playerUsername,
-                    playerProfilePicture: playerProfilePicture,
-                    opponentUsername: opponentUsername,
-                    opponentId: opponentId,
-                    opponentProfilePicture: opponentProfilePicture
-                })
+                setTimeout(() => {
+                    navigationReplace(SCENE_KEYS.gameScreens.friendGame, {
+                        // These are necessary for the game logic
+                        room: this.room,
+                        client: this.client,
+                        // These can be used in both screens
+                        playerUsername: playerUsername,
+                        playerProfilePicture: playerProfilePicture,
+                        opponentUsername: opponentUsername,
+                        opponentId: opponentId,
+                        opponentProfilePicture: opponentProfilePicture
+                    })
+                }, 3000)
             } else {
                 gameEnergyServices
                     .subtractGameEnergy(
@@ -133,17 +135,22 @@ class FriendMatchingScreen extends React.Component {
                         // Removing one energy when the match starts
                         this.props.removeOneEnergy()
 
-                        navigationReplace(SCENE_KEYS.gameScreens.friendGame, {
-                            // These are necessary for the game logic
-                            room: this.room,
-                            client: this.client,
-                            // These can be used in both screens
-                            playerUsername: playerUsername,
-                            playerProfilePicture: playerProfilePicture,
-                            opponentUsername: opponentUsername,
-                            opponentId: opponentId,
-                            opponentProfilePicture: opponentProfilePicture
-                        })
+                        setTimeout(() => {
+                            navigationReplace(
+                                SCENE_KEYS.gameScreens.friendGame,
+                                {
+                                    // These are necessary for the game logic
+                                    room: this.room,
+                                    client: this.client,
+                                    // These can be used in both screens
+                                    playerUsername: playerUsername,
+                                    playerProfilePicture: playerProfilePicture,
+                                    opponentUsername: opponentUsername,
+                                    opponentId: opponentId,
+                                    opponentProfilePicture: opponentProfilePicture
+                                }
+                            )
+                        }, 3000)
                     })
                     .catch(error => {
                         console.log(error)
