@@ -16,6 +16,7 @@ import {
     navigationReset
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
+import { appActions } from '../../../redux/app/actions'
 
 // Colyseus imports
 import { Buffer } from 'buffer'
@@ -27,6 +28,7 @@ import { GAME_ENGINE_ENDPOINT, SCENE_KEYS } from '../../../config'
 
 import SWORD from '../../../assets/sword.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
+import { gameEnergyServices } from '../../../sagas/gameEnergy'
 
 class FriendMatchingScreen extends React.Component {
     constructor(props) {
@@ -109,17 +111,45 @@ class FriendMatchingScreen extends React.Component {
 
             this.room.removeAllListeners()
 
-            navigationReplace(SCENE_KEYS.gameScreens.friendGame, {
-                // These are necessary for the game logic
-                room: this.room,
-                client: this.client,
-                // These can be used in both screens
-                playerUsername: playerUsername,
-                playerProfilePicture: playerProfilePicture,
-                opponentUsername: opponentUsername,
-                opponentId: opponentId,
-                opponentProfilePicture: opponentProfilePicture
-            })
+            if (this.props.clientInformation.isPremium) {
+                navigationReplace(SCENE_KEYS.gameScreens.friendGame, {
+                    // These are necessary for the game logic
+                    room: this.room,
+                    client: this.client,
+                    // These can be used in both screens
+                    playerUsername: playerUsername,
+                    playerProfilePicture: playerProfilePicture,
+                    opponentUsername: opponentUsername,
+                    opponentId: opponentId,
+                    opponentProfilePicture: opponentProfilePicture
+                })
+            } else {
+                gameEnergyServices
+                    .subtractGameEnergy(
+                        this.props.clientToken,
+                        this.props.clientDBId
+                    )
+                    .then(() => {
+                        // Removing one energy when the match starts
+                        this.props.removeOneEnergy()
+
+                        navigationReplace(SCENE_KEYS.gameScreens.friendGame, {
+                            // These are necessary for the game logic
+                            room: this.room,
+                            client: this.client,
+                            // These can be used in both screens
+                            playerUsername: playerUsername,
+                            playerProfilePicture: playerProfilePicture,
+                            opponentUsername: opponentUsername,
+                            opponentId: opponentId,
+                            opponentProfilePicture: opponentProfilePicture
+                        })
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        this.backButtonOnPress()
+                    })
+            }
         })
     }
 
@@ -134,14 +164,41 @@ class FriendMatchingScreen extends React.Component {
 
         this.room.removeAllListeners()
 
-        navigationReplace(SCENE_KEYS.gameScreens.soloGameScreen, {
-            // These are necessary for the game logic
-            room: this.room,
-            client: this.client,
-            // These can be used in both screens
-            playerUsername: this.props.clientInformation.username,
-            playerProfilePicture: this.props.clientInformation.profilePicture
-        })
+        if (this.props.clientInformation.isPremium) {
+            navigationReplace(SCENE_KEYS.gameScreens.soloGameScreen, {
+                // These are necessary for the game logic
+                room: this.room,
+                client: this.client,
+                // These can be used in both screens
+                playerUsername: this.props.clientInformation.username,
+                playerProfilePicture: this.props.clientInformation
+                    .profilePicture
+            })
+        } else {
+            gameEnergyServices
+                .subtractGameEnergy(
+                    this.props.clientToken,
+                    this.props.clientDBId
+                )
+                .then(() => {
+                    // Removing one energy when the match starts
+                    this.props.removeOneEnergy()
+
+                    navigationReplace(SCENE_KEYS.gameScreens.soloGameScreen, {
+                        // These are necessary for the game logic
+                        room: this.room,
+                        client: this.client,
+                        // These can be used in both screens
+                        playerUsername: this.props.clientInformation.username,
+                        playerProfilePicture: this.props.clientInformation
+                            .profilePicture
+                    })
+                })
+                .catch(error => {
+                    console.log(error)
+                    this.backButtonOnPress()
+                })
+        }
     }
 
     backButtonOnPress = () => {
@@ -296,12 +353,15 @@ class FriendMatchingScreen extends React.Component {
 const mapStateToProps = state => ({
     clientInformation: state.client.clientInformation,
     clientDBId: state.client.clientDBId,
+    clientToken: state.client.clientToken,
     gameContentMap: state.gameContent.gameContentMap
 })
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+    removeOneEnergy: () => dispatch(appActions.removeOneEnergy())
+})
 
 export default connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
 )(FriendMatchingScreen)

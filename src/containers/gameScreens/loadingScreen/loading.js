@@ -15,6 +15,8 @@ import {
 } from '../../../services/navigationService'
 import { GAME_ENGINE_ENDPOINT, SCENE_KEYS } from '../../../config'
 import { connect } from 'react-redux'
+import { appActions } from '../../../redux/app/actions'
+import { gameEnergyServices } from '../../../sagas/gameEnergy/'
 import { wp, hp } from '../../splashScreen/style'
 import BACK_BUTTON from '../../../assets/return.png'
 
@@ -60,7 +62,7 @@ class LoadingScreen extends React.Component {
     // Client sends a ready signal when they join a room successfully
     joinRoom = playerOptions => {
         this.room = this.client.join('rankedRoom', playerOptions)
-        console.log(this.room)
+
         // Initiate the bot game after 10 seconds
         this.botTimeout = setTimeout(() => {
             this.room.send({
@@ -101,28 +103,70 @@ class LoadingScreen extends React.Component {
             this.room.removeAllListeners()
             clearTimeout(this.botTimeout)
 
-            navigationReplace(SCENE_KEYS.gameScreens.rankedMatchingScreen, {
-                // These are necessary for the game logic
-                room: this.room,
-                client: this.client,
-                // These can be used in both screens
-                playerUsername: playerUsername,
-                playerProfilePicture: playerProfilePicture,
-                playerCoverPicture: playerCoverPicture,
-                opponentUsername: opponentUsername,
-                opponentId: opponentId,
-                opponentProfilePicture: opponentProfilePicture,
-                opponentCoverPicture: opponentCoverPicture,
-                // These are used in the match intro screen
-                courseName: this.props.gameContentMap.courses[
-                    this.props.courseId - 1
-                ].name,
-                subjectName: this.props.gameContentMap.subjects[
-                    this.props.subjectId - 1
-                ].name,
-                clientPoints: playerTotalPoints,
-                opponentPoints: opponentTotalPoints
-            })
+            if (this.props.clientInformation.isPremium) {
+                navigationReplace(SCENE_KEYS.gameScreens.rankedMatchingScreen, {
+                    // These are necessary for the game logic
+                    room: this.room,
+                    client: this.client,
+                    // These can be used in both screens
+                    playerUsername: playerUsername,
+                    playerProfilePicture: playerProfilePicture,
+                    playerCoverPicture: playerCoverPicture,
+                    opponentUsername: opponentUsername,
+                    opponentId: opponentId,
+                    opponentProfilePicture: opponentProfilePicture,
+                    opponentCoverPicture: opponentCoverPicture,
+                    // These are used in the match intro screen
+                    courseName: this.props.gameContentMap.courses[
+                        this.props.courseId - 1
+                    ].name,
+                    subjectName: this.props.gameContentMap.subjects[
+                        this.props.subjectId - 1
+                    ].name,
+                    clientPoints: playerTotalPoints,
+                    opponentPoints: opponentTotalPoints
+                })
+            } else {
+                gameEnergyServices
+                    .subtractGameEnergy(
+                        this.props.clientToken,
+                        this.props.clientDBId
+                    )
+                    .then(() => {
+                        // Removing one energy when the match starts
+                        this.props.removeOneEnergy()
+
+                        navigationReplace(
+                            SCENE_KEYS.gameScreens.rankedMatchingScreen,
+                            {
+                                // These are necessary for the game logic
+                                room: this.room,
+                                client: this.client,
+                                // These can be used in both screens
+                                playerUsername: playerUsername,
+                                playerProfilePicture: playerProfilePicture,
+                                playerCoverPicture: playerCoverPicture,
+                                opponentUsername: opponentUsername,
+                                opponentId: opponentId,
+                                opponentProfilePicture: opponentProfilePicture,
+                                opponentCoverPicture: opponentCoverPicture,
+                                // These are used in the match intro screen
+                                courseName: this.props.gameContentMap.courses[
+                                    this.props.courseId - 1
+                                ].name,
+                                subjectName: this.props.gameContentMap.subjects[
+                                    this.props.subjectId - 1
+                                ].name,
+                                clientPoints: playerTotalPoints,
+                                opponentPoints: opponentTotalPoints
+                            }
+                        )
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        this.backButtonOnPress()
+                    })
+            }
         })
     }
 
@@ -160,13 +204,17 @@ class LoadingScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
+    clientToken: state.client.clientToken,
     clientDBId: state.client.clientDBId,
-    gameContentMap: state.gameContent.gameContentMap
+    gameContentMap: state.gameContent.gameContentMap,
+    clientInformation: state.client.clientInformation
 })
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+    removeOneEnergy: () => dispatch(appActions.removeOneEnergy())
+})
 
 export default connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
 )(LoadingScreen)

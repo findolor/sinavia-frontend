@@ -16,6 +16,8 @@ import {
     SCENE_KEYS
 } from '../../../../../services/navigationService'
 import { connect } from 'react-redux'
+import { appActions } from '../../../../../redux/app/actions'
+import { gameEnergyServices } from '../../../../../sagas/gameEnergy'
 // Colyseus game engine imports
 import { Buffer } from 'buffer'
 import { AsyncStorage } from 'react-native'
@@ -129,17 +131,44 @@ class CreateGroupRoom extends React.Component {
                     })
 
                     this.setState({ groupRoomPlayerList: playerList })
-                    return
+                    break
                 case 'start-match':
                     this.room.removeAllListeners()
 
-                    navigationReset('game', { isHardReset: true })
-                    navigationReplace(SCENE_KEYS.gameScreens.groupGame, {
-                        room: this.room,
-                        client: this.client,
-                        groupRoomPlayerList: this.state.groupRoomPlayerList
-                    })
-                    return
+                    if (this.props.clientInformation.isPremium) {
+                        navigationReset('game', { isHardReset: true })
+                        navigationReplace(SCENE_KEYS.gameScreens.groupGame, {
+                            room: this.room,
+                            client: this.client,
+                            groupRoomPlayerList: this.state.groupRoomPlayerList
+                        })
+                    } else {
+                        gameEnergyServices
+                            .subtractGameEnergy(
+                                this.props.clientToken,
+                                this.props.clientDBId
+                            )
+                            .then(() => {
+                                // Removing one energy when the match starts
+                                this.props.removeOneEnergy()
+
+                                navigationReset('game', { isHardReset: true })
+                                navigationReplace(
+                                    SCENE_KEYS.gameScreens.groupGame,
+                                    {
+                                        room: this.room,
+                                        client: this.client,
+                                        groupRoomPlayerList: this.state
+                                            .groupRoomPlayerList
+                                    }
+                                )
+                            })
+                            .catch(error => {
+                                console.log(error)
+                                this.shutdownRoutine()
+                            })
+                    }
+                    break
             }
         })
     }
@@ -338,12 +367,16 @@ class CreateGroupRoom extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    clientDBId: state.client.clientDBId
+    clientDBId: state.client.clientDBId,
+    clientToken: state.client.clientToken,
+    clientInformation: state.client.clientInformation
 })
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+    removeOneEnergy: () => dispatch(appActions.removeOneEnergy())
+})
 
 export default connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
 )(CreateGroupRoom)

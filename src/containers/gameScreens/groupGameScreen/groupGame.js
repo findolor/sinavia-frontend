@@ -28,7 +28,6 @@ import SECOND_CHANCE from '../../../assets/gameScreens/jokers/secondChance.png'
 import CORRECT_IMG from '../../../assets/gameScreens/correct.png'
 import UNANSWERED_IMG from '../../../assets/gameScreens/unanswered.png'
 import INCORRECT_IMG from '../../../assets/gameScreens/incorrect.png'
-import { appActions } from '../../../redux/app/actions'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
@@ -111,8 +110,6 @@ class GroupGame extends React.Component {
                 this.backButtonOnPress()
             }
         )
-        // Removing one energy when the match starts
-        this.props.removeOneEnergy()
         // We check if the user has enough jokers
         this.checkJokerAmount()
         await this.initializeLeaderboard()
@@ -1106,8 +1103,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    subtractJoker: jokerId => dispatch(clientActions.subtractJoker(jokerId)),
-    removeOneEnergy: () => dispatch(appActions.removeOneEnergy())
+    subtractJoker: jokerId => dispatch(clientActions.subtractJoker(jokerId))
 })
 
 export default connect(

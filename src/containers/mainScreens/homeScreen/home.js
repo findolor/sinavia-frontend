@@ -14,6 +14,7 @@ import {
 import { connect } from 'react-redux'
 import { gameContentActions } from '../../../redux/gameContent/actions'
 import { friendActions } from '../../../redux/friends/actions'
+import { appActions } from '../../../redux/app/actions'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
@@ -45,6 +46,7 @@ import { fcmService } from '../../../services/fcmService'
 import { friendshipServices } from '../../../sagas/friendship/'
 import { friendGameServices } from '../../../sagas/friendGame/'
 import { userServices } from '../../../sagas/user/'
+import { gameEnergyServices } from '../../../sagas/gameEnergy/'
 import { GAME_ENGINE_ENDPOINT } from '../../../config'
 
 import NOTIFICATION_LOGO from '../../../assets/mainScreens/notification.png'
@@ -165,20 +167,66 @@ class Home extends React.Component {
                         },
                         {
                             text: 'Kabul et',
-                            onPress: () =>
-                                this.playFriendGame({
-                                    opponentId: message.data.userId,
-                                    roomCode: message.data.roomCode,
-                                    examId: parseInt(message.data.examId, 10),
-                                    courseId: parseInt(
-                                        message.data.courseId,
-                                        10
-                                    ),
-                                    subjectId: parseInt(
-                                        message.data.subjectId,
-                                        10
-                                    )
-                                })
+                            onPress: () => {
+                                if (this.props.clientInformation.isPremium) {
+                                    this.playFriendGame({
+                                        opponentId: message.data.userId,
+                                        roomCode: message.data.roomCode,
+                                        examId: parseInt(
+                                            message.data.examId,
+                                            10
+                                        ),
+                                        courseId: parseInt(
+                                            message.data.courseId,
+                                            10
+                                        ),
+                                        subjectId: parseInt(
+                                            message.data.subjectId,
+                                            10
+                                        )
+                                    })
+                                } else {
+                                    gameEnergyServices
+                                        .subtractGameEnergy(
+                                            this.props.clientToken,
+                                            this.props.clientDBId
+                                        )
+                                        .then(() => {
+                                            // Removing one energy when the match starts
+                                            this.props.removeOneEnergy()
+
+                                            this.playFriendGame({
+                                                opponentId: message.data.userId,
+                                                roomCode: message.data.roomCode,
+                                                examId: parseInt(
+                                                    message.data.examId,
+                                                    10
+                                                ),
+                                                courseId: parseInt(
+                                                    message.data.courseId,
+                                                    10
+                                                ),
+                                                subjectId: parseInt(
+                                                    message.data.subjectId,
+                                                    10
+                                                )
+                                            })
+                                        })
+                                        .catch(error => {
+                                            console.log(error)
+                                            Alert.alert(
+                                                'Üzgünüm ama oyun hakkın bitti :('
+                                            )
+                                            this.rejectFriendGame({
+                                                roomCode: message.data.roomCode
+                                            })
+                                        })
+                                }
+                            }
+                        },
+                        ,
+                        {
+                            text: 'Tamam'
                         }
                     ],
                     { cancelable: false }
@@ -1100,7 +1148,8 @@ const mapDispatchToProps = dispatch => ({
     saveChoosenExam: choosenExam =>
         dispatch(gameContentActions.saveChoosenExam(choosenExam)),
     saveFriendIdList: friendList =>
-        dispatch(friendActions.saveFriendIds(friendList))
+        dispatch(friendActions.saveFriendIds(friendList)),
+    removeOneEnergy: () => dispatch(appActions.removeOneEnergy())
 })
 
 export default connect(
