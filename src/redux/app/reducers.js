@@ -34,6 +34,11 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state
             }
+        case appTypes.SAVE_ENERGY_AMOUNT:
+            return {
+                ...state,
+                energyAmount: action.payload
+            }
         default:
             return state
     }

@@ -48,18 +48,10 @@ const removeOneEnergy = () => {
     }
 }
 
-const saveEnergyAmount = energyAmount => {
-    return {
-        type: appTypes.SAVE_ENERGY_AMOUNT,
-        energyAmount: energyAmount
-    }
-}
-
 export const appActions = {
     setNetworkConnectionInfo: setNetworkConnectionInfo,
     getLeaderboard: getLeaderboard,
     getNotifications: getNotifications,
     removeFromNotifications: removeFromNotifications,
-    removeOneEnergy: removeOneEnergy,
-    saveEnergyAmount: saveEnergyAmount
+    removeOneEnergy: removeOneEnergy
 }

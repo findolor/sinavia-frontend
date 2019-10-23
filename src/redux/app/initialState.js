@@ -3,5 +3,5 @@ export const INITIAL_STATE = {
     leaderboardUserList: null,
     clientRanking: null,
     userNotificationList: null,
-    energyAmount: 5
+    energyAmount: null
 }
