@@ -33,12 +33,16 @@ class Settings extends React.Component {
             // User information variables
             name: null,
             lastname: null,
+            username: null,
             city: null,
             birthDate: null,
-            birthDateUI: moment(
-                this.props.clientInformation.birthDate,
-                'YYYY-MM-DD HH:mm'
-            ).format('DD-MM-YYYY'),
+            birthDateUI:
+                this.props.clientInformation.birthDate === null
+                    ? ''
+                    : moment(
+                          this.props.clientInformation.birthDate,
+                          'YYYY-MM-DD HH:mm'
+                      ).format('DD-MM-YYYY'),
             dateColor: '#7A7878'
         }
     }
@@ -104,6 +108,11 @@ class Settings extends React.Component {
         this.setState({ city: text })
     }
 
+    usernameOnChange = text => {
+        if (text === '') text = null
+        this.setState({ username: text })
+    }
+
     checkNameLastname = () => {
         if (this.state.name !== null && this.state.lastname !== null) {
             if (this.state.lastname !== '') return true
@@ -113,6 +122,11 @@ class Settings extends React.Component {
 
     checkCity = () => {
         if (this.state.city !== null) return true
+        else false
+    }
+
+    checkUsername = () => {
+        if (this.state.username !== null) return true
         else false
     }
 
@@ -127,6 +141,11 @@ class Settings extends React.Component {
 
         if (this.checkCity()) {
             clientInformation.city = this.state.city
+            shouldUpdate = true
+        }
+
+        if (this.checkUsername()) {
+            clientInformation.username = this.state.username
             shouldUpdate = true
         }
 
@@ -216,6 +235,26 @@ class Settings extends React.Component {
                                 autoCapitalize={'none'}
                                 onChangeText={text =>
                                     this.nameLastnameOnChange(text)
+                                }
+                            />
+                        </View>
+                    </View>
+                    <View style={styles.textInputContainer}>
+                        <View style={styles.textInputTitleContainer}>
+                            <Text style={styles.textInputTitle}>
+                                Kullanıcı Adı
+                            </Text>
+                        </View>
+                        <View style={styles.textInputView}>
+                            <TextInput
+                                placeholder={
+                                    this.props.clientInformation.username
+                                }
+                                style={styles.textInputStyle}
+                                placeholderTextColor="#8A8888"
+                                autoCapitalize={'none'}
+                                onChangeText={text =>
+                                    this.usernameOnChange(text)
                                 }
                             />
                         </View>
