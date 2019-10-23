@@ -75,7 +75,7 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     textInputContainer: {
-        height: hp(12),
+        height: hp(9),
         width: wp(89),
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -83,7 +83,7 @@ export default StyleSheet.create({
     },
     textInputView: {
         height: hp(7.5),
-        width: wp(72),
+        width: wp(70),
         borderWidth: wp(0.5),
         borderRadius: 20,
         borderColor: '#C8C8C8'
@@ -96,7 +96,7 @@ export default StyleSheet.create({
     },
     textInputTitleContainer: {
         height: hp(7.5),
-        width: wp(17),
+        width: wp(19),
         justifyContent: 'center'
     },
     changePasswordButton: {
