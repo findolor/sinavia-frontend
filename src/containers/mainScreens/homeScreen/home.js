@@ -159,6 +159,10 @@ class Home extends React.Component {
                     message.data.body,
                     [
                         {
+                            text: 'Tamam',
+                            onPress: () => {}
+                        },
+                        {
                             text: 'Reddet',
                             onPress: () =>
                                 this.rejectFriendGame({
@@ -186,47 +190,33 @@ class Home extends React.Component {
                                         )
                                     })
                                 } else {
-                                    gameEnergyServices
-                                        .subtractGameEnergy(
-                                            this.props.clientToken,
-                                            this.props.clientDBId
+                                    if (this.props.energyAmount === 0) {
+                                        Alert.alert(
+                                            'Üzgünüm ama oyun hakkın bitti :('
                                         )
-                                        .then(() => {
-                                            // Removing one energy when the match starts
-                                            this.props.removeOneEnergy()
-
-                                            this.playFriendGame({
-                                                opponentId: message.data.userId,
-                                                roomCode: message.data.roomCode,
-                                                examId: parseInt(
-                                                    message.data.examId,
-                                                    10
-                                                ),
-                                                courseId: parseInt(
-                                                    message.data.courseId,
-                                                    10
-                                                ),
-                                                subjectId: parseInt(
-                                                    message.data.subjectId,
-                                                    10
-                                                )
-                                            })
+                                        this.rejectFriendGame({
+                                            roomCode: message.data.roomCode
                                         })
-                                        .catch(error => {
-                                            console.log(error)
-                                            Alert.alert(
-                                                'Üzgünüm ama oyun hakkın bitti :('
+                                    } else {
+                                        this.playFriendGame({
+                                            opponentId: message.data.userId,
+                                            roomCode: message.data.roomCode,
+                                            examId: parseInt(
+                                                message.data.examId,
+                                                10
+                                            ),
+                                            courseId: parseInt(
+                                                message.data.courseId,
+                                                10
+                                            ),
+                                            subjectId: parseInt(
+                                                message.data.subjectId,
+                                                10
                                             )
-                                            this.rejectFriendGame({
-                                                roomCode: message.data.roomCode
-                                            })
                                         })
+                                    }
                                 }
                             }
-                        },
-                        ,
-                        {
-                            text: 'Tamam'
                         }
                     ],
                     { cancelable: false }
