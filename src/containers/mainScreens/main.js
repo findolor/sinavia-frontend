@@ -76,26 +76,14 @@ class Main extends React.Component {
                 break
             case 'TROPHY':
                 finalIndex = 0 - this.state.currentPage
-                this.setState({
-                    trophyIconSelected: true,
-                    homeIconSelected: false,
-                    jokerIconSelected: false})
                 this.refs.swiper.scrollBy(finalIndex)
                 break
             case 'HOME':
                 finalIndex = 1 - this.state.currentPage
-                this.setState({
-                    trophyIconSelected: false,
-                    homeIconSelected: true,
-                    jokerIconSelected: false})
                 this.refs.swiper.scrollBy(finalIndex)
                 break
             case 'PURCHASE':
                 finalIndex = 2 - this.state.currentPage
-                this.setState({
-                    trophyIconSelected: false,
-                    homeIconSelected: false,
-                    jokerIconSelected: true})
                 this.refs.swiper.scrollBy(finalIndex)
                 break
         }

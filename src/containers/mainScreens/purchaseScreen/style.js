@@ -7,6 +7,7 @@ import {
 export default StyleSheet.create({
     container: {
         flex: 1,
+        justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#fcfcfc'
     },
@@ -86,7 +87,7 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     linearGradientUpperView: {
-        height: hp(35),
+        height: hp(34),
         width: wp(93)
     },
     linearGradientBottomView: {
@@ -334,7 +335,7 @@ export default StyleSheet.create({
         height: hp(4),
         width: wp(16),
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center'
     },
     purchaseJokerButtonView: {
@@ -388,5 +389,171 @@ export default StyleSheet.create({
         fontSize: hp(1.5),
         textAlign: 'center',
         color: 'white'
+    },
+    premiumModal: {
+        flex: 1,
+        backgroundColor: '#000000DE',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    premiumModalView: {
+        position: 'absolute',
+        zIndex: 1,
+        height: hp(71),
+        width: wp(93),
+        borderWidth: hp(0.5),
+        borderRadius: 10,
+        borderColor: '#D27E00',
+        overflow: 'hidden',
+        backgroundColor: 'red',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    linearGradientPremiumModalView: {
+        height: hp(71),
+        width: wp(93)
+    },
+    premiumModalHeaderView: {
+        height: hp(7),
+        width: wp(93),
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    premiumOptionsView: {
+        height: hp(22),
+        width: wp(93),
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignItems: 'center'
+    },
+    buttonsInPremiumModalView: {
+        height: hp(16),
+        width: wp(93),
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    premiumModalHeaderText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(3),
+        textAlign: 'center',
+        color: '#FF9900'
+    },
+    purchasePremiumButton: {
+        height: hp(6),
+        width: wp(75),
+        borderWidth: hp(0.2),
+        borderColor: 'white',
+        borderRadius: 30,
+        backgroundColor: '#00D9EF',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: hp(1.5)
+    },
+    purchasePremiumButtonText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(3),
+        textAlign: 'center',
+        color: 'white'
+    },
+    purchasePremiumCancelText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(2.5),
+        textAlign: 'center',
+        color: 'white',
+        marginTop: hp(2)
+    },
+    premiumOptionView: {
+        height: hp(22),
+        width: wp(28),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    premiumOptionUpperView: {
+        height: hp(3),
+        width: wp(28),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    premiumOptionBottomView: {
+        height: hp(19),
+        width: wp(28),
+        borderWidth: hp(0.35),
+        borderColor: '#00D9EF',
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    premiumOptionMonthsView: {
+        height: hp(11),
+        width: wp(27),
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    premiumOptionPriceAmountView: {
+        height: hp(8),
+        width: wp(27),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    selectedMonthNumberText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(5),
+        textAlign: 'center',
+        color: 'black'
+    },
+    unselectedMonthNumberText: {
+        fontFamily: 'Averta-Light',
+        fontSize: hp(4.5),
+        textAlign: 'center',
+        color: '#818181'
+    },
+    selectedMonthText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(3),
+        textAlign: 'center',
+        color: 'black'
+    },
+    unselectedMonthText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(2.5),
+        textAlign: 'center',
+        color: '#818181'
+    },
+    selectedPricePerMonthText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(2),
+        textAlign: 'center',
+        color: '#818181'
+    },
+    unselectedPricePerMonthText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(1.8),
+        textAlign: 'center',
+        color: '#818181'
+    },
+    selectedPriceAmountText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(3),
+        textAlign: 'center',
+        color: 'black'
+    },
+    unselectedPriceAmountText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(2.5),
+        textAlign: 'center',
+        color: 'black'
+    },
+    selectedPremiumOptionHeaderText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(1.4),
+        textAlign: 'center',
+        color: 'white'
+    },
+    unselectedPremiumOptionHeaderText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(1.4),
+        textAlign: 'center',
+        color: '#818181'
     }
 })
