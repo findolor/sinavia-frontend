@@ -100,7 +100,7 @@ export default StyleSheet.create({
     },
     circlesContainer: {
         height: hp(25),
-        width: wp(54),
+        width: wp(48),
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -127,8 +127,7 @@ export default StyleSheet.create({
     percentageContainer: {
         height: hp(6),
         width: wp(34),
-        flexDirection: 'row',
-        marginLeft: wp(2)
+        flexDirection: 'row'
     },
     percentagesTextView: {
         height: hp(6)
@@ -139,7 +138,7 @@ export default StyleSheet.create({
         backgroundColor: '#6AC259',
         borderRadius: 2,
         marginTop: hp(0.4),
-        marginLeft: wp(6.5)
+        marginLeft: wp(5.5)
     },
     incorrectPoint: {
         height: hp(1.75),
@@ -147,7 +146,7 @@ export default StyleSheet.create({
         backgroundColor: '#B72A2A',
         borderRadius: 2,
         marginTop: hp(0.4),
-        marginLeft: wp(6.5)
+        marginLeft: wp(5.5)
     },
     unansweredPoint: {
         height: hp(1.75),
@@ -155,7 +154,7 @@ export default StyleSheet.create({
         backgroundColor: '#00D9EF',
         borderRadius: 2,
         marginTop: hp(0.4),
-        marginLeft: wp(6.5)
+        marginLeft: wp(5.5)
     },
     optionsText: {
         fontFamily: 'Averta-Semibold',
@@ -218,43 +217,43 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Semibold',
         fontSize: hp(4),
         color: '#2E313C',
-        marginLeft: wp(8.5),
+        marginLeft: wp(5.5),
         marginTop: hp(0.5)
     },
     totalGamesPlayedAndSolvedQuestionsText: {
         fontFamily: 'Averta-Semibold',
         fontSize: hp(1.8),
         color: '#CACACA',
-        marginLeft: wp(8.5)
+        marginLeft: wp(5.5)
     },
     totalGamesPlayedAndSolvedQuestionsAmountText: {
         fontFamily: 'Averta-Semibold',
         fontSize: hp(1.4),
         color: '#CACACA',
-        marginLeft: wp(8.5)
+        marginLeft: wp(5.5)
     },
     wonText: {
         fontFamily: 'Averta-Regular',
         fontSize: hp(1.8),
         color: '#6AC259',
-        marginLeft: wp(8.5),
+        marginLeft: wp(5.5),
         marginTop: hp(0.8)
     },
     drawText: {
         fontFamily: 'Averta-Regular',
         fontSize: hp(1.8),
         color: '#2E313C',
-        marginLeft: wp(8.5)
+        marginLeft: wp(5.5)
     },
     lostText: {
         fontFamily: 'Averta-Regular',
         fontSize: hp(1.8),
         color: '#B72A2A',
-        marginLeft: wp(8.5)
+        marginLeft: wp(5.5)
     },
     semiCircleContainer: {
         height: hp(16),
-        width: wp(54),
+        width: wp(48),
         justifyContent: 'center',
         alignItems: 'center'
     },
