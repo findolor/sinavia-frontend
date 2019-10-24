@@ -109,7 +109,7 @@ class Login extends React.Component {
                     </View>
                     <View style={styles.textInputsContainer}>
                         <AuthTextInput
-                            placeholder="Kullanıcı Adı veya E-Posta"
+                            placeholder="E-Posta"
                             placeholderTextColor="#8A8888"
                             onChangeText={email => this.emailOnChange(email)}
                         />

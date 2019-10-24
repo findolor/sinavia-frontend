@@ -58,13 +58,13 @@ export function* createUser(action) {
         })
 
         // Saving information to storage
-        delete action.payload.password
+        delete res.password
         action.payload.id = response.id
         deviceStorage.saveItemToStorage('clientInformation', action.payload)
         // Saving client information to redux state
         yield put({
             type: clientTypes.SAVE_CLIENT_INFORMATION,
-            payload: action.payload
+            payload: res
         })
 
         // We get the user's game energy info
