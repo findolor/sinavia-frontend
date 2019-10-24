@@ -181,7 +181,7 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     barRheostatContainer: {
-        height: hp(6),
+        height: hp(8),
         width: wp(75)
     },
     timezonesTextView: {
