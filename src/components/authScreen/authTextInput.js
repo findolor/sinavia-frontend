@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
         height: hp(7),
         width: wp(85),
         borderRadius: 10,
-        paddingHorizontal: wp(4)
+        paddingHorizontal: wp(4),
+        color: '#000'
     }
 })
