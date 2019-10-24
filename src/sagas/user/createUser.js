@@ -9,6 +9,10 @@ import { gameContentTypes } from '../../redux/gameContent/actions'
 import DeviceInfo from 'react-native-device-info'
 
 export function* createUser(action) {
+    yield put({
+        type: appTypes.LOCK_UNLOCK_BUTTON
+    })
+
     try {
         // We get the unique device id
         const deviceId = yield call(DeviceInfo.getUniqueId)
@@ -76,7 +80,14 @@ export function* createUser(action) {
             type: gameContentTypes.GET_ALL_CONTENT,
             clientToken: response.token
         })
+
+        yield put({
+            type: appTypes.LOCK_UNLOCK_BUTTON
+        })
     } catch (error) {
+        yield put({
+            type: appTypes.LOCK_UNLOCK_BUTTON
+        })
         // TODO remove console.log later
         console.log(error)
     }

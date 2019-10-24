@@ -14,13 +14,14 @@ import {
 } from 'react-native-responsive-screen'
 import { AuthButton, AuthTextInput } from '../../../components/authScreen'
 import styles from './style'
-import firebase from 'react-native-firebase'
 import { userServices } from '../../../sagas/user'
 
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
 import { navigationReset } from '../../../services/navigationService'
+import { connect } from 'react-redux'
+import { appTypes } from '../../../redux/app/actions'
 
-export default class ResetPassword extends React.Component {
+class ResetPassword extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -33,13 +34,17 @@ export default class ResetPassword extends React.Component {
     }
 
     sendLinkOnPress = () => {
+        this.props.lockUnlockButton()
         userServices
             .resetPassword(this.state.email)
             .then(data => {
+                this.props.lockUnlockButton()
+
                 Alert.alert('Yeni şifren e-postana gönderildi!')
                 navigationReset('auth')
             })
             .catch(error => {
+                this.props.lockUnlockButton()
                 Alert.alert('E-postayı kontrol et!')
             })
     }
@@ -89,6 +94,7 @@ export default class ResetPassword extends React.Component {
                             borderRadius={10}
                             buttonText="Gönder"
                             onPress={this.sendLinkOnPress}
+                            disabled={this.props.buttonLock}
                         />
                     </View>
                 </KeyboardAvoidingView>
@@ -96,3 +102,16 @@ export default class ResetPassword extends React.Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    buttonLock: state.app.buttonLock
+})
+
+const mapDispatchToProps = dispatch => ({
+    lockUnlockButton: () => dispatch(appTypes.LOCK_UNLOCK_BUTTON())
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ResetPassword)
