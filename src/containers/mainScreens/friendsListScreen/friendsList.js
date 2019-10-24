@@ -10,7 +10,8 @@ import {
 import {
     SCENE_KEYS,
     navigationPop,
-    navigationPush
+    navigationPush,
+    navigationReplace
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import { userServices } from '../../../sagas/user/'
@@ -89,13 +90,18 @@ class FriendsList extends React.Component {
     }
 
     friendOnPress = searchListIndex => {
-        this.props.getOpponentFullInformation(
-            this.state.friendsList[searchListIndex],
-            this.props.clientDBId,
-            this.props.clientToken,
-            false,
-            this.props.isOpponentFriends
+        if (
+            this.state.friendsList[searchListIndex].id === this.props.clientDBId
         )
+            navigationPush(SCENE_KEYS.mainScreens.profile)
+        else
+            this.props.getOpponentFullInformation(
+                this.state.friendsList[searchListIndex],
+                this.props.clientDBId,
+                this.props.clientToken,
+                false,
+                this.props.isOpponentFriends
+            )
     }
 
     render() {
