@@ -84,10 +84,12 @@ export default StyleSheet.create({
         marginLeft: wp(-0.5)
     },
     modalView: {
+        position: 'absolute',
+        zIndex: 1,
         backgroundColor: '#ffffff',
         height: hp(67),
         width: wp(87.5),
-        marginTop: hp(2),
+        marginTop: hp(14),
         borderColor: '#00D9EF',
         borderWidth: wp(0.75),
         borderRadius: 10,
@@ -176,10 +178,12 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     backAndCloseButtonsContainer: {
+        position: 'absolute',
+        zIndex: 1,
         height: hp(6),
         width: wp(86),
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         alignItems: 'center',
         marginTop: hp(6)
     },
@@ -202,6 +206,7 @@ export default StyleSheet.create({
     modal: {
         flex: 1,
         backgroundColor: '#000000DE',
+        justifyContent: 'flex-start',
         alignItems: 'center'
     },
     rankedModeImage: {

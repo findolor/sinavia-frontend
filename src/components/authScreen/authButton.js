@@ -16,7 +16,8 @@ export default AuthButton = ({
     marginTop,
     marginBottom,
     borderRadius,
-    fontSize
+    fontSize,
+    position
 }) => {
     return (
         <TouchableOpacity
@@ -27,7 +28,8 @@ export default AuthButton = ({
                 { marginBottom: marginBottom },
                 { height: height },
                 { width: width },
-                { borderRadius: borderRadius }
+                { borderRadius: borderRadius },
+                { position: position }
             ]}
             onPress={onPress}
         >

@@ -86,11 +86,6 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    usersCounterText: {
-        fontFamily: 'Averta-Bold',
-        fontSize: wp(4),
-        color: '#5C5C5C'
-    },
     quitView: {
         backgroundColor: '#ffffff',
         height: hp(20),

@@ -38,6 +38,7 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     premiumUpperView: {
+        zIndex: 1,
         height: hp(34),
         width: wp(93),
         borderWidth: hp(0.4),

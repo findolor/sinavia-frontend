@@ -52,6 +52,9 @@ import { GAME_ENGINE_ENDPOINT } from '../../../config'
 import NOTIFICATION_LOGO from '../../../assets/mainScreens/notification.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
 
+import CreateGroupRoomView from './groupRoomScreens/createRoomScreen/createGroupRoom'
+import JoinGroupRoomView from './groupRoomScreens/joinRoomScreen/joinGroupRoom'
+
 import {
     navigationPush,
     navigationReset,
@@ -82,8 +85,6 @@ class Home extends React.Component {
             carouselCourseData: [],
             subject: '',
             isModalVisible: false,
-            // Mode button variables
-            rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
             // Mode images
             rankedImage: RANKED_EMPTY_IMAGE,
             friendsImage: FRIENDS_EMPTY_IMAGE,
@@ -95,7 +96,6 @@ class Home extends React.Component {
             // Modal visible view variable
             visibleView: '',
             // Variable for making start button when pressed ranked
-            visibleRankedGameStartPress: false,
             friendSelected: false,
             opponentUserPic: null,
             opponentName: '',
@@ -423,28 +423,18 @@ class Home extends React.Component {
         })
     }
 
-    rankedGameModeOnPress = () => {
-        this.setState({
-            visibleRankedGameStartPress: true,
-            rankedModeButtonBorderColor: SELECTED_MODE_COLOR
-        })
-    }
-
     groupGameModeOnPress = () => {
         if (this.props.clientInformation.isPremium) {
             this.setState({
                 visibleView: 'GROUP_MODES',
-                visibleRankedGameStartPress: false,
                 rankedModeButtonBorderColor: EMPTY_MODE_COLOR
             })
         } else if (this.props.energyAmount !== 0)
             this.setState({
                 visibleView: 'GROUP_MODES',
-                visibleRankedGameStartPress: false,
                 rankedModeButtonBorderColor: EMPTY_MODE_COLOR
             })
         else {
-            this.setState({ visibleRankedGameStartPress: false })
             Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
         }
     }
@@ -452,6 +442,7 @@ class Home extends React.Component {
     gameModesView() {
         return (
             <View style={styles.modal}>
+                <TouchableOpacity onPress={this.closeModalButtonOnPress} style={ {height: hp(120), width: wp(100)}}/>
                 <View style={styles.onlyCloseButtonContainer}>
                     <TouchableOpacity onPress={this.closeModalButtonOnPress}>
                         <Image source={CLOSE_BUTTON} style={styles.xLogo} />
@@ -473,8 +464,7 @@ class Home extends React.Component {
                                     style={[
                                         styles.gameModeLogoContainer,
                                         {
-                                            borderColor: this.state
-                                                .rankedModeButtonBorderColor
+                                            borderColor: '#00D9EF'
                                         }
                                     ]}
                                 >
@@ -524,17 +514,16 @@ class Home extends React.Component {
                         </View>
                     </View>
                 </View>
-                {this.state.visibleRankedGameStartPress && (
                     <AuthButton
-                        marginTop={hp(2)}
+                        marginTop={hp(83.5)}
                         height={hp(7)}
                         width={wp(87.5)}
                         color="#00D9EF"
                         buttonText="Başlat"
                         borderRadius={10}
+                        position={'absolute'}
                         onPress={this.playButtonOnPress}
                     />
-                )}
             </View>
         )
     }
@@ -588,7 +577,6 @@ class Home extends React.Component {
                 originalFriends: friends
             })
         } else {
-            this.setState({ visibleRankedGameStartPress: false })
             Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
         }
     }
@@ -607,14 +595,12 @@ class Home extends React.Component {
     groupModesView() {
         return (
             <View style={styles.modal}>
+                <TouchableOpacity onPress={this.closeModalButtonOnPress} style={ {height: hp(120), width: wp(100)}}/>
                 <View style={styles.backAndCloseButtonsContainer}>
                     <TouchableOpacity
                         onPress={this.friendRoomAndGameModesBackButtonOnPress}
                     >
                         <Image source={BACK_BUTTON} style={styles.backLogo} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this.closeModalButtonOnPress}>
-                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.modalView}>
@@ -734,14 +720,12 @@ class Home extends React.Component {
     friendRoomView() {
         return (
             <View style={styles.modal}>
+                <TouchableOpacity onPress={this.closeModalButtonOnPress} style={ {height: hp(120), width: wp(100)}}/>
                 <View style={styles.backAndCloseButtonsContainer}>
                     <TouchableOpacity
                         onPress={this.friendRoomAndGameModesBackButtonOnPress}
                     >
                         <Image source={BACK_BUTTON} style={styles.backLogo} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this.closeModalButtonOnPress}>
-                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.modalView}>
@@ -844,12 +828,13 @@ class Home extends React.Component {
                     </View>
                 </View>
                 <AuthButton
-                    marginTop={hp(2)}
+                    marginTop={hp(83.5)}
                     height={hp(7)}
                     width={wp(87.5)}
                     color="#00D9EF"
                     buttonText="Başla"
                     borderRadius={10}
+                    position={'absolute'}
                     onPress={this.friendGameModeOnPress}
                 />
             </View>
@@ -905,12 +890,10 @@ class Home extends React.Component {
     joinRoomView() {
         return (
             <View style={styles.modal}>
+                <TouchableOpacity onPress={this.closeModalButtonOnPress} style={ {height: hp(120), width: wp(100)}}/>
                 <View style={styles.backAndCloseButtonsContainer}>
                     <TouchableOpacity onPress={this.joinRoomBackButtonOnPress}>
                         <Image source={BACK_BUTTON} style={styles.backLogo} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this.closeModalButtonOnPress}>
-                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.modalView}>
@@ -946,7 +929,8 @@ class Home extends React.Component {
                     </View>
                 </View>
                 <AuthButton
-                    marginTop={hp(2)}
+                    position={'absolute'}
+                    marginTop={hp(83.5)}
                     height={hp(7)}
                     width={wp(87.5)}
                     color="#00D9EF"
@@ -976,7 +960,6 @@ class Home extends React.Component {
             navigationReset('game', this.calculateContentIds())
         else {
             this.setState({
-                visibleRankedGameStartPress: false,
                 rankedModeButtonBorderColor: EMPTY_MODE_COLOR
             })
             Alert.alert('Üzgünüm ama oyun hakkın bitti :(')

@@ -218,11 +218,7 @@ class CreateGroupRoom extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.onlyCloseButtonContainer}>
-                    <TouchableOpacity onPress={this.closeGroupGameOnPress}>
-                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
-                    </TouchableOpacity>
-                </View>
+                <TouchableOpacity onPress={this.closeGroupGameOnPress} style={ {height: hp(120), width: wp(100)}}/>
                 <View style={styles.modalView}>
                     <View style={styles.gameCodeContainer}>
                         <View style={styles.gameCodeBox}>
@@ -323,12 +319,13 @@ class CreateGroupRoom extends React.Component {
                     </View>
                 </View>
                 <AuthButton
-                    marginTop={hp(2)}
+                    marginTop={hp(83.5)}
                     height={hp(7)}
                     width={wp(87.5)}
                     color="#00D9EF"
                     buttonText="Başla"
                     borderRadius={10}
+                    position={'absolute'}
                     onPress={this.startGroupGameOnPress}
                 />
                 <Modal visible={this.state.isQuitGameModalVisible}>
