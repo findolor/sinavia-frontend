@@ -69,9 +69,11 @@ const SELECTED_MODE_COLOR = '#00D9EF'
 const EMPTY_MODE_COLOR = '#A8A8A8'
 
 const CLOSE_BUTTON = require('../../../assets/closeButton.png')
-const RANKED_EMPTY_IMAGE = require('../../../assets/mainScreens/tek.png')
-const FRIENDS_EMPTY_IMAGE = require('../../../assets/mainScreens/arkadas_siyah.png')
-const GROUP_EMPTY_IMAGE = require('../../../assets/mainScreens/group_siyah.png')
+
+const RANKED_IMAGE = require('../../../assets/sword.png')
+const FRIENDS_IMAGE = require('../../../assets/mainScreens/arkadas_siyah.png')
+const GROUP_IMAGE = require('../../../assets/mainScreens/group_siyah.png')
+const SOLO_IMAGE = require('../../../assets/mainScreens/tek.png')
 
 class Home extends React.Component {
     constructor(props) {
@@ -85,10 +87,6 @@ class Home extends React.Component {
             carouselCourseData: [],
             subject: '',
             isModalVisible: false,
-            // Mode images
-            rankedImage: RANKED_EMPTY_IMAGE,
-            friendsImage: FRIENDS_EMPTY_IMAGE,
-            groupImage: GROUP_EMPTY_IMAGE,
             // Carousel slide item
             carouselActiveSlide: carouselFirstItem,
             // On change text for the group room code
@@ -452,7 +450,34 @@ class Home extends React.Component {
                     <Text style={styles.modalSubjectText}>
                         {this.state.subject}
                     </Text>
-                    <View style={styles.separatorLine} />
+                    <View style={styles.separatorContainer}>
+                        <View style={styles.separatorLine} />
+                    </View>
+                    <View style={styles.gameModeContainer}>
+                        <View
+                            style={styles.gameModeButtonContainer}
+                        >
+                            <TouchableOpacity
+                                onPress={this.rankedGameModeOnPress}
+                                style={[
+                                    styles.gameModeLogoContainer,
+                                    {
+                                        borderColor: '#00D9EF'
+                                    }
+                                ]}
+                            >
+                                <Image
+                                    source={RANKED_IMAGE}
+                                    style={styles.gameModeImage}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.gameModeContextContainer}>
+                            <Text style={[styles.gameModeContextText, {fontSize: hp(1.7)}]}>
+                                Dereceli - Sınavia Puanı'nı artır, Türkiye sıralamanı yükselt
+                            </Text>
+                        </View>
+                    </View>
                     <View style={styles.scoreContainer}>
                         <Text style={styles.scoreTextInModal}>Sınavia Puanı:</Text>
                         <Text style={styles.scoreInModal}> 327</Text>
@@ -471,40 +496,17 @@ class Home extends React.Component {
                             </View>
                         </View>
                     </View>
-                    <View style={styles.gameModesContainer}>
-                        <View style={styles.gameModeContainer}>
-                            <View
-                                style={styles.gameModeButtonContainer}
-                            >
-                                <TouchableOpacity
-                                    onPress={this.rankedGameModeOnPress}
-                                    style={[
-                                        styles.gameModeLogoContainer,
-                                        {
-                                            borderColor: '#00D9EF'
-                                        }
-                                    ]}
-                                >
-                                    <Image
-                                        source={this.state.rankedImage}
-                                        style={styles.rankedModeImage}
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                            <View style={styles.gameModeContextContainer}>
-                                <Text style={styles.gameModeContextText}>
-                                    Rastgele bir kullanıcı ile yarış
-                                </Text>
-                            </View>
-                        </View>
+                    <View style={styles.separatorContainer}>
+                        <View style={styles.separatorLine} />
+                    </View>
                         <View style={styles.gameModeContainer}>
                             <View
                                 style={styles.gameModeButtonContainer}
                             >
                                 <TouchableOpacity onPress={this.friendRoomOnPress} style={styles.gameModeLogoContainer}>
                                     <Image
-                                        source={this.state.friendsImage}
-                                        style={styles.friendsModeImage}
+                                        source={FRIENDS_IMAGE}
+                                        style={styles.gameModeImage}
                                     />
                                 </TouchableOpacity>
                             </View>
@@ -520,8 +522,8 @@ class Home extends React.Component {
                             >
                                 <TouchableOpacity onPress={this.groupGameModeOnPress} style={styles.gameModeLogoContainer}>
                                     <Image
-                                        source={this.state.groupImage}
-                                        style={styles.groupModeImage}
+                                        source={GROUP_IMAGE}
+                                        style={styles.gameModeImage}
                                     />
                                 </TouchableOpacity>
                             </View>
@@ -531,7 +533,23 @@ class Home extends React.Component {
                                 </Text>
                             </View>
                         </View>
-                    </View>
+                        <View style={styles.gameModeContainer}>
+                            <View
+                                style={styles.gameModeButtonContainer}
+                            >
+                                <TouchableOpacity style={styles.gameModeLogoContainer}>
+                                    <Image
+                                        source={SOLO_IMAGE}
+                                        style={styles.gameModeImage}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styles.gameModeContextContainer}>
+                                <Text style={styles.gameModeContextText}>
+                                    Tek başına soru çöz
+                                </Text>
+                            </View>
+                        </View>
                 </View>
                     <AuthButton
                         marginTop={hp(83.5)}

@@ -106,7 +106,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         backgroundColor: '#ffffff',
-        height: hp(3),
+        height: hp(2),
         width: wp(75)
     },
     separatorLine: {
@@ -120,14 +120,14 @@ export default StyleSheet.create({
         width: wp(75)
     },
     gameModeContainer: {
-        height: hp(10),
+        height: hp(9),
         width: wp(75),
         backgroundColor: 'white',
         flexDirection: 'row',
         alignItems: 'center'
     },
     gameModeButtonContainer: {
-        height: hp(10),
+        height: hp(9),
         width: wp(33),
         justifyContent: 'center',
         alignItems: 'flex-start'
@@ -143,7 +143,7 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     gameModeContextContainer: {
-        height: hp(10),
+        height: hp(9),
         width: wp(42),
         justifyContent: 'center',
         alignItems: 'flex-start'
@@ -214,20 +214,9 @@ export default StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
-    rankedModeImage: {
+    gameModeImage: {
         resizeMode: 'contain',
-        height: hp(6),
-        width: wp(6)
-    },
-    friendsModeImage: {
-        resizeMode: 'contain',
-        height: hp(9),
-        width: wp(9)
-    },
-    groupModeImage: {
-        resizeMode: 'contain',
-        height: hp(9),
-        width: wp(9)
+        height: hp(5)
     },
     createOrJoinRoomButtonsContainer: {
         height: hp(30),
@@ -443,8 +432,6 @@ export default StyleSheet.create({
         height: hp(1.5)
     },
     scoreContainer: {
-        height: hp(6),
-        width: wp(75),
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
@@ -452,20 +439,18 @@ export default StyleSheet.create({
     levelProgressBarContainer: {
         height: hp(5.5),
         width: wp(75),
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         alignItems: 'center'
     },
     scoreTextInModal: {
         fontFamily: 'Averta-RegularItalic',
         color: '#00D9EF',
-        fontSize: hp(3.3),
-        marginTop: hp(0.5)
+        fontSize: hp(3.3)
     },
     scoreInModal: {
         fontFamily: 'Averta-ExtraBoldItalic',
         color: '#00D9EF',
-        fontSize: hp(3.3),
-        marginTop: hp(0.5)
+        fontSize: hp(3.3)
     },
     progressBarView:{
         height: hp(5),
@@ -474,7 +459,6 @@ export default StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         borderRadius: 6,
-        marginRight: wp(5),
         backgroundColor: '#B0B0B0'
     },
     instantProgressView: {
