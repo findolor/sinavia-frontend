@@ -7,6 +7,7 @@ import {
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
 import { Image, StyleSheet, TouchableOpacity, View, Alert } from 'react-native'
+import Swiper from 'react-native-swiper'
 import { connect } from 'react-redux'
 import { showMessage } from 'react-native-flash-message'
 
@@ -26,7 +27,8 @@ class Main extends React.Component {
             visibleForm: 'HOME',
             homeIconSelected: true,
             trophyIconSelected: false,
-            jokerIconSelected: false
+            jokerIconSelected: false,
+            currentPage: 1
         }
     }
 
@@ -45,26 +47,45 @@ class Main extends React.Component {
             })
             return
         }
-
+        console.log(pageName)
+        let finalIndex
         switch (pageName) {
-            case 'HOME':
-                this.setVisibleForm('HOME')
-                this.setState({ trophyIconSelected: false })
-                this.setState({ homeIconSelected: true })
-                this.setState({ jokerIconSelected: false })
-                return
+            case 0:
+                this.setState({ currentPage: 0,
+                    trophyIconSelected: true,
+                    homeIconSelected: false,
+                    jokerIconSelected: false})
+                console.log('FinalIndex --> ' + finalIndex)
+                console.log('Current Page -->' + this.state.currentPage)
+                break
+            case 1:
+                this.setState({ currentPage: 1,
+                    trophyIconSelected: false,
+                    homeIconSelected: true,
+                    jokerIconSelected: false})
+                console.log('FinalIndex --> ' + finalIndex)
+                console.log('Current Page -->' + this.state.currentPage)
+                break
+            case 2:
+                this.setState({ currentPage: 2,
+                    trophyIconSelected: false,
+                    homeIconSelected: false,
+                    jokerIconSelected: true})
+                console.log('FinalIndex --> ' + finalIndex)
+                console.log('Current Page -->' + this.state.currentPage)
+                break
             case 'TROPHY':
-                this.setVisibleForm('LEADERBOARD')
-                this.setState({ trophyIconSelected: true })
-                this.setState({ homeIconSelected: false })
-                this.setState({ jokerIconSelected: false })
-                return
+                finalIndex = 0 - this.state.currentPage
+                this.refs.swiper.scrollBy(finalIndex)
+                break
+            case 'HOME':
+                finalIndex = 1 - this.state.currentPage
+                this.refs.swiper.scrollBy(finalIndex)
+                break
             case 'PURCHASE':
-                this.setVisibleForm('PURCHASE')
-                this.setState({ trophyIconSelected: false })
-                this.setState({ homeIconSelected: false })
-                this.setState({ jokerIconSelected: true })
-                return
+                finalIndex = 2 - this.state.currentPage
+                this.refs.swiper.scrollBy(finalIndex)
+                break
         }
     }
 
@@ -74,12 +95,18 @@ class Main extends React.Component {
             <View style={styles.container}>
                 <NotchView color={'#fcfcfc'} />
                 <View style={styles.formContainer}>
-                    {visibleForm === 'HOME' && (
-                        <Home style={styles.formsStyle} />
-                    )}
-                    {visibleForm === 'LEADERBOARD' && (
+                    <Swiper
+                        ref="swiper"
+                        index={this.state.currentPage}
+                        onIndexChanged={index => this.updatePageIcons(index)}
+                        loop={false}
+                        showsPagination={false}
+                        loadMinimal={true}
+                        loadMinimalSize={0}>
                         <Leaderboard style={styles.formsStyle} />
-                    )}
+                        <Home style={styles.formsStyle} />
+                        <Purchase style={styles.formsStyle} />
+                    </Swiper>
                 </View>
                 <View style={styles.bottomBar}>
                     <TouchableOpacity
@@ -115,7 +142,7 @@ class Main extends React.Component {
                         />
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={() => this.updatePageIcons('PURCHASE')}
+                        onPress={() => this.updatePageIcons("PURCHASE")}
                     >
                         <Image
                             source={
