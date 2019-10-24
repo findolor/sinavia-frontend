@@ -14,6 +14,7 @@ import {
     navigationPush
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
+import Swiper from 'react-native-swiper'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import SemiCircleProgress from '../../../components/semiCircleProgress'
@@ -22,7 +23,10 @@ import searchlogo from '../../../assets/search.png'
 import ADD_FRIEND from '../../../assets/mainScreens/addFriend.png'
 import ADD_FRIEND_REQUESTED from '../../../assets/mainScreens/addFriendRequested.png'
 import ALREADY_FRIEND from '../../../assets/mainScreens/alreadyFriend.png'
-import { widthPercentageToDP } from 'react-native-responsive-screen'
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
 
 import { friendActions } from '../../../redux/friends/actions'
 import { opponentActions } from '../../../redux/opponents/actions'
@@ -370,17 +374,16 @@ class OpponentsProfile extends React.Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
-                        <View style={styles.totalGameStatsBox}>
-                            <ScrollView
-                                horizontal
-                                showsHorizontalScrollIndicator={false}
-                                pagingEnabled
-                            >
+                        <View style={styles.swiperContainer}>
+                            <Swiper loop={true}
+                                    paginationStyle={{ bottom: hp(0.5) }}
+                                    activeDotColor={'#FF9900'}>
+                                <View style={styles.totalGameStatsBox}>
                                 <View
                                     style={styles.totalGameStatsInfosContainer}
                                 >
                                     <Text style={styles.totalGameStatsText}>
-                                        Dereceli Oyun İstatistikleri
+                                        Dereceli Mod
                                     </Text>
                                     <Text
                                         style={styles.totalGamesPlayedCounter}
@@ -413,9 +416,9 @@ class OpponentsProfile extends React.Component {
                                                 : 0
                                         }
                                         progressColor={'#00D9EF'}
-                                        circleRadius={widthPercentageToDP(22)}
+                                        circleRadius={wp(22)}
                                         animationSpeed={0.1}
-                                        progressWidth={widthPercentageToDP(5)}
+                                        progressWidth={wp(5)}
                                     >
                                         <Text
                                             style={styles.chartPercentageText}
@@ -429,11 +432,13 @@ class OpponentsProfile extends React.Component {
                                         </Text>
                                     </SemiCircleProgress>
                                 </View>
+                                </View>
+                                <View style={styles.totalGameStatsBox}>
                                 <View
                                     style={styles.totalGameStatsInfosContainer}
                                 >
                                     <Text style={styles.totalGameStatsText}>
-                                        Arkadaş Oyun İstatistikleri
+                                        Arkadaş Modu
                                     </Text>
                                     <Text
                                         style={styles.totalGamesPlayedCounter}
@@ -466,9 +471,9 @@ class OpponentsProfile extends React.Component {
                                                 : 0
                                         }
                                         progressColor={'#00D9EF'}
-                                        circleRadius={widthPercentageToDP(22)}
+                                        circleRadius={wp(22)}
                                         animationSpeed={0.1}
-                                        progressWidth={widthPercentageToDP(5)}
+                                        progressWidth={wp(5)}
                                     >
                                         <Text
                                             style={styles.chartPercentageText}
@@ -482,7 +487,8 @@ class OpponentsProfile extends React.Component {
                                         </Text>
                                     </SemiCircleProgress>
                                 </View>
-                            </ScrollView>
+                                </View>
+                            </Swiper>
                         </View>
                         <View style={styles.versusGameStatsBox}>
                             <View style={styles.versusGameTextsContainer}>
@@ -509,7 +515,7 @@ class OpponentsProfile extends React.Component {
                                             style={[
                                                 styles.yourWinsView,
                                                 {
-                                                    width: widthPercentageToDP(
+                                                    width: wp(
                                                         (this.state
                                                             .clientWinCount /
                                                             (this.state
@@ -525,7 +531,7 @@ class OpponentsProfile extends React.Component {
                                             style={[
                                                 styles.opponentsWinsView,
                                                 {
-                                                    width: widthPercentageToDP(
+                                                    width: wp(
                                                         (this.state
                                                             .opponentWinCount /
                                                             (this.state
@@ -556,7 +562,7 @@ class OpponentsProfile extends React.Component {
                                             style={[
                                                 styles.yourWinsView,
                                                 {
-                                                    width: widthPercentageToDP(
+                                                    width: wp(
                                                         82
                                                     ),
                                                     borderTopRightRadius: 10,
@@ -583,7 +589,7 @@ class OpponentsProfile extends React.Component {
                                             style={[
                                                 styles.opponentsWinsView,
                                                 {
-                                                    width: widthPercentageToDP(
+                                                    width: wp(
                                                         82
                                                     ),
                                                     borderTopLeftRadius: 10,
@@ -610,7 +616,7 @@ class OpponentsProfile extends React.Component {
                                             style={[
                                                 styles.noneWinsView,
                                                 {
-                                                    width: widthPercentageToDP(
+                                                    width: wp(
                                                         82
                                                     ),
                                                     borderTopLeftRadius: 10,

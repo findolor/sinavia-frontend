@@ -15,6 +15,7 @@ import { navigationPop } from '../../../services/navigationService'
 import Moment from 'moment'
 import 'moment/locale/tr'
 import SemiCircleProgress from '../../../components/semiCircleProgress'
+import Swiper from 'react-native-swiper'
 import { connect } from 'react-redux'
 
 const timezonesList = ['Bu hafta', 'Bu ay', 'Son 6 ay', 'Ay seçin']
@@ -997,12 +998,10 @@ class Statistics extends React.Component {
                             }
                         />
                     </View>
-                    <ScrollView
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        pagingEnabled
-                        style={styles.scrollViewContainer}
-                    >
+                    <View style={styles.scrollViewContainer}>
+                        <Swiper loop={true}
+                                paginationStyle={{ bottom: hp(0.5) }}
+                                activeDotColor={'#FF9900'}>
                         <View style={styles.totalGameStatsContainer}>
                             <View style={styles.totalGameStatsInfosContainer}>
                                 <Text
@@ -1017,7 +1016,14 @@ class Statistics extends React.Component {
                                         styles.totalGamesPlayedAndSolvedQuestionsText
                                     }
                                 >
-                                    Dereceli Mod Oynadığın Oyun
+                                    Dereceli Mod
+                                </Text>
+                                <Text
+                                    style={
+                                        styles.totalGamesPlayedAndSolvedQuestionsAmountText
+                                    }
+                                >
+                                    Oyun Sayısı
                                 </Text>
                                 <Text style={styles.wonText}>
                                     Kazandığı: {this.state.totalRankedWin}
@@ -1069,7 +1075,14 @@ class Statistics extends React.Component {
                                         styles.totalGamesPlayedAndSolvedQuestionsText
                                     }
                                 >
-                                    Arkadaş Modu Oynadığın Oyun
+                                    Arkadaş Mod
+                                </Text>
+                                <Text
+                                    style={
+                                        styles.totalGamesPlayedAndSolvedQuestionsAmountText
+                                    }
+                                >
+                                    Oyun Sayısı
                                 </Text>
                                 <Text style={styles.wonText}>
                                     Kazandığı: {this.state.totalFriendWin}
@@ -1107,7 +1120,8 @@ class Statistics extends React.Component {
                                 </SemiCircleProgress>
                             </View>
                         </View>
-                    </ScrollView>
+                        </Swiper>
+                    </View>
                     <View style={styles.percentagesAndCirclesContainer}>
                         <View style={styles.percentagesContainer}>
                             <View style={styles.totalQuestionsSolvedContainer}>

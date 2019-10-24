@@ -204,8 +204,9 @@ export default StyleSheet.create({
         marginBottom: hp(1)
     },
     totalGameStatsInfosContainer: {
-        height: hp(16),
-        width: wp(34)
+        height: hp(21),
+        width: wp(34),
+        justifyContent: 'flex-start'
     },
     totalGameStatsText: {
         fontFamily: 'Averta-Semibold',
@@ -217,11 +218,18 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Semibold',
         fontSize: hp(4),
         color: '#2E313C',
-        marginLeft: wp(8.5)
+        marginLeft: wp(8.5),
+        marginTop: hp(0.5)
     },
     totalGamesPlayedAndSolvedQuestionsText: {
         fontFamily: 'Averta-Semibold',
         fontSize: hp(1.8),
+        color: '#CACACA',
+        marginLeft: wp(8.5)
+    },
+    totalGamesPlayedAndSolvedQuestionsAmountText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(1.4),
         color: '#CACACA',
         marginLeft: wp(8.5)
     },
@@ -260,11 +268,13 @@ export default StyleSheet.create({
         width: wp(82),
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center',
-        borderBottomWidth: wp(0.3),
-        borderColor: '#CACACA'
+        alignItems: 'center'
     },
     scrollViewContainer: {
-        width: wp(82)
+        height: hp(21),
+        width: wp(82),
+        overflow: 'hidden',
+        borderBottomWidth: wp(0.3),
+        borderColor: '#CACACA'
     }
 })
