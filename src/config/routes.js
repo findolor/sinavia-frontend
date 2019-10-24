@@ -132,8 +132,12 @@ const RouterComp = () => {
                         component={gameScreens.soloFriendGameScreen}
                     />
                     <Scene
-                        key={SCENE_KEYS.gameScreens.soloLoadingScreen}
-                        component={gameScreens.soloLoadingScreen}
+                        key={SCENE_KEYS.gameScreens.soloModeLoadingScreen}
+                        component={gameScreens.soloModeLoadingScreen}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.gameScreens.soloModeGameScreen}
+                        component={gameScreens.soloModeGameScreen}
                     />
                 </Scene>
             </Scene>

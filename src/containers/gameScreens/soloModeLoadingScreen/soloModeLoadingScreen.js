@@ -15,7 +15,7 @@ import {
 import { GAME_ENGINE_ENDPOINT, SCENE_KEYS } from '../../../config'
 import { connect } from 'react-redux'
 
-class SoloLoadingScreen extends React.Component {
+class SoloModeLoadingScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {}
@@ -66,4 +66,4 @@ const mapDispatchToProps = dispatch => ({})
 export default connect(
     mapStateToProps,
     null
-)(SoloLoadingScreen)
+)(SoloModeLoadingScreen)
