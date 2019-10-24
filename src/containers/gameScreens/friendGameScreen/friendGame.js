@@ -180,11 +180,43 @@ class FriendGame extends React.Component {
         switch (message.action) {
             // Which options to remove comes from the server
             case 'remove-options-joker':
+                this.setState({ isRemoveOptionJokerDisabled: true })
+                this.props.subtractJoker(2)
+
                 this.removeOptions(message.optionsToRemove)
                 break
             // Question answer comes from the server
             case 'second-chance-joker':
+                this.setState({
+                    isSecondChanceJokerDisabled: true,
+                    isSecondChanceJokerActive: true
+                })
+                this.props.subtractJoker(3)
+
                 this.setState({ questionAnswer: message.questionAnswer })
+                break
+            case 'see-opponent-answer-joker':
+                this.setState({
+                    isSeeOpponentAnswerJokerDisabled: true,
+                    isSeeOpponentAnswerJokerActive: true
+                })
+                this.props.subtractJoker(1)
+
+                // If the user answered the question before we used the joker, we show the answer immediately
+                const playerProp = this.state.playerProps[this.state.opponentId]
+                let answers
+                // Necessary checks for any undefined variables
+                if (playerProp !== undefined) {
+                    answers = playerProp.answers[this.state.questionNumber]
+
+                    if (answers !== undefined) {
+                        this.setState({ isSeeOpponentAnswerJokerActive: false })
+                        this.highlightOpponentButton(answers.answer)
+                    }
+                }
+                break
+            case 'error-joker':
+                Alert.alert('Joker hatası!')
                 break
             case 'client-leaving':
                 Alert.alert(this.props.opponentUsername, 'oyundan ayrildi.')
@@ -194,6 +226,7 @@ class FriendGame extends React.Component {
                         .length === 0
                 ) {
                     this.shutdownGame()
+                    this.props.room.leave()
                     this.props.client.close()
                     navigationReset('main')
                     break
@@ -582,8 +615,6 @@ class FriendGame extends React.Component {
     }
 
     removeOptionJokerOnPressed = () => {
-        this.setState({ isRemoveOptionJokerDisabled: true })
-
         // This is used for not selecting the already disabled button to remove
         let alreadyDisabledButton = 0
 
@@ -606,7 +637,6 @@ class FriendGame extends React.Component {
                 disabled: alreadyDisabledButton,
                 jokerId: 2
             })
-        this.props.subtractJoker(2)
     }
 
     removeOptions = optionsToRemove => {
@@ -651,40 +681,17 @@ class FriendGame extends React.Component {
     }
 
     seeOpponentAnswerJokerOnPressed = () => {
-        this.setState({
-            isSeeOpponentAnswerJokerDisabled: true,
-            isSeeOpponentAnswerJokerActive: true
-        })
         this.props.room.send({
             action: 'see-opponent-answer-joker',
             jokerId: 1
         })
-        this.props.subtractJoker(1)
-
-        // If the user answered the question before we used the joker, we show the answer immediately
-        const playerProp = this.state.playerProps[this.state.opponentId]
-        let answers
-        // Necessary checks for any undefined variables
-        if (playerProp !== undefined) {
-            answers = playerProp.answers[this.state.questionNumber]
-
-            if (answers !== undefined) {
-                this.setState({ isSeeOpponentAnswerJokerActive: false })
-                this.highlightOpponentButton(answers.answer)
-            }
-        }
     }
 
     secondChangeJokerOnPressed = () => {
-        this.setState({
-            isSecondChanceJokerDisabled: true,
-            isSecondChanceJokerActive: true
-        })
         this.props.room.send({
             action: 'second-chance-joker',
             jokerId: 3
         })
-        this.props.subtractJoker(3)
     }
 
     render() {
