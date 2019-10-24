@@ -14,6 +14,7 @@ import {
     navigationPush
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
+import Swiper from 'react-native-swiper'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import SemiCircleProgress from '../../../components/semiCircleProgress'
@@ -22,7 +23,10 @@ import searchlogo from '../../../assets/search.png'
 import ADD_FRIEND from '../../../assets/mainScreens/addFriend.png'
 import ADD_FRIEND_REQUESTED from '../../../assets/mainScreens/addFriendRequested.png'
 import ALREADY_FRIEND from '../../../assets/mainScreens/alreadyFriend.png'
-import { widthPercentageToDP } from 'react-native-responsive-screen'
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
 
 import { friendActions } from '../../../redux/friends/actions'
 import { opponentActions } from '../../../redux/opponents/actions'
@@ -370,119 +374,150 @@ class OpponentsProfile extends React.Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
-                        <View style={styles.totalGameStatsBox}>
-                            <ScrollView
-                                horizontal
-                                showsHorizontalScrollIndicator={false}
-                                pagingEnabled
+                        <View style={styles.swiperContainer}>
+                            <Swiper
+                                loop={false}
+                                paginationStyle={{ bottom: hp(0.5) }}
+                                activeDotColor={'#FF9900'}
+                                removeClippedSubviews={false}
                             >
-                                <View
-                                    style={styles.totalGameStatsInfosContainer}
-                                >
-                                    <Text style={styles.totalGameStatsText}>
-                                        Dereceli Oyun İstatistikleri
-                                    </Text>
-                                    <Text
-                                        style={styles.totalGamesPlayedCounter}
-                                    >
-                                        {this.state.totalRankedGames}
-                                    </Text>
-                                    <Text style={styles.totalGamesPlayedText}>
-                                        Oynadığı Oyun
-                                    </Text>
-                                    <Text style={styles.wonText}>
-                                        Kazandığı: {this.state.totalRankedWin}
-                                    </Text>
-                                    <Text style={styles.drawText}>
-                                        Beraberlik: {this.state.totalRankedDraw}
-                                    </Text>
-                                    <Text style={styles.lostText}>
-                                        Kaybettiği: {this.state.totalRankedLose}
-                                    </Text>
-                                </View>
-                                <View style={styles.chartContainer}>
-                                    <SemiCircleProgress
-                                        percentage={
-                                            this.state.totalRankedGames !== 0
-                                                ? parseInt(
-                                                      this.state.rankedWinPercentage.toFixed(
-                                                          0
-                                                      ),
-                                                      10
-                                                  )
-                                                : 0
+                                <View style={styles.totalGameStatsBox}>
+                                    <View
+                                        style={
+                                            styles.totalGameStatsInfosContainer
                                         }
-                                        progressColor={'#00D9EF'}
-                                        circleRadius={widthPercentageToDP(22)}
-                                        animationSpeed={0.1}
-                                        progressWidth={widthPercentageToDP(5)}
                                     >
-                                        <Text
-                                            style={styles.chartPercentageText}
-                                        >
-                                            {this.state.totalRankedGames !== 0
-                                                ? this.state.rankedWinPercentage.toFixed(
-                                                      0
-                                                  )
-                                                : 0}
-                                            %
+                                        <Text style={styles.totalGameStatsText}>
+                                            Dereceli Mod
                                         </Text>
-                                    </SemiCircleProgress>
-                                </View>
-                                <View
-                                    style={styles.totalGameStatsInfosContainer}
-                                >
-                                    <Text style={styles.totalGameStatsText}>
-                                        Arkadaş Oyun İstatistikleri
-                                    </Text>
-                                    <Text
-                                        style={styles.totalGamesPlayedCounter}
-                                    >
-                                        {this.state.totalFriendGames}
-                                    </Text>
-                                    <Text style={styles.totalGamesPlayedText}>
-                                        Oynadığı Oyun
-                                    </Text>
-                                    <Text style={styles.wonText}>
-                                        Kazandığı: {this.state.totalFriendWin}
-                                    </Text>
-                                    <Text style={styles.drawText}>
-                                        Beraberlik: {this.state.totalFriendDraw}
-                                    </Text>
-                                    <Text style={styles.lostText}>
-                                        Kaybettiği: {this.state.totalFriendLose}
-                                    </Text>
-                                </View>
-                                <View style={styles.chartContainer}>
-                                    <SemiCircleProgress
-                                        percentage={
-                                            this.state.totalFriendGames !== 0
-                                                ? parseInt(
-                                                      this.state.friendWinPercentage.toFixed(
+                                        <Text
+                                            style={
+                                                styles.totalGamesPlayedCounter
+                                            }
+                                        >
+                                            {this.state.totalRankedGames}
+                                        </Text>
+                                        <Text
+                                            style={styles.totalGamesPlayedText}
+                                        >
+                                            Oynadığı Oyun
+                                        </Text>
+                                        <Text style={styles.wonText}>
+                                            Kazandığı:{' '}
+                                            {this.state.totalRankedWin}
+                                        </Text>
+                                        <Text style={styles.drawText}>
+                                            Beraberlik:{' '}
+                                            {this.state.totalRankedDraw}
+                                        </Text>
+                                        <Text style={styles.lostText}>
+                                            Kaybettiği:{' '}
+                                            {this.state.totalRankedLose}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.chartContainer}>
+                                        <SemiCircleProgress
+                                            percentage={
+                                                this.state.totalRankedGames !==
+                                                0
+                                                    ? parseInt(
+                                                          this.state.rankedWinPercentage.toFixed(
+                                                              0
+                                                          ),
+                                                          10
+                                                      )
+                                                    : 0
+                                            }
+                                            progressColor={'#00D9EF'}
+                                            circleRadius={wp(22)}
+                                            animationSpeed={0.1}
+                                            progressWidth={wp(5)}
+                                        >
+                                            <Text
+                                                style={
+                                                    styles.chartPercentageText
+                                                }
+                                            >
+                                                {this.state.totalRankedGames !==
+                                                0
+                                                    ? this.state.rankedWinPercentage.toFixed(
                                                           0
-                                                      ),
-                                                      10
-                                                  )
-                                                : 0
-                                        }
-                                        progressColor={'#00D9EF'}
-                                        circleRadius={widthPercentageToDP(22)}
-                                        animationSpeed={0.1}
-                                        progressWidth={widthPercentageToDP(5)}
-                                    >
-                                        <Text
-                                            style={styles.chartPercentageText}
-                                        >
-                                            {this.state.totalFriendGames !== 0
-                                                ? this.state.friendWinPercentage.toFixed(
-                                                      0
-                                                  )
-                                                : 0}
-                                            %
-                                        </Text>
-                                    </SemiCircleProgress>
+                                                      )
+                                                    : 0}
+                                                %
+                                            </Text>
+                                        </SemiCircleProgress>
+                                    </View>
                                 </View>
-                            </ScrollView>
+                                <View style={styles.totalGameStatsBox}>
+                                    <View
+                                        style={
+                                            styles.totalGameStatsInfosContainer
+                                        }
+                                    >
+                                        <Text style={styles.totalGameStatsText}>
+                                            Arkadaş Modu
+                                        </Text>
+                                        <Text
+                                            style={
+                                                styles.totalGamesPlayedCounter
+                                            }
+                                        >
+                                            {this.state.totalFriendGames}
+                                        </Text>
+                                        <Text
+                                            style={styles.totalGamesPlayedText}
+                                        >
+                                            Oynadığı Oyun
+                                        </Text>
+                                        <Text style={styles.wonText}>
+                                            Kazandığı:{' '}
+                                            {this.state.totalFriendWin}
+                                        </Text>
+                                        <Text style={styles.drawText}>
+                                            Beraberlik:{' '}
+                                            {this.state.totalFriendDraw}
+                                        </Text>
+                                        <Text style={styles.lostText}>
+                                            Kaybettiği:{' '}
+                                            {this.state.totalFriendLose}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.chartContainer}>
+                                        <SemiCircleProgress
+                                            percentage={
+                                                this.state.totalFriendGames !==
+                                                0
+                                                    ? parseInt(
+                                                          this.state.friendWinPercentage.toFixed(
+                                                              0
+                                                          ),
+                                                          10
+                                                      )
+                                                    : 0
+                                            }
+                                            progressColor={'#00D9EF'}
+                                            circleRadius={wp(22)}
+                                            animationSpeed={0.1}
+                                            progressWidth={wp(5)}
+                                        >
+                                            <Text
+                                                style={
+                                                    styles.chartPercentageText
+                                                }
+                                            >
+                                                {this.state.totalFriendGames !==
+                                                0
+                                                    ? this.state.friendWinPercentage.toFixed(
+                                                          0
+                                                      )
+                                                    : 0}
+                                                %
+                                            </Text>
+                                        </SemiCircleProgress>
+                                    </View>
+                                </View>
+                            </Swiper>
                         </View>
                         <View style={styles.versusGameStatsBox}>
                             <View style={styles.versusGameTextsContainer}>
@@ -509,7 +544,7 @@ class OpponentsProfile extends React.Component {
                                             style={[
                                                 styles.yourWinsView,
                                                 {
-                                                    width: widthPercentageToDP(
+                                                    width: wp(
                                                         (this.state
                                                             .clientWinCount /
                                                             (this.state
@@ -525,7 +560,7 @@ class OpponentsProfile extends React.Component {
                                             style={[
                                                 styles.opponentsWinsView,
                                                 {
-                                                    width: widthPercentageToDP(
+                                                    width: wp(
                                                         (this.state
                                                             .opponentWinCount /
                                                             (this.state
@@ -556,9 +591,7 @@ class OpponentsProfile extends React.Component {
                                             style={[
                                                 styles.yourWinsView,
                                                 {
-                                                    width: widthPercentageToDP(
-                                                        82
-                                                    ),
+                                                    width: wp(82),
                                                     borderTopRightRadius: 10,
                                                     borderBottomRightRadius: 10
                                                 }
@@ -583,9 +616,7 @@ class OpponentsProfile extends React.Component {
                                             style={[
                                                 styles.opponentsWinsView,
                                                 {
-                                                    width: widthPercentageToDP(
-                                                        82
-                                                    ),
+                                                    width: wp(82),
                                                     borderTopLeftRadius: 10,
                                                     borderBottomLeftRadius: 10
                                                 }
@@ -610,9 +641,7 @@ class OpponentsProfile extends React.Component {
                                             style={[
                                                 styles.noneWinsView,
                                                 {
-                                                    width: widthPercentageToDP(
-                                                        82
-                                                    ),
+                                                    width: wp(82),
                                                     borderTopLeftRadius: 10,
                                                     borderBottomLeftRadius: 10
                                                 }

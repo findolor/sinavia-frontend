@@ -126,13 +126,17 @@ export default StyleSheet.create({
         borderRadius: 10,
         borderColor: '#00D9EF'
     },
-    totalGameStatsBox: {
+    swiperContainer: {
         height: hp(23),
         width: wp(90),
         borderWidth: hp(0.3),
         borderRadius: 10,
         borderColor: '#00D9EF',
-        marginTop: hp(2.5),
+        marginTop: hp(2.5)
+    },
+    totalGameStatsBox: {
+        height: hp(23),
+        width: wp(90),
         flexDirection: 'row'
     },
     versusGameStatsBox: {
@@ -214,8 +218,8 @@ export default StyleSheet.create({
         justifyContent: 'center'
     },
     chartContainer: {
-        height: hp(22.5),
-        width: wp(49),
+        height: hp(23),
+        width: wp(50),
         justifyContent: 'center',
         alignItems: 'flex-start'
     },
