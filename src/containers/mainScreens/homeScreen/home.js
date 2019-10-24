@@ -452,15 +452,32 @@ class Home extends React.Component {
                     <Text style={styles.modalSubjectText}>
                         {this.state.subject}
                     </Text>
-                    <View style={styles.separatorContainer}>
-                        <View style={styles.separatorLine} />
+                    <View style={styles.separatorLine} />
+                    <View style={styles.scoreContainer}>
+                        <Text style={styles.scoreTextInModal}>Sınavia Puanı:</Text>
+                        <Text style={styles.scoreInModal}> 327</Text>
+                    </View>
+                    <View style={styles.levelProgressBarContainer}>
+                        <View style={styles.progressBarView}>
+                            <Text style={styles.levelText}>Seviye 7</Text>
+                            <View style={[
+                                styles.instantProgressView,
+                                {
+                                    width: wp((163/200)*65)
+                                }
+                            ]}/>
+                            <View style={styles.progressScoreView}>
+                                <Text style={styles.levelInProgressText}>163/200</Text>
+                            </View>
+                        </View>
                     </View>
                     <View style={styles.gameModesContainer}>
                         <View style={styles.gameModeContainer}>
-                            <TouchableOpacity
-                                onPress={this.rankedGameModeOnPress}
+                            <View
+                                style={styles.gameModeButtonContainer}
                             >
-                                <View
+                                <TouchableOpacity
+                                    onPress={this.rankedGameModeOnPress}
                                     style={[
                                         styles.gameModeLogoContainer,
                                         {
@@ -472,8 +489,8 @@ class Home extends React.Component {
                                         source={this.state.rankedImage}
                                         style={styles.rankedModeImage}
                                     />
-                                </View>
-                            </TouchableOpacity>
+                                </TouchableOpacity>
+                            </View>
                             <View style={styles.gameModeContextContainer}>
                                 <Text style={styles.gameModeContextText}>
                                     Rastgele bir kullanıcı ile yarış
@@ -481,14 +498,16 @@ class Home extends React.Component {
                             </View>
                         </View>
                         <View style={styles.gameModeContainer}>
-                            <TouchableOpacity onPress={this.friendRoomOnPress}>
-                                <View style={styles.gameModeLogoContainer}>
+                            <View
+                                style={styles.gameModeButtonContainer}
+                            >
+                                <TouchableOpacity onPress={this.friendRoomOnPress} style={styles.gameModeLogoContainer}>
                                     <Image
                                         source={this.state.friendsImage}
                                         style={styles.friendsModeImage}
                                     />
-                                </View>
-                            </TouchableOpacity>
+                                </TouchableOpacity>
+                            </View>
                             <View style={styles.gameModeContextContainer}>
                                 <Text style={styles.gameModeContextText}>
                                     Arkadaşın ile yarış
@@ -496,16 +515,16 @@ class Home extends React.Component {
                             </View>
                         </View>
                         <View style={styles.gameModeContainer}>
-                            <TouchableOpacity
-                                onPress={this.groupGameModeOnPress}
+                            <View
+                                style={styles.gameModeButtonContainer}
                             >
-                                <View style={styles.gameModeLogoContainer}>
+                                <TouchableOpacity onPress={this.groupGameModeOnPress} style={styles.gameModeLogoContainer}>
                                     <Image
                                         source={this.state.groupImage}
                                         style={styles.groupModeImage}
                                     />
-                                </View>
-                            </TouchableOpacity>
+                                </TouchableOpacity>
+                            </View>
                             <View style={styles.gameModeContextContainer}>
                                 <Text style={styles.gameModeContextText}>
                                     Arkadaş grubun ile yarış

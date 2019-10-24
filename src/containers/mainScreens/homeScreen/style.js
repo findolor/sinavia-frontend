@@ -110,9 +110,9 @@ export default StyleSheet.create({
         width: wp(75)
     },
     separatorLine: {
-        flex: 1,
-        borderWidth: wp(0.2),
         height: hp(0.1),
+        width: wp(75),
+        borderWidth: wp(0.2),
         borderColor: '#D9D9D9'
     },
     gameModesContainer: {
@@ -125,6 +125,12 @@ export default StyleSheet.create({
         backgroundColor: 'white',
         flexDirection: 'row',
         alignItems: 'center'
+    },
+    gameModeButtonContainer: {
+        height: hp(10),
+        width: wp(33),
+        justifyContent: 'center',
+        alignItems: 'flex-start'
     },
     gameModeLogoContainer: {
         height: hp(7.5),
@@ -139,7 +145,6 @@ export default StyleSheet.create({
     gameModeContextContainer: {
         height: hp(10),
         width: wp(42),
-        backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'flex-start'
     },
@@ -436,5 +441,67 @@ export default StyleSheet.create({
     },
     spaceView: {
         height: hp(1.5)
-    }
+    },
+    scoreContainer: {
+        height: hp(6),
+        width: wp(75),
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    levelProgressBarContainer: {
+        height: hp(5.5),
+        width: wp(75),
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    scoreTextInModal: {
+        fontFamily: 'Averta-RegularItalic',
+        color: '#00D9EF',
+        fontSize: hp(3.3),
+        marginTop: hp(0.5)
+    },
+    scoreInModal: {
+        fontFamily: 'Averta-ExtraBoldItalic',
+        color: '#00D9EF',
+        fontSize: hp(3.3),
+        marginTop: hp(0.5)
+    },
+    progressBarView:{
+        height: hp(5),
+        width: wp(65),
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderRadius: 6,
+        marginRight: wp(5),
+        backgroundColor: '#B0B0B0'
+    },
+    instantProgressView: {
+        position: 'absolute',
+        height: hp(5),
+        borderTopLeftRadius: 6,
+        borderBottomLeftRadius: 6,
+        backgroundColor: '#FF9900'
+    },
+    progressScoreView: {
+        height: hp(4),
+        width: wp(25),
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    levelText: {
+        fontFamily: 'Averta-Semibold',
+        zIndex: 1,
+        marginLeft: wp(1),
+        fontSize: hp(2.5),
+        color: 'white'
+    },
+    levelInProgressText: {
+        fontFamily: 'Averta-Semibold',
+        marginRight: wp(1),
+        fontSize: hp(2.5),
+        color: 'white'
+    },
 })
