@@ -22,7 +22,6 @@ class SoloModeLoadingScreen extends React.Component {
     }
 
     componentDidMount() {
-        console.log('here')
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
         this.client.onOpen.add(() => {
             this.joinRoom({
@@ -38,15 +37,17 @@ class SoloModeLoadingScreen extends React.Component {
     joinRoom = playerOptions => {
         this.room = this.client.join('soloModeRoom', playerOptions)
 
-        this.room.onMessage.add(message => {
-            console.log(message)
+        this.room.onJoin.add(() => {
+            navigationReplace(SCENE_KEYS.gameScreens.soloModeGameScreen, {
+                // These are necessary for the game logic
+                room: this.room,
+                client: this.client,
+                // These can be used in both screens
+                playerUsername: this.props.clientInformation.username,
+                playerProfilePicture: this.props.clientInformation
+                    .profilePicture
+            })
         })
-    }
-
-    backButtonOnPress = () => {
-        this.room.leave()
-        this.client.close()
-        navigationReset('main')
     }
 
     render() {
@@ -55,9 +56,7 @@ class SoloModeLoadingScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    clientToken: state.client.clientToken,
     clientDBId: state.client.clientDBId,
-    gameContentMap: state.gameContent.gameContentMap,
     clientInformation: state.client.clientInformation
 })
 

@@ -105,7 +105,7 @@ class SoloModeGameScreen extends React.Component {
         this.checkJokerAmount()
         // We send ready signal when game screen is loaded
         this.props.room.send({
-            action: 'ready-solo'
+            action: 'ready'
         })
         this.props.room.onStateChange.add(state => {
             // We update the UI after state changes
@@ -245,7 +245,7 @@ class SoloModeGameScreen extends React.Component {
     updatePlayerResults = () => {
         // Player answers to the question
         const answers = this.state.playerProps.answers
-
+        console.log(answers)
         // Switch statement for the user
         this.updateAnswers(answers)
     }
@@ -383,7 +383,7 @@ class SoloModeGameScreen extends React.Component {
         // There is a timeout because there needs to be a delay between the events
         this.finishedTimeout = setTimeout(() => {
             that.props.room.send({
-                action: 'finished-solo'
+                action: 'finished'
             })
         }, 1000)
     }

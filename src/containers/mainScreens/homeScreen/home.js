@@ -1032,7 +1032,7 @@ class Home extends React.Component {
                 if (this.props.clientInformation.isPremium) {
                     navigationReset('game', { isHardReset: true })
                     navigationReplace(
-                        SCENE_KEYS.gameScreens.soloLoadingScreen,
+                        SCENE_KEYS.gameScreens.soloModeLoadingScreen,
                         this.calculateContentIds()
                     )
                 } else {
