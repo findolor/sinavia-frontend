@@ -34,7 +34,7 @@ class PurchaseScreen extends React.Component {
         super(props)
         this.state = {
             isPremiumModalVisible: false,
-            premiumOption: 'oneMonth'
+            premiumOption: 'threeMonths'
         }
     }
 
@@ -46,7 +46,8 @@ class PurchaseScreen extends React.Component {
 
     closePremiumView() {
         this.setState({
-            isPremiumModalVisible: false
+            isPremiumModalVisible: false,
+            premiumOption: 'threeMonths'
         })
     }
 
