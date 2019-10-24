@@ -1001,7 +1001,8 @@ class Statistics extends React.Component {
                     <View style={styles.scrollViewContainer}>
                         <Swiper loop={true}
                                 paginationStyle={{ bottom: hp(0.5) }}
-                                activeDotColor={'#FF9900'}>
+                                activeDotColor={'#FF9900'}
+                                removeClippedSubviews = {false}>
                         <View style={styles.totalGameStatsContainer}>
                             <View style={styles.totalGameStatsInfosContainer}>
                                 <Text

@@ -377,7 +377,8 @@ class OpponentsProfile extends React.Component {
                         <View style={styles.swiperContainer}>
                             <Swiper loop={true}
                                     paginationStyle={{ bottom: hp(0.5) }}
-                                    activeDotColor={'#FF9900'}>
+                                    activeDotColor={'#FF9900'}
+                                    removeClippedSubviews = {false}>
                                 <View style={styles.totalGameStatsBox}>
                                 <View
                                     style={styles.totalGameStatsInfosContainer}
