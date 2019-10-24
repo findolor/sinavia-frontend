@@ -4,17 +4,11 @@ import {
     View,
     Text,
     TouchableOpacity,
-    Switch,
-    TextInput,
-    Animated,
     Keyboard,
-    Platform,
     Alert,
     TouchableWithoutFeedback,
     KeyboardAvoidingView
 } from 'react-native'
-import { navigationPush } from '../../../services/navigationService'
-import { SCENE_KEYS } from '../../../config/index'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
 import {
@@ -47,10 +41,10 @@ class GetInfo extends React.Component {
             username: '',
             name: '',
             lastname: '',
-            city: '',
+            city: null,
             email: '',
             password: '',
-            birthDate: ''
+            birthDate: null
         }
     }
 
