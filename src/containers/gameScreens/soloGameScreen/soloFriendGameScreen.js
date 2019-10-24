@@ -29,7 +29,7 @@ const SELECTED_BUTTON_COLOR = '#00d9ef'
 const CORRECT_ANSWER_COLOR = '#14e31f'
 const INCORRECT_ANSWER_COLOR = '#eb2b0e'
 
-class SoloGameScreen extends React.Component {
+class SoloFriendGameScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -849,4 +849,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(SoloGameScreen)
+)(SoloFriendGameScreen)
