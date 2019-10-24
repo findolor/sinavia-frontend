@@ -160,11 +160,23 @@ class SoloGameScreen extends React.Component {
         switch (message.action) {
             // Which options to remove comes from the server
             case 'remove-options-joker':
+                this.setState({ isRemoveOptionJokerDisabled: true })
+                this.props.subtractJoker(2)
+
                 this.removeOptions(message.optionsToRemove)
                 break
             // Question answer comes from the server
             case 'second-chance-joker':
+                this.setState({
+                    isSecondChanceJokerDisabled: true,
+                    isSecondChanceJokerActive: true
+                })
+                this.props.subtractJoker(3)
+
                 this.setState({ questionAnswer: message.questionAnswer })
+                break
+            case 'error-joker':
+                Alert.alert('Joker hatası!')
                 break
             case 'save-questions':
                 this.setState({ fullQuestionList: message.fullQuestionList })
@@ -459,8 +471,6 @@ class SoloGameScreen extends React.Component {
     }
 
     removeOptionJokerOnPressed = () => {
-        this.setState({ isRemoveOptionJokerDisabled: true })
-
         // This is used for not selecting the already disabled button to remove
         let alreadyDisabledButton = 0
 
@@ -483,7 +493,6 @@ class SoloGameScreen extends React.Component {
                 disabled: alreadyDisabledButton,
                 jokerId: 2
             })
-        this.props.subtractJoker(2)
     }
 
     removeOptions = optionsToRemove => {
@@ -528,15 +537,10 @@ class SoloGameScreen extends React.Component {
     }
 
     secondChangeJokerOnPressed = () => {
-        this.setState({
-            isSecondChanceJokerDisabled: true,
-            isSecondChanceJokerActive: true
-        })
         this.props.room.send({
             action: 'second-chance-joker',
             jokerId: 3
         })
-        this.props.subtractJoker(3)
     }
 
     render() {
