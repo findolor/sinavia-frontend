@@ -7,7 +7,8 @@ export const appTypes = {
     SAVE_NOTIFICATIONS: 'save_notifications',
     REMOVE_FROM_NOTIFICATIONS: 'remove_from_notifications',
     REMOVE_ONE_ENERGY: 'remove_one_energy',
-    SAVE_ENERGY_AMOUNT: 'save_energy_amount'
+    SAVE_ENERGY_AMOUNT: 'save_energy_amount',
+    LOCK_UNLOCK_BUTTON: 'lock_unlock_button'
 }
 
 const setNetworkConnectionInfo = isNetworkConnected => {
@@ -48,10 +49,17 @@ const removeOneEnergy = () => {
     }
 }
 
+const lockUnlockButton = () => {
+    return {
+        type: appTypes.LOCK_UNLOCK_BUTTON
+    }
+}
+
 export const appActions = {
     setNetworkConnectionInfo: setNetworkConnectionInfo,
     getLeaderboard: getLeaderboard,
     getNotifications: getNotifications,
     removeFromNotifications: removeFromNotifications,
-    removeOneEnergy: removeOneEnergy
+    removeOneEnergy: removeOneEnergy,
+    lockUnlockButton: lockUnlockButton
 }

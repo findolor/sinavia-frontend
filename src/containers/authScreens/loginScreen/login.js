@@ -171,6 +171,7 @@ class Login extends React.Component {
                             buttonText="Giriş Yap"
                             borderRadius={10}
                             onPress={this.loginOnPress}
+                            disabled={this.props.buttonLock}
                         />
                     </View>
                 </KeyboardAvoidingView>
@@ -180,7 +181,8 @@ class Login extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    isNetworkConnected: state.app.isNetworkConnected
+    isNetworkConnected: state.app.isNetworkConnected,
+    buttonLock: state.app.buttonLock
 })
 
 const mapDispatchToProps = dispatch => ({

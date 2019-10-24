@@ -317,6 +317,7 @@ class Register extends React.Component {
                             buttonText="Kayıt Ol"
                             borderRadius={10}
                             onPress={this.registerOnPress}
+                            disabled={this.props.buttonLock}
                         />
                     </View>
                     <View style={styles.gotoLoginContainer}>
@@ -337,7 +338,8 @@ class Register extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    isNetworkConnected: state.app.isNetworkConnected
+    isNetworkConnected: state.app.isNetworkConnected,
+    buttonLock: state.app.buttonLock
 })
 
 const mapDispatchToProps = dispatch => ({
