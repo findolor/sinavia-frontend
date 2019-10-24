@@ -338,7 +338,7 @@ class PurchaseScreen extends React.Component {
                 </View>
                 <View style={styles.adsContainer}>
                     <TouchableOpacity style={styles.adContainer}>
-                        <ImageBackground source={JOKER_ADS} style={styles.adView} imageStyle={{ blurRadius: 10 }}>
+                        <ImageBackground source={JOKER_ADS} style={styles.adView}>
                             <Text style={styles.adText}>JOKER</Text>
                         </ImageBackground>
                         <View style={styles.playButtonContainer}>
@@ -351,7 +351,7 @@ class PurchaseScreen extends React.Component {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.adContainer}>
                         <View style={styles.adView}>
-                            <ImageBackground source={FAVORITE} style={styles.adView} imageStyle={{ blurRadius: 10 }}>
+                            <ImageBackground source={FAVORITE} style={styles.adView}>
                                 <Text style={styles.adText}>OYUN</Text>
                                 <Text style={styles.adText}>HAKKI</Text>
                             </ImageBackground>
