@@ -999,23 +999,27 @@ class Statistics extends React.Component {
                         />
                     </View>
                     <View style={styles.scrollViewContainer}>
-                        <Swiper loop={true}
-                                paginationStyle={{ bottom: hp(0.5) }}
-                                activeDotColor={'#FF9900'}
-                                removeClippedSubviews = {false}>
-                        <View style={styles.totalGameStatsContainer}>
-                            <View style={styles.totalGameStatsInfosContainer}>
-                                <Text
-                                    style={
-                                        styles.totalGamesPlayedAndSolvedQuestionsCounter
-                                    }
+                        <Swiper
+                            loop={false}
+                            paginationStyle={{ bottom: hp(0.5) }}
+                            activeDotColor={'#FF9900'}
+                            removeClippedSubviews={false}
+                        >
+                            <View style={styles.totalGameStatsContainer}>
+                                <View
+                                    style={styles.totalGameStatsInfosContainer}
                                 >
-                                    {this.state.totalRankedGames}
-                                </Text>
-                                <Text
-                                    style={
-                                        styles.totalGamesPlayedAndSolvedQuestionsText
-                                    }
+                                    <Text
+                                        style={
+                                            styles.totalGamesPlayedAndSolvedQuestionsCounter
+                                        }
+                                    >
+                                        {this.state.totalRankedGames}
+                                    </Text>
+                                    <Text
+                                        style={
+                                            styles.totalGamesPlayedAndSolvedQuestionsText
+                                        }
                                     >
                                         Dereceli Mod
                                     </Text>

@@ -375,10 +375,12 @@ class OpponentsProfile extends React.Component {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.swiperContainer}>
-                            <Swiper loop={true}
-                                    paginationStyle={{ bottom: hp(0.5) }}
-                                    activeDotColor={'#FF9900'}
-                                    removeClippedSubviews = {false}>
+                            <Swiper
+                                loop={false}
+                                paginationStyle={{ bottom: hp(0.5) }}
+                                activeDotColor={'#FF9900'}
+                                removeClippedSubviews={false}
+                            >
                                 <View style={styles.totalGameStatsBox}>
                                     <View
                                         style={
