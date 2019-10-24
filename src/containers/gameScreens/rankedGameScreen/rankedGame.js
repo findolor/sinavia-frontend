@@ -223,6 +223,8 @@ class RankedGame extends React.Component {
                     Object.keys(message.playerProps[message.clientId].answers)
                         .length === 0
                 ) {
+                    this.props.updateTotalPoints(100)
+
                     this.shutdownGame()
                     this.props.client.close()
                     this.props.room.leave()
@@ -1058,6 +1060,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     subtractJoker: jokerId => dispatch(clientActions.subtractJoker(jokerId)),
+    updateTotalPoints: totalEarnedPoints =>
+        dispatch(clientActions.updateTotalPoints(totalEarnedPoints)),
     updateTotalPoints: totalEarnedPoints =>
         dispatch(clientActions.updateTotalPoints(totalEarnedPoints))
 })
