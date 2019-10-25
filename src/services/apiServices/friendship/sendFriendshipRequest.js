@@ -9,7 +9,7 @@ export const sendFriendshipRequest = async (
     clientUsername
 ) => {
     try {
-        const response = await axios.post(
+        let response = await axios.post(
             API_ENDPOINT + 'friendships/',
             {
                 userId: userId,
@@ -24,27 +24,22 @@ export const sendFriendshipRequest = async (
         )
         return response.data
     } catch (err) {
-        console.log(err.response)
         if (err.response.status === 401) {
-            renewToken().then(res => {
-                axios
-                    .post(
-                        API_ENDPOINT + 'friendships/',
-                        {
-                            userId: userId,
-                            friendId: friendId,
-                            username: clientUsername
-                        },
-                        {
-                            headers: {
-                                Authorization: 'Bearer ' + res.token
-                            }
-                        }
-                    )
-                    .then(response => {
-                        return response.data
-                    })
-            })
+            let res = await renewToken()
+            response = await axios.post(
+                API_ENDPOINT + 'friendships/',
+                {
+                    userId: userId,
+                    friendId: friendId,
+                    username: clientUsername
+                },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + res.token
+                    }
+                }
+            )
+            return response.data
         } else return err.response
     }
 }

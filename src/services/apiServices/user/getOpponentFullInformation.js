@@ -8,7 +8,7 @@ export const getOpponentFullInformation = async (
     clientId
 ) => {
     try {
-        const response = await axios.get(
+        let response = await axios.get(
             API_ENDPOINT + 'users/opponent/' + userId,
             {
                 headers: {
@@ -21,22 +21,20 @@ export const getOpponentFullInformation = async (
         )
         return response.data.data
     } catch (err) {
-        console.log(err)
         if (err.response.status === 401) {
-            renewToken().then(res => {
-                axios
-                    .get(API_ENDPOINT + 'users/opponent/' + userId, {
-                        headers: {
-                            Authorization: 'Bearer ' + res.token
-                        },
-                        params: {
-                            clientId: clientId
-                        }
-                    })
-                    .then(response => {
-                        return response.data.data
-                    })
-            })
+            let res = await renewToken()
+            response = await axios.get(
+                API_ENDPOINT + 'users/opponent/' + userId,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + res.token
+                    },
+                    params: {
+                        clientId: clientId
+                    }
+                }
+            )
+            return response.data.data
         } else return err.response
     }
 }

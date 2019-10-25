@@ -4,7 +4,7 @@ import { renewToken } from '../token/renewToken'
 
 export const getMonthlyStatistics = async (userToken, userId, params) => {
     try {
-        const response = await axios.get(
+        let response = await axios.get(
             API_ENDPOINT + 'statistics/monthly/' + userId,
             {
                 headers: {
@@ -15,20 +15,18 @@ export const getMonthlyStatistics = async (userToken, userId, params) => {
         )
         return response.data.data
     } catch (err) {
-        console.log(err)
         if (err.response.status === 401) {
-            renewToken().then(res => {
-                axios
-                    .get(API_ENDPOINT + 'statistics/monthly/' + userId, {
-                        headers: {
-                            Authorization: 'Bearer ' + res.token
-                        },
-                        params: params
-                    })
-                    .then(response => {
-                        return response.data.data
-                    })
-            })
+            let res = await renewToken()
+            response = await axios.get(
+                API_ENDPOINT + 'statistics/monthly/' + userId,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + res.token
+                    },
+                    params: params
+                }
+            )
+            return response.data.data
         } else return err.response
     }
 }

@@ -9,11 +9,25 @@ export const getUserScores = async (
     params
 ) => {
     try {
-        const response = await axios.get(
-            API_ENDPOINT + 'leaderboards/friends/',
-            {
+        let response = await axios.get(API_ENDPOINT + 'leaderboards/friends/', {
+            headers: {
+                Authorization: 'Bearer ' + userToken
+            },
+            params: {
+                userIdList: userIdList,
+                clientId: clientId,
+                examId: params.examId,
+                courseId: params.courseId,
+                subjectId: params.subjectId
+            }
+        })
+        return response.data.data
+    } catch (err) {
+        if (err.response.status === 401) {
+            let res = await renewToken()
+            response = await axios.get(API_ENDPOINT + 'leaderboards/friends/', {
                 headers: {
-                    Authorization: 'Bearer ' + userToken
+                    Authorization: 'Bearer ' + res.token
                 },
                 params: {
                     userIdList: userIdList,
@@ -22,30 +36,8 @@ export const getUserScores = async (
                     courseId: params.courseId,
                     subjectId: params.subjectId
                 }
-            }
-        )
-        return response.data.data
-    } catch (err) {
-        console.log(err)
-        if (err.response.status === 401) {
-            renewToken().then(res => {
-                axios
-                    .get(API_ENDPOINT + 'leaderboards/friends/', {
-                        headers: {
-                            Authorization: 'Bearer ' + res.token
-                        },
-                        params: {
-                            userIdList: userIdList,
-                            clientId: clientId,
-                            examId: params.examId,
-                            courseId: params.courseId,
-                            subjectId: params.subjectId
-                        }
-                    })
-                    .then(response => {
-                        return response.data.data
-                    })
             })
+            return response.data.data
         } else return err.response
     }
 }

@@ -20,6 +20,11 @@ export const renewToken = async () => {
             }
         )
 
+        await deviceStorage.saveItemToStorage(
+            'clientToken',
+            response.data.data.token
+        )
+
         return { token: response.data.data.token, id: response.data.data.id }
     } catch (err) {
         console.log(err.response)

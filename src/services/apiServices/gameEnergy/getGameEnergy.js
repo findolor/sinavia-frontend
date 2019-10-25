@@ -4,7 +4,7 @@ import { renewToken } from '../token/renewToken'
 
 export const getGameEnergy = async (clientToken, clientId) => {
     try {
-        const response = await axios.get(
+        let response = await axios.get(
             API_ENDPOINT + 'gameEnergies/' + clientId,
             {
                 headers: {
@@ -14,19 +14,17 @@ export const getGameEnergy = async (clientToken, clientId) => {
         )
         return response.data.data
     } catch (err) {
-        console.log(err)
         if (err.response.status === 401) {
-            renewToken().then(res => {
-                axios
-                    .get(API_ENDPOINT + 'gameEnergies/' + clientId, {
-                        headers: {
-                            Authorization: 'Bearer ' + res.token
-                        }
-                    })
-                    .then(response => {
-                        return response.data.data
-                    })
-            })
+            let res = await renewToken()
+            response = await axios.get(
+                API_ENDPOINT + 'gameEnergies/' + clientId,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + res.token
+                    }
+                }
+            )
+            return response.data.data
         } else return err.response
     }
 }

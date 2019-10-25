@@ -19,24 +19,20 @@ export const favouriteQuestion = async (userToken, userId, questionId) => {
         return response.data.data
     } catch (err) {
         if (err.response.status === 401) {
-            renewToken().then(res => {
-                axios
-                    .post(
-                        API_ENDPOINT + 'favouriteQuestions/',
-                        {
-                            userId: userId,
-                            questionId: questionId
-                        },
-                        {
-                            headers: {
-                                Authorization: 'Bearer ' + res.token
-                            }
-                        }
-                    )
-                    .then(response => {
-                        return response.data.data
-                    })
-            })
+            let res = await renewToken()
+            response = await axios.post(
+                API_ENDPOINT + 'favouriteQuestions/',
+                {
+                    userId: userId,
+                    questionId: questionId
+                },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + res.token
+                    }
+                }
+            )
+            return response.data.data
         } else throw new Error(err.message)
     }
 }
