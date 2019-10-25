@@ -172,7 +172,7 @@ class FriendMatchingScreen extends React.Component {
         this.room.removeAllListeners()
 
         if (this.props.clientInformation.isPremium) {
-            navigationReplace(SCENE_KEYS.gameScreens.soloGameScreen, {
+            navigationReplace(SCENE_KEYS.gameScreens.soloFriendGameScreen, {
                 // These are necessary for the game logic
                 room: this.room,
                 client: this.client,
@@ -191,15 +191,19 @@ class FriendMatchingScreen extends React.Component {
                     // Removing one energy when the match starts
                     this.props.removeOneEnergy()
 
-                    navigationReplace(SCENE_KEYS.gameScreens.soloGameScreen, {
-                        // These are necessary for the game logic
-                        room: this.room,
-                        client: this.client,
-                        // These can be used in both screens
-                        playerUsername: this.props.clientInformation.username,
-                        playerProfilePicture: this.props.clientInformation
-                            .profilePicture
-                    })
+                    navigationReplace(
+                        SCENE_KEYS.gameScreens.soloFriendGameScreen,
+                        {
+                            // These are necessary for the game logic
+                            room: this.room,
+                            client: this.client,
+                            // These can be used in both screens
+                            playerUsername: this.props.clientInformation
+                                .username,
+                            playerProfilePicture: this.props.clientInformation
+                                .profilePicture
+                        }
+                    )
                 })
                 .catch(error => {
                     console.log(error)

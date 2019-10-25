@@ -84,6 +84,7 @@ class Home extends React.Component {
             isModalVisible: false,
             // Mode button variables
             rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
+            soloModeButtonBorderColor: EMPTY_MODE_COLOR,
             // Mode images
             rankedImage: RANKED_EMPTY_IMAGE,
             friendsImage: FRIENDS_EMPTY_IMAGE,
@@ -102,7 +103,9 @@ class Home extends React.Component {
             opponentUsername: '',
             opponentInformation: {},
             friendList: [],
-            originalFriends: []
+            originalFriends: [],
+            // Selected game mode variable
+            selectedGameMode: 'ranked'
         }
     }
 
@@ -419,14 +422,27 @@ class Home extends React.Component {
             opponentName: '',
             opponentUsername: '',
             opponentInformation: {},
-            rankedModeButtonBorderColor: EMPTY_MODE_COLOR
+            rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
+            soloModeButtonBorderColor: EMPTY_MODE_COLOR,
+            visibleRankedGameStartPress: false
         })
     }
 
     rankedGameModeOnPress = () => {
         this.setState({
             visibleRankedGameStartPress: true,
-            rankedModeButtonBorderColor: SELECTED_MODE_COLOR
+            rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
+            soloModeButtonBorderColor: EMPTY_MODE_COLOR,
+            selectedGameMode: 'ranked'
+        })
+    }
+
+    soloModeOnPress = () => {
+        this.setState({
+            visibleRankedGameStartPress: true,
+            soloModeButtonBorderColor: SELECTED_MODE_COLOR,
+            rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
+            selectedGameMode: 'solo'
         })
     }
 
@@ -435,13 +451,15 @@ class Home extends React.Component {
             this.setState({
                 visibleView: 'GROUP_MODES',
                 visibleRankedGameStartPress: false,
-                rankedModeButtonBorderColor: EMPTY_MODE_COLOR
+                rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
+                soloModeButtonBorderColor: EMPTY_MODE_COLOR
             })
         } else if (this.props.energyAmount !== 0)
             this.setState({
                 visibleView: 'GROUP_MODES',
                 visibleRankedGameStartPress: false,
-                rankedModeButtonBorderColor: EMPTY_MODE_COLOR
+                rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
+                soloModeButtonBorderColor: EMPTY_MODE_COLOR
             })
         else {
             this.setState({ visibleRankedGameStartPress: false })
@@ -522,6 +540,29 @@ class Home extends React.Component {
                                 </Text>
                             </View>
                         </View>
+                        <View style={styles.gameModeContainer}>
+                            <TouchableOpacity onPress={this.soloModeOnPress}>
+                                <View
+                                    style={[
+                                        styles.gameModeLogoContainer,
+                                        {
+                                            borderColor: this.state
+                                                .soloModeButtonBorderColor
+                                        }
+                                    ]}
+                                >
+                                    <Image
+                                        source={this.state.rankedImage}
+                                        style={styles.rankedModeImage}
+                                    />
+                                </View>
+                            </TouchableOpacity>
+                            <View style={styles.gameModeContextContainer}>
+                                <Text style={styles.gameModeContextText}>
+                                    Tek başına yarış
+                                </Text>
+                            </View>
+                        </View>
                     </View>
                 </View>
                 {this.state.visibleRankedGameStartPress && (
@@ -561,7 +602,10 @@ class Home extends React.Component {
     }
 
     friendRoomOnPress = async () => {
-        this.setState({ rankedModeButtonBorderColor: EMPTY_MODE_COLOR })
+        this.setState({
+            rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
+            soloModeButtonBorderColor: EMPTY_MODE_COLOR
+        })
 
         if (this.props.clientInformation.isPremium) {
             if (Object.keys(this.props.friendIds).length === 0) return
@@ -970,16 +1014,37 @@ class Home extends React.Component {
             return
         }
 
-        if (this.props.clientInformation.isPremium) {
-            navigationReset('game', this.calculateContentIds())
-        } else if (this.props.energyAmount !== 0)
-            navigationReset('game', this.calculateContentIds())
-        else {
-            this.setState({
-                visibleRankedGameStartPress: false,
-                rankedModeButtonBorderColor: EMPTY_MODE_COLOR
-            })
-            Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
+        switch (this.state.selectedGameMode) {
+            case 'ranked':
+                if (this.props.clientInformation.isPremium) {
+                    navigationReset('game', this.calculateContentIds())
+                } else if (this.props.energyAmount !== 0)
+                    navigationReset('game', this.calculateContentIds())
+                else {
+                    this.setState({
+                        visibleRankedGameStartPress: false,
+                        rankedModeButtonBorderColor: EMPTY_MODE_COLOR
+                    })
+                    Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
+                }
+                break
+            case 'solo':
+                if (this.props.clientInformation.isPremium) {
+                    navigationReset('game', { isHardReset: true })
+                    navigationReplace(
+                        SCENE_KEYS.gameScreens.soloModeLoadingScreen,
+                        this.calculateContentIds()
+                    )
+                } else {
+                    this.setState({
+                        visibleRankedGameStartPress: false,
+                        soloModeButtonBorderColor: EMPTY_MODE_COLOR
+                    })
+                    Alert.alert(
+                        'Üzgünüm ama tek başına oynamak için premium alman gerek!'
+                    )
+                }
+                break
         }
     }
 

@@ -29,7 +29,7 @@ const SELECTED_BUTTON_COLOR = '#00d9ef'
 const CORRECT_ANSWER_COLOR = '#14e31f'
 const INCORRECT_ANSWER_COLOR = '#eb2b0e'
 
-class SoloGameScreen extends React.Component {
+class SoloModeGameScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -105,11 +105,11 @@ class SoloGameScreen extends React.Component {
         this.checkJokerAmount()
         // We send ready signal when game screen is loaded
         this.props.room.send({
-            action: 'ready-solo'
+            action: 'ready'
         })
         this.props.room.onStateChange.add(state => {
             // We update the UI after state changes
-            this.chooseStateAction(state.friendState)
+            this.chooseStateAction(state.soloModeState)
         })
         // Joker messages come through here
         this.props.room.onMessage.add(message => {
@@ -185,20 +185,20 @@ class SoloGameScreen extends React.Component {
     }
 
     // TODO Move these actions to their functions
-    chooseStateAction = friendState => {
+    chooseStateAction = soloModeState => {
         // We check the action that happened
-        switch (friendState.stateInformation) {
+        switch (soloModeState.stateInformation) {
             // Setting up question number and resetting the buttons
             case 'question':
                 // We set the questionList once when the game starts
-                if (friendState.questionNumber === 0)
-                    this.setState({ questionList: friendState.questionList })
+                if (soloModeState.questionNumber === 0)
+                    this.setState({ questionList: soloModeState.questionList })
                 // We reset the questions every time a round starts
                 this.resetButtons()
                 // Necessary settings
                 this.setState({
                     start: false,
-                    questionNumber: friendState.questionNumber,
+                    questionNumber: soloModeState.questionNumber,
                     isQuestionAnswered: false,
                     countDownTime: 60,
                     isCountDownRunning: false
@@ -214,7 +214,7 @@ class SoloGameScreen extends React.Component {
                 return
             // As soon as someone answers, a result event is fired
             case 'result':
-                this.setState({ playerProps: friendState.playerProps })
+                this.setState({ playerProps: soloModeState.playerProps })
                 return
             case 'show-results':
                 // 8 second countdown time for the results
@@ -244,8 +244,8 @@ class SoloGameScreen extends React.Component {
 
     updatePlayerResults = () => {
         // Player answers to the question
-        const answers = this.state.playerProps[this.props.client.id].answers
-
+        const answers = this.state.playerProps.answers
+        console.log(answers)
         // Switch statement for the user
         this.updateAnswers(answers)
     }
@@ -383,7 +383,7 @@ class SoloGameScreen extends React.Component {
         // There is a timeout because there needs to be a delay between the events
         this.finishedTimeout = setTimeout(() => {
             that.props.room.send({
-                action: 'finished-solo'
+                action: 'finished'
             })
         }, 1000)
     }
@@ -849,4 +849,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(SoloGameScreen)
+)(SoloModeGameScreen)

@@ -5,7 +5,7 @@ import NotchView from '../../../components/notchView'
 import returnLogo from '../../../assets/return.png'
 import {
     navigationPop,
-    navigationPush,
+    navigationReplace,
     navigationReset
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
@@ -420,7 +420,7 @@ class Notifications extends React.Component {
 
                 this.room.removeAllListeners()
                 navigationReset('game', { isHardReset: true })
-                navigationPush(SCENE_KEYS.gameScreens.soloGameScreen, {
+                navigationReplace(SCENE_KEYS.gameScreens.soloFriendGameScreen, {
                     client: this.client,
                     room: this.room,
                     playerUsername: this.props.clientInformation.username,
