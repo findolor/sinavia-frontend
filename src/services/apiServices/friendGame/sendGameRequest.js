@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { API_ENDPOINT } from '../../../config/index'
+import { renewToken } from '../token/renewToken'
 
 export const sendGameRequest = async (
     userToken,
@@ -10,7 +11,7 @@ export const sendGameRequest = async (
     matchInformation
 ) => {
     try {
-        const response = await axios.post(
+        let response = await axios.post(
             API_ENDPOINT + 'friendGames/request',
             {
                 id: userId,
@@ -28,6 +29,24 @@ export const sendGameRequest = async (
 
         return response.data.success
     } catch (err) {
-        throw new Error(err.message)
+        if (err.response.status === 401) {
+            let res = await renewToken()
+            response = await axios.post(
+                API_ENDPOINT + 'friendGames/request',
+                {
+                    id: userId,
+                    username: username,
+                    roomCode: roomCode,
+                    requestedUserFCMToken: requestedUserFCMToken,
+                    matchInformation: matchInformation
+                },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + res.token
+                    }
+                }
+            )
+            return response.data.success
+        } else throw new Error(err.message)
     }
 }

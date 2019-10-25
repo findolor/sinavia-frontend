@@ -1,9 +1,10 @@
 import axios from 'axios'
 import { API_ENDPOINT } from '../../../config/index'
+import { renewToken } from '../token/renewToken'
 
 export const rejectOngoingMatch = async (userToken, ongoingMatchId) => {
     try {
-        const response = await axios.delete(
+        let response = await axios.delete(
             API_ENDPOINT + 'friendGames/' + ongoingMatchId,
             {
                 headers: {
@@ -13,7 +14,17 @@ export const rejectOngoingMatch = async (userToken, ongoingMatchId) => {
         )
         return response.data.data
     } catch (err) {
-        console.log(err)
-        return err.response
+        if (err.response.status === 401) {
+            let res = await renewToken()
+            response = await axios.delete(
+                API_ENDPOINT + 'friendGames/' + ongoingMatchId,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + res.token
+                    }
+                }
+            )
+            return response.data.data
+        } else return err.response
     }
 }
