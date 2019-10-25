@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { API_ENDPOINT } from '../../../config/index'
+import { renewToken } from '../token/renewToken'
 
 export const getUsers = async (userToken, idList) => {
     try {
@@ -14,6 +15,21 @@ export const getUsers = async (userToken, idList) => {
         return response.data.data
     } catch (err) {
         console.log(err)
-        return err.response
+        if (err.response.status === 401) {
+            renewToken().then(res => {
+                axios
+                    .get(API_ENDPOINT + 'users/', {
+                        headers: {
+                            Authorization: 'Bearer ' + res.token
+                        },
+                        params: {
+                            idList: idList
+                        }
+                    })
+                    .then(response => {
+                        return response.data.data
+                    })
+            })
+        } else return err.response
     }
 }

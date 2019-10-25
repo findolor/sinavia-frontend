@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { API_ENDPOINT } from '../../../config/index'
+import { renewToken } from '../token/renewToken'
 
 export const getNotifications = async (userToken, userId) => {
     try {
@@ -14,6 +15,18 @@ export const getNotifications = async (userToken, userId) => {
         return response.data.data
     } catch (err) {
         console.log(err)
-        return err.response
+        if (err.response.status === 401) {
+            renewToken().then(res => {
+                axios
+                    .get(API_ENDPOINT + 'notifications/' + userId, {
+                        headers: {
+                            Authorization: 'Bearer ' + res.token
+                        }
+                    })
+                    .then(response => {
+                        return response.data.data
+                    })
+            })
+        } else return err.response
     }
 }

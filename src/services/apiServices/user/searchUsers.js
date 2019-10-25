@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { API_ENDPOINT } from '../../../config/index'
+import { renewToken } from '../token/renewToken'
 
 export const searchUsers = async (userToken, keyword, userId) => {
     try {
@@ -12,9 +13,24 @@ export const searchUsers = async (userToken, keyword, userId) => {
                 userId: userId
             }
         })
-
         return response.data.data
     } catch (err) {
-        throw err
+        if (err.response.status === 401) {
+            renewToken().then(res => {
+                axios
+                    .get(API_ENDPOINT + 'searchUsers/', {
+                        headers: {
+                            Authorization: 'Bearer ' + res.token
+                        },
+                        params: {
+                            keyword: keyword,
+                            userId: userId
+                        }
+                    })
+                    .then(response => {
+                        return response.data.data
+                    })
+            })
+        } else throw err
     }
 }

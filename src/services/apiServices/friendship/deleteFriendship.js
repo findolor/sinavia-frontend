@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { API_ENDPOINT } from '../../../config/index'
+import { renewToken } from '../token/renewToken'
 
 export const deleteFriendship = async (
     userToken,
@@ -21,6 +22,23 @@ export const deleteFriendship = async (
         return response.data
     } catch (err) {
         console.log(err)
-        return err.response
+        if (err.response.status === 401) {
+            renewToken().then(res => {
+                axios
+                    .delete(API_ENDPOINT + 'friendships/', {
+                        headers: {
+                            Authorization: 'Bearer ' + res.token
+                        },
+                        params: {
+                            userId: userId,
+                            friendId: friendId,
+                            isClientUser: isClientUser
+                        }
+                    })
+                    .then(response => {
+                        return response.data
+                    })
+            })
+        } else return err.response
     }
 }
