@@ -117,7 +117,10 @@ class GroupGameStatsScreen extends React.Component {
 
             playerIds.forEach(playerId => {
                 if (playerId === 'matchInformation') return
-                if (!playerProps[playerId].isLeft) {
+                if (
+                    !playerProps[playerId].isLeft ||
+                    !this.props.isMatchFinished
+                ) {
                     username = playerProps[playerId].username
                     profilePicture = playerProps[playerId].profilePicture
                     playerProps[playerId].answers.forEach((result, index) => {

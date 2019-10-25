@@ -34,7 +34,7 @@ class FriendMatchingScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            countDownTime: 30,
+            countDownTime: 2,
             isCoundownFinished: false
         }
     }

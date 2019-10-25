@@ -110,7 +110,22 @@ class RankedGame extends React.Component {
         this.backHandler = BackHandler.addEventListener(
             'hardwareBackPress',
             () => {
-                this.backButtonOnPress()
+                Alert.alert(
+                    'Oyundan ayrılmak üzeresin!',
+                    'Ayrılırsan bu sana mağlubiyet olarak yazılır. Çıkmak istediğine emin misin?',
+                    [
+                        {
+                            text: 'Hayır'
+                        },
+                        {
+                            text: 'Evet',
+                            onPress: () =>
+                                this.props.room.send({
+                                    action: 'leave-match'
+                                })
+                        }
+                    ]
+                )
             }
         )
         // We check if the user has enough jokers
@@ -244,7 +259,8 @@ class RankedGame extends React.Component {
                     opponentId: this.props.opponentId,
                     opponentProfilePicture: this.props.opponentProfilePicture,
                     fullQuestionList: message.fullQuestionList,
-                    isMatchFinished: false
+                    isMatchFinished: false,
+                    isWon: true
                 })
                 break
             case 'save-questions':
@@ -257,6 +273,36 @@ class RankedGame extends React.Component {
                 break
             case 'player-props':
                 this.setState({ playerProps: message.playerProps })
+                break
+            case 'leave-match':
+                // If the client hasn't answered any of the questions, we just navigate him to main screen
+                if (
+                    Object.keys(message.playerProps[message.clientId].answers)
+                        .length === 0
+                ) {
+                    this.shutdownGame()
+                    this.props.client.close()
+                    this.props.room.leave()
+                    navigationReset('main')
+                    break
+                }
+                // Do a shutdown routine
+                this.shutdownGame()
+                this.props.room.leave()
+                navigationReplace(SCENE_KEYS.gameScreens.gameStats, {
+                    playerProps: message.playerProps,
+                    room: this.props.room,
+                    client: this.props.client,
+                    questionList: this.state.questionList,
+                    playerUsername: this.props.playerUsername,
+                    playerProfilePicture: this.props.playerProfilePicture,
+                    opponentUsername: this.props.opponentUsername,
+                    opponentId: this.props.opponentId,
+                    opponentProfilePicture: this.props.opponentProfilePicture,
+                    fullQuestionList: message.fullQuestionList,
+                    isMatchFinished: false,
+                    isWon: false
+                })
                 break
         }
     }
@@ -843,7 +889,26 @@ class RankedGame extends React.Component {
                         </View>
                     </View>
                     <View style={styles.backButtonContainer}>
-                        <TouchableOpacity onPress={this.backButtonOnPress}>
+                        <TouchableOpacity
+                            onPress={() =>
+                                Alert.alert(
+                                    'Oyundan ayrılmak üzeresin!',
+                                    'Ayrılırsan bu sana mağlubiyet olarak yazılır. Çıkmak istediğine emin misin?',
+                                    [
+                                        {
+                                            text: 'Hayır'
+                                        },
+                                        {
+                                            text: 'Evet',
+                                            onPress: () =>
+                                                this.props.room.send({
+                                                    action: 'leave-match'
+                                                })
+                                        }
+                                    ]
+                                )
+                            }
+                        >
                             <Image
                                 source={BACK_BUTTON}
                                 style={styles.backButton}

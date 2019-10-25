@@ -231,8 +231,11 @@ class FriendGameStatsScreen extends React.Component {
             } else {
                 playerFriendMatchWinCount++
                 this.setState({
-                    matchResultLogo: YOU_WIN_LOGO,
-                    matchResultText: 'Kazandın',
+                    matchResultLogo:
+                        this.props.isWon === true
+                            ? YOU_WIN_LOGO
+                            : YOU_LOSE_LOGO,
+                    matchResultText: true ? 'Kazandın' : 'Kaybettin',
                     isReplayButtonDisabled: true,
                     replayButtonBorderColor: REPLAY_DEACTIVE_BORDER
                 })
