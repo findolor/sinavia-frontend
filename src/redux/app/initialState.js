@@ -4,5 +4,6 @@ export const INITIAL_STATE = {
     clientRanking: null,
     userNotificationList: null,
     energyAmount: null,
-    buttonLock: false
+    buttonLock: false,
+    notificationOpen: {}
 }

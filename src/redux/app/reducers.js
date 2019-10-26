@@ -44,6 +44,11 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 buttonLock: !state.buttonLock
             }
+        case appTypes.SAVE_NOTIFICATION_OPEN:
+            return {
+                ...state,
+                notificationOpen: action.payload
+            }
         default:
             return state
     }
