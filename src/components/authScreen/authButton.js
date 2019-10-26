@@ -14,6 +14,7 @@ export default AuthButton = ({
     buttonText,
     onPress,
     marginTop,
+    marginLeft,
     marginBottom,
     borderRadius,
     fontSize,
@@ -29,7 +30,8 @@ export default AuthButton = ({
                 { height: height },
                 { width: width },
                 { borderRadius: borderRadius },
-                { position: position }
+                { position: position },
+                { marginLeft: marginLeft}
             ]}
             onPress={onPress}
         >

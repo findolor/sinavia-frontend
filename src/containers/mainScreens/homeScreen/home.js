@@ -578,12 +578,8 @@ class Home extends React.Component {
         }
 
         this.setState({
-            isModalVisible: false
+            visibleView: 'CREATE_ROOM'
         })
-        navigationReplace(
-            SCENE_KEYS.mainScreens.createGroupRoom,
-            this.calculateContentIds()
-        )
     }
 
     friendRoomOnPress = async () => {
@@ -910,14 +906,19 @@ class Home extends React.Component {
         })
 
         this.room.onJoin.add(() => {
-            this.setState({ isModalVisible: false })
             this.room.removeAllListeners()
-            navigationReplace(SCENE_KEYS.mainScreens.joinGroupRoom, {
-                client: this.client,
-                room: this.room,
-                roomCode: this.state.groupCodeOnChangeText
+            this.setState({
+                visibleView: 'JOINED_ROOM'
             })
         })
+    }
+
+    joinGameParams = () => {
+        return {
+            client: this.client,
+            room: this.room,
+            roomCode: this.state.groupCodeOnChangeText
+        }
     }
 
     joinRoomBackButtonOnPress = () => {
@@ -1076,6 +1077,10 @@ class Home extends React.Component {
                         this.groupModesView()}
                     {this.state.visibleView === 'JOIN_ROOM' &&
                         this.joinRoomView()}
+                    {this.state.visibleView === 'CREATE_ROOM' &&
+                    <CreateGroupRoomView calculateContentIds={this.calculateContentIds()}/>}
+                    {this.state.visibleView === 'JOINED_ROOM' &&
+                    <JoinGroupRoomView joinGameParams={this.joinGameParams()}/>}
                 </Modal>
                 <View style={styles.header}>
                     <View style={styles.profilePicContainer}>

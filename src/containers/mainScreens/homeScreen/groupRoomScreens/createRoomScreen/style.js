@@ -3,11 +3,12 @@ import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
+import AuthButton from '../../../../../components/authScreen/authButton'
+import React from 'react'
 
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#000000DE',
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
@@ -18,12 +19,11 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     modalView: {
-        position: 'absolute',
-        zIndex: 1,
         backgroundColor: '#ffffff',
         height: hp(67),
         width: wp(87.5),
         marginTop: hp(14),
+        marginLeft: wp(6.25),
         borderColor: '#00D9EF',
         borderWidth: wp(0.75),
         borderRadius: 10,
@@ -210,12 +210,6 @@ export default StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'flex-start'
     },
-    modalContainer: {
-        flex: 1,
-        backgroundColor: '#000000DE',
-        justifyContent: 'flex-start',
-        alignItems: 'center'
-    },
     leaderContainer: {
         width: wp(10)
     },
@@ -223,5 +217,15 @@ export default StyleSheet.create({
         resizeMode: 'contain',
         height: hp(6),
         width: wp(6)
-    }
+    },
+    modal: {
+        flex: 1,
+        backgroundColor: '#000000DE',
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    modalContainer: {
+        flex: 1,
+        alignItems: 'center'
+    },
 })
