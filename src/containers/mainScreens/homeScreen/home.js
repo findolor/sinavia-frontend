@@ -46,7 +46,6 @@ import { fcmService } from '../../../services/fcmService'
 import { friendshipServices } from '../../../sagas/friendship/'
 import { friendGameServices } from '../../../sagas/friendGame/'
 import { userServices } from '../../../sagas/user/'
-import { gameEnergyServices } from '../../../sagas/gameEnergy/'
 import { GAME_ENGINE_ENDPOINT } from '../../../config'
 
 import NOTIFICATION_LOGO from '../../../assets/mainScreens/notification.png'

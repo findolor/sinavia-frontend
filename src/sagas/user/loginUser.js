@@ -1,21 +1,20 @@
 import { put, call } from 'redux-saga/effects'
-import { getToken } from '../../services/apiServices/token/getToken'
-import { getUser } from '../../services/apiServices/user/getUser'
-import { getGameEnergy } from '../../services/apiServices/gameEnergy/getGameEnergy'
 import { deviceStorage } from '../../services/deviceStorage'
 import { navigationReplace } from '../../services/navigationService'
 import { clientTypes } from '../../redux/client/actions'
 import { friendTypes } from '../../redux/friends/actions'
 import { appTypes } from '../../redux/app/actions'
 import { fcmService } from '../../services/fcmService'
-import { postFCMToken } from '../../services/apiServices/fcmToken/postToken'
-import { getFriends } from '../../services/apiServices/friendship/getFriends'
-import { getFavouriteQuestions } from '../../services/apiServices/favouriteQuestion/getFavouriteQuestions'
-import { getUserJokers } from '../../services/apiServices/userJoker/getUserJokers'
 import { gameContentTypes } from '../../redux/gameContent/actions'
 import DeviceInfo from 'react-native-device-info'
 import firebase from 'react-native-firebase'
 import { Alert } from 'react-native'
+import {
+    apiServicesTree,
+    makeGetRequest,
+    makePostRequest,
+    makePutRequest
+} from '../../services/apiServices'
 
 function firebaseSignIn() {
     return Promise.resolve().then(async () => {
@@ -44,7 +43,14 @@ export function* loginUser(action) {
             try {
                 // We get our token from the api
                 // action.payload is our email and password
-                const res = yield call(getToken, action.payload, deviceId)
+                const res = yield call(
+                    makePostRequest,
+                    apiServicesTree.tokenApi.getToken,
+                    {
+                        deviceId: deviceId,
+                        userInformation: action.payload
+                    }
+                )
                 // Saving the api token to redux state
                 yield put({
                     type: clientTypes.SAVE_API_TOKEN,
@@ -66,9 +72,12 @@ export function* loginUser(action) {
 
                 // We save user favourite questions
                 const favouriteQuestions = yield call(
-                    getFavouriteQuestions,
-                    res.token,
-                    res.id
+                    makeGetRequest,
+                    apiServicesTree.favouriteQuestionApi.getFavouriteQuestions,
+                    {
+                        clientToken: res.token,
+                        userId: res.id
+                    }
                 )
                 // Saving to device storage
                 deviceStorage.saveItemToStorage(
@@ -82,7 +91,14 @@ export function* loginUser(action) {
                 })
 
                 // Then we get our user information
-                const clientInformation = yield call(getUser, res.token, res.id)
+                const clientInformation = yield call(
+                    makeGetRequest,
+                    apiServicesTree.userApi.getUser,
+                    {
+                        clientToken: res.token,
+                        id: res.id
+                    }
+                )
                 // We save the user information
                 deviceStorage.saveItemToStorage(
                     'clientInformation',
@@ -109,10 +125,24 @@ export function* loginUser(action) {
                 // We add the token to our client info
                 clientInformation.fcmToken = fcmToken
                 // We send a request to api to save our fcm token
-                yield call(postFCMToken, res.token, clientInformation)
+                yield call(
+                    makePutRequest,
+                    apiServicesTree.fcmTokenApi.updateFCMToken,
+                    {
+                        userInformation: clientInformation,
+                        clientToken: res.token
+                    }
+                )
 
                 // We get all of our friend ids
-                const friendsList = yield call(getFriends, res.token, res.id)
+                const friendsList = yield call(
+                    makeGetRequest,
+                    apiServicesTree.friendshipApi.getFriends,
+                    {
+                        clientToken: res.token,
+                        userId: res.id
+                    }
+                )
                 deviceStorage.saveItemToStorage('clientFriends', friendsList)
                 // We save clients friends ids to redux state
                 yield put({
@@ -122,9 +152,12 @@ export function* loginUser(action) {
 
                 // Getting the user joker info from db
                 const userJokers = yield call(
-                    getUserJokers,
-                    action.payload,
-                    res.id
+                    makeGetRequest,
+                    apiServicesTree.userJokerApi.getUserJokers,
+                    {
+                        clientToken: res.token,
+                        userId: res.id
+                    }
                 )
                 // Saving it to redux state
                 yield put({
@@ -133,7 +166,14 @@ export function* loginUser(action) {
                 })
 
                 // We get the user's game energy info
-                let gameEnergy = yield call(getGameEnergy, res.token, res.id)
+                let gameEnergy = yield call(
+                    makeGetRequest,
+                    apiServicesTree.gameEnergyApi.getGameEnergy,
+                    {
+                        clientToken: res.token,
+                        clientId: res.id
+                    }
+                )
                 // Saving the energy amount to redux
                 yield put({
                     type: appTypes.SAVE_ENERGY_AMOUNT,

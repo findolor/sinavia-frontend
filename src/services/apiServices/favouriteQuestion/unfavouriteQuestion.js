@@ -1,18 +1,16 @@
 import axios from 'axios'
-import { API_ENDPOINT } from '../../../config/index'
+import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
 import { renewToken } from '../token/renewToken'
 
-export const unfavouriteQuestion = async (userToken, userId, questionId) => {
+export const unfavouriteQuestion = async (headers, params) => {
     try {
         let response = await axios.delete(
-            API_ENDPOINT + 'favouriteQuestions/',
+            API_ENDPOINT + APP_VERSION + '/favouriteQuestions/',
             {
-                headers: {
-                    Authorization: 'Bearer ' + userToken
-                },
+                headers: headers,
                 params: {
-                    userId: userId,
-                    questionId: questionId
+                    userId: params.userId,
+                    questionId: params.questionId
                 }
             }
         )
@@ -20,15 +18,14 @@ export const unfavouriteQuestion = async (userToken, userId, questionId) => {
     } catch (err) {
         if (err.response.status === 401) {
             let res = await renewToken()
+            headers.Authorization = 'Bearer ' + res.token
             response = await axios.delete(
-                API_ENDPOINT + 'favouriteQuestions/',
+                API_ENDPOINT + APP_VERSION + '/favouriteQuestions/',
                 {
-                    headers: {
-                        Authorization: 'Bearer ' + res.token
-                    },
+                    headers: headers,
                     params: {
-                        userId: userId,
-                        questionId: questionId
+                        userId: params.userId,
+                        questionId: params.questionId
                     }
                 }
             )

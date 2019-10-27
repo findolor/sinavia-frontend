@@ -1,42 +1,40 @@
 import axios from 'axios'
-import { API_ENDPOINT } from '../../../config/index'
+import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
 import { renewToken } from '../token/renewToken'
 
-export const getUserScores = async (
-    userToken,
-    userIdList,
-    clientId,
-    params
-) => {
+export const getUserScores = async (headers, params) => {
     try {
-        let response = await axios.get(API_ENDPOINT + 'leaderboards/friends/', {
-            headers: {
-                Authorization: 'Bearer ' + userToken
-            },
-            params: {
-                userIdList: userIdList,
-                clientId: clientId,
-                examId: params.examId,
-                courseId: params.courseId,
-                subjectId: params.subjectId
+        let response = await axios.get(
+            API_ENDPOINT + APP_VERSION + '/leaderboards/friends/',
+            {
+                headers: headers,
+                params: {
+                    userIdList: params.userIdList,
+                    clientId: params.clientId,
+                    examId: params.params.examId,
+                    courseId: params.params.courseId,
+                    subjectId: params.params.subjectId
+                }
             }
-        })
+        )
         return response.data.data
     } catch (err) {
         if (err.response.status === 401) {
             let res = await renewToken()
-            response = await axios.get(API_ENDPOINT + 'leaderboards/friends/', {
-                headers: {
-                    Authorization: 'Bearer ' + res.token
-                },
-                params: {
-                    userIdList: userIdList,
-                    clientId: clientId,
-                    examId: params.examId,
-                    courseId: params.courseId,
-                    subjectId: params.subjectId
+            headers.Authorization = 'Bearer ' + res.token
+            response = await axios.get(
+                API_ENDPOINT + APP_VERSION + '/leaderboards/friends/',
+                {
+                    headers: headers,
+                    params: {
+                        userIdList: params.userIdList,
+                        clientId: params.clientId,
+                        examId: params.params.examId,
+                        courseId: params.params.courseId,
+                        subjectId: params.params.subjectId
+                    }
                 }
-            })
+            )
             return response.data.data
         } else return err.response
     }

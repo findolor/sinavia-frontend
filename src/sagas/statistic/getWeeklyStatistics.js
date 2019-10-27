@@ -1,11 +1,13 @@
-import { getWeeklyStatistics } from '../../services/apiServices/statistic/getWeeklyStatistics'
+import { makeGetRequest, apiServicesTree } from '../../services/apiServices'
 
 export async function getWeeklyStatisticsService(
     clientToken,
     clientId,
     params
 ) {
-    const res = getWeeklyStatistics(clientToken, clientId, params)
-
-    return res
+    return makeGetRequest(apiServicesTree.statisticApi.getWeeklyStatistics, {
+        clientToken: clientToken,
+        userId: clientId,
+        params: params
+    })
 }
