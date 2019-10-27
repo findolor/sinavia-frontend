@@ -21,6 +21,11 @@ import { clientActions } from '../../../redux/client/actions'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import moment from 'moment'
 import firebase from 'react-native-firebase'
+import ImagePicker from 'react-native-image-crop-picker'
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
 // Picture imports
 import returnLogo from '../../../assets/return.png'
 import EDIT from '../../../assets/edit.png'
@@ -43,7 +48,9 @@ class Settings extends React.Component {
                           this.props.clientInformation.birthDate,
                           'YYYY-MM-DD HH:mm'
                       ).format('DD-MM-YYYY'),
-            dateColor: '#7A7878'
+            dateColor: '#7A7878',
+            profileImage: null,
+            coverImage: null
         }
     }
 
@@ -169,6 +176,48 @@ class Settings extends React.Component {
             )
     }
 
+    pickProfileImage(cropit, circular=false, mediaType) {
+        ImagePicker.openPicker({
+            width: hp(18),
+            height: hp(18),
+            cropping: cropit,
+            cropperCircleOverlay: circular,
+            compressImageMaxWidth: 1000,
+            compressImageMaxHeight: 1000,
+            compressImageQuality: 1,
+            includeExif: true,
+        }).then(image => {
+            console.log('received image', image);
+            this.setState({
+                profileImage: {uri: image.path, width: image.width, height: image.height, mime: image.mime},
+            });
+        }).catch(e => {
+            console.log(e);
+            Alert.alert(e.message ? e.message : e);
+        });
+    }
+
+    pickCoverImage(cropit, circular=false, mediaType) {
+        ImagePicker.openPicker({
+            width: wp(90),
+            height: hp(30),
+            cropping: cropit,
+            cropperCircleOverlay: circular,
+            compressImageMaxWidth: 1000,
+            compressImageMaxHeight: 1000,
+            compressImageQuality: 1,
+            includeExif: true,
+        }).then(image => {
+            console.log('received image', image);
+            this.setState({
+                coverImage: {uri: image.path, width: image.width, height: image.height, mime: image.mime},
+            });
+        }).catch(e => {
+            console.log(e);
+            Alert.alert(e.message ? e.message : e);
+        });
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -185,28 +234,24 @@ class Settings extends React.Component {
                 </View>
                 <View style={styles.profileContainer}>
                     <ImageBackground
-                        source={{
-                            uri: this.props.clientInformation.coverPicture
-                        }}
+                        source={this.state.coverImage}
                         style={styles.coverPhoto}
                         imageStyle={{ borderRadius: 30 }}
                     >
+                        <View style={styles.shadowCoverView}/>
                         <View style={styles.editImgView}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.pickCoverImage(true, false)}>
                                 <Image source={EDIT} style={styles.editImg} />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.profilePicView}>
                             <ImageBackground
-                                source={{
-                                    uri: this.props.clientInformation
-                                        .profilePicture
-                                }}
+                                source={this.state.profileImage}
                                 style={styles.profilePic}
                                 imageStyle={{ borderRadius: 100 }}
                             >
                                 <View style={styles.editProfilePicView}>
-                                    <TouchableOpacity>
+                                    <TouchableOpacity onPress={() => this.pickProfileImage(true, true)}>
                                         <Image
                                             source={EDIT}
                                             style={styles.editImg}

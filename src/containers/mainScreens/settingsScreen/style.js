@@ -61,8 +61,11 @@ export default StyleSheet.create({
         height: hp(18),
         width: hp(18),
         borderRadius: 100,
+        borderWidth: hp(0.3),
+        borderColor: '#00D9EF',
         justifyContent: 'flex-end',
-        alignItems: 'center'
+        alignItems: 'center',
+        overflow: 'hidden'
     },
     editImg: {
         height: hp(3.5),
@@ -152,5 +155,13 @@ export default StyleSheet.create({
         paddingTop: hp(2),
         fontSize: hp(2),
         color: '#7A7878'
+    },
+    shadowCoverView: {
+        position: 'absolute',
+        height: hp(30),
+        width: wp(90),
+        borderRadius: 30,
+        backgroundColor: "rgba(0,0,0,0.5)",
+        alignItems: 'center'
     }
 })
