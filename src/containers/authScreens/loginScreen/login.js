@@ -109,7 +109,7 @@ class Login extends React.Component {
                     </View>
                     <View style={styles.textInputsContainer}>
                         <AuthTextInput
-                            placeholder="Kullanıcı Adı veya E-Posta"
+                            placeholder="E-Posta"
                             placeholderTextColor="#8A8888"
                             onChangeText={email => this.emailOnChange(email)}
                         />
@@ -171,6 +171,7 @@ class Login extends React.Component {
                             buttonText="Giriş Yap"
                             borderRadius={10}
                             onPress={this.loginOnPress}
+                            disabled={this.props.buttonLock}
                         />
                     </View>
                 </KeyboardAvoidingView>
@@ -180,7 +181,8 @@ class Login extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    isNetworkConnected: state.app.isNetworkConnected
+    isNetworkConnected: state.app.isNetworkConnected,
+    buttonLock: state.app.buttonLock
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -238,8 +238,8 @@ class PurchaseScreen extends React.Component {
                 <View style={styles.bundlesContainer}>
                     <View style={styles.bundlesView}>
                         <Swiper loop={true}
-                                paginationStyle={{ bottom: hp(0) }}
-                                activeDotColor={'#750000'}>
+                                paginationStyle={{ bottom: hp(0.25) }}
+                                activeDotColor={'#00D9EF'}>
                             <View style={styles.swiperView}>
                                 <TouchableOpacity style={styles.bundleView}>
                                     <View style={styles.totalJokerAmountView}>
@@ -268,6 +268,7 @@ class PurchaseScreen extends React.Component {
                                         </TouchableOpacity>
                                     </View>
                                 </TouchableOpacity>
+                                <View style={styles.bundleDivider}/>
                                 <TouchableOpacity style={styles.bundleView}>
                                     <View style={styles.totalJokerAmountView}>
                                         <Text style={styles.jokerAmountsText}>90 Joker</Text>
@@ -295,6 +296,7 @@ class PurchaseScreen extends React.Component {
                                         </TouchableOpacity>
                                     </View>
                                 </TouchableOpacity>
+                                <View style={styles.bundleDivider}/>
                                 <TouchableOpacity style={styles.bundleView}>
                                     <View style={styles.totalJokerAmountView}>
                                         <Text style={styles.jokerAmountsText}>180 Joker</Text>
@@ -338,7 +340,7 @@ class PurchaseScreen extends React.Component {
                 </View>
                 <View style={styles.adsContainer}>
                     <TouchableOpacity style={styles.adContainer}>
-                        <ImageBackground source={JOKER_ADS} style={styles.adView} imageStyle={{ blurRadius: 10 }}>
+                        <ImageBackground source={JOKER_ADS} style={styles.adView}>
                             <Text style={styles.adText}>JOKER</Text>
                         </ImageBackground>
                         <View style={styles.playButtonContainer}>
@@ -351,7 +353,7 @@ class PurchaseScreen extends React.Component {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.adContainer}>
                         <View style={styles.adView}>
-                            <ImageBackground source={FAVORITE} style={styles.adView} imageStyle={{ blurRadius: 10 }}>
+                            <ImageBackground source={FAVORITE} style={styles.adView}>
                                 <Text style={styles.adText}>OYUN</Text>
                                 <Text style={styles.adText}>HAKKI</Text>
                             </ImageBackground>
@@ -366,10 +368,7 @@ class PurchaseScreen extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.premiumContainer}>
-                    <TouchableOpacity   onPress={() => {
-                                        this.onPressPremiumView()
-                                        }}
-                                        style={styles.premiumUpperView}>
+                    <View  style={styles.premiumUpperView}>
                         <LinearGradient colors={['white', '#F3CE97']} style={styles.linearGradientUpperView}>
                             <View style={styles.premiumSwiperContainer}>
                                 <Swiper autoplay={true}
@@ -443,7 +442,7 @@ class PurchaseScreen extends React.Component {
                                 </TouchableOpacity>
                             </View>
                         </LinearGradient>
-                    </TouchableOpacity>
+                    </View>
                     <TouchableOpacity style={styles.premiumBottomView}>
                         <View style={styles.linearGradientBottomView}>
                             <Text style={styles.inviteText}>Arkadaşını davet et</Text>

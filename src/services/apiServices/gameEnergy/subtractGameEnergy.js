@@ -1,21 +1,33 @@
 import axios from 'axios'
-import { API_ENDPOINT } from '../../../config/index'
+import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
+import { renewToken } from '../token/renewToken'
 
-export const subtractGameEnergy = async (clientToken, clientId) => {
+export const subtractGameEnergy = async (headers, params) => {
     try {
-        const response = await axios.put(
-            API_ENDPOINT + 'gameEnergies/remove/',
+        let response = await axios.put(
+            API_ENDPOINT + APP_VERSION + '/gameEnergies/remove/',
             {
-                userId: clientId
+                userId: params.clientId
             },
             {
-                headers: {
-                    Authorization: 'Bearer ' + clientToken
-                }
+                headers: headers
             }
         )
         return response.data.data
     } catch (err) {
-        throw new Error(err)
+        if (err.response.status === 401) {
+            let res = await renewToken()
+            headers.Authorization = 'Bearer ' + res.token
+            response = await axios.put(
+                API_ENDPOINT + APP_VERSION + '/gameEnergies/remove/',
+                {
+                    userId: params.clientId
+                },
+                {
+                    headers: headers
+                }
+            )
+            return response.data.data
+        } else throw new Error(err)
     }
 }

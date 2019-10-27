@@ -1,33 +1,42 @@
 import axios from 'axios'
-import { API_ENDPOINT } from '../../../config/index'
+import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
+import { renewToken } from '../token/renewToken'
 
-export const sendGameRequest = async (
-    userToken,
-    userId,
-    username,
-    roomCode,
-    requestedUserFCMToken,
-    matchInformation
-) => {
+export const sendGameRequest = async (headers, params) => {
     try {
-        const response = await axios.post(
-            API_ENDPOINT + 'friendGames/request',
+        let response = await axios.post(
+            API_ENDPOINT + APP_VERSION + '/friendGames/request',
             {
-                id: userId,
-                username: username,
-                roomCode: roomCode,
-                requestedUserFCMToken: requestedUserFCMToken,
-                matchInformation: matchInformation
+                id: params.userId,
+                username: params.username,
+                roomCode: params.roomCode,
+                requestedUserFCMToken: params.requestedUserFCMToken,
+                matchInformation: params.matchInformation
             },
             {
-                headers: {
-                    Authorization: 'Bearer ' + userToken
-                }
+                headers: headers
             }
         )
 
         return response.data.success
     } catch (err) {
-        throw new Error(err.message)
+        if (err.response.status === 401) {
+            let res = await renewToken()
+            headers.Authorization = 'Bearer ' + res.token
+            response = await axios.post(
+                API_ENDPOINT + APP_VERSION + '/friendGames/request',
+                {
+                    id: params.userId,
+                    username: params.username,
+                    roomCode: params.roomCode,
+                    requestedUserFCMToken: params.requestedUserFCMToken,
+                    matchInformation: params.matchInformation
+                },
+                {
+                    headers: headers
+                }
+            )
+            return response.data.success
+        } else throw new Error(err.message)
     }
 }

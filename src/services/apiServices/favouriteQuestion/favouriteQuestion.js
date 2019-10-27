@@ -1,23 +1,35 @@
 import axios from 'axios'
-import { API_ENDPOINT } from '../../../config/index'
+import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
+import { renewToken } from '../token/renewToken'
 
-export const favouriteQuestion = async (userToken, userId, questionId) => {
+export const favouriteQuestion = async (headers, params) => {
     try {
-        const response = await axios.post(
-            API_ENDPOINT + 'favouriteQuestions/',
+        let response = await axios.post(
+            API_ENDPOINT + APP_VERSION + '/favouriteQuestions/',
             {
-                userId: userId,
-                questionId: questionId
+                userId: params.userId,
+                questionId: params.questionId
             },
             {
-                headers: {
-                    Authorization: 'Bearer ' + userToken
-                }
+                headers: headers
             }
         )
-
         return response.data.data
     } catch (err) {
-        throw new Error(err.message)
+        if (err.response.status === 401) {
+            let res = await renewToken()
+            headers.Authorization = 'Bearer ' + res.token
+            response = await axios.post(
+                API_ENDPOINT + APP_VERSION + '/favouriteQuestions/',
+                {
+                    userId: params.userId,
+                    questionId: params.questionId
+                },
+                {
+                    headers: headers
+                }
+            )
+            return response.data.data
+        } else throw new Error(err.message)
     }
 }

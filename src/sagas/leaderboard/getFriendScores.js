@@ -1,4 +1,4 @@
-import { getUserScores } from '../../services/apiServices/leaderboard/getUserScores'
+import { apiServicesTree, makeGetRequest } from '../../services/apiServices'
 
 export const getFriendScoresService = async (
     clientToken,
@@ -6,5 +6,10 @@ export const getFriendScoresService = async (
     clientId,
     params
 ) => {
-    return getUserScores(clientToken, userIdList, clientId, params)
+    return makeGetRequest(apiServicesTree.leaderboardApi.getUserScores, {
+        clientToken: clientToken,
+        userIdList: userIdList,
+        clientId: clientId,
+        params: params
+    })
 }

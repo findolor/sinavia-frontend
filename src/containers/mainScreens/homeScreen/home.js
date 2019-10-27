@@ -46,7 +46,6 @@ import { fcmService } from '../../../services/fcmService'
 import { friendshipServices } from '../../../sagas/friendship/'
 import { friendGameServices } from '../../../sagas/friendGame/'
 import { userServices } from '../../../sagas/user/'
-import { gameEnergyServices } from '../../../sagas/gameEnergy/'
 import { GAME_ENGINE_ENDPOINT } from '../../../config'
 
 import NOTIFICATION_LOGO from '../../../assets/mainScreens/notification.png'
@@ -87,6 +86,9 @@ class Home extends React.Component {
             carouselCourseData: [],
             subject: '',
             isModalVisible: false,
+            // Mode button variables
+            rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
+            soloModeButtonBorderColor: EMPTY_MODE_COLOR,
             // Carousel slide item
             carouselActiveSlide: carouselFirstItem,
             // On change text for the group room code
@@ -100,7 +102,9 @@ class Home extends React.Component {
             opponentUsername: '',
             opponentInformation: {},
             friendList: [],
-            originalFriends: []
+            originalFriends: [],
+            // Selected game mode variable
+            selectedGameMode: 'ranked'
         }
     }
 
@@ -417,7 +421,28 @@ class Home extends React.Component {
             opponentName: '',
             opponentUsername: '',
             opponentInformation: {},
-            rankedModeButtonBorderColor: EMPTY_MODE_COLOR
+            rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
+            soloModeButtonBorderColor: EMPTY_MODE_COLOR,
+            visibleRankedGameStartPress: false,
+            selectedGameMode: 'ranked'
+        })
+    }
+
+    rankedGameModeOnPress = () => {
+        this.setState({
+            visibleRankedGameStartPress: true,
+            rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
+            soloModeButtonBorderColor: EMPTY_MODE_COLOR,
+            selectedGameMode: 'ranked'
+        })
+    }
+
+    soloModeOnPress = () => {
+        this.setState({
+            visibleRankedGameStartPress: true,
+            soloModeButtonBorderColor: SELECTED_MODE_COLOR,
+            rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
+            selectedGameMode: 'solo'
         })
     }
 
@@ -425,12 +450,16 @@ class Home extends React.Component {
         if (this.props.clientInformation.isPremium) {
             this.setState({
                 visibleView: 'GROUP_MODES',
-                rankedModeButtonBorderColor: EMPTY_MODE_COLOR
+                visibleRankedGameStartPress: false,
+                rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
+                soloModeButtonBorderColor: EMPTY_MODE_COLOR
             })
         } else if (this.props.energyAmount !== 0)
             this.setState({
                 visibleView: 'GROUP_MODES',
-                rankedModeButtonBorderColor: EMPTY_MODE_COLOR
+                visibleRankedGameStartPress: false,
+                rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
+                soloModeButtonBorderColor: EMPTY_MODE_COLOR
             })
         else {
             Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
@@ -440,7 +469,13 @@ class Home extends React.Component {
     gameModesView() {
         return (
             <View style={styles.modal}>
-                <TouchableOpacity onPress={this.closeModalButtonOnPress} style={ {height: hp(120), width: wp(100)}}/>
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{
+                        height: hp(120),
+                        width: wp(100)
+                    }}
+                />
                 <View style={styles.onlyCloseButtonContainer}>
                     <TouchableOpacity onPress={this.closeModalButtonOnPress}>
                         <Image source={CLOSE_BUTTON} style={styles.xLogo} />
@@ -454,15 +489,14 @@ class Home extends React.Component {
                         <View style={styles.separatorLine} />
                     </View>
                     <View style={styles.gameModeContainer}>
-                        <View
-                            style={styles.gameModeButtonContainer}
-                        >
+                        <View style={styles.gameModeButtonContainer}>
                             <TouchableOpacity
                                 onPress={this.rankedGameModeOnPress}
                                 style={[
                                     styles.gameModeLogoContainer,
                                     {
-                                        borderColor: '#00D9EF'
+                                        borderColor: this.state
+                                            .rankedModeButtonBorderColor
                                     }
                                 ]}
                             >
@@ -473,94 +507,115 @@ class Home extends React.Component {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.gameModeContextContainer}>
-                            <Text style={[styles.gameModeContextText, {fontSize: hp(1.7)}]}>
-                                Dereceli - Sınavia Puanı'nı artır, Türkiye sıralamanı yükselt
+                            <Text
+                                style={[
+                                    styles.gameModeContextText,
+                                    { fontSize: hp(1.7) }
+                                ]}
+                            >
+                                Dereceli - Sınavia Puanı'nı artır, Türkiye
+                                sıralamanı yükselt
                             </Text>
                         </View>
                     </View>
                     <View style={styles.scoreContainer}>
-                        <Text style={styles.scoreTextInModal}>Sınavia Puanı:</Text>
+                        <Text style={styles.scoreTextInModal}>
+                            Sınavia Puanı:
+                        </Text>
                         <Text style={styles.scoreInModal}> 327</Text>
                     </View>
                     <View style={styles.levelProgressBarContainer}>
                         <View style={styles.progressBarView}>
                             <Text style={styles.levelText}>Seviye 7</Text>
-                            <View style={[
-                                styles.instantProgressView,
-                                {
-                                    width: wp((163/200)*65)
-                                }
-                            ]}/>
+                            <View
+                                style={[
+                                    styles.instantProgressView,
+                                    {
+                                        width: wp((163 / 200) * 65)
+                                    }
+                                ]}
+                            />
                             <View style={styles.progressScoreView}>
-                                <Text style={styles.levelInProgressText}>163/200</Text>
+                                <Text style={styles.levelInProgressText}>
+                                    163/200
+                                </Text>
                             </View>
                         </View>
                     </View>
                     <View style={styles.separatorContainer}>
                         <View style={styles.separatorLine} />
                     </View>
-                        <View style={styles.gameModeContainer}>
-                            <View
-                                style={styles.gameModeButtonContainer}
+                    <View style={styles.gameModeContainer}>
+                        <View style={styles.gameModeButtonContainer}>
+                            <TouchableOpacity
+                                onPress={this.friendRoomOnPress}
+                                style={styles.gameModeLogoContainer}
                             >
-                                <TouchableOpacity onPress={this.friendRoomOnPress} style={styles.gameModeLogoContainer}>
-                                    <Image
-                                        source={FRIENDS_IMAGE}
-                                        style={styles.gameModeImage}
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                            <View style={styles.gameModeContextContainer}>
-                                <Text style={styles.gameModeContextText}>
-                                    Arkadaşın ile yarış
-                                </Text>
-                            </View>
+                                <Image
+                                    source={FRIENDS_IMAGE}
+                                    style={styles.gameModeImage}
+                                />
+                            </TouchableOpacity>
                         </View>
-                        <View style={styles.gameModeContainer}>
-                            <View
-                                style={styles.gameModeButtonContainer}
+                        <View style={styles.gameModeContextContainer}>
+                            <Text style={styles.gameModeContextText}>
+                                Arkadaşın ile yarış
+                            </Text>
+                        </View>
+                    </View>
+                    <View style={styles.gameModeContainer}>
+                        <View style={styles.gameModeButtonContainer}>
+                            <TouchableOpacity
+                                onPress={this.groupGameModeOnPress}
+                                style={styles.gameModeLogoContainer}
                             >
-                                <TouchableOpacity onPress={this.groupGameModeOnPress} style={styles.gameModeLogoContainer}>
-                                    <Image
-                                        source={GROUP_IMAGE}
-                                        style={styles.gameModeImage}
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                            <View style={styles.gameModeContextContainer}>
-                                <Text style={styles.gameModeContextText}>
-                                    Arkadaş grubun ile yarış
-                                </Text>
-                            </View>
+                                <Image
+                                    source={GROUP_IMAGE}
+                                    style={styles.gameModeImage}
+                                />
+                            </TouchableOpacity>
                         </View>
-                        <View style={styles.gameModeContainer}>
-                            <View
-                                style={styles.gameModeButtonContainer}
+                        <View style={styles.gameModeContextContainer}>
+                            <Text style={styles.gameModeContextText}>
+                                Arkadaş grubun ile yarış
+                            </Text>
+                        </View>
+                    </View>
+                    <View style={styles.gameModeContainer}>
+                        <View style={styles.gameModeButtonContainer}>
+                            <TouchableOpacity
+                                style={[
+                                    styles.gameModeLogoContainer,
+                                    {
+                                        borderColor: this.state
+                                            .soloModeButtonBorderColor
+                                    }
+                                ]}
+                                onPress={this.soloModeOnPress}
                             >
-                                <TouchableOpacity style={styles.gameModeLogoContainer}>
-                                    <Image
-                                        source={SOLO_IMAGE}
-                                        style={styles.gameModeImage}
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                            <View style={styles.gameModeContextContainer}>
-                                <Text style={styles.gameModeContextText}>
-                                    Tek başına soru çöz
-                                </Text>
-                            </View>
+                                <Image
+                                    source={SOLO_IMAGE}
+                                    style={styles.gameModeImage}
+                                />
+                            </TouchableOpacity>
                         </View>
+                        <View style={styles.gameModeContextContainer}>
+                            <Text style={styles.gameModeContextText}>
+                                Tek başına soru çöz
+                            </Text>
+                        </View>
+                    </View>
                 </View>
-                    <AuthButton
-                        marginTop={hp(83.5)}
-                        height={hp(7)}
-                        width={wp(87.5)}
-                        color="#00D9EF"
-                        buttonText="Başlat"
-                        borderRadius={10}
-                        position={'absolute'}
-                        onPress={this.playButtonOnPress}
-                    />
+                <AuthButton
+                    marginTop={hp(83.5)}
+                    height={hp(7)}
+                    width={wp(87.5)}
+                    color="#00D9EF"
+                    buttonText="Başlat"
+                    borderRadius={10}
+                    position={'absolute'}
+                    onPress={this.playButtonOnPress}
+                />
             </View>
         )
     }
@@ -583,7 +638,10 @@ class Home extends React.Component {
     }
 
     friendRoomOnPress = async () => {
-        this.setState({ rankedModeButtonBorderColor: EMPTY_MODE_COLOR })
+        this.setState({
+            rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
+            soloModeButtonBorderColor: EMPTY_MODE_COLOR
+        })
 
         if (this.props.clientInformation.isPremium) {
             if (Object.keys(this.props.friendIds).length === 0) return
@@ -621,14 +679,22 @@ class Home extends React.Component {
             opponentUserPic: null,
             opponentName: '',
             opponentUsername: '',
-            opponentInformation: {}
+            opponentInformation: {},
+            rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
+            selectedGameMode: 'ranked'
         })
     }
 
     groupModesView() {
         return (
             <View style={styles.modal}>
-                <TouchableOpacity onPress={this.closeModalButtonOnPress} style={ {height: hp(120), width: wp(100)}}/>
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{
+                        height: hp(120),
+                        width: wp(100)
+                    }}
+                />
                 <View style={styles.backAndCloseButtonsContainer}>
                     <TouchableOpacity
                         onPress={this.friendRoomAndGameModesBackButtonOnPress}
@@ -753,7 +819,10 @@ class Home extends React.Component {
     friendRoomView() {
         return (
             <View style={styles.modal}>
-                <TouchableOpacity onPress={this.closeModalButtonOnPress} style={ {height: hp(120), width: wp(100)}}/>
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{ height: hp(120), width: wp(100) }}
+                />
                 <View style={styles.backAndCloseButtonsContainer}>
                     <TouchableOpacity
                         onPress={this.friendRoomAndGameModesBackButtonOnPress}
@@ -928,7 +997,10 @@ class Home extends React.Component {
     joinRoomView() {
         return (
             <View style={styles.modal}>
-                <TouchableOpacity onPress={this.closeModalButtonOnPress} style={ {height: hp(120), width: wp(100)}}/>
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{ height: hp(120), width: wp(100) }}
+                />
                 <View style={styles.backAndCloseButtonsContainer}>
                     <TouchableOpacity onPress={this.joinRoomBackButtonOnPress}>
                         <Image source={BACK_BUTTON} style={styles.backLogo} />
@@ -992,15 +1064,39 @@ class Home extends React.Component {
             return
         }
 
-        if (this.props.clientInformation.isPremium) {
-            navigationReset('game', this.calculateContentIds())
-        } else if (this.props.energyAmount !== 0)
-            navigationReset('game', this.calculateContentIds())
-        else {
-            this.setState({
-                rankedModeButtonBorderColor: EMPTY_MODE_COLOR
-            })
-            Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
+        switch (this.state.selectedGameMode) {
+            case 'ranked':
+                if (this.props.clientInformation.isPremium) {
+                    navigationReset('game', this.calculateContentIds())
+                } else if (this.props.energyAmount !== 0)
+                    navigationReset('game', this.calculateContentIds())
+                else {
+                    this.setState({
+                        visibleRankedGameStartPress: false,
+                        rankedModeButtonBorderColor: EMPTY_MODE_COLOR
+                    })
+                    Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
+                }
+                break
+            case 'solo':
+                if (this.props.clientInformation.isPremium) {
+                    navigationReset('game', { isHardReset: true })
+                    navigationReplace(
+                        SCENE_KEYS.gameScreens.soloModeLoadingScreen,
+                        this.calculateContentIds()
+                    )
+                } else {
+                    this.setState({
+                        visibleRankedGameStartPress: false,
+                        soloModeButtonBorderColor: EMPTY_MODE_COLOR,
+                        rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
+                        selectedGameMode: 'ranked'
+                    })
+                    Alert.alert(
+                        'Üzgünüm ama tek başına oynamak için premium alman gerek!'
+                    )
+                }
+                break
         }
     }
 
@@ -1077,10 +1173,16 @@ class Home extends React.Component {
                         this.groupModesView()}
                     {this.state.visibleView === 'JOIN_ROOM' &&
                         this.joinRoomView()}
-                    {this.state.visibleView === 'CREATE_ROOM' &&
-                    <CreateGroupRoomView calculateContentIds={this.calculateContentIds()}/>}
-                    {this.state.visibleView === 'JOINED_ROOM' &&
-                    <JoinGroupRoomView joinGameParams={this.joinGameParams()}/>}
+                    {this.state.visibleView === 'CREATE_ROOM' && (
+                        <CreateGroupRoomView
+                            calculateContentIds={this.calculateContentIds()}
+                        />
+                    )}
+                    {this.state.visibleView === 'JOINED_ROOM' && (
+                        <JoinGroupRoomView
+                            joinGameParams={this.joinGameParams()}
+                        />
+                    )}
                 </Modal>
                 <View style={styles.header}>
                     <View style={styles.profilePicContainer}>

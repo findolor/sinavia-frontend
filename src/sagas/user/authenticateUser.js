@@ -1,20 +1,19 @@
 import { put, call } from 'redux-saga/effects'
-import { checkToken } from '../../services/apiServices/token/checkToken'
-import { getToken } from '../../services/apiServices/token/getToken'
 import { deviceStorage } from '../../services/deviceStorage'
 import { navigationReset } from '../../services/navigationService'
 import { clientTypes } from '../../redux/client/actions'
 import { friendTypes } from '../../redux/friends/actions'
 import { appTypes } from '../../redux/app/actions'
 import { fcmService } from '../../services/fcmService'
-import { postFCMToken } from '../../services/apiServices/fcmToken/postToken'
-import { getFriends } from '../../services/apiServices/friendship/getFriends'
-import { getUserJokers } from '../../services/apiServices/userJoker/getUserJokers'
-import { getUser } from '../../services/apiServices/user/getUser'
 import { gameContentTypes } from '../../redux/gameContent/actions'
 import DeviceInfo from 'react-native-device-info'
 import { Alert } from 'react-native'
-import { getGameEnergy } from '../../services/apiServices/gameEnergy/getGameEnergy'
+import {
+    apiServicesTree,
+    makeGetRequest,
+    makePostRequest,
+    makePutRequest
+} from '../../services/apiServices'
 import firebase from 'react-native-firebase'
 
 async function getFromStorage(key) {
@@ -43,7 +42,7 @@ export function* authenticateUser(action) {
         }
 
         // We get the unique device id
-        const deviceId = yield call(DeviceInfo.getUniqueId)
+        let deviceId = yield call(DeviceInfo.getUniqueId)
 
         // Get client id from storage
         let clientDBId = yield call(getFromStorage, 'clientDBId')
@@ -55,7 +54,15 @@ export function* authenticateUser(action) {
 
         // We first check if the token is valid.
         // If the response is true we continue to the main screen
-        let res = yield call(checkToken, action.payload, clientDBId, deviceId)
+        let res = yield call(
+            makeGetRequest,
+            apiServicesTree.tokenApi.checkToken,
+            {
+                clientToken: action.payload,
+                deviceId: deviceId,
+                clientId: clientDBId
+            }
+        )
         // If the response is false that means the user is logged in on another device
         // We dont log them in and reset to the auth screen
         if (!res) {
@@ -85,9 +92,9 @@ export function* authenticateUser(action) {
 
         // Then we get our user information
         const clientInformation = yield call(
-            getUser,
-            action.payload,
-            clientDBId
+            makeGetRequest,
+            apiServicesTree.userApi.getUser,
+            { id: clientDBId, clientToken: action.payload }
         )
         // We save the user information
         deviceStorage.saveItemToStorage('clientInformation', clientInformation)
@@ -115,7 +122,11 @@ export function* authenticateUser(action) {
 
         // TODO TAKE A LOOK HERE
         // We get all of our friend ids
-        let friendsList = yield call(getFriends, action.payload, clientDBId)
+        let friendsList = yield call(
+            makeGetRequest,
+            apiServicesTree.friendshipApi.getFriends,
+            { userId: clientDBId, clientToken: action.payload }
+        )
         // Get client friends from storage
         let friends = yield call(getFromStorage, 'clientFriends')
         // We check if cached friends is the same as db
@@ -144,10 +155,20 @@ export function* authenticateUser(action) {
         // We add the token to our client info
         clientInformation.fcmToken = fcmToken
         // We send a request to api to save our fcm token
-        yield call(postFCMToken, action.payload, clientInformation)
+        yield call(makePutRequest, apiServicesTree.fcmTokenApi.updateFCMToken, {
+            userInformation: clientInformation,
+            clientToken: action.payload
+        })
 
         // Getting the user joker info from db
-        const userJokers = yield call(getUserJokers, action.payload, clientDBId)
+        const userJokers = yield call(
+            makeGetRequest,
+            apiServicesTree.userJokerApi.getUserJokers,
+            {
+                userId: clientDBId,
+                clientToken: action.payload
+            }
+        )
         // Saving it to redux state
         yield put({
             type: clientTypes.SAVE_USER_JOKERS,
@@ -181,7 +202,14 @@ export function* authenticateUser(action) {
         }
 
         // We get the user's game energy info
-        let gameEnergy = yield call(getGameEnergy, action.payload, clientDBId)
+        let gameEnergy = yield call(
+            makeGetRequest,
+            apiServicesTree.gameEnergyApi.getGameEnergy,
+            {
+                clientToken: action.payload,
+                clientId: clientDBId
+            }
+        )
         // Saving the energy amount to redux
         yield put({
             type: appTypes.SAVE_ENERGY_AMOUNT,
@@ -206,11 +234,25 @@ export function* authenticateUser(action) {
                 payload: clientCredentials
             })
 
+            // We get the unique device id
+            deviceId = yield call(DeviceInfo.getUniqueId)
+
             // We send the credentials for getting the token and id
-            let res = yield call(getToken, {
+            /* let res = yield call(getToken, {
                 email: clientCredentials.email,
                 password: clientCredentials.password
-            })
+            }) */
+            let res = yield call(
+                makePostRequest,
+                apiServicesTree.tokenApi.getToken,
+                {
+                    userInformation: {
+                        email: clientCredentials.email,
+                        password: clientCredentials.password
+                    },
+                    deviceId: deviceId
+                }
+            )
             // Saving the api token to redux state
             yield put({
                 type: clientTypes.SAVE_API_TOKEN,
@@ -225,7 +267,11 @@ export function* authenticateUser(action) {
             })
 
             // Then we get our user information
-            const clientInformation = yield call(getUser, res.token, res.id)
+            const clientInformation = yield call(
+                makeGetRequest,
+                apiServicesTree.userApi.getUser,
+                { id: res.id, clientToken: res.token }
+            )
             // We save the user information
             deviceStorage.saveItemToStorage(
                 'clientInformation',
@@ -256,7 +302,11 @@ export function* authenticateUser(action) {
             }
 
             // We get all of our friend ids
-            let friendsList = yield call(getFriends, res.token, res.id)
+            let friendsList = yield call(
+                makeGetRequest,
+                apiServicesTree.friendshipApi.getFriends,
+                { userId: res.id, clientToken: res.token }
+            )
             // Get client friends from storage
             let friends = yield call(getFromStorage, 'clientFriends')
             if (friends === null) friends = []
@@ -285,10 +335,24 @@ export function* authenticateUser(action) {
             // We add the token to our client info
             clientInformation.fcmToken = fcmToken
             // We send a request to api to save our fcm token
-            yield call(postFCMToken, res.token, clientInformation)
+            yield call(
+                makePutRequest,
+                apiServicesTree.fcmTokenApi.updateFCMToken,
+                {
+                    userInformation: clientInformation,
+                    clientToken: res.token
+                }
+            )
 
             // Getting the user joker info from db
-            const userJokers = yield call(getUserJokers, action.payload, res.id)
+            const userJokers = yield call(
+                makeGetRequest,
+                apiServicesTree.userJokerApi.getUserJokers,
+                {
+                    userId: res.id,
+                    clientToken: res.token
+                }
+            )
             // Saving it to redux state
             yield put({
                 type: clientTypes.SAVE_USER_JOKERS,
@@ -314,7 +378,14 @@ export function* authenticateUser(action) {
             }
 
             // We get the user's game energy info
-            let gameEnergy = yield call(getGameEnergy, res.token, res.id)
+            let gameEnergy = yield call(
+                makeGetRequest,
+                apiServicesTree.gameEnergyApi.getGameEnergy,
+                {
+                    clientToken: res.token,
+                    clientId: res.id
+                }
+            )
             // Saving the energy amount to redux
             yield put({
                 type: appTypes.SAVE_ENERGY_AMOUNT,

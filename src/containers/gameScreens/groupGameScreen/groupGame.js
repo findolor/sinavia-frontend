@@ -107,7 +107,22 @@ class GroupGame extends React.Component {
         this.backHandler = BackHandler.addEventListener(
             'hardwareBackPress',
             () => {
-                this.backButtonOnPress()
+                Alert.alert(
+                    'Oyundan ayrılmak üzeresin!',
+                    'Ayrılırsan bu sana mağlubiyet olarak yazılır. Çıkmak istediğine emin misin?',
+                    [
+                        {
+                            text: 'Hayır'
+                        },
+                        {
+                            text: 'Evet',
+                            onPress: () =>
+                                this.props.room.send({
+                                    action: 'leave-match'
+                                })
+                        }
+                    ]
+                )
             }
         )
         // We check if the user has enough jokers
@@ -243,6 +258,29 @@ class GroupGame extends React.Component {
                 break
             case 'save-questions':
                 this.setState({ fullQuestionList: message.fullQuestionList })
+                break
+            case 'leave-match':
+                // If the client hasn't answered any of the questions, we just navigate him to main screen
+                if (
+                    Object.keys(message.playerProps[message.clientId].answers)
+                        .length === 0
+                ) {
+                    this.props.room.leave()
+                    this.onlyClientMatchQuit()
+                    break
+                }
+                console.log(this.state.questionList)
+                // Do a shutdown routine
+                this.shutdownGame()
+                this.props.room.leave()
+                navigationReplace(SCENE_KEYS.gameScreens.groupGameStats, {
+                    playerProps: message.playerProps,
+                    room: this.props.room,
+                    client: this.props.client,
+                    questionList: this.state.questionList,
+                    fullQuestionList: message.fullQuestionList,
+                    isMatchFinished: false
+                })
                 break
         }
     }
@@ -919,7 +957,26 @@ class GroupGame extends React.Component {
                         </View>
                     </View>
                     <View style={styles.backButtonContainer}>
-                        <TouchableOpacity onPress={this.backButtonOnPress}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                Alert.alert(
+                                    'Oyundan ayrılmak üzeresin!',
+                                    'Ayrılırsan bu sana mağlubiyet olarak yazılır. Çıkmak istediğine emin misin?',
+                                    [
+                                        {
+                                            text: 'Hayır'
+                                        },
+                                        {
+                                            text: 'Evet',
+                                            onPress: () =>
+                                                this.props.room.send({
+                                                    action: 'leave-match'
+                                                })
+                                        }
+                                    ]
+                                )
+                            }}
+                        >
                             <Image
                                 source={BACK_BUTTON}
                                 style={styles.backButton}

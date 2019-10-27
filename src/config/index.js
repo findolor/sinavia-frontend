@@ -1,15 +1,10 @@
-const local = false
-
-const api = {
-    host:
-        local === true
-            ? 'http://localhost:4000/api/'
-            : 'http://10.253.12.108:4000/api/',
-    hostAWS: 'http://sinavia-test.eu-central-1.elasticbeanstalk.com:4000/api/',
-    gameEngine:
-        local === true ? 'http://localhost:5000' : 'http://10.253.12.108:5000',
-    gameEngineAWS: 'http://sinavia-test.eu-central-1.elasticbeanstalk.com:5000'
-}
+import {
+    ENV_API_ENDPOINT,
+    ENV_API_ENDPOINT_LOCAL,
+    ENV_GAME_ENGINE_ENDPOINT,
+    ENV_GAME_ENGINE_ENDPOINT_LOCAL,
+    ENV_APP_VERSION
+} from 'react-native-dotenv'
 
 const scene_keys = {
     authScreens: {
@@ -30,7 +25,9 @@ const scene_keys = {
         groupGameStats: 'groupGameStats',
         friendGame: 'friendGame',
         friendGameStats: 'friendGameStats',
-        soloGameScreen: 'soloGameScreen'
+        soloFriendGameScreen: 'soloFriendGameScreen',
+        soloModeLoadingScreen: 'soloModeLoadingScreen',
+        soloModeGameScreen: 'soloModeGameScreen'
     },
     mainScreens: {
         main: 'main',
@@ -49,11 +46,9 @@ const scene_keys = {
     splashScreen: 'splash'
 }
 
-const API_ENDPOINT = api.host
-//const API_ENDPOINT = api.hostAWS
-const GAME_ENGINE_ENDPOINT = api.gameEngine
-//const GAME_ENGINE_ENDPOINT = api.gameEngineAWS
-
+const API_ENDPOINT = ENV_API_ENDPOINT
+const GAME_ENGINE_ENDPOINT = ENV_GAME_ENGINE_ENDPOINT
+const APP_VERSION = ENV_APP_VERSION
 const SCENE_KEYS = scene_keys
 
-export { API_ENDPOINT, SCENE_KEYS, GAME_ENGINE_ENDPOINT }
+export { API_ENDPOINT, SCENE_KEYS, GAME_ENGINE_ENDPOINT, APP_VERSION }

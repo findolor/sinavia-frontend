@@ -48,6 +48,7 @@ export default StyleSheet.create({
         overflow: 'hidden'
     },
     premiumBottomView: {
+        zIndex: 1,
         height: hp(9),
         width: wp(93),
         borderBottomWidth: hp(0.4),
@@ -71,9 +72,9 @@ export default StyleSheet.create({
         height: hp(21),
         width: wp(93),
         borderWidth: hp(0.25),
-        borderColor: '#750000',
+        borderColor: '#00D9EF',
         borderRadius: 10,
-        backgroundColor: '#FFD2D2',
+        backgroundColor: '#CCF7FC',
         overflow: 'hidden'
     },
     yourPremiumContainer: {
@@ -108,13 +109,15 @@ export default StyleSheet.create({
     bundleView: {
         height: hp(18),
         width: wp(27),
-        borderWidth: hp(0.4),
         marginTop: hp(0.5),
-        borderRadius: 10,
-        borderColor: '#750000',
-        backgroundColor: '#D94141',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    bundleDivider: {
+        height: hp(12),
+        width: wp(0.5),
+        marginTop: hp(3.25),
+        backgroundColor: '#C4C4C4'
     },
     adView: {
         height: hp(8),
@@ -363,13 +366,13 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Bold',
         fontSize: hp(3),
         textAlign: 'center',
-        color: 'white',
+        color: '#858585',
         textDecorationLine: 'line-through',
         textDecorationStyle: 'solid'
     },
     discountPriceText: {
         fontFamily: 'Averta-Bold',
-        fontSize: hp(2),
+        fontSize: hp(2.35),
         textAlign: 'center',
         color: 'white'
     },
@@ -383,13 +386,13 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Bold',
         fontSize: hp(2.5),
         textAlign: 'center',
-        color: 'white'
+        color: 'black'
     },
     jokerAmountText: {
         fontFamily: 'Averta-Regular',
         fontSize: hp(1.5),
         textAlign: 'center',
-        color: 'white'
+        color: 'black'
     },
     premiumModal: {
         flex: 1,

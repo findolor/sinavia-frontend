@@ -39,6 +39,11 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 energyAmount: action.payload
             }
+        case appTypes.LOCK_UNLOCK_BUTTON:
+            return {
+                ...state,
+                buttonLock: !state.buttonLock
+            }
         default:
             return state
     }

@@ -1,19 +1,27 @@
 import axios from 'axios'
-import { API_ENDPOINT } from '../../../config/index'
+import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
+import { renewToken } from '../token/renewToken'
 
-export const getNotifications = async (userToken, userId) => {
+export const getNotifications = async (headers, params) => {
     try {
-        const response = await axios.get(
-            API_ENDPOINT + 'notifications/' + userId,
+        let response = await axios.get(
+            API_ENDPOINT + APP_VERSION + '/notifications/' + params.userId,
             {
-                headers: {
-                    Authorization: 'Bearer ' + userToken
-                }
+                headers: headers
             }
         )
         return response.data.data
     } catch (err) {
-        console.log(err)
-        return err.response
+        if (err.response.status === 401) {
+            let res = await renewToken()
+            headers.Authorization = 'Bearer ' + res.token
+            response = await axios.get(
+                API_ENDPOINT + APP_VERSION + '/notifications/' + params.userId,
+                {
+                    headers: headers
+                }
+            )
+            return response.data.data
+        } else return err.response
     }
 }

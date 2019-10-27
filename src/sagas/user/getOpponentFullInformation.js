@@ -2,6 +2,7 @@ import { put, call } from 'redux-saga/effects'
 import { getOpponentFullInformation } from '../../services/apiServices/user/getOpponentFullInformation'
 import { opponentTypes } from '../../redux/opponents/actions'
 import { SCENE_KEYS, navigationPush } from '../../services/navigationService'
+import { apiServicesTree, makeGetRequest } from '../../services/apiServices'
 
 export async function getOpponentFullInformationService(
     clientToken,
@@ -15,10 +16,13 @@ export async function getOpponentFullInformationService(
 
 export function* getOpponentFullInformationSaga(action) {
     const res = yield call(
-        getOpponentFullInformation,
-        action.clientToken,
-        action.opponentInformation.id,
-        action.clientId
+        makeGetRequest,
+        apiServicesTree.userApi.getOpponentFullInformation,
+        {
+            clientToken: action.clientToken,
+            userId: action.opponentInformation.id,
+            clientId: action.clientId
+        }
     )
 
     // Calculating friend matches

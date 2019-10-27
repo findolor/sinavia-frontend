@@ -1,19 +1,35 @@
 import axios from 'axios'
-import { API_ENDPOINT } from '../../../config/index'
+import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
+import { renewToken } from '../token/renewToken'
 
-export const getFullExamInformation = async (userToken, examId) => {
+export const getFullExamInformation = async (headers, params) => {
     try {
-        const response = await axios.get(
-            API_ENDPOINT + 'examEntities/' + examId + '/full',
+        let response = await axios.get(
+            API_ENDPOINT +
+                APP_VERSION +
+                '/examEntities/' +
+                params.examId +
+                '/full',
             {
-                headers: {
-                    Authorization: 'Bearer ' + userToken
-                }
+                headers: headers
             }
         )
         return response.data.data
     } catch (err) {
-        console.log(err)
-        return err.response
+        if (err.response.status === 401) {
+            let res = await renewToken()
+            headers.Authorization = 'Bearer ' + res.token
+            response = await axios.get(
+                API_ENDPOINT +
+                    APP_VERSION +
+                    '/examEntities/' +
+                    params.examId +
+                    '/full',
+                {
+                    headers: headers
+                }
+            )
+            return response.data.data
+        } else return err.response
     }
 }

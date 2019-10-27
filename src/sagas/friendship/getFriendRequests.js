@@ -1,13 +1,15 @@
-import { getFriendRequests } from '../../services/apiServices/friendship/getFriendRequests'
-import { getUsers } from '../../services/apiServices/user/getUsers'
+import { makeGetRequest, apiServicesTree } from '../../services/apiServices'
 import { put, call } from 'redux-saga/effects'
 import { friendTypes } from '../../redux/friends/actions'
 
 export function* getFriendRequestsSaga(action) {
     const requestIds = yield call(
-        getFriendRequests,
-        action.clientToken,
-        action.clientId
+        makeGetRequest,
+        apiServicesTree.friendshipApi.getFriendRequests,
+        {
+            clientToken: action.clientToken,
+            userId: action.clientId
+        }
     )
 
     if (requestIds === undefined || Object.keys(requestIds).length === 0) {
@@ -18,7 +20,10 @@ export function* getFriendRequestsSaga(action) {
         return
     }
 
-    const users = yield call(getUsers, action.clientToken, requestIds)
+    const users = yield call(makeGetRequest, apiServicesTree.userApi.getUsers, {
+        idList: requestIds,
+        clientToken: action.clientToken
+    })
 
     yield put({
         type: friendTypes.SAVE_FRIEND_REQUESTS,
@@ -27,7 +32,8 @@ export function* getFriendRequestsSaga(action) {
 }
 
 export async function getFriendRequestsService(clientToken, clientDBId) {
-    const res = getFriendRequests(clientToken, clientDBId)
-
-    return res
+    return makeGetRequest(apiServicesTree.friendshipApi.getFriendRequests, {
+        clientToken: clientToken,
+        userId: clientDBId
+    })
 }

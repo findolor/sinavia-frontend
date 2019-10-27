@@ -1,20 +1,35 @@
 import axios from 'axios'
-import { API_ENDPOINT } from '../../../config/index'
+import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
+import { renewToken } from '../token/renewToken'
 
-export const getLastSixMonthsStatistics = async (userToken, userId, params) => {
+export const getLastSixMonthsStatistics = async (headers, params) => {
     try {
-        const response = await axios.get(
-            API_ENDPOINT + 'statistics/sixMonths/' + userId,
+        let response = await axios.get(
+            API_ENDPOINT +
+                APP_VERSION +
+                '/statistics/sixMonths/' +
+                params.userId,
             {
-                headers: {
-                    Authorization: 'Bearer ' + userToken
-                },
-                params: params
+                headers: headers,
+                params: params.params
             }
         )
         return response.data.data
     } catch (err) {
-        console.log(err)
-        return err.response
+        if (err.response.status === 401) {
+            let res = await renewToken()
+            headers.Authorization = 'Bearer ' + res.token
+            response = await axios.get(
+                API_ENDPOINT +
+                    APP_VERSION +
+                    '/statistics/sixMonths/' +
+                    params.userId,
+                {
+                    headers: headers,
+                    params: params.params
+                }
+            )
+            return response.data.data
+        } else return err.response
     }
 }

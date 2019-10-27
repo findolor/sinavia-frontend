@@ -1,14 +1,20 @@
 import { put, call } from 'redux-saga/effects'
-import { postUser } from '../../services/apiServices/user/postUser'
-import { getToken } from '../../services/apiServices/token/getToken'
-import { getGameEnergy } from '../../services/apiServices/gameEnergy/getGameEnergy'
 import { deviceStorage } from '../../services/deviceStorage'
 import { clientTypes } from '../../redux/client/actions'
 import { appTypes } from '../../redux/app/actions'
 import { gameContentTypes } from '../../redux/gameContent/actions'
 import DeviceInfo from 'react-native-device-info'
+import {
+    apiServicesTree,
+    makeGetRequest,
+    makePostRequest
+} from '../../services/apiServices'
 
 export function* createUser(action) {
+    yield put({
+        type: appTypes.LOCK_UNLOCK_BUTTON
+    })
+
     try {
         // We get the unique device id
         const deviceId = yield call(DeviceInfo.getUniqueId)
@@ -16,7 +22,11 @@ export function* createUser(action) {
         action.payload.deviceId = deviceId
 
         // We send the client information to our server
-        const res = yield call(postUser, action.payload)
+        const res = yield call(
+            makePostRequest,
+            apiServicesTree.userApi.postUser,
+            { userInformation: action.payload }
+        )
 
         // Saving the credentials to storage
         deviceStorage.saveItemToStorage('clientCredentials', {
@@ -41,10 +51,16 @@ export function* createUser(action) {
         })
 
         // Get token from server
-        const response = yield call(getToken, {
-            email: action.payload.email,
-            password: action.payload.password
-        })
+        const response = yield call(
+            makePostRequest,
+            apiServicesTree.tokenApi.getToken,
+            {
+                userInformation: {
+                    email: action.payload.email,
+                    password: action.payload.password
+                }
+            }
+        )
         // Save token to storage
         deviceStorage.saveItemToStorage('clientToken', response.token)
         // Save token to redux state
@@ -54,17 +70,24 @@ export function* createUser(action) {
         })
 
         // Saving information to storage
-        delete action.payload.password
+        delete res.password
         action.payload.id = response.id
         deviceStorage.saveItemToStorage('clientInformation', action.payload)
         // Saving client information to redux state
         yield put({
             type: clientTypes.SAVE_CLIENT_INFORMATION,
-            payload: action.payload
+            payload: res
         })
 
         // We get the user's game energy info
-        let gameEnergy = yield call(getGameEnergy, response.token, response.id)
+        let gameEnergy = yield call(
+            makeGetRequest,
+            apiServicesTree.gameEnergyApi.getGameEnergy,
+            {
+                clientId: response.id,
+                clientToken: response.token
+            }
+        )
         // Saving the energy amount to redux
         yield put({
             type: appTypes.SAVE_ENERGY_AMOUNT,
@@ -76,7 +99,14 @@ export function* createUser(action) {
             type: gameContentTypes.GET_ALL_CONTENT,
             clientToken: response.token
         })
+
+        yield put({
+            type: appTypes.LOCK_UNLOCK_BUTTON
+        })
     } catch (error) {
+        yield put({
+            type: appTypes.LOCK_UNLOCK_BUTTON
+        })
         // TODO remove console.log later
         console.log(error)
     }

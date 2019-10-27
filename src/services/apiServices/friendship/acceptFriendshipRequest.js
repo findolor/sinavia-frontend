@@ -1,30 +1,39 @@
 import axios from 'axios'
-import { API_ENDPOINT } from '../../../config/index'
+import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
+import { renewToken } from '../token/renewToken'
 
-export const acceptFriendshipRequest = async (
-    userToken,
-    userId,
-    friendId,
-    clientUsername
-) => {
+export const acceptFriendshipRequest = async (headers, params) => {
     try {
-        const response = await axios.put(
-            API_ENDPOINT + 'friendships/',
+        let response = await axios.put(
+            API_ENDPOINT + APP_VERSION + '/friendships/',
             {
-                userId: friendId,
-                friendId: userId,
+                userId: params.friendId,
+                friendId: params.userId,
                 friendshipStatus: 'approved',
-                username: clientUsername
+                username: params.clientUsername
             },
             {
-                headers: {
-                    Authorization: 'Bearer ' + userToken
-                }
+                headers: headers
             }
         )
         return response.data
     } catch (err) {
-        console.log(err.response)
-        return err.response
+        if (err.response.status === 401) {
+            let res = await renewToken()
+            headers.Authorization = 'Bearer ' + res.token
+            response = await axios.put(
+                API_ENDPOINT + APP_VERSION + '/friendships/',
+                {
+                    userId: params.friendId,
+                    friendId: params.userId,
+                    friendshipStatus: 'approved',
+                    username: params.clientUsername
+                },
+                {
+                    headers: headers
+                }
+            )
+            return response.data
+        } else return err.response
     }
 }

@@ -1,14 +1,14 @@
 import axios from 'axios'
-import { API_ENDPOINT } from '../../../config/index'
+import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
 
-export const getToken = async (userInformation, deviceId) => {
+export const getToken = async params => {
     try {
         const response = await axios.post(
-            API_ENDPOINT + 'token/',
-            userInformation,
+            API_ENDPOINT + APP_VERSION + '/token/',
+            params.userInformation,
             {
                 params: {
-                    deviceId: deviceId
+                    deviceId: params.deviceId
                 }
             }
         )

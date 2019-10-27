@@ -4,17 +4,11 @@ import {
     View,
     Text,
     TouchableOpacity,
-    Switch,
-    TextInput,
-    Animated,
     Keyboard,
-    Platform,
     Alert,
     TouchableWithoutFeedback,
     KeyboardAvoidingView
 } from 'react-native'
-import { navigationPush } from '../../../services/navigationService'
-import { SCENE_KEYS } from '../../../config/index'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
 import {
@@ -47,10 +41,10 @@ class GetInfo extends React.Component {
             username: '',
             name: '',
             lastname: '',
-            city: '',
+            city: null,
             email: '',
             password: '',
-            birthDate: ''
+            birthDate: null
         }
     }
 
@@ -128,7 +122,6 @@ class GetInfo extends React.Component {
         if (Object.keys(wrongInformationList).length === 0)
             this.props.createUser(userInformation)
         else Alert.alert(wrongInformationString)
-        console.log(userInformation)
     }
 
     render() {
@@ -200,6 +193,7 @@ class GetInfo extends React.Component {
                             borderRadius={10}
                             marginTop={hp(2)}
                             onPress={this.registerOnPress}
+                            disabled={this.props.buttonLock}
                         />
                     </View>
                 </KeyboardAvoidingView>
@@ -209,7 +203,8 @@ class GetInfo extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    isNetworkConnected: state.app.isNetworkConnected
+    isNetworkConnected: state.app.isNetworkConnected,
+    buttonLock: state.app.buttonLock
 })
 
 const mapDispatchToProps = dispatch => ({

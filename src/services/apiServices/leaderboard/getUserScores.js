@@ -1,31 +1,41 @@
 import axios from 'axios'
-import { API_ENDPOINT } from '../../../config/index'
+import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
+import { renewToken } from '../token/renewToken'
 
-export const getUserScores = async (
-    userToken,
-    userIdList,
-    clientId,
-    params
-) => {
+export const getUserScores = async (headers, params) => {
     try {
-        const response = await axios.get(
-            API_ENDPOINT + 'leaderboards/friends/',
+        let response = await axios.get(
+            API_ENDPOINT + APP_VERSION + '/leaderboards/friends/',
             {
-                headers: {
-                    Authorization: 'Bearer ' + userToken
-                },
+                headers: headers,
                 params: {
-                    userIdList: userIdList,
-                    clientId: clientId,
-                    examId: params.examId,
-                    courseId: params.courseId,
-                    subjectId: params.subjectId
+                    userIdList: params.userIdList,
+                    clientId: params.clientId,
+                    examId: params.params.examId,
+                    courseId: params.params.courseId,
+                    subjectId: params.params.subjectId
                 }
             }
         )
         return response.data.data
     } catch (err) {
-        console.log(err)
-        return err.response
+        if (err.response.status === 401) {
+            let res = await renewToken()
+            headers.Authorization = 'Bearer ' + res.token
+            response = await axios.get(
+                API_ENDPOINT + APP_VERSION + '/leaderboards/friends/',
+                {
+                    headers: headers,
+                    params: {
+                        userIdList: params.userIdList,
+                        clientId: params.clientId,
+                        examId: params.params.examId,
+                        courseId: params.params.courseId,
+                        subjectId: params.params.subjectId
+                    }
+                }
+            )
+            return response.data.data
+        } else return err.response
     }
 }

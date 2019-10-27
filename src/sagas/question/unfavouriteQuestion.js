@@ -1,14 +1,17 @@
-import { unfavouriteQuestion } from '../../services/apiServices/favouriteQuestion/unfavouriteQuestion'
+import { apiServicesTree, makeDeleteRequest } from '../../services/apiServices'
 import { put, call } from 'redux-saga/effects'
 import { deviceStorage } from '../../services/deviceStorage'
 import { clientTypes } from '../../redux/client/actions'
 
 export function* unfavouriteQuestionSaga(action) {
     yield call(
-        unfavouriteQuestion,
-        action.clientToken,
-        action.clientId,
-        action.question.id
+        makeDeleteRequest,
+        apiServicesTree.favouriteQuestionApi.unfavouriteQuestion,
+        {
+            userId: action.clientId,
+            questionId: action.question.id,
+            clientToken: action.clientToken
+        }
     )
 
     const favedQuestionList = action.favedQuestionList

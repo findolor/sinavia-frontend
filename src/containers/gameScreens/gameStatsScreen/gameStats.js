@@ -223,15 +223,21 @@ class GameStatsScreen extends React.Component {
                 }
             } else {
                 this.setState({
-                    matchResultLogo: YOU_WIN_LOGO,
-                    matchResultText: 'Kazandın',
-                    matchResultPoint: 100,
+                    matchResultLogo:
+                        this.props.isWon === true
+                            ? YOU_WIN_LOGO
+                            : YOU_LOSE_LOGO,
+                    matchResultText:
+                        this.props.isWon === true ? 'Kazandın' : 'Kaybettin',
+                    matchResultPoint: this.props.isWon === true ? 100 : 0,
                     finishedGamePoint: 0,
                     isReplayButtonDisabled: true,
                     replayButtonBorderColor: REPLAY_DEACTIVE_BORDER
                 })
+
                 // We add 80 because we take away the finished match point
-                totalEarnedPoints += 80
+                if (this.props.isWon) totalEarnedPoints += 80
+                else totalEarnedPoints -= 20
 
                 this.props.fullQuestionList.splice(
                     undefinedQuestionIndex + 1,
@@ -249,7 +255,10 @@ class GameStatsScreen extends React.Component {
 
             totalEarnedPoints += playerCorrect * 20
 
-            this.props.updateTotalPoints(totalEarnedPoints)
+            if (this.props.isWon)
+                this.props.updateTotalPoints(totalEarnedPoints)
+            else if (playerCorrect !== 0)
+                this.props.updateTotalPoints(totalEarnedPoints)
 
             for (i = 0; i < Object.keys(this.props.questionList).length; i++) {
                 if (this.props.playerProps)

@@ -9,8 +9,6 @@ export default AuthButton = ({
     height,
     width,
     color,
-    onPressedColor,
-    underlayColor,
     buttonText,
     onPress,
     marginTop,
@@ -18,7 +16,8 @@ export default AuthButton = ({
     marginBottom,
     borderRadius,
     fontSize,
-    position
+    position,
+    disabled
 }) => {
     return (
         <TouchableOpacity
@@ -31,9 +30,10 @@ export default AuthButton = ({
                 { width: width },
                 { borderRadius: borderRadius },
                 { position: position },
-                { marginLeft: marginLeft}
+                { marginLeft: marginLeft }
             ]}
             onPress={onPress}
+            disabled={disabled}
         >
             <Text style={[styles.buttonText, { fontSize: fontSize }]}>
                 {buttonText}
