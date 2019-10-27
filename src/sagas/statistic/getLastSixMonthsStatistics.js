@@ -1,11 +1,16 @@
-import { getLastSixMonthsStatistics } from '../../services/apiServices/statistic/getLastSixMonthsStatistics'
+import { makeGetRequest, apiServicesTree } from '../../services/apiServices'
 
 export async function getLastSixMonthsStatisticsService(
     clientToken,
     userId,
     params
 ) {
-    const res = getLastSixMonthsStatistics(clientToken, userId, params)
-
-    return res
+    return makeGetRequest(
+        apiServicesTree.statisticApi.getLastSixMonthsStatistics,
+        {
+            clientToken: clientToken,
+            userId: userId,
+            params: params
+        }
+    )
 }

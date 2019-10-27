@@ -1,29 +1,29 @@
 import axios from 'axios'
-import { API_ENDPOINT } from '../../../config/index'
+import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
 import { renewToken } from '../token/renewToken'
 
-export const updateFCMToken = async (userToken, userInformation) => {
+export const updateFCMToken = async (headers, params) => {
     try {
         let response = await axios.put(
-            API_ENDPOINT + 'users/' + userInformation.id,
-            userInformation,
+            API_ENDPOINT + APP_VERSION + '/users/' + params.userInformation.id,
+            params.userInformation,
             {
-                headers: {
-                    Authorization: 'Bearer ' + userToken
-                }
+                headers: headers
             }
         )
         return response.data.success
     } catch (err) {
         if (err.response.status === 401) {
             let res = await renewToken()
+            headers.Authorization = 'Bearer ' + res.token
             response = await axios.put(
-                API_ENDPOINT + 'users/' + userInformation.id,
-                userInformation,
+                API_ENDPOINT +
+                    APP_VERSION +
+                    '/users/' +
+                    params.userInformation.id,
+                params.userInformation,
                 {
-                    headers: {
-                        Authorization: 'Bearer ' + res.token
-                    }
+                    headers: headers
                 }
             )
             return response.data.success

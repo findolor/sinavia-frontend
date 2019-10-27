@@ -1,21 +1,15 @@
 import axios from 'axios'
-import { API_ENDPOINT } from '../../../config/index'
+import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
 import { renewToken } from '../token/renewToken'
 
-export const getOpponentFullInformation = async (
-    userToken,
-    userId,
-    clientId
-) => {
+export const getOpponentFullInformation = async (headers, params) => {
     try {
         let response = await axios.get(
-            API_ENDPOINT + 'users/opponent/' + userId,
+            API_ENDPOINT + APP_VERSION + '/users/opponent/' + params.userId,
             {
-                headers: {
-                    Authorization: 'Bearer ' + userToken
-                },
+                headers: headers,
                 params: {
-                    clientId: clientId
+                    clientId: params.clientId
                 }
             }
         )
@@ -23,14 +17,13 @@ export const getOpponentFullInformation = async (
     } catch (err) {
         if (err.response.status === 401) {
             let res = await renewToken()
+            headers.Authorization = 'Bearer ' + res.token
             response = await axios.get(
-                API_ENDPOINT + 'users/opponent/' + userId,
+                API_ENDPOINT + APP_VERSION + '/users/opponent/' + params.userId,
                 {
-                    headers: {
-                        Authorization: 'Bearer ' + res.token
-                    },
+                    headers: headers,
                     params: {
-                        clientId: clientId
+                        clientId: params.clientId
                     }
                 }
             )

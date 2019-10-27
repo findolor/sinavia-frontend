@@ -52,7 +52,7 @@ export const apiServicesTree = {
         unfavouriteQuestion: 'unfavouriteQuestion'
     },
     fcmTokenApi: {
-        postFCMToken: 'postFCMToken'
+        updateFCMToken: 'updateFCMToken'
     },
     friendGameApi: {
         sendGameRequest: 'sendGameRequest'
@@ -111,86 +111,86 @@ export const apiServicesTree = {
 }
 
 const headers = {
-    Authorization: 'Bearer'
+    Authorization: null
 }
 
 export const getRequest = async (functionName, params) => {
     switch (functionName) {
         // FAVOURITE QUESTIONS
         case 'getFavouriteQuestions':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return getFavouriteQuestions(headers, params)
         //FRIENDSHIP
         case 'getFriendMatches':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return getFriendMatches(headers, params)
         case 'getFriendRequests':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return getFriendRequests(headers, params)
         case 'getFriends':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return getFriends(headers, params)
         case 'getFriendship':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return getFriendship(headers, params)
         // GAME CONTENT
         case 'getAllContent':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return getAllContent(headers, params)
         case 'getExamList':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return getExamList(headers, params)
         case 'getFullExamInformation':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return getFullExamInformation(headers, params)
         // GAME ENERGY
         case 'getGameEnergy':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return getGameEnergy(headers, params)
         // LEADERBOARD
         case 'getLeaderboard':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return getLeaderboard(headers, params)
         case 'getUserScores':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return getUserScores(headers, params)
         // NOTIFICATION
         case 'getNotifications':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return getNotifications(headers, params)
         //STATISTIC
         case 'getLastSixMonthsStatistics':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return getLastSixMonthsStatistics(headers, params)
         case 'getMonthlyStatistics':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return getMonthlyStatistics(headers, params)
         case 'getStatistics':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return getStatistics(headers, params)
         case 'getWeeklyStatistics':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return getWeeklyStatistics(headers, params)
         // TOKEN
         case 'checkToken':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return checkToken(headers, params)
         // USER
         case 'getOpponentFullInformation':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return getOpponentFullInformation(headers, params)
         case 'getUser':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return getUser(headers, params)
         case 'getUsers':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return getUsers(headers, params)
         case 'searchUsers':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return searchUsers(headers, params)
         // USER JOKER
         case 'getUserJokers':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return getUserJokers(headers, params)
     }
 }
@@ -199,15 +199,15 @@ export const postRequest = async (functionName, params) => {
     switch (functionName) {
         // FAVOURITE QUESTIONS
         case 'favouriteQuestion':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return favouriteQuestion(headers, params)
         // FRIEND GAME
         case 'sendGameRequest':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return sendGameRequest(headers, params)
         // FRIENDSHIP
         case 'sendFriendshipRequest':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return sendFriendshipRequest(headers, params)
         // TOKEN
         case 'getToken':
@@ -216,10 +216,10 @@ export const postRequest = async (functionName, params) => {
             return renewToken()
         // USER
         case 'postUser':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return postUser(headers, params)
         case 'forgotPassword':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return forgotPassword(headers, params)
     }
 }
@@ -228,23 +228,23 @@ export const putRequest = async (functionName, params) => {
     switch (functionName) {
         // FCM TOKEN
         case 'updateFCMToken':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return updateFCMToken(headers, params)
         // FRIENDSHIP
         case 'acceptFriendshipRequest':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return acceptFriendshipRequest(headers, params)
         // GAME ENERGY
         case 'subtractGameEnergy':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return subtractGameEnergy(headers, params)
         // NOTIFICATION
         case 'markNotificationRead':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return markNotificationRead(headers, params)
         // USER
         case 'updateUser':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return updateUser(headers, params)
     }
 }
@@ -253,18 +253,18 @@ export const deleteRequest = async (functionName, params) => {
     switch (functionName) {
         // FAVOURITE QUESTIONS
         case 'unfavouriteQuestion':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return unfavouriteQuestion(headers, params)
         // FRIENDSHIP
         case 'deleteFriendship':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return deleteFriendship(headers, params)
         case 'rejectFriendshipRequest':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return rejectFriendshipRequest(headers, params)
         // NOTIFICATION
         case 'rejectOngoingMatch':
-            headers.Authorization += params.clientToken
+            headers.Authorization = 'Bearer ' + params.clientToken
             return rejectOngoingMatch(headers, params)
     }
 }

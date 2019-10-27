@@ -1,8 +1,14 @@
-import { rejectOngoingMatch } from '../../services/apiServices/notification/rejectOngoingMatch'
+import { apiServicesTree, makeDeleteRequest } from '../../services/apiServices'
 
 export const rejectOngoingMatchService = async (
     clientToken,
     ongoingMatchId
 ) => {
-    return rejectOngoingMatch(clientToken, ongoingMatchId)
+    return makeDeleteRequest(
+        apiServicesTree.notificationApi.rejectOngoingMatch,
+        {
+            ongoingMatchId: ongoingMatchId,
+            clientToken: clientToken
+        }
+    )
 }

@@ -1,19 +1,22 @@
 import { put, call } from 'redux-saga/effects'
-import { putUser } from '../../services/apiServices/user/updateUser'
 import { deviceStorage } from '../../services/deviceStorage'
 import { navigationPop, SCENE_KEYS } from '../../services/navigationService'
 import { clientTypes } from '../../redux/client/actions'
 import firebase from 'react-native-firebase'
+import { apiServicesTree, makePutRequest } from '../../services/apiServices'
 
 export function* updateUserSaga(action) {
     try {
         const totalPoints = action.clientInformation.totalPoints
         delete action.clientInformation.totalPoints
         const response = yield call(
-            putUser,
-            action.clientToken,
-            action.clientId,
-            action.clientInformation
+            makePutRequest,
+            apiServicesTree.userApi.updateUser,
+            {
+                clientToken: action.clientToken,
+                clientInformation: action.clientInformation,
+                clientId: action.clientId
+            }
         )
 
         if (action.isPasswordChange) {
