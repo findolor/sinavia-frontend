@@ -1,29 +1,29 @@
 import axios from 'axios'
-import { API_ENDPOINT } from '../../../config/index'
+import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
 import { renewToken } from '../token/renewToken'
 
-export const getWeeklyStatistics = async (userToken, userId, params) => {
+export const getWeeklyStatistics = async (headers, params) => {
     try {
         let response = await axios.get(
-            API_ENDPOINT + 'statistics/weekly/' + userId,
+            API_ENDPOINT + APP_VERSION + '/statistics/weekly/' + params.userId,
             {
-                headers: {
-                    Authorization: 'Bearer ' + userToken
-                },
-                params: params
+                headers: headers,
+                params: params.params
             }
         )
         return response.data.data
     } catch (err) {
         if (err.response.status === 401) {
             let res = await renewToken()
+            headers.Authorization = 'Bearer ' + res.token
             response = await axios.get(
-                API_ENDPOINT + 'statistics/weekly/' + userId,
+                API_ENDPOINT +
+                    APP_VERSION +
+                    '/statistics/weekly/' +
+                    params.userId,
                 {
-                    headers: {
-                        Authorization: 'Bearer ' + res.token
-                    },
-                    params: params
+                    headers: headers,
+                    params: params.params
                 }
             )
             return response.data.data

@@ -12,9 +12,11 @@ export default AuthButton = ({
     buttonText,
     onPress,
     marginTop,
+    marginLeft,
     marginBottom,
     borderRadius,
     fontSize,
+    position,
     disabled
 }) => {
     return (
@@ -26,7 +28,9 @@ export default AuthButton = ({
                 { marginBottom: marginBottom },
                 { height: height },
                 { width: width },
-                { borderRadius: borderRadius }
+                { borderRadius: borderRadius },
+                { position: position },
+                { marginLeft: marginLeft }
             ]}
             onPress={onPress}
             disabled={disabled}

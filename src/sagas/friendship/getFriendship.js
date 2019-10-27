@@ -1,7 +1,9 @@
-import { getFriendship } from '../../services/apiServices/friendship/getFriendship'
+import { makeGetRequest, apiServicesTree } from '../../services/apiServices'
 
 export async function getFriendshipService(clientToken, clientDBId, friendId) {
-    const res = getFriendship(clientToken, clientDBId, friendId)
-
-    return res
+    return makeGetRequest(apiServicesTree.friendshipApi.getFriendship, {
+        clientToken: clientToken,
+        userId: clientDBId,
+        friendId: friendId
+    })
 }

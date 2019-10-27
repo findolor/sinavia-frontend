@@ -47,7 +47,7 @@ class JoinGroupRoom extends React.Component {
     }
 
     componentDidMount() {
-        this.props.room.onMessage.add(message => {
+        this.props.joinGameParams.room.onMessage.add(message => {
             switch (message.action) {
                 case 'player-props':
                     const playerIds = Object.keys(message.playerProps)
@@ -74,7 +74,7 @@ class JoinGroupRoom extends React.Component {
                                 isLeader: message.playerProps[element].isLeader
                             })
                         }
-                        message.playerProps[this.props.client.id].isLeader ===
+                        message.playerProps[this.props.joinGameParams.client.id].isLeader ===
                         true
                             ? this.setState({ isClientLeader: true })
                             : this.setState({ isClientLeader: false })
@@ -83,13 +83,13 @@ class JoinGroupRoom extends React.Component {
                     this.setState({ groupRoomPlayerList: playerList })
                     break
                 case 'start-match':
-                    this.props.room.removeAllListeners()
+                    this.props.joinGameParams.room.removeAllListeners()
 
                     if (this.props.clientInformation.isPremium) {
                         navigationReset('game', { isHardReset: true })
                         navigationReplace(SCENE_KEYS.gameScreens.groupGame, {
-                            room: this.props.room,
-                            client: this.props.client,
+                            room: this.props.joinGameParams.room,
+                            client: this.props.joinGameParams.client,
                             groupRoomPlayerList: this.state.groupRoomPlayerList
                         })
                     } else {
@@ -106,8 +106,8 @@ class JoinGroupRoom extends React.Component {
                                 navigationReplace(
                                     SCENE_KEYS.gameScreens.groupGame,
                                     {
-                                        room: this.props.room,
-                                        client: this.props.client,
+                                        room: this.props.joinGameParams.room,
+                                        client: this.joinGameParams.client,
                                         groupRoomPlayerList: this.state
                                             .groupRoomPlayerList
                                     }
@@ -125,7 +125,7 @@ class JoinGroupRoom extends React.Component {
 
     // Selected question amount is sent to the server
     questionAmountPicker(idx, value) {
-        this.props.room.send({
+        this.props.joinGameParams.room.send({
             action: 'set-question-number',
             questionAmount: value
         })
@@ -133,7 +133,7 @@ class JoinGroupRoom extends React.Component {
 
     groupGameReadyOnPress = () => {
         if (!this.state.isClientLeader) {
-            this.props.room.send({
+            this.props.joinGameParams.room.send({
                 action: 'ready-status'
             })
         } else {
@@ -153,7 +153,7 @@ class JoinGroupRoom extends React.Component {
 
         if (readyCount !== playerListLenght || playerListLenght === 1) return
 
-        this.props.room.send({
+        this.props.joinGameParams.room.send({
             action: 'start-match'
         })
     }
@@ -171,166 +171,172 @@ class JoinGroupRoom extends React.Component {
     }
 
     shutdownRoutine = () => {
-        this.props.room.leave()
-        this.props.client.close()
+        this.props.joinGameParams.room.leave()
+        this.props.joinGameParams.client.close()
         navigationReset('main')
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.onlyCloseButtonContainer}>
-                    <TouchableOpacity onPress={this.closeGroupGameOnPress}>
-                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.modalView}>
-                    {!this.state.isClientLeader && (
-                        <View style={styles.isJoinedRoomSubjectContainer}>
-                            <Text style={styles.modalSubjectText}>
-                                Paragrafta Anlam
-                            </Text>
-                        </View>
-                    )}
-                    {this.state.isClientLeader && (
-                        <View style={styles.isLeaderContainer}>
-                            <View style={styles.gameCodeContainer}>
-                                <View style={styles.gameCodeBox}>
-                                    <View style={styles.gameCodeBoxLeftView} />
-                                    <View style={styles.gameCodeBoxTextView}>
-                                        <Text
-                                            style={styles.gameCodeText}
-                                            selectable={true}
-                                        >
-                                            {this.props.roomCode}
+                {this.state.isQuitGameModalVisible === false &&
+                <View style={styles.modal}>
+                    <TouchableOpacity onPress={this.closeGroupGameOnPress} style={ {height: hp(120), width: wp(100)}}>
+                        <View style={styles.modalView}>
+                            {!this.state.isClientLeader && (
+                                <View style={styles.isJoinedRoomSubjectContainer}>
+                                    <Text style={styles.modalSubjectText}>
+                                        Paragrafta Anlam
+                                    </Text>
+                                </View>
+                            )}
+                            {this.state.isClientLeader && (
+                                <View style={styles.isLeaderContainer}>
+                                    <View style={styles.gameCodeContainer}>
+                                        <View style={styles.gameCodeBox}>
+                                            <View style={styles.gameCodeBoxLeftView} />
+                                            <View style={styles.gameCodeBoxTextView}>
+                                                <Text
+                                                    style={styles.gameCodeText}
+                                                    selectable={true}
+                                                >
+                                                    {this.props.joinGameParams.roomCode}
+                                                </Text>
+                                            </View>
+                                            <View style={styles.gameCodeBoxRightView}>
+                                                <TouchableOpacity
+                                                    onPress={this.writeToClipboard}
+                                                >
+                                                    <Image
+                                                        source={COPY_IMAGE}
+                                                        style={styles.copyImage}
+                                                    />
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                    </View>
+                                    <View style={styles.gameCodeInfoTextContainer}>
+                                        <Text style={styles.gameCodeInfoText}>
+                                            Grup olarak oynamak için{' '}
+                                        </Text>
+                                        <Text style={styles.gameCodeInfoText}>
+                                            yukarıdaki kodu arkadaşlarınla paylaş
                                         </Text>
                                     </View>
-                                    <View style={styles.gameCodeBoxRightView}>
-                                        <TouchableOpacity
-                                            onPress={this.writeToClipboard}
-                                        >
-                                            <Image
-                                                source={COPY_IMAGE}
-                                                style={styles.copyImage}
-                                            />
-                                        </TouchableOpacity>
+                                    <View style={styles.questionsNumberContainer}>
+                                        <Text style={styles.questionsNumberText}>
+                                            Soru Sayısı:{' '}
+                                        </Text>
+                                        <DropDown
+                                            style={styles.questionNumberPicker}
+                                            textStyle={styles.questionPickerText}
+                                            dropdownTextStyle={
+                                                styles.questionPickerDropdownText
+                                            }
+                                            dropdownStyle={
+                                                styles.questionPickerDropdown
+                                            }
+                                            options={QUESTION_AMOUNTS_LIST}
+                                            defaultValue={this.state.questionNumber}
+                                            onSelect={(idx, value) =>
+                                                this.questionAmountPicker(idx, value)
+                                            }
+                                        />
                                     </View>
                                 </View>
+                            )}
+                            <FlatList
+                                data={this.state.groupRoomPlayerList}
+                                vertical={true}
+                                showsVerticalScrollIndicator={false}
+                                renderItem={({ item }) => {
+                                    return (
+                                        <View style={styles.userRow}>
+                                            <View
+                                                style={styles.profilePicContainerinRow}
+                                            >
+                                                <Image
+                                                    source={{
+                                                        uri: item.profilePicture
+                                                    }}
+                                                    style={styles.userPic}
+                                                />
+                                            </View>
+                                            <View style={styles.nameContainer}>
+                                                <Text style={styles.nameText}>
+                                                    {item.username}
+                                                </Text>
+                                                <Text>{item.status}</Text>
+                                            </View>
+                                            {item.isLeader && (
+                                                <View style={styles.leaderContainer}>
+                                                    <Image
+                                                        source={LEADER_LOGO}
+                                                        style={styles.leaderLogo}
+                                                    />
+                                                </View>
+                                            )}
+                                        </View>
+                                    )
+                                }}
+                                keyExtractor={(item, index) => index.toString()}
+                            />
+                            <View style={styles.usersCounterContainer}>
+                                <Text style={styles.usersCounterText}>
+                                    {Object.keys(this.state.groupRoomPlayerList).length}
+                                    /30
+                                </Text>
                             </View>
-                            <View style={styles.gameCodeInfoTextContainer}>
-                                <Text style={styles.gameCodeInfoText}>
-                                    Grup olarak oynamak için{' '}
+                        </View>
+                        <AuthButton
+                            marginTop={hp(83.5)}
+                            marginLeft={wp(6.25)}
+                            height={hp(7)}
+                            width={wp(87.5)}
+                            color="#00D9EF"
+                            buttonText={
+                                this.state.isClientLeader === true ? 'Başlat' : 'Hazır'
+                            }
+                            borderRadius={10}
+                            onPress={this.groupGameReadyOnPress}
+                        />
+                    </TouchableOpacity>
+                </View>
+                }
+                {this.state.isQuitGameModalVisible === true &&
+                    <View style={styles.modal}>
+                        <TouchableOpacity style={ {height: hp(120), width: wp(100)}}>
+                        <View style={styles.modalContainer}>
+                            <View style={styles.quitView}>
+                                <Text style={styles.areYouSureText}>
+                                    Odadan çıkış yapmak istediğine
                                 </Text>
-                                <Text style={styles.gameCodeInfoText}>
-                                    yukarıdaki kodu arkadaşlarınla paylaş
+                                <Text style={styles.areYouSureText}>
+                                    emin misin?
                                 </Text>
                             </View>
-                            <View style={styles.questionsNumberContainer}>
-                                <Text style={styles.questionsNumberText}>
-                                    Soru Sayısı:{' '}
-                                </Text>
-                                <DropDown
-                                    style={styles.questionNumberPicker}
-                                    textStyle={styles.questionPickerText}
-                                    dropdownTextStyle={
-                                        styles.questionPickerDropdownText
-                                    }
-                                    dropdownStyle={
-                                        styles.questionPickerDropdown
-                                    }
-                                    options={QUESTION_AMOUNTS_LIST}
-                                    defaultValue={this.state.questionNumber}
-                                    onSelect={(idx, value) =>
-                                        this.questionAmountPicker(idx, value)
-                                    }
+                            <View style={styles.yesOrNoButtonsContainer}>
+                                <AuthButton
+                                    height={hp(7)}
+                                    width={wp(42)}
+                                    color="#00D9EF"
+                                    buttonText="Evet"
+                                    borderRadius={10}
+                                    onPress={this.quitGameYes}
+                                />
+                                <AuthButton
+                                    height={hp(7)}
+                                    width={wp(42)}
+                                    color="#00D9EF"
+                                    buttonText="Hayır"
+                                    borderRadius={10}
+                                    onPress={this.quitGameNo}
                                 />
                             </View>
                         </View>
-                    )}
-                    <FlatList
-                        data={this.state.groupRoomPlayerList}
-                        vertical={true}
-                        showsVerticalScrollIndicator={false}
-                        renderItem={({ item }) => {
-                            return (
-                                <View style={styles.userRow}>
-                                    <View
-                                        style={styles.profilePicContainerinRow}
-                                    >
-                                        <Image
-                                            source={{
-                                                uri: item.profilePicture
-                                            }}
-                                            style={styles.userPic}
-                                        />
-                                    </View>
-                                    <View style={styles.nameContainer}>
-                                        <Text style={styles.nameText}>
-                                            {item.username}
-                                        </Text>
-                                        <Text>{item.status}</Text>
-                                    </View>
-                                    {item.isLeader && (
-                                        <View style={styles.leaderContainer}>
-                                            <Image
-                                                source={LEADER_LOGO}
-                                                style={styles.leaderLogo}
-                                            />
-                                        </View>
-                                    )}
-                                </View>
-                            )
-                        }}
-                        keyExtractor={(item, index) => index.toString()}
-                    />
-                    <View style={styles.usersCounterContainer}>
-                        <Text style={styles.usersCounterText}>
-                            {Object.keys(this.state.groupRoomPlayerList).length}
-                            /30
-                        </Text>
+                        </TouchableOpacity>
                     </View>
-                </View>
-                <AuthButton
-                    marginTop={hp(2)}
-                    height={hp(7)}
-                    width={wp(87.5)}
-                    color="#00D9EF"
-                    buttonText={
-                        this.state.isClientLeader === true ? 'Başlat' : 'Hazır'
-                    }
-                    borderRadius={10}
-                    onPress={this.groupGameReadyOnPress}
-                />
-                <Modal visible={this.state.isQuitGameModalVisible}>
-                    <View style={styles.modalContainer}>
-                        <View style={styles.quitView}>
-                            <Text style={styles.areYouSureText}>
-                                Odadan çıkış yapmak istediğine
-                            </Text>
-                            <Text style={styles.areYouSureText}>
-                                emin misin?
-                            </Text>
-                        </View>
-                        <View style={styles.yesOrNoButtonsContainer}>
-                            <AuthButton
-                                height={hp(7)}
-                                width={wp(42)}
-                                color="#00D9EF"
-                                buttonText="Evet"
-                                borderRadius={10}
-                                onPress={this.quitGameYes}
-                            />
-                            <AuthButton
-                                height={hp(7)}
-                                width={wp(42)}
-                                color="#00D9EF"
-                                buttonText="Hayır"
-                                borderRadius={10}
-                                onPress={this.quitGameNo}
-                            />
-                        </View>
-                    </View>
-                </Modal>
+                }
             </View>
         )
     }

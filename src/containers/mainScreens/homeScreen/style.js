@@ -84,10 +84,12 @@ export default StyleSheet.create({
         marginLeft: wp(-0.5)
     },
     modalView: {
+        position: 'absolute',
+        zIndex: 1,
         backgroundColor: '#ffffff',
         height: hp(67),
         width: wp(87.5),
-        marginTop: hp(2),
+        marginTop: hp(14),
         borderColor: '#00D9EF',
         borderWidth: wp(0.75),
         borderRadius: 10,
@@ -104,13 +106,13 @@ export default StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         backgroundColor: '#ffffff',
-        height: hp(3),
+        height: hp(2),
         width: wp(75)
     },
     separatorLine: {
-        flex: 1,
-        borderWidth: wp(0.2),
         height: hp(0.1),
+        width: wp(75),
+        borderWidth: wp(0.2),
         borderColor: '#D9D9D9'
     },
     gameModesContainer: {
@@ -118,11 +120,17 @@ export default StyleSheet.create({
         width: wp(75)
     },
     gameModeContainer: {
-        height: hp(10),
+        height: hp(9),
         width: wp(75),
         backgroundColor: 'white',
         flexDirection: 'row',
         alignItems: 'center'
+    },
+    gameModeButtonContainer: {
+        height: hp(9),
+        width: wp(33),
+        justifyContent: 'center',
+        alignItems: 'flex-start'
     },
     gameModeLogoContainer: {
         height: hp(7.5),
@@ -135,9 +143,8 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     gameModeContextContainer: {
-        height: hp(10),
+        height: hp(9),
         width: wp(42),
-        backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'flex-start'
     },
@@ -176,10 +183,12 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     backAndCloseButtonsContainer: {
+        position: 'absolute',
+        zIndex: 1,
         height: hp(6),
         width: wp(86),
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         alignItems: 'center',
         marginTop: hp(6)
     },
@@ -202,22 +211,12 @@ export default StyleSheet.create({
     modal: {
         flex: 1,
         backgroundColor: '#000000DE',
+        justifyContent: 'flex-start',
         alignItems: 'center'
     },
-    rankedModeImage: {
+    gameModeImage: {
         resizeMode: 'contain',
-        height: hp(6),
-        width: wp(6)
-    },
-    friendsModeImage: {
-        resizeMode: 'contain',
-        height: hp(9),
-        width: wp(9)
-    },
-    groupModeImage: {
-        resizeMode: 'contain',
-        height: hp(9),
-        width: wp(9)
+        height: hp(5)
     },
     createOrJoinRoomButtonsContainer: {
         height: hp(30),
@@ -431,5 +430,62 @@ export default StyleSheet.create({
     },
     spaceView: {
         height: hp(1.5)
-    }
+    },
+    scoreContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    levelProgressBarContainer: {
+        height: hp(5.5),
+        width: wp(75),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    scoreTextInModal: {
+        fontFamily: 'Averta-RegularItalic',
+        color: '#00D9EF',
+        fontSize: hp(3.3)
+    },
+    scoreInModal: {
+        fontFamily: 'Averta-ExtraBoldItalic',
+        color: '#00D9EF',
+        fontSize: hp(3.3)
+    },
+    progressBarView:{
+        height: hp(5),
+        width: wp(65),
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderRadius: 6,
+        backgroundColor: '#B0B0B0'
+    },
+    instantProgressView: {
+        position: 'absolute',
+        height: hp(5),
+        borderTopLeftRadius: 6,
+        borderBottomLeftRadius: 6,
+        backgroundColor: '#FF9900'
+    },
+    progressScoreView: {
+        height: hp(4),
+        width: wp(25),
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    levelText: {
+        fontFamily: 'Averta-Semibold',
+        zIndex: 1,
+        marginLeft: wp(1),
+        fontSize: hp(2.5),
+        color: 'white'
+    },
+    levelInProgressText: {
+        fontFamily: 'Averta-Semibold',
+        marginRight: wp(1),
+        fontSize: hp(2.5),
+        color: 'white'
+    },
 })

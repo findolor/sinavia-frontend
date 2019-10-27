@@ -1,27 +1,24 @@
 import axios from 'axios'
-import { API_ENDPOINT } from '../../../config/index'
+import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
 import { renewToken } from '../token/renewToken'
 
-export const getUsers = async (userToken, idList) => {
+export const getUsers = async (headers, params) => {
     try {
-        let response = await axios.get(API_ENDPOINT + 'users/', {
-            headers: {
-                Authorization: 'Bearer ' + userToken
-            },
+        let response = await axios.get(API_ENDPOINT + APP_VERSION + '/users/', {
+            headers: headers,
             params: {
-                idList: idList
+                idList: params.idList
             }
         })
         return response.data.data
     } catch (err) {
         if (err.response.status === 401) {
             const res = await renewToken()
-            response = await axios.get(API_ENDPOINT + 'users/', {
-                headers: {
-                    Authorization: 'Bearer ' + res.token
-                },
+            headers.Authorization = 'Bearer ' + res.token
+            response = await axios.get(API_ENDPOINT + APP_VERSION + '/users/', {
+                headers: headers,
                 params: {
-                    idList: idList
+                    idList: params.idList
                 }
             })
             return response.data.data

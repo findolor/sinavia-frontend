@@ -1,4 +1,4 @@
-import { sendGameRequest } from '../../services/apiServices/friendGame/sendGameRequest'
+import { apiServicesTree, makePostRequest } from '../../services/apiServices'
 
 export async function sendFriendGameRequestService(
     clientToken,
@@ -7,14 +7,12 @@ export async function sendFriendGameRequestService(
     requestedUserFCMToken,
     matchInformation
 ) {
-    const res = sendGameRequest(
-        clientToken,
-        clientInformation.id,
-        clientInformation.username,
-        roomCode,
-        requestedUserFCMToken,
-        matchInformation
-    )
-
-    return res
+    return makePostRequest(apiServicesTree.friendGameApi.sendGameRequest, {
+        clientToken: clientToken,
+        id: clientInformation.id,
+        username: clientInformation.username,
+        roomCode: roomCode,
+        requestedUserFCMToken: requestedUserFCMToken,
+        matchInformation: matchInformation
+    })
 }

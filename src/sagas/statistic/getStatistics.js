@@ -1,7 +1,8 @@
-import { getStatistics } from '../../services/apiServices/statistic/getStatistics'
+import { makeGetRequest, apiServicesTree } from '../../services/apiServices'
 
 export async function getStatisticsService(clientToken, friendId) {
-    const res = getStatistics(clientToken, friendId)
-
-    return res
+    return makeGetRequest(apiServicesTree.statisticApi.getStatistics, {
+        clientToken: clientToken,
+        userId: friendId
+    })
 }
