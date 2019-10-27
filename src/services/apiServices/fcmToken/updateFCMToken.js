@@ -2,7 +2,7 @@ import axios from 'axios'
 import { API_ENDPOINT } from '../../../config/index'
 import { renewToken } from '../token/renewToken'
 
-export const postFCMToken = async (userToken, userInformation) => {
+export const updateFCMToken = async (userToken, userInformation) => {
     try {
         let response = await axios.put(
             API_ENDPOINT + 'users/' + userInformation.id,
