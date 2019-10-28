@@ -89,7 +89,16 @@ class SoloFriendGameScreen extends React.Component {
             fullQuestionList: [],
             // Joker names
             secondJokerName: '',
-            thirdJokerName: ''
+            thirdJokerName: '',
+            // Friend infos
+            friendUsername: null,
+            friendProfilePicture: null,
+            // User infos
+            userUsername: null,
+            userProfilePicture: null,
+            userStatistics: null,
+            // Friend matches info
+            friendMatches: null
         }
     }
 
@@ -181,6 +190,20 @@ class SoloFriendGameScreen extends React.Component {
             case 'save-questions':
                 this.setState({ fullQuestionList: message.fullQuestionList })
                 break
+            case 'save-friend-infos':
+                this.setState({
+                    friendUsername: message.friendUsername,
+                    friendProfilePicture: message.friendProfilePicture
+                })
+                break
+            case 'save-user-infos':
+                this.setState({
+                    userUsername: message.userUsername,
+                    userProfilePicture: message.userProfilePicture,
+                    userStatistics: message.userStatistics,
+                    friendMatches: message.friendMatches
+                })
+                break
         }
     }
 
@@ -211,11 +234,11 @@ class SoloFriendGameScreen extends React.Component {
                         start: true
                     })
                 }, 3000)
-                return
+                break
             // As soon as someone answers, a result event is fired
             case 'result':
                 this.setState({ playerProps: friendState.playerProps })
-                return
+                break
             case 'show-results':
                 // 8 second countdown time for the results
                 this.setState({
@@ -225,20 +248,92 @@ class SoloFriendGameScreen extends React.Component {
                     // We wait 1.5 seconds for the reveal
                     this.updatePlayerResults()
                 }, 1500)
-                return
-            case 'match-finished':
-                this.shutdownGame()
-                navigationReplace(SCENE_KEYS.gameScreens.friendGameStats, {
-                    playerProps: this.state.playerProps,
-                    room: this.props.room,
-                    client: this.props.client,
-                    questionList: this.state.questionList,
-                    playerUsername: this.props.clientInformation.username,
-                    playerProfilePicture: this.props.clientInformation
-                        .profilePicture,
-                    fullQuestionList: this.state.fullQuestionList
+                break
+            case 'match-finished-user':
+                let clientStatistics = {
+                    correctNumber: 0,
+                    incorrectNumber: 0,
+                    unansweredNumber: 0,
+                    examId: this.state.playerProps['matchInformation'].examId
+                }
+
+                let clientId
+                let keys = Object.keys(this.state.playerProps)
+                keys.forEach(key => {
+                    if (key !== 'matchInformation') clientId = key
                 })
-                return
+
+                this.state.playerProps[clientId].answers.forEach(answer => {
+                    switch (answer.result) {
+                        case true:
+                            clientStatistics.correctNumber++
+                            break
+                        case false:
+                            clientStatistics.incorrectNumber++
+                            break
+                        case null:
+                            clientStatistics.unansweredNumber++
+                            break
+                    }
+                })
+
+                this.shutdownGame()
+                navigationReplace(
+                    SCENE_KEYS.gameScreens.soloFriendGameStatsScreen,
+                    {
+                        friendStatistics: null,
+                        friendUsername: this.state.friendUsername,
+                        friendProfilePicture: this.state.friendProfilePicture,
+                        questionList: this.state.fullQuestionList,
+                        userAnswers: this.state.playerProps[clientId].answers,
+                        clientStatistics: clientStatistics,
+                        friendMatches: null
+                    }
+                )
+                break
+            case 'match-finished-friend':
+                clientStatistics = {
+                    correctNumber: 0,
+                    incorrectNumber: 0,
+                    unansweredNumber: 0,
+                    examId: this.state.userStatistics.examId
+                }
+
+                clientId
+                keys = Object.keys(this.state.playerProps)
+                keys.forEach(key => {
+                    if (key !== 'matchInformation') clientId = key
+                })
+
+                this.state.playerProps[clientId].answers.forEach(answer => {
+                    switch (answer.result) {
+                        case true:
+                            clientStatistics.correctNumber++
+                            break
+                        case false:
+                            clientStatistics.incorrectNumber++
+                            break
+                        case null:
+                            clientStatistics.unansweredNumber++
+                            break
+                    }
+                })
+
+                this.shutdownGame()
+                navigationReplace(
+                    SCENE_KEYS.gameScreens.soloFriendGameStatsScreen,
+                    {
+                        friendStatistics: this.state.userStatistics,
+                        friendUsername: this.state.userUsername,
+                        friendProfilePicture: this.state.userProfilePicture,
+                        questionList: this.state.fullQuestionList,
+                        userAnswers: this.state.playerProps[clientId].answers,
+                        clientStatistics: clientStatistics,
+                        friendMatches: this.state.friendMatches,
+                        isFromNotification: false
+                    }
+                )
+                break
         }
     }
 

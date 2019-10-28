@@ -309,46 +309,46 @@ class FriendMatchingScreen extends React.Component {
                             </View>
                         </ImageBackground>
                     </View>
-                </View>
-                <View style={styles.separatorView}>
-                    <View style={styles.separatorLineUser}>
-                        <Text style={styles.winLoseText}>Kazanma</Text>
-                        <Text style={styles.winLoseCounterText}>20</Text>
-                    </View>
-                    <View style={styles.separatorCircle}>
-                        {!this.state.isFriendJoined &&
-                            !this.state.isCoundownFinished && (
-                                <CountDown
-                                    until={this.state.countDownTime}
-                                    size={countdownProps.size}
-                                    digitStyle={{
-                                        backgroundColor: '#FF9900',
-                                        borderRadius: 100
-                                    }}
-                                    digitTxtStyle={styles.timerText}
-                                    timeToShow={['S']}
-                                    timeLabels={{ s: null }}
-                                    separatorStyle={{ color: '#fff' }}
-                                    showSeparator
-                                    //running={!this.state.isCoundownFinished}
-                                    onFinish={this.countdownOnFinish}
-                                />
+                    <View style={styles.separatorView}>
+                        <View style={styles.separatorLineUser}>
+                            <Text style={styles.winLoseText}>Kazanma</Text>
+                            <Text style={styles.winLoseCounterText}>20</Text>
+                        </View>
+                        <View style={styles.separatorCircle}>
+                            {!this.state.isFriendJoined &&
+                                !this.state.isCoundownFinished && (
+                                    <CountDown
+                                        until={this.state.countDownTime}
+                                        size={countdownProps.size}
+                                        digitStyle={{
+                                            backgroundColor: '#FF9900',
+                                            borderRadius: 100
+                                        }}
+                                        digitTxtStyle={styles.timerText}
+                                        timeToShow={['S']}
+                                        timeLabels={{ s: null }}
+                                        separatorStyle={{ color: '#fff' }}
+                                        showSeparator
+                                        //running={!this.state.isCoundownFinished}
+                                        onFinish={this.countdownOnFinish}
+                                    />
+                                )}
+                            {!this.state.isFriendJoined &&
+                                this.state.isCoundownFinished && (
+                                    <TouchableOpacity
+                                        onPress={this.playAheadOnPress}
+                                    >
+                                        <Text>ÖNDEN OYNA</Text>
+                                    </TouchableOpacity>
+                                )}
+                            {this.state.isFriendJoined && (
+                                <Image source={SWORD} style={styles.swordPic} />
                             )}
-                        {!this.state.isFriendJoined &&
-                            this.state.isCoundownFinished && (
-                                <TouchableOpacity
-                                    onPress={this.playAheadOnPress}
-                                >
-                                    <Text>ÖNDEN OYNA</Text>
-                                </TouchableOpacity>
-                            )}
-                        {this.state.isFriendJoined && (
-                            <Image source={SWORD} style={styles.swordPic} />
-                        )}
-                    </View>
-                    <View style={styles.separatorLineOpponent}>
-                        <Text style={styles.winLoseText}>Kazanma</Text>
-                        <Text style={styles.winLoseCounterText}>20</Text>
+                        </View>
+                        <View style={styles.separatorLineOpponent}>
+                            <Text style={styles.winLoseText}>Kazanma</Text>
+                            <Text style={styles.winLoseCounterText}>20</Text>
+                        </View>
                     </View>
                 </View>
                 <View style={styles.backButtonContainer}>

@@ -511,7 +511,8 @@ class Notifications extends React.Component {
             friendProfilePicture: item.notificationData.friendProfilePicture,
             friendMatches: item.notificationData.friendMatches,
             userAnswers: item.notificationData.userAnswers,
-            questionList: item.notificationData.questionList
+            questionList: item.notificationData.questionList,
+            isFromNotification: true
         })
 
         item.read = true

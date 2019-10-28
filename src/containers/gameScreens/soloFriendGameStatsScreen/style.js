@@ -37,7 +37,7 @@ export default StyleSheet.create({
         marginLeft: wp(6.4),
         borderRadius: 20,
         position: 'absolute',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     replayButton: {
         height: hp(7),
@@ -380,5 +380,16 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-start'
+    },
+    friendMatchWaitingContainer: {
+        width: wp(81),
+        height: hp(8),
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: hp(3)
+    },
+    friendMatchWaitingText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(4)
     }
 })
