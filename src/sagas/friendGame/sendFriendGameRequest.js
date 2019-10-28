@@ -9,7 +9,7 @@ export async function sendFriendGameRequestService(
 ) {
     return makePostRequest(apiServicesTree.friendGameApi.sendGameRequest, {
         clientToken: clientToken,
-        id: clientInformation.id,
+        userId: clientInformation.id,
         username: clientInformation.username,
         roomCode: roomCode,
         requestedUserFCMToken: requestedUserFCMToken,
