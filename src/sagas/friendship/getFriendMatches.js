@@ -1,11 +1,13 @@
-import { getFriendMatches } from '../../services/apiServices/friendship/getFriendMatches'
+import { makeGetRequest, apiServicesTree } from '../../services/apiServices'
 
 export async function getFriendMatchesService(
     clientToken,
     clientDBId,
     friendId
 ) {
-    const res = getFriendMatches(clientToken, clientDBId, friendId)
-
-    return res
+    return makeGetRequest(apiServicesTree.friendshipApi.getFriendMatches, {
+        clientToken: clientToken,
+        userId: clientDBId,
+        friendId: friendId
+    })
 }

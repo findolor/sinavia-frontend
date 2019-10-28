@@ -1,7 +1,7 @@
-import { forgotPassword } from '../../services/apiServices/user/forgotPassword'
+import { apiServicesTree, makePostRequest } from '../../services/apiServices'
 
 export async function resetPassword(email) {
-    const res = forgotPassword(email)
-
-    return res
+    return makePostRequest(apiServicesTree.userApi.forgotPassword, {
+        email: email
+    })
 }

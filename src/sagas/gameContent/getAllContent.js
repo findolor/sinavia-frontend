@@ -1,10 +1,14 @@
-import { getAllContent } from '../../services/apiServices/gameContent/getAllContent'
 import { put, call } from 'redux-saga/effects'
 import { gameContentTypes } from '../../redux/gameContent/actions'
 import { navigationReset } from '../../services/navigationService'
+import { apiServicesTree, makeGetRequest } from '../../services/apiServices'
 
 export function* getAllContentSaga(action) {
-    const response = yield call(getAllContent, action.clientToken)
+    const response = yield call(
+        makeGetRequest,
+        apiServicesTree.gameContentApi.getAllContent,
+        { clientToken: action.clientToken }
+    )
 
     const examList = []
 

@@ -1,5 +1,8 @@
-import { getLeaderboard } from '../../services/apiServices/leaderboard/getLeaderboard'
+import { apiServicesTree, makeGetRequest } from '../../services/apiServices'
 
 export const getLeaderboardService = async (clientToken, params) => {
-    return getLeaderboard(clientToken, params)
+    return makeGetRequest(apiServicesTree.leaderboardApi.getLeaderboard, {
+        clientToken: clientToken,
+        params: params
+    })
 }

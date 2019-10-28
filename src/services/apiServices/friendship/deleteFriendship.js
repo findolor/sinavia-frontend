@@ -1,38 +1,36 @@
 import axios from 'axios'
-import { API_ENDPOINT } from '../../../config/index'
+import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
 import { renewToken } from '../token/renewToken'
 
-export const deleteFriendship = async (
-    userToken,
-    userId,
-    friendId,
-    isClientUser
-) => {
+export const deleteFriendship = async (headers, params) => {
     try {
-        let response = await axios.delete(API_ENDPOINT + 'friendships/', {
-            headers: {
-                Authorization: 'Bearer ' + userToken
-            },
-            params: {
-                userId: userId,
-                friendId: friendId,
-                isClientUser: isClientUser
+        let response = await axios.delete(
+            API_ENDPOINT + APP_VERSION + '/friendships/',
+            {
+                headers: headers,
+                params: {
+                    userId: params.userId,
+                    friendId: params.friendId,
+                    isClientUser: params.isClientUser
+                }
             }
-        })
+        )
         return response.data
     } catch (err) {
         if (err.response.status === 401) {
             let res = await renewToken()
-            response = await axios.delete(API_ENDPOINT + 'friendships/', {
-                headers: {
-                    Authorization: 'Bearer ' + res.token
-                },
-                params: {
-                    userId: userId,
-                    friendId: friendId,
-                    isClientUser: isClientUser
+            headers.Authorization = 'Bearer ' + res.token
+            response = await axios.delete(
+                API_ENDPOINT + APP_VERSION + '/friendships/',
+                {
+                    headers: headers,
+                    params: {
+                        userId: params.userId,
+                        friendId: params.friendId,
+                        isClientUser: params.isClientUser
+                    }
                 }
-            })
+            )
             return response.data
         } else return err.response
     }

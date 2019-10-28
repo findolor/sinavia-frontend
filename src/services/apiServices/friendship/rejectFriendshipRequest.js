@@ -1,18 +1,16 @@
 import axios from 'axios'
-import { API_ENDPOINT } from '../../../config/index'
+import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
 import { renewToken } from '../token/renewToken'
 
-export const rejectFriendshipRequest = async (userToken, userId, friendId) => {
+export const rejectFriendshipRequest = async (headers, params) => {
     try {
         let response = await axios.delete(
-            API_ENDPOINT + 'friendships/reject/',
+            API_ENDPOINT + APP_VERSION + '/friendships/reject/',
             {
-                headers: {
-                    Authorization: 'Bearer ' + userToken
-                },
+                headers: headers,
                 params: {
-                    userId: userId,
-                    friendId: friendId
+                    userId: params.userId,
+                    friendId: params.friendId
                 }
             }
         )
@@ -20,15 +18,14 @@ export const rejectFriendshipRequest = async (userToken, userId, friendId) => {
     } catch (err) {
         if (err.response.status === 401) {
             let res = await renewToken()
+            headers.Authorization = 'Bearer ' + res.token
             response = await axios.delete(
-                API_ENDPOINT + 'friendships/reject/',
+                API_ENDPOINT + APP_VERSION + '/friendships/reject/',
                 {
-                    headers: {
-                        Authorization: 'Bearer ' + res.token
-                    },
+                    headers: headers,
                     params: {
-                        userId: userId,
-                        friendId: friendId
+                        userId: params.userId,
+                        friendId: params.friendId
                     }
                 }
             )
