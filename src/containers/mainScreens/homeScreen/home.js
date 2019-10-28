@@ -148,6 +148,7 @@ class Home extends React.Component {
                 // Get information about the notification that was opened
                 const notification = notificationOpen.notification
                 console.log(action, notification, 'app running')
+                this.fcmMessagePicker(notification)
             })
         // If the app was closed when the notification is opened
         // This func fires up
@@ -265,10 +266,12 @@ class Home extends React.Component {
                     { cancelable: false }
                 )
                 break
-            case 'friendDeleted': {
+            case 'friendDeleted':
                 this.friendDeleted({ opponentId: message.data.userId })
                 break
-            }
+            case 'friendMatchResult':
+                navigationPush(SCENE_KEYS.mainScreens.notifications)
+                break
         }
     }
 

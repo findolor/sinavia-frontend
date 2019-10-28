@@ -10,6 +10,7 @@ import FriendGame from './friendGameScreen/friendGame'
 import SoloFriendGameScreen from './soloFriendGameScreen/soloFriendGameScreen'
 import SoloModeLoadingScreen from './soloModeLoadingScreen/soloModeLoadingScreen'
 import SoloModeGameScreen from './soloModeGameScreen/soloModeGameScreen'
+import SoloFriendGameStatsScreen from './soloFriendGameStatsScreen/soloFriendGameStats'
 
 export {
     RankedGame,
@@ -23,5 +24,6 @@ export {
     FriendGame,
     SoloFriendGameScreen,
     SoloModeLoadingScreen,
-    SoloModeGameScreen
+    SoloModeGameScreen,
+    SoloFriendGameStatsScreen
 }

@@ -26,8 +26,8 @@ export function* getOpponentFullInformationSaga(action) {
     )
 
     // Calculating friend matches
-    const opponentWinCount = Object.keys(res.friendGameWins).length
-    const clientWinCount = Object.keys(res.friendGameDefeats).length
+    const opponentWinCount = Object.keys(res.friendGameDefeats).length
+    const clientWinCount = Object.keys(res.friendGameWins).length
     const friendMatchDrawCount = Object.keys(res.friendGameDraws).length
     const totalFriendMatchesCount =
         opponentWinCount + clientWinCount + friendMatchDrawCount

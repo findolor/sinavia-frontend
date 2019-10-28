@@ -237,9 +237,10 @@ class PurchaseScreen extends React.Component {
                 </Modal>
                 <View style={styles.bundlesContainer}>
                     <View style={styles.bundlesView}>
-                        <Swiper loop={true}
+                        <Swiper loop={false}
                                 paginationStyle={{ bottom: hp(0.25) }}
-                                activeDotColor={'#00D9EF'}>
+                                activeDotColor={'#00D9EF'}
+                                >
                             <View style={styles.swiperView}>
                                 <TouchableOpacity style={styles.bundleView}>
                                     <View style={styles.totalJokerAmountView}>
