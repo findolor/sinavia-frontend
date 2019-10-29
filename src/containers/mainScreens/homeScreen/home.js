@@ -41,7 +41,6 @@ import * as Colyseus from 'colyseus.js'
 
 // FCM imports
 import firebase from 'react-native-firebase'
-import { fcmService } from '../../../services/fcmService'
 
 import { friendshipServices } from '../../../sagas/friendship/'
 import { friendGameServices } from '../../../sagas/friendGame/'
@@ -109,17 +108,62 @@ class Home extends React.Component {
     }
 
     async componentDidMount() {
-        await fcmService.checkPermissions()
         await this.fillGameContent()
-        this.messageListener = firebase.messaging().onMessage(message => {
+
+        this.removeMessageListener = firebase.messaging().onMessage(message => {
             console.log(message, 'mes')
-            this.fcmMessagePicker(message)
+            //this.fcmMessagePicker(message)
         })
-        this.NotificationListener = firebase
+        this.removeNotificationListener = firebase
             .notifications()
             .onNotification(notification => {
+                // Create the channel
+                const channel = new firebase.notifications.Android.Channel(
+                    'notification-channel',
+                    'Notification Channel',
+                    firebase.notifications.Android.Importance.Max
+                ).setDescription('Sinavia notification channel')
+                firebase.notifications().android.createChannel(channel)
+
                 console.log(notification, 'not')
+                const tempNotification = new firebase.notifications.Notification()
+                    .setNotificationId(notification.notificationId)
+                    .setTitle(notification.title)
+                    .setBody(notification.body)
+                    .setData(notification.data)
+                tempNotification.android.setChannelId('aaa')
+                tempNotification.android.setSmallIcon('ic_launcher')
+                tempNotification.ios.setBadge(2)
+
+                firebase.notifications().displayNotification(tempNotification)
             })
+
+        // If the app was in foreground or background
+        // This func fires up
+        this.removeNotificationOpenedListener = firebase
+            .notifications()
+            .onNotificationOpened(notificationOpen => {
+                // Get the action triggered by the notification being opened
+                const action = notificationOpen.action
+                // Get information about the notification that was opened
+                const notification = notificationOpen.notification
+                console.log(action, notification, 'app running')
+                this.fcmMessagePicker(notification)
+            })
+        // If the app was closed when the notification is opened
+        // This func fires up
+        if (this.props.notificationOpen) {
+            // App was opened by a notification
+            // Get the action triggered by the notification being opened
+            const action = this.props.notificationOpen.action
+            // Get information about the notification that was opened
+            const notification = this.props.notificationOpen.notification
+            console.log(action, notification, 'app closed')
+            // TODO ACT ON ACTIONS HERE
+            // TODO DECIDE WHAT TO DO
+            this.fcmMessagePicker(notification)
+            this.props.saveNotificationOpen(null)
+        }
     }
 
     fillGameContent = () => {
@@ -133,9 +177,7 @@ class Home extends React.Component {
         })
     }
 
-    componentWillUnmount() {
-        this.messageListener()
-    }
+    componentWillUnmount() {}
 
     fcmMessagePicker = message => {
         switch (message.data.type) {
@@ -174,7 +216,7 @@ class Home extends React.Component {
                         {
                             text: 'Kabul et',
                             onPress: () => {
-                                if (this.props.clientInformation.isPremium) {
+                                /* if (this.props.clientInformation.isPremium) {
                                     this.playFriendGame({
                                         opponentId: message.data.userId,
                                         roomCode: message.data.roomCode,
@@ -217,17 +259,33 @@ class Home extends React.Component {
                                             )
                                         })
                                     }
-                                }
+                                } */
+
+                                this.playFriendGame({
+                                    opponentId: message.data.userId,
+                                    roomCode: message.data.roomCode,
+                                    examId: parseInt(message.data.examId, 10),
+                                    courseId: parseInt(
+                                        message.data.courseId,
+                                        10
+                                    ),
+                                    subjectId: parseInt(
+                                        message.data.subjectId,
+                                        10
+                                    )
+                                })
                             }
                         }
                     ],
                     { cancelable: false }
                 )
                 break
-            case 'friendDeleted': {
+            case 'friendDeleted':
                 this.friendDeleted({ opponentId: message.data.userId })
                 break
-            }
+            case 'friendMatchResult':
+                navigationPush(SCENE_KEYS.mainScreens.notifications)
+                break
         }
     }
 
@@ -385,14 +443,14 @@ class Home extends React.Component {
         let examIndex
         let subjectList = []
         examIndex = this.props.examList.findIndex(x => x.name === examName)
-        if (!this.props.clientInformation.isPremium)
+        /* if (!this.props.clientInformation.isPremium)
             subjectList.push(
                 <View style={styles.card}>
                     <Text style={styles.cardText}>
                         Kalan enerji sayısı: {this.props.energyAmount}
                     </Text>
                 </View>
-            )
+            ) */
         this.props.examList[examIndex].courseEntities[
             carouselActiveSlide
         ].subjectEntities.forEach((subject, index) => {
@@ -447,7 +505,7 @@ class Home extends React.Component {
     }
 
     groupGameModeOnPress = () => {
-        if (this.props.clientInformation.isPremium) {
+        /* if (this.props.clientInformation.isPremium) {
             this.setState({
                 visibleView: 'GROUP_MODES',
                 visibleRankedGameStartPress: false,
@@ -463,7 +521,14 @@ class Home extends React.Component {
             })
         else {
             Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
-        }
+        } */
+
+        this.setState({
+            visibleView: 'GROUP_MODES',
+            visibleRankedGameStartPress: false,
+            rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
+            soloModeButtonBorderColor: EMPTY_MODE_COLOR
+        })
     }
 
     gameModesView() {
@@ -643,7 +708,7 @@ class Home extends React.Component {
             soloModeButtonBorderColor: EMPTY_MODE_COLOR
         })
 
-        if (this.props.clientInformation.isPremium) {
+        /* if (this.props.clientInformation.isPremium) {
             if (Object.keys(this.props.friendIds).length === 0) return
             const friends = await userServices.getUsers(
                 this.props.clientToken,
@@ -669,7 +734,19 @@ class Home extends React.Component {
             })
         } else {
             Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
-        }
+        } */
+
+        if (Object.keys(this.props.friendIds).length === 0) return
+        const friends = await userServices.getUsers(
+            this.props.clientToken,
+            this.props.friendIds
+        )
+
+        this.setState({
+            visibleView: 'FRIEND_ROOM',
+            friendList: friends,
+            originalFriends: friends
+        })
     }
 
     friendRoomAndGameModesBackButtonOnPress = () => {
@@ -1066,7 +1143,7 @@ class Home extends React.Component {
 
         switch (this.state.selectedGameMode) {
             case 'ranked':
-                if (this.props.clientInformation.isPremium) {
+                /* if (this.props.clientInformation.isPremium) {
                     navigationReset('game', this.calculateContentIds())
                 } else if (this.props.energyAmount !== 0)
                     navigationReset('game', this.calculateContentIds())
@@ -1076,7 +1153,8 @@ class Home extends React.Component {
                         rankedModeButtonBorderColor: EMPTY_MODE_COLOR
                     })
                     Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
-                }
+                } */
+                navigationReset('game', this.calculateContentIds())
                 break
             case 'solo':
                 if (this.props.clientInformation.isPremium) {
@@ -1295,7 +1373,8 @@ const mapStateToProps = state => ({
     friendIds: state.friends.friendIds,
     examList: state.gameContent.examList,
     isNetworkConnected: state.app.isNetworkConnected,
-    energyAmount: state.app.energyAmount
+    //energyAmount: state.app.energyAmount,
+    notificationOpen: state.app.notificationOpen
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -1303,7 +1382,9 @@ const mapDispatchToProps = dispatch => ({
         dispatch(gameContentActions.saveChoosenExam(choosenExam)),
     saveFriendIdList: friendList =>
         dispatch(friendActions.saveFriendIds(friendList)),
-    removeOneEnergy: () => dispatch(appActions.removeOneEnergy())
+    //removeOneEnergy: () => dispatch(appActions.removeOneEnergy()),
+    saveNotificationOpen: notificationOpen =>
+        dispatch(appActions.saveNotificationOpen(notificationOpen))
 })
 
 export default connect(

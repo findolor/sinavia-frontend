@@ -5,7 +5,7 @@ import {
     ENV_GAME_ENGINE_ENDPOINT_LOCAL,
     ENV_APP_VERSION
 } from 'react-native-dotenv'
-
+//console.log(ENV_GAME_ENGINE_ENDPOINT, ENV_API_ENDPOINT)
 const scene_keys = {
     authScreens: {
         opening: 'opening',
@@ -27,7 +27,8 @@ const scene_keys = {
         friendGameStats: 'friendGameStats',
         soloFriendGameScreen: 'soloFriendGameScreen',
         soloModeLoadingScreen: 'soloModeLoadingScreen',
-        soloModeGameScreen: 'soloModeGameScreen'
+        soloModeGameScreen: 'soloModeGameScreen',
+        soloFriendGameStatsScreen: 'soloFriendGameStatsScreen'
     },
     mainScreens: {
         main: 'main',

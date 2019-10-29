@@ -29,20 +29,25 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 userNotificationList: state.userNotificationList
             }
-        case appTypes.REMOVE_ONE_ENERGY:
+        /* case appTypes.REMOVE_ONE_ENERGY:
             state.energyAmount--
             return {
                 ...state
-            }
-        case appTypes.SAVE_ENERGY_AMOUNT:
+            } */
+        /* case appTypes.SAVE_ENERGY_AMOUNT:
             return {
                 ...state,
                 energyAmount: action.payload
-            }
+            } */
         case appTypes.LOCK_UNLOCK_BUTTON:
             return {
                 ...state,
                 buttonLock: !state.buttonLock
+            }
+        case appTypes.SAVE_NOTIFICATION_OPEN:
+            return {
+                ...state,
+                notificationOpen: action.payload
             }
         default:
             return state

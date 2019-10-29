@@ -20,7 +20,7 @@ export async function sendFriendshipRequestService(
 }
 
 export function* sendFriendshipRequestSaga(action) {
-    const response = yield call(
+    yield call(
         makePostRequest,
         apiServicesTree.friendshipApi.sendFriendshipRequest,
         {
@@ -30,15 +30,4 @@ export function* sendFriendshipRequestSaga(action) {
             clientUsername: action.clientUsername
         }
     )
-
-    if (response.success) {
-        yield put({
-            type: friendTypes.CHANGE_FRIENDSHIP_STATUS,
-            friendshipStatus: 'friendRequestSent'
-        })
-        yield put({
-            type: friendTypes.CHANGE_IS_FRIEND_REQUEST_SENT,
-            isFriendRequestSent: true
-        })
-    }
 }
