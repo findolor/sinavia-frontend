@@ -37,6 +37,9 @@ export function* loginUser(action) {
 
         if (!firebaseResponse.user.emailVerified) {
             Alert.alert('Lütfen e-postana gelen linki onayla.')
+            yield put({
+                type: appTypes.LOCK_UNLOCK_BUTTON
+            })
         } else {
             const deviceId = yield call(DeviceInfo.getUniqueId)
 
@@ -165,7 +168,8 @@ export function* loginUser(action) {
                     payload: userJokers
                 })
 
-                // We get the user's game energy info
+                // This will be used later on
+                /* // We get the user's game energy info
                 let gameEnergy = yield call(
                     makeGetRequest,
                     apiServicesTree.gameEnergyApi.getGameEnergy,
@@ -178,7 +182,7 @@ export function* loginUser(action) {
                 yield put({
                     type: appTypes.SAVE_ENERGY_AMOUNT,
                     payload: gameEnergy.energyAmount
-                })
+                }) */
 
                 // Saving the game content to redux state
                 yield put({

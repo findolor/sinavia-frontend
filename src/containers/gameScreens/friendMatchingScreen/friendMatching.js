@@ -111,7 +111,7 @@ class FriendMatchingScreen extends React.Component {
 
             this.room.removeAllListeners()
 
-            if (this.props.clientInformation.isPremium) {
+            /* if (this.props.clientInformation.isPremium) {
                 setTimeout(() => {
                     navigationReplace(SCENE_KEYS.gameScreens.friendGame, {
                         // These are necessary for the game logic
@@ -156,7 +156,21 @@ class FriendMatchingScreen extends React.Component {
                         console.log(error)
                         this.backButtonOnPress()
                     })
-            }
+            } */
+
+            setTimeout(() => {
+                navigationReplace(SCENE_KEYS.gameScreens.friendGame, {
+                    // These are necessary for the game logic
+                    room: this.room,
+                    client: this.client,
+                    // These can be used in both screens
+                    playerUsername: playerUsername,
+                    playerProfilePicture: playerProfilePicture,
+                    opponentUsername: opponentUsername,
+                    opponentId: opponentId,
+                    opponentProfilePicture: opponentProfilePicture
+                })
+            }, 3000)
         })
     }
 
@@ -171,7 +185,7 @@ class FriendMatchingScreen extends React.Component {
 
         this.room.removeAllListeners()
 
-        if (this.props.clientInformation.isPremium) {
+        /* if (this.props.clientInformation.isPremium) {
             navigationReplace(SCENE_KEYS.gameScreens.soloFriendGameScreen, {
                 // These are necessary for the game logic
                 room: this.room,
@@ -209,7 +223,16 @@ class FriendMatchingScreen extends React.Component {
                     console.log(error)
                     this.backButtonOnPress()
                 })
-        }
+        } */
+
+        navigationReplace(SCENE_KEYS.gameScreens.soloFriendGameScreen, {
+            // These are necessary for the game logic
+            room: this.room,
+            client: this.client,
+            // These can be used in both screens
+            playerUsername: this.props.clientInformation.username,
+            playerProfilePicture: this.props.clientInformation.profilePicture
+        })
     }
 
     backButtonOnPress = () => {
@@ -369,7 +392,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    removeOneEnergy: () => dispatch(appActions.removeOneEnergy())
+    //removeOneEnergy: () => dispatch(appActions.removeOneEnergy())
 })
 
 export default connect(

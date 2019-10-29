@@ -216,8 +216,7 @@ export const postRequest = async (functionName, params) => {
             return renewToken()
         // USER
         case 'postUser':
-            headers.Authorization = 'Bearer ' + params.clientToken
-            return postUser(headers, params)
+            return postUser(params)
         case 'forgotPassword':
             headers.Authorization = 'Bearer ' + params.clientToken
             return forgotPassword(headers, params)
