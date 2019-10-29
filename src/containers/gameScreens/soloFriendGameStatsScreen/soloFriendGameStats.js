@@ -8,7 +8,6 @@ import {
     Dimensions
 } from 'react-native'
 import { navigationReset } from '../../../services/navigationService'
-import { SCENE_KEYS } from '../../../config'
 import styles from './style'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
@@ -26,10 +25,6 @@ import YOU_WIN_LOGO from '../../../assets/gameScreens/win.png'
 import YOU_LOSE_LOGO from '../../../assets/gameScreens/lose.png'
 import DRAW_LOGO from '../../../assets/gameScreens/draw.png'
 import { widthPercentageToDP } from 'react-native-responsive-screen'
-
-const REPLAY_NORMAL_BORDER = '#00D9EF'
-const REPLAY_ACTIVE_BORDER = 'green'
-const REPLAY_DEACTIVE_BORDER = 'red'
 
 class SoloFriendGameStatsScreen extends React.Component {
     constructor(props) {
@@ -225,24 +220,24 @@ class SoloFriendGameStatsScreen extends React.Component {
                 })
             } else questionList = this.props.questionList
 
-            this.setState(
-                {
-                    correctAnswerNumber: playerCorrect,
-                    incorrectAnswerNumber: playerIncorrect,
-                    unansweredAnswerNumber: playerUnanswered,
-                    opponentCorrectAnswerNumber: opponentCorrect,
-                    opponentInorrectAnswerNumber: opponentIncorrect,
-                    opponentUnansweredAnswerNumber: opponentUnanswered,
-                    opponentProfilePicture: opponentProfilePicture,
-                    opponentUsername: opponentUsername,
-                    playerFriendMatchWinCount: playerFriendMatchWinCount,
-                    opponentFriendMatchWinCount: opponentFriendMatchWinCount,
-                    friendMatchesCount: friendMatchesCount,
-                    clientAnswers: clientAnswers,
-                    questionList: questionList
-                },
-                () => console.log(this.state)
-            )
+            this.setState({
+                correctAnswerNumber: playerCorrect,
+                incorrectAnswerNumber: playerIncorrect,
+                unansweredAnswerNumber: playerUnanswered,
+                opponentCorrectAnswerNumber: opponentCorrect,
+                opponentInorrectAnswerNumber: opponentIncorrect,
+                opponentUnansweredAnswerNumber: opponentUnanswered,
+                opponentProfilePicture: opponentProfilePicture,
+                opponentUsername: opponentUsername,
+                playerFriendMatchWinCount: playerFriendMatchWinCount,
+                opponentFriendMatchWinCount: opponentFriendMatchWinCount,
+                friendMatchesCount: friendMatchesCount,
+                clientAnswers: clientAnswers,
+                questionList: questionList
+            })
+
+            this.checkFavouriteStatus()
+
             resolve(true)
         })
     }
@@ -251,7 +246,7 @@ class SoloFriendGameStatsScreen extends React.Component {
         const index = this.props.favouriteQuestions.findIndex(
             x =>
                 x.question.id ===
-                this.props.questionList[this.state.questionPosition - 1].id
+                this.state.questionList[this.state.questionPosition - 1].id
         )
 
         if (index === -1) {

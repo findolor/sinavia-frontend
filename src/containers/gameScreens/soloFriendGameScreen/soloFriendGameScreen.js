@@ -296,7 +296,7 @@ class SoloFriendGameScreen extends React.Component {
                     correctNumber: 0,
                     incorrectNumber: 0,
                     unansweredNumber: 0,
-                    examId: this.state.userStatistics.examId
+                    examId: this.state.playerProps['matchInformation'].examId
                 }
 
                 clientId
