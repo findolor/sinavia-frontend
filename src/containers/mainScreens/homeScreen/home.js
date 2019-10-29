@@ -44,6 +44,7 @@ import firebase from 'react-native-firebase'
 
 import { friendshipServices } from '../../../sagas/friendship/'
 import { friendGameServices } from '../../../sagas/friendGame/'
+import { userScoreServices } from '../../../sagas/userScore'
 import { userServices } from '../../../sagas/user/'
 import { GAME_ENGINE_ENDPOINT } from '../../../config'
 
@@ -103,7 +104,9 @@ class Home extends React.Component {
             friendList: [],
             originalFriends: [],
             // Selected game mode variable
-            selectedGameMode: 'ranked'
+            selectedGameMode: 'ranked',
+            // Selected content total score
+            selectedContentTotalPoints: 0
         }
     }
 
@@ -414,11 +417,31 @@ class Home extends React.Component {
     }
 
     onPressCard(title) {
-        this.setState({
-            isModalVisible: true,
-            subject: title,
-            visibleView: 'GAME_MODES'
-        })
+        this.setState(
+            {
+                isModalVisible: true,
+                subject: title,
+                visibleView: 'GAME_MODES',
+                selectedContentTotalPoints: 0
+            },
+            () => {
+                const contentIds = this.calculateContentIds()
+
+                userScoreServices
+                    .getUserScore(
+                        this.props.clientToken,
+                        this.props.clientDBId,
+                        contentIds.examId,
+                        contentIds.courseId,
+                        contentIds.subjectId
+                    )
+                    .then(userScore => {
+                        this.setState({
+                            selectedContentTotalPoints: userScore.totalPoints
+                        })
+                    })
+            }
+        )
     }
 
     // TODO THINK ABOUT CONTETT LATER IMPORTRRANT
@@ -587,22 +610,65 @@ class Home extends React.Component {
                         <Text style={styles.scoreTextInModal}>
                             Sınavia Puanı:
                         </Text>
-                        <Text style={styles.scoreInModal}> 15400</Text>
+                        <Text style={styles.scoreInModal}>
+                            {this.state.selectedContentTotalPoints}
+                        </Text>
                     </View>
                     <View style={styles.levelProgressBarContainer}>
                         <View style={styles.progressBarView}>
-                            <Text style={styles.levelText}>Seviye {Math.floor(this.levelFinder(6852).level)}</Text>
+                            <Text style={styles.levelText}>
+                                Seviye{' '}
+                                {Math.floor(
+                                    this.levelFinder(
+                                        this.state.selectedContentTotalPoints
+                                    ).level
+                                )}
+                            </Text>
                             <View
                                 style={[
                                     styles.instantProgressView,
                                     {
-                                        width: wp((Math.floor(this.levelFinder(6852).levelProgressScore) / Math.floor(this.levelFinder(6852).levelProgressLimit)) * 65)
+                                        width: wp(
+                                            (Math.floor(
+                                                this.levelFinder(
+                                                    this.state
+                                                        .selectedContentTotalPoints
+                                                ).levelProgressScore
+                                            ) /
+                                                Math.floor(
+                                                    this.levelFinder(
+                                                        this.state
+                                                            .selectedContentTotalPoints !==
+                                                            0
+                                                            ? this.state
+                                                                  .selectedContentTotalPoints
+                                                            : 1
+                                                    ).levelProgressLimit
+                                                )) *
+                                                65
+                                        )
                                     }
                                 ]}
                             />
                             <View style={styles.progressScoreView}>
                                 <Text style={styles.levelInProgressText}>
-                                    {Math.floor(this.levelFinder(6852).levelProgressScore)}/{Math.floor(this.levelFinder(6852).levelProgressLimit)}
+                                    {Math.floor(
+                                        this.levelFinder(
+                                            this.state
+                                                .selectedContentTotalPoints
+                                        ).levelProgressScore
+                                    )}
+                                    /
+                                    {Math.floor(
+                                        this.levelFinder(
+                                            this.state
+                                                .selectedContentTotalPoints !==
+                                                0
+                                                ? this.state
+                                                      .selectedContentTotalPoints
+                                                : 1000
+                                        ).levelProgressLimit
+                                    )}
                                 </Text>
                             </View>
                         </View>
@@ -703,11 +769,6 @@ class Home extends React.Component {
     }
 
     friendRoomOnPress = async () => {
-        this.setState({
-            rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
-            soloModeButtonBorderColor: EMPTY_MODE_COLOR
-        })
-
         /* if (this.props.clientInformation.isPremium) {
             if (Object.keys(this.props.friendIds).length === 0) return
             const friends = await userServices.getUsers(
@@ -737,6 +798,11 @@ class Home extends React.Component {
         } */
 
         if (Object.keys(this.props.friendIds).length === 0) return
+        this.setState({
+            rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
+            soloModeButtonBorderColor: EMPTY_MODE_COLOR
+        })
+
         const friends = await userServices.getUsers(
             this.props.clientToken,
             this.props.friendIds
@@ -1231,41 +1297,37 @@ class Home extends React.Component {
         navigationPush(SCENE_KEYS.mainScreens.notifications)
     }
 
-    /*
-    Change score dynamically for every kind of subject
-    */
+    // Change score dynamically for every kind of subject
     levelFinder = userScore => {
-        let level, levelProgressScore, levelProgressLimit
-        if (userScore<2000) {
-            level = (userScore/500)
-            levelProgressScore = (userScore%500)
+        let level = 1,
+            levelProgressScore = 0,
+            levelProgressLimit = 0
+
+        if (userScore === 0)
+            return { level, levelProgressScore, levelProgressLimit }
+
+        if (userScore < 2000) {
+            level = userScore / 500 + 1
+            levelProgressScore = userScore % 500
             levelProgressLimit = 500
-            return {level, levelProgressScore, levelProgressLimit }
-        }
-        else if (userScore<5000) {
-            level = ((userScore-2000)/750) + 5
-            levelProgressScore = ((userScore-2000)%750)
+        } else if (userScore < 5000) {
+            level = (userScore - 2000) / 750 + 5
+            levelProgressScore = (userScore - 2000) % 750
             levelProgressLimit = 750
-            return {level, levelProgressScore, levelProgressLimit }
-        }
-        else if (userScore<11000) {
-            level = ((userScore-5000)/1000) + 9
-            levelProgressScore = ((userScore-5000)%1000)
+        } else if (userScore < 11000) {
+            level = (userScore - 5000) / 1000 + 9
+            levelProgressScore = (userScore - 5000) % 1000
             levelProgressLimit = 1000
-            return {level, levelProgressScore, levelProgressLimit }
-        }
-        else if (userScore<18500) {
-            level = ((userScore-11000)/1500) + 15
-            levelProgressScore = ((userScore-11000)%1500)
+        } else if (userScore < 20000) {
+            level = (userScore - 11000) / 1500 + 15
+            levelProgressScore = (userScore - 11000) % 1500
             levelProgressLimit = 1500
-            return {level, levelProgressScore, levelProgressLimit }
-        }
-        else {
-            level = ((userScore-18500)/2000) + 20
-            levelProgressScore = ((userScore-18500)%2000)
+        } else {
+            level = (userScore - 20000) / 2000 + 21
+            levelProgressScore = (userScore - 20000) % 2000
             levelProgressLimit = 2000
-            return {level, levelProgressScore, levelProgressLimit }
         }
+        return { level, levelProgressScore, levelProgressLimit }
     }
 
     render() {
