@@ -76,16 +76,31 @@ class Main extends React.Component {
                 break
             case 'TROPHY':
                 finalIndex = 0 - this.state.currentPage
-                this.refs.swiper.scrollBy(finalIndex)
-                break
+                if (finalIndex === 0) {
+                    break
+                }
+                else{
+                    this.refs.swiper.scrollBy(finalIndex)
+                    break
+                }
             case 'HOME':
                 finalIndex = 1 - this.state.currentPage
-                this.refs.swiper.scrollBy(finalIndex)
-                break
+                if (finalIndex === 0) {
+                    break
+                }
+                else{
+                    this.refs.swiper.scrollBy(finalIndex)
+                    break
+                }
             case 'PURCHASE':
                 finalIndex = 2 - this.state.currentPage
-                this.refs.swiper.scrollBy(finalIndex)
-                break
+                if (finalIndex === 0) {
+                    break
+                }
+                else{
+                    this.refs.swiper.scrollBy(finalIndex)
+                    break
+                }
         }
     }
 

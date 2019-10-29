@@ -522,22 +522,22 @@ class Home extends React.Component {
                         <Text style={styles.scoreTextInModal}>
                             Sınavia Puanı:
                         </Text>
-                        <Text style={styles.scoreInModal}> 327</Text>
+                        <Text style={styles.scoreInModal}> 15400</Text>
                     </View>
                     <View style={styles.levelProgressBarContainer}>
                         <View style={styles.progressBarView}>
-                            <Text style={styles.levelText}>Seviye 7</Text>
+                            <Text style={styles.levelText}>Seviye {Math.floor(this.levelFinder(6852).level)}</Text>
                             <View
                                 style={[
                                     styles.instantProgressView,
                                     {
-                                        width: wp((163 / 200) * 65)
+                                        width: wp((Math.floor(this.levelFinder(6852).levelProgressScore) / Math.floor(this.levelFinder(6852).levelProgressLimit)) * 65)
                                     }
                                 ]}
                             />
                             <View style={styles.progressScoreView}>
                                 <Text style={styles.levelInProgressText}>
-                                    163/200
+                                    {Math.floor(this.levelFinder(6852).levelProgressScore)}/{Math.floor(this.levelFinder(6852).levelProgressLimit)}
                                 </Text>
                             </View>
                         </View>
@@ -1151,6 +1151,43 @@ class Home extends React.Component {
         }
 
         navigationPush(SCENE_KEYS.mainScreens.notifications)
+    }
+
+    /*
+    Change score dynamically for every kind of subject
+    */
+    levelFinder = userScore => {
+        let level, levelProgressScore, levelProgressLimit
+        if (userScore<2000) {
+            level = (userScore/500)
+            levelProgressScore = (userScore%500)
+            levelProgressLimit = 500
+            return {level, levelProgressScore, levelProgressLimit }
+        }
+        else if (userScore<5000) {
+            level = ((userScore-2000)/750) + 5
+            levelProgressScore = ((userScore-2000)%750)
+            levelProgressLimit = 750
+            return {level, levelProgressScore, levelProgressLimit }
+        }
+        else if (userScore<11000) {
+            level = ((userScore-5000)/1000) + 9
+            levelProgressScore = ((userScore-5000)%1000)
+            levelProgressLimit = 1000
+            return {level, levelProgressScore, levelProgressLimit }
+        }
+        else if (userScore<18500) {
+            level = ((userScore-11000)/1500) + 15
+            levelProgressScore = ((userScore-11000)%1500)
+            levelProgressLimit = 1500
+            return {level, levelProgressScore, levelProgressLimit }
+        }
+        else {
+            level = ((userScore-18500)/2000) + 20
+            levelProgressScore = ((userScore-18500)%2000)
+            levelProgressLimit = 2000
+            return {level, levelProgressScore, levelProgressLimit }
+        }
     }
 
     render() {
