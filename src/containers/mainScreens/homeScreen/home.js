@@ -41,7 +41,6 @@ import * as Colyseus from 'colyseus.js'
 
 // FCM imports
 import firebase from 'react-native-firebase'
-import { fcmService } from '../../../services/fcmService'
 
 import { friendshipServices } from '../../../sagas/friendship/'
 import { friendGameServices } from '../../../sagas/friendGame/'
@@ -109,17 +108,62 @@ class Home extends React.Component {
     }
 
     async componentDidMount() {
-        await fcmService.checkPermissions()
         await this.fillGameContent()
-        this.messageListener = firebase.messaging().onMessage(message => {
+
+        this.removeMessageListener = firebase.messaging().onMessage(message => {
             console.log(message, 'mes')
-            this.fcmMessagePicker(message)
+            //this.fcmMessagePicker(message)
         })
-        this.NotificationListener = firebase
+        this.removeNotificationListener = firebase
             .notifications()
             .onNotification(notification => {
+                // Create the channel
+                const channel = new firebase.notifications.Android.Channel(
+                    'notification-channel',
+                    'Notification Channel',
+                    firebase.notifications.Android.Importance.Max
+                ).setDescription('Sinavia notification channel')
+                firebase.notifications().android.createChannel(channel)
+
                 console.log(notification, 'not')
+                const tempNotification = new firebase.notifications.Notification()
+                    .setNotificationId(notification.notificationId)
+                    .setTitle(notification.title)
+                    .setBody(notification.body)
+                    .setData(notification.data)
+                tempNotification.android.setChannelId('aaa')
+                tempNotification.android.setSmallIcon('ic_launcher')
+                tempNotification.ios.setBadge(2)
+
+                firebase.notifications().displayNotification(tempNotification)
             })
+
+        // If the app was in foreground or background
+        // This func fires up
+        this.removeNotificationOpenedListener = firebase
+            .notifications()
+            .onNotificationOpened(notificationOpen => {
+                // Get the action triggered by the notification being opened
+                const action = notificationOpen.action
+                // Get information about the notification that was opened
+                const notification = notificationOpen.notification
+                console.log(action, notification, 'app running')
+                this.fcmMessagePicker(notification)
+            })
+        // If the app was closed when the notification is opened
+        // This func fires up
+        if (this.props.notificationOpen) {
+            // App was opened by a notification
+            // Get the action triggered by the notification being opened
+            const action = this.props.notificationOpen.action
+            // Get information about the notification that was opened
+            const notification = this.props.notificationOpen.notification
+            console.log(action, notification, 'app closed')
+            // TODO ACT ON ACTIONS HERE
+            // TODO DECIDE WHAT TO DO
+            this.fcmMessagePicker(notification)
+            this.props.saveNotificationOpen(null)
+        }
     }
 
     fillGameContent = () => {
@@ -133,9 +177,7 @@ class Home extends React.Component {
         })
     }
 
-    componentWillUnmount() {
-        this.messageListener()
-    }
+    componentWillUnmount() {}
 
     fcmMessagePicker = message => {
         switch (message.data.type) {
@@ -224,10 +266,12 @@ class Home extends React.Component {
                     { cancelable: false }
                 )
                 break
-            case 'friendDeleted': {
+            case 'friendDeleted':
                 this.friendDeleted({ opponentId: message.data.userId })
                 break
-            }
+            case 'friendMatchResult':
+                navigationPush(SCENE_KEYS.mainScreens.notifications)
+                break
         }
     }
 
@@ -1258,7 +1302,8 @@ const mapStateToProps = state => ({
     friendIds: state.friends.friendIds,
     examList: state.gameContent.examList,
     isNetworkConnected: state.app.isNetworkConnected,
-    energyAmount: state.app.energyAmount
+    energyAmount: state.app.energyAmount,
+    notificationOpen: state.app.notificationOpen
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -1266,7 +1311,9 @@ const mapDispatchToProps = dispatch => ({
         dispatch(gameContentActions.saveChoosenExam(choosenExam)),
     saveFriendIdList: friendList =>
         dispatch(friendActions.saveFriendIds(friendList)),
-    removeOneEnergy: () => dispatch(appActions.removeOneEnergy())
+    removeOneEnergy: () => dispatch(appActions.removeOneEnergy()),
+    saveNotificationOpen: notificationOpen =>
+        dispatch(appActions.saveNotificationOpen(notificationOpen))
 })
 
 export default connect(

@@ -32,6 +32,16 @@ function firebaseSignIn() {
     })
 }
 
+function getNotificationOpened() {
+    return Promise.resolve().then(async () => {
+        // If we have a notification pressed we get it here
+        const notificationOpen = await firebase
+            .notifications()
+            .getInitialNotification()
+        return notificationOpen
+    })
+}
+
 export function* authenticateUser(action) {
     try {
         try {
@@ -216,9 +226,16 @@ export function* authenticateUser(action) {
             payload: gameEnergy.energyAmount
         })
 
+        const notificationOpen = yield call(getNotificationOpened)
+        yield put({
+            type: appTypes.SAVE_NOTIFICATION_OPEN,
+            payload: notificationOpen
+        })
+
         yield put({
             type: gameContentTypes.GET_ALL_CONTENT,
-            clientToken: action.payload
+            clientToken: action.payload,
+            notificationOpen: notificationOpen
         })
     } catch (error) {
         // If we get unauthorized from api
@@ -392,9 +409,16 @@ export function* authenticateUser(action) {
                 payload: gameEnergy.energyAmount
             })
 
+            const notificationOpen = yield call(getNotificationOpened)
+            yield put({
+                type: appTypes.SAVE_NOTIFICATION_OPEN,
+                payload: notificationOpen
+            })
+
             yield put({
                 type: gameContentTypes.GET_ALL_CONTENT,
-                clientToken: res.token
+                clientToken: res.token,
+                notificationOpen: notificationOpen
             })
         } catch (error) {
             console.log(error)

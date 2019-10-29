@@ -248,7 +248,7 @@ class PurchaseScreen extends React.Component {
                         <Swiper loop={false}
                                 paginationStyle={{ bottom: hp(0.25) }}
                                 activeDotColor={'#00D9EF'}
-                                removeClippedSubviews={false}>
+                                >
                             <View style={styles.swiperView}>
                                 <TouchableOpacity style={styles.bundleView}>
                                     <View style={styles.totalJokerAmountView}>
