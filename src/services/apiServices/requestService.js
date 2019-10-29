@@ -44,6 +44,7 @@ import {
     updateUser
 } from './user'
 import { getUserJokers } from './userJoker'
+import { getUserScore } from './userScore'
 
 export const apiServicesTree = {
     favouriteQuestionApi: {
@@ -107,6 +108,9 @@ export const apiServicesTree = {
     },
     userJokerApi: {
         getUserJokers: 'getUserJokers'
+    },
+    userScoreApi: {
+        getUserScore: 'getUserScore'
     }
 }
 
@@ -192,6 +196,10 @@ export const getRequest = async (functionName, params) => {
         case 'getUserJokers':
             headers.Authorization = 'Bearer ' + params.clientToken
             return getUserJokers(headers, params)
+        // USER SCORE
+        case 'getUserScore':
+            headers.Authorization = 'Bearer ' + params.clientToken
+            return getUserScore(headers, params)
     }
 }
 

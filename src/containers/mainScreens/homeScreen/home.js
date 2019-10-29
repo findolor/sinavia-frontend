@@ -44,6 +44,7 @@ import firebase from 'react-native-firebase'
 
 import { friendshipServices } from '../../../sagas/friendship/'
 import { friendGameServices } from '../../../sagas/friendGame/'
+import { userScoreServices } from '../../../sagas/userScore'
 import { userServices } from '../../../sagas/user/'
 import { GAME_ENGINE_ENDPOINT } from '../../../config'
 
@@ -59,6 +60,8 @@ import {
     SCENE_KEYS,
     navigationReplace
 } from '../../../services/navigationService'
+
+import { levelFinder } from '../../../services/userLevelFinder'
 
 import SWORD from '../../../assets/sword.png'
 const carouselFirstItem = 0
@@ -103,7 +106,9 @@ class Home extends React.Component {
             friendList: [],
             originalFriends: [],
             // Selected game mode variable
-            selectedGameMode: 'ranked'
+            selectedGameMode: 'ranked',
+            // Selected content total score
+            selectedContentTotalPoints: 0
         }
     }
 
@@ -414,11 +419,31 @@ class Home extends React.Component {
     }
 
     onPressCard(title) {
-        this.setState({
-            isModalVisible: true,
-            subject: title,
-            visibleView: 'GAME_MODES'
-        })
+        this.setState(
+            {
+                isModalVisible: true,
+                subject: title,
+                visibleView: 'GAME_MODES',
+                selectedContentTotalPoints: 0
+            },
+            () => {
+                const contentIds = this.calculateContentIds()
+
+                userScoreServices
+                    .getUserScore(
+                        this.props.clientToken,
+                        this.props.clientDBId,
+                        contentIds.examId,
+                        contentIds.courseId,
+                        contentIds.subjectId
+                    )
+                    .then(userScore => {
+                        this.setState({
+                            selectedContentTotalPoints: userScore.totalPoints
+                        })
+                    })
+            }
+        )
     }
 
     // TODO THINK ABOUT CONTETT LATER IMPORTRRANT
@@ -587,22 +612,65 @@ class Home extends React.Component {
                         <Text style={styles.scoreTextInModal}>
                             Sınavia Puanı:
                         </Text>
-                        <Text style={styles.scoreInModal}> 327</Text>
+                        <Text style={styles.scoreInModal}>
+                            {this.state.selectedContentTotalPoints}
+                        </Text>
                     </View>
                     <View style={styles.levelProgressBarContainer}>
                         <View style={styles.progressBarView}>
-                            <Text style={styles.levelText}>Seviye 7</Text>
+                            <Text style={styles.levelText}>
+                                Seviye{' '}
+                                {Math.floor(
+                                    levelFinder(
+                                        this.state.selectedContentTotalPoints
+                                    ).level
+                                )}
+                            </Text>
                             <View
                                 style={[
                                     styles.instantProgressView,
                                     {
-                                        width: wp((163 / 200) * 65)
+                                        width: wp(
+                                            (Math.floor(
+                                                levelFinder(
+                                                    this.state
+                                                        .selectedContentTotalPoints
+                                                ).levelProgressScore
+                                            ) /
+                                                Math.floor(
+                                                    levelFinder(
+                                                        this.state
+                                                            .selectedContentTotalPoints !==
+                                                            0
+                                                            ? this.state
+                                                                  .selectedContentTotalPoints
+                                                            : 1
+                                                    ).levelProgressLimit
+                                                )) *
+                                                65
+                                        )
                                     }
                                 ]}
                             />
                             <View style={styles.progressScoreView}>
                                 <Text style={styles.levelInProgressText}>
-                                    163/200
+                                    {Math.floor(
+                                        levelFinder(
+                                            this.state
+                                                .selectedContentTotalPoints
+                                        ).levelProgressScore
+                                    )}
+                                    /
+                                    {Math.floor(
+                                        levelFinder(
+                                            this.state
+                                                .selectedContentTotalPoints !==
+                                                0
+                                                ? this.state
+                                                      .selectedContentTotalPoints
+                                                : 1000
+                                        ).levelProgressLimit
+                                    )}
                                 </Text>
                             </View>
                         </View>
@@ -703,11 +771,6 @@ class Home extends React.Component {
     }
 
     friendRoomOnPress = async () => {
-        this.setState({
-            rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
-            soloModeButtonBorderColor: EMPTY_MODE_COLOR
-        })
-
         /* if (this.props.clientInformation.isPremium) {
             if (Object.keys(this.props.friendIds).length === 0) return
             const friends = await userServices.getUsers(
@@ -737,6 +800,11 @@ class Home extends React.Component {
         } */
 
         if (Object.keys(this.props.friendIds).length === 0) return
+        this.setState({
+            rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
+            soloModeButtonBorderColor: EMPTY_MODE_COLOR
+        })
+
         const friends = await userServices.getUsers(
             this.props.clientToken,
             this.props.friendIds
