@@ -12,7 +12,13 @@ export default StyleSheet.create({
         backgroundColor: '#fcfcfc'
     },
     premiumContainer: {
-        flex: 43,
+        flex: 33.5,
+        width: wp(100),
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    socialMediaContainer: {
+        flex: 9.5,
         width: wp(100),
         justifyContent: 'flex-end',
         alignItems: 'center'
@@ -39,7 +45,7 @@ export default StyleSheet.create({
     },
     premiumUpperView: {
         zIndex: 1,
-        height: hp(34),
+        height: hp(24.5),
         width: wp(93),
         borderWidth: hp(0.4),
         borderColor: '#CC7A00',
@@ -51,12 +57,15 @@ export default StyleSheet.create({
         zIndex: 1,
         height: hp(9),
         width: wp(93),
+        backgroundColor: '#F3CE97',
         borderBottomWidth: hp(0.4),
         borderLeftWidth: hp(0.4),
         borderRightWidth: hp(0.4),
         borderColor: '#CC7A00',
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
         overflow: 'hidden'
     },
     adContainer: {
@@ -89,15 +98,8 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     linearGradientUpperView: {
-        height: hp(34),
+        height: hp(24.5),
         width: wp(93)
-    },
-    linearGradientBottomView: {
-        height: hp(9),
-        width: wp(93),
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F3CE97'
     },
     swiperView: {
         height: hp(21),
@@ -255,21 +257,25 @@ export default StyleSheet.create({
         fontFamily: 'Averta-ExtraBold',
         fontSize: hp(2.5),
         textAlign: 'center',
-        color: 'white',
+        color: 'black',
         marginBottom: hp(0.25)
     },
     premiumSwiperContainer: {
+        height: hp(17.5),
+        width: wp(93)
+    },
+    premiumModalSwiperContainer: {
         height: hp(26),
         width: wp(93)
     },
     premiumButtonView: {
-        height: hp(9),
+        height: hp(7),
         width: wp(93),
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
     premiumButton: {
-        height: hp(5.75),
+        height: hp(5),
         width: wp(75),
         justifyContent: 'center',
         alignItems: 'center',
@@ -285,40 +291,80 @@ export default StyleSheet.create({
         color: 'white'
     },
     premiumSwiperView: {
+        height: hp(17.5),
+        width: wp(93),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    premiumModalSwiperView: {
         height: hp(26),
         width: wp(93),
         justifyContent: 'center',
         alignItems: 'center'
     },
     premiumSwiperImgView: {
+        height: hp(7.5),
+        width: wp(93),
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    premiumModalSwiperImgView: {
         height: hp(11),
         width: wp(93),
         justifyContent: 'flex-end',
         alignItems: 'center'
     },
     premiumSwiperHeaderView: {
+        height: hp(4.5),
+        width: wp(93),
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    premiumModalSwiperHeaderView: {
         height: hp(7),
         width: wp(93),
         justifyContent: 'flex-end',
         alignItems: 'center'
     },
     premiumSwiperInfoView: {
+        height: hp(5.5),
+        width: wp(55),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    premiumModalSwiperInfoView: {
         height: hp(8),
         width: wp(65),
         justifyContent: 'center',
         alignItems: 'center'
     },
     premiumImg: {
+        height: hp(6.5),
+        width: hp(6.5)
+    },
+    premiumModalImg: {
         height: hp(8),
         width: hp(8)
     },
     premiumHeaderText: {
         fontFamily: 'Averta-Bold',
-        fontSize: hp(4),
+        fontSize: hp(3),
         textAlign: 'center',
         color: 'black'
     },
+    premiumModalHeaderText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(3),
+        textAlign: 'center',
+        color: '#FF9900'
+    },
     premiumInfoText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(1.8),
+        textAlign: 'center',
+        color: '#303030'
+    },
+    premiumModalInfoText: {
         fontFamily: 'Averta-Regular',
         fontSize: hp(2.2),
         textAlign: 'center',
@@ -409,7 +455,6 @@ export default StyleSheet.create({
         borderRadius: 10,
         borderColor: '#D27E00',
         overflow: 'hidden',
-        backgroundColor: 'red',
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -435,12 +480,6 @@ export default StyleSheet.create({
         width: wp(93),
         justifyContent: 'flex-start',
         alignItems: 'center'
-    },
-    premiumModalHeaderText: {
-        fontFamily: 'Averta-Bold',
-        fontSize: hp(3),
-        textAlign: 'center',
-        color: '#FF9900'
     },
     purchasePremiumButton: {
         height: hp(6),
@@ -559,5 +598,46 @@ export default StyleSheet.create({
         fontSize: hp(1.4),
         textAlign: 'center',
         color: '#818181'
+    },
+    socialMediaView: {
+        height: hp(8),
+        width: wp(93),
+        backgroundColor: '#FF9900',
+        borderRadius: 10,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    socialMediaLogosView: {
+        height: hp(8),
+        width: wp(16),
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    socialMediaInfoView: {
+        height: hp(8),
+        width: wp(40),
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: wp(2.5)
+    },
+    socialMediaLogoCircle: {
+        height: hp(6),
+        width: hp(6),
+        backgroundColor: 'white',
+        borderRadius: 100,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    socialMediaInfoText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(1.5),
+        textAlign: 'center',
+        color: 'white'
+    },
+    socialMediaLogo: {
+        resizeMode: 'contain',
+        height: hp(3)
     }
 })
