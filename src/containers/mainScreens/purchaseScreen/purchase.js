@@ -27,7 +27,15 @@ import JOKER_1 from '../../../assets/gameScreens/jokers/secondChance.png'
 import JOKER_2 from '../../../assets/gameScreens/jokers/fiftyFifty.png'
 import JOKER_3 from '../../../assets/gameScreens/jokers/opponentsAnswer.png'
 
+import INSTAGRAM_LOGO from '../../../assets/instagram_logo.png'
+import TWITTER_LOGO from '../../../assets/twitter_logo.png'
+import FACEBOOK_LOGO from '../../../assets/facebook_logo.png'
+
 import PREMIUM_ADS from '../../../assets/premiumAds.png'
+
+const instagram_page = 'https://www.instagram.com/sinavia.app/'
+const twitter_page = 'https://twitter.com/sinavia'
+const facebook_page = 'https://www.facebook.com/sinaviaapp'
 
 class PurchaseScreen extends React.Component {
     constructor(props) {
@@ -82,69 +90,69 @@ class PurchaseScreen extends React.Component {
                             this.closePremiumView()
                         }} style={ {height: hp(120), width: wp(100)}}/>
                         <View style={styles.premiumModalView}>
-                            <LinearGradient colors={['white', 'white', '#FFA800']} style={styles.linearGradientPremiumModalView}>
+                            <LinearGradient colors={['white', '#FFE6BB', '#FFA800']} style={styles.linearGradientPremiumModalView}>
                                 <View style={styles.premiumModalHeaderView}>
                                     <Text style={styles.premiumModalHeaderText}>ELİT ÖĞRENCİ PAKETİ</Text>
                                 </View>
-                                <View style={styles.premiumSwiperContainer}>
+                                <View style={styles.premiumModalSwiperContainer}>
                                     <Swiper autoplay={true}
                                             loop={true}
                                             loadMinimal={false}
                                             showsPagination={false}
                                             scrollEnabled={false}>
-                                        <View style={styles.premiumSwiperView}>
-                                            <View style={styles.premiumSwiperImgView}>
-                                                <Image source={PREMIUM_ADS} style={styles.premiumImg}/>
+                                        <View style={styles.premiumModalSwiperView}>
+                                            <View style={styles.premiumModalSwiperImgView}>
+                                                <Image source={PREMIUM_ADS} style={styles.premiumModalImg}/>
                                             </View>
-                                            <View style={styles.premiumSwiperHeaderView}>
-                                                <Text style={styles.premiumHeaderText}>Reklam Yok!</Text>
+                                            <View style={styles.premiumModalSwiperHeaderView}>
+                                                <Text style={styles.premiumModalHeaderText}>Reklam Yok!</Text>
                                             </View>
-                                            <View style={[styles.premiumSwiperInfoView, {justifyContent: 'flex-start'}]}>
-                                                <Text style={[styles.premiumInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
-                                            </View>
-                                        </View>
-                                        <View style={styles.premiumSwiperView}>
-                                            <View style={styles.premiumSwiperImgView}>
-                                                <Image source={PREMIUM_ADS} style={styles.premiumImg}/>
-                                            </View>
-                                            <View style={styles.premiumSwiperHeaderView}>
-                                                <Text style={styles.premiumHeaderText}>Reklam Yok!</Text>
-                                            </View>
-                                            <View style={[styles.premiumSwiperInfoView, {justifyContent: 'flex-start'}]}>
-                                                <Text style={[styles.premiumInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                            <View style={[styles.premiumModalSwiperInfoView, {justifyContent: 'flex-start'}]}>
+                                                <Text style={[styles.premiumModalInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
                                             </View>
                                         </View>
-                                        <View style={styles.premiumSwiperView}>
-                                            <View style={styles.premiumSwiperImgView}>
-                                                <Image source={PREMIUM_ADS} style={styles.premiumImg}/>
+                                        <View style={styles.premiumModalSwiperView}>
+                                            <View style={styles.premiumModalSwiperImgView}>
+                                                <Image source={PREMIUM_ADS} style={styles.premiumModalImg}/>
                                             </View>
-                                            <View style={styles.premiumSwiperHeaderView}>
-                                                <Text style={styles.premiumHeaderText}>Reklam Yok!</Text>
+                                            <View style={styles.premiumModalSwiperHeaderView}>
+                                                <Text style={styles.premiumModalHeaderText}>Reklam Yok!</Text>
                                             </View>
-                                            <View style={[styles.premiumSwiperInfoView, {justifyContent: 'flex-start'}]}>
-                                                <Text style={[styles.premiumInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
-                                            </View>
-                                        </View>
-                                        <View style={styles.premiumSwiperView}>
-                                            <View style={styles.premiumSwiperImgView}>
-                                                <Image source={PREMIUM_ADS} style={styles.premiumImg}/>
-                                            </View>
-                                            <View style={styles.premiumSwiperHeaderView}>
-                                                <Text style={styles.premiumHeaderText}>Reklam Yok!</Text>
-                                            </View>
-                                            <View style={[styles.premiumSwiperInfoView, {justifyContent: 'flex-start'}]}>
-                                                <Text style={[styles.premiumInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                            <View style={[styles.premiumModalSwiperInfoView, {justifyContent: 'flex-start'}]}>
+                                                <Text style={[styles.premiumModalInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
                                             </View>
                                         </View>
-                                        <View style={styles.premiumSwiperView}>
-                                            <View style={styles.premiumSwiperImgView}>
-                                                <Image source={PREMIUM_ADS} style={styles.premiumImg}/>
+                                        <View style={styles.premiumModalSwiperView}>
+                                            <View style={styles.premiumModalSwiperImgView}>
+                                                <Image source={PREMIUM_ADS} style={styles.premiumModalImg}/>
                                             </View>
-                                            <View style={styles.premiumSwiperHeaderView}>
-                                                <Text style={styles.premiumHeaderText}>Reklam Yok!</Text>
+                                            <View style={styles.premiumModalSwiperHeaderView}>
+                                                <Text style={styles.premiumModalHeaderText}>Reklam Yok!</Text>
                                             </View>
-                                            <View style={[styles.premiumSwiperInfoView, {justifyContent: 'flex-start'}]}>
-                                                <Text style={[styles.premiumInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                            <View style={[styles.premiumModalSwiperInfoView, {justifyContent: 'flex-start'}]}>
+                                                <Text style={[styles.premiumModalInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                            </View>
+                                        </View>
+                                        <View style={styles.premiumModalSwiperView}>
+                                            <View style={styles.premiumModalSwiperImgView}>
+                                                <Image source={PREMIUM_ADS} style={styles.premiumModalImg}/>
+                                            </View>
+                                            <View style={styles.premiumModalSwiperHeaderView}>
+                                                <Text style={styles.premiumModalHeaderText}>Reklam Yok!</Text>
+                                            </View>
+                                            <View style={[styles.premiumModalSwiperInfoView, {justifyContent: 'flex-start'}]}>
+                                                <Text style={[styles.premiumModalInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                            </View>
+                                        </View>
+                                        <View style={styles.premiumModalSwiperView}>
+                                            <View style={styles.premiumModalSwiperImgView}>
+                                                <Image source={PREMIUM_ADS} style={styles.premiumModalImg}/>
+                                            </View>
+                                            <View style={styles.premiumModalSwiperHeaderView}>
+                                                <Text style={styles.premiumModalHeaderText}>Reklam Yok!</Text>
+                                            </View>
+                                            <View style={[styles.premiumModalSwiperInfoView, {justifyContent: 'flex-start'}]}>
+                                                <Text style={[styles.premiumModalInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
                                             </View>
                                         </View>
                                     </Swiper>
@@ -445,11 +453,31 @@ class PurchaseScreen extends React.Component {
                         </LinearGradient>
                     </View>
                     <TouchableOpacity style={styles.premiumBottomView}>
-                        <View style={styles.linearGradientBottomView}>
                             <Text style={styles.inviteText}>Arkadaşını davet et</Text>
                             <Text style={styles.earnPremiumWithInviteText}>1 Haftalık Elit Öğrenci Paketi Kazan!</Text>
-                        </View>
                     </TouchableOpacity>
+                </View>
+                <View style={styles.socialMediaContainer}>
+                    <View style={styles.socialMediaView}>
+                        <View style={styles.socialMediaLogosView}>
+                            <TouchableOpacity onPress={() => Linking.openURL(instagram_page)} style={styles.socialMediaLogoCircle}>
+                                <Image source={INSTAGRAM_LOGO} style={styles.socialMediaLogo}/>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.socialMediaLogosView}>
+                            <TouchableOpacity onPress={() => Linking.openURL(twitter_page)} style={styles.socialMediaLogoCircle}>
+                                <Image source={TWITTER_LOGO} style={styles.socialMediaLogo}/>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.socialMediaLogosView}>
+                            <TouchableOpacity onPress={() => Linking.openURL(facebook_page)} style={styles.socialMediaLogoCircle}>
+                                <Image source={FACEBOOK_LOGO} style={styles.socialMediaLogo}/>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.socialMediaInfoView}>
+                            <Text style={styles.socialMediaInfoText}>Sosyal medya hesaplarımızı takip ederek ödülleri ve en güncel haberleri kaçırma!</Text>
+                        </View>
+                    </View>
                 </View>
                 <View style={styles.yourPremiumAndJokersContainer}>
                     <View style={styles.yourPremiumContainer}>
