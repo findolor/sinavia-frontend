@@ -211,7 +211,8 @@ export function* authenticateUser(action) {
             }) */
         }
 
-        // We get the user's game energy info
+        // This will be used later on
+        /* // We get the user's game energy info
         let gameEnergy = yield call(
             makeGetRequest,
             apiServicesTree.gameEnergyApi.getGameEnergy,
@@ -224,7 +225,7 @@ export function* authenticateUser(action) {
         yield put({
             type: appTypes.SAVE_ENERGY_AMOUNT,
             payload: gameEnergy.energyAmount
-        })
+        }) */
 
         const notificationOpen = yield call(getNotificationOpened)
         yield put({
@@ -394,7 +395,8 @@ export function* authenticateUser(action) {
                 })
             }
 
-            // We get the user's game energy info
+            // These will be used later on
+            /* // We get the user's game energy info
             let gameEnergy = yield call(
                 makeGetRequest,
                 apiServicesTree.gameEnergyApi.getGameEnergy,
@@ -407,7 +409,7 @@ export function* authenticateUser(action) {
             yield put({
                 type: appTypes.SAVE_ENERGY_AMOUNT,
                 payload: gameEnergy.energyAmount
-            })
+            }) */
 
             const notificationOpen = yield call(getNotificationOpened)
             yield put({

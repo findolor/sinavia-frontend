@@ -3,7 +3,7 @@ export const INITIAL_STATE = {
     leaderboardUserList: null,
     clientRanking: null,
     userNotificationList: null,
-    energyAmount: null,
+    //energyAmount: null,
     buttonLock: false,
     notificationOpen: {}
 }

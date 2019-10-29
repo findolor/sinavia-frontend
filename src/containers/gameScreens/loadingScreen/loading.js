@@ -16,7 +16,7 @@ import {
 import { GAME_ENGINE_ENDPOINT, SCENE_KEYS } from '../../../config'
 import { connect } from 'react-redux'
 import { appActions } from '../../../redux/app/actions'
-import { gameEnergyServices } from '../../../sagas/gameEnergy/'
+//import { gameEnergyServices } from '../../../sagas/gameEnergy/'
 import { wp, hp } from '../../splashScreen/style'
 import BACK_BUTTON from '../../../assets/return.png'
 
@@ -103,7 +103,31 @@ class LoadingScreen extends React.Component {
             this.room.removeAllListeners()
             clearTimeout(this.botTimeout)
 
-            if (this.props.clientInformation.isPremium) {
+            navigationReplace(SCENE_KEYS.gameScreens.rankedMatchingScreen, {
+                // These are necessary for the game logic
+                room: this.room,
+                client: this.client,
+                // These can be used in both screens
+                playerUsername: playerUsername,
+                playerProfilePicture: playerProfilePicture,
+                playerCoverPicture: playerCoverPicture,
+                opponentUsername: opponentUsername,
+                opponentId: opponentId,
+                opponentProfilePicture: opponentProfilePicture,
+                opponentCoverPicture: opponentCoverPicture,
+                // These are used in the match intro screen
+                courseName: this.props.gameContentMap.courses[
+                    this.props.courseId - 1
+                ].name,
+                subjectName: this.props.gameContentMap.subjects[
+                    this.props.subjectId - 1
+                ].name,
+                clientPoints: playerTotalPoints,
+                opponentPoints: opponentTotalPoints
+            })
+
+            // If we use energy
+            /* if (this.props.clientInformation.isPremium) {
                 navigationReplace(SCENE_KEYS.gameScreens.rankedMatchingScreen, {
                     // These are necessary for the game logic
                     room: this.room,
@@ -166,7 +190,7 @@ class LoadingScreen extends React.Component {
                         console.log(error)
                         this.backButtonOnPress()
                     })
-            }
+            } */
         })
     }
 
@@ -211,7 +235,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    removeOneEnergy: () => dispatch(appActions.removeOneEnergy())
+    //removeOneEnergy: () => dispatch(appActions.removeOneEnergy())
 })
 
 export default connect(

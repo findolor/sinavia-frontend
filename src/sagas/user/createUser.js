@@ -79,7 +79,8 @@ export function* createUser(action) {
             payload: res
         })
 
-        // We get the user's game energy info
+        // This will be used later on
+        /* // We get the user's game energy info
         let gameEnergy = yield call(
             makeGetRequest,
             apiServicesTree.gameEnergyApi.getGameEnergy,
@@ -92,7 +93,7 @@ export function* createUser(action) {
         yield put({
             type: appTypes.SAVE_ENERGY_AMOUNT,
             payload: gameEnergy.energyAmount
-        })
+        }) */
 
         // This action will navigate to main screen
         yield put({

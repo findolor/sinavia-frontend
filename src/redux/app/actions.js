@@ -6,8 +6,8 @@ export const appTypes = {
     GET_NOTIFICATIONS: 'get_notifications',
     SAVE_NOTIFICATIONS: 'save_notifications',
     REMOVE_FROM_NOTIFICATIONS: 'remove_from_notifications',
-    REMOVE_ONE_ENERGY: 'remove_one_energy',
-    SAVE_ENERGY_AMOUNT: 'save_energy_amount',
+    /* REMOVE_ONE_ENERGY: 'remove_one_energy',
+    SAVE_ENERGY_AMOUNT: 'save_energy_amount', */
     LOCK_UNLOCK_BUTTON: 'lock_unlock_button',
     SAVE_NOTIFICATION_OPEN: 'save_notification_open'
 }
@@ -44,11 +44,11 @@ const removeFromNotifications = index => {
     }
 }
 
-const removeOneEnergy = () => {
+/* const removeOneEnergy = () => {
     return {
         type: appTypes.REMOVE_ONE_ENERGY
     }
-}
+} */
 
 const lockUnlockButton = () => {
     return {
@@ -68,7 +68,7 @@ export const appActions = {
     getLeaderboard: getLeaderboard,
     getNotifications: getNotifications,
     removeFromNotifications: removeFromNotifications,
-    removeOneEnergy: removeOneEnergy,
+    //removeOneEnergy: removeOneEnergy,
     lockUnlockButton: lockUnlockButton,
     saveNotificationOpen: saveNotificationOpen
 }
