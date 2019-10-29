@@ -29,14 +29,6 @@ export function* acceptFriendshipRequestSaga(action) {
     )
 
     if (response.success) {
-        yield put({
-            type: friendTypes.CHANGE_FRIENDSHIP_STATUS,
-            friendshipStatus: 'alreadyFriend'
-        })
-        yield put({
-            type: friendTypes.CHANGE_IS_FRIEND_REQUEST_SENT,
-            isFriendRequestSent: false
-        })
         action.friendIds.push(action.friendId)
         yield put({
             type: friendTypes.SAVE_FRIEND_IDS,

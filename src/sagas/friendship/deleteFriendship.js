@@ -29,11 +29,6 @@ export function* deleteFriendshipRequestSaga(action) {
     )
 
     if (response.success) {
-        yield put({
-            type: friendTypes.CHANGE_FRIENDSHIP_STATUS,
-            friendshipStatus: 'addFriend'
-        })
-
         let index = action.friendIds.indexOf(action.friendId)
         action.friendIds.splice(index, 1)
 
