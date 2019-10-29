@@ -6,7 +6,6 @@ export const friendTypes = {
     ACCEPT_FRIENDSHIP_REQUEST: 'accept_friendship_request',
     SEND_FRIENDSHIP_REQUEST: 'send_friendship_request',
     DELETE_FRIENDSHIP_REQUEST: 'delete_friendship_request',
-    CHANGE_FRIENDSHIP_STATUS: 'change_friendship_status',
     CHANGE_IS_FRIEND_REQUEST_SENT: 'change_is_friend_request_sent',
     REJECT_FRIENDSHIP_REQUEST: 'reject_friendship_request'
 }
@@ -77,20 +76,6 @@ const deleteFriendRequest = (
     }
 }
 
-const changeFriendshipStatus = friendshipStatus => {
-    return {
-        type: friendTypes.CHANGE_FRIENDSHIP_STATUS,
-        friendshipStatus: friendshipStatus
-    }
-}
-
-const changeIsFriendRequestSent = isFriendRequestSent => {
-    return {
-        type: friendTypes.CHANGE_IS_FRIEND_REQUEST_SENT,
-        isFriendRequestSent: isFriendRequestSent
-    }
-}
-
 const rejectFriendshipRequest = (
     clientToken,
     userId,
@@ -113,7 +98,5 @@ export const friendActions = {
     sendFriendRequest: sendFriendRequest,
     acceptFriendRequest: acceptFriendRequest,
     deleteFriendRequest: deleteFriendRequest,
-    changeFriendshipStatus: changeFriendshipStatus,
-    changeIsFriendRequestSent: changeIsFriendRequestSent,
     rejectFriendshipRequest: rejectFriendshipRequest
 }
