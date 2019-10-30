@@ -67,8 +67,8 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#00D9EF',
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10
     },
     questionsContainer: {
         height: hp(22.5),
@@ -76,8 +76,8 @@ export default StyleSheet.create({
         paddingHorizontal: wp(3),
         borderWidth: wp(0.6),
         borderColor: '#00D9EF',
-        borderBottomLeftRadius: 30,
-        borderBottomRightRadius: 30,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10
     },
     contentText: {
         fontFamily: 'Averta-Semibold',
@@ -89,7 +89,7 @@ export default StyleSheet.create({
         width: wp(30),
         borderWidth: wp(0.3),
         borderColor: '#00D9EF',
-        borderRadius: 15,
+        borderRadius: 10,
         marginTop: hp(1.35),
         marginRight: wp(5)
     },
@@ -116,9 +116,20 @@ export default StyleSheet.create({
     },
     galleryView: {
         flex: 1,
+        width: wp(100),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    questionInModalView: {
+        flex: 1,
         width: wp(90),
-        backgroundColor: 'white',
-        borderRadius: 30
+        borderRadius: 30,
+        backgroundColor: 'white'
+    },
+    questionInModal: {
+        resizeMode: 'contain',
+        flex: 1,
+        width: wp(90)
     },
     answerContainer: {
         height: hp(15),

@@ -8,9 +8,9 @@ import FriendGameStatsScreen from './friendGameStatsScreen/friendGameStats'
 import GroupGameStatsScreen from './groupGameStatsScreen/groupGameStats'
 import FriendGame from './friendGameScreen/friendGame'
 import SoloFriendGameScreen from './soloFriendGameScreen/soloFriendGameScreen'
+import SoloFriendGameStatsScreen from './soloFriendGameStatsScreen/soloFriendGameStats'
 import SoloModeLoadingScreen from './soloModeLoadingScreen/soloModeLoadingScreen'
 import SoloModeGameScreen from './soloModeGameScreen/soloModeGameScreen'
-import SoloFriendGameStatsScreen from './soloFriendGameStatsScreen/soloFriendGameStats'
 
 export {
     RankedGame,
