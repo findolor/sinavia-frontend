@@ -509,7 +509,7 @@ class Home extends React.Component {
         this.setState({
             isModalVisible: false,
             friendSelected: false,
-            opponentUserPic: '',
+            opponentUserPic: null,
             opponentName: '',
             opponentUsername: '',
             opponentInformation: {},

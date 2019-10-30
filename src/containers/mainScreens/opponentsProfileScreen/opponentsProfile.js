@@ -51,8 +51,6 @@ class OpponentsProfile extends React.Component {
             totalFriendMatchesCount: this.props.totalFriendMatchesCount,
             clientWinCount: this.props.clientWinCount,
             opponentWinCount: this.props.opponentWinCount,
-            // See if we deleted the friend
-            isFriendDeleted: false,
             // Friend search text
             searchText: '',
             // Friendship status
@@ -86,14 +84,8 @@ class OpponentsProfile extends React.Component {
         }
     }
 
-    // TODO this doesn't refresh the screen upon popping
-    // TODO Take a close look here
     backButtonOnPress = () => {
-        if (
-            !this.props.isWithSearchBar &&
-            this.state.isFriendDeleted &&
-            !this.props.isFromOpponentScreen
-        ) {
+        if (!this.props.isWithSearchBar && !this.props.isFromOpponentScreen) {
             this.props.removeFromOpponentList()
             navigationPop(true, {
                 popScreen: SCENE_KEYS.mainScreens.friendsList,
@@ -155,7 +147,6 @@ class OpponentsProfile extends React.Component {
             friendshipStatus: 'addFriend'
         })
         this.props.subtractFromFriendsList(this.props.opponentInformation)
-        this.setState({ isFriendDeleted: true })
     }
 
     friendshipStatusOnPress = () => {
