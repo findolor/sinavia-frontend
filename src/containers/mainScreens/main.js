@@ -47,39 +47,38 @@ class Main extends React.Component {
             })
             return
         }
-        console.log(pageName)
+
         let finalIndex
         switch (pageName) {
             case 0:
-                this.setState({ currentPage: 0,
+                this.setState({
+                    currentPage: 0,
                     trophyIconSelected: true,
                     homeIconSelected: false,
-                    jokerIconSelected: false})
-                console.log('FinalIndex --> ' + finalIndex)
-                console.log('Current Page -->' + this.state.currentPage)
+                    jokerIconSelected: false
+                })
                 break
             case 1:
-                this.setState({ currentPage: 1,
+                this.setState({
+                    currentPage: 1,
                     trophyIconSelected: false,
                     homeIconSelected: true,
-                    jokerIconSelected: false})
-                console.log('FinalIndex --> ' + finalIndex)
-                console.log('Current Page -->' + this.state.currentPage)
+                    jokerIconSelected: false
+                })
                 break
             case 2:
-                this.setState({ currentPage: 2,
+                this.setState({
+                    currentPage: 2,
                     trophyIconSelected: false,
                     homeIconSelected: false,
-                    jokerIconSelected: true})
-                console.log('FinalIndex --> ' + finalIndex)
-                console.log('Current Page -->' + this.state.currentPage)
+                    jokerIconSelected: true
+                })
                 break
             case 'TROPHY':
                 finalIndex = 0 - this.state.currentPage
                 if (finalIndex === 0) {
                     break
-                }
-                else{
+                } else {
                     this.refs.swiper.scrollBy(finalIndex)
                     break
                 }
@@ -87,8 +86,7 @@ class Main extends React.Component {
                 finalIndex = 1 - this.state.currentPage
                 if (finalIndex === 0) {
                     break
-                }
-                else{
+                } else {
                     this.refs.swiper.scrollBy(finalIndex)
                     break
                 }
@@ -96,8 +94,7 @@ class Main extends React.Component {
                 finalIndex = 2 - this.state.currentPage
                 if (finalIndex === 0) {
                     break
-                }
-                else{
+                } else {
                     this.refs.swiper.scrollBy(finalIndex)
                     break
                 }
@@ -117,7 +114,8 @@ class Main extends React.Component {
                         loop={false}
                         showsPagination={false}
                         loadMinimal={true}
-                        loadMinimalSize={0}>
+                        loadMinimalSize={0}
+                    >
                         <Leaderboard style={styles.formsStyle} />
                         <Home style={styles.formsStyle} />
                         <Purchase style={styles.formsStyle} />
@@ -157,7 +155,7 @@ class Main extends React.Component {
                         />
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={() => this.updatePageIcons("PURCHASE")}
+                        onPress={() => this.updatePageIcons('PURCHASE')}
                     >
                         <Image
                             source={

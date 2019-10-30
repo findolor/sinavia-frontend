@@ -187,14 +187,22 @@ class Home extends React.Component {
     fcmMessagePicker = message => {
         switch (message.data.type) {
             case 'friendRequest':
-                this.customAlert(
-                    true,
+                Alert.alert(
                     'Arkadaşlık isteği!',
                     message.data.body,
-                    this.acceptFriendRequest,
-                    {
-                        opponentId: message.data.userId
-                    }
+                    [
+                        {
+                            text: 'Reddet',
+                            onPress: () => {}
+                        },
+                        {
+                            text: 'Kabul et',
+                            onPress: () => {
+                                this.acceptFriendRequest(message.data.userId)
+                            }
+                        }
+                    ],
+                    { cancelable: false }
                 )
                 break
             case 'friendApproved':
@@ -334,16 +342,16 @@ class Home extends React.Component {
         this.props.saveFriendIdList(friends)
     }
 
-    acceptFriendRequest = params => {
+    acceptFriendRequest = opponentId => {
         const friends = this.props.friendIds
-        friends.push(params.opponentId)
+        friends.push(opponentId)
 
         this.props.saveFriendIdList(friends)
 
         friendshipServices.acceptFriendshipRequest(
             this.props.clientToken,
             this.props.clientDBId,
-            params.opponentId,
+            opponentId,
             this.props.clientInformation.username
         )
     }

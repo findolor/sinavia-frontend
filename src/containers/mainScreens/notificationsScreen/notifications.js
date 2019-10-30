@@ -490,6 +490,9 @@ class Notifications extends React.Component {
         )
         // If we do this step inside the saga it wont refresh
         this.props.removeFromFriendRequests(index)
+        this.setState({
+            refreshFlatlist: !this.state.refreshFlatlist
+        })
     }
 
     rejectFriendRequestOnPress = (friendId, index) => {
@@ -500,6 +503,9 @@ class Notifications extends React.Component {
             this.props.friendRequests
         )
         this.props.removeFromFriendRequests(index)
+        this.setState({
+            refreshFlatlist: !this.state.refreshFlatlist
+        })
     }
 
     friendMatchResultsOnPress = (item, index) => {
