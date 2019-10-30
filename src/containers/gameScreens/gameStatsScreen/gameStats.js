@@ -7,7 +7,10 @@ import {
     View,
     Dimensions
 } from 'react-native'
-import { navigationReset } from '../../../services/navigationService'
+import {
+    navigationReset,
+    navigationReplace
+} from '../../../services/navigationService'
 import { SCENE_KEYS } from '../../../config/'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
@@ -101,7 +104,7 @@ class GameStatsScreen extends React.Component {
                     setTimeout(() => {
                         this.props.room.removeAllListeners()
 
-                        navigationReset(SCENE_KEYS.gameScreens.rankedGame, {
+                        navigationReplace(SCENE_KEYS.gameScreens.rankedGame, {
                             room: this.props.room,
                             client: this.props.client,
                             playerUsername: this.props.playerUsername,
@@ -112,7 +115,7 @@ class GameStatsScreen extends React.Component {
                             opponentProfilePicture: this.props
                                 .opponentProfilePicture
                         })
-                    }, 2000)
+                    }, 1000)
                 }
                 return
             case 'client-leaving':
@@ -387,7 +390,7 @@ class GameStatsScreen extends React.Component {
             setTimeout(() => {
                 this.props.room.removeAllListeners()
 
-                navigationReset(SCENE_KEYS.gameScreens.rankedGame, {
+                navigationReplace(SCENE_KEYS.gameScreens.rankedGame, {
                     room: this.props.room,
                     client: this.props.client,
                     playerUsername: this.props.playerUsername,
@@ -396,7 +399,7 @@ class GameStatsScreen extends React.Component {
                     opponentId: this.props.opponentId,
                     opponentProfilePicture: this.props.opponentProfilePicture
                 })
-            }, 2000)
+            }, 1000)
         }
     }
 
