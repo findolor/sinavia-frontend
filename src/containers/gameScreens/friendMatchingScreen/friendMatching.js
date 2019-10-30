@@ -28,14 +28,17 @@ import { GAME_ENGINE_ENDPOINT, SCENE_KEYS } from '../../../config'
 
 import SWORD from '../../../assets/sword.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
-import { gameEnergyServices } from '../../../sagas/gameEnergy'
+//import { gameEnergyServices } from '../../../sagas/gameEnergy'
+import { levelFinder } from '../../../services/userLevelFinder'
 
 class FriendMatchingScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             countDownTime: 2,
-            isCoundownFinished: false
+            isCoundownFinished: false,
+            clientPoint: 0,
+            friendPoint: 0
         }
     }
 
@@ -92,6 +95,14 @@ class FriendMatchingScreen extends React.Component {
                 this.room.removeAllListeners()
                 this.client.close()
                 navigationReset('main')
+                return
+            }
+            if (message.action === 'save-user-points') {
+                message.userScores.forEach(userScore => {
+                    if (this.props.clientInformation.id === userScore.userId) {
+                        this.setState({ clientPoint: userScore.totalPoints })
+                    } else this.setState({ friendPoint: userScore.totalPoints })
+                })
                 return
             }
             // Message is playerProps
@@ -289,7 +300,11 @@ class FriendMatchingScreen extends React.Component {
                                             styles.subjectBasedSinaviaScoreText
                                         }
                                     >
-                                        Sınavia Puanı: 20
+                                        Konu Seviyesi:{' '}
+                                        {Math.floor(
+                                            levelFinder(this.state.clientPoint)
+                                                .level
+                                        )}
                                     </Text>
                                 </View>
                             </View>
@@ -317,7 +332,11 @@ class FriendMatchingScreen extends React.Component {
                                             styles.subjectBasedSinaviaScoreText
                                         }
                                     >
-                                        Sınavia Puanı: 20
+                                        Konu Seviyesi:{' '}
+                                        {Math.floor(
+                                            levelFinder(this.state.friendPoint)
+                                                .level
+                                        )}
                                     </Text>
                                 </View>
                                 <View style={styles.opponentPicContainer}>
