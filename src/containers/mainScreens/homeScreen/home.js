@@ -447,7 +447,8 @@ class Home extends React.Component {
                     )
                     .then(userScore => {
                         this.setState({
-                            selectedContentTotalPoints: userScore.totalPoints
+                            selectedContentTotalPoints:
+                                userScore !== null ? userScore.totalPoints : 0
                         })
                     })
             }
