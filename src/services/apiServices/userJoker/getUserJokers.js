@@ -1,23 +1,26 @@
 import axios from 'axios'
-import { API_ENDPOINT } from '../../../config/index'
+import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
 import { renewToken } from '../token/renewToken'
 
-export const getUserJokers = async (userToken, userId) => {
+export const getUserJokers = async (headers, params) => {
     try {
-        let response = await axios.get(API_ENDPOINT + 'userJokers/' + userId, {
-            headers: {
-                Authorization: 'Bearer ' + userToken
+        let response = await axios.get(
+            API_ENDPOINT + APP_VERSION + '/userJokers/' + params.userId,
+            {
+                headers: headers
             }
-        })
+        )
         return response.data.data
     } catch (err) {
         if (err.response.status === 401) {
             let res = await renewToken()
-            response = await axios.get(API_ENDPOINT + 'userJokers/' + userId, {
-                headers: {
-                    Authorization: 'Bearer ' + res.token
+            headers.Authorization = 'Bearer ' + res.token
+            response = await axios.get(
+                API_ENDPOINT + APP_VERSION + '/userJokers/' + params.userId,
+                {
+                    headers: headers
                 }
-            })
+            )
             return response.data.data
         } else return err.response
     }

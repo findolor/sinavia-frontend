@@ -27,7 +27,9 @@ class FriendsList extends React.Component {
             // Flatlist data
             friendsList: this.props.friendsList,
             // Original friendsList
-            value: ''
+            value: '',
+            // Flatlist refresher
+            refreshFlatlist: false
         }
     }
 
@@ -45,12 +47,16 @@ class FriendsList extends React.Component {
                 this.props.opponentFriendIds
             )
         }
-        this.setState({ friendsList: friends, originalList: friends })
+        this.setState({
+            friendsList: friends,
+            originalList: friends,
+            refreshFlatlist: !this.state.refreshFlatlist
+        })
     }
 
     async componentDidUpdate(prevProps, prevState) {
         if (prevProps !== this.props) {
-            if (Object.keys(this.props.friendIds).length === 0) {
+            if (Object.keys(this.props.friendsList).length === 0) {
                 this.setState({ friendsList: [] })
                 return
             }
@@ -59,7 +65,11 @@ class FriendsList extends React.Component {
                 this.props.friendIds
             )
 
-            this.setState({ friendsList: friends, originalList: friends })
+            this.setState({
+                friendsList: friends,
+                originalList: friends,
+                refreshFlatlist: !this.state.refreshFlatlist
+            })
         }
     }
 
@@ -141,7 +151,7 @@ class FriendsList extends React.Component {
                     <FlatList
                         data={this.state.friendsList}
                         vertical={true}
-                        extraData={this.state.friendsList}
+                        extraData={this.state.refreshFlatlist}
                         showsVerticalScrollIndicator={false}
                         renderItem={({ item, index }) => {
                             return (

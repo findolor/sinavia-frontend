@@ -1,12 +1,15 @@
-import { getNotifications } from '../../services/apiServices/notification/getNotifications'
+import { apiServicesTree, makeGetRequest } from '../../services/apiServices'
 import { put, call } from 'redux-saga/effects'
 import { appTypes } from '../../redux/app/actions'
 
 export function* getNotificationsSaga(action) {
     const notifications = yield call(
-        getNotifications,
-        action.clientToken,
-        action.clientId
+        makeGetRequest,
+        apiServicesTree.notificationApi.getNotifications,
+        {
+            userId: action.clientId,
+            clientToken: action.clientToken
+        }
     )
 
     if (
@@ -33,5 +36,8 @@ export function* getNotificationsSaga(action) {
 }
 
 export const getNotificationsService = async (clientToken, clientId) => {
-    return getNotifications(clientToken, clientId)
+    return makeGetRequest(apiServicesTree.notificationApi.getNotifications, {
+        userId: clientId,
+        clientToken: clientToken
+    })
 }

@@ -10,6 +10,8 @@ import {
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient';
 import Swiper from 'react-native-swiper'
+import { connect } from 'react-redux'
+import moment from 'moment'
 
 import styles from './style'
 import {
@@ -17,25 +19,95 @@ import {
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
 
-import NotchView from '../../../components/notchView'
-
 import PLAY_BUTTON from '../../../assets/play_Button.png'
 import JOKER_ADS from '../../../assets/joker_ads.png'
 import FAVORITE from '../../../assets/favori.png'
 
-import JOKER_1 from '../../../assets/gameScreens/jokers/secondChance.png'
-import JOKER_2 from '../../../assets/gameScreens/jokers/fiftyFifty.png'
-import JOKER_3 from '../../../assets/gameScreens/jokers/opponentsAnswer.png'
+import INSTAGRAM_LOGO from '../../../assets/instagram_logo.png'
+import TWITTER_LOGO from '../../../assets/twitter_logo.png'
+import FACEBOOK_LOGO from '../../../assets/facebook_logo.png'
 
 import PREMIUM_ADS from '../../../assets/premiumAds.png'
+
+const instagram_page = 'https://www.instagram.com/sinavia.app/'
+const twitter_page = 'https://twitter.com/sinavia'
+const facebook_page = 'https://www.facebook.com/sinaviaapp'
 
 class PurchaseScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             isPremiumModalVisible: false,
-            premiumOption: 'threeMonths'
+            premiumOption: 'threeMonths',
+            firstJoker: {
+                joker: {
+                    imageLink: null,
+                    name: null
+                }
+            },
+            secondJoker: {
+                joker: {
+                    imageLink: null,
+                    name: null
+                }
+            },
+            thirdJoker: {
+                joker: {
+                    imageLink: null,
+                    name: null
+                }
+            },
+            remainingPremiumDays: null,
+            remainingPremiumWeeks: null,
+            remainingPremiumMonths: null
         }
+    }
+
+    componentDidMount() {
+        this.props.userJokers.forEach(userJoker => {
+            switch(userJoker.jokerId) {
+                case 1:
+                    this.setState({ firstJoker: userJoker})
+                    break
+                case 2:
+                    this.setState({ secondJoker: userJoker})
+                    break
+                case 3:
+                    this.setState({ thirdJoker: userJoker})
+                    break
+            }
+        })
+        this.calculateDateUntilPremiumEnd()
+    }
+
+    calculateDateUntilPremiumEnd = () => {
+        const dateToday = moment()
+        const endDate = moment(this.props.clientInformation.premiumEndDate)
+        const remainingPremiumMonths = endDate.diff(dateToday, 'months')
+        let remainingPremiumWeeks = 0
+        let remainingPremiumDays = endDate.diff(dateToday, 'days')
+        let daysToSubtract = 0
+
+        if(remainingPremiumMonths !== 0) {
+            let tempDate = moment()
+            let daysInMonth = tempDate.daysInMonth()
+            for(let i = 1; i < remainingPremiumMonths + 1; i++) {
+                daysToSubtract += daysInMonth
+                tempDate = moment().add(i, 'months')
+                daysInMonth = tempDate.daysInMonth()
+            }
+        }
+        remainingPremiumDays -= daysToSubtract
+        if(remainingPremiumDays >= 7) {
+            remainingPremiumWeeks = Math.floor(remainingPremiumDays / 7)
+            remainingPremiumDays -= remainingPremiumWeeks * 7
+        }
+
+        this.setState({
+            remainingPremiumDays: remainingPremiumDays,
+            remainingPremiumWeeks: remainingPremiumWeeks,
+            remainingPremiumMonths: remainingPremiumMonths
+        })
     }
 
     onPressPremiumView() {
@@ -82,69 +154,69 @@ class PurchaseScreen extends React.Component {
                             this.closePremiumView()
                         }} style={ {height: hp(120), width: wp(100)}}/>
                         <View style={styles.premiumModalView}>
-                            <LinearGradient colors={['white', 'white', '#FFA800']} style={styles.linearGradientPremiumModalView}>
+                            <LinearGradient colors={['white', '#FFE6BB', '#FFA800']} style={styles.linearGradientPremiumModalView}>
                                 <View style={styles.premiumModalHeaderView}>
                                     <Text style={styles.premiumModalHeaderText}>ELİT ÖĞRENCİ PAKETİ</Text>
                                 </View>
-                                <View style={styles.premiumSwiperContainer}>
+                                <View style={styles.premiumModalSwiperContainer}>
                                     <Swiper autoplay={true}
                                             loop={true}
                                             loadMinimal={false}
                                             showsPagination={false}
                                             scrollEnabled={false}>
-                                        <View style={styles.premiumSwiperView}>
-                                            <View style={styles.premiumSwiperImgView}>
-                                                <Image source={PREMIUM_ADS} style={styles.premiumImg}/>
+                                        <View style={styles.premiumModalSwiperView}>
+                                            <View style={styles.premiumModalSwiperImgView}>
+                                                <Image source={PREMIUM_ADS} style={styles.premiumModalImg}/>
                                             </View>
-                                            <View style={styles.premiumSwiperHeaderView}>
-                                                <Text style={styles.premiumHeaderText}>Reklam Yok!</Text>
+                                            <View style={styles.premiumModalSwiperHeaderView}>
+                                                <Text style={styles.premiumModalHeaderText}>Reklam Yok!</Text>
                                             </View>
-                                            <View style={[styles.premiumSwiperInfoView, {justifyContent: 'flex-start'}]}>
-                                                <Text style={[styles.premiumInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
-                                            </View>
-                                        </View>
-                                        <View style={styles.premiumSwiperView}>
-                                            <View style={styles.premiumSwiperImgView}>
-                                                <Image source={PREMIUM_ADS} style={styles.premiumImg}/>
-                                            </View>
-                                            <View style={styles.premiumSwiperHeaderView}>
-                                                <Text style={styles.premiumHeaderText}>Reklam Yok!</Text>
-                                            </View>
-                                            <View style={[styles.premiumSwiperInfoView, {justifyContent: 'flex-start'}]}>
-                                                <Text style={[styles.premiumInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                            <View style={[styles.premiumModalSwiperInfoView, {justifyContent: 'flex-start'}]}>
+                                                <Text style={[styles.premiumModalInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
                                             </View>
                                         </View>
-                                        <View style={styles.premiumSwiperView}>
-                                            <View style={styles.premiumSwiperImgView}>
-                                                <Image source={PREMIUM_ADS} style={styles.premiumImg}/>
+                                        <View style={styles.premiumModalSwiperView}>
+                                            <View style={styles.premiumModalSwiperImgView}>
+                                                <Image source={PREMIUM_ADS} style={styles.premiumModalImg}/>
                                             </View>
-                                            <View style={styles.premiumSwiperHeaderView}>
-                                                <Text style={styles.premiumHeaderText}>Reklam Yok!</Text>
+                                            <View style={styles.premiumModalSwiperHeaderView}>
+                                                <Text style={styles.premiumModalHeaderText}>Reklam Yok!</Text>
                                             </View>
-                                            <View style={[styles.premiumSwiperInfoView, {justifyContent: 'flex-start'}]}>
-                                                <Text style={[styles.premiumInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
-                                            </View>
-                                        </View>
-                                        <View style={styles.premiumSwiperView}>
-                                            <View style={styles.premiumSwiperImgView}>
-                                                <Image source={PREMIUM_ADS} style={styles.premiumImg}/>
-                                            </View>
-                                            <View style={styles.premiumSwiperHeaderView}>
-                                                <Text style={styles.premiumHeaderText}>Reklam Yok!</Text>
-                                            </View>
-                                            <View style={[styles.premiumSwiperInfoView, {justifyContent: 'flex-start'}]}>
-                                                <Text style={[styles.premiumInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                            <View style={[styles.premiumModalSwiperInfoView, {justifyContent: 'flex-start'}]}>
+                                                <Text style={[styles.premiumModalInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
                                             </View>
                                         </View>
-                                        <View style={styles.premiumSwiperView}>
-                                            <View style={styles.premiumSwiperImgView}>
-                                                <Image source={PREMIUM_ADS} style={styles.premiumImg}/>
+                                        <View style={styles.premiumModalSwiperView}>
+                                            <View style={styles.premiumModalSwiperImgView}>
+                                                <Image source={PREMIUM_ADS} style={styles.premiumModalImg}/>
                                             </View>
-                                            <View style={styles.premiumSwiperHeaderView}>
-                                                <Text style={styles.premiumHeaderText}>Reklam Yok!</Text>
+                                            <View style={styles.premiumModalSwiperHeaderView}>
+                                                <Text style={styles.premiumModalHeaderText}>Reklam Yok!</Text>
                                             </View>
-                                            <View style={[styles.premiumSwiperInfoView, {justifyContent: 'flex-start'}]}>
-                                                <Text style={[styles.premiumInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                            <View style={[styles.premiumModalSwiperInfoView, {justifyContent: 'flex-start'}]}>
+                                                <Text style={[styles.premiumModalInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                            </View>
+                                        </View>
+                                        <View style={styles.premiumModalSwiperView}>
+                                            <View style={styles.premiumModalSwiperImgView}>
+                                                <Image source={PREMIUM_ADS} style={styles.premiumModalImg}/>
+                                            </View>
+                                            <View style={styles.premiumModalSwiperHeaderView}>
+                                                <Text style={styles.premiumModalHeaderText}>Reklam Yok!</Text>
+                                            </View>
+                                            <View style={[styles.premiumModalSwiperInfoView, {justifyContent: 'flex-start'}]}>
+                                                <Text style={[styles.premiumModalInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                            </View>
+                                        </View>
+                                        <View style={styles.premiumModalSwiperView}>
+                                            <View style={styles.premiumModalSwiperImgView}>
+                                                <Image source={PREMIUM_ADS} style={styles.premiumModalImg}/>
+                                            </View>
+                                            <View style={styles.premiumModalSwiperHeaderView}>
+                                                <Text style={styles.premiumModalHeaderText}>Reklam Yok!</Text>
+                                            </View>
+                                            <View style={[styles.premiumModalSwiperInfoView, {justifyContent: 'flex-start'}]}>
+                                                <Text style={[styles.premiumModalInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
                                             </View>
                                         </View>
                                     </Swiper>
@@ -237,9 +309,10 @@ class PurchaseScreen extends React.Component {
                 </Modal>
                 <View style={styles.bundlesContainer}>
                     <View style={styles.bundlesView}>
-                        <Swiper loop={true}
+                        <Swiper loop={false}
                                 paginationStyle={{ bottom: hp(0.25) }}
-                                activeDotColor={'#00D9EF'}>
+                                activeDotColor={'#00D9EF'}
+                                >
                             <View style={styles.swiperView}>
                                 <TouchableOpacity style={styles.bundleView}>
                                     <View style={styles.totalJokerAmountView}>
@@ -247,15 +320,15 @@ class PurchaseScreen extends React.Component {
                                     </View>
                                     <View style={styles.jokersView}>
                                         <View style={styles.jokerView}>
-                                            <Image source={JOKER_1} style={styles.jokerImg}/>
+                                            <Image source={{ uri: this.state.firstJoker.joker.imageLink }} style={styles.jokerImg}/>
                                             <Text style={styles.jokerAmountText}>x10</Text>
                                         </View>
                                         <View style={styles.jokerView}>
-                                            <Image source={JOKER_2} style={styles.jokerImg}/>
+                                            <Image source={{ uri: this.state.secondJoker.joker.imageLink }} style={styles.jokerImg}/>
                                             <Text style={styles.jokerAmountText}>x10</Text>
                                         </View>
                                         <View style={styles.jokerView}>
-                                            <Image source={JOKER_3} style={styles.jokerImg}/>
+                                            <Image source={{ uri: this.state.thirdJoker.joker.imageLink }} style={styles.jokerImg}/>
                                             <Text style={styles.jokerAmountText}>x10</Text>
                                         </View>
                                     </View>
@@ -274,16 +347,16 @@ class PurchaseScreen extends React.Component {
                                         <Text style={styles.jokerAmountsText}>90 Joker</Text>
                                     </View>
                                     <View style={styles.jokersView}>
-                                        <View style={styles.jokerView}>
-                                            <Image source={JOKER_1} style={styles.jokerImg}/>
+                                    <View style={styles.jokerView}>
+                                            <Image source={{ uri: this.state.firstJoker.joker.imageLink }} style={styles.jokerImg}/>
                                             <Text style={styles.jokerAmountText}>x10</Text>
                                         </View>
                                         <View style={styles.jokerView}>
-                                            <Image source={JOKER_2} style={styles.jokerImg}/>
+                                            <Image source={{ uri: this.state.secondJoker.joker.imageLink }} style={styles.jokerImg}/>
                                             <Text style={styles.jokerAmountText}>x10</Text>
                                         </View>
                                         <View style={styles.jokerView}>
-                                            <Image source={JOKER_3} style={styles.jokerImg}/>
+                                            <Image source={{ uri: this.state.thirdJoker.joker.imageLink }} style={styles.jokerImg}/>
                                             <Text style={styles.jokerAmountText}>x10</Text>
                                         </View>
                                     </View>
@@ -302,16 +375,16 @@ class PurchaseScreen extends React.Component {
                                         <Text style={styles.jokerAmountsText}>180 Joker</Text>
                                     </View>
                                     <View style={styles.jokersView}>
-                                        <View style={styles.jokerView}>
-                                            <Image source={JOKER_1} style={styles.jokerImg}/>
+                                    <View style={styles.jokerView}>
+                                            <Image source={{ uri: this.state.firstJoker.joker.imageLink }} style={styles.jokerImg}/>
                                             <Text style={styles.jokerAmountText}>x10</Text>
                                         </View>
                                         <View style={styles.jokerView}>
-                                            <Image source={JOKER_2} style={styles.jokerImg}/>
+                                            <Image source={{ uri: this.state.secondJoker.joker.imageLink }} style={styles.jokerImg}/>
                                             <Text style={styles.jokerAmountText}>x10</Text>
                                         </View>
                                         <View style={styles.jokerView}>
-                                            <Image source={JOKER_3} style={styles.jokerImg}/>
+                                            <Image source={{ uri: this.state.thirdJoker.joker.imageLink }} style={styles.jokerImg}/>
                                             <Text style={styles.jokerAmountText}>x10</Text>
                                         </View>
                                     </View>
@@ -444,11 +517,31 @@ class PurchaseScreen extends React.Component {
                         </LinearGradient>
                     </View>
                     <TouchableOpacity style={styles.premiumBottomView}>
-                        <View style={styles.linearGradientBottomView}>
                             <Text style={styles.inviteText}>Arkadaşını davet et</Text>
                             <Text style={styles.earnPremiumWithInviteText}>1 Haftalık Elit Öğrenci Paketi Kazan!</Text>
-                        </View>
                     </TouchableOpacity>
+                </View>
+                <View style={styles.socialMediaContainer}>
+                    <View style={styles.socialMediaView}>
+                        <View style={styles.socialMediaLogosView}>
+                            <TouchableOpacity onPress={() => Linking.openURL(instagram_page)} style={styles.socialMediaLogoCircle}>
+                                <Image source={INSTAGRAM_LOGO} style={styles.socialMediaLogo}/>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.socialMediaLogosView}>
+                            <TouchableOpacity onPress={() => Linking.openURL(twitter_page)} style={styles.socialMediaLogoCircle}>
+                                <Image source={TWITTER_LOGO} style={styles.socialMediaLogo}/>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.socialMediaLogosView}>
+                            <TouchableOpacity onPress={() => Linking.openURL(facebook_page)} style={styles.socialMediaLogoCircle}>
+                                <Image source={FACEBOOK_LOGO} style={styles.socialMediaLogo}/>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.socialMediaInfoView}>
+                            <Text style={styles.socialMediaInfoText}>Sosyal medya hesaplarımızı takip ederek ödülleri ve en güncel haberleri kaçırma!</Text>
+                        </View>
+                    </View>
                 </View>
                 <View style={styles.yourPremiumAndJokersContainer}>
                     <View style={styles.yourPremiumContainer}>
@@ -458,9 +551,9 @@ class PurchaseScreen extends React.Component {
                         </View>
                         <View style={styles.yourPremiumCounterView}>
                             <Text style={styles.yourPremiumCounterText}>
-                                <Text style={styles.yourPremiumCounterNumbersText}>1</Text> Ay
-                                <Text style={styles.yourPremiumCounterNumbersText}> 2</Text> Hafta
-                                <Text style={styles.yourPremiumCounterNumbersText}> 6</Text> Gün
+                                <Text style={styles.yourPremiumCounterNumbersText}>{this.state.remainingPremiumMonths}</Text> Ay
+                                <Text style={styles.yourPremiumCounterNumbersText}> {this.state.remainingPremiumWeeks}</Text> Hafta
+                                <Text style={styles.yourPremiumCounterNumbersText}> {this.state.remainingPremiumDays}</Text> Gün
                             </Text>
                         </View>
                     </View>
@@ -469,39 +562,39 @@ class PurchaseScreen extends React.Component {
                             <View style={styles.jokerImageContainer}>
                                 <View style={styles.jokerImageView}>
                                     <View style={styles.jokerCounterView}>
-                                        <Text style={styles.jokerCounterText}>20</Text>
+                                        <Text style={styles.jokerCounterText}>{this.state.firstJoker.amount}</Text>
                                     </View>
-                                    <Image source={JOKER_1} style={styles.jokerImg}/>
+                                    <Image source={{ uri: this.state.firstJoker.joker.imageLink }} style={styles.jokerImg}/>
                                 </View>
                             </View>
                             <View style={styles.jokerNameContainer}>
-                                <Text style={styles.jokerNameText}>Çifte Şans</Text>
+                                <Text style={styles.jokerNameText}>{this.state.firstJoker.joker.name}</Text>
                             </View>
                         </View>
                         <View style={styles.jokerContainer}>
                             <View style={styles.jokerImageContainer}>
                                 <View style={styles.jokerImageView}>
                                     <View style={styles.jokerCounterView}>
-                                        <Text style={styles.jokerCounterText}>275</Text>
+                                        <Text style={styles.jokerCounterText}>{this.state.secondJoker.amount}</Text>
                                     </View>
-                                    <Image source={JOKER_2} style={styles.jokerImg}/>
+                                    <Image source={{ uri: this.state.secondJoker.joker.imageLink }} style={styles.jokerImg}/>
                                 </View>
                             </View>
                             <View style={styles.jokerNameContainer}>
-                                <Text style={styles.jokerNameText}>50/50</Text>
+                                <Text style={styles.jokerNameText}>{this.state.secondJoker.joker.name}</Text>
                             </View>
                         </View>
                         <View style={styles.jokerContainer}>
                             <View style={styles.jokerImageContainer}>
                                 <View style={styles.jokerImageView}>
                                     <View style={styles.jokerCounterView}>
-                                        <Text style={styles.jokerCounterText}>5</Text>
+                                        <Text style={styles.jokerCounterText}>{this.state.thirdJoker.amount}</Text>
                                     </View>
-                                    <Image source={JOKER_3} style={styles.jokerImg}/>
+                                    <Image source={{ uri: this.state.thirdJoker.joker.imageLink }} style={styles.jokerImg}/>
                                 </View>
                             </View>
                             <View style={styles.jokerNameContainer}>
-                                <Text style={styles.jokerNameText}>Rakibi Gör</Text>
+                                <Text style={styles.jokerNameText}>{this.state.thirdJoker.joker.name}</Text>
                             </View>
                         </View>
                     </View>
@@ -511,4 +604,16 @@ class PurchaseScreen extends React.Component {
     }
 }
 
-export default PurchaseScreen
+const mapStateToProps = state => ({
+    userJokers: state.client.userJokers,
+    clientInformation: state.client.clientInformation
+})
+
+const mapDispatchToProps = dispatch => ({
+
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PurchaseScreen)

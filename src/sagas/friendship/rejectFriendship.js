@@ -1,19 +1,26 @@
-import { rejectFriendshipRequest } from '../../services/apiServices/friendship/rejectFriendshipRequest'
+import { makeDeleteRequest, apiServicesTree } from '../../services/apiServices'
 import { put, call } from 'redux-saga/effects'
-import { friendTypes } from '../../redux/friends/actions'
 
 export async function rejectFriendshipService(clientToken, userId, friendId) {
-    const res = await rejectFriendshipRequest(clientToken, userId, friendId)
-
-    return res
+    return makeDeleteRequest(
+        apiServicesTree.friendshipApi.rejectFriendshipRequest,
+        {
+            clientToken: clientToken,
+            userId: userId,
+            friendId: friendId
+        }
+    )
 }
 
 export function* rejectFriendshipSaga(action) {
     const response = yield call(
-        rejectFriendshipRequest,
-        action.clientToken,
-        action.userId,
-        action.friendId
+        makeDeleteRequest,
+        apiServicesTree.friendshipApi.rejectFriendshipRequest,
+        {
+            clientToken: action.clientToken,
+            userId: action.userId,
+            friendId: action.friendId
+        }
     )
 
     /* if (response.success) {

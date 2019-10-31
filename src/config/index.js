@@ -1,5 +1,11 @@
-import { ENV_API_ENDPOINT, ENV_GAME_ENGINE_ENDPOINT } from 'react-native-dotenv'
-
+import {
+    ENV_API_ENDPOINT,
+    ENV_API_ENDPOINT_LOCAL,
+    ENV_GAME_ENGINE_ENDPOINT,
+    ENV_GAME_ENGINE_ENDPOINT_LOCAL,
+    ENV_APP_VERSION
+} from 'react-native-dotenv'
+//console.log(ENV_GAME_ENGINE_ENDPOINT, ENV_API_ENDPOINT)
 const scene_keys = {
     authScreens: {
         opening: 'opening',
@@ -21,7 +27,8 @@ const scene_keys = {
         friendGameStats: 'friendGameStats',
         soloFriendGameScreen: 'soloFriendGameScreen',
         soloModeLoadingScreen: 'soloModeLoadingScreen',
-        soloModeGameScreen: 'soloModeGameScreen'
+        soloModeGameScreen: 'soloModeGameScreen',
+        soloFriendGameStatsScreen: 'soloFriendGameStatsScreen'
     },
     mainScreens: {
         main: 'main',
@@ -42,6 +49,7 @@ const scene_keys = {
 
 const API_ENDPOINT = ENV_API_ENDPOINT
 const GAME_ENGINE_ENDPOINT = ENV_GAME_ENGINE_ENDPOINT
+const APP_VERSION = ENV_APP_VERSION
 const SCENE_KEYS = scene_keys
 
-export { API_ENDPOINT, SCENE_KEYS, GAME_ENGINE_ENDPOINT }
+export { API_ENDPOINT, SCENE_KEYS, GAME_ENGINE_ENDPOINT, APP_VERSION }

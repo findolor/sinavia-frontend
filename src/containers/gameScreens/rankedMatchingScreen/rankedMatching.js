@@ -6,6 +6,7 @@ import {
     SCENE_KEYS,
     navigationReplace
 } from '../../../services/navigationService'
+import { levelFinder } from '../../../services/userLevelFinder'
 
 import SWORD from '../../../assets/sword.png'
 
@@ -65,7 +66,11 @@ class RankedMatchingScreen extends React.Component {
                                         @{this.props.playerUsername}
                                     </Text>
                                     <Text style={styles.sinaviaScoreText}>
-                                        Sınavia Puanı: {this.props.clientPoints}
+                                        Konu Seviyesi:{' '}
+                                        {Math.floor(
+                                            levelFinder(this.props.clientPoints)
+                                                .level
+                                        )}
                                     </Text>
                                 </View>
                             </View>
@@ -83,8 +88,12 @@ class RankedMatchingScreen extends React.Component {
                                         @{this.props.opponentUsername}
                                     </Text>
                                     <Text style={styles.sinaviaScoreText}>
-                                        Sınavia Puanı:{' '}
-                                        {this.props.opponentPoints}
+                                        Konu Seviyesi:{' '}
+                                        {Math.floor(
+                                            levelFinder(
+                                                this.props.opponentPoints
+                                            ).level
+                                        )}
                                     </Text>
                                 </View>
                                 <View style={styles.opponentPicContainer}>

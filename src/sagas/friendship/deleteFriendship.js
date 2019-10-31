@@ -1,6 +1,5 @@
-import { deleteFriendship } from '../../services/apiServices/friendship/deleteFriendship'
+import { makeDeleteRequest, apiServicesTree } from '../../services/apiServices'
 import { put, call } from 'redux-saga/effects'
-import { opponentTypes } from '../../redux/opponents/actions'
 import { friendTypes } from '../../redux/friends/actions'
 
 export async function deleteFriendshipService(
@@ -9,26 +8,27 @@ export async function deleteFriendshipService(
     friendId,
     isClientUser
 ) {
-    const res = deleteFriendship(clientToken, userId, friendId, isClientUser)
-
-    return res
+    return makeDeleteRequest(apiServicesTree.friendshipApi.deleteFriendship, {
+        clientToken: clientToken,
+        userId: userId,
+        friendId: friendId,
+        isClientUser: isClientUser
+    })
 }
 
 export function* deleteFriendshipRequestSaga(action) {
     const response = yield call(
-        deleteFriendship,
-        action.clientToken,
-        action.clientDBId,
-        action.friendId,
-        action.isClientUser
+        makeDeleteRequest,
+        apiServicesTree.friendshipApi.deleteFriendship,
+        {
+            clientToken: action.clientToken,
+            userId: action.clientDBId,
+            friendId: action.friendId,
+            isClientUser: action.isClientUser
+        }
     )
 
     if (response.success) {
-        yield put({
-            type: friendTypes.CHANGE_FRIENDSHIP_STATUS,
-            friendshipStatus: 'addFriend'
-        })
-
         let index = action.friendIds.indexOf(action.friendId)
         action.friendIds.splice(index, 1)
 

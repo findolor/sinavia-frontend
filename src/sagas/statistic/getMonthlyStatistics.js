@@ -1,7 +1,9 @@
-import { getMonthlyStatistics } from '../../services/apiServices/statistic/getMonthlyStatistics'
+import { makeGetRequest, apiServicesTree } from '../../services/apiServices'
 
 export async function getMonthlyStatisticsService(clientToken, userId, params) {
-    const res = getMonthlyStatistics(clientToken, userId, params)
-
-    return res
+    return makeGetRequest(apiServicesTree.statisticApi.getMonthlyStatistics, {
+        clientToken: clientToken,
+        userId: userId,
+        params: params
+    })
 }

@@ -1,0 +1,808 @@
+import React from 'react'
+import {
+    Image,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
+    Dimensions
+} from 'react-native'
+import { navigationReset } from '../../../services/navigationService'
+import styles from './style'
+import { connect } from 'react-redux'
+import { clientActions } from '../../../redux/client/actions'
+
+import background from '../../../assets/gameScreens/gameStatsBackground.jpg'
+import slideUp from '../../../assets/gameScreens/slideUp.png'
+import slideDown from '../../../assets/gameScreens/slideDown.png'
+import correct from '../../../assets/gameScreens/correct.png'
+import incorrect from '../../../assets/gameScreens/incorrect.png'
+import unanswered from '../../../assets/gameScreens/unanswered.png'
+import selectedFav from '../../../assets/favori.png'
+import unselectedFav from '../../../assets/favori_bos.png'
+
+import YOU_WIN_LOGO from '../../../assets/gameScreens/win.png'
+import YOU_LOSE_LOGO from '../../../assets/gameScreens/lose.png'
+import DRAW_LOGO from '../../../assets/gameScreens/draw.png'
+import { widthPercentageToDP } from 'react-native-responsive-screen'
+
+class SoloFriendGameStatsScreen extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            // Client match results
+            correctAnswerNumber: 0,
+            incorrectAnswerNumber: 0,
+            unansweredAnswerNumber: 0,
+            // Opponent match results
+            opponentCorrectAnswerNumber: 0,
+            opponentInorrectAnswerNumber: 0,
+            opponentUnansweredAnswerNumber: 0,
+            // Opponent username
+            opponentUsername: '',
+            // Match result text
+            matchResultText: '',
+            // Player profile pictures
+            opponentProfilePicture: '',
+            // Match result logo
+            matchResultLogo: null,
+            // Question position
+            questionPosition: 1,
+            // A list to feed into the scroll view
+            allQuestionsList: [],
+            // All the questions parsed
+            questionList: [],
+            // Screen position
+            screenPosition: 1,
+            // User answer background color. Changes depending on the result
+            answerBackgroundColor: '',
+            // Fav icon selection
+            favIconSelected: false,
+            // Matches between the users
+            playerFriendMatchWinCount: 0,
+            opponentFriendMatchWinCount: 0,
+            friendMatchesCount: 0,
+            // Fav icon selection
+            isFaved: false,
+            // Fav icon
+            favouriteIcon: unselectedFav,
+            // Client question answers
+            clientAnswers: [
+                {
+                    correctAnswer: 0,
+                    answer: 0
+                }
+            ]
+        }
+    }
+
+    async componentDidMount() {
+        await this.loadScreen()
+    }
+
+    chooseMessageAction = message => {
+        switch (message.action) {
+        }
+    }
+
+    // TODO Tidy up this code block
+    // These could be implemented better
+    loadScreen() {
+        return new Promise(resolve => {
+            let opponentCorrect
+            let opponentIncorrect
+            let opponentUnanswered
+
+            if (this.props.friendStatistics === null) {
+                opponentCorrect = '...'
+                opponentIncorrect = '...'
+                opponentUnanswered = '...'
+            } else {
+                opponentCorrect = this.props.friendStatistics.correctNumber
+                opponentIncorrect = this.props.friendStatistics.incorrectNumber
+                opponentUnanswered = this.props.friendStatistics
+                    .unansweredNumber
+            }
+            let opponentUsername = this.props.friendUsername
+            let opponentProfilePicture = this.props.friendProfilePicture
+
+            let playerCorrect = this.props.clientStatistics.correctNumber
+            let playerIncorrect = this.props.clientStatistics.incorrectNumber
+            let playerUnanswered = this.props.clientStatistics.unansweredNumber
+
+            let friendMatchesCount
+            let opponentFriendMatchWinCount = '...'
+            let playerFriendMatchWinCount = '...'
+            if (this.props.friendMatches === null) {
+                friendMatchesCount = '...'
+            } else {
+                friendMatchesCount = Object.keys(this.props.friendMatches)
+                    .length
+
+                opponentFriendMatchWinCount = 0
+                playerFriendMatchWinCount = 0
+
+                this.props.friendMatches.forEach(friendMatch => {
+                    if (!friendMatch.isMatchDraw) {
+                        if (friendMatch.winnerId === this.props.clientDBId)
+                            playerFriendMatchWinCount++
+                        else opponentFriendMatchWinCount++
+                    }
+                })
+            }
+
+            if (this.props.friendStatistics === null) {
+                this.setState({
+                    matchResultLogo: null,
+                    matchResultText: 'Bekleniyor'
+                })
+            } else {
+                let playerNet
+                let opponentNet
+
+                if (this.props.clientStatistics.examId !== 1) {
+                    playerNet = playerCorrect - playerIncorrect / 4
+                    opponentNet = opponentCorrect - opponentIncorrect / 4
+                } else {
+                    playerNet = playerCorrect - playerIncorrect / 3
+                    opponentNet = opponentCorrect - opponentIncorrect / 3
+                }
+
+                if (playerNet < opponentNet) {
+                    this.setState({
+                        matchResultLogo: YOU_LOSE_LOGO,
+                        matchResultText: 'Kaybettin'
+                    })
+                    if (!this.props.isFromNotification) {
+                        opponentFriendMatchWinCount++
+                        friendMatchesCount++
+                    }
+                } else if (playerNet === opponentNet) {
+                    this.setState({
+                        matchResultLogo: DRAW_LOGO,
+                        matchResultText: 'Berabere'
+                    })
+                    if (!this.props.isFromNotification) friendMatchesCount++
+                } else {
+                    this.setState({
+                        matchResultLogo: YOU_WIN_LOGO,
+                        matchResultText: 'Kazandın'
+                    })
+                    if (!this.props.isFromNotification) {
+                        playerFriendMatchWinCount++
+                        friendMatchesCount++
+                    }
+                }
+            }
+
+            if (Object.keys(this.props.userAnswers).length !== 5) {
+                this.props.questionList.splice(
+                    Object.keys(this.props.userAnswers).length,
+                    Object.keys(this.props.questionList).length -
+                        Object.keys(this.props.userAnswers).length
+                )
+            }
+
+            this.props.questionList.forEach((question, index) => {
+                if (
+                    this.props.friendStatistics !== null &&
+                    this.props.isFromNotification
+                )
+                    question = JSON.parse(question)
+                this.state.allQuestionsList.push(
+                    <View style={styles.scrollQuestionContainer} key={index}>
+                        <View style={styles.questionContainer}>
+                            <Image
+                                source={{ uri: question.questionLink }}
+                                style={styles.questionStyle}
+                            />
+                        </View>
+                    </View>
+                )
+            })
+
+            let clientAnswers = []
+            if (
+                this.props.friendStatistics !== null &&
+                this.props.isFromNotification
+            ) {
+                this.props.userAnswers.forEach(answer => {
+                    clientAnswers.push(JSON.parse(answer))
+                })
+            } else clientAnswers = this.props.userAnswers
+            let questionList = []
+            if (
+                this.props.friendStatistics !== null &&
+                this.props.isFromNotification
+            ) {
+                this.props.questionList.forEach(question => {
+                    questionList.push(JSON.parse(question))
+                })
+            } else questionList = this.props.questionList
+
+            this.setState({
+                correctAnswerNumber: playerCorrect,
+                incorrectAnswerNumber: playerIncorrect,
+                unansweredAnswerNumber: playerUnanswered,
+                opponentCorrectAnswerNumber: opponentCorrect,
+                opponentInorrectAnswerNumber: opponentIncorrect,
+                opponentUnansweredAnswerNumber: opponentUnanswered,
+                opponentProfilePicture: opponentProfilePicture,
+                opponentUsername: opponentUsername,
+                playerFriendMatchWinCount: playerFriendMatchWinCount,
+                opponentFriendMatchWinCount: opponentFriendMatchWinCount,
+                friendMatchesCount: friendMatchesCount,
+                clientAnswers: clientAnswers,
+                questionList: questionList
+            })
+
+            this.checkFavouriteStatus()
+
+            resolve(true)
+        })
+    }
+
+    checkFavouriteStatus = () => {
+        const index = this.props.favouriteQuestions.findIndex(
+            x =>
+                x.question.id ===
+                this.state.questionList[this.state.questionPosition - 1].id
+        )
+
+        if (index === -1) {
+            this.setState({
+                favouriteIcon: unselectedFav,
+                isFaved: false
+            })
+        } else {
+            this.setState({ favouriteIcon: selectedFav, isFaved: true })
+        }
+    }
+
+    // Used for getting the index of questions from scroll view
+    handleScrollHorizontal = event => {
+        this.scrollX = event.nativeEvent.contentOffset.x
+        this.setState({
+            questionPosition: Math.min(
+                Math.max(
+                    Math.floor(
+                        this.scrollX /
+                            Math.round(Dimensions.get('window').width) +
+                            0.5
+                    ) + 1,
+                    0
+                ),
+                Object.keys(this.props.questionList).length /*Image count*/
+            )
+        })
+        this.checkFavouriteStatus()
+    }
+
+    // Used for getting the index of screen from scroll view
+    handleScrollVertical = event => {
+        this.scrollY = event.nativeEvent.contentOffset.y
+        this.setState({
+            screenPosition: Math.min(
+                Math.max(
+                    Math.floor(
+                        this.scrollY /
+                            Math.round(Dimensions.get('window').height) +
+                            0.5
+                    ) + 1,
+                    0
+                ),
+                2 // Screen number which is 2
+            )
+        })
+    }
+
+    answerSwitcher(buttonNumber) {
+        switch (buttonNumber) {
+            case 1:
+                return 'A'
+            case 2:
+                return 'B'
+            case 3:
+                return 'C'
+            case 4:
+                return 'D'
+            case 5:
+                return 'E'
+            case 6:
+                return 'Boş'
+        }
+    }
+
+    mainScreenButtonOnPress = () => {
+        navigationReset('main')
+    }
+
+    favouriteOnPress = () => {
+        if (this.state.isFaved) {
+            this.props.unfavouriteQuestion(
+                this.props.clientToken,
+                this.props.clientDBId,
+                this.state.questionList[this.state.questionPosition - 1],
+                this.props.favouriteQuestions
+            )
+            this.setState({ favouriteIcon: unselectedFav, isFaved: false })
+        } else {
+            this.props.favouriteQuestion(
+                this.props.clientToken,
+                this.props.clientDBId,
+                this.state.questionList[this.state.questionPosition - 1],
+                this.props.favouriteQuestions
+            )
+            this.setState({ favouriteIcon: selectedFav, isFaved: true })
+        }
+    }
+
+    render() {
+        return (
+            <ScrollView
+                pagingEnabled={true}
+                showsVerticalScrollIndicator={false}
+                onScroll={this.handleScrollVertical}
+                scrollEventThrottle={8}
+            >
+                <View style={styles.container}>
+                    <Image source={background} style={styles.background} />
+                    <View style={styles.resultTextContainer}>
+                        <Image
+                            source={this.state.matchResultLogo}
+                            style={styles.resultTextImg}
+                        />
+                    </View>
+                    <View style={styles.resultsContainer}>
+                        <View style={styles.userPicsContainer}>
+                            <View style={styles.user1Container}>
+                                <Image
+                                    source={{
+                                        uri: this.props.clientInformation
+                                            .profilePicture
+                                    }}
+                                    style={styles.profilePic}
+                                />
+                                <Text style={styles.usernameText}>
+                                    {this.props.clientInformation.username}
+                                </Text>
+                            </View>
+                            <View style={styles.user2Container}>
+                                <Image
+                                    source={{
+                                        uri: this.state.opponentProfilePicture
+                                    }}
+                                    style={styles.profilePic}
+                                />
+                                <Text style={styles.usernameText}>
+                                    {this.state.opponentUsername}
+                                </Text>
+                            </View>
+                        </View>
+                        <View style={styles.resultsAndStatisticsContainer}>
+                            <View style={styles.dividedAnswer}>
+                                <View style={styles.numberContainer}>
+                                    <Text style={styles.numbers}>
+                                        {this.state.correctAnswerNumber}
+                                    </Text>
+                                </View>
+                                <Image
+                                    source={correct}
+                                    style={styles.answerImg}
+                                />
+                                <View style={styles.numberContainer}>
+                                    <Text style={styles.numbers}>
+                                        {this.state.opponentCorrectAnswerNumber}
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style={styles.dividedAnswer}>
+                                <View style={styles.numberContainer}>
+                                    <Text style={styles.numbers}>
+                                        {this.state.incorrectAnswerNumber}
+                                    </Text>
+                                </View>
+                                <Image
+                                    source={incorrect}
+                                    style={styles.answerImg}
+                                />
+                                <View style={styles.numberContainer}>
+                                    <Text style={styles.numbers}>
+                                        {
+                                            this.state
+                                                .opponentInorrectAnswerNumber
+                                        }
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style={styles.dividedAnswer}>
+                                <View style={styles.numberContainer}>
+                                    <Text style={styles.numbers}>
+                                        {this.state.unansweredAnswerNumber}
+                                    </Text>
+                                </View>
+                                <Image
+                                    source={unanswered}
+                                    style={styles.answerImg}
+                                />
+                                <View style={styles.numberContainer}>
+                                    <Text style={styles.numbers}>
+                                        {
+                                            this.state
+                                                .opponentUnansweredAnswerNumber
+                                        }
+                                    </Text>
+                                </View>
+                            </View>
+                            {this.props.friendMatches !== null && (
+                                <View style={styles.versusGameStatsBox}>
+                                    <View
+                                        style={styles.versusGameTextsContainer}
+                                    >
+                                        <View
+                                            style={
+                                                styles.versusGameTitleContainer
+                                            }
+                                        >
+                                            <Text
+                                                style={
+                                                    styles.versusGameTitleText
+                                                }
+                                            >
+                                                Aranızdaki Oyunlar
+                                            </Text>
+                                        </View>
+                                        <View
+                                            style={
+                                                styles.versusGameTotalContainer
+                                            }
+                                        >
+                                            <Text
+                                                style={styles.versusTotalText}
+                                            >
+                                                Toplam Oyun{' '}
+                                            </Text>
+                                            <Text
+                                                style={
+                                                    styles.versusTotalCounter
+                                                }
+                                            >
+                                                {this.state.friendMatchesCount}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                    {this.state.playerFriendMatchWinCount > 0 &&
+                                        this.state.opponentFriendMatchWinCount >
+                                            0 && (
+                                            <View
+                                                style={
+                                                    styles.versusGameChartContainer
+                                                }
+                                            >
+                                                <View
+                                                    style={[
+                                                        styles.yourWinsView,
+                                                        {
+                                                            width: widthPercentageToDP(
+                                                                (this.state
+                                                                    .playerFriendMatchWinCount /
+                                                                    (this.state
+                                                                        .playerFriendMatchWinCount +
+                                                                        this
+                                                                            .state
+                                                                            .opponentFriendMatchWinCount)) *
+                                                                    82
+                                                            )
+                                                        }
+                                                    ]}
+                                                />
+                                                <View
+                                                    style={[
+                                                        styles.opponentsWinsView,
+                                                        {
+                                                            width: widthPercentageToDP(
+                                                                (this.state
+                                                                    .opponentFriendMatchWinCount /
+                                                                    (this.state
+                                                                        .playerFriendMatchWinCount +
+                                                                        this
+                                                                            .state
+                                                                            .opponentFriendMatchWinCount)) *
+                                                                    82
+                                                            )
+                                                        }
+                                                    ]}
+                                                />
+                                                <Text
+                                                    style={
+                                                        styles.yourWinsCounter
+                                                    }
+                                                >
+                                                    {
+                                                        this.state
+                                                            .playerFriendMatchWinCount
+                                                    }
+                                                </Text>
+                                                <Text
+                                                    style={
+                                                        styles.opponentWinsCounter
+                                                    }
+                                                >
+                                                    {
+                                                        this.state
+                                                            .opponentFriendMatchWinCount
+                                                    }
+                                                </Text>
+                                            </View>
+                                        )}
+                                    {this.state.playerFriendMatchWinCount > 0 &&
+                                        this.state
+                                            .opponentFriendMatchWinCount ===
+                                            0 && (
+                                            <View
+                                                style={
+                                                    styles.versusGameChartContainer
+                                                }
+                                            >
+                                                <View
+                                                    style={[
+                                                        styles.yourWinsView,
+                                                        {
+                                                            width: widthPercentageToDP(
+                                                                82
+                                                            ),
+                                                            borderTopRightRadius: 10,
+                                                            borderBottomRightRadius: 10
+                                                        }
+                                                    ]}
+                                                />
+                                                <Text
+                                                    style={
+                                                        styles.yourWinsCounter
+                                                    }
+                                                >
+                                                    {
+                                                        this.state
+                                                            .playerFriendMatchWinCount
+                                                    }
+                                                </Text>
+                                                <Text
+                                                    style={
+                                                        styles.opponentWinsCounter
+                                                    }
+                                                >
+                                                    {
+                                                        this.state
+                                                            .opponentFriendMatchWinCount
+                                                    }
+                                                </Text>
+                                            </View>
+                                        )}
+                                    {this.state.playerFriendMatchWinCount ===
+                                        0 &&
+                                        this.state.opponentFriendMatchWinCount >
+                                            0 && (
+                                            <View
+                                                style={
+                                                    styles.versusGameChartContainer
+                                                }
+                                            >
+                                                <View
+                                                    style={[
+                                                        styles.opponentsWinsView,
+                                                        {
+                                                            width: widthPercentageToDP(
+                                                                82
+                                                            ),
+                                                            borderTopLeftRadius: 10,
+                                                            borderBottomLeftRadius: 10
+                                                        }
+                                                    ]}
+                                                />
+                                                <Text
+                                                    style={
+                                                        styles.yourWinsCounter
+                                                    }
+                                                >
+                                                    {
+                                                        this.state
+                                                            .playerFriendMatchWinCount
+                                                    }
+                                                </Text>
+                                                <Text
+                                                    style={
+                                                        styles.opponentWinsCounter
+                                                    }
+                                                >
+                                                    {
+                                                        this.state
+                                                            .opponentFriendMatchWinCount
+                                                    }
+                                                </Text>
+                                            </View>
+                                        )}
+                                    <View
+                                        style={styles.versusGameNamesContainer}
+                                    >
+                                        <Text
+                                            style={styles.versusGameTitleText}
+                                        >
+                                            Sen
+                                        </Text>
+                                        <Text
+                                            style={styles.versusGameTitleText}
+                                        >
+                                            {this.state.opponentUsername}
+                                        </Text>
+                                    </View>
+                                </View>
+                            )}
+                            {this.props.friendMatches === null && (
+                                <View
+                                    style={styles.friendMatchWaitingContainer}
+                                >
+                                    <Text style={styles.friendMatchWaitingText}>
+                                        {this.state.opponentUsername} Bekleniyor
+                                    </Text>
+                                </View>
+                            )}
+                        </View>
+                    </View>
+                    <View style={styles.buttonsContainer}>
+                        <TouchableOpacity
+                            onPress={this.mainScreenButtonOnPress}
+                        >
+                            <View style={styles.mainScreenButton}>
+                                <Text style={styles.buttonText}>Ana</Text>
+                                <Text style={styles.buttonText}>Menü</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.slideView}>
+                        <View style={styles.slideUpContainer}>
+                            <Image
+                                source={
+                                    this.state.screenPosition === 1
+                                        ? slideUp
+                                        : slideDown
+                                }
+                                style={styles.slideUpImg}
+                            />
+                            <Text style={styles.slideViewText}>
+                                {' '}
+                                {this.state.screenPosition === 1
+                                    ? 'SORULARI GÖRMEK İÇİN KAYDIR'
+                                    : 'PUANLARI GÖRMEK İÇİN KAYDIR'}{' '}
+                            </Text>
+                            <Image
+                                source={
+                                    this.state.screenPosition === 1
+                                        ? slideUp
+                                        : slideDown
+                                }
+                                style={styles.slideUpImg}
+                            />
+                        </View>
+                    </View>
+                </View>
+                {Object.keys(this.props.userAnswers).length !== 0 && (
+                    <View style={styles.secondScreenView}>
+                        <View style={styles.questionNumberContainer}>
+                            <Text style={styles.questionNumberText}>
+                                {this.state.questionPosition}/
+                                {
+                                    Object.keys(this.state.allQuestionsList)
+                                        .length
+                                }
+                            </Text>
+                        </View>
+                        <ScrollView
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                            pagingEnabled={true}
+                            onScroll={this.handleScrollHorizontal}
+                            scrollEventThrottle={8}
+                        >
+                            {this.state.allQuestionsList}
+                        </ScrollView>
+                        <View style={styles.favAndAnswerContainer}>
+                            <View style={styles.answerContainer}>
+                                <View
+                                    style={[
+                                        styles.correctAnswer,
+                                        { backgroundColor: 'white' }
+                                    ]}
+                                >
+                                    <Text
+                                        style={[
+                                            styles.optionText,
+                                            { color: '#00D9EF' }
+                                        ]}
+                                    >
+                                        {this.answerSwitcher(
+                                            this.state.clientAnswers[
+                                                this.state.questionPosition - 1
+                                            ].correctAnswer
+                                        )}
+                                    </Text>
+                                </View>
+                                <Text style={styles.answerText}>
+                                    Doğru Cevap
+                                </Text>
+                            </View>
+                            <View style={styles.favIconContainer}>
+                                <TouchableOpacity
+                                    onPress={this.favouriteOnPress}
+                                >
+                                    <Image
+                                        source={this.state.favouriteIcon}
+                                        style={styles.favIcon}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styles.answerContainer}>
+                                <View
+                                    style={[
+                                        styles.correctAnswer,
+                                        {
+                                            backgroundColor: 'white'
+                                        }
+                                    ]}
+                                >
+                                    <Text
+                                        style={[
+                                            styles.optionText,
+                                            { color: '#00D9EF' }
+                                        ]}
+                                    >
+                                        {this.answerSwitcher(
+                                            this.state.clientAnswers[
+                                                this.state.questionPosition - 1
+                                            ].answer
+                                        )}
+                                    </Text>
+                                </View>
+                                <Text style={styles.answerText}>
+                                    Senin Cevabın
+                                </Text>
+                            </View>
+                        </View>
+                    </View>
+                )}
+            </ScrollView>
+        )
+    }
+}
+
+const mapStateToProps = state => ({
+    clientDBId: state.client.clientDBId,
+    clientToken: state.client.clientToken,
+    clientInformation: state.client.clientInformation,
+    favouriteQuestions: state.client.favouriteQuestions
+})
+
+const mapDispatchToProps = dispatch => ({
+    favouriteQuestion: (clientToken, clientId, question, favedQuestionList) =>
+        dispatch(
+            clientActions.favouriteQuestion(
+                clientToken,
+                clientId,
+                question,
+                favedQuestionList
+            )
+        ),
+    unfavouriteQuestion: (clientToken, clientId, question, favedQuestionList) =>
+        dispatch(
+            clientActions.unfavouriteQuestion(
+                clientToken,
+                clientId,
+                question,
+                favedQuestionList
+            )
+        )
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SoloFriendGameStatsScreen)

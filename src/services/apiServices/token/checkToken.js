@@ -1,20 +1,21 @@
 import axios from 'axios'
-import { API_ENDPOINT } from '../../../config/index'
+import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
 
-export const checkToken = async (userToken, clientId, deviceId) => {
+export const checkToken = async (headers, params) => {
     try {
-        const response = await axios.get(API_ENDPOINT + 'token/' + clientId, {
-            headers: {
-                Authorization: 'Bearer ' + userToken
-            },
-            params: {
-                deviceId: deviceId
+        const response = await axios.get(
+            API_ENDPOINT + APP_VERSION + '/token/' + params.clientId,
+            {
+                headers: headers,
+                params: {
+                    deviceId: params.deviceId
+                }
             }
-        })
+        )
 
         return response.data.success
     } catch (err) {
-        console.log(err)
+        console.log(err.response)
         throw new Error(err.message)
     }
 }

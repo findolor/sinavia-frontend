@@ -1,7 +1,8 @@
-import { getUsers } from '../../services/apiServices/user/getUsers'
+import { apiServicesTree, makeGetRequest } from '../../services/apiServices'
 
 export async function getUsersService(clientToken, idList) {
-    const res = getUsers(clientToken, idList)
-
-    return res
+    return makeGetRequest(apiServicesTree.userApi.getUsers, {
+        idList: idList,
+        clientToken: clientToken
+    })
 }

@@ -1,27 +1,30 @@
 import axios from 'axios'
-import { API_ENDPOINT } from '../../../config/index'
+import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
 import { renewToken } from '../token/renewToken'
 
-export const rejectOngoingMatch = async (userToken, ongoingMatchId) => {
+export const rejectOngoingMatch = async (headers, params) => {
     try {
         let response = await axios.delete(
-            API_ENDPOINT + 'friendGames/' + ongoingMatchId,
+            API_ENDPOINT +
+                APP_VERSION +
+                '/friendGames/' +
+                params.ongoingMatchId,
             {
-                headers: {
-                    Authorization: 'Bearer ' + userToken
-                }
+                headers: headers
             }
         )
         return response.data.data
     } catch (err) {
         if (err.response.status === 401) {
             let res = await renewToken()
+            headers.Authorization = 'Bearer ' + res.token
             response = await axios.delete(
-                API_ENDPOINT + 'friendGames/' + ongoingMatchId,
+                API_ENDPOINT +
+                    APP_VERSION +
+                    '/friendGames/' +
+                    params.ongoingMatchId,
                 {
-                    headers: {
-                        Authorization: 'Bearer ' + res.token
-                    }
+                    headers: headers
                 }
             )
             return response.data.data

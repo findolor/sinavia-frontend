@@ -1,5 +1,8 @@
-import { subtractGameEnergy } from '../../services/apiServices/gameEnergy/subtractGameEnergy'
+import { apiServicesTree, makePutRequest } from '../../services/apiServices'
 
 export const subtractGameEnergyService = async (clientToken, clientId) => {
-    return subtractGameEnergy(clientToken, clientId)
+    return makePutRequest(apiServicesTree.gameEnergyApi.subtractGameEnergy, {
+        clientToken: clientToken,
+        clientId: clientId
+    })
 }

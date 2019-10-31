@@ -28,14 +28,17 @@ import { GAME_ENGINE_ENDPOINT, SCENE_KEYS } from '../../../config'
 
 import SWORD from '../../../assets/sword.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
-import { gameEnergyServices } from '../../../sagas/gameEnergy'
+//import { gameEnergyServices } from '../../../sagas/gameEnergy'
+import { levelFinder } from '../../../services/userLevelFinder'
 
 class FriendMatchingScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             countDownTime: 2,
-            isCoundownFinished: false
+            isCoundownFinished: false,
+            clientPoint: 0,
+            friendPoint: 0
         }
     }
 
@@ -94,6 +97,14 @@ class FriendMatchingScreen extends React.Component {
                 navigationReset('main')
                 return
             }
+            if (message.action === 'save-user-points') {
+                message.userScores.forEach(userScore => {
+                    if (this.props.clientInformation.id === userScore.userId) {
+                        this.setState({ clientPoint: userScore.totalPoints })
+                    } else this.setState({ friendPoint: userScore.totalPoints })
+                })
+                return
+            }
             // Message is playerProps
             const playerIds = Object.keys(message)
 
@@ -111,7 +122,7 @@ class FriendMatchingScreen extends React.Component {
 
             this.room.removeAllListeners()
 
-            if (this.props.clientInformation.isPremium) {
+            /* if (this.props.clientInformation.isPremium) {
                 setTimeout(() => {
                     navigationReplace(SCENE_KEYS.gameScreens.friendGame, {
                         // These are necessary for the game logic
@@ -156,7 +167,21 @@ class FriendMatchingScreen extends React.Component {
                         console.log(error)
                         this.backButtonOnPress()
                     })
-            }
+            } */
+
+            setTimeout(() => {
+                navigationReplace(SCENE_KEYS.gameScreens.friendGame, {
+                    // These are necessary for the game logic
+                    room: this.room,
+                    client: this.client,
+                    // These can be used in both screens
+                    playerUsername: playerUsername,
+                    playerProfilePicture: playerProfilePicture,
+                    opponentUsername: opponentUsername,
+                    opponentId: opponentId,
+                    opponentProfilePicture: opponentProfilePicture
+                })
+            }, 3000)
         })
     }
 
@@ -171,7 +196,7 @@ class FriendMatchingScreen extends React.Component {
 
         this.room.removeAllListeners()
 
-        if (this.props.clientInformation.isPremium) {
+        /* if (this.props.clientInformation.isPremium) {
             navigationReplace(SCENE_KEYS.gameScreens.soloFriendGameScreen, {
                 // These are necessary for the game logic
                 room: this.room,
@@ -209,7 +234,16 @@ class FriendMatchingScreen extends React.Component {
                     console.log(error)
                     this.backButtonOnPress()
                 })
-        }
+        } */
+
+        navigationReplace(SCENE_KEYS.gameScreens.soloFriendGameScreen, {
+            // These are necessary for the game logic
+            room: this.room,
+            client: this.client,
+            // These can be used in both screens
+            playerUsername: this.props.clientInformation.username,
+            playerProfilePicture: this.props.clientInformation.profilePicture
+        })
     }
 
     backButtonOnPress = () => {
@@ -266,7 +300,11 @@ class FriendMatchingScreen extends React.Component {
                                             styles.subjectBasedSinaviaScoreText
                                         }
                                     >
-                                        Sınavia Puanı: 20
+                                        Konu Seviyesi:{' '}
+                                        {Math.floor(
+                                            levelFinder(this.state.clientPoint)
+                                                .level
+                                        )}
                                     </Text>
                                 </View>
                             </View>
@@ -294,7 +332,11 @@ class FriendMatchingScreen extends React.Component {
                                             styles.subjectBasedSinaviaScoreText
                                         }
                                     >
-                                        Sınavia Puanı: 20
+                                        Konu Seviyesi:{' '}
+                                        {Math.floor(
+                                            levelFinder(this.state.friendPoint)
+                                                .level
+                                        )}
                                     </Text>
                                 </View>
                                 <View style={styles.opponentPicContainer}>
@@ -309,46 +351,46 @@ class FriendMatchingScreen extends React.Component {
                             </View>
                         </ImageBackground>
                     </View>
-                </View>
-                <View style={styles.separatorView}>
-                    <View style={styles.separatorLineUser}>
-                        <Text style={styles.winLoseText}>Kazanma</Text>
-                        <Text style={styles.winLoseCounterText}>20</Text>
-                    </View>
-                    <View style={styles.separatorCircle}>
-                        {!this.state.isFriendJoined &&
-                            !this.state.isCoundownFinished && (
-                                <CountDown
-                                    until={this.state.countDownTime}
-                                    size={countdownProps.size}
-                                    digitStyle={{
-                                        backgroundColor: '#FF9900',
-                                        borderRadius: 100
-                                    }}
-                                    digitTxtStyle={styles.timerText}
-                                    timeToShow={['S']}
-                                    timeLabels={{ s: null }}
-                                    separatorStyle={{ color: '#fff' }}
-                                    showSeparator
-                                    //running={!this.state.isCoundownFinished}
-                                    onFinish={this.countdownOnFinish}
-                                />
+                    <View style={styles.separatorView}>
+                        <View style={styles.separatorLineUser}>
+                            <Text style={styles.winLoseText}>Kazanma</Text>
+                            <Text style={styles.winLoseCounterText}>20</Text>
+                        </View>
+                        <View style={styles.separatorCircle}>
+                            {!this.state.isFriendJoined &&
+                                !this.state.isCoundownFinished && (
+                                    <CountDown
+                                        until={this.state.countDownTime}
+                                        size={countdownProps.size}
+                                        digitStyle={{
+                                            backgroundColor: '#FF9900',
+                                            borderRadius: 100
+                                        }}
+                                        digitTxtStyle={styles.timerText}
+                                        timeToShow={['S']}
+                                        timeLabels={{ s: null }}
+                                        separatorStyle={{ color: '#fff' }}
+                                        showSeparator
+                                        //running={!this.state.isCoundownFinished}
+                                        onFinish={this.countdownOnFinish}
+                                    />
+                                )}
+                            {!this.state.isFriendJoined &&
+                                this.state.isCoundownFinished && (
+                                    <TouchableOpacity
+                                        onPress={this.playAheadOnPress}
+                                    >
+                                        <Text>ÖNDEN OYNA</Text>
+                                    </TouchableOpacity>
+                                )}
+                            {this.state.isFriendJoined && (
+                                <Image source={SWORD} style={styles.swordPic} />
                             )}
-                        {!this.state.isFriendJoined &&
-                            this.state.isCoundownFinished && (
-                                <TouchableOpacity
-                                    onPress={this.playAheadOnPress}
-                                >
-                                    <Text>ÖNDEN OYNA</Text>
-                                </TouchableOpacity>
-                            )}
-                        {this.state.isFriendJoined && (
-                            <Image source={SWORD} style={styles.swordPic} />
-                        )}
-                    </View>
-                    <View style={styles.separatorLineOpponent}>
-                        <Text style={styles.winLoseText}>Kazanma</Text>
-                        <Text style={styles.winLoseCounterText}>20</Text>
+                        </View>
+                        <View style={styles.separatorLineOpponent}>
+                            <Text style={styles.winLoseText}>Kazanma</Text>
+                            <Text style={styles.winLoseCounterText}>20</Text>
+                        </View>
                     </View>
                 </View>
                 <View style={styles.backButtonContainer}>
@@ -369,7 +411,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    removeOneEnergy: () => dispatch(appActions.removeOneEnergy())
+    //removeOneEnergy: () => dispatch(appActions.removeOneEnergy())
 })
 
 export default connect(

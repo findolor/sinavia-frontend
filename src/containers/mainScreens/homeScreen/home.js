@@ -41,16 +41,18 @@ import * as Colyseus from 'colyseus.js'
 
 // FCM imports
 import firebase from 'react-native-firebase'
-import { fcmService } from '../../../services/fcmService'
 
 import { friendshipServices } from '../../../sagas/friendship/'
 import { friendGameServices } from '../../../sagas/friendGame/'
+import { userScoreServices } from '../../../sagas/userScore'
 import { userServices } from '../../../sagas/user/'
-import { gameEnergyServices } from '../../../sagas/gameEnergy/'
 import { GAME_ENGINE_ENDPOINT } from '../../../config'
 
 import NOTIFICATION_LOGO from '../../../assets/mainScreens/notification.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
+
+import CreateGroupRoomView from './groupRoomScreens/createRoomScreen/createGroupRoom'
+import JoinGroupRoomView from './groupRoomScreens/joinRoomScreen/joinGroupRoom'
 
 import {
     navigationPush,
@@ -59,6 +61,8 @@ import {
     navigationReplace
 } from '../../../services/navigationService'
 
+import { levelFinder } from '../../../services/userLevelFinder'
+
 import SWORD from '../../../assets/sword.png'
 const carouselFirstItem = 0
 
@@ -66,9 +70,11 @@ const SELECTED_MODE_COLOR = '#00D9EF'
 const EMPTY_MODE_COLOR = '#A8A8A8'
 
 const CLOSE_BUTTON = require('../../../assets/closeButton.png')
-const RANKED_EMPTY_IMAGE = require('../../../assets/mainScreens/tek.png')
-const FRIENDS_EMPTY_IMAGE = require('../../../assets/mainScreens/arkadas_siyah.png')
-const GROUP_EMPTY_IMAGE = require('../../../assets/mainScreens/group_siyah.png')
+
+const RANKED_IMAGE = require('../../../assets/sword.png')
+const FRIENDS_IMAGE = require('../../../assets/mainScreens/arkadas_siyah.png')
+const GROUP_IMAGE = require('../../../assets/mainScreens/group_siyah.png')
+const SOLO_IMAGE = require('../../../assets/mainScreens/tek.png')
 
 class Home extends React.Component {
     constructor(props) {
@@ -83,12 +89,8 @@ class Home extends React.Component {
             subject: '',
             isModalVisible: false,
             // Mode button variables
-            rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
+            rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
             soloModeButtonBorderColor: EMPTY_MODE_COLOR,
-            // Mode images
-            rankedImage: RANKED_EMPTY_IMAGE,
-            friendsImage: FRIENDS_EMPTY_IMAGE,
-            groupImage: GROUP_EMPTY_IMAGE,
             // Carousel slide item
             carouselActiveSlide: carouselFirstItem,
             // On change text for the group room code
@@ -96,7 +98,6 @@ class Home extends React.Component {
             // Modal visible view variable
             visibleView: '',
             // Variable for making start button when pressed ranked
-            visibleRankedGameStartPress: false,
             friendSelected: false,
             opponentUserPic: null,
             opponentName: '',
@@ -105,22 +106,69 @@ class Home extends React.Component {
             friendList: [],
             originalFriends: [],
             // Selected game mode variable
-            selectedGameMode: 'ranked'
+            selectedGameMode: 'ranked',
+            // Selected content total score
+            selectedContentTotalPoints: 0
         }
     }
 
     async componentDidMount() {
-        await fcmService.checkPermissions()
         await this.fillGameContent()
-        this.messageListener = firebase.messaging().onMessage(message => {
+
+        this.removeMessageListener = firebase.messaging().onMessage(message => {
             console.log(message, 'mes')
-            this.fcmMessagePicker(message)
+            //this.fcmMessagePicker(message)
         })
-        this.NotificationListener = firebase
+        this.removeNotificationListener = firebase
             .notifications()
             .onNotification(notification => {
+                // Create the channel
+                const channel = new firebase.notifications.Android.Channel(
+                    'notification-channel',
+                    'Notification Channel',
+                    firebase.notifications.Android.Importance.Max
+                ).setDescription('Sinavia notification channel')
+                firebase.notifications().android.createChannel(channel)
+
                 console.log(notification, 'not')
+                const tempNotification = new firebase.notifications.Notification()
+                    .setNotificationId(notification.notificationId)
+                    .setTitle(notification.title)
+                    .setBody(notification.body)
+                    .setData(notification.data)
+                tempNotification.android.setChannelId('aaa')
+                tempNotification.android.setSmallIcon('ic_launcher')
+                tempNotification.ios.setBadge(2)
+
+                firebase.notifications().displayNotification(tempNotification)
             })
+
+        // If the app was in foreground or background
+        // This func fires up
+        this.removeNotificationOpenedListener = firebase
+            .notifications()
+            .onNotificationOpened(notificationOpen => {
+                // Get the action triggered by the notification being opened
+                const action = notificationOpen.action
+                // Get information about the notification that was opened
+                const notification = notificationOpen.notification
+                console.log(action, notification, 'app running')
+                this.fcmMessagePicker(notification)
+            })
+        // If the app was closed when the notification is opened
+        // This func fires up
+        if (this.props.notificationOpen) {
+            // App was opened by a notification
+            // Get the action triggered by the notification being opened
+            const action = this.props.notificationOpen.action
+            // Get information about the notification that was opened
+            const notification = this.props.notificationOpen.notification
+            console.log(action, notification, 'app closed')
+            // TODO ACT ON ACTIONS HERE
+            // TODO DECIDE WHAT TO DO
+            this.fcmMessagePicker(notification)
+            this.props.saveNotificationOpen(null)
+        }
     }
 
     fillGameContent = () => {
@@ -134,21 +182,27 @@ class Home extends React.Component {
         })
     }
 
-    componentWillUnmount() {
-        this.messageListener()
-    }
+    componentWillUnmount() {}
 
     fcmMessagePicker = message => {
         switch (message.data.type) {
             case 'friendRequest':
-                this.customAlert(
-                    true,
+                Alert.alert(
                     'Arkadaşlık isteği!',
                     message.data.body,
-                    this.acceptFriendRequest,
-                    {
-                        opponentId: message.data.userId
-                    }
+                    [
+                        {
+                            text: 'Reddet',
+                            onPress: () => {}
+                        },
+                        {
+                            text: 'Kabul et',
+                            onPress: () => {
+                                this.acceptFriendRequest(message.data.userId)
+                            }
+                        }
+                    ],
+                    { cancelable: false }
                 )
                 break
             case 'friendApproved':
@@ -175,7 +229,7 @@ class Home extends React.Component {
                         {
                             text: 'Kabul et',
                             onPress: () => {
-                                if (this.props.clientInformation.isPremium) {
+                                /* if (this.props.clientInformation.isPremium) {
                                     this.playFriendGame({
                                         opponentId: message.data.userId,
                                         roomCode: message.data.roomCode,
@@ -218,17 +272,33 @@ class Home extends React.Component {
                                             )
                                         })
                                     }
-                                }
+                                } */
+
+                                this.playFriendGame({
+                                    opponentId: message.data.userId,
+                                    roomCode: message.data.roomCode,
+                                    examId: parseInt(message.data.examId, 10),
+                                    courseId: parseInt(
+                                        message.data.courseId,
+                                        10
+                                    ),
+                                    subjectId: parseInt(
+                                        message.data.subjectId,
+                                        10
+                                    )
+                                })
                             }
                         }
                     ],
                     { cancelable: false }
                 )
                 break
-            case 'friendDeleted': {
+            case 'friendDeleted':
                 this.friendDeleted({ opponentId: message.data.userId })
                 break
-            }
+            case 'friendMatchResult':
+                navigationPush(SCENE_KEYS.mainScreens.notifications)
+                break
         }
     }
 
@@ -272,16 +342,16 @@ class Home extends React.Component {
         this.props.saveFriendIdList(friends)
     }
 
-    acceptFriendRequest = params => {
+    acceptFriendRequest = opponentId => {
         const friends = this.props.friendIds
-        friends.push(params.opponentId)
+        friends.push(opponentId)
 
         this.props.saveFriendIdList(friends)
 
         friendshipServices.acceptFriendshipRequest(
             this.props.clientToken,
             this.props.clientDBId,
-            params.opponentId,
+            opponentId,
             this.props.clientInformation.username
         )
     }
@@ -357,11 +427,32 @@ class Home extends React.Component {
     }
 
     onPressCard(title) {
-        this.setState({
-            isModalVisible: true,
-            subject: title,
-            visibleView: 'GAME_MODES'
-        })
+        this.setState(
+            {
+                isModalVisible: true,
+                subject: title,
+                visibleView: 'GAME_MODES',
+                selectedContentTotalPoints: 0
+            },
+            () => {
+                const contentIds = this.calculateContentIds()
+
+                userScoreServices
+                    .getUserScore(
+                        this.props.clientToken,
+                        this.props.clientDBId,
+                        contentIds.examId,
+                        contentIds.courseId,
+                        contentIds.subjectId
+                    )
+                    .then(userScore => {
+                        this.setState({
+                            selectedContentTotalPoints:
+                                userScore !== null ? userScore.totalPoints : 0
+                        })
+                    })
+            }
+        )
     }
 
     // TODO THINK ABOUT CONTETT LATER IMPORTRRANT
@@ -386,14 +477,14 @@ class Home extends React.Component {
         let examIndex
         let subjectList = []
         examIndex = this.props.examList.findIndex(x => x.name === examName)
-        if (!this.props.clientInformation.isPremium)
+        /* if (!this.props.clientInformation.isPremium)
             subjectList.push(
                 <View style={styles.card}>
                     <Text style={styles.cardText}>
                         Kalan enerji sayısı: {this.props.energyAmount}
                     </Text>
                 </View>
-            )
+            ) */
         this.props.examList[examIndex].courseEntities[
             carouselActiveSlide
         ].subjectEntities.forEach((subject, index) => {
@@ -418,13 +509,14 @@ class Home extends React.Component {
         this.setState({
             isModalVisible: false,
             friendSelected: false,
-            opponentUserPic: '',
+            opponentUserPic: null,
             opponentName: '',
             opponentUsername: '',
             opponentInformation: {},
-            rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
+            rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
             soloModeButtonBorderColor: EMPTY_MODE_COLOR,
-            visibleRankedGameStartPress: false
+            visibleRankedGameStartPress: false,
+            selectedGameMode: 'ranked'
         })
     }
 
@@ -447,7 +539,7 @@ class Home extends React.Component {
     }
 
     groupGameModeOnPress = () => {
-        if (this.props.clientInformation.isPremium) {
+        /* if (this.props.clientInformation.isPremium) {
             this.setState({
                 visibleView: 'GROUP_MODES',
                 visibleRankedGameStartPress: false,
@@ -462,14 +554,27 @@ class Home extends React.Component {
                 soloModeButtonBorderColor: EMPTY_MODE_COLOR
             })
         else {
-            this.setState({ visibleRankedGameStartPress: false })
             Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
-        }
+        } */
+
+        this.setState({
+            visibleView: 'GROUP_MODES',
+            visibleRankedGameStartPress: false,
+            rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
+            soloModeButtonBorderColor: EMPTY_MODE_COLOR
+        })
     }
 
     gameModesView() {
         return (
             <View style={styles.modal}>
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{
+                        height: hp(120),
+                        width: wp(100)
+                    }}
+                />
                 <View style={styles.onlyCloseButtonContainer}>
                     <TouchableOpacity onPress={this.closeModalButtonOnPress}>
                         <Image source={CLOSE_BUTTON} style={styles.xLogo} />
@@ -482,100 +587,177 @@ class Home extends React.Component {
                     <View style={styles.separatorContainer}>
                         <View style={styles.separatorLine} />
                     </View>
-                    <View style={styles.gameModesContainer}>
-                        <View style={styles.gameModeContainer}>
+                    <View style={styles.gameModeContainer}>
+                        <View style={styles.gameModeButtonContainer}>
                             <TouchableOpacity
                                 onPress={this.rankedGameModeOnPress}
+                                style={[
+                                    styles.gameModeLogoContainer,
+                                    {
+                                        borderColor: this.state
+                                            .rankedModeButtonBorderColor
+                                    }
+                                ]}
                             >
-                                <View
-                                    style={[
-                                        styles.gameModeLogoContainer,
-                                        {
-                                            borderColor: this.state
-                                                .rankedModeButtonBorderColor
-                                        }
-                                    ]}
-                                >
-                                    <Image
-                                        source={this.state.rankedImage}
-                                        style={styles.rankedModeImage}
-                                    />
-                                </View>
+                                <Image
+                                    source={RANKED_IMAGE}
+                                    style={styles.gameModeImage}
+                                />
                             </TouchableOpacity>
-                            <View style={styles.gameModeContextContainer}>
-                                <Text style={styles.gameModeContextText}>
-                                    Rastgele bir kullanıcı ile yarış
-                                </Text>
-                            </View>
                         </View>
-                        <View style={styles.gameModeContainer}>
-                            <TouchableOpacity onPress={this.friendRoomOnPress}>
-                                <View style={styles.gameModeLogoContainer}>
-                                    <Image
-                                        source={this.state.friendsImage}
-                                        style={styles.friendsModeImage}
-                                    />
-                                </View>
-                            </TouchableOpacity>
-                            <View style={styles.gameModeContextContainer}>
-                                <Text style={styles.gameModeContextText}>
-                                    Arkadaşın ile yarış
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.gameModeContainer}>
-                            <TouchableOpacity
-                                onPress={this.groupGameModeOnPress}
+                        <View style={styles.gameModeContextContainer}>
+                            <Text
+                                style={[
+                                    styles.gameModeContextText,
+                                    { fontSize: hp(1.7) }
+                                ]}
                             >
-                                <View style={styles.gameModeLogoContainer}>
-                                    <Image
-                                        source={this.state.groupImage}
-                                        style={styles.groupModeImage}
-                                    />
-                                </View>
-                            </TouchableOpacity>
-                            <View style={styles.gameModeContextContainer}>
-                                <Text style={styles.gameModeContextText}>
-                                    Arkadaş grubun ile yarış
-                                </Text>
-                            </View>
+                                Dereceli - Sınavia Puanı'nı artır, Türkiye
+                                sıralamanı yükselt
+                            </Text>
                         </View>
-                        <View style={styles.gameModeContainer}>
-                            <TouchableOpacity onPress={this.soloModeOnPress}>
-                                <View
-                                    style={[
-                                        styles.gameModeLogoContainer,
-                                        {
-                                            borderColor: this.state
-                                                .soloModeButtonBorderColor
-                                        }
-                                    ]}
-                                >
-                                    <Image
-                                        source={this.state.rankedImage}
-                                        style={styles.rankedModeImage}
-                                    />
-                                </View>
-                            </TouchableOpacity>
-                            <View style={styles.gameModeContextContainer}>
-                                <Text style={styles.gameModeContextText}>
-                                    Tek başına yarış
+                    </View>
+                    <View style={styles.scoreContainer}>
+                        <Text style={styles.scoreTextInModal}>
+                            Sınavia Puanı:
+                        </Text>
+                        <Text style={styles.scoreInModal}>
+                            {this.state.selectedContentTotalPoints}
+                        </Text>
+                    </View>
+                    <View style={styles.levelProgressBarContainer}>
+                        <View style={styles.progressBarView}>
+                            <Text style={styles.levelText}>
+                                Seviye{' '}
+                                {Math.floor(
+                                    levelFinder(
+                                        this.state.selectedContentTotalPoints
+                                    ).level
+                                )}
+                            </Text>
+                            <View
+                                style={[
+                                    styles.instantProgressView,
+                                    {
+                                        width: wp(
+                                            (Math.floor(
+                                                levelFinder(
+                                                    this.state
+                                                        .selectedContentTotalPoints
+                                                ).levelProgressScore
+                                            ) /
+                                                Math.floor(
+                                                    levelFinder(
+                                                        this.state
+                                                            .selectedContentTotalPoints !==
+                                                            0
+                                                            ? this.state
+                                                                  .selectedContentTotalPoints
+                                                            : 1
+                                                    ).levelProgressLimit
+                                                )) *
+                                                65
+                                        )
+                                    }
+                                ]}
+                            />
+                            <View style={styles.progressScoreView}>
+                                <Text style={styles.levelInProgressText}>
+                                    {Math.floor(
+                                        levelFinder(
+                                            this.state
+                                                .selectedContentTotalPoints
+                                        ).levelProgressScore
+                                    )}
+                                    /
+                                    {Math.floor(
+                                        levelFinder(
+                                            this.state
+                                                .selectedContentTotalPoints !==
+                                                0
+                                                ? this.state
+                                                      .selectedContentTotalPoints
+                                                : 1000
+                                        ).levelProgressLimit
+                                    )}
                                 </Text>
                             </View>
                         </View>
                     </View>
+                    <View style={styles.separatorContainer}>
+                        <View style={styles.separatorLine} />
+                    </View>
+                    <View style={styles.gameModeContainer}>
+                        <View style={styles.gameModeButtonContainer}>
+                            <TouchableOpacity
+                                onPress={this.friendRoomOnPress}
+                                style={styles.gameModeLogoContainer}
+                            >
+                                <Image
+                                    source={FRIENDS_IMAGE}
+                                    style={styles.gameModeImage}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.gameModeContextContainer}>
+                            <Text style={styles.gameModeContextText}>
+                                Arkadaşın ile yarış
+                            </Text>
+                        </View>
+                    </View>
+                    <View style={styles.gameModeContainer}>
+                        <View style={styles.gameModeButtonContainer}>
+                            <TouchableOpacity
+                                onPress={this.groupGameModeOnPress}
+                                style={styles.gameModeLogoContainer}
+                            >
+                                <Image
+                                    source={GROUP_IMAGE}
+                                    style={styles.gameModeImage}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.gameModeContextContainer}>
+                            <Text style={styles.gameModeContextText}>
+                                Arkadaş grubun ile yarış
+                            </Text>
+                        </View>
+                    </View>
+                    <View style={styles.gameModeContainer}>
+                        <View style={styles.gameModeButtonContainer}>
+                            <TouchableOpacity
+                                style={[
+                                    styles.gameModeLogoContainer,
+                                    {
+                                        borderColor: this.state
+                                            .soloModeButtonBorderColor
+                                    }
+                                ]}
+                                onPress={this.soloModeOnPress}
+                            >
+                                <Image
+                                    source={SOLO_IMAGE}
+                                    style={styles.gameModeImage}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.gameModeContextContainer}>
+                            <Text style={styles.gameModeContextText}>
+                                Tek başına soru çöz
+                            </Text>
+                        </View>
+                    </View>
                 </View>
-                {this.state.visibleRankedGameStartPress && (
-                    <AuthButton
-                        marginTop={hp(2)}
-                        height={hp(7)}
-                        width={wp(87.5)}
-                        color="#00D9EF"
-                        buttonText="Başlat"
-                        borderRadius={10}
-                        onPress={this.playButtonOnPress}
-                    />
-                )}
+                <AuthButton
+                    marginTop={hp(83.5)}
+                    height={hp(7)}
+                    width={wp(87.5)}
+                    color="#00D9EF"
+                    buttonText="Başlat"
+                    borderRadius={10}
+                    position={'absolute'}
+                    onPress={this.playButtonOnPress}
+                />
             </View>
         )
     }
@@ -593,21 +775,12 @@ class Home extends React.Component {
         }
 
         this.setState({
-            isModalVisible: false
+            visibleView: 'CREATE_ROOM'
         })
-        navigationReplace(
-            SCENE_KEYS.mainScreens.createGroupRoom,
-            this.calculateContentIds()
-        )
     }
 
     friendRoomOnPress = async () => {
-        this.setState({
-            rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
-            soloModeButtonBorderColor: EMPTY_MODE_COLOR
-        })
-
-        if (this.props.clientInformation.isPremium) {
+        /* if (this.props.clientInformation.isPremium) {
             if (Object.keys(this.props.friendIds).length === 0) return
             const friends = await userServices.getUsers(
                 this.props.clientToken,
@@ -632,9 +805,25 @@ class Home extends React.Component {
                 originalFriends: friends
             })
         } else {
-            this.setState({ visibleRankedGameStartPress: false })
             Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
-        }
+        } */
+
+        if (Object.keys(this.props.friendIds).length === 0) return
+        this.setState({
+            rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
+            soloModeButtonBorderColor: EMPTY_MODE_COLOR
+        })
+
+        const friends = await userServices.getUsers(
+            this.props.clientToken,
+            this.props.friendIds
+        )
+
+        this.setState({
+            visibleView: 'FRIEND_ROOM',
+            friendList: friends,
+            originalFriends: friends
+        })
     }
 
     friendRoomAndGameModesBackButtonOnPress = () => {
@@ -644,21 +833,27 @@ class Home extends React.Component {
             opponentUserPic: null,
             opponentName: '',
             opponentUsername: '',
-            opponentInformation: {}
+            opponentInformation: {},
+            rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
+            selectedGameMode: 'ranked'
         })
     }
 
     groupModesView() {
         return (
             <View style={styles.modal}>
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{
+                        height: hp(120),
+                        width: wp(100)
+                    }}
+                />
                 <View style={styles.backAndCloseButtonsContainer}>
                     <TouchableOpacity
                         onPress={this.friendRoomAndGameModesBackButtonOnPress}
                     >
                         <Image source={BACK_BUTTON} style={styles.backLogo} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this.closeModalButtonOnPress}>
-                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.modalView}>
@@ -778,14 +973,15 @@ class Home extends React.Component {
     friendRoomView() {
         return (
             <View style={styles.modal}>
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{ height: hp(120), width: wp(100) }}
+                />
                 <View style={styles.backAndCloseButtonsContainer}>
                     <TouchableOpacity
                         onPress={this.friendRoomAndGameModesBackButtonOnPress}
                     >
                         <Image source={BACK_BUTTON} style={styles.backLogo} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this.closeModalButtonOnPress}>
-                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.modalView}>
@@ -888,12 +1084,13 @@ class Home extends React.Component {
                     </View>
                 </View>
                 <AuthButton
-                    marginTop={hp(2)}
+                    marginTop={hp(83.5)}
                     height={hp(7)}
                     width={wp(87.5)}
                     color="#00D9EF"
                     buttonText="Başla"
                     borderRadius={10}
+                    position={'absolute'}
                     onPress={this.friendGameModeOnPress}
                 />
             </View>
@@ -932,14 +1129,19 @@ class Home extends React.Component {
         })
 
         this.room.onJoin.add(() => {
-            this.setState({ isModalVisible: false })
             this.room.removeAllListeners()
-            navigationReplace(SCENE_KEYS.mainScreens.joinGroupRoom, {
-                client: this.client,
-                room: this.room,
-                roomCode: this.state.groupCodeOnChangeText
+            this.setState({
+                visibleView: 'JOINED_ROOM'
             })
         })
+    }
+
+    joinGameParams = () => {
+        return {
+            client: this.client,
+            room: this.room,
+            roomCode: this.state.groupCodeOnChangeText
+        }
     }
 
     joinRoomBackButtonOnPress = () => {
@@ -949,12 +1151,13 @@ class Home extends React.Component {
     joinRoomView() {
         return (
             <View style={styles.modal}>
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{ height: hp(120), width: wp(100) }}
+                />
                 <View style={styles.backAndCloseButtonsContainer}>
                     <TouchableOpacity onPress={this.joinRoomBackButtonOnPress}>
                         <Image source={BACK_BUTTON} style={styles.backLogo} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this.closeModalButtonOnPress}>
-                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.modalView}>
@@ -990,7 +1193,8 @@ class Home extends React.Component {
                     </View>
                 </View>
                 <AuthButton
-                    marginTop={hp(2)}
+                    position={'absolute'}
+                    marginTop={hp(83.5)}
                     height={hp(7)}
                     width={wp(87.5)}
                     color="#00D9EF"
@@ -1016,7 +1220,7 @@ class Home extends React.Component {
 
         switch (this.state.selectedGameMode) {
             case 'ranked':
-                if (this.props.clientInformation.isPremium) {
+                /* if (this.props.clientInformation.isPremium) {
                     navigationReset('game', this.calculateContentIds())
                 } else if (this.props.energyAmount !== 0)
                     navigationReset('game', this.calculateContentIds())
@@ -1026,7 +1230,8 @@ class Home extends React.Component {
                         rankedModeButtonBorderColor: EMPTY_MODE_COLOR
                     })
                     Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
-                }
+                } */
+                navigationReset('game', this.calculateContentIds())
                 break
             case 'solo':
                 if (this.props.clientInformation.isPremium) {
@@ -1038,7 +1243,9 @@ class Home extends React.Component {
                 } else {
                     this.setState({
                         visibleRankedGameStartPress: false,
-                        soloModeButtonBorderColor: EMPTY_MODE_COLOR
+                        soloModeButtonBorderColor: EMPTY_MODE_COLOR,
+                        rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
+                        selectedGameMode: 'ranked'
                     })
                     Alert.alert(
                         'Üzgünüm ama tek başına oynamak için premium alman gerek!'
@@ -1121,6 +1328,16 @@ class Home extends React.Component {
                         this.groupModesView()}
                     {this.state.visibleView === 'JOIN_ROOM' &&
                         this.joinRoomView()}
+                    {this.state.visibleView === 'CREATE_ROOM' && (
+                        <CreateGroupRoomView
+                            calculateContentIds={this.calculateContentIds()}
+                        />
+                    )}
+                    {this.state.visibleView === 'JOINED_ROOM' && (
+                        <JoinGroupRoomView
+                            joinGameParams={this.joinGameParams()}
+                        />
+                    )}
                 </Modal>
                 <View style={styles.header}>
                     <View style={styles.profilePicContainer}>
@@ -1196,7 +1413,8 @@ const mapStateToProps = state => ({
     friendIds: state.friends.friendIds,
     examList: state.gameContent.examList,
     isNetworkConnected: state.app.isNetworkConnected,
-    energyAmount: state.app.energyAmount
+    //energyAmount: state.app.energyAmount,
+    notificationOpen: state.app.notificationOpen
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -1204,7 +1422,9 @@ const mapDispatchToProps = dispatch => ({
         dispatch(gameContentActions.saveChoosenExam(choosenExam)),
     saveFriendIdList: friendList =>
         dispatch(friendActions.saveFriendIds(friendList)),
-    removeOneEnergy: () => dispatch(appActions.removeOneEnergy())
+    //removeOneEnergy: () => dispatch(appActions.removeOneEnergy()),
+    saveNotificationOpen: notificationOpen =>
+        dispatch(appActions.saveNotificationOpen(notificationOpen))
 })
 
 export default connect(

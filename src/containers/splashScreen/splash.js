@@ -14,6 +14,7 @@ import LottieView from 'lottie-react-native'
 import { appActions } from '../../redux/app/actions'
 import { AuthButton } from '../../components/authScreen'
 import { showMessage } from 'react-native-flash-message'
+import { fcmService } from '../../services/fcmService'
 
 class SplashScreen extends React.PureComponent {
     constructor(props) {
@@ -55,6 +56,7 @@ class SplashScreen extends React.PureComponent {
     }
 
     async componentDidMount() {
+        await fcmService.checkPermissions()
         this.getJWTToken().then(async token => {
             // If we don't have any token saved, we go to the auth screen
             if (token === null) {

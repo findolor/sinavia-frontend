@@ -7,9 +7,8 @@ import {
 export default StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#000000DE'
+        justifyContent: 'flex-start',
+        alignItems: 'center'
     },
     usersCounterText: {
         fontFamily: 'Averta-Bold',
@@ -28,10 +27,13 @@ export default StyleSheet.create({
         width: hp(4)
     },
     modalView: {
+        position: 'absolute',
+        zIndex: 1,
         backgroundColor: '#ffffff',
         height: hp(67),
         width: wp(87.5),
-        marginTop: hp(2),
+        marginTop: hp(14),
+        marginLeft: wp(6.25),
         borderColor: '#00D9EF',
         borderWidth: wp(0.75),
         borderRadius: 10,
@@ -86,11 +88,6 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    usersCounterText: {
-        fontFamily: 'Averta-Bold',
-        fontSize: wp(4),
-        color: '#5C5C5C'
-    },
     quitView: {
         backgroundColor: '#ffffff',
         height: hp(20),
@@ -117,8 +114,7 @@ export default StyleSheet.create({
     },
     modalContainer: {
         flex: 1,
-        alignItems: 'center',
-        backgroundColor: '#000000DE'
+        alignItems: 'center'
     },
     leaderContainer: {
         width: wp(10)
@@ -232,6 +228,12 @@ export default StyleSheet.create({
     },
     isLeaderContainer: {
         justifyContent: 'center',
+        alignItems: 'center'
+    },
+    modal: {
+        flex: 1,
+        backgroundColor: '#000000DE',
+        justifyContent: 'flex-start',
         alignItems: 'center'
     }
 })

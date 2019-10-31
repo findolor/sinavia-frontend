@@ -1,5 +1,5 @@
-import { sendFriendshipRequest } from '../../services/apiServices/friendship/sendFriendshipRequest'
-import { put, call, delay } from 'redux-saga/effects'
+import { makePostRequest, apiServicesTree } from '../../services/apiServices'
+import { put, call } from 'redux-saga/effects'
 import { friendTypes } from '../../redux/friends/actions'
 
 export async function sendFriendshipRequestService(
@@ -8,33 +8,26 @@ export async function sendFriendshipRequestService(
     friendId,
     clientUsername
 ) {
-    const res = sendFriendshipRequest(
-        clientToken,
-        clientDBId,
-        friendId,
-        clientUsername
+    return makePostRequest(
+        apiServicesTree.friendshipApi.sendFriendshipRequest,
+        {
+            clientToken: clientToken,
+            userId: clientDBId,
+            friendId: friendId,
+            clientUsername: clientUsername
+        }
     )
-
-    return res
 }
 
 export function* sendFriendshipRequestSaga(action) {
-    const response = yield call(
-        sendFriendshipRequest,
-        action.clientToken,
-        action.clientDBId,
-        action.friendId,
-        action.clientUsername
+    yield call(
+        makePostRequest,
+        apiServicesTree.friendshipApi.sendFriendshipRequest,
+        {
+            clientToken: action.clientToken,
+            userId: action.clientDBId,
+            friendId: action.friendId,
+            clientUsername: action.clientUsername
+        }
     )
-
-    if (response.success) {
-        yield put({
-            type: friendTypes.CHANGE_FRIENDSHIP_STATUS,
-            friendshipStatus: 'friendRequestSent'
-        })
-        yield put({
-            type: friendTypes.CHANGE_IS_FRIEND_REQUEST_SENT,
-            isFriendRequestSent: true
-        })
-    }
 }

@@ -323,6 +323,32 @@ class Notifications extends React.Component {
                         </View>
                     </View>
                 )
+            case 'friendMatchResult':
+                return (
+                    <TouchableOpacity
+                        onPress={() =>
+                            this.friendMatchResultsOnPress(item, index)
+                        }
+                    >
+                        <View style={styles.userRow}>
+                            <View style={styles.userPicContainerInRow}>
+                                <Image
+                                    source={{
+                                        uri:
+                                            item.notificationData
+                                                .friendProfilePicture
+                                    }}
+                                    style={styles.userPic}
+                                />
+                            </View>
+                            <View style={styles.textsinRowWithPic}>
+                                <Text style={styles.notificationRowsText}>
+                                    {item.notificationData.message}
+                                </Text>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                )
             case 'nationalPlace':
                 return (
                     <View style={styles.userRow}>
@@ -464,6 +490,9 @@ class Notifications extends React.Component {
         )
         // If we do this step inside the saga it wont refresh
         this.props.removeFromFriendRequests(index)
+        this.setState({
+            refreshFlatlist: !this.state.refreshFlatlist
+        })
     }
 
     rejectFriendRequestOnPress = (friendId, index) => {
@@ -474,6 +503,29 @@ class Notifications extends React.Component {
             this.props.friendRequests
         )
         this.props.removeFromFriendRequests(index)
+        this.setState({
+            refreshFlatlist: !this.state.refreshFlatlist
+        })
+    }
+
+    friendMatchResultsOnPress = (item, index) => {
+        navigationReset('game', { isHardReset: true })
+        navigationReplace(SCENE_KEYS.gameScreens.soloFriendGameStatsScreen, {
+            clientStatistics: item.notificationData.userStatistics,
+            friendStatistics: item.notificationData.friendStatistics,
+            friendUsername: item.notificationData.friendUsername,
+            friendProfilePicture: item.notificationData.friendProfilePicture,
+            friendMatches: item.notificationData.friendMatches,
+            userAnswers: item.notificationData.userAnswers,
+            questionList: item.notificationData.questionList,
+            isFromNotification: true
+        })
+
+        item.read = true
+        item.notificationData = JSON.stringify(item.notificationData)
+
+        notificationServices.markNotificationRead(this.props.clientToken, item)
+        this.props.removeFromNotifications(index)
     }
 
     renderEmptyFriendRequests = () => {
