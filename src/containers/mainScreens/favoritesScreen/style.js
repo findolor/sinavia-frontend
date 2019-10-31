@@ -53,14 +53,6 @@ export default StyleSheet.create({
         flex: 1,
         width: wp(87)
     },
-    card: {
-        height: hp(32),
-        width: wp(87),
-        flexDirection: 'column',
-        justifyContent: 'center',
-        marginBottom: hp(1),
-        alignItems: 'center'
-    },
     contentContainerWrapper: {
         height: hp(7.5),
         width: wp(87),
@@ -68,10 +60,11 @@ export default StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#00D9EF',
         borderTopLeftRadius: 10,
-        borderTopRightRadius: 10
+        borderTopRightRadius: 10,
+        marginTop: hp(2)
     },
     questionsContainer: {
-        height: hp(22.5),
+        height: hp(62.85),
         width: wp(87),
         paddingHorizontal: wp(3),
         borderWidth: wp(0.6),
@@ -86,8 +79,8 @@ export default StyleSheet.create({
     },
     question: {
         height: hp(19),
-        width: wp(30),
-        borderWidth: wp(0.3),
+        width: wp(23),
+        borderWidth: hp(0.15),
         borderColor: '#00D9EF',
         borderRadius: 10,
         marginTop: hp(1.35),

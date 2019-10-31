@@ -56,13 +56,19 @@ class Favorites extends React.Component {
             favIconSelected: false,
             // ScrollView item list
             scrollViewList: [],
-            startQuestionIndex: 1
+            startQuestionIndex: 1,
+            isOpen: false
         }
     }
 
     // TODO REMOVE GALLERY AND THINK OF SOMETHING ELSE
     async componentDidMount() {
         await this.loadScreen()
+    }
+
+    toggleExpand=()=>{
+        this.setState({isOpen : !this.state.isOpen})
+        console.log(this.state.isOpen)
     }
 
     // Takes the transformed favouriteQuestions and makes the proper ui
@@ -83,8 +89,8 @@ class Favorites extends React.Component {
                     (courseKey, index) => {
                         questionList = []
                         courseName = this.props.gameContentMap.courses[
-                            courseKey - 1
-                        ].name
+                        courseKey - 1
+                            ].name
                         favouriteQuestions[examKey][courseKey].forEach(
                             (question, index) => {
                                 questionList.push({
@@ -93,44 +99,49 @@ class Favorites extends React.Component {
                                     },
                                     id: index - 1,
                                     correctAnswer:
-                                        question.question.correctAnswer,
+                                    question.question.correctAnswer,
                                     favouriteQuestionId: question.id
                                 })
                             }
                         )
                         itemList.push(
                             <View style={styles.card} key={index}>
-                                <View style={styles.contentContainerWrapper}>
-                                    <Text style={styles.contentText}>
+                                <TouchableOpacity style={styles.contentContainerWrapper} onPress={()=>this.toggleExpand()}>
+                                    <Text style={[styles.contentText, {color: this.state.isOpen === true ? 'red': 'white'}]}>
                                         {examName} - {courseName}
                                     </Text>
-                                </View>
-                                <View style={styles.questionsContainer}>
-                                    <FlatList
-                                        horizontal={true}
-                                        data={questionList}
-                                        showsHorizontalScrollIndicator={false}
-                                        renderItem={({ item, index }) => {
-                                            return (
-                                                <TouchableOpacity
-                                                    onPress={() => {
-                                                        this.goIndex(index)
-                                                    }}
-                                                >
-                                                    <Image
-                                                        source={{
-                                                            uri: item.source.uri
+                                </TouchableOpacity>
+                                {
+                                    this.state.isOpen &&
+                                    <View style={styles.questionsContainer}>
+                                        <FlatList
+                                            horizontal={false}
+                                            nestedScrollEnabled={true}
+                                            numColumns={3}
+                                            data={questionList}
+                                            showsHorizontalScrollIndicator={false}
+                                            renderItem={({ item, index }) => {
+                                                return (
+                                                    <TouchableOpacity
+                                                        onPress={() => {
+                                                            this.goIndex(index)
                                                         }}
-                                                        style={styles.question}
-                                                    />
-                                                </TouchableOpacity>
-                                            )
-                                        }}
-                                        keyExtractor={(item, index) =>
-                                            index.toString()
-                                        }
-                                    />
-                                </View>
+                                                    >
+                                                        <Image
+                                                            source={{
+                                                                uri: item.source.uri
+                                                            }}
+                                                            style={styles.question}
+                                                        />
+                                                    </TouchableOpacity>
+                                                )
+                                            }}
+                                            keyExtractor={(item, index) =>
+                                                index.toString()
+                                            }
+                                        />
+                                    </View>
+                                }
                             </View>
                         )
                     }
@@ -154,33 +165,33 @@ class Favorites extends React.Component {
                 if (
                     favouriteQuestions[question.question.examId][
                         question.question.courseId
-                    ] === undefined
+                        ] === undefined
                 ) {
                     favouriteQuestions[question.question.examId][
                         question.question.courseId
-                    ] = []
+                        ] = []
                     favouriteQuestions[question.question.examId][
                         question.question.courseId
-                    ].push(question)
+                        ].push(question)
                 } else
                     favouriteQuestions[question.question.examId][
                         question.question.courseId
-                    ].push(question)
+                        ].push(question)
             } else if (
                 favouriteQuestions[question.question.examId][
                     question.question.courseId
-                ] === undefined
+                    ] === undefined
             ) {
                 favouriteQuestions[question.question.examId][
                     question.question.courseId
-                ] = []
+                    ] = []
                 favouriteQuestions[question.question.examId][
                     question.question.courseId
-                ].push(question)
+                    ].push(question)
             } else
                 favouriteQuestions[question.question.examId][
                     question.question.courseId
-                ].push(question)
+                    ].push(question)
         })
         return favouriteQuestions
     }
@@ -359,6 +370,7 @@ class Favorites extends React.Component {
                     <ScrollView
                         style={styles.cardsScrollView}
                         showsVerticalScrollIndicator={false}
+                        extraData={this.state}
                     >
                         {this.state.scrollViewList}
                         {/* <View style={styles.card}>
