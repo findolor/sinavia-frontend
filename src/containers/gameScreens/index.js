@@ -13,6 +13,7 @@ import SoloModeGameScreen from './soloModeGameScreen/soloModeGameScreen'
 import SoloFriendGameStatsScreen from './soloFriendGameStatsScreen/soloFriendGameStats'
 import SoloPregame from './soloPregameScreen/soloPregame'
 import GroupPregame from './groupPregameScreen/groupPregame'
+import SoloGameStats from './soloGameStatsScreen/soloGameStats'
 
 export {
     RankedGame,
@@ -29,5 +30,6 @@ export {
     SoloModeGameScreen,
     SoloFriendGameStatsScreen,
     SoloPregame,
-    GroupPregame
+    GroupPregame,
+    SoloGameStats
 }
