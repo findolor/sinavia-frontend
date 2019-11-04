@@ -25,6 +25,8 @@ import BACK_BUTTON from '../../../assets/backButton.png'
 import OPPONENTS_ANSWER from '../../../assets/gameScreens/jokers/opponentsAnswer.png'
 import FIFTY_FIFTY from '../../../assets/gameScreens/jokers/fiftyFifty.png'
 import SECOND_CHANCE from '../../../assets/gameScreens/jokers/secondChance.png'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import AuthButton from '../../../components/authScreen/authButton'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
@@ -80,6 +82,7 @@ class RankedGame extends React.Component {
             opponentId: this.props.opponentId,
             // modal visibility variable
             isQuestionModalVisible: false,
+            isQuitGameModalVisible: false,
             // Question option names
             buttonOneName: 'A',
             buttonTwoName: 'B',
@@ -109,24 +112,7 @@ class RankedGame extends React.Component {
     componentDidMount() {
         this.backHandler = BackHandler.addEventListener(
             'hardwareBackPress',
-            () => {
-                Alert.alert(
-                    'Oyundan ayrılmak üzeresin!',
-                    'Ayrılırsan bu sana mağlubiyet olarak yazılır. Çıkmak istediğine emin misin?',
-                    [
-                        {
-                            text: 'Hayır'
-                        },
-                        {
-                            text: 'Evet',
-                            onPress: () =>
-                                this.props.room.send({
-                                    action: 'leave-match'
-                                })
-                        }
-                    ]
-                )
-            }
+            () => this.setState({isQuitGameModalVisible: true})
         )
         // We check if the user has enough jokers
         this.checkJokerAmount()
@@ -890,24 +876,7 @@ class RankedGame extends React.Component {
                     </View>
                     <View style={styles.backButtonContainer}>
                         <TouchableOpacity
-                            onPress={() =>
-                                Alert.alert(
-                                    'Oyundan ayrılmak üzeresin!',
-                                    'Ayrılırsan bu sana mağlubiyet olarak yazılır. Çıkmak istediğine emin misin?',
-                                    [
-                                        {
-                                            text: 'Hayır'
-                                        },
-                                        {
-                                            text: 'Evet',
-                                            onPress: () =>
-                                                this.props.room.send({
-                                                    action: 'leave-match'
-                                                })
-                                        }
-                                    ]
-                                )
-                            }
+                            onPress={() => this.setState({isQuitGameModalVisible: true})}
                         >
                             <Image
                                 source={BACK_BUTTON}
@@ -916,6 +885,47 @@ class RankedGame extends React.Component {
                         </TouchableOpacity>
                     </View>
                 </View>
+                <Modal
+                    visible={this.state.isQuitGameModalVisible}
+                    transparent={true}
+                    animationType={'fade'}
+                >
+                    <View
+                        style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+                    >
+                        <View style={styles.modalContainer}>
+                            <View style={styles.quitView}>
+                                <Text style={styles.areYouSureText}>
+                                    Oyundan çıkmak istediğine
+                                </Text>
+                                <Text style={styles.areYouSureText}>
+                                    emin misin?
+                                </Text>
+                            </View>
+                            <View style={styles.yesOrNoButtonsContainer}>
+                                <AuthButton
+                                    height={hp(7)}
+                                    width={wp(42)}
+                                    color="#00D9EF"
+                                    buttonText="Evet"
+                                    borderRadius={10}
+                                    onPress={() =>
+                                        this.props.room.send({
+                                            action: 'leave-match'
+                                        })}
+                                />
+                                <AuthButton
+                                    height={hp(7)}
+                                    width={wp(42)}
+                                    color="#00D9EF"
+                                    buttonText="Hayır"
+                                    borderRadius={10}
+                                    onPress={() => this.setState({isQuitGameModalVisible: false})}
+                                />
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
                 <View style={styles.dummyButtonContainer}>
                     {this.state.start && (
                         <View>
@@ -1125,8 +1135,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     subtractJoker: jokerId => dispatch(clientActions.subtractJoker(jokerId)),
-    updateTotalPoints: totalEarnedPoints =>
-        dispatch(clientActions.updateTotalPoints(totalEarnedPoints)),
     updateTotalPoints: totalEarnedPoints =>
         dispatch(clientActions.updateTotalPoints(totalEarnedPoints))
 })

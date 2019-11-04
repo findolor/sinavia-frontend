@@ -12,10 +12,6 @@ const RouterComp = () => {
     return (
         <Router>
             <Scene key="root" hideNavBar={true}>
-                <Scene
-                    key={SCENE_KEYS.mainScreens.modals}
-                    component={mainScreens.modals}
-                />
                 <Scene key="splash" hideNavBar={true}>
                     <Scene
                         key={SCENE_KEYS.splashScreen}
