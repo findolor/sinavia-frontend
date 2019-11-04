@@ -12,7 +12,7 @@ import { SCENE_KEYS, navigationPop } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import styles from './style'
 import NotchView from '../../../components/notchView'
-import Gallery from 'react-native-image-gallery'
+import {Collapse, CollapseHeader, CollapseBody} from "accordion-collapse-react-native"
 import Share from 'react-native-share'
 import RNFetchBlob, { Dirs as DIRS } from 'rn-fetch-blob'
 import selectedFav from '../../../assets/favori.png'
@@ -21,29 +21,13 @@ import backButton from '../../../assets/backButton.png'
 import returnLogo from '../../../assets/return.png'
 import shareLogo from '../../../assets/share.png'
 
-const data = [
-    {
-        source: {
-            uri:
-                'http://testicoz.org/wp-content/uploads/2017/09/ygs-dilveanlatim-7-01.png'
-        },
-        id: 0
-    },
-    {
-        source: {
-            uri:
-                'http://testicoz.org/wp-content/uploads/2017/09/ygs-dilveanlatim-7-01.png'
-        },
-        id: 1
-    },
-    {
-        source: {
-            uri:
-                'https://prods3.imgix.net/images/articles/2017_04/Feature-restaurant-butcher-bakery-shops2.jpg?auto=format%2Ccompress&ixjsv=2.2.3'
-        },
-        id: 2
-    }
-]
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
+import { favouriteQuestion } from '../../../services/apiServices/favouriteQuestion'
+
+const data = []
 
 // TODO write this file again according to the data from server
 class Favorites extends React.Component {
@@ -57,18 +41,13 @@ class Favorites extends React.Component {
             // ScrollView item list
             scrollViewList: [],
             startQuestionIndex: 1,
-            isOpen: false
+            correctAnswer: ''
         }
     }
 
     // TODO REMOVE GALLERY AND THINK OF SOMETHING ELSE
     async componentDidMount() {
         await this.loadScreen()
-    }
-
-    toggleExpand=()=>{
-        this.setState({isOpen : !this.state.isOpen})
-        console.log(this.state.isOpen)
     }
 
     // Takes the transformed favouriteQuestions and makes the proper ui
@@ -105,43 +84,41 @@ class Favorites extends React.Component {
                             }
                         )
                         itemList.push(
-                            <View style={styles.card} key={index}>
-                                <TouchableOpacity style={styles.contentContainerWrapper} onPress={()=>this.toggleExpand()}>
-                                    <Text style={[styles.contentText, {color: this.state.isOpen === true ? 'red': 'white'}]}>
+                            <View>
+                                <View style={styles.contentContainerWrapper}>
+                                    <Text style={styles.contentText}>
                                         {examName} - {courseName}
                                     </Text>
-                                </TouchableOpacity>
-                                {
-                                    this.state.isOpen &&
-                                    <View style={styles.questionsContainer}>
-                                        <FlatList
-                                            horizontal={false}
-                                            nestedScrollEnabled={true}
-                                            numColumns={3}
-                                            data={questionList}
-                                            showsHorizontalScrollIndicator={false}
-                                            renderItem={({ item, index }) => {
-                                                return (
-                                                    <TouchableOpacity
-                                                        onPress={() => {
-                                                            this.goIndex(index)
+                                </View>
+                                <View style={styles.questionsContainer}>
+                                    <FlatList
+                                        horizontal={false}
+                                        data={questionList}
+                                        nestedScrollEnabled={true}
+                                        numColumns={3}
+                                        showsVerticalScrollIndicator={false}
+                                        extraData={questionList}
+                                        renderItem={({ item, index }) => {
+                                            return (
+                                                <TouchableOpacity
+                                                    onPress={() => {
+                                                        this.loadScreen1(index, favouriteQuestions[examKey][courseKey])
+                                                    }}
+                                                >
+                                                    <Image
+                                                        source={{
+                                                            uri: item.source.uri
                                                         }}
-                                                    >
-                                                        <Image
-                                                            source={{
-                                                                uri: item.source.uri
-                                                            }}
-                                                            style={styles.question}
-                                                        />
-                                                    </TouchableOpacity>
-                                                )
-                                            }}
-                                            keyExtractor={(item, index) =>
-                                                index.toString()
-                                            }
-                                        />
-                                    </View>
-                                }
+                                                        style={styles.question}
+                                                    />
+                                                </TouchableOpacity>
+                                            )
+                                        }}
+                                        keyExtractor={(item, index) =>
+                                            index.toString()
+                                        }
+                                    />
+                                </View>
                             </View>
                         )
                     }
@@ -152,6 +129,16 @@ class Favorites extends React.Component {
             this.setState({ scrollViewList: scrollViewList })
             return true
         })
+    }
+
+    loadScreen1 = (index, questionList) => {
+        console.log('Soru Sirasi' + index)
+        console.log('Test Sirasi' + questionList)
+        this.goIndex(index, questionList)
+    }
+
+    goIndex(index, questionList){
+        this.setState({ isModalVisible: true, galleryPosition: index+1, startQuestionIndex: index, data: questionList, correctAnswer: questionList[index].question.correctAnswer})
     }
 
     // This function takes favouriteQuestions ( it is an array )
@@ -244,10 +231,6 @@ class Favorites extends React.Component {
         )
     }
 
-    goIndex(index){
-        this.setState({ isModalVisible: true, startQuestionIndex: index })
-    }
-
     render() {
         return (
             <View style={styles.container}>
@@ -310,7 +293,7 @@ class Favorites extends React.Component {
                                         <View style={styles.questionInModalView}>
                                             <Image
                                                 source={{
-                                                    uri: item.source.uri
+                                                    uri: item.question.questionLink
                                                 }}
                                                 style={styles.questionInModal}
                                             />
@@ -338,7 +321,7 @@ class Favorites extends React.Component {
                                         { color: '#00D9EF' }
                                     ]}
                                 >
-                                    C
+                                    {this.state.correctAnswer}
                                 </Text>
                             </View>
                             <Text style={styles.answerText}>Doğru cevap</Text>
@@ -367,45 +350,8 @@ class Favorites extends React.Component {
                     </View>
                 </Modal>
                 <View style={styles.scrollViewContainer}>
-                    <ScrollView
-                        style={styles.cardsScrollView}
-                        showsVerticalScrollIndicator={false}
-                        extraData={this.state}
-                    >
+                    <ScrollView showsVerticalScrollIndicator={false}>
                         {this.state.scrollViewList}
-                        {/* <View style={styles.card}>
-                            <View style={styles.contentContainerWrapper}>
-                                <Text style={styles.contentText}>
-                                    YKS - TÜRKÇE
-                                </Text>
-                            </View>
-                            <View style={styles.questionsContainer}>
-                                <FlatList
-                                    horizontal={true}
-                                    data={this.state.data}
-                                    showsHorizontalScrollIndicator={false}
-                                    renderItem={({ item }) => {
-                                        return (
-                                            <TouchableOpacity
-                                                onPress={() =>
-                                                    this.questionOnPress(item)
-                                                }
-                                            >
-                                                <Image
-                                                    source={{
-                                                        uri: item.source.uri
-                                                    }}
-                                                    style={styles.question}
-                                                />
-                                            </TouchableOpacity>
-                                        )
-                                    }}
-                                    keyExtractor={(item, index) =>
-                                        index.toString()
-                                    }
-                                />
-                            </View>
-                        </View> */}
                     </ScrollView>
                 </View>
             </View>
