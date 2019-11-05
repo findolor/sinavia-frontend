@@ -11,6 +11,7 @@ import {
 } from 'react-native'
 import styles, { countdownProps } from './style'
 import CountDown from 'react-native-countdown-component'
+import FlashMessage, { showMessage, hideMessage } from "react-native-flash-message";
 import NotchView from '../../../components/notchView'
 import { SCENE_KEYS } from '../../../config/'
 import {
@@ -28,6 +29,8 @@ import SECOND_CHANCE from '../../../assets/gameScreens/jokers/secondChance.png'
 import CORRECT_IMG from '../../../assets/gameScreens/correct.png'
 import UNANSWERED_IMG from '../../../assets/gameScreens/unanswered.png'
 import INCORRECT_IMG from '../../../assets/gameScreens/incorrect.png'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import AuthButton from '../../../components/authScreen/authButton'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
@@ -76,6 +79,8 @@ class GroupGame extends React.Component {
             playerProps: {},
             // modal visibility variable
             isQuestionModalVisible: false,
+            isQuitGameModalVisible: false,
+            visibleView: '',
             // Question option names
             buttonOneName: 'A',
             buttonTwoName: 'B',
@@ -106,24 +111,7 @@ class GroupGame extends React.Component {
     async componentDidMount() {
         this.backHandler = BackHandler.addEventListener(
             'hardwareBackPress',
-            () => {
-                Alert.alert(
-                    'Oyundan ayrılmak üzeresin!',
-                    'Ayrılırsan bu sana mağlubiyet olarak yazılır. Çıkmak istediğine emin misin?',
-                    [
-                        {
-                            text: 'Hayır'
-                        },
-                        {
-                            text: 'Evet',
-                            onPress: () =>
-                                this.props.room.send({
-                                    action: 'leave-match'
-                                })
-                        }
-                    ]
-                )
-            }
+            () => this.setState({isQuitGameModalVisible: true, visibleView: 'quitGameModal'})
         )
         // We check if the user has enough jokers
         this.checkJokerAmount()
@@ -201,6 +189,19 @@ class GroupGame extends React.Component {
         this.setState({ isCountDownRunning: false })
     }
 
+    showSimpleMessage( username, props = {}) {
+        const message = {
+            message: username,
+            description: "oyundan ayrıldı",
+            duration: 3000,
+            titleStyle: {fontFamily: 'Averta-SemiboldItalic', color: '#FF9900'},
+            textStyle: {fontFamily: 'Averta-Regular', color: '#00D9EF'},
+            ...props,
+        };
+
+        showMessage(message);
+    }
+
     chooseMessageAction = message => {
         switch (message.action) {
             // Which options to remove comes from the server
@@ -224,32 +225,36 @@ class GroupGame extends React.Component {
                 Alert.alert('Joker hatası!')
                 break
             case 'client-leaving':
-                Alert.alert(
-                    this.state.opponentId,
-                    `${message.username} oyundan ayrildi.`
-                )
+                this.showSimpleMessage(`${message.username}`, {backgroundColor: '#FFFFFF', borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10, borderColor: '#00D9EF', borderWidth: hp(0.25), height: hp(10)} )
                 break
             case 'only-client':
-                Alert.alert('Herkes oyundan ayrıldı!')
+                const that = this
                 // If the client hasn't answered any of the questions, we just navigate him to main screen
                 if (
                     Object.keys(message.playerProps[message.clientId].answers)
                         .length === 0
                 ) {
-                    this.props.room.leave()
-                    this.onlyClientMatchQuit()
+                    this.setState({isQuitGameModalVisible: true, visibleView: 'allOpponentsLeaveNoAnswer'})
+                    setTimeout(function(){
+                        that.props.room.leave()
+                        that.onlyClientMatchQuit()
+                    }, 5000)
                     break
                 }
                 // Do a shutdown routine
-                this.shutdownGame()
-                navigationReplace(SCENE_KEYS.gameScreens.groupGameStats, {
-                    playerProps: message.playerProps,
-                    room: this.props.room,
-                    client: this.props.client,
-                    questionList: this.state.questionList,
-                    fullQuestionList: message.fullQuestionList,
-                    isMatchFinished: false
-                })
+                this.setState({isQuitGameModalVisible: true, visibleView: 'allOpponentLeaveAfterAnswer'})
+                setTimeout(function(){
+                    that.shutdownGame()
+                    navigationReplace(SCENE_KEYS.gameScreens.groupGameStats, {
+                        playerProps: message.playerProps,
+                        room: that.props.room,
+                        client: that.props.client,
+                        questionList: that.state.questionList,
+                        fullQuestionList: message.fullQuestionList,
+                        isMatchFinished: false
+                    })
+                }, 5000)
                 break
             case 'finished-resend':
                 this.props.room.send({
@@ -702,6 +707,84 @@ class GroupGame extends React.Component {
         this.setState({ isQuestionVisible: !this.state.isQuestionVisible })
     }
 
+    allOpponentsLeaveNoAnswer() {
+        return (
+            <View
+                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+            >
+                <View style={styles.quitModalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>
+                            Tüm kullanıcılar oyundan ayrıldı
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            Ana sayfaya yönlendirileceksin
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
+    allOpponentLeaveAfterAnswer() {
+        return (
+            <View
+                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+            >
+                <View style={styles.quitModalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>
+                            Tüm kullanıcılar oyundan ayrıldı
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            Sonuç sayfasına yönlendirileceksin
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
+    quitGameModal() {
+        return (
+            <View
+                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+            >
+                <View style={styles.quitModalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>
+                            Oyundan çıkmak istediğine
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            emin misin?
+                        </Text>
+                    </View>
+                    <View style={styles.yesOrNoButtonsContainer}>
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#00D9EF"
+                            buttonText="Evet"
+                            borderRadius={10}
+                            onPress={() =>
+                                this.props.room.send({
+                                    action: 'leave-match'
+                                })}
+                        />
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#00D9EF"
+                            buttonText="Hayır"
+                            borderRadius={10}
+                            onPress={() => this.setState({isQuitGameModalVisible: false})}
+                        />
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -958,24 +1041,7 @@ class GroupGame extends React.Component {
                     </View>
                     <View style={styles.backButtonContainer}>
                         <TouchableOpacity
-                            onPress={() => {
-                                Alert.alert(
-                                    'Oyundan ayrılmak üzeresin!',
-                                    'Ayrılırsan bu sana mağlubiyet olarak yazılır. Çıkmak istediğine emin misin?',
-                                    [
-                                        {
-                                            text: 'Hayır'
-                                        },
-                                        {
-                                            text: 'Evet',
-                                            onPress: () =>
-                                                this.props.room.send({
-                                                    action: 'leave-match'
-                                                })
-                                        }
-                                    ]
-                                )
-                            }}
+                            onPress={() => this.setState({isQuitGameModalVisible: true, visibleView: 'quitGameModal'})}
                         >
                             <Image
                                 source={BACK_BUTTON}
@@ -984,6 +1050,18 @@ class GroupGame extends React.Component {
                         </TouchableOpacity>
                     </View>
                 </View>
+                <Modal
+                    visible={this.state.isQuitGameModalVisible}
+                    transparent={true}
+                    animationType={'fade'}
+                >
+                    {this.state.visibleView === 'allOpponentsLeaveNoAnswer' &&
+                    this.allOpponentsLeaveNoAnswer()}
+                    {this.state.visibleView === 'allOpponentLeaveAfterAnswer' &&
+                    this.allOpponentLeaveAfterAnswer()}
+                    {this.state.visibleView === 'quitGameModal' &&
+                    this.quitGameModal()}
+                </Modal>
                 <View style={styles.dummyButtonContainer}>
                     {this.state.start && (
                         <View>

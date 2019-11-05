@@ -113,7 +113,7 @@ class RankedGame extends React.Component {
     componentDidMount() {
         this.backHandler = BackHandler.addEventListener(
             'hardwareBackPress',
-            () => this.setState({isQuitGameModalVisible: true})
+            () => this.setState({isQuitGameModalVisible: true, visibleView: 'quitGameModal'})
         )
         // We check if the user has enough jokers
         this.checkJokerAmount()
