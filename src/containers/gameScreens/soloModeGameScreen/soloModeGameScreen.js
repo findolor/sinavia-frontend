@@ -23,6 +23,8 @@ import ZOOM_BUTTON from '../../../assets/gameScreens/zoomButton.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
 import FIFTY_FIFTY from '../../../assets/gameScreens/jokers/fiftyFifty.png'
 import SECOND_CHANCE from '../../../assets/gameScreens/jokers/secondChance.png'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import AuthButton from '../../../components/authScreen/authButton'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
@@ -71,6 +73,8 @@ class SoloModeGameScreen extends React.Component {
             playerProps: {},
             // modal visibility variable
             isQuestionModalVisible: false,
+            isQuitGameModalVisible: false,
+            visibleView: '',
             // Question option names
             buttonOneName: 'A',
             buttonTwoName: 'B',
@@ -97,9 +101,7 @@ class SoloModeGameScreen extends React.Component {
     componentDidMount() {
         this.backHandler = BackHandler.addEventListener(
             'hardwareBackPress',
-            () => {
-                this.backButtonOnPress()
-            }
+            () => this.setState({isQuitGameModalVisible: true, visibleView: 'quitGameModal'})
         )
         // We check if the user has enough jokers
         this.checkJokerAmount()
@@ -543,6 +545,43 @@ class SoloModeGameScreen extends React.Component {
         })
     }
 
+    quitGameModal() {
+        return (
+            <View
+                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+            >
+                <View style={styles.quitModalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>
+                            Oyundan çıkmak istediğine
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            emin misin?
+                        </Text>
+                    </View>
+                    <View style={styles.yesOrNoButtonsContainer}>
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#00D9EF"
+                            buttonText="Evet"
+                            borderRadius={10}
+                            onPress={this.backButtonOnPress}
+                        />
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#00D9EF"
+                            buttonText="Hayır"
+                            borderRadius={10}
+                            onPress={() => this.setState({isQuitGameModalVisible: false})}
+                        />
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -654,7 +693,7 @@ class SoloModeGameScreen extends React.Component {
                         </View>
                     </View>
                     <View style={styles.backButtonContainer}>
-                        <TouchableOpacity onPress={this.backButtonOnPress}>
+                        <TouchableOpacity onPress={() => this.setState({isQuitGameModalVisible: true, visibleView: 'quitGameModal'})}>
                             <Image
                                 source={BACK_BUTTON}
                                 style={styles.backButton}
@@ -662,6 +701,14 @@ class SoloModeGameScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
                 </View>
+                <Modal
+                    visible={this.state.isQuitGameModalVisible}
+                    transparent={true}
+                    animationType={'fade'}
+                >
+                    {this.state.visibleView === 'quitGameModal' &&
+                    this.quitGameModal()}
+                </Modal>
                 <View style={styles.dummyButtonContainer}>
                     {this.state.start && (
                         <View>
