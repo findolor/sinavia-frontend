@@ -83,6 +83,7 @@ class RankedGame extends React.Component {
             // modal visibility variable
             isQuestionModalVisible: false,
             isQuitGameModalVisible: false,
+            visibleView: '',
             // Question option names
             buttonOneName: 'A',
             buttonTwoName: 'B',
@@ -218,36 +219,42 @@ class RankedGame extends React.Component {
                 Alert.alert('Joker hatası!')
                 break
             case 'client-leaving':
-                Alert.alert(this.props.opponentUsername, 'oyundan ayrildi.')
+                const that = this
                 // If the client hasn't answered any of the questions, we just navigate him to main screen
                 if (
                     Object.keys(message.playerProps[message.clientId].answers)
                         .length === 0
-                ) {
-                    this.props.updateTotalPoints(100)
-
-                    this.shutdownGame()
-                    this.props.client.close()
-                    this.props.room.leave()
-                    navigationReset('main')
+                )
+                {
+                    this.setState({isQuitGameModalVisible: true, visibleView: 'opponentLeaveNoAnswer'})
+                    this.props.updateTotalPoints(100),
+                        this.shutdownGame(),
+                        this.props.client.close(),
+                    setTimeout(function(){
+                            that.props.room.leave(),
+                            navigationReset('main')
+                    }, 3000)
                     break
                 }
                 // Do a shutdown routine
-                this.shutdownGame()
-                navigationReplace(SCENE_KEYS.gameScreens.gameStats, {
-                    playerProps: message.playerProps,
-                    room: this.props.room,
-                    client: this.props.client,
-                    questionList: this.state.questionList,
-                    playerUsername: this.props.playerUsername,
-                    playerProfilePicture: this.props.playerProfilePicture,
-                    opponentUsername: this.props.opponentUsername,
-                    opponentId: this.props.opponentId,
-                    opponentProfilePicture: this.props.opponentProfilePicture,
-                    fullQuestionList: message.fullQuestionList,
-                    isMatchFinished: false,
-                    isWon: true
+                this.setState({isQuitGameModalVisible: true, visibleView: 'opponentLeaveAfterAnswer'})
+                setTimeout(function() {
+                    that.shutdownGame()
+                    navigationReplace(SCENE_KEYS.gameScreens.gameStats, {
+                        playerProps: message.playerProps,
+                        room: that.props.room,
+                        client: that.props.client,
+                        questionList: that.state.questionList,
+                        playerUsername: that.props.playerUsername,
+                        playerProfilePicture: that.props.playerProfilePicture,
+                        opponentUsername: that.props.opponentUsername,
+                        opponentId: that.props.opponentId,
+                        opponentProfilePicture: that.props.opponentProfilePicture,
+                        fullQuestionList: message.fullQuestionList,
+                        isMatchFinished: false,
+                        isWon: true
                 })
+                }, 3000)
                 break
             case 'save-questions':
                 this.setState({ fullQuestionList: message.fullQuestionList })
@@ -734,6 +741,84 @@ class RankedGame extends React.Component {
         })
     }
 
+    opponentLeaveNoAnswer() {
+        return (
+            <View
+                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>
+                            Rakibin oyundan ayrıldı
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            Ana sayfaya yönlendirileceksin
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
+    opponentLeaveAfterAnswer() {
+        return (
+            <View
+                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>
+                            Rakibin oyundan ayrıldı
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            Sonuç sayfasına yönlendirileceksin
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
+    quitGameModal() {
+        return (
+            <View
+                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>
+                            Oyundan çıkmak istediğine
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            emin misin?
+                        </Text>
+                    </View>
+                    <View style={styles.yesOrNoButtonsContainer}>
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#00D9EF"
+                            buttonText="Evet"
+                            borderRadius={10}
+                            onPress={() =>
+                                this.props.room.send({
+                                    action: 'leave-match'
+                                })}
+                        />
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#00D9EF"
+                            buttonText="Hayır"
+                            borderRadius={10}
+                            onPress={() => this.setState({isQuitGameModalVisible: false})}
+                        />
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -876,7 +961,7 @@ class RankedGame extends React.Component {
                     </View>
                     <View style={styles.backButtonContainer}>
                         <TouchableOpacity
-                            onPress={() => this.setState({isQuitGameModalVisible: true})}
+                            onPress={() => this.setState({isQuitGameModalVisible: true, visibleView: 'quitGameModal'})}
                         >
                             <Image
                                 source={BACK_BUTTON}
@@ -890,41 +975,12 @@ class RankedGame extends React.Component {
                     transparent={true}
                     animationType={'fade'}
                 >
-                    <View
-                        style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
-                    >
-                        <View style={styles.modalContainer}>
-                            <View style={styles.quitView}>
-                                <Text style={styles.areYouSureText}>
-                                    Oyundan çıkmak istediğine
-                                </Text>
-                                <Text style={styles.areYouSureText}>
-                                    emin misin?
-                                </Text>
-                            </View>
-                            <View style={styles.yesOrNoButtonsContainer}>
-                                <AuthButton
-                                    height={hp(7)}
-                                    width={wp(42)}
-                                    color="#00D9EF"
-                                    buttonText="Evet"
-                                    borderRadius={10}
-                                    onPress={() =>
-                                        this.props.room.send({
-                                            action: 'leave-match'
-                                        })}
-                                />
-                                <AuthButton
-                                    height={hp(7)}
-                                    width={wp(42)}
-                                    color="#00D9EF"
-                                    buttonText="Hayır"
-                                    borderRadius={10}
-                                    onPress={() => this.setState({isQuitGameModalVisible: false})}
-                                />
-                            </View>
-                        </View>
-                    </View>
+                    {this.state.visibleView === 'opponentLeaveNoAnswer' &&
+                    this.opponentLeaveNoAnswer()}
+                    {this.state.visibleView === 'opponentLeaveAfterAnswer' &&
+                    this.opponentLeaveAfterAnswer()}
+                    {this.state.visibleView === 'quitGameModal' &&
+                    this.quitGameModal()}
                 </Modal>
                 <View style={styles.dummyButtonContainer}>
                     {this.state.start && (
