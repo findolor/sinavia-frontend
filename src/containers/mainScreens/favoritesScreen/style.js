@@ -26,7 +26,9 @@ export default StyleSheet.create({
     },
     scrollViewContainer: {
         flex: 90,
-        width: wp(88)
+        width: wp(100),
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     returnLogo: {
         height: hp(3.5),
@@ -49,28 +51,45 @@ export default StyleSheet.create({
         fontSize: wp(9),
         color: '#00D9EF'
     },
-    cardsScrollView: {
-        flex: 1,
-        width: wp(87)
+    subjectCardContainer: {
+        height: hp(90),
+        width: wp(82),
+        marginStart: wp(6.5),
+        justifyContent: 'center',
+        alignItems: 'flex-start'
     },
     contentContainerWrapper: {
         height: hp(7.5),
-        width: wp(87),
+        width: wp(82),
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#00D9EF',
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
         marginTop: hp(2)
     },
     questionsContainer: {
-        height: hp(62.85),
-        width: wp(87),
-        paddingHorizontal: wp(3),
-        borderWidth: wp(0.6),
+        height: hp(73),
+        width: wp(82),
+        borderLeftWidth: wp(0.6),
+        borderRightWidth: wp(0.6),
+        borderBottomWidth: wp(0.6),
         borderColor: '#00D9EF',
         borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10
+        borderBottomRightRadius: 10,
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start'
+    },
+    subjectQuestionCounterView: {
+        height: hp(7.5),
+        width: wp(82),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    subjectQuestionCounterText: {
+        fontFamily: 'Averta-SemiboldItalic',
+        fontSize: hp(3),
+        color: '#FF9900'
     },
     contentText: {
         fontFamily: 'Averta-Semibold',
@@ -78,13 +97,13 @@ export default StyleSheet.create({
         color: '#FFFFFF'
     },
     question: {
-        height: hp(19),
-        width: wp(23),
-        borderWidth: hp(0.15),
+        height: hp(27),
+        width: wp(36),
+        borderWidth: wp(0.5),
         borderColor: '#00D9EF',
         borderRadius: 10,
         marginTop: hp(1.35),
-        marginRight: wp(5)
+        marginLeft: wp(3)
     },
     modalHeader: {
         flex: 11,

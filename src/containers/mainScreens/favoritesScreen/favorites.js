@@ -12,7 +12,7 @@ import { SCENE_KEYS, navigationPop } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import styles from './style'
 import NotchView from '../../../components/notchView'
-import {Collapse, CollapseHeader, CollapseBody} from "accordion-collapse-react-native"
+import Swiper from 'react-native-swiper'
 import Share from 'react-native-share'
 import RNFetchBlob, { Dirs as DIRS } from 'rn-fetch-blob'
 import selectedFav from '../../../assets/favori.png'
@@ -26,6 +26,7 @@ import {
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
 import { favouriteQuestion } from '../../../services/apiServices/favouriteQuestion'
+import { fetchUser } from '../../../sagas/user/fetchUser'
 
 const data = []
 
@@ -84,7 +85,7 @@ class Favorites extends React.Component {
                             }
                         )
                         itemList.push(
-                            <View>
+                            <View style={styles.subjectCardContainer}>
                                 <View style={styles.contentContainerWrapper}>
                                     <Text style={styles.contentText}>
                                         {examName} - {courseName}
@@ -95,7 +96,7 @@ class Favorites extends React.Component {
                                         horizontal={false}
                                         data={questionList}
                                         nestedScrollEnabled={true}
-                                        numColumns={3}
+                                        numColumns={2}
                                         showsVerticalScrollIndicator={false}
                                         extraData={questionList}
                                         renderItem={({ item, index }) => {
@@ -119,6 +120,7 @@ class Favorites extends React.Component {
                                         }
                                     />
                                 </View>
+                                <View style={styles.subjectQuestionCounterView}><Text style={styles.subjectQuestionCounterText}>{questionList.length} Soru</Text></View>
                             </View>
                         )
                     }
@@ -226,8 +228,9 @@ class Favorites extends React.Component {
                         0
                     ),
                     Object.keys(this.state.data).length /*Image count*/
-                )
-            }
+                ),
+                correctAnswer: this.state.data[this.state.galleryPosition-1].question.correctAnswer
+    }
         )
     }
 
@@ -297,7 +300,6 @@ class Favorites extends React.Component {
                                                 }}
                                                 style={styles.questionInModal}
                                             />
-                                            <Text>{index}</Text>
                                         </View>
                                     </View>
                                 )
@@ -350,7 +352,7 @@ class Favorites extends React.Component {
                     </View>
                 </Modal>
                 <View style={styles.scrollViewContainer}>
-                    <ScrollView showsVerticalScrollIndicator={false}>
+                    <ScrollView horizontal={true} showsVerticalScrollIndicator={false}>
                         {this.state.scrollViewList}
                     </ScrollView>
                 </View>
