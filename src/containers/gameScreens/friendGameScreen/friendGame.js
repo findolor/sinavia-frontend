@@ -842,7 +842,7 @@ class FriendGame extends React.Component {
                         animationType={'fade'}
                     >
                         <View style={styles.questionModalContainer}>
-                            <View style={styles.questionImageModalContainer}>
+                            <View>
                                 <Image
                                     source={{
                                         uri: this.state.questionList[
@@ -864,19 +864,22 @@ class FriendGame extends React.Component {
                             </View>
                         </View>
                     </Modal>
-                    <View style={styles.questionInformation}>
-                        <Text style={styles.questionInformationText}>
-                            Soru {this.state.questionNumber + 1} /{' '}
-                            {Object.keys(this.state.questionList).length}
-                        </Text>
-                    </View>
-                    <View style={styles.zoomButtonContainer}>
-                        <TouchableOpacity onPress={this.zoomButtonOnPress}>
-                            <Image
-                                source={ZOOM_BUTTON}
-                                style={styles.zoomButton}
-                            />
-                        </TouchableOpacity>
+                    <View style={styles.questionAndZoomButtonContainer}>
+                        <View style={styles.spaceContainer} />
+                        <View style={styles.questionInformation}>
+                            <Text style={styles.questionInformationText}>
+                                Soru {this.state.questionNumber + 1} /{' '}
+                                {Object.keys(this.state.questionList).length}
+                            </Text>
+                        </View>
+                        <View style={styles.zoomButtonContainer}>
+                            <TouchableOpacity onPress={this.zoomButtonOnPress}>
+                                <Image
+                                    source={ZOOM_BUTTON}
+                                    style={styles.zoomButton}
+                                />
+                            </TouchableOpacity>
+                        </View>
                     </View>
                     <View style={styles.backButtonContainer}>
                         <TouchableOpacity

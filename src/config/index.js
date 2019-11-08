@@ -5,7 +5,7 @@ import {
     ENV_GAME_ENGINE_ENDPOINT_LOCAL,
     ENV_APP_VERSION
 } from 'react-native-dotenv'
-console.log(ENV_GAME_ENGINE_ENDPOINT, ENV_API_ENDPOINT)
+//console.log(ENV_GAME_ENGINE_ENDPOINT, ENV_API_ENDPOINT)
 const scene_keys = {
     authScreens: {
         opening: 'opening',
@@ -51,8 +51,8 @@ const scene_keys = {
     splashScreen: 'splash'
 }
 
-const API_ENDPOINT = ENV_API_ENDPOINT
-const GAME_ENGINE_ENDPOINT = ENV_GAME_ENGINE_ENDPOINT
+const API_ENDPOINT = ENV_API_ENDPOINT_LOCAL
+const GAME_ENGINE_ENDPOINT = ENV_GAME_ENGINE_ENDPOINT_LOCAL
 const APP_VERSION = ENV_APP_VERSION
 const SCENE_KEYS = scene_keys
 
