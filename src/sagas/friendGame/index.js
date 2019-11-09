@@ -1,5 +1,7 @@
 import { sendFriendGameRequestService } from './sendFriendGameRequest'
+import { checkOngoingMatchService } from './checkOngoingMatch'
 
 export const friendGameServices = {
-    sendFriendGameRequest: sendFriendGameRequestService
+    sendFriendGameRequest: sendFriendGameRequestService,
+    checkOngoingMatch: checkOngoingMatchService
 }
