@@ -44,9 +44,15 @@ class FriendMatchingScreen extends React.Component {
     }
 
     componentDidMount() {
+        if (this.props.isFriendJoining) {
+            this.room = this.props.room
+            this.client = this.props.client
+            this.roomMessage()
+            return
+        }
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
         this.client.onOpen.add(() => {
-            this.joinRoom({
+            this.room = this.client.join('friendRoom', {
                 examId: this.props.examId,
                 courseId: this.props.courseId,
                 subjectId: this.props.subjectId,
@@ -69,6 +75,10 @@ class FriendMatchingScreen extends React.Component {
                         .name
                 )
             })
+
+            this.room.onJoin.add(() => {
+                this.roomMessage()
+            })
         })
     }
 
@@ -80,9 +90,7 @@ class FriendMatchingScreen extends React.Component {
     // TODO Implement logic for the closed game
     // If the user closes the game
     // Friend should not be able to enter the game
-    joinRoom = playerOptions => {
-        this.room = this.client.join('friendRoom', playerOptions)
-
+    roomMessage = () => {
         // Opponent information
         let opponentUsername
         let opponentId
