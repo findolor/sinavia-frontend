@@ -38,7 +38,8 @@ class FriendMatchingScreen extends React.Component {
             countDownTime: 2,
             isCoundownFinished: false,
             clientPoint: 0,
-            friendPoint: 0
+            friendPoint: 0,
+            isFriendJoined: false
         }
     }
 
@@ -393,11 +394,16 @@ class FriendMatchingScreen extends React.Component {
                         </View>
                     </View>
                 </View>
-                <View style={styles.backButtonContainer}>
-                    <TouchableOpacity onPress={this.backButtonOnPress}>
-                        <Image source={BACK_BUTTON} style={styles.backButton} />
-                    </TouchableOpacity>
-                </View>
+                {!this.state.isFriendJoined && (
+                    <View style={styles.backButtonContainer}>
+                        <TouchableOpacity onPress={this.backButtonOnPress}>
+                            <Image
+                                source={BACK_BUTTON}
+                                style={styles.backButton}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                )}
             </View>
         )
     }

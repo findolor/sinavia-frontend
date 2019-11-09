@@ -299,10 +299,15 @@ class Home extends React.Component {
                                                     10
                                                 )
                                             })
-                                        else
+                                        else {
                                             Alert.alert(
                                                 'Arkadaşın önden başladı!'
                                             )
+                                            navigationPush(
+                                                SCENE_KEYS.mainScreens
+                                                    .notifications
+                                            )
+                                        }
                                         // TODO Write logic for testing the room validness
                                         // Solo join code might have to change!!!
                                         // THINK GROUP MODE CODE
