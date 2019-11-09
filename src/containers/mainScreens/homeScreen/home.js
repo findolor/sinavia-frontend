@@ -117,7 +117,7 @@ class Home extends React.Component {
 
         this.removeMessageListener = firebase.messaging().onMessage(message => {
             console.log(message, 'mes')
-            //this.fcmMessagePicker(message)
+            this.fcmMessagePicker(message)
         })
         this.removeNotificationListener = firebase
             .notifications()
@@ -273,20 +273,40 @@ class Home extends React.Component {
                                         })
                                     }
                                 } */
-
-                                this.playFriendGame({
-                                    opponentId: message.data.userId,
-                                    roomCode: message.data.roomCode,
-                                    examId: parseInt(message.data.examId, 10),
-                                    courseId: parseInt(
-                                        message.data.courseId,
-                                        10
-                                    ),
-                                    subjectId: parseInt(
-                                        message.data.subjectId,
-                                        10
+                                friendGameServices
+                                    .checkOngoingMatch(
+                                        this.props.clientToken,
+                                        message.data.userId,
+                                        message.data.roomCode
                                     )
-                                })
+                                    .then(data => {
+                                        // If the data is false we can play synchronized game
+                                        // If it is true other user either pressed play ahead or still waiting
+                                        if (!data)
+                                            this.playFriendGame({
+                                                opponentId: message.data.userId,
+                                                roomCode: message.data.roomCode,
+                                                examId: parseInt(
+                                                    message.data.examId,
+                                                    10
+                                                ),
+                                                courseId: parseInt(
+                                                    message.data.courseId,
+                                                    10
+                                                ),
+                                                subjectId: parseInt(
+                                                    message.data.subjectId,
+                                                    10
+                                                )
+                                            })
+                                        else
+                                            Alert.alert(
+                                                'Arkadaşın önden başladı!'
+                                            )
+                                        // TODO Write logic for testing the room validness
+                                        // Solo join code might have to change!!!
+                                        // THINK GROUP MODE CODE
+                                    })
                             }
                         }
                     ],
