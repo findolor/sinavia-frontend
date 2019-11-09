@@ -29,6 +29,7 @@ import {
 } from '../../../components/mainScreen/carousel/styles/SliderEntry.style'
 import SliderEntry from '../../../components/mainScreen/carousel/components/SliderEntry'
 import styles from './style'
+import premiumStyles from '../purchaseScreen/style'
 import { showMessage } from 'react-native-flash-message'
 
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
@@ -64,6 +65,9 @@ import {
 import { levelFinder } from '../../../services/userLevelFinder'
 
 import SWORD from '../../../assets/sword.png'
+import LinearGradient from "react-native-linear-gradient"
+import Swiper from "react-native-swiper"
+import PREMIUM_ADS from '../../../assets/premiumAds.png'
 const carouselFirstItem = 0
 
 const SELECTED_MODE_COLOR = '#00D9EF'
@@ -1206,6 +1210,42 @@ class Home extends React.Component {
         )
     }
 
+    premiumForSoloView() {
+        return (
+            <View style={premiumStyles.premiumModal}>
+                <TouchableOpacity onPress={this.closeModalButtonOnPress} style={ {height: hp(120), width: wp(100)}}/>
+                <View style={[premiumStyles.premiumModalView, { height: hp(49)}]}>
+                    <LinearGradient colors={['white', '#FFE6BB', '#FFA800']} style={[premiumStyles.linearGradientPremiumModalView, { height: hp(49)}]}>
+                        <View style={premiumStyles.premiumModalHeaderView}>
+                            <Text style={premiumStyles.premiumModalHeaderText}>ELİT ÖĞRENCİ PAKETİ</Text>
+                        </View>
+                        <View style={premiumStyles.premiumModalSwiperContainer}>
+                                <View style={premiumStyles.premiumModalSwiperView}>
+                                    <View style={premiumStyles.premiumModalSwiperImgView}>
+                                        <Image source={PREMIUM_ADS} style={premiumStyles.premiumModalImg}/>
+                                    </View>
+                                    <View style={premiumStyles.premiumModalSwiperHeaderView}>
+                                        <Text style={premiumStyles.premiumModalHeaderText}>Reklam Yok!</Text>
+                                    </View>
+                                    <View style={[premiumStyles.premiumModalSwiperInfoView, {justifyContent: 'flex-start'}]}>
+                                        <Text style={[premiumStyles.premiumModalInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                    </View>
+                                </View>
+                        </View>
+                        <View style={premiumStyles.buttonsInPremiumModalView}>
+                            <TouchableOpacity style={premiumStyles.purchasePremiumButton}>
+                                <Text style={premiumStyles.purchasePremiumButtonText}>HEMEN SATIN AL</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={this.closeModalButtonOnPress} >
+                                <Text style={premiumStyles.purchasePremiumCancelText}>HAYIR, TEŞEKKÜRLER</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </LinearGradient>
+                </View>
+            </View>
+        )
+    }
+
     playButtonOnPress = () => {
         if (!this.props.isNetworkConnected) {
             showMessage({
@@ -1245,11 +1285,10 @@ class Home extends React.Component {
                         visibleRankedGameStartPress: false,
                         soloModeButtonBorderColor: EMPTY_MODE_COLOR,
                         rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
-                        selectedGameMode: 'ranked'
+                        selectedGameMode: 'ranked',
+                        isModalVisible: true,
+                        visibleView: 'PREMIUM_MODAL_FOR_SOLO'
                     })
-                    Alert.alert(
-                        'Üzgünüm ama tek başına oynamak için premium alman gerek!'
-                    )
                 }
                 break
         }
@@ -1338,6 +1377,8 @@ class Home extends React.Component {
                             joinGameParams={this.joinGameParams()}
                         />
                     )}
+                    {this.state.visibleView === 'PREMIUM_MODAL_FOR_SOLO' &&
+                    this.premiumForSoloView()}
                 </Modal>
                 <View style={styles.header}>
                     <View style={styles.profilePicContainer}>
