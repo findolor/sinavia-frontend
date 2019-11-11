@@ -23,6 +23,7 @@ import DateTimePicker from 'react-native-modal-datetime-picker'
 import moment from 'moment'
 import firebase from 'react-native-firebase'
 import ImagePicker from 'react-native-image-crop-picker'
+import { Appearance } from 'react-native-appearance'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
@@ -54,12 +55,15 @@ class Settings extends React.Component {
             profilePicture: null,
             coverPicture: null,
             isCoverPictureChoosen: false,
-            isProfilePictureChoosen: false
+            isProfilePictureChoosen: false,
+            isDarkModeEnabled: null
         }
     }
 
-    // TODO STILL NEED TO GET PHOTOS AND UPLOAD THOSE TO OUR SERVER
     componentDidMount() {
+        const isDarkModeEnabled = Appearance.getColorScheme() === 'dark'
+        this.setState({ isDarkModeEnabled: isDarkModeEnabled })
+
         if (this.props.clientInformation.birthDate === '')
             this.setState({ birthDateUI: '' })
     }
@@ -425,6 +429,7 @@ class Settings extends React.Component {
                             isVisible={this.state.isDateTimePickerVisible}
                             onConfirm={this.datePickerHandler}
                             onCancel={this.showHideDatePicker}
+                            isDarkModeEnabled={this.state.isDarkModeEnabled}
                         />
                     </View>
                 </View>

@@ -21,6 +21,7 @@ import DateTimePicker from 'react-native-modal-datetime-picker'
 import moment from 'moment'
 import NotchView from '../../../components/notchView'
 import { showMessage } from 'react-native-flash-message'
+import { Appearance } from 'react-native-appearance'
 
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
 
@@ -44,8 +45,15 @@ class GetInfo extends React.Component {
             city: null,
             email: '',
             password: '',
-            birthDate: null
+            birthDate: null,
+            // Dark mode for date time picker
+            isDarkModeEnabled: null
         }
+    }
+
+    componentDidMount() {
+        const isDarkModeEnabled = Appearance.getColorScheme() === 'dark'
+        this.setState({ isDarkModeEnabled: isDarkModeEnabled })
     }
 
     showDateTimePicker = () => {
@@ -177,6 +185,7 @@ class GetInfo extends React.Component {
                             isVisible={this.state.isDateTimePickerVisible}
                             onConfirm={this.handleDatePicked}
                             onCancel={this.hideDateTimePicker}
+                            isDarkModeEnabled={this.state.isDarkModeEnabled}
                         />
                         <AuthTextInput
                             placeholder="Şehir"
