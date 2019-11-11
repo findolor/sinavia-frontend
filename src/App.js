@@ -4,6 +4,7 @@ import { RouterComp } from './config/routes'
 import createStore from './redux'
 import { StatusBar } from 'react-native'
 import FlashMessage from 'react-native-flash-message'
+import { AppearanceProvider } from 'react-native-appearance'
 
 const { store } = createStore()
 
@@ -14,7 +15,9 @@ export default class App extends Component {
         return (
             <Provider store={store}>
                 <StatusBar hidden={true} />
-                <RouterComp />
+                <AppearanceProvider>
+                    <RouterComp />
+                </AppearanceProvider>
                 <FlashMessage position="top" />
             </Provider>
         )
