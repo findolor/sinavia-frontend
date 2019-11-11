@@ -203,6 +203,7 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - lottie-ios (from `../node_modules/lottie-ios`)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
+  - QBImagePickerController (from `../node_modules/react-native-image-crop-picker/ios/QBImagePicker/QBImagePickerController.podspec`)
   - React (from `../node_modules/react-native/`)
   - React-Core (from `../node_modules/react-native/React`)
   - React-cxxreact (from `../node_modules/react-native/ReactCommon/cxxreact`)
@@ -248,7 +249,6 @@ SPEC REPOS:
     - GTMSessionFetcher
     - nanopb
     - Protobuf
-    - QBImagePickerController
     - RSKImageCropper
 
 EXTERNAL SOURCES:
@@ -264,6 +264,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/lottie-ios"
   lottie-react-native:
     :path: "../node_modules/lottie-react-native"
+  QBImagePickerController:
+    :path: "../node_modules/react-native-image-crop-picker/ios/QBImagePicker/QBImagePickerController.podspec"
   React:
     :path: "../node_modules/react-native/"
   React-Core:
@@ -369,6 +371,6 @@ SPEC CHECKSUMS:
   RSKImageCropper: a446db0e8444a036b34f3c43db01b2373baa4b2a
   yoga: 843fe25849b56131275bf3e5da2c468e96f68aff
 
-PODFILE CHECKSUM: 86618a3b3c060e6e7e18682ce54b30543d1b01bd
+PODFILE CHECKSUM: d91f409c24ea5e45ba6db790d376cbe57dcd9197
 
 COCOAPODS: 1.7.3
