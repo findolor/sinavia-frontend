@@ -18,6 +18,7 @@ import {
 import { deviceStorage } from '../../../services/deviceStorage'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
+import { appActions } from '../../../redux/app/actions'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import moment from 'moment'
 import firebase from 'react-native-firebase'
@@ -53,9 +54,7 @@ class Settings extends React.Component {
             profilePicture: null,
             coverPicture: null,
             isCoverPictureChoosen: false,
-            isProfilePictureChoosen: false,
-            profilePictureData: null,
-            coverPictureData: null
+            isProfilePictureChoosen: false
         }
     }
 
@@ -157,8 +156,13 @@ class Settings extends React.Component {
         else false
     }
 
-    saveButtonOnPress = () => {
+    saveButtonOnPress = async () => {
+        const firebaseStorage = firebase.storage()
+
         let shouldUpdate = false
+        let isProfilePictureChanged = false
+        let isCoverPictureChanged = false
+
         const clientInformation = this.props.clientInformation
 
         if (this.checkCity()) {
@@ -182,15 +186,37 @@ class Settings extends React.Component {
             shouldUpdate = true
         }
 
-        /* if (this.checkCoverPicture()) {
+        if (this.checkCoverPicture()) {
             clientInformation.coverPicture = this.state.coverPicture
             shouldUpdate = true
+            isCoverPictureChanged = true
         }
 
         if (this.checkProfilePicture()) {
             clientInformation.profilePicture = this.state.profilePicture
             shouldUpdate = true
-        } */
+            isProfilePictureChanged = true
+        }
+
+        if (shouldUpdate) this.props.lockUnlockButton()
+
+        let response
+
+        if (isProfilePictureChanged) {
+            response = await firebaseStorage
+                .ref(`profilePictures/${this.props.clientDBId}.jpg`)
+                .putFile(this.state.profilePicture.path)
+
+            clientInformation.profilePicture = response.downloadURL
+        }
+
+        if (isCoverPictureChanged) {
+            response = await firebaseStorage
+                .ref(`coverPictures/${this.props.clientDBId}.jpg`)
+                .putFile(this.state.coverPicture.path)
+
+            clientInformation.coverPicture = response.downloadURL
+        }
 
         if (shouldUpdate)
             this.props.updateUser(
@@ -220,10 +246,14 @@ class Settings extends React.Component {
                         uri: image.path,
                         width: image.width,
                         height: image.height,
-                        mime: image.mime
+                        mime: image.mime,
+                        path: image.path,
+                        fileExt: image.filename
+                            .split('.')
+                            .pop()
+                            .toLowerCase()
                     },
-                    isProfilePictureChoosen: true,
-                    profilePictureData: image.data
+                    isProfilePictureChoosen: true
                 })
             })
             .catch(e => {
@@ -249,10 +279,14 @@ class Settings extends React.Component {
                         uri: image.path,
                         width: image.width,
                         height: image.height,
-                        mime: image.mime
+                        mime: image.mime,
+                        path: image.path,
+                        fileExt: image.filename
+                            .split('.')
+                            .pop()
+                            .toLowerCase()
                     },
-                    isCoverPictureChoosen: true,
-                    coverPictureData: image.data
+                    isCoverPictureChoosen: true
                 })
             })
             .catch(e => {
@@ -438,7 +472,8 @@ const mapDispatchToProps = dispatch => ({
                 clientInformation,
                 isPasswordChange
             )
-        )
+        ),
+    lockUnlockButton: () => dispatch(appActions.lockUnlockButton())
 })
 
 export default connect(
