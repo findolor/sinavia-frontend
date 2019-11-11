@@ -246,11 +246,7 @@ class Settings extends React.Component {
                         width: image.width,
                         height: image.height,
                         mime: image.mime,
-                        path: image.path,
-                        fileExt: image.filename
-                            .split('.')
-                            .pop()
-                            .toLowerCase()
+                        path: image.path
                     },
                     isProfilePictureChoosen: true
                 })
@@ -278,11 +274,7 @@ class Settings extends React.Component {
                         width: image.width,
                         height: image.height,
                         mime: image.mime,
-                        path: image.path,
-                        fileExt: image.filename
-                            .split('.')
-                            .pop()
-                            .toLowerCase()
+                        path: image.path
                     },
                     isCoverPictureChoosen: true
                 })
