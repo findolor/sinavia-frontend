@@ -231,8 +231,7 @@ export const postRequest = async (functionName, params) => {
         case 'postUser':
             return postUser(params)
         case 'forgotPassword':
-            headers.Authorization = 'Bearer ' + params.clientToken
-            return forgotPassword(headers, params)
+            return forgotPassword(params)
     }
 }
 
