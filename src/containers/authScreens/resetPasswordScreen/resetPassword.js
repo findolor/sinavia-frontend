@@ -19,7 +19,7 @@ import { userServices } from '../../../sagas/user'
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
 import { navigationReset } from '../../../services/navigationService'
 import { connect } from 'react-redux'
-import { appTypes } from '../../../redux/app/actions'
+import { appActions } from '../../../redux/app/actions'
 
 class ResetPassword extends React.Component {
     constructor(props) {
@@ -108,7 +108,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    lockUnlockButton: () => dispatch(appTypes.LOCK_UNLOCK_BUTTON())
+    lockUnlockButton: () => dispatch(appActions.lockUnlockButton())
 })
 
 export default connect(
