@@ -1,4 +1,4 @@
-package com.sinavia;
+package com.mobee.sinavia;
 
 import com.facebook.react.ReactActivity;
 
