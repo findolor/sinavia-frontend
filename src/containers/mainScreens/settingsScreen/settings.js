@@ -240,7 +240,6 @@ class Settings extends React.Component {
             includeBase64: true
         })
             .then(image => {
-                console.log('received image', image)
                 this.setState({
                     profilePicture: {
                         uri: image.path,
@@ -273,7 +272,6 @@ class Settings extends React.Component {
             includeExif: true
         })
             .then(image => {
-                console.log('received image', image)
                 this.setState({
                     coverPicture: {
                         uri: image.path,
