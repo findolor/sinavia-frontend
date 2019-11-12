@@ -6,7 +6,7 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Dimensions
+    Dimensions, Modal
 } from 'react-native'
 import styles from './style'
 import { connect } from 'react-redux'
@@ -24,6 +24,9 @@ import INCORRECT_IMG from '../../../assets/gameScreens/incorrect.png'
 import UNANSWERED_IMG from '../../../assets/gameScreens/unanswered.png'
 import selectedFav from '../../../assets/favori.png'
 import unselectedFav from '../../../assets/favori_bos.png'
+import premiumStyles from '../../mainScreens/purchaseScreen/style'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import LinearGradient from "react-native-linear-gradient"
 
 const GAME_OVER_LOGO = require('../../../assets/gameScreens/gameover.png')
 
@@ -53,7 +56,8 @@ class GroupGameStatsScreen extends React.Component {
             // Fav icon selection
             isFaved: false,
             // Fav icon
-            favouriteIcon: unselectedFav
+            favouriteIcon: unselectedFav,
+            isModalVisible: false
         }
     }
 
@@ -298,23 +302,64 @@ class GroupGameStatsScreen extends React.Component {
     }
 
     favouriteOnPress = () => {
-        if (this.state.isFaved) {
-            this.props.unfavouriteQuestion(
-                this.props.clientToken,
-                this.props.clientDBId,
-                this.props.fullQuestionList[this.state.questionPosition - 1],
-                this.props.favouriteQuestions
-            )
-            this.setState({ favouriteIcon: unselectedFav, isFaved: false })
-        } else {
-            this.props.favouriteQuestion(
-                this.props.clientToken,
-                this.props.clientDBId,
-                this.props.fullQuestionList[this.state.questionPosition - 1],
-                this.props.favouriteQuestions
-            )
-            this.setState({ favouriteIcon: selectedFav, isFaved: true })
+        if(this.props.clientInformation.isPremium){
+            if (this.state.isFaved) {
+                this.props.unfavouriteQuestion(
+                    this.props.clientToken,
+                    this.props.clientDBId,
+                    this.props.fullQuestionList[this.state.questionPosition - 1],
+                    this.props.favouriteQuestions
+                )
+                this.setState({ favouriteIcon: unselectedFav, isFaved: false })
+            } else {
+                this.props.favouriteQuestion(
+                    this.props.clientToken,
+                    this.props.clientDBId,
+                    this.props.fullQuestionList[this.state.questionPosition - 1],
+                    this.props.favouriteQuestions
+                )
+                this.setState({ favouriteIcon: selectedFav, isFaved: true })
+            }
         }
+        else{
+            this.setState({
+                isModalVisible: true,
+            })
+        }
+    }
+
+    closeModalButtonOnPress = () => {
+        this.setState({
+            isModalVisible: false
+        })
+    }
+
+    premiumForFavoritesPage() {
+        return (
+            <View style={premiumStyles.premiumModal}>
+                <TouchableOpacity onPress={this.closeModalButtonOnPress} style={ {height: hp(120), width: wp(100)}}/>
+                <View style={[premiumStyles.premiumModalView, { height: hp(33)}]}>
+                    <LinearGradient colors={['white', '#FFE6BB', '#FFA800']} style={[premiumStyles.linearGradientPremiumModalView, { height: hp(33)}]}>
+                        <View style={premiumStyles.premiumModalHeaderView}>
+                            <Text style={premiumStyles.premiumModalHeaderText}>ELİT ÖĞRENCİ PAKETİ</Text>
+                        </View>
+                        <View style={premiumStyles.premiumModalSwiperContainer}>
+                            <View style={premiumStyles.premiumModalSwiperView}>
+                                <View style={premiumStyles.premiumModalSwiperImgView}>
+                                    <Image source={selectedFav} style={premiumStyles.premiumModalImg}/>
+                                </View>
+                                <View style={[premiumStyles.premiumModalSwiperHeaderView, { height: hp(5.5)}]}>
+                                    <Text style={premiumStyles.premiumModalHeaderText}>Soru Favorileme!</Text>
+                                </View>
+                                <View style={[premiumStyles.premiumModalSwiperInfoView, {justifyContent: 'flex-start', height: hp(9.5)}]}>
+                                    <Text style={[premiumStyles.premiumModalInfoText, {marginTop: hp(1.5)}]}>Soru Favorileme şimdi Elit Öğrenci Paketi'nde</Text>
+                                </View>
+                            </View>
+                        </View>
+                    </LinearGradient>
+                </View>
+            </View>
+        )
     }
 
     render() {
@@ -475,6 +520,13 @@ class GroupGameStatsScreen extends React.Component {
                     </View>
                 </View>
                 <View style={styles.secondScreenView}>
+                    <Modal
+                        visible={this.state.isModalVisible}
+                        transparent={true}
+                        animationType={'fade'}
+                    >
+                        {this.premiumForFavoritesPage()}
+                    </Modal>
                     <View style={styles.questionNumberContainer}>
                         <Text style={styles.questionNumberText}>
                             {this.state.questionPosition}/
@@ -559,7 +611,8 @@ class GroupGameStatsScreen extends React.Component {
 const mapStateToProps = state => ({
     clientDBId: state.client.clientDBId,
     clientToken: state.client.clientToken,
-    favouriteQuestions: state.client.favouriteQuestions
+    favouriteQuestions: state.client.favouriteQuestions,
+    clientInformation: state.client.clientInformation
 })
 
 const mapDispatchToProps = dispatch => ({

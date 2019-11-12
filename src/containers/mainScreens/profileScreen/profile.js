@@ -26,6 +26,7 @@ import favoriteLogo from '../../../assets/favorite.png'
 import returnLogo from '../../../assets/return.png'
 import settingsLogo from '../../../assets/settings.png'
 import searchlogo from '../../../assets/search.png'
+import favori_dolu from '../../../assets/favori.png'
 
 import COVER from '../../../assets/cover.jpg'
 import PROFILE_PIC from '../../../assets/profile2.jpg'
@@ -91,31 +92,23 @@ class Profile extends React.Component {
         return (
             <View style={premiumStyles.premiumModal}>
                 <TouchableOpacity onPress={this.closeModalButtonOnPress} style={ {height: hp(120), width: wp(100)}}/>
-                <View style={[premiumStyles.premiumModalView, { height: hp(49)}]}>
-                    <LinearGradient colors={['white', '#FFE6BB', '#FFA800']} style={[premiumStyles.linearGradientPremiumModalView, { height: hp(49)}]}>
+                <View style={[premiumStyles.premiumModalView, { height: hp(33)}]}>
+                    <LinearGradient colors={['white', '#FFE6BB', '#FFA800']} style={[premiumStyles.linearGradientPremiumModalView, { height: hp(33)}]}>
                         <View style={premiumStyles.premiumModalHeaderView}>
                             <Text style={premiumStyles.premiumModalHeaderText}>ELİT ÖĞRENCİ PAKETİ</Text>
                         </View>
                         <View style={premiumStyles.premiumModalSwiperContainer}>
                             <View style={premiumStyles.premiumModalSwiperView}>
                                 <View style={premiumStyles.premiumModalSwiperImgView}>
-                                    <Image source={PREMIUM_ADS} style={premiumStyles.premiumModalImg}/>
+                                    <Image source={favori_dolu} style={premiumStyles.premiumModalImg}/>
                                 </View>
-                                <View style={premiumStyles.premiumModalSwiperHeaderView}>
-                                    <Text style={premiumStyles.premiumModalHeaderText}>Reklam Yok!</Text>
+                                <View style={[premiumStyles.premiumModalSwiperHeaderView, { height: hp(5.5)}]}>
+                                    <Text style={premiumStyles.premiumModalHeaderText}>Soru Favorileme!</Text>
                                 </View>
-                                <View style={[premiumStyles.premiumModalSwiperInfoView, {justifyContent: 'flex-start'}]}>
-                                    <Text style={[premiumStyles.premiumModalInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                <View style={[premiumStyles.premiumModalSwiperInfoView, {justifyContent: 'flex-start', height: hp(9.5)}]}>
+                                    <Text style={[premiumStyles.premiumModalInfoText, {marginTop: hp(1.5)}]}>Soru Favorileme şimdi Elit Öğrenci Paketi'nde</Text>
                                 </View>
                             </View>
-                        </View>
-                        <View style={premiumStyles.buttonsInPremiumModalView}>
-                            <TouchableOpacity style={premiumStyles.purchasePremiumButton}>
-                                <Text style={premiumStyles.purchasePremiumButtonText}>HEMEN SATIN AL</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={this.closeModalButtonOnPress} >
-                                <Text style={premiumStyles.purchasePremiumCancelText}>HAYIR, TEŞEKKÜRLER</Text>
-                            </TouchableOpacity>
                         </View>
                     </LinearGradient>
                 </View>

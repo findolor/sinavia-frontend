@@ -79,6 +79,7 @@ const RANKED_IMAGE = require('../../../assets/sword.png')
 const FRIENDS_IMAGE = require('../../../assets/mainScreens/arkadas_siyah.png')
 const GROUP_IMAGE = require('../../../assets/mainScreens/group_siyah.png')
 const SOLO_IMAGE = require('../../../assets/mainScreens/tek.png')
+const SOLO_PREMIUM = require('../../../assets/soloPremium.png')
 
 class Home extends React.Component {
     constructor(props) {
@@ -427,7 +428,7 @@ class Home extends React.Component {
 
         return this.props.examList[index].courseEntities[
             this.state.carouselActiveSlide
-        ].name
+            ].name
     }
 
     onPressCard(title) {
@@ -491,7 +492,7 @@ class Home extends React.Component {
             ) */
         this.props.examList[examIndex].courseEntities[
             carouselActiveSlide
-        ].subjectEntities.forEach((subject, index) => {
+            ].subjectEntities.forEach((subject, index) => {
             subjectList.push(
                 <TouchableOpacity
                     onPress={() => {
@@ -649,18 +650,18 @@ class Home extends React.Component {
                                                     this.state
                                                         .selectedContentTotalPoints
                                                 ).levelProgressScore
-                                            ) /
+                                                ) /
                                                 Math.floor(
                                                     levelFinder(
                                                         this.state
                                                             .selectedContentTotalPoints !==
-                                                            0
+                                                        0
                                                             ? this.state
-                                                                  .selectedContentTotalPoints
+                                                                .selectedContentTotalPoints
                                                             : 1
                                                     ).levelProgressLimit
                                                 )) *
-                                                65
+                                            65
                                         )
                                     }
                                 ]}
@@ -678,9 +679,9 @@ class Home extends React.Component {
                                         levelFinder(
                                             this.state
                                                 .selectedContentTotalPoints !==
-                                                0
+                                            0
                                                 ? this.state
-                                                      .selectedContentTotalPoints
+                                                    .selectedContentTotalPoints
                                                 : 1000
                                         ).levelProgressLimit
                                     )}
@@ -765,7 +766,6 @@ class Home extends React.Component {
             </View>
         )
     }
-
     createGroupRoomOnPress = () => {
         if (!this.props.isNetworkConnected) {
             showMessage({
@@ -777,12 +777,10 @@ class Home extends React.Component {
             })
             return
         }
-
         this.setState({
             visibleView: 'CREATE_ROOM'
         })
     }
-
     friendRoomOnPress = async () => {
         /* if (this.props.clientInformation.isPremium) {
             if (Object.keys(this.props.friendIds).length === 0) return
@@ -790,7 +788,6 @@ class Home extends React.Component {
                 this.props.clientToken,
                 this.props.friendIds
             )
-
             this.setState({
                 visibleView: 'FRIEND_ROOM',
                 friendList: friends,
@@ -802,7 +799,6 @@ class Home extends React.Component {
                 this.props.clientToken,
                 this.props.friendIds
             )
-
             this.setState({
                 visibleView: 'FRIEND_ROOM',
                 friendList: friends,
@@ -811,25 +807,21 @@ class Home extends React.Component {
         } else {
             Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
         } */
-
         if (Object.keys(this.props.friendIds).length === 0) return
         this.setState({
             rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
             soloModeButtonBorderColor: EMPTY_MODE_COLOR
         })
-
         const friends = await userServices.getUsers(
             this.props.clientToken,
             this.props.friendIds
         )
-
         this.setState({
             visibleView: 'FRIEND_ROOM',
             friendList: friends,
             originalFriends: friends
         })
     }
-
     friendRoomAndGameModesBackButtonOnPress = () => {
         this.setState({
             visibleView: 'GAME_MODES',
@@ -842,7 +834,6 @@ class Home extends React.Component {
             selectedGameMode: 'ranked'
         })
     }
-
     groupModesView() {
         return (
             <View style={styles.modal}>
@@ -885,7 +876,6 @@ class Home extends React.Component {
             </View>
         )
     }
-
     searchFilterFunction = text => {
         this.setState({
             value: text
@@ -894,20 +884,17 @@ class Home extends React.Component {
             this.setState({ friendList: this.state.originalFriends })
             return
         }
-
         const newData = this.state.friendList.filter(item => {
             const itemData = `${item.name.toUpperCase() +
-                ' ' +
-                item.lastname.toUpperCase()} ${item.username.toUpperCase()}`
+            ' ' +
+            item.lastname.toUpperCase()} ${item.username.toUpperCase()}`
             const textData = text.toUpperCase()
-
             return itemData.indexOf(textData) > -1
         })
         this.setState({
             friendList: newData
         })
     }
-
     userOnPress(user) {
         this.setState({
             opponentUserPic: user.profilePicture,
@@ -917,7 +904,6 @@ class Home extends React.Component {
             friendSelected: true
         })
     }
-
     randomCodeGenerator() {
         var result = ''
         var characters = 'ABCDEF0123456789'
@@ -929,7 +915,6 @@ class Home extends React.Component {
         }
         return result
     }
-
     friendGameModeOnPress = () => {
         if (!this.props.isNetworkConnected) {
             showMessage({
@@ -941,13 +926,9 @@ class Home extends React.Component {
             })
             return
         }
-
         if (!this.state.friendSelected) return
-
         const randomNumber = this.randomCodeGenerator()
-
         const Ids = this.calculateContentIds()
-
         navigationReset('game', { isHardReset: true })
         navigationReplace(SCENE_KEYS.gameScreens.friendMatchingScreen, {
             roomCode: randomNumber,
@@ -958,7 +939,6 @@ class Home extends React.Component {
             subjectId: Ids.subjectId,
             invitedFriendId: this.state.opponentInformation.id
         })
-
         friendGameServices
             .sendFriendGameRequest(
                 this.props.clientToken,
@@ -973,7 +953,6 @@ class Home extends React.Component {
             )
             .then(data => console.log(data))
     }
-
     friendRoomView() {
         return (
             <View style={styles.modal}>
@@ -1003,8 +982,8 @@ class Home extends React.Component {
                             <View style={styles.nameAndUsernameContainer}>
                                 <Text style={styles.nameAndSurnameText}>
                                     {this.props.clientInformation.name +
-                                        '  ' +
-                                        this.props.clientInformation.lastname}
+                                    '  ' +
+                                    this.props.clientInformation.lastname}
                                 </Text>
                                 <Text style={styles.userNameText}>
                                     @{this.props.clientInformation.username}
@@ -1070,8 +1049,8 @@ class Home extends React.Component {
                                             <View style={styles.nameContainer}>
                                                 <Text style={styles.nameText}>
                                                     {item.name +
-                                                        ' ' +
-                                                        item.lastname}
+                                                    ' ' +
+                                                    item.lastname}
                                                 </Text>
                                                 <Text
                                                     style={styles.userNameText}
@@ -1100,7 +1079,6 @@ class Home extends React.Component {
             </View>
         )
     }
-
     joinGroupRoomOnPress = () => {
         if (!this.props.isNetworkConnected) {
             showMessage({
@@ -1112,7 +1090,6 @@ class Home extends React.Component {
             })
             return
         }
-
         if (
             this.state.groupCodeOnChangeText === '' ||
             this.state.groupCodeOnChangeText.length !== 6
@@ -1123,7 +1100,6 @@ class Home extends React.Component {
             this.tryJoiningRoom()
         })
     }
-
     tryJoiningRoom = async () => {
         this.room = this.client.join('groupRoom', {
             databaseId: this.props.clientDBId,
@@ -1214,31 +1190,23 @@ class Home extends React.Component {
         return (
             <View style={premiumStyles.premiumModal}>
                 <TouchableOpacity onPress={this.closeModalButtonOnPress} style={ {height: hp(120), width: wp(100)}}/>
-                <View style={[premiumStyles.premiumModalView, { height: hp(49)}]}>
-                    <LinearGradient colors={['white', '#FFE6BB', '#FFA800']} style={[premiumStyles.linearGradientPremiumModalView, { height: hp(49)}]}>
+                <View style={[premiumStyles.premiumModalView, { height: hp(33)}]}>
+                    <LinearGradient colors={['white', '#FFE6BB', '#FFA800']} style={[premiumStyles.linearGradientPremiumModalView, { height: hp(33)}]}>
                         <View style={premiumStyles.premiumModalHeaderView}>
                             <Text style={premiumStyles.premiumModalHeaderText}>ELİT ÖĞRENCİ PAKETİ</Text>
                         </View>
                         <View style={premiumStyles.premiumModalSwiperContainer}>
-                                <View style={premiumStyles.premiumModalSwiperView}>
-                                    <View style={premiumStyles.premiumModalSwiperImgView}>
-                                        <Image source={PREMIUM_ADS} style={premiumStyles.premiumModalImg}/>
-                                    </View>
-                                    <View style={premiumStyles.premiumModalSwiperHeaderView}>
-                                        <Text style={premiumStyles.premiumModalHeaderText}>Reklam Yok!</Text>
-                                    </View>
-                                    <View style={[premiumStyles.premiumModalSwiperInfoView, {justifyContent: 'flex-start'}]}>
-                                        <Text style={[premiumStyles.premiumModalInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
-                                    </View>
+                            <View style={premiumStyles.premiumModalSwiperView}>
+                                <View style={premiumStyles.premiumModalSwiperImgView}>
+                                    <Image source={SOLO_PREMIUM} style={premiumStyles.premiumModalImg}/>
                                 </View>
-                        </View>
-                        <View style={premiumStyles.buttonsInPremiumModalView}>
-                            <TouchableOpacity style={premiumStyles.purchasePremiumButton}>
-                                <Text style={premiumStyles.purchasePremiumButtonText}>HEMEN SATIN AL</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={this.closeModalButtonOnPress} >
-                                <Text style={premiumStyles.purchasePremiumCancelText}>HAYIR, TEŞEKKÜRLER</Text>
-                            </TouchableOpacity>
+                                <View style={[premiumStyles.premiumModalSwiperHeaderView, { height: hp(5.5)}]}>
+                                    <Text style={premiumStyles.premiumModalHeaderText}>Tek Başına Soru Çözme!</Text>
+                                </View>
+                                <View style={[premiumStyles.premiumModalSwiperInfoView, {justifyContent: 'flex-start', height: hp(9.5)}]}>
+                                    <Text style={[premiumStyles.premiumModalInfoText, {marginTop: hp(1.5)}]}>Tek Kişilik Soru Çözme Modu şimdi Elit Öğrenci Paketi'nde</Text>
+                                </View>
+                            </View>
                         </View>
                     </LinearGradient>
                 </View>
@@ -1304,16 +1272,16 @@ class Home extends React.Component {
         )
         subjectIndex = this.props.examList[examIndex].courseEntities[
             this.state.carouselActiveSlide
-        ].subjectEntities.findIndex(x => x.name === this.state.subject)
+            ].subjectEntities.findIndex(x => x.name === this.state.subject)
 
         return {
             examId: this.props.examList[examIndex].id,
             courseId: this.props.examList[examIndex].courseEntities[
                 this.state.carouselActiveSlide
-            ].id,
+                ].id,
             subjectId: this.props.examList[examIndex].courseEntities[
                 this.state.carouselActiveSlide
-            ].subjectEntities[subjectIndex].id
+                ].subjectEntities[subjectIndex].id
         }
     }
 
@@ -1360,13 +1328,13 @@ class Home extends React.Component {
                     animationType={'fade'}
                 >
                     {this.state.visibleView === 'GAME_MODES' &&
-                        this.gameModesView()}
+                    this.gameModesView()}
                     {this.state.visibleView === 'FRIEND_ROOM' &&
-                        this.friendRoomView()}
+                    this.friendRoomView()}
                     {this.state.visibleView === 'GROUP_MODES' &&
-                        this.groupModesView()}
+                    this.groupModesView()}
                     {this.state.visibleView === 'JOIN_ROOM' &&
-                        this.joinRoomView()}
+                    this.joinRoomView()}
                     {this.state.visibleView === 'CREATE_ROOM' && (
                         <CreateGroupRoomView
                             calculateContentIds={this.calculateContentIds()}
