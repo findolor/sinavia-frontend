@@ -120,7 +120,7 @@ class JoinGroupRoom extends React.Component {
                     } */
 
                     navigationReset('game', { isHardReset: true })
-                    navigationReplace(SCENE_KEYS.gameScreens.groupGame, {
+                    navigationReplace(SCENE_KEYS.gameScreens.groupLoading, {
                         room: this.props.joinGameParams.room,
                         client: this.props.joinGameParams.client,
                         groupRoomPlayerList: this.state.groupRoomPlayerList

@@ -113,7 +113,8 @@ class Home extends React.Component {
             // Selected game mode variable
             selectedGameMode: 'ranked',
             // Selected content total score
-            selectedContentTotalPoints: 0
+            selectedContentTotalPoints: 0,
+            isFriendGameRequestModalVisible: false
         }
     }
 
@@ -460,7 +461,7 @@ class Home extends React.Component {
         )
     }
 
-    // TODO THINK ABOUT CONTETT LATER IMPORTRRANT
+    // TODO THINK ABOUT CONTENT LATER IMPORTRRANT
     carouselMaker = examName => {
         let index = this.props.examList.findIndex(x => x.name === examName)
 
@@ -1186,6 +1187,57 @@ class Home extends React.Component {
         )
     }
 
+    friendGameRequestModal() {
+        return (
+            <View
+                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.gameRequestView}>
+                        <Text style={styles.gameRequestText}>
+                            <Text style={[{color: '#FF9900', fontFamily: 'Averta-SemiboldItalic'}]}>hakanyilmaz</Text> kişisi sana
+                        </Text>
+                        <Text style={[styles.gameRequestText, {color: '#00D9EF', fontFamily: 'Averta-Bold'}]}>
+                            YKS - Türkçe
+                        </Text>
+                        <Text style={[styles.gameRequestText, {color: '#00D9EF', fontFamily: 'Averta-Bold'}]}>
+                            Paragrafta Anlam
+                        </Text>
+                        <Text style={styles.gameRequestText}>
+                            konusunda oyun isteği gönderdi
+                        </Text>
+                    </View>
+                    <View style={styles.yesOrNoButtonsContainer}>
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#B72A2A"
+                            buttonText="Reddet"
+                            borderRadius={10}
+                            onPress={() => this.setState({isFriendGameRequestModal: false})}
+                        />
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#FF9900"
+                            buttonText="Daha Sonra"
+                            borderRadius={10}
+                            onPress={() => this.setState({isFriendGameRequestModal: false})}
+                        />
+                    </View>
+                    <AuthButton
+                        height={hp(7)}
+                        width={wp(87.5)}
+                        color="#3EBB29"
+                        buttonText="Şimdi Oyna"
+                        borderRadius={10}
+                        onPress={() => this.setState({isFriendGameRequestModal: false})}
+                    />
+                </View>
+            </View>
+        )
+    }
+
     premiumForSoloView() {
         return (
             <View style={premiumStyles.premiumModal}>
@@ -1347,6 +1399,11 @@ class Home extends React.Component {
                     )}
                     {this.state.visibleView === 'PREMIUM_MODAL_FOR_SOLO' &&
                     this.premiumForSoloView()}
+                </Modal>
+                <Modal visible={this.state.isFriendGameRequestModalVisible}
+                       transparent={true}
+                       animationType={'fade'}>
+                        {this.friendGameRequestModal()}
                 </Modal>
                 <View style={styles.header}>
                     <View style={styles.profilePicContainer}>
