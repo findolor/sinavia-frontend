@@ -28,8 +28,8 @@
 		8234A81F9D7E458BA9CC600B /* Averta-ExtrathinItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4A931156D29643CA8BB1A16C /* Averta-ExtrathinItalic.otf */; };
 		95CB3382C216494EA94682F7 /* Averta-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5972F7AA2FE0420E9D6F681C /* Averta-Black.otf */; };
 		981889EA3B4B40A1B0A17761 /* Averta-RegularItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3CEEF7C287524C95BC284325 /* Averta-RegularItalic.otf */; };
-		9A12946B23795FE200DA1105 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A12946A23795FE200DA1105 /* GoogleService-Info.plist */; };
 		9A7DF232230C799300890161 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7DF231230C799300890161 /* File.swift */; };
+		9A8A6C16237AE28E00641E31 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A8A6C15237AE28E00641E31 /* GoogleService-Info.plist */; };
 		9EDA85F01EFC6497ACD82F89 /* libPods-Sinavia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6803A60CA2105D929503EBF /* libPods-Sinavia.a */; };
 		A60AA0DF81344ABC946DDCA0 /* Averta-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = CBD4F8D6FF994206B79B5A09 /* Averta-LightItalic.otf */; };
 		B19388F18BC24D738B0A620B /* Averta-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 248B895017E84678B0BD244F /* Averta-BoldItalic.otf */; };
@@ -88,9 +88,10 @@
 		77FB107A7AAB407C866137E5 /* Averta-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-Bold.otf"; path = "../src/assets/fonts/Averta-Bold.otf"; sourceTree = "<group>"; };
 		7D01560C726C2ACCB3734B8F /* Pods-Sinavia-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sinavia-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Sinavia-tvOSTests/Pods-Sinavia-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		83FB10C90C0545E49953A162 /* Averta-Extrathin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-Extrathin.otf"; path = "../src/assets/fonts/Averta-Extrathin.otf"; sourceTree = "<group>"; };
-		9A12946A23795FE200DA1105 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9A7DF230230C799200890161 /* Sinavia-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Sinavia-Bridging-Header.h"; sourceTree = "<group>"; };
 		9A7DF231230C799300890161 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		9A8A6C0C237AAA4700641E31 /* Sinavia.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Sinavia.entitlements; path = Sinavia/Sinavia.entitlements; sourceTree = "<group>"; };
+		9A8A6C15237AE28E00641E31 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A6803A60CA2105D929503EBF /* libPods-Sinavia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sinavia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC8951B9CD060DF9FAD03977 /* Pods-Sinavia-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sinavia-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Sinavia-tvOSTests/Pods-Sinavia-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		B13033158B1DA1B89A9F8EB6 /* libPods-Sinavia-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sinavia-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -162,6 +163,7 @@
 		13B07FAE1A68108700A75B9A /* Sinavia */ = {
 			isa = PBXGroup;
 			children = (
+				9A8A6C0C237AAA4700641E31 /* Sinavia.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -211,7 +213,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				9A12946A23795FE200DA1105 /* GoogleService-Info.plist */,
+				9A8A6C15237AE28E00641E31 /* GoogleService-Info.plist */,
 				9A7DF231230C799300890161 /* File.swift */,
 				13B07FAE1A68108700A75B9A /* Sinavia */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -417,12 +419,12 @@
 				E0572877956E4880BD150338 /* Averta-Extrathin.otf in Resources */,
 				8234A81F9D7E458BA9CC600B /* Averta-ExtrathinItalic.otf in Resources */,
 				2E0C31687154475CB83EC959 /* Averta-Light.otf in Resources */,
+				9A8A6C16237AE28E00641E31 /* GoogleService-Info.plist in Resources */,
 				A60AA0DF81344ABC946DDCA0 /* Averta-LightItalic.otf in Resources */,
 				2513F96770234444B2ADE2A8 /* Averta-Regular.otf in Resources */,
 				981889EA3B4B40A1B0A17761 /* Averta-RegularItalic.otf in Resources */,
 				7E82C88ADEFA496DBD2EA06A /* Averta-Semibold.otf in Resources */,
 				C8A88142F0164A51B7BD8A62 /* Averta-SemiboldItalic.otf in Resources */,
-				9A12946B23795FE200DA1105 /* GoogleService-Info.plist in Resources */,
 				011DF84842B7407FB0A02353 /* Averta-Thin.otf in Resources */,
 				7724CB6AF76244749AF6742E /* Averta-ThinItalic.otf in Resources */,
 			);
@@ -739,6 +741,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Sinavia/Sinavia.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = G3CN9DY25B;
@@ -749,7 +752,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mobee.sinavia;
 				PRODUCT_NAME = Sinavia;
 				SWIFT_OBJC_BRIDGING_HEADER = "Sinavia-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -765,6 +768,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Sinavia/Sinavia.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = G3CN9DY25B;
 				INFOPLIST_FILE = Sinavia/Info.plist;
@@ -774,7 +778,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mobee.sinavia;
 				PRODUCT_NAME = Sinavia;
 				SWIFT_OBJC_BRIDGING_HEADER = "Sinavia-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

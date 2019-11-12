@@ -117,7 +117,7 @@ class Home extends React.Component {
 
         this.removeMessageListener = firebase.messaging().onMessage(message => {
             console.log(message, 'mes')
-            this.fcmMessagePicker(message)
+            //this.fcmMessagePicker(message)
         })
         this.removeNotificationListener = firebase
             .notifications()
