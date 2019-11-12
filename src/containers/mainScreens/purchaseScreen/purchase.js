@@ -561,7 +561,7 @@ class PurchaseScreen extends React.Component {
                         <View style={styles.jokerContainer}>
                             <View style={styles.jokerImageContainer}>
                                 <View style={styles.jokerImageView}>
-                                    <View style={styles.jokerCounterView}>
+                                    <View style={[styles.jokerCounterView, { width: ((''+this.state.firstJoker.amount).length) < 3 ? hp(4) : hp(5.5)}]}>
                                         <Text style={styles.jokerCounterText}>{this.state.firstJoker.amount}</Text>
                                     </View>
                                     <Image source={{ uri: this.state.firstJoker.joker.imageLink }} style={styles.jokerImg}/>
@@ -574,7 +574,7 @@ class PurchaseScreen extends React.Component {
                         <View style={styles.jokerContainer}>
                             <View style={styles.jokerImageContainer}>
                                 <View style={styles.jokerImageView}>
-                                    <View style={styles.jokerCounterView}>
+                                    <View style={[styles.jokerCounterView, { width: ((''+this.state.secondJoker.amount).length) < 3 ? hp(4) : hp(5.5)}]}>
                                         <Text style={styles.jokerCounterText}>{this.state.secondJoker.amount}</Text>
                                     </View>
                                     <Image source={{ uri: this.state.secondJoker.joker.imageLink }} style={styles.jokerImg}/>
@@ -587,7 +587,7 @@ class PurchaseScreen extends React.Component {
                         <View style={styles.jokerContainer}>
                             <View style={styles.jokerImageContainer}>
                                 <View style={styles.jokerImageView}>
-                                    <View style={styles.jokerCounterView}>
+                                    <View style={[styles.jokerCounterView, { width: ((''+this.state.thirdJoker.amount).length) < 3 ? hp(4) : hp(5.5)}]}>
                                         <Text style={styles.jokerCounterText}>{this.state.thirdJoker.amount}</Text>
                                     </View>
                                     <Image source={{ uri: this.state.thirdJoker.joker.imageLink }} style={styles.jokerImg}/>
