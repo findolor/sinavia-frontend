@@ -11,8 +11,7 @@ import SoloFriendGameScreen from './soloFriendGameScreen/soloFriendGameScreen'
 import SoloModeLoadingScreen from './soloModeLoadingScreen/soloModeLoadingScreen'
 import SoloModeGameScreen from './soloModeGameScreen/soloModeGameScreen'
 import SoloFriendGameStatsScreen from './soloFriendGameStatsScreen/soloFriendGameStats'
-import SoloPregame from './soloPregameScreen/soloPregame'
-import GroupPregame from './groupPregameScreen/groupPregame'
+import GroupLoading from './groupLoadingScreen/groupLoading'
 import SoloGameStats from './soloGameStatsScreen/soloGameStats'
 
 export {
@@ -29,7 +28,6 @@ export {
     SoloModeLoadingScreen,
     SoloModeGameScreen,
     SoloFriendGameStatsScreen,
-    SoloPregame,
-    GroupPregame,
+    GroupLoading,
     SoloGameStats
 }

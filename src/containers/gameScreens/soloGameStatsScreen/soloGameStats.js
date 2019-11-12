@@ -36,11 +36,35 @@ const REPLAY_NORMAL_BORDER = '#00D9EF'
 const REPLAY_ACTIVE_BORDER = 'green'
 const REPLAY_DEACTIVE_BORDER = 'red'
 
-export default class SoloGameStats extends React.Component {
+class SoloGameStats extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            screenPosition: 1
+            // Client match results
+            correctAnswerNumber: 0,
+            incorrectAnswerNumber: 0,
+            unansweredAnswerNumber: 0,
+            // Opponent username
+            clientUsername: '',
+            // Player profile pictures
+            clientProfilePicture: '',
+            // Question position
+            questionPosition: 1,
+            // A list to feed into the scroll view
+            allQuestionsList: [],
+            // Screen position
+            screenPosition: 1,
+            // User answer background color. Changes depending on the result
+            answerBackgroundColor: '',
+            // Replay button press number
+            replayButtonPressNumber: 0,
+            // Fav icon selection
+            isFaved: false,
+            // Fav icon
+            favouriteIcon: unselectedFav,
+            // Current match information
+            matchInformation: {},
+            isModalVisible: false
         }
     }
 
@@ -254,3 +278,36 @@ export default class SoloGameStats extends React.Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    clientDBId: state.client.clientDBId,
+    clientToken: state.client.clientToken,
+    favouriteQuestions: state.client.favouriteQuestions,
+    clientInformation: state.client.clientInformation
+})
+
+const mapDispatchToProps = dispatch => ({
+    favouriteQuestion: (clientToken, clientId, question, favedQuestionList) =>
+        dispatch(
+            clientActions.favouriteQuestion(
+                clientToken,
+                clientId,
+                question,
+                favedQuestionList
+            )
+        ),
+    unfavouriteQuestion: (clientToken, clientId, question, favedQuestionList) =>
+        dispatch(
+            clientActions.unfavouriteQuestion(
+                clientToken,
+                clientId,
+                question,
+                favedQuestionList
+            )
+        ),
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SoloGameStats)

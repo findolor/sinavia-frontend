@@ -10,8 +10,9 @@ import {
 
 import BACKGROUND from '../../../assets/gameScreens/gameStatsBackground.jpg'
 import LOGO from '../../../assets/sinavia_logo_cut.png'
+import GROUP_PEOPLE from '../../../assets/groupPeople.png'
 
-export default class SoloPregame extends React.Component {
+export default class GroupLoading extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -32,6 +33,10 @@ export default class SoloPregame extends React.Component {
                             <Text style={styles.courseText}>LGS - Matematik</Text>
                             <Text style={styles.subjectText}>Sayılar</Text>
                             <Text style={styles.questionCounterText}>Soru Sayısı: 15</Text>
+                        </View>
+                        <View style={styles.peopleCounterView}>
+                            <Image source={GROUP_PEOPLE} style={styles.groupPeopleImg}/>
+                            <Text style={styles.peopleCounterText}>15</Text>
                         </View>
                     </View>
                 </ImageBackground>

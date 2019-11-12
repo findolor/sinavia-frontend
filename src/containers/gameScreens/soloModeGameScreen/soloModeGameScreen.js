@@ -253,7 +253,7 @@ class SoloModeGameScreen extends React.Component {
                 return
             case 'match-finished':
                 this.shutdownGame()
-                navigationReplace(SCENE_KEYS.gameScreens.friendGameStats, {
+                navigationReplace(SCENE_KEYS.gameScreens.soloGameStats, {
                     playerProps: this.state.playerProps,
                     room: this.props.room,
                     client: this.props.client,

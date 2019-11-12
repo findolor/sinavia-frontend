@@ -29,8 +29,7 @@ const scene_keys = {
         soloModeLoadingScreen: 'soloModeLoadingScreen',
         soloModeGameScreen: 'soloModeGameScreen',
         soloFriendGameStatsScreen: 'soloFriendGameStatsScreen',
-        soloPregame: 'soloPregame',
-        groupPregame: 'groupPregame',
+        groupLoading: 'groupLoading',
         soloGameStats: 'soloGameStats'
     },
     mainScreens: {
