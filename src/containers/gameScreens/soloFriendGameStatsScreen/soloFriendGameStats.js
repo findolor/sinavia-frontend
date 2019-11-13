@@ -5,7 +5,8 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Dimensions, Modal
+    Dimensions,
+    Modal
 } from 'react-native'
 import { navigationReset } from '../../../services/navigationService'
 import styles from './style'
@@ -24,9 +25,12 @@ import unselectedFav from '../../../assets/favori_bos.png'
 import YOU_WIN_LOGO from '../../../assets/gameScreens/win.png'
 import YOU_LOSE_LOGO from '../../../assets/gameScreens/lose.png'
 import DRAW_LOGO from '../../../assets/gameScreens/draw.png'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
 import premiumStyles from '../../mainScreens/purchaseScreen/style'
-import LinearGradient from "react-native-linear-gradient"
+import LinearGradient from 'react-native-linear-gradient'
 
 class SoloFriendGameStatsScreen extends React.Component {
     constructor(props) {
@@ -321,7 +325,7 @@ class SoloFriendGameStatsScreen extends React.Component {
     }
 
     favouriteOnPress = () => {
-        if(this.props.clientInformation.isPremium){
+        if (this.props.clientInformation.isPremium) {
             if (this.state.isFaved) {
                 this.props.unfavouriteQuestion(
                     this.props.clientToken,
@@ -339,10 +343,9 @@ class SoloFriendGameStatsScreen extends React.Component {
                 )
                 this.setState({ favouriteIcon: selectedFav, isFaved: true })
             }
-        }
-        else{
+        } else {
             this.setState({
-                isModalVisible: true,
+                isModalVisible: true
             })
         }
     }
@@ -356,22 +359,69 @@ class SoloFriendGameStatsScreen extends React.Component {
     premiumForFavoritesPage() {
         return (
             <View style={premiumStyles.premiumModal}>
-                <TouchableOpacity onPress={this.closeModalButtonOnPress} style={ {height: hp(120), width: wp(100)}}/>
-                <View style={[premiumStyles.premiumModalView, { height: hp(33)}]}>
-                    <LinearGradient colors={['white', '#FFE6BB', '#FFA800']} style={[premiumStyles.linearGradientPremiumModalView, { height: hp(33)}]}>
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{ height: hp(120), width: wp(100) }}
+                />
+                <View
+                    style={[premiumStyles.premiumModalView, { height: hp(33) }]}
+                >
+                    <LinearGradient
+                        colors={['white', '#FFE6BB', '#FFA800']}
+                        style={[
+                            premiumStyles.linearGradientPremiumModalView,
+                            { height: hp(33) }
+                        ]}
+                    >
                         <View style={premiumStyles.premiumModalHeaderView}>
-                            <Text style={premiumStyles.premiumModalHeaderText}>ELİT ÖĞRENCİ PAKETİ</Text>
+                            <Text style={premiumStyles.premiumModalHeaderText}>
+                                ELİT ÖĞRENCİ PAKETİ
+                            </Text>
                         </View>
                         <View style={premiumStyles.premiumModalSwiperContainer}>
                             <View style={premiumStyles.premiumModalSwiperView}>
-                                <View style={premiumStyles.premiumModalSwiperImgView}>
-                                    <Image source={selectedFav} style={premiumStyles.premiumModalImg}/>
+                                <View
+                                    style={
+                                        premiumStyles.premiumModalSwiperImgView
+                                    }
+                                >
+                                    <Image
+                                        source={selectedFav}
+                                        style={premiumStyles.premiumModalImg}
+                                    />
                                 </View>
-                                <View style={[premiumStyles.premiumModalSwiperHeaderView, { height: hp(5.5)}]}>
-                                    <Text style={premiumStyles.premiumModalHeaderText}>Soru Favorileme!</Text>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperHeaderView,
+                                        { height: hp(5.5) }
+                                    ]}
+                                >
+                                    <Text
+                                        style={
+                                            premiumStyles.premiumModalHeaderText
+                                        }
+                                    >
+                                        Soru Favorileme!
+                                    </Text>
                                 </View>
-                                <View style={[premiumStyles.premiumModalSwiperInfoView, {justifyContent: 'flex-start', height: hp(9.5)}]}>
-                                    <Text style={[premiumStyles.premiumModalInfoText, {marginTop: hp(1.5)}]}>Soru Favorileme şimdi Elit Öğrenci Paketi'nde</Text>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperInfoView,
+                                        {
+                                            justifyContent: 'flex-start',
+                                            height: hp(9.5)
+                                        }
+                                    ]}
+                                >
+                                    <Text
+                                        style={[
+                                            premiumStyles.premiumModalInfoText,
+                                            { marginTop: hp(1.5) }
+                                        ]}
+                                    >
+                                        Soru Favorileme şimdi Elit Öğrenci
+                                        Paketi'nde
+                                    </Text>
                                 </View>
                             </View>
                         </View>
@@ -527,7 +577,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                                     style={[
                                                         styles.yourWinsView,
                                                         {
-                                                            width: widthPercentageToDP(
+                                                            width: wp(
                                                                 (this.state
                                                                     .playerFriendMatchWinCount /
                                                                     (this.state
@@ -544,7 +594,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                                     style={[
                                                         styles.opponentsWinsView,
                                                         {
-                                                            width: widthPercentageToDP(
+                                                            width: wp(
                                                                 (this.state
                                                                     .opponentFriendMatchWinCount /
                                                                     (this.state
@@ -592,9 +642,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                                     style={[
                                                         styles.yourWinsView,
                                                         {
-                                                            width: widthPercentageToDP(
-                                                                82
-                                                            ),
+                                                            width: wp(82),
                                                             borderTopRightRadius: 10,
                                                             borderBottomRightRadius: 10
                                                         }
@@ -635,9 +683,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                                     style={[
                                                         styles.opponentsWinsView,
                                                         {
-                                                            width: widthPercentageToDP(
-                                                                82
-                                                            ),
+                                                            width: wp(82),
                                                             borderTopLeftRadius: 10,
                                                             borderBottomLeftRadius: 10
                                                         }

@@ -152,7 +152,8 @@ class Notifications extends React.Component {
     }
 
     componentDidMount() {
-        this.loadNotifications()
+        if (this.props.shouldGoToFriendRequests) this.friendsRequestsOnPress()
+        else this.loadNotifications()
     }
 
     updateNotificationsCategoryButtonUI = notificationsMode => {

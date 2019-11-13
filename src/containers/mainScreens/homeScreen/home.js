@@ -124,7 +124,9 @@ class Home extends React.Component {
             requestedGameCourseId: 1,
             requestedGameSubjectId: 1,
             requestedGameRoomCode: null,
-            requestedGameOpponentId: null
+            requestedGameOpponentId: null,
+            // Variable to check if group game is initiated
+            isGroupGameInitiated: false
         }
     }
 
@@ -134,6 +136,11 @@ class Home extends React.Component {
         // Set up a listener for detecting the app state
         AppState.addEventListener('change', this.handleAppStateChange)
 
+        // TODO RIGHT NOW THE PROBLEM IS
+        // BECAUSE WE DONT REMOVE THE LISTENERS
+        // EVERYTIME WE COME TO THIS SCREEN
+        // WE GET MULTIPLE LISTENERS HERE
+        // GOTTA FIX THIS
         this.removeMessageListener = firebase.messaging().onMessage(message => {
             console.log(message, 'mes')
             this.fcmMessagePicker(message)
@@ -149,12 +156,24 @@ class Home extends React.Component {
                         getCurrentScreen() !== 'rankedMatchingScreen' &&
                         getCurrentScreen() !== 'friendMatchingScreen' &&
                         getCurrentScreen() !== 'groupGame' &&
+                        getCurrentScreen() !== 'groupLoading' &&
                         getCurrentScreen() !== 'friendGame' &&
                         getCurrentScreen() !== 'soloFriendGameScreen' &&
                         getCurrentScreen() !== 'soloModeLoadingScreen' &&
-                        getCurrentScreen() !== 'soloModeGameScreen'
-                    )
-                        this.fcmMessagePicker(notification)
+                        getCurrentScreen() !== 'soloModeGameScreen' &&
+                        !this.state.isGroupGameInitiated
+                    ) {
+                        if (
+                            notification.data.type === 'friendRequest' ||
+                            notification.data.type === 'friendMatchResult'
+                        )
+                            return
+                        if (this.state.isModalVisible) {
+                            this.setState({ isModalVisible: false }, () => {
+                                this.fcmMessagePicker(notification)
+                            })
+                        } else this.fcmMessagePicker(notification)
+                    }
                 } else {
                     // Create the channel
                     const channel = new firebase.notifications.Android.Channel(
@@ -229,6 +248,11 @@ class Home extends React.Component {
 
     fcmMessagePicker = message => {
         switch (message.data.type) {
+            case 'friendRequest':
+                navigationPush(SCENE_KEYS.mainScreens.notifications, {
+                    shouldGoToFriendRequests: true
+                })
+                break
             case 'friendApproved':
                 this.friendRequestAccepted({
                     opponentId: message.data.userId
@@ -359,44 +383,6 @@ class Home extends React.Component {
 
         friends.splice(index, 1)
         this.props.saveFriendIdList(friends)
-    }
-
-    customAlert = (
-        isTwoButtoned,
-        alertTitle,
-        alertBody,
-        onPressFunction,
-        params
-    ) => {
-        if (!isTwoButtoned) {
-            Alert.alert(
-                alertTitle,
-                alertBody,
-                [
-                    {
-                        text: 'Tamam',
-                        onPress: () => onPressFunction(params)
-                    }
-                ],
-                { cancelable: false }
-            )
-        } else {
-            Alert.alert(
-                alertTitle,
-                alertBody,
-                [
-                    {
-                        text: 'Reddet',
-                        onPress: () => onPressFunction(params)
-                    },
-                    {
-                        text: 'Kabul et',
-                        onPress: () => onPressFunction(params)
-                    }
-                ],
-                { cancelable: false }
-            )
-        }
     }
 
     _renderItemWithParallax({ item }) {
@@ -536,24 +522,6 @@ class Home extends React.Component {
     }
 
     groupGameModeOnPress = () => {
-        /* if (this.props.clientInformation.isPremium) {
-            this.setState({
-                visibleView: 'GROUP_MODES',
-                visibleRankedGameStartPress: false,
-                rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
-                soloModeButtonBorderColor: EMPTY_MODE_COLOR
-            })
-        } else if (this.props.energyAmount !== 0)
-            this.setState({
-                visibleView: 'GROUP_MODES',
-                visibleRankedGameStartPress: false,
-                rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
-                soloModeButtonBorderColor: EMPTY_MODE_COLOR
-            })
-        else {
-            Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
-        } */
-
         this.setState({
             visibleView: 'GROUP_MODES',
             visibleRankedGameStartPress: false,
@@ -770,35 +738,11 @@ class Home extends React.Component {
             return
         }
         this.setState({
-            visibleView: 'CREATE_ROOM'
+            visibleView: 'CREATE_ROOM',
+            isGroupGameInitiated: true
         })
     }
     friendRoomOnPress = async () => {
-        /* if (this.props.clientInformation.isPremium) {
-            if (Object.keys(this.props.friendIds).length === 0) return
-            const friends = await userServices.getUsers(
-                this.props.clientToken,
-                this.props.friendIds
-            )
-            this.setState({
-                visibleView: 'FRIEND_ROOM',
-                friendList: friends,
-                originalFriends: friends
-            })
-        } else if (this.props.energyAmount !== 0) {
-            if (Object.keys(this.props.friendIds).length === 0) return
-            const friends = await userServices.getUsers(
-                this.props.clientToken,
-                this.props.friendIds
-            )
-            this.setState({
-                visibleView: 'FRIEND_ROOM',
-                friendList: friends,
-                originalFriends: friends
-            })
-        } else {
-            Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
-        } */
         if (Object.keys(this.props.friendIds).length === 0) return
         this.setState({
             rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
@@ -1071,6 +1015,7 @@ class Home extends React.Component {
             </View>
         )
     }
+
     joinGroupRoomOnPress = () => {
         if (!this.props.isNetworkConnected) {
             showMessage({
@@ -1092,6 +1037,7 @@ class Home extends React.Component {
             this.tryJoiningRoom()
         })
     }
+
     tryJoiningRoom = async () => {
         this.room = this.client.join('groupRoom', {
             databaseId: this.props.clientDBId,
@@ -1103,7 +1049,8 @@ class Home extends React.Component {
         this.room.onJoin.add(() => {
             this.room.removeAllListeners()
             this.setState({
-                visibleView: 'JOINED_ROOM'
+                visibleView: 'JOINED_ROOM',
+                isGroupGameInitiated: true
             })
         })
     }
