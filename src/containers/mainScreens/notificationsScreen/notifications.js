@@ -486,7 +486,8 @@ class Notifications extends React.Component {
             this.props.clientDBId,
             friendId,
             this.props.clientInformation.username,
-            this.props.friendIds
+            this.props.friendIds,
+            this.props.clientInformation.profilePicture
         )
         // If we do this step inside the saga it wont refresh
         this.props.removeFromFriendRequests(index)
@@ -735,7 +736,8 @@ const mapDispatchToProps = dispatch => ({
         clientId,
         opponentId,
         clientUsername,
-        friendIdList
+        friendIdList,
+        profilePicture
     ) =>
         dispatch(
             friendActions.acceptFriendRequest(
@@ -743,7 +745,8 @@ const mapDispatchToProps = dispatch => ({
                 clientId,
                 opponentId,
                 clientUsername,
-                friendIdList
+                friendIdList,
+                profilePicture
             )
         ),
     rejectFriendshipRequest: (clientToken, userId, friendId, friendRequests) =>
@@ -775,7 +778,4 @@ const mapDispatchToProps = dispatch => ({
         )
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Notifications)
+export default connect(mapStateToProps, mapDispatchToProps)(Notifications)

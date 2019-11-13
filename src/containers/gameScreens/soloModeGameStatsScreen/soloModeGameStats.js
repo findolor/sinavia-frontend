@@ -11,7 +11,6 @@ import {
     navigationReset,
     navigationReplace
 } from '../../../services/navigationService'
-import { SCENE_KEYS } from '../../../config/'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
 
@@ -28,15 +27,7 @@ import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
 
 import PROFILE_IMG from '../../../assets/profile2.jpg'
 
-import YOU_WIN_LOGO from '../../../assets/gameScreens/win.png'
-import YOU_LOSE_LOGO from '../../../assets/gameScreens/lose.png'
-import DRAW_LOGO from '../../../assets/gameScreens/draw.png'
-
-const REPLAY_NORMAL_BORDER = '#00D9EF'
-const REPLAY_ACTIVE_BORDER = 'green'
-const REPLAY_DEACTIVE_BORDER = 'red'
-
-class SoloGameStats extends React.Component {
+class SoloModeGameStats extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -77,8 +68,8 @@ class SoloGameStats extends React.Component {
                     Math.max(
                         Math.floor(
                             this.scrollX /
-                            Math.round(Dimensions.get('window').width) +
-                            0.5
+                                Math.round(Dimensions.get('window').width) +
+                                0.5
                         ) + 1,
                         0
                     ),
@@ -97,8 +88,8 @@ class SoloGameStats extends React.Component {
                 Math.max(
                     Math.floor(
                         this.scrollY /
-                        Math.round(Dimensions.get('window').height) +
-                        0.5
+                            Math.round(Dimensions.get('window').height) +
+                            0.5
                     ) + 1,
                     0
                 ),
@@ -118,14 +109,13 @@ class SoloGameStats extends React.Component {
                 <View style={styles.container}>
                     <Image source={background} style={styles.background} />
                     <View style={styles.logoContainer}>
-                        <Image
-                            source={SINAVIA_LOGO}
-                            style={styles.logoImg}
-                        />
+                        <Image source={SINAVIA_LOGO} style={styles.logoImg} />
                     </View>
                     <View style={styles.resultsContainer}>
                         <View style={styles.courseTextView}>
-                            <Text style={styles.courseText}>Paragrafta Anlam</Text>
+                            <Text style={styles.courseText}>
+                                Paragrafta Anlam
+                            </Text>
                         </View>
                         <View style={styles.userAndResultView}>
                             <View style={styles.userView}>
@@ -133,7 +123,9 @@ class SoloGameStats extends React.Component {
                                     source={PROFILE_IMG}
                                     style={styles.profilePic}
                                 />
-                                <Text style={styles.usernameText}>arcaaltunsu</Text>
+                                <Text style={styles.usernameText}>
+                                    arcaaltunsu
+                                </Text>
                             </View>
                             <View style={styles.resultView}>
                                 <View style={styles.dividedAnswer}>
@@ -141,36 +133,28 @@ class SoloGameStats extends React.Component {
                                         source={correct}
                                         style={styles.answerImg}
                                     />
-                                    <Text style={styles.numbers}>
-                                        5 Doğru
-                                    </Text>
+                                    <Text style={styles.numbers}>5 Doğru</Text>
                                 </View>
                                 <View style={styles.dividedAnswer}>
                                     <Image
                                         source={incorrect}
                                         style={styles.answerImg}
                                     />
-                                    <Text style={styles.numbers}>
-                                        5 Yanlış
-                                    </Text>
+                                    <Text style={styles.numbers}>5 Yanlış</Text>
                                 </View>
                                 <View style={styles.dividedAnswer}>
                                     <Image
                                         source={unanswered}
                                         style={styles.answerImg}
                                     />
-                                    <Text style={styles.numbers}>
-                                        5 Boş
-                                    </Text>
+                                    <Text style={styles.numbers}>5 Boş</Text>
                                 </View>
                             </View>
                         </View>
                     </View>
                     <View style={styles.buttonsContainer}>
                         <TouchableOpacity>
-                            <View
-                                style={styles.replayButton}
-                            >
+                            <View style={styles.replayButton}>
                                 <Text style={styles.buttonText}>Yeniden</Text>
                                 <Text style={styles.buttonText}>Oyna</Text>
                             </View>
@@ -211,10 +195,7 @@ class SoloGameStats extends React.Component {
                 </View>
                 <View style={styles.secondScreenView}>
                     <View style={styles.questionNumberContainer}>
-                        <Text style={styles.questionNumberText}>
-                            4/
-                            5
-                        </Text>
+                        <Text style={styles.questionNumberText}>4/ 5</Text>
                     </View>
                     <ScrollView
                         horizontal={true}
@@ -222,9 +203,7 @@ class SoloGameStats extends React.Component {
                         pagingEnabled={true}
                         onScroll={this.handleScrollHorizontal}
                         scrollEventThrottle={8}
-                    >
-
-                    </ScrollView>
+                    ></ScrollView>
                     <View style={styles.favAndAnswerContainer}>
                         <View style={styles.answerContainer}>
                             <View
@@ -304,10 +283,7 @@ const mapDispatchToProps = dispatch => ({
                 question,
                 favedQuestionList
             )
-        ),
+        )
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(SoloGameStats)
+export default connect(mapStateToProps, mapDispatchToProps)(SoloModeGameStats)

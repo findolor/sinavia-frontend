@@ -148,8 +148,8 @@ const RouterComp = () => {
                         component={gameScreens.groupLoading}
                     />
                     <Scene
-                        key={SCENE_KEYS.gameScreens.soloGameStats}
-                        component={gameScreens.soloGameStats}
+                        key={SCENE_KEYS.gameScreens.soloModeGameStats}
+                        component={gameScreens.soloModeGameStats}
                     />
                 </Scene>
             </Scene>

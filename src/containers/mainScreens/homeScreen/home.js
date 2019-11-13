@@ -9,7 +9,8 @@ import {
     View,
     AsyncStorage,
     Alert,
-    FlatList
+    FlatList,
+    AppState
 } from 'react-native'
 import { connect } from 'react-redux'
 import { gameContentActions } from '../../../redux/gameContent/actions'
@@ -43,7 +44,6 @@ import * as Colyseus from 'colyseus.js'
 // FCM imports
 import firebase from 'react-native-firebase'
 
-import { friendshipServices } from '../../../sagas/friendship/'
 import { friendGameServices } from '../../../sagas/friendGame/'
 import { userScoreServices } from '../../../sagas/userScore'
 import { userServices } from '../../../sagas/user/'
@@ -59,15 +59,15 @@ import {
     navigationPush,
     navigationReset,
     SCENE_KEYS,
-    navigationReplace
+    navigationReplace,
+    getCurrentScreen
 } from '../../../services/navigationService'
 
 import { levelFinder } from '../../../services/userLevelFinder'
 
 import SWORD from '../../../assets/sword.png'
-import LinearGradient from "react-native-linear-gradient"
-import Swiper from "react-native-swiper"
-import PREMIUM_ADS from '../../../assets/premiumAds.png'
+import LinearGradient from 'react-native-linear-gradient'
+
 const carouselFirstItem = 0
 
 const SELECTED_MODE_COLOR = '#00D9EF'
@@ -114,12 +114,25 @@ class Home extends React.Component {
             selectedGameMode: 'ranked',
             // Selected content total score
             selectedContentTotalPoints: 0,
-            isFriendGameRequestModalVisible: false
+            // Friend game modal variable
+            isFriendGameRequestModalVisible: false,
+            // Current app state (foreground, active, ...)
+            appState: AppState.currentState,
+            // Friend game request notification variables
+            requestingUserUsername: null,
+            requestedGameExamId: 1,
+            requestedGameCourseId: 1,
+            requestedGameSubjectId: 1,
+            requestedGameRoomCode: null,
+            requestedGameOpponentId: null
         }
     }
 
     async componentDidMount() {
+        // Fills the lists
         await this.fillGameContent()
+        // Set up a listener for detecting the app state
+        AppState.addEventListener('change', this.handleAppStateChange)
 
         this.removeMessageListener = firebase.messaging().onMessage(message => {
             console.log(message, 'mes')
@@ -128,25 +141,42 @@ class Home extends React.Component {
         this.removeNotificationListener = firebase
             .notifications()
             .onNotification(notification => {
-                // Create the channel
-                const channel = new firebase.notifications.Android.Channel(
-                    'notification-channel',
-                    'Notification Channel',
-                    firebase.notifications.Android.Importance.Max
-                ).setDescription('Sinavia notification channel')
-                firebase.notifications().android.createChannel(channel)
-
                 console.log(notification, 'not')
-                const tempNotification = new firebase.notifications.Notification()
-                    .setNotificationId(notification.notificationId)
-                    .setTitle(notification.title)
-                    .setBody(notification.body)
-                    .setData(notification.data)
-                tempNotification.android.setChannelId('aaa')
-                tempNotification.android.setSmallIcon('ic_launcher')
-                tempNotification.ios.setBadge(2)
+                if (this.state.appState === 'active') {
+                    if (
+                        getCurrentScreen() !== 'rankedGame' &&
+                        getCurrentScreen() !== 'loading' &&
+                        getCurrentScreen() !== 'rankedMatchingScreen' &&
+                        getCurrentScreen() !== 'friendMatchingScreen' &&
+                        getCurrentScreen() !== 'groupGame' &&
+                        getCurrentScreen() !== 'friendGame' &&
+                        getCurrentScreen() !== 'soloFriendGameScreen' &&
+                        getCurrentScreen() !== 'soloModeLoadingScreen' &&
+                        getCurrentScreen() !== 'soloModeGameScreen'
+                    )
+                        this.fcmMessagePicker(notification)
+                } else {
+                    // Create the channel
+                    const channel = new firebase.notifications.Android.Channel(
+                        'notification-channel',
+                        'Notification Channel',
+                        firebase.notifications.Android.Importance.Max
+                    ).setDescription('Sinavia notification channel')
+                    firebase.notifications().android.createChannel(channel)
 
-                firebase.notifications().displayNotification(tempNotification)
+                    const tempNotification = new firebase.notifications.Notification()
+                        .setNotificationId(notification.notificationId)
+                        .setTitle(notification.title)
+                        .setBody(notification.body)
+                        .setData(notification.data)
+                    tempNotification.android.setChannelId('channelId')
+                    tempNotification.android.setSmallIcon('ic_launcher')
+                    tempNotification.ios.setBadge(2)
+
+                    firebase
+                        .notifications()
+                        .displayNotification(tempNotification)
+                }
             })
 
         // If the app was in foreground or background
@@ -160,6 +190,7 @@ class Home extends React.Component {
                 const notification = notificationOpen.notification
                 console.log(action, notification, 'app running')
                 this.fcmMessagePicker(notification)
+                this.props.saveNotificationOpen(null)
             })
         // If the app was closed when the notification is opened
         // This func fires up
@@ -177,6 +208,14 @@ class Home extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this.handleAppStateChange)
+    }
+
+    handleAppStateChange = nextAppState => {
+        this.setState({ appState: nextAppState })
+    }
+
     fillGameContent = () => {
         new Promise.resolve().then(() => {
             const examNames = []
@@ -188,156 +227,33 @@ class Home extends React.Component {
         })
     }
 
-    componentWillUnmount() {}
-
     fcmMessagePicker = message => {
         switch (message.data.type) {
-            case 'friendRequest':
-                Alert.alert(
-                    'Arkadaşlık isteği!',
-                    message.data.body,
-                    [
-                        {
-                            text: 'Reddet',
-                            onPress: () => {}
-                        },
-                        {
-                            text: 'Kabul et',
-                            onPress: () => {
-                                this.acceptFriendRequest(message.data.userId)
-                            }
-                        }
-                    ],
-                    { cancelable: false }
-                )
-                break
             case 'friendApproved':
                 this.friendRequestAccepted({
                     opponentId: message.data.userId
                 })
                 break
             case 'friendGameRequest':
-                Alert.alert(
-                    'Oyun İsteği!',
-                    message.data.body,
-                    [
-                        {
-                            text: 'Tamam',
-                            onPress: () => {}
-                        },
-                        {
-                            text: 'Reddet',
-                            onPress: () => {
-                                friendGameServices
-                                    .checkOngoingMatch(
-                                        this.props.clientToken,
-                                        message.data.userId,
-                                        message.data.roomCode
-                                    )
-                                    .then(data => {
-                                        if (!data)
-                                            this.rejectFriendGame({
-                                                roomCode: message.data.roomCode
-                                            })
-                                        else {
-                                            Alert.alert(
-                                                'Arkadaşın önden başladı!'
-                                            )
-                                            navigationPush(
-                                                SCENE_KEYS.mainScreens
-                                                    .notifications
-                                            )
-                                        }
-                                    })
-                            }
-                        },
-                        {
-                            text: 'Kabul et',
-                            onPress: () => {
-                                /* if (this.props.clientInformation.isPremium) {
-                                    this.playFriendGame({
-                                        opponentId: message.data.userId,
-                                        roomCode: message.data.roomCode,
-                                        examId: parseInt(
-                                            message.data.examId,
-                                            10
-                                        ),
-                                        courseId: parseInt(
-                                            message.data.courseId,
-                                            10
-                                        ),
-                                        subjectId: parseInt(
-                                            message.data.subjectId,
-                                            10
-                                        )
-                                    })
-                                } else {
-                                    if (this.props.energyAmount === 0) {
-                                        Alert.alert(
-                                            'Üzgünüm ama oyun hakkın bitti :('
-                                        )
-                                        this.rejectFriendGame({
-                                            roomCode: message.data.roomCode
-                                        })
-                                    } else {
-                                        this.playFriendGame({
-                                            opponentId: message.data.userId,
-                                            roomCode: message.data.roomCode,
-                                            examId: parseInt(
-                                                message.data.examId,
-                                                10
-                                            ),
-                                            courseId: parseInt(
-                                                message.data.courseId,
-                                                10
-                                            ),
-                                            subjectId: parseInt(
-                                                message.data.subjectId,
-                                                10
-                                            )
-                                        })
-                                    }
-                                } */
-                                friendGameServices
-                                    .checkOngoingMatch(
-                                        this.props.clientToken,
-                                        message.data.userId,
-                                        message.data.roomCode
-                                    )
-                                    .then(data => {
-                                        // If the data is false we can play synchronized game
-                                        // If it is true other user either pressed play ahead or still waiting
-                                        if (!data)
-                                            this.tryJoiningFriendRoom({
-                                                opponentId: message.data.userId,
-                                                roomCode: message.data.roomCode,
-                                                examId: parseInt(
-                                                    message.data.examId,
-                                                    10
-                                                ),
-                                                courseId: parseInt(
-                                                    message.data.courseId,
-                                                    10
-                                                ),
-                                                subjectId: parseInt(
-                                                    message.data.subjectId,
-                                                    10
-                                                )
-                                            })
-                                        else {
-                                            Alert.alert(
-                                                'Arkadaşın önden başladı!'
-                                            )
-                                            navigationPush(
-                                                SCENE_KEYS.mainScreens
-                                                    .notifications
-                                            )
-                                        }
-                                    })
-                            }
-                        }
-                    ],
-                    { cancelable: false }
+                this.setState(
+                    {
+                        requestingUserUsername: message.data.username,
+                        requestedGameExamId: parseInt(message.data.examId, 10),
+                        requestedGameCourseId: parseInt(
+                            message.data.courseId,
+                            10
+                        ),
+                        requestedGameSubjectId: parseInt(
+                            message.data.subjectId,
+                            10
+                        ),
+                        requestedGameRoomCode: message.data.roomCode,
+                        requestedGameOpponentId: message.data.userId
+                    },
+                    () =>
+                        this.setState({
+                            isFriendGameRequestModalVisible: true
+                        })
                 )
                 break
             case 'friendDeleted':
@@ -350,12 +266,12 @@ class Home extends React.Component {
     }
 
     tryJoiningFriendRoom = params => {
-        // TODO Put a modal here and when the room is joined close it and navigaate
-        Alert.alert('Bekleniyor...')
-
         let room
         const client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
         client.onOpen.add(() => {
+            // TODO PUT A MODAL HERE FOR WAITING
+            Alert.alert('Bekleniyor...')
+
             room = client.join('friendRoom', {
                 databaseId: this.props.clientDBId,
                 roomCode: params.roomCode,
@@ -437,20 +353,6 @@ class Home extends React.Component {
         this.props.saveFriendIdList(friends)
     }
 
-    acceptFriendRequest = opponentId => {
-        const friends = this.props.friendIds
-        friends.push(opponentId)
-
-        this.props.saveFriendIdList(friends)
-
-        friendshipServices.acceptFriendshipRequest(
-            this.props.clientToken,
-            this.props.clientDBId,
-            opponentId,
-            this.props.clientInformation.username
-        )
-    }
-
     friendDeleted = params => {
         const friends = this.props.friendIds
         const index = friends.indexOf(params.opponentId)
@@ -518,7 +420,7 @@ class Home extends React.Component {
 
         return this.props.examList[index].courseEntities[
             this.state.carouselActiveSlide
-            ].name
+        ].name
     }
 
     onPressCard(title) {
@@ -582,7 +484,7 @@ class Home extends React.Component {
             ) */
         this.props.examList[examIndex].courseEntities[
             carouselActiveSlide
-            ].subjectEntities.forEach((subject, index) => {
+        ].subjectEntities.forEach((subject, index) => {
             subjectList.push(
                 <TouchableOpacity
                     onPress={() => {
@@ -740,18 +642,18 @@ class Home extends React.Component {
                                                     this.state
                                                         .selectedContentTotalPoints
                                                 ).levelProgressScore
-                                                ) /
+                                            ) /
                                                 Math.floor(
                                                     levelFinder(
                                                         this.state
                                                             .selectedContentTotalPoints !==
-                                                        0
+                                                            0
                                                             ? this.state
-                                                                .selectedContentTotalPoints
+                                                                  .selectedContentTotalPoints
                                                             : 1
                                                     ).levelProgressLimit
                                                 )) *
-                                            65
+                                                65
                                         )
                                     }
                                 ]}
@@ -769,9 +671,9 @@ class Home extends React.Component {
                                         levelFinder(
                                             this.state
                                                 .selectedContentTotalPoints !==
-                                            0
+                                                0
                                                 ? this.state
-                                                    .selectedContentTotalPoints
+                                                      .selectedContentTotalPoints
                                                 : 1000
                                         ).levelProgressLimit
                                     )}
@@ -976,8 +878,8 @@ class Home extends React.Component {
         }
         const newData = this.state.friendList.filter(item => {
             const itemData = `${item.name.toUpperCase() +
-            ' ' +
-            item.lastname.toUpperCase()} ${item.username.toUpperCase()}`
+                ' ' +
+                item.lastname.toUpperCase()} ${item.username.toUpperCase()}`
             const textData = text.toUpperCase()
             return itemData.indexOf(textData) > -1
         })
@@ -1072,8 +974,8 @@ class Home extends React.Component {
                             <View style={styles.nameAndUsernameContainer}>
                                 <Text style={styles.nameAndSurnameText}>
                                     {this.props.clientInformation.name +
-                                    '  ' +
-                                    this.props.clientInformation.lastname}
+                                        '  ' +
+                                        this.props.clientInformation.lastname}
                                 </Text>
                                 <Text style={styles.userNameText}>
                                     @{this.props.clientInformation.username}
@@ -1139,8 +1041,8 @@ class Home extends React.Component {
                                             <View style={styles.nameContainer}>
                                                 <Text style={styles.nameText}>
                                                     {item.name +
-                                                    ' ' +
-                                                    item.lastname}
+                                                        ' ' +
+                                                        item.lastname}
                                                 </Text>
                                                 <Text
                                                     style={styles.userNameText}
@@ -1279,18 +1181,56 @@ class Home extends React.Component {
     friendGameRequestModal() {
         return (
             <View
-                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.gameRequestView}>
                         <Text style={styles.gameRequestText}>
-                            <Text style={[{color: '#FF9900', fontFamily: 'Averta-SemiboldItalic'}]}>hakanyilmaz</Text> kişisi sana
+                            <Text
+                                style={[
+                                    {
+                                        color: '#FF9900',
+                                        fontFamily: 'Averta-SemiboldItalic'
+                                    }
+                                ]}
+                            >
+                                {this.state.requestingUserUsername}
+                            </Text>{' '}
+                            kişisi sana
                         </Text>
-                        <Text style={[styles.gameRequestText, {color: '#00D9EF', fontFamily: 'Averta-Bold'}]}>
-                            YKS - Türkçe
+                        <Text
+                            style={[
+                                styles.gameRequestText,
+                                { color: '#00D9EF', fontFamily: 'Averta-Bold' }
+                            ]}
+                        >
+                            {
+                                this.props.gameContentMap.exams[
+                                    this.state.requestedGameExamId - 1
+                                ].name
+                            }{' '}
+                            -{' '}
+                            {
+                                this.props.gameContentMap.courses[
+                                    this.state.requestedGameCourseId - 1
+                                ].name
+                            }
                         </Text>
-                        <Text style={[styles.gameRequestText, {color: '#00D9EF', fontFamily: 'Averta-Bold'}]}>
-                            Paragrafta Anlam
+                        <Text
+                            style={[
+                                styles.gameRequestText,
+                                { color: '#00D9EF', fontFamily: 'Averta-Bold' }
+                            ]}
+                        >
+                            {
+                                this.props.gameContentMap.subjects[
+                                    this.state.requestedGameSubjectId - 1
+                                ].name
+                            }
                         </Text>
                         <Text style={styles.gameRequestText}>
                             konusunda oyun isteği gönderdi
@@ -1303,7 +1243,38 @@ class Home extends React.Component {
                             color="#B72A2A"
                             buttonText="Reddet"
                             borderRadius={10}
-                            onPress={() => this.setState({isFriendGameRequestModal: false})}
+                            onPress={() => {
+                                friendGameServices
+                                    .checkOngoingMatch(
+                                        this.props.clientToken,
+                                        this.state.requestedGameOpponentId,
+                                        this.state.requestedGameRoomCode
+                                    )
+                                    .then(data => {
+                                        this.setState(
+                                            {
+                                                isFriendGameRequestModalVisible: false
+                                            },
+                                            () => {
+                                                if (!data)
+                                                    this.rejectFriendGame({
+                                                        roomCode: this.state
+                                                            .requestedGameRoomCode
+                                                    })
+                                                else {
+                                                    // TODO MAKE A MODAL HERE
+                                                    Alert.alert(
+                                                        'Arkadaşın önden başladı!'
+                                                    )
+                                                    navigationPush(
+                                                        SCENE_KEYS.mainScreens
+                                                            .notifications
+                                                    )
+                                                }
+                                            }
+                                        )
+                                    })
+                            }}
                         />
                         <AuthButton
                             height={hp(7)}
@@ -1311,7 +1282,11 @@ class Home extends React.Component {
                             color="#FF9900"
                             buttonText="Daha Sonra"
                             borderRadius={10}
-                            onPress={() => this.setState({isFriendGameRequestModal: false})}
+                            onPress={() =>
+                                this.setState({
+                                    isFriendGameRequestModalVisible: false
+                                })
+                            }
                         />
                     </View>
                     <AuthButton
@@ -1320,7 +1295,47 @@ class Home extends React.Component {
                         color="#3EBB29"
                         buttonText="Şimdi Oyna"
                         borderRadius={10}
-                        onPress={() => this.setState({isFriendGameRequestModal: false})}
+                        onPress={() => {
+                            friendGameServices
+                                .checkOngoingMatch(
+                                    this.props.clientToken,
+                                    this.state.requestedGameOpponentId,
+                                    this.state.requestedGameRoomCode
+                                )
+                                .then(data => {
+                                    this.setState(
+                                        {
+                                            isFriendGameRequestModalVisible: false
+                                        },
+                                        () => {
+                                            // If the data is false we can play synchronized game
+                                            // If it is true other user either pressed play ahead or still waiting
+                                            if (!data)
+                                                this.tryJoiningFriendRoom({
+                                                    opponentId: this.state
+                                                        .requestedGameOpponentId,
+                                                    roomCode: this.state
+                                                        .requestedGameRoomCode,
+                                                    examId: this.state
+                                                        .requestedGameExamId,
+                                                    courseId: this.state
+                                                        .requestedGameCourseId,
+                                                    subjectId: this.state
+                                                        .requestedGameSubjectId
+                                                })
+                                            else {
+                                                Alert.alert(
+                                                    'Arkadaşın önden başladı!'
+                                                )
+                                                navigationPush(
+                                                    SCENE_KEYS.mainScreens
+                                                        .notifications
+                                                )
+                                            }
+                                        }
+                                    )
+                                })
+                        }}
                     />
                 </View>
             </View>
@@ -1330,22 +1345,69 @@ class Home extends React.Component {
     premiumForSoloView() {
         return (
             <View style={premiumStyles.premiumModal}>
-                <TouchableOpacity onPress={this.closeModalButtonOnPress} style={ {height: hp(120), width: wp(100)}}/>
-                <View style={[premiumStyles.premiumModalView, { height: hp(33)}]}>
-                    <LinearGradient colors={['white', '#FFE6BB', '#FFA800']} style={[premiumStyles.linearGradientPremiumModalView, { height: hp(33)}]}>
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{ height: hp(120), width: wp(100) }}
+                />
+                <View
+                    style={[premiumStyles.premiumModalView, { height: hp(33) }]}
+                >
+                    <LinearGradient
+                        colors={['white', '#FFE6BB', '#FFA800']}
+                        style={[
+                            premiumStyles.linearGradientPremiumModalView,
+                            { height: hp(33) }
+                        ]}
+                    >
                         <View style={premiumStyles.premiumModalHeaderView}>
-                            <Text style={premiumStyles.premiumModalHeaderText}>ELİT ÖĞRENCİ PAKETİ</Text>
+                            <Text style={premiumStyles.premiumModalHeaderText}>
+                                ELİT ÖĞRENCİ PAKETİ
+                            </Text>
                         </View>
                         <View style={premiumStyles.premiumModalSwiperContainer}>
                             <View style={premiumStyles.premiumModalSwiperView}>
-                                <View style={premiumStyles.premiumModalSwiperImgView}>
-                                    <Image source={SOLO_PREMIUM} style={premiumStyles.premiumModalImg}/>
+                                <View
+                                    style={
+                                        premiumStyles.premiumModalSwiperImgView
+                                    }
+                                >
+                                    <Image
+                                        source={SOLO_PREMIUM}
+                                        style={premiumStyles.premiumModalImg}
+                                    />
                                 </View>
-                                <View style={[premiumStyles.premiumModalSwiperHeaderView, { height: hp(5.5)}]}>
-                                    <Text style={premiumStyles.premiumModalHeaderText}>Tek Başına Soru Çözme!</Text>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperHeaderView,
+                                        { height: hp(5.5) }
+                                    ]}
+                                >
+                                    <Text
+                                        style={
+                                            premiumStyles.premiumModalHeaderText
+                                        }
+                                    >
+                                        Tek Başına Soru Çözme!
+                                    </Text>
                                 </View>
-                                <View style={[premiumStyles.premiumModalSwiperInfoView, {justifyContent: 'flex-start', height: hp(9.5)}]}>
-                                    <Text style={[premiumStyles.premiumModalInfoText, {marginTop: hp(1.5)}]}>Tek Kişilik Soru Çözme Modu şimdi Elit Öğrenci Paketi'nde</Text>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperInfoView,
+                                        {
+                                            justifyContent: 'flex-start',
+                                            height: hp(9.5)
+                                        }
+                                    ]}
+                                >
+                                    <Text
+                                        style={[
+                                            premiumStyles.premiumModalInfoText,
+                                            { marginTop: hp(1.5) }
+                                        ]}
+                                    >
+                                        Tek Kişilik Soru Çözme Modu şimdi Elit
+                                        Öğrenci Paketi'nde
+                                    </Text>
                                 </View>
                             </View>
                         </View>
@@ -1413,16 +1475,16 @@ class Home extends React.Component {
         )
         subjectIndex = this.props.examList[examIndex].courseEntities[
             this.state.carouselActiveSlide
-            ].subjectEntities.findIndex(x => x.name === this.state.subject)
+        ].subjectEntities.findIndex(x => x.name === this.state.subject)
 
         return {
             examId: this.props.examList[examIndex].id,
             courseId: this.props.examList[examIndex].courseEntities[
                 this.state.carouselActiveSlide
-                ].id,
+            ].id,
             subjectId: this.props.examList[examIndex].courseEntities[
                 this.state.carouselActiveSlide
-                ].subjectEntities[subjectIndex].id
+            ].subjectEntities[subjectIndex].id
         }
     }
 
@@ -1469,13 +1531,13 @@ class Home extends React.Component {
                     animationType={'fade'}
                 >
                     {this.state.visibleView === 'GAME_MODES' &&
-                    this.gameModesView()}
+                        this.gameModesView()}
                     {this.state.visibleView === 'FRIEND_ROOM' &&
-                    this.friendRoomView()}
+                        this.friendRoomView()}
                     {this.state.visibleView === 'GROUP_MODES' &&
-                    this.groupModesView()}
+                        this.groupModesView()}
                     {this.state.visibleView === 'JOIN_ROOM' &&
-                    this.joinRoomView()}
+                        this.joinRoomView()}
                     {this.state.visibleView === 'CREATE_ROOM' && (
                         <CreateGroupRoomView
                             calculateContentIds={this.calculateContentIds()}
@@ -1487,12 +1549,14 @@ class Home extends React.Component {
                         />
                     )}
                     {this.state.visibleView === 'PREMIUM_MODAL_FOR_SOLO' &&
-                    this.premiumForSoloView()}
+                        this.premiumForSoloView()}
                 </Modal>
-                <Modal visible={this.state.isFriendGameRequestModalVisible}
-                       transparent={true}
-                       animationType={'fade'}>
-                        {this.friendGameRequestModal()}
+                <Modal
+                    visible={this.state.isFriendGameRequestModalVisible}
+                    transparent={true}
+                    animationType={'fade'}
+                >
+                    {this.friendGameRequestModal()}
                 </Modal>
                 <View style={styles.header}>
                     <View style={styles.profilePicContainer}>
@@ -1568,8 +1632,8 @@ const mapStateToProps = state => ({
     friendIds: state.friends.friendIds,
     examList: state.gameContent.examList,
     isNetworkConnected: state.app.isNetworkConnected,
-    //energyAmount: state.app.energyAmount,
-    notificationOpen: state.app.notificationOpen
+    notificationOpen: state.app.notificationOpen,
+    gameContentMap: state.gameContent.gameContentMap
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -1582,7 +1646,4 @@ const mapDispatchToProps = dispatch => ({
         dispatch(appActions.saveNotificationOpen(notificationOpen))
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

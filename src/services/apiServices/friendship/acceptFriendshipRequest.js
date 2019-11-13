@@ -10,7 +10,8 @@ export const acceptFriendshipRequest = async (headers, params) => {
                 userId: params.friendId,
                 friendId: params.userId,
                 friendshipStatus: 'approved',
-                username: params.clientUsername
+                username: params.clientUsername,
+                profilePicture: params.clientProfilePicture
             },
             {
                 headers: headers
@@ -27,7 +28,8 @@ export const acceptFriendshipRequest = async (headers, params) => {
                     userId: params.friendId,
                     friendId: params.userId,
                     friendshipStatus: 'approved',
-                    username: params.clientUsername
+                    username: params.clientUsername,
+                    profilePicture: params.clientProfilePicture
                 },
                 {
                     headers: headers

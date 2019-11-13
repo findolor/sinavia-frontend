@@ -37,7 +37,7 @@ import {
     SoloModeGameScreen,
     SoloFriendGameStatsScreen,
     GroupLoading,
-    SoloGameStats
+    SoloModeGameStats
 } from '../containers/gameScreens'
 
 import { SplashScreen } from '../containers/splashScreen'
@@ -81,7 +81,7 @@ export const gameScreens = {
     soloModeGameScreen: SoloModeGameScreen,
     soloFriendGameStatsScreen: SoloFriendGameStatsScreen,
     groupLoading: GroupLoading,
-    soloGameStats: SoloGameStats
+    soloModeGameStats: SoloModeGameStats
 }
 
 export const splashScreen = SplashScreen
