@@ -44,7 +44,7 @@ export default StyleSheet.create({
         height: hp(6),
         width: wp(10),
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'flex-start'
     },
     headerText: {
         fontFamily: 'Averta-BoldItalic',
@@ -53,9 +53,9 @@ export default StyleSheet.create({
     },
     subjectCardContainer: {
         height: hp(90),
-        width: wp(82),
-        marginStart: wp(6.5),
-        justifyContent: 'center',
+        width: wp(85),
+        marginStart: wp(5),
+        justifyContent: 'flex-start',
         alignItems: 'flex-start'
     },
     contentContainerWrapper: {
@@ -66,10 +66,10 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#00D9EF',
-        marginTop: hp(2)
+        marginTop: hp(1.5)
     },
     questionsContainer: {
-        height: hp(73),
+        height: hp(78),
         width: wp(82),
         borderLeftWidth: wp(0.6),
         borderRightWidth: wp(0.6),
@@ -81,7 +81,7 @@ export default StyleSheet.create({
         alignItems: 'flex-start'
     },
     subjectQuestionCounterView: {
-        height: hp(7.5),
+        height: hp(5.5),
         width: wp(82),
         justifyContent: 'center',
         alignItems: 'center'
@@ -96,7 +96,7 @@ export default StyleSheet.create({
         fontSize: wp(6.5),
         color: '#FFFFFF'
     },
-    question: {
+    questionImgBorder: {
         height: hp(27),
         width: wp(36),
         borderWidth: wp(0.5),
@@ -104,6 +104,11 @@ export default StyleSheet.create({
         borderRadius: 10,
         marginTop: hp(1.35),
         marginLeft: wp(3)
+    },
+    question: {
+        resizeMode: 'stretch',
+        height: hp(25),
+        marginTop: hp(1)
     },
     modalHeader: {
         flex: 11,
@@ -132,8 +137,13 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    questionSubjectNameView: {
+        flex: 5,
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
     questionInModalView: {
-        flex: 1,
+        flex: 65,
         width: wp(90),
         borderRadius: 30,
         backgroundColor: 'white'
@@ -209,4 +219,9 @@ export default StyleSheet.create({
         height: hp(4),
         width: hp(4)
     },
+    questionSubjectText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(3),
+        color: 'white'
+    }
 })

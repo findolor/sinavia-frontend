@@ -106,12 +106,15 @@ class Favorites extends React.Component {
                                                         this.loadScreen1(index, favouriteQuestions[examKey][courseKey])
                                                     }}
                                                 >
-                                                    <Image
-                                                        source={{
-                                                            uri: item.source.uri
-                                                        }}
-                                                        style={styles.question}
-                                                    />
+                                                    <View style={styles.questionImgBorder}>
+                                                        <Image
+                                                            source={{
+                                                                uri: item.source.uri
+                                                            }}
+                                                            style={styles.question}
+                                                        />
+                                                        <Text>{item.subjectId}</Text>
+                                                    </View>
                                                 </TouchableOpacity>
                                             )
                                         }}
@@ -119,8 +122,8 @@ class Favorites extends React.Component {
                                             index.toString()
                                         }
                                     />
+                                    <View style={styles.subjectQuestionCounterView}><Text style={styles.subjectQuestionCounterText}>{questionList.length} Soru</Text></View>
                                 </View>
-                                <View style={styles.subjectQuestionCounterView}><Text style={styles.subjectQuestionCounterText}>{questionList.length} Soru</Text></View>
                             </View>
                         )
                     }
@@ -234,6 +237,23 @@ class Favorites extends React.Component {
         )
     }
 
+    answerSwitcher(buttonNumber) {
+        switch (buttonNumber) {
+            case 1:
+                return 'A'
+            case 2:
+                return 'B'
+            case 3:
+                return 'C'
+            case 4:
+                return 'D'
+            case 5:
+                return 'E'
+            case 6:
+                return 'Boş'
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -293,6 +313,13 @@ class Favorites extends React.Component {
                             renderItem={({ item, index }) => {
                                 return (
                                     <View style={styles.galleryView}>
+                                        <View style={styles.questionSubjectNameView}>
+                                            <Text style={styles.questionSubjectText}>{
+                                                this.props.gameContentMap.subjects[
+                                                item.question.subjectId - 1
+                                                    ].name
+                                            }</Text>
+                                        </View>
                                         <View style={styles.questionInModalView}>
                                             <Image
                                                 source={{
@@ -323,7 +350,7 @@ class Favorites extends React.Component {
                                         { color: '#00D9EF' }
                                     ]}
                                 >
-                                    {this.state.correctAnswer}
+                                    {this.answerSwitcher(this.state.correctAnswer)}
                                 </Text>
                             </View>
                             <Text style={styles.answerText}>Doğru cevap</Text>
