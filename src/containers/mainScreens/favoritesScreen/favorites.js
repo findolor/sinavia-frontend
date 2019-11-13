@@ -6,7 +6,7 @@ import {
     ScrollView,
     Text,
     TouchableOpacity,
-    View
+    View, Dimensions
 } from 'react-native'
 import { SCENE_KEYS, navigationPop } from '../../../services/navigationService'
 import { connect } from 'react-redux'
@@ -52,11 +52,11 @@ class Favorites extends React.Component {
         this.state = {
             data: data,
             isModalVisible: false,
-            initialIndex: 0,
-            galleryPosition: 0,
+            galleryPosition: 1,
             favIconSelected: false,
             // ScrollView item list
-            scrollViewList: []
+            scrollViewList: [],
+            startQuestionIndex: 1
         }
     }
 
@@ -110,14 +110,12 @@ class Favorites extends React.Component {
                                         horizontal={true}
                                         data={questionList}
                                         showsHorizontalScrollIndicator={false}
-                                        renderItem={({ item }) => {
+                                        renderItem={({ item, index }) => {
                                             return (
                                                 <TouchableOpacity
-                                                    onPress={() =>
-                                                        this.questionOnPress(
-                                                            item
-                                                        )
-                                                    }
+                                                    onPress={() => {
+                                                        this.goIndex(index)
+                                                    }}
                                                 >
                                                     <Image
                                                         source={{
@@ -191,14 +189,6 @@ class Favorites extends React.Component {
         navigationPop()
     }
 
-    questionOnPress = item => {
-        this.setState({ isModalVisible: true, initialIndex: item.id })
-    }
-
-    galleryOnScroll = event => {
-        this.setState({ galleryPosition: event.position })
-    }
-
     shareImage = () => {
         const configOptions = {
             path: RNFetchBlob.fs.dirs.DownloadDir + '/question.png'
@@ -222,6 +212,29 @@ class Favorites extends React.Component {
                 Share.open(shareOptions)
             })
             .catch(err => console.log(err))
+    }
+
+    galleryOnScroll = event => {
+        this.scrollX = event.nativeEvent.contentOffset.x
+        this.setState(
+            {
+                galleryPosition: Math.min(
+                    Math.max(
+                        Math.floor(
+                            this.scrollX /
+                            Math.round(Dimensions.get('window').width) +
+                            0.5
+                        ) + 1,
+                        0
+                    ),
+                    Object.keys(this.state.data).length /*Image count*/
+                )
+            }
+        )
+    }
+
+    goIndex(index){
+        this.setState({ isModalVisible: true, startQuestionIndex: index })
     }
 
     render() {
@@ -258,7 +271,7 @@ class Favorites extends React.Component {
                         </View>
                         <View style={styles.questionNumberContainer}>
                             <Text style={styles.questionNumberText}>
-                                Soru {this.state.galleryPosition + 1}/
+                                Soru {this.state.galleryPosition}/
                                 {Object.keys(this.state.data).length}
                             </Text>
                         </View>
@@ -272,11 +285,32 @@ class Favorites extends React.Component {
                         </View>
                     </View>
                     <View style={styles.galleryContainer}>
-                        <Gallery
-                            style={styles.galleryView}
-                            images={this.state.data}
-                            initialPage={this.state.initialIndex}
-                            onPageScroll={event => this.galleryOnScroll(event)}
+                        <FlatList
+                            ref={(ref) => { this.flatListRef = ref }}
+                            horizontal={true}
+                            pagingEnabled={true}
+                            data={this.state.data}
+                            initialScrollIndex={this.state.startQuestionIndex}
+                            showsHorizontalScrollIndicator={false}
+                            onScroll={this.galleryOnScroll}
+                            renderItem={({ item, index }) => {
+                                return (
+                                    <View style={styles.galleryView}>
+                                        <View style={styles.questionInModalView}>
+                                            <Image
+                                                source={{
+                                                    uri: item.source.uri
+                                                }}
+                                                style={styles.questionInModal}
+                                            />
+                                            <Text>{index}</Text>
+                                        </View>
+                                    </View>
+                                )
+                            }}
+                            keyExtractor={(item, index) =>
+                                index.toString()
+                            }
                         />
                     </View>
                     <View style={styles.modalFooter}>
