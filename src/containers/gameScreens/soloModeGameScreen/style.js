@@ -56,18 +56,16 @@ export default StyleSheet.create({
         fontWeight: '700'
     },
     dummyButtonContainer: {
-        flex: 16,
+        flex: 14,
         width: wp(100),
         justifyContent: 'space-evenly'
     },
     topButtonRowContainer: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
-        backgroundColor: '#fff',
         width: wp(100),
-        height: hp(9),
-        alignItems: 'center',
-        marginBottom: hp(-1)
+        height: hp(7),
+        alignItems: 'center'
     },
     button: {
         borderWidth: 3,
@@ -86,24 +84,21 @@ export default StyleSheet.create({
     bottomButtonRowContainer: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
-        backgroundColor: '#fff',
         width: wp(100),
-        height: hp(9),
-        alignItems: 'center',
-        paddingBottom: hp(1.5)
+        height: hp(7),
+        alignItems: 'center'
     },
     jokerContainer: {
         backgroundColor: '#F4F6FB',
         width: wp(100),
-        flex: 8,
+        flex: 10,
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         marginTop: hp(1),
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         shadowOpacity: 1,
-        shadowColor: '#adadad',
-        paddingTop: hp(1)
+        shadowColor: '#adadad'
     },
     joker: {
         height: hp(3),
@@ -114,8 +109,10 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     touchableJokerContainer: {
-        flex: 1,
-        justifyContent: 'center'
+        width: wp(25),
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     jokerText: {
         color: '#000',
@@ -225,6 +222,88 @@ export default StyleSheet.create({
     spaceContainer: {
         height: hp(6),
         width: wp(15)
+    },
+    quitModalContainer: {
+        flex: 1,
+        alignItems: 'center'
+    },
+    quitView: {
+        backgroundColor: '#ffffff',
+        height: hp(20),
+        width: wp(87.5),
+        marginTop: hp(35),
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#00D9EF',
+        borderWidth: wp(0.75),
+        borderRadius: 10
+    },
+    areYouSureText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: wp(4.5),
+        color: '#5C5C5C'
+    },
+    yesOrNoButtonsContainer: {
+        height: hp(9),
+        width: wp(87.5),
+        marginTop: hp(2),
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start'
+    },
+    jokerImageContainer: {
+        height: hp(8),
+        width: wp(12),
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: hp(0.75)
+    },
+    jokerImageView: {
+        height: hp(6.75),
+        width: hp(6.75),
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: hp(0.25),
+        borderRadius: 100,
+        borderColor: '#FF9900'
+    },
+    jokerCounterView: {
+        position: 'absolute',
+        height: hp(4),
+        width: hp(4),
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'red',
+        borderWidth: hp(0.35),
+        borderRadius: 100,
+        borderColor: '#fcfcfc',
+        bottom: hp(2.75),
+        right: wp(6.5),
+        zIndex: 1
+    },
+    jokerCounterText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(2),
+        textAlign: 'center',
+        color: 'white',
+        marginBottom: hp(0.25)
+    },
+    jokerImg: {
+        height: hp(3),
+        width: hp(3)
+    },
+    jokerNameContainer: {
+        height: hp(8),
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: hp(0.75)
+    },
+    jokerNameText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(2),
+        marginLeft: wp(1.5),
+        textAlign: 'center',
+        color: 'black'
     }
 })
 

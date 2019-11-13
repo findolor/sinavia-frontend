@@ -312,7 +312,7 @@ class PurchaseScreen extends React.Component {
                         <Swiper loop={false}
                                 paginationStyle={{ bottom: hp(0.25) }}
                                 activeDotColor={'#00D9EF'}
-                                >
+                        >
                             <View style={styles.swiperView}>
                                 <TouchableOpacity style={styles.bundleView}>
                                     <View style={styles.totalJokerAmountView}>
@@ -347,7 +347,7 @@ class PurchaseScreen extends React.Component {
                                         <Text style={styles.jokerAmountsText}>90 Joker</Text>
                                     </View>
                                     <View style={styles.jokersView}>
-                                    <View style={styles.jokerView}>
+                                        <View style={styles.jokerView}>
                                             <Image source={{ uri: this.state.firstJoker.joker.imageLink }} style={styles.jokerImg}/>
                                             <Text style={styles.jokerAmountText}>x10</Text>
                                         </View>
@@ -375,7 +375,7 @@ class PurchaseScreen extends React.Component {
                                         <Text style={styles.jokerAmountsText}>180 Joker</Text>
                                     </View>
                                     <View style={styles.jokersView}>
-                                    <View style={styles.jokerView}>
+                                        <View style={styles.jokerView}>
                                             <Image source={{ uri: this.state.firstJoker.joker.imageLink }} style={styles.jokerImg}/>
                                             <Text style={styles.jokerAmountText}>x10</Text>
                                         </View>
@@ -508,8 +508,8 @@ class PurchaseScreen extends React.Component {
                             </View>
                             <View style={styles.premiumButtonView}>
                                 <TouchableOpacity   onPress={() => {
-                                                    this.onPressPremiumView()
-                                                    }}
+                                    this.onPressPremiumView()
+                                }}
                                                     style={styles.premiumButton}>
                                     <Text style={styles.premiumButtonText}>ELİT ÖĞRENCİ PAKETİ'Nİ ŞİMDİ AL</Text>
                                 </TouchableOpacity>
@@ -517,8 +517,8 @@ class PurchaseScreen extends React.Component {
                         </LinearGradient>
                     </View>
                     <TouchableOpacity style={styles.premiumBottomView}>
-                            <Text style={styles.inviteText}>Arkadaşını davet et</Text>
-                            <Text style={styles.earnPremiumWithInviteText}>1 Haftalık Elit Öğrenci Paketi Kazan!</Text>
+                        <Text style={styles.inviteText}>Arkadaşını davet et</Text>
+                        <Text style={styles.earnPremiumWithInviteText}>1 Haftalık Elit Öğrenci Paketi Kazan!</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.socialMediaContainer}>
@@ -561,7 +561,7 @@ class PurchaseScreen extends React.Component {
                         <View style={styles.jokerContainer}>
                             <View style={styles.jokerImageContainer}>
                                 <View style={styles.jokerImageView}>
-                                    <View style={styles.jokerCounterView}>
+                                    <View style={[styles.jokerCounterView, { width: ((''+this.state.firstJoker.amount).length) < 3 ? hp(4) : hp(5.5)}]}>
                                         <Text style={styles.jokerCounterText}>{this.state.firstJoker.amount}</Text>
                                     </View>
                                     <Image source={{ uri: this.state.firstJoker.joker.imageLink }} style={styles.jokerImg}/>
@@ -574,7 +574,7 @@ class PurchaseScreen extends React.Component {
                         <View style={styles.jokerContainer}>
                             <View style={styles.jokerImageContainer}>
                                 <View style={styles.jokerImageView}>
-                                    <View style={styles.jokerCounterView}>
+                                    <View style={[styles.jokerCounterView, { width: ((''+this.state.secondJoker.amount).length) < 3 ? hp(4) : hp(5.5)}]}>
                                         <Text style={styles.jokerCounterText}>{this.state.secondJoker.amount}</Text>
                                     </View>
                                     <Image source={{ uri: this.state.secondJoker.joker.imageLink }} style={styles.jokerImg}/>
@@ -587,7 +587,7 @@ class PurchaseScreen extends React.Component {
                         <View style={styles.jokerContainer}>
                             <View style={styles.jokerImageContainer}>
                                 <View style={styles.jokerImageView}>
-                                    <View style={styles.jokerCounterView}>
+                                    <View style={[styles.jokerCounterView, { width: ((''+this.state.thirdJoker.amount).length) < 3 ? hp(4) : hp(5.5)}]}>
                                         <Text style={styles.jokerCounterText}>{this.state.thirdJoker.amount}</Text>
                                     </View>
                                     <Image source={{ uri: this.state.thirdJoker.joker.imageLink }} style={styles.jokerImg}/>
@@ -603,16 +603,12 @@ class PurchaseScreen extends React.Component {
         )
     }
 }
-
 const mapStateToProps = state => ({
     userJokers: state.client.userJokers,
     clientInformation: state.client.clientInformation
 })
-
 const mapDispatchToProps = dispatch => ({
-
 })
-
 export default connect(
     mapStateToProps,
     mapDispatchToProps

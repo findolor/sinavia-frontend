@@ -35,6 +35,13 @@ export default StyleSheet.create({
         alignItems: 'center',
         marginTop: hp(1.5)
     },
+    peopleCounterView: {
+        height: hp(15),
+        width: wp(100),
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     logoBorderView: {
         height: hp(19),
         width: hp(19),
@@ -63,5 +70,15 @@ export default StyleSheet.create({
         color: '#FF9900',
         fontFamily: 'Averta-Semibold',
         fontSize: hp(3)
+    },
+    peopleCounterText: {
+        color: '#FFFFFF',
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(5)
+    },
+    groupPeopleImg: {
+        height: hp(5),
+        width: hp(2.5),
+        marginRight: wp(3)
     }
 })

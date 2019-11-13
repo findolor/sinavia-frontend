@@ -12,12 +12,20 @@ export default StyleSheet.create({
         backgroundColor: '#fff'
     },
     backButtonContainer: {
-        paddingLeft: wp(6),
-        paddingTop: hp(3),
+        flex: 8,
+        width: wp(100),
+        justifyContent: 'center',
+        alignItems: 'flex-start',
         zIndex: 1
     },
     backButton: {
         height: hp(3.5),
         width: hp(3.5)
+    },
+    animationView: {
+        flex: 92,
+        width: wp(100),
+        justifyContent: 'center',
+        backgroundColor: 'blue'
     }
 })

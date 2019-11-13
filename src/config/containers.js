@@ -18,7 +18,8 @@ import {
     JoinGroupRoom,
     OpponentsProfile,
     Notifications,
-    Statistics
+    Statistics,
+    Modals
 } from '../containers/mainScreens'
 
 import {
@@ -34,7 +35,9 @@ import {
     SoloFriendGameScreen,
     SoloModeLoadingScreen,
     SoloModeGameScreen,
-    SoloFriendGameStatsScreen
+    SoloFriendGameStatsScreen,
+    GroupLoading,
+    SoloModeGameStats
 } from '../containers/gameScreens'
 
 import { SplashScreen } from '../containers/splashScreen'
@@ -59,7 +62,8 @@ export const mainScreens = {
     joinGroupRoom: JoinGroupRoom,
     opponentsProfile: OpponentsProfile,
     notifications: Notifications,
-    statistics: Statistics
+    statistics: Statistics,
+    modals: Modals
 }
 
 export const gameScreens = {
@@ -75,7 +79,9 @@ export const gameScreens = {
     soloFriendGameScreen: SoloFriendGameScreen,
     soloModeLoadingScreen: SoloModeLoadingScreen,
     soloModeGameScreen: SoloModeGameScreen,
-    soloFriendGameStatsScreen: SoloFriendGameStatsScreen
+    soloFriendGameStatsScreen: SoloFriendGameStatsScreen,
+    groupLoading: GroupLoading,
+    soloModeGameStats: SoloModeGameStats
 }
 
 export const splashScreen = SplashScreen

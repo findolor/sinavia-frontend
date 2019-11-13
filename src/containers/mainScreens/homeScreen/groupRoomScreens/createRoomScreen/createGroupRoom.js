@@ -31,7 +31,6 @@ import {
 } from 'react-native-responsive-screen'
 // Image imports
 const COPY_IMAGE = require('../../../../../assets/mainScreens/copy.png')
-const CLOSE_BUTTON = require('../../../../../assets/closeButton.png')
 const LEADER_LOGO = require('../../../../../assets/mainScreens/groupLeaderSword.png')
 
 // Question amounts that can be taken
@@ -52,7 +51,12 @@ class CreateGroupRoom extends React.Component {
             // Quit modal visible variable
             isQuitGameModalVisible: false,
             // Variable for checking leader status
-            isClientLeader: false
+            isClientLeader: false,
+            // Match content ids
+            matchCourseId: null,
+            matchSubjectId: null,
+            // choosen question amount
+            choosenQuesionAmount: '5'
         }
     }
 
@@ -135,45 +139,24 @@ class CreateGroupRoom extends React.Component {
                 case 'start-match':
                     this.room.removeAllListeners()
 
-                    /* if (this.props.clientInformation.isPremium) {
-                        navigationReset('game', { isHardReset: true })
-                        navigationReplace(SCENE_KEYS.gameScreens.groupGame, {
-                            room: this.room,
-                            client: this.client,
-                            groupRoomPlayerList: this.state.groupRoomPlayerList
-                        })
-                    } else {
-                        gameEnergyServices
-                            .subtractGameEnergy(
-                                this.props.clientToken,
-                                this.props.clientDBId
-                            )
-                            .then(() => {
-                                // Removing one energy when the match starts
-                                this.props.removeOneEnergy()
-
-                                navigationReset('game', { isHardReset: true })
-                                navigationReplace(
-                                    SCENE_KEYS.gameScreens.groupGame,
-                                    {
-                                        room: this.room,
-                                        client: this.client,
-                                        groupRoomPlayerList: this.state
-                                            .groupRoomPlayerList
-                                    }
-                                )
-                            })
-                            .catch(error => {
-                                console.log(error)
-                                this.shutdownRoutine()
-                            })
-                    } */
-
                     navigationReset('game', { isHardReset: true })
-                    navigationReplace(SCENE_KEYS.gameScreens.groupGame, {
+                    navigationReplace(SCENE_KEYS.gameScreens.groupLoading, {
                         room: this.room,
                         client: this.client,
-                        groupRoomPlayerList: this.state.groupRoomPlayerList
+                        groupRoomPlayerList: this.state.groupRoomPlayerList,
+                        courseName: this.props.gameContentMap.courses[
+                            this.state.matchCourseId - 1
+                        ].name,
+                        subjectName: this.props.gameContentMap.subjects[
+                            this.state.matchSubjectId - 1
+                        ].name,
+                        choosenQuestionAmount: this.state.choosenQuesionAmount
+                    })
+                    break
+                case 'content-ids':
+                    this.setState({
+                        matchCourseId: message.courseId,
+                        matchSubjectId: message.subjectId
                     })
                     break
             }
@@ -202,6 +185,7 @@ class CreateGroupRoom extends React.Component {
             action: 'set-question-number',
             questionAmount: value
         })
+        this.setState({ choosenQuesionAmount: value })
     }
 
     closeGroupGameOnPress = () => {
@@ -424,14 +408,12 @@ class CreateGroupRoom extends React.Component {
 const mapStateToProps = state => ({
     clientDBId: state.client.clientDBId,
     clientToken: state.client.clientToken,
-    clientInformation: state.client.clientInformation
+    clientInformation: state.client.clientInformation,
+    gameContentMap: state.gameContent.gameContentMap
 })
 
 const mapDispatchToProps = dispatch => ({
     //removeOneEnergy: () => dispatch(appActions.removeOneEnergy())
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(CreateGroupRoom)
+export default connect(mapStateToProps, mapDispatchToProps)(CreateGroupRoom)

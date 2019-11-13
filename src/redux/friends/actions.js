@@ -47,7 +47,8 @@ const acceptFriendRequest = (
     clientId,
     friendId,
     clientUsername,
-    friendIds
+    friendIds,
+    profilePicture
 ) => {
     return {
         type: friendTypes.ACCEPT_FRIENDSHIP_REQUEST,
@@ -55,7 +56,8 @@ const acceptFriendRequest = (
         clientDBId: clientId,
         friendId: friendId,
         clientUsername: clientUsername,
-        friendIds: friendIds
+        friendIds: friendIds,
+        profilePicture: profilePicture
     }
 }
 

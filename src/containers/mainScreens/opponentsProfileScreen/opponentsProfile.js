@@ -1,7 +1,7 @@
 import React from 'react'
 import {
     Image,
-    ImageBackground,
+    ImageBackground, Modal,
     ScrollView,
     Text,
     TextInput,
@@ -30,6 +30,7 @@ import {
 
 import { friendActions } from '../../../redux/friends/actions'
 import { opponentActions } from '../../../redux/opponents/actions'
+import AuthButton from '../../../components/authScreen/authButton'
 
 class OpponentsProfile extends React.Component {
     constructor(props) {
@@ -55,7 +56,9 @@ class OpponentsProfile extends React.Component {
             searchText: '',
             // Friendship status
             friendshipStatus: 'addFriend',
-            isRequestSent: null
+            isRequestSent: null,
+            isModalVisible: false,
+            visibleView: ''
         }
     }
 
@@ -119,10 +122,12 @@ class OpponentsProfile extends React.Component {
             this.props.clientInformation.username,
             this.props.friendIds
         )
-        this.setState({
-            friendshipStatus: 'alreadyFriend'
-        })
         this.props.addToFriendsList(this.props.opponentInformation)
+        this.setState({
+            friendshipStatus: 'alreadyFriend',
+            isModalVisible: false,
+            visibleView: ''
+        })
     }
 
     deleteFriendship = () => {
@@ -144,23 +149,11 @@ class OpponentsProfile extends React.Component {
             )
         }
         this.setState({
-            friendshipStatus: 'addFriend'
+            friendshipStatus: 'addFriend',
+            isModalVisible: false,
+            visibleView: ''
         })
         this.props.subtractFromFriendsList(this.props.opponentInformation)
-    }
-
-    friendshipStatusOnPress = () => {
-        switch (this.state.friendshipStatus) {
-            case 'addFriend':
-                this.sendFriendshipRequest()
-                return
-            case 'friendRequestSent':
-                if (!this.props.isRequested) this.acceptFriendshipRequest()
-                return
-            case 'alreadyFriend':
-                this.deleteFriendship()
-                return
-        }
     }
 
     profileSearchOnPress = () => {
@@ -178,9 +171,157 @@ class OpponentsProfile extends React.Component {
         })
     }
 
+    friendshipStatusOnPress = () => {
+        switch (this.state.friendshipStatus) {
+            case 'addFriend':
+                this.sendFriendshipRequest()
+                return
+            case 'friendRequestSent':
+                if (this.state.isFriendRequestSent === false){
+                    this.setState({isModalVisible: true, visibleView: 'acceptFriendshipRequestModal'})
+                }
+                else{
+                    alert('... kisisine gonderdigin istegi iptal etmek istiyor musun')
+                }
+                return
+            case 'alreadyFriend':
+                this.setState({isModalVisible: true, visibleView: 'removeFriendshipModal'})
+                return
+        }
+    }
+
+    acceptFriendshipRequestModal() {
+        return (
+            <View
+                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>
+                            <Text style={[{color: '#FF9900', fontFamily: 'Averta-SemiboldItalic'}]}>hakanyilmaz</Text> kişisinden
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            gelen arkadaşlık isteğini
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            kabul ediyor musun?
+                        </Text>
+                    </View>
+                    <View style={styles.yesOrNoButtonsContainer}>
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#00D9EF"
+                            buttonText="Evet"
+                            borderRadius={10}
+                            onPress={() => this.acceptFriendshipRequest()}
+                        />
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#00D9EF"
+                            buttonText="Hayır"
+                            borderRadius={10}
+                            onPress={() => this.setState({isModalVisible: false})}
+                        />
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
+    removeFriendshipRequestModal() {
+        return (
+            <View
+                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>
+                            <Text style={[{color: '#FF9900', fontFamily: 'Averta-SemiboldItalic'}]}>hakanyilmaz</Text> kişisine
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            gönderdiğin arkadaşlık isteği
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            iptal edilsin mi?
+                        </Text>
+                    </View>
+                    <View style={styles.yesOrNoButtonsContainer}>
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#00D9EF"
+                            buttonText="Evet"
+                            borderRadius={10}
+                            onPress={() => this.setState({isModalVisible: false})}
+                        />
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#00D9EF"
+                            buttonText="Hayır"
+                            borderRadius={10}
+                            onPress={() => this.setState({isModalVisible: false})}
+                        />
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
+    removeFriendshipModal() {
+        return (
+            <View
+                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>
+                            <Text style={[{color: '#FF9900', fontFamily: 'Averta-SemiboldItalic'}]}>{this.props.opponentInformation.username}</Text> kişisi
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            arkadaşlıktan çıkarılsın mı?
+                        </Text>
+                    </View>
+                    <View style={styles.yesOrNoButtonsContainer}>
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#00D9EF"
+                            buttonText="Evet"
+                            borderRadius={10}
+                            onPress={() => this.deleteFriendship()}
+                        />
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#00D9EF"
+                            buttonText="Hayır"
+                            borderRadius={10}
+                            onPress={() => this.setState({isModalVisible: false})}
+                        />
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     render() {
         return (
             <View style={styles.container}>
+                <Modal
+                    visible={this.state.isModalVisible}
+                    transparent={true}
+                    animationType={'fade'}
+                >
+                    {this.state.visibleView === 'removeFriendshipModal' &&
+                    this.removeFriendshipModal()}
+                    {this.state.visibleView === 'removeFriendshipRequestModal' &&
+                    this.removeFriendshipRequestModal()}
+                    {this.state.visibleView === 'acceptFriendshipRequestModal' &&
+                    this.acceptFriendshipRequestModal()}
+                </Modal>
                 <NotchView />
                 <View style={styles.header}>
                     <TouchableOpacity onPress={this.backButtonOnPress}>

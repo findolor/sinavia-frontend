@@ -16,15 +16,12 @@ import {
 } from '../../../../../services/navigationService'
 import DropDown from '../../../../../components/mainScreen/dropdown/dropdown'
 import { connect } from 'react-redux'
-import { appActions } from '../../../../../redux/app/actions'
-import { gameEnergyServices } from '../../../../../sagas/gameEnergy'
 // Styling imports
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
 // Image imports
-const CLOSE_BUTTON = require('../../../../../assets/closeButton.png')
 const LEADER_LOGO = require('../../../../../assets/mainScreens/groupLeaderSword.png')
 const COPY_IMAGE = require('../../../../../assets/mainScreens/copy.png')
 
@@ -42,7 +39,12 @@ class JoinGroupRoom extends React.Component {
             // Variable for checking leader status
             isClientLeader: false,
             // Group game question number
-            questionNumber: '5'
+            questionNumber: '5',
+            // Match content ids
+            matchCourseId: null,
+            matchSubjectId: null,
+            // choosen question amount
+            choosenQuesionAmount: '5'
         }
     }
 
@@ -85,45 +87,24 @@ class JoinGroupRoom extends React.Component {
                 case 'start-match':
                     this.props.joinGameParams.room.removeAllListeners()
 
-                    /* if (this.props.clientInformation.isPremium) {
-                        navigationReset('game', { isHardReset: true })
-                        navigationReplace(SCENE_KEYS.gameScreens.groupGame, {
-                            room: this.props.joinGameParams.room,
-                            client: this.props.joinGameParams.client,
-                            groupRoomPlayerList: this.state.groupRoomPlayerList
-                        })
-                    } else {
-                        gameEnergyServices
-                            .subtractGameEnergy(
-                                this.props.clientToken,
-                                this.props.clientDBId
-                            )
-                            .then(() => {
-                                // Removing one energy when the match starts
-                                this.props.removeOneEnergy()
-
-                                navigationReset('game', { isHardReset: true })
-                                navigationReplace(
-                                    SCENE_KEYS.gameScreens.groupGame,
-                                    {
-                                        room: this.props.joinGameParams.room,
-                                        client: this.joinGameParams.client,
-                                        groupRoomPlayerList: this.state
-                                            .groupRoomPlayerList
-                                    }
-                                )
-                            })
-                            .catch(error => {
-                                console.log(error)
-                                this.shutdownRoutine()
-                            })
-                    } */
-
                     navigationReset('game', { isHardReset: true })
-                    navigationReplace(SCENE_KEYS.gameScreens.groupGame, {
+                    navigationReplace(SCENE_KEYS.gameScreens.groupLoading, {
                         room: this.props.joinGameParams.room,
                         client: this.props.joinGameParams.client,
-                        groupRoomPlayerList: this.state.groupRoomPlayerList
+                        groupRoomPlayerList: this.state.groupRoomPlayerList,
+                        courseName: this.props.gameContentMap.courses[
+                            this.state.matchCourseId - 1
+                        ].name,
+                        subjectName: this.props.gameContentMap.subjects[
+                            this.state.matchSubjectId - 1
+                        ].name,
+                        choosenQuestionAmount: this.state.choosenQuesionAmount
+                    })
+                    break
+                case 'content-ids':
+                    this.setState({
+                        matchCourseId: message.courseId,
+                        matchSubjectId: message.subjectId
                     })
                     break
             }
@@ -136,6 +117,7 @@ class JoinGroupRoom extends React.Component {
             action: 'set-question-number',
             questionAmount: value
         })
+        this.setState({ choosenQuesionAmount: value })
     }
 
     groupGameReadyOnPress = () => {
@@ -200,7 +182,13 @@ class JoinGroupRoom extends React.Component {
                                         }
                                     >
                                         <Text style={styles.modalSubjectText}>
-                                            Paragrafta Anlam
+                                            {this.state.matchSubjectId === null
+                                                ? ''
+                                                : this.props.gameContentMap
+                                                      .subjects[
+                                                      this.state
+                                                          .matchSubjectId - 1
+                                                  ].name}
                                         </Text>
                                     </View>
                                 )}
@@ -431,14 +419,10 @@ class JoinGroupRoom extends React.Component {
 const mapStateToProps = state => ({
     clientDBId: state.client.clientDBId,
     clientToken: state.client.clientToken,
-    clientInformation: state.client.clientInformation
+    clientInformation: state.client.clientInformation,
+    gameContentMap: state.gameContent.gameContentMap
 })
 
-const mapDispatchToProps = dispatch => ({
-    //removeOneEnergy: () => dispatch(appActions.removeOneEnergy())
-})
+const mapDispatchToProps = dispatch => ({})
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(JoinGroupRoom)
+export default connect(mapStateToProps, mapDispatchToProps)(JoinGroupRoom)

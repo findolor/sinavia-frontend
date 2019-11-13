@@ -1,5 +1,5 @@
 import React from 'react'
-import { BackHandler } from 'react-native'
+import { BackHandler, Image, ImageBackground, Text, View } from 'react-native'
 import styles from './style'
 // Colyseus imports
 import { Buffer } from 'buffer'
@@ -14,6 +14,8 @@ import {
 } from '../../../services/navigationService'
 import { GAME_ENGINE_ENDPOINT, SCENE_KEYS } from '../../../config'
 import { connect } from 'react-redux'
+import BACKGROUND from '../../../assets/gameScreens/gameStatsBackground.jpg'
+import LOGO from '../../../assets/sinavia_logo_cut.png'
 
 class SoloModeLoadingScreen extends React.Component {
     constructor(props) {
@@ -33,31 +35,65 @@ class SoloModeLoadingScreen extends React.Component {
         })
     }
 
+
+
     // Client sends a ready signal when they join a room successfully
     joinRoom = playerOptions => {
         this.room = this.client.join('soloModeRoom', playerOptions)
 
-        this.room.onJoin.add(() => {
-            navigationReplace(SCENE_KEYS.gameScreens.soloModeGameScreen, {
-                // These are necessary for the game logic
-                room: this.room,
-                client: this.client,
-                // These can be used in both screens
-                playerUsername: this.props.clientInformation.username,
-                playerProfilePicture: this.props.clientInformation
-                    .profilePicture
+            this.room.onJoin.add(() => {
+                setTimeout(() => {
+                navigationReplace(SCENE_KEYS.gameScreens.soloModeGameScreen, {
+                    // These are necessary for the game logic
+                    room: this.room,
+                    client: this.client,
+                    // These can be used in both screens
+                    playerUsername: this.props.clientInformation.username,
+                    playerProfilePicture: this.props.clientInformation
+                        .profilePicture
+                })
+                }, 5000 )
             })
-        })
     }
 
     render() {
-        return null
+        return (
+            <View style={styles.container}>
+                <ImageBackground source={BACKGROUND} style={styles.background}>
+                    <View style={styles.shadowView}>
+                        <View style={styles.logoView}>
+                            <View style={styles.logoBorderView}>
+                                <Image source={LOGO} style={styles.logoImg}/>
+                            </View>
+                        </View>
+                        <View style={styles.textsView}>
+                            <Text style={styles.courseText}>
+                                {
+                                this.props.gameContentMap.courses[
+                                this.props.courseId - 1
+                                    ].name
+                                }
+                            </Text>
+                            <Text style={styles.subjectText}>
+                                {
+                                this.props.gameContentMap.subjects[
+                                this.props.subjectId - 1
+                                    ].name
+                                }
+                            </Text>
+                            <Text style={styles.questionCounterText}>Soru Sayısı: 15</Text>
+                        </View>
+                    </View>
+                </ImageBackground>
+            </View>
+        );
     }
 }
 
 const mapStateToProps = state => ({
     clientDBId: state.client.clientDBId,
-    clientInformation: state.client.clientInformation
+    clientInformation: state.client.clientInformation,
+    gameContentMap: state.gameContent.gameContentMap
 })
 
 const mapDispatchToProps = dispatch => ({})

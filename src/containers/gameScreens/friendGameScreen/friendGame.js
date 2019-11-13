@@ -25,6 +25,8 @@ import BACK_BUTTON from '../../../assets/backButton.png'
 import OPPONENTS_ANSWER from '../../../assets/gameScreens/jokers/opponentsAnswer.png'
 import FIFTY_FIFTY from '../../../assets/gameScreens/jokers/fiftyFifty.png'
 import SECOND_CHANCE from '../../../assets/gameScreens/jokers/secondChance.png'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import AuthButton from '../../../components/authScreen/authButton'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
@@ -74,6 +76,8 @@ class FriendGame extends React.Component {
             isButtonSixDisabled: false,
             // Variable to know if the client has answered question
             isQuestionAnswered: false,
+            isQuitGameModalVisible: false,
+            visibleView: '',
             // Our countdown timer's time
             countDownTime: 60,
             // playerProps state
@@ -99,9 +103,15 @@ class FriendGame extends React.Component {
             // Current question answer for second chance
             questionAnswer: 0,
             // Joker names
-            firstJokerName: '',
-            secondJokerName: '',
-            thirdJokerName: '',
+            firstJokerNameFirstWord: '',
+            firstJokerNameSecondWord: '',
+            firstJokerAmount: '',
+            secondJokerNameFirstWord: '',
+            secondJokerNameSecondWord: '',
+            secondJokerAmount: '',
+            thirdJokerNameFirstWord: '',
+            thirdJokerNameSecondWord: '',
+            thirdJokerAmount: '',
             // Friend matches that was played before
             friendMatches: []
         }
@@ -111,24 +121,7 @@ class FriendGame extends React.Component {
     componentDidMount() {
         this.backHandler = BackHandler.addEventListener(
             'hardwareBackPress',
-            () => {
-                Alert.alert(
-                    'Oyundan ayrılmak üzeresin!',
-                    'Ayrılırsan bu sana mağlubiyet olarak yazılır. Çıkmak istediğine emin misin?',
-                    [
-                        {
-                            text: 'Hayır'
-                        },
-                        {
-                            text: 'Evet',
-                            onPress: () =>
-                                this.props.room.send({
-                                    action: 'leave-match'
-                                })
-                        }
-                    ]
-                )
-            }
+            () => this.setState({isQuitGameModalVisible: true, visibleView: 'quitGameModal'})
         )
         // We check if the user has enough jokers
         this.checkJokerAmount()
@@ -155,25 +148,49 @@ class FriendGame extends React.Component {
         this.props.userJokers.forEach(userJoker => {
             switch (userJoker.jokerId) {
                 case 1:
+                    let splittedFirstJoker = userJoker.joker.name.split(/[ ,]+/)
+                    console.log(userJoker)
                     this.setState({
-                        firstJokerName:
-                            userJoker.joker.name + ' ' + userJoker.amount,
-                        isSeeOpponentAnswerJokerDisabled: false
+                        firstJokerNameFirstWord: splittedFirstJoker[0],
+                        firstJokerNameSecondWord: splittedFirstJoker[1],
+                        firstJokerAmount: userJoker.amount
                     })
+                    if(userJoker.amount === 0){
+                        this.setState({isSeeOpponentAnswerJokerDisabled: true})
+                    }
+                    else {
+                        this.setState({isSeeOpponentAnswerJokerDisabled: false})
+                    }
                     break
                 case 2:
+                    let splittedSecondJoker = userJoker.joker.name.split(/[ ,]+/)
+                    console.log(userJoker)
                     this.setState({
-                        secondJokerName:
-                            userJoker.joker.name + ' ' + userJoker.amount,
-                        isRemoveOptionJokerDisabled: false
+                        secondJokerNameFirstWord: splittedSecondJoker[0],
+                        secondJokerNameSecondWord: splittedSecondJoker[1],
+                        secondJokerAmount: userJoker.amount
                     })
+                    if(userJoker.amount === 0){
+                        this.setState({isRemoveOptionJokerDisabled: true})
+                    }
+                    else {
+                        this.setState({isRemoveOptionJokerDisabled: false})
+                    }
                     break
                 case 3:
+                    let splittedThirdJoker = userJoker.joker.name.split(/[ ,]+/)
+                    console.log(userJoker)
                     this.setState({
-                        thirdJokerName:
-                            userJoker.joker.name + ' ' + userJoker.amount,
-                        isSecondChanceJokerDisabled: false
+                        thirdJokerNameFirstWord: splittedThirdJoker[0],
+                        thirdJokerNameSecondWord: splittedThirdJoker[1],
+                        thirdJokerAmount: userJoker.amount
                     })
+                    if(userJoker.amount === 0){
+                        this.setState({isSecondChanceJokerDisabled: true})
+                    }
+                    else {
+                        this.setState({isSecondChanceJokerDisabled: false})
+                    }
                     break
             }
         })
@@ -195,7 +212,9 @@ class FriendGame extends React.Component {
         switch (message.action) {
             // Which options to remove comes from the server
             case 'remove-options-joker':
-                this.setState({ isRemoveOptionJokerDisabled: true })
+                this.setState({ isRemoveOptionJokerDisabled: true,
+                    secondJokerAmount: this.state.secondJokerAmount-1
+                })
                 this.props.subtractJoker(2)
 
                 this.removeOptions(message.optionsToRemove)
@@ -204,7 +223,8 @@ class FriendGame extends React.Component {
             case 'second-chance-joker':
                 this.setState({
                     isSecondChanceJokerDisabled: true,
-                    isSecondChanceJokerActive: true
+                    isSecondChanceJokerActive: true,
+                    thirdJokerAmount: this.state.thirdJokerAmount-1
                 })
                 this.props.subtractJoker(3)
 
@@ -213,7 +233,8 @@ class FriendGame extends React.Component {
             case 'see-opponent-answer-joker':
                 this.setState({
                     isSeeOpponentAnswerJokerDisabled: true,
-                    isSeeOpponentAnswerJokerActive: true
+                    isSeeOpponentAnswerJokerActive: true,
+                    firstJokerAmount: this.state.firstJokerAmount-1
                 })
                 this.props.subtractJoker(1)
 
@@ -234,35 +255,41 @@ class FriendGame extends React.Component {
                 Alert.alert('Joker hatası!')
                 break
             case 'client-leaving':
-                Alert.alert(this.props.opponentUsername, 'oyundan ayrildi.')
+                const that = this
                 // If the client hasn't answered any of the questions, we just navigate him to main screen
                 if (
                     Object.keys(message.playerProps[message.clientId].answers)
                         .length === 0
                 ) {
+                    this.setState({isQuitGameModalVisible: true, visibleView: 'opponentLeaveNoAnswer'})
                     this.shutdownGame()
-                    this.props.room.leave()
                     this.props.client.close()
-                    navigationReset('main')
+                    setTimeout(function(){
+                        that.props.room.leave(),
+                            navigationReset('main')
+                    }, 3000)
                     break
                 }
                 // Do a shutdown routine
-                this.shutdownGame()
-                navigationReplace(SCENE_KEYS.gameScreens.friendGameStats, {
-                    playerProps: message.playerProps,
-                    room: this.props.room,
-                    client: this.props.client,
-                    questionList: this.state.questionList,
-                    playerUsername: this.props.playerUsername,
-                    playerProfilePicture: this.props.playerProfilePicture,
-                    opponentUsername: this.props.opponentUsername,
-                    opponentId: this.props.opponentId,
-                    opponentProfilePicture: this.props.opponentProfilePicture,
-                    fullQuestionList: message.fullQuestionList,
-                    isMatchFinished: false,
-                    friendMatches: message.friendMatches,
-                    isWon: true
-                })
+                this.setState({isQuitGameModalVisible: true, visibleView: 'opponentLeaveAfterAnswer'})
+                setTimeout(function(){
+                    that.shutdownGame()
+                    navigationReplace(SCENE_KEYS.gameScreens.friendGameStats, {
+                        playerProps: message.playerProps,
+                        room: that.props.room,
+                        client: that.props.client,
+                        questionList: that.state.questionList,
+                        playerUsername: that.props.playerUsername,
+                        playerProfilePicture: that.props.playerProfilePicture,
+                        opponentUsername: that.props.opponentUsername,
+                        opponentId: that.props.opponentId,
+                        opponentProfilePicture: that.props.opponentProfilePicture,
+                        fullQuestionList: message.fullQuestionList,
+                        isMatchFinished: false,
+                        friendMatches: message.friendMatches,
+                        isWon: true
+                    })
+                }, 3000)
                 break
             case 'friend-matches':
                 this.setState({ friendMatches: message.friendMatches })
@@ -741,6 +768,84 @@ class FriendGame extends React.Component {
         })
     }
 
+    opponentLeaveNoAnswer() {
+        return (
+            <View
+                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>
+                            Rakibin oyundan ayrıldı
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            Ana sayfaya yönlendirileceksin
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
+    opponentLeaveAfterAnswer() {
+        return (
+            <View
+                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>
+                            Rakibin oyundan ayrıldı
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            Sonuç sayfasına yönlendirileceksin
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
+    quitGameModal() {
+        return (
+            <View
+                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>
+                            Oyundan çıkmak istediğine
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            emin misin?
+                        </Text>
+                    </View>
+                    <View style={styles.yesOrNoButtonsContainer}>
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#00D9EF"
+                            buttonText="Evet"
+                            borderRadius={10}
+                            onPress={() =>
+                                this.props.room.send({
+                                    action: 'leave-match'
+                                })}
+                        />
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#00D9EF"
+                            buttonText="Hayır"
+                            borderRadius={10}
+                            onPress={() => this.setState({isQuitGameModalVisible: false})}
+                        />
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -842,7 +947,7 @@ class FriendGame extends React.Component {
                         animationType={'fade'}
                     >
                         <View style={styles.questionModalContainer}>
-                            <View style={styles.questionImageModalContainer}>
+                            <View>
                                 <Image
                                     source={{
                                         uri: this.state.questionList[
@@ -864,40 +969,26 @@ class FriendGame extends React.Component {
                             </View>
                         </View>
                     </Modal>
-                    <View style={styles.questionInformation}>
-                        <Text style={styles.questionInformationText}>
-                            Soru {this.state.questionNumber + 1} /{' '}
-                            {Object.keys(this.state.questionList).length}
-                        </Text>
-                    </View>
-                    <View style={styles.zoomButtonContainer}>
-                        <TouchableOpacity onPress={this.zoomButtonOnPress}>
-                            <Image
-                                source={ZOOM_BUTTON}
-                                style={styles.zoomButton}
-                            />
-                        </TouchableOpacity>
+                    <View style={styles.questionAndZoomButtonContainer}>
+                        <View style={styles.spaceContainer} />
+                        <View style={styles.questionInformation}>
+                            <Text style={styles.questionInformationText}>
+                                Soru {this.state.questionNumber + 1} /{' '}
+                                {Object.keys(this.state.questionList).length}
+                            </Text>
+                        </View>
+                        <View style={styles.zoomButtonContainer}>
+                            <TouchableOpacity onPress={this.zoomButtonOnPress}>
+                                <Image
+                                    source={ZOOM_BUTTON}
+                                    style={styles.zoomButton}
+                                />
+                            </TouchableOpacity>
+                        </View>
                     </View>
                     <View style={styles.backButtonContainer}>
                         <TouchableOpacity
-                            onPress={() => {
-                                Alert.alert(
-                                    'Oyundan ayrılmak üzeresin!',
-                                    'Ayrılırsan bu sana mağlubiyet olarak yazılır. Çıkmak istediğine emin misin?',
-                                    [
-                                        {
-                                            text: 'Hayır'
-                                        },
-                                        {
-                                            text: 'Evet',
-                                            onPress: () =>
-                                                this.props.room.send({
-                                                    action: 'leave-match'
-                                                })
-                                        }
-                                    ]
-                                )
-                            }}
+                            onPress={() => this.setState({isQuitGameModalVisible: true, visibleView: 'quitGameModal'})}
                         >
                             <Image
                                 source={BACK_BUTTON}
@@ -906,6 +997,18 @@ class FriendGame extends React.Component {
                         </TouchableOpacity>
                     </View>
                 </View>
+                <Modal
+                    visible={this.state.isQuitGameModalVisible}
+                    transparent={true}
+                    animationType={'fade'}
+                >
+                    {this.state.visibleView === 'opponentLeaveNoAnswer' &&
+                    this.opponentLeaveNoAnswer()}
+                    {this.state.visibleView === 'opponentLeaveAfterAnswer' &&
+                    this.opponentLeaveAfterAnswer()}
+                    {this.state.visibleView === 'quitGameModal' &&
+                    this.quitGameModal()}
+                </Modal>
                 <View style={styles.dummyButtonContainer}>
                     {this.state.start && (
                         <View>
@@ -1026,82 +1129,73 @@ class FriendGame extends React.Component {
                 </View>
                 <View style={styles.jokerContainer}>
                     <View style={styles.touchableJokerContainer}>
-                        <TouchableOpacity
-                            onPress={this.seeOpponentAnswerJokerOnPressed}
-                            disabled={
-                                this.state.isSeeOpponentAnswerJokerDisabled
-                            }
-                        >
-                            <View style={styles.jokerAndTextContainer}>
-                                <Image
-                                    source={
-                                        this.state
-                                            .isSeeOpponentAnswerJokerDisabled ===
-                                        false
-                                            ? OPPONENTS_ANSWER
-                                            : null
-                                    }
-                                    style={styles.joker}
-                                />
-                                <Text style={styles.jokerText}>
-                                    {this.state
-                                        .isSeeOpponentAnswerJokerDisabled ===
-                                    false
-                                        ? this.state.firstJokerName
-                                        : ''}
-                                </Text>
+                        <TouchableOpacity style={styles.jokerImageContainer}
+                                          onPress={this.seeOpponentAnswerJokerOnPressed}
+                                          disabled={
+                                              this.state.isSeeOpponentAnswerJokerDisabled
+                                          }>
+                            <View style={[styles.jokerImageView, {borderColor: this.state.isSeeOpponentAnswerJokerDisabled === true ? '#FFD79C' : '#FF9900'}]}>
+                                <View style={[styles.jokerCounterView, { width: ((''+this.state.firstJokerAmount).length) < 3 ? hp(4) : hp(5.5), backgroundColor: this.state.isSeeOpponentAnswerJokerDisabled === true ? '#FE8B8B' : 'red'}]}>
+                                    <Text style={styles.jokerCounterText}>{this.state.firstJokerAmount}</Text>
+                                </View>
+                                <Image source={OPPONENTS_ANSWER} style={[styles.jokerImg, { opacity: this.state.isSeeOpponentAnswerJokerDisabled === true ? 0.3 : 1}]}/>
                             </View>
                         </TouchableOpacity>
+                        <View style={styles.jokerNameContainer}>
+                            <TouchableOpacity onPress={this.seeOpponentAnswerJokerOnPressed}
+                                              disabled={
+                                                  this.state.isSeeOpponentAnswerJokerDisabled
+                                              }>
+                                <Text style={[styles.jokerNameText, {color: this.state.isSeeOpponentAnswerJokerDisabled === true ? 'rgba(0,0,0,0.5)' : 'black'}]}>{this.state.firstJokerNameFirstWord}</Text>
+                                <Text style={[styles.jokerNameText, {color: this.state.isSeeOpponentAnswerJokerDisabled === true ? 'rgba(0,0,0,0.5)' : 'black'}]}>{this.state.firstJokerNameSecondWord}</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                     <View style={styles.touchableJokerContainer}>
-                        <TouchableOpacity
-                            onPress={this.removeOptionJokerOnPressed}
-                            disabled={this.state.isRemoveOptionJokerDisabled}
-                        >
-                            <View style={styles.jokerAndTextContainer}>
-                                <Image
-                                    source={
-                                        this.state
-                                            .isRemoveOptionJokerDisabled ===
-                                        false
-                                            ? FIFTY_FIFTY
-                                            : null
-                                    }
-                                    style={styles.joker}
-                                />
-                                <Text style={styles.jokerText}>
-                                    {this.state.isRemoveOptionJokerDisabled ===
-                                    false
-                                        ? this.state.secondJokerName
-                                        : ''}
-                                </Text>
+                        <TouchableOpacity style={styles.jokerImageContainer}
+                                          onPress={this.removeOptionJokerOnPressed}
+                                          disabled={
+                                              this.state.isRemoveOptionJokerDisabled
+                                          }>
+                            <View style={[styles.jokerImageView, {borderColor: this.state.isRemoveOptionJokerDisabled === true ? '#FFD79C' : '#FF9900'}]}>
+                                <View style={[styles.jokerCounterView, { width: ((''+this.state.secondJokerAmount).length) < 3 ? hp(4) : hp(5.5), backgroundColor: this.state.isRemoveOptionJokerDisabled === true ? '#FE8B8B' : 'red'}]}>
+                                    <Text style={styles.jokerCounterText}>{this.state.secondJokerAmount}</Text>
+                                </View>
+                                <Image source={FIFTY_FIFTY} style={[styles.jokerImg, { opacity: this.state.isRemoveOptionJokerDisabled === true ? 0.3 : 1}]}/>
                             </View>
                         </TouchableOpacity>
+                        <View style={styles.jokerNameContainer}>
+                            <TouchableOpacity onPress={this.removeOptionJokerOnPressed}
+                                              disabled={
+                                                  this.state.isRemoveOptionJokerDisabled
+                                              }>
+                                <Text style={[styles.jokerNameText, {color: this.state.isRemoveOptionJokerDisabled === true ? 'rgba(0,0,0,0.5)' : 'black'}]}>{this.state.secondJokerNameFirstWord}</Text>
+                                <Text style={[styles.jokerNameText, {color: this.state.isRemoveOptionJokerDisabled === true ? 'rgba(0,0,0,0.5)' : 'black'}]}>{this.state.secondJokerNameSecondWord}</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                     <View style={styles.touchableJokerContainer}>
-                        <TouchableOpacity
-                            onPress={this.secondChangeJokerOnPressed}
-                            disabled={this.state.isSecondChanceJokerDisabled}
-                        >
-                            <View style={styles.jokerAndTextContainer}>
-                                <Image
-                                    source={
-                                        this.state
-                                            .isSecondChanceJokerDisabled ===
-                                        false
-                                            ? SECOND_CHANCE
-                                            : null
-                                    }
-                                    style={styles.joker}
-                                />
-                                <Text style={styles.jokerText}>
-                                    {this.state.isSecondChanceJokerDisabled ===
-                                    false
-                                        ? this.state.thirdJokerName
-                                        : ''}
-                                </Text>
+                        <TouchableOpacity style={styles.jokerImageContainer}
+                                          onPress={this.secondChangeJokerOnPressed}
+                                          disabled={
+                                              this.state.isSecondChanceJokerDisabled
+                                          }>
+                            <View style={[styles.jokerImageView, {borderColor: this.state.isSecondChanceJokerDisabled === true ? '#FFD79C' : '#FF9900'}]}>
+                                <View style={[styles.jokerCounterView, { width: ((''+this.state.thirdJokerAmount).length) < 3 ? hp(4) : hp(5.5), backgroundColor: this.state.isSecondChanceJokerDisabled === true ? '#FE8B8B' : 'red'}]}>
+                                    <Text style={styles.jokerCounterText}>{this.state.thirdJokerAmount}</Text>
+                                </View>
+                                <Image source={SECOND_CHANCE} style={[styles.jokerImg, { opacity: this.state.isSecondChanceJokerDisabled === true ? 0.3 : 1}]}/>
                             </View>
                         </TouchableOpacity>
+                        <View style={styles.jokerNameContainer}>
+                            <TouchableOpacity onPress={this.secondChangeJokerOnPressed}
+                                              disabled={
+                                                  this.state.isSecondChanceJokerDisabled
+                                              }>
+                                <Text style={[styles.jokerNameText, {color: this.state.isSecondChanceJokerDisabled === true ? 'rgba(0,0,0,0.5)' : 'black'}]}>{this.state.thirdJokerNameFirstWord}</Text>
+                                <Text style={[styles.jokerNameText, {color: this.state.isSecondChanceJokerDisabled === true ? 'rgba(0,0,0,0.5)' : 'black'}]}>{this.state.thirdJokerNameSecondWord}</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </View>

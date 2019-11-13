@@ -23,6 +23,8 @@ import ZOOM_BUTTON from '../../../assets/gameScreens/zoomButton.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
 import FIFTY_FIFTY from '../../../assets/gameScreens/jokers/fiftyFifty.png'
 import SECOND_CHANCE from '../../../assets/gameScreens/jokers/secondChance.png'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import AuthButton from '../../../components/authScreen/authButton'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
@@ -88,8 +90,12 @@ class SoloFriendGameScreen extends React.Component {
             // Contains every information about question
             fullQuestionList: [],
             // Joker names
-            secondJokerName: '',
-            thirdJokerName: '',
+            secondJokerNameFirstWord: '',
+            secondJokerNameSecondWord: '',
+            secondJokerAmount: '',
+            thirdJokerNameFirstWord: '',
+            thirdJokerNameSecondWord: '',
+            thirdJokerAmount: '',
             // Friend infos
             friendUsername: null,
             friendProfilePicture: null,
@@ -98,7 +104,9 @@ class SoloFriendGameScreen extends React.Component {
             userProfilePicture: null,
             userStatistics: null,
             // Friend matches info
-            friendMatches: null
+            friendMatches: null,
+            isQuitGameModalVisible: false,
+            visibleView: ''
         }
     }
 
@@ -135,18 +143,34 @@ class SoloFriendGameScreen extends React.Component {
         this.props.userJokers.forEach(userJoker => {
             switch (userJoker.jokerId) {
                 case 2:
+                    let splittedSecondJoker = userJoker.joker.name.split(/[ ,]+/)
+                    console.log(userJoker)
                     this.setState({
-                        secondJokerName:
-                            userJoker.joker.name + ' ' + userJoker.amount,
-                        isRemoveOptionJokerDisabled: false
+                        secondJokerNameFirstWord: splittedSecondJoker[0],
+                        secondJokerNameSecondWord: splittedSecondJoker[1],
+                        secondJokerAmount: userJoker.amount
                     })
+                    if(userJoker.amount === 0){
+                        this.setState({isRemoveOptionJokerDisabled: true})
+                    }
+                    else {
+                        this.setState({isRemoveOptionJokerDisabled: false})
+                    }
                     break
                 case 3:
+                    let splittedThirdJoker = userJoker.joker.name.split(/[ ,]+/)
+                    console.log(userJoker)
                     this.setState({
-                        thirdJokerName:
-                            userJoker.joker.name + ' ' + userJoker.amount,
-                        isSecondChanceJokerDisabled: false
+                        thirdJokerNameFirstWord: splittedThirdJoker[0],
+                        thirdJokerNameSecondWord: splittedThirdJoker[1],
+                        thirdJokerAmount: userJoker.amount
                     })
+                    if(userJoker.amount === 0){
+                        this.setState({isSecondChanceJokerDisabled: true})
+                    }
+                    else {
+                        this.setState({isSecondChanceJokerDisabled: false})
+                    }
                     break
             }
         })
@@ -169,7 +193,8 @@ class SoloFriendGameScreen extends React.Component {
         switch (message.action) {
             // Which options to remove comes from the server
             case 'remove-options-joker':
-                this.setState({ isRemoveOptionJokerDisabled: true })
+                this.setState({ isRemoveOptionJokerDisabled: true,
+                    secondJokerAmount: this.state.secondJokerAmount-1})
                 this.props.subtractJoker(2)
 
                 this.removeOptions(message.optionsToRemove)
@@ -178,7 +203,8 @@ class SoloFriendGameScreen extends React.Component {
             case 'second-chance-joker':
                 this.setState({
                     isSecondChanceJokerDisabled: true,
-                    isSecondChanceJokerActive: true
+                    isSecondChanceJokerActive: true,
+                    thirdJokerAmount: this.state.thirdJokerAmount-1
                 })
                 this.props.subtractJoker(3)
 
@@ -638,6 +664,43 @@ class SoloFriendGameScreen extends React.Component {
         })
     }
 
+    quitGameModal() {
+        return (
+            <View
+                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+            >
+                <View style={styles.quitModalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>
+                            Oyundan çıkmak istediğine
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            emin misin?
+                        </Text>
+                    </View>
+                    <View style={styles.yesOrNoButtonsContainer}>
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#00D9EF"
+                            buttonText="Evet"
+                            borderRadius={10}
+                            onPress={this.backButtonOnPress}
+                        />
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#00D9EF"
+                            buttonText="Hayır"
+                            borderRadius={10}
+                            onPress={() => this.setState({isQuitGameModalVisible: false})}
+                        />
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -749,7 +812,7 @@ class SoloFriendGameScreen extends React.Component {
                         </View>
                     </View>
                     <View style={styles.backButtonContainer}>
-                        <TouchableOpacity onPress={this.backButtonOnPress}>
+                        <TouchableOpacity onPress={() => this.setState({isQuitGameModalVisible: true, visibleView: 'quitGameModal'})}>
                             <Image
                                 source={BACK_BUTTON}
                                 style={styles.backButton}
@@ -757,6 +820,14 @@ class SoloFriendGameScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
                 </View>
+                <Modal
+                    visible={this.state.isQuitGameModalVisible}
+                    transparent={true}
+                    animationType={'fade'}
+                >
+                    {this.state.visibleView === 'quitGameModal' &&
+                    this.quitGameModal()}
+                </Modal>
                 <View style={styles.dummyButtonContainer}>
                     {this.state.start && (
                         <View>
@@ -877,54 +948,50 @@ class SoloFriendGameScreen extends React.Component {
                 </View>
                 <View style={styles.jokerContainer}>
                     <View style={styles.touchableJokerContainer}>
-                        <TouchableOpacity
-                            onPress={this.removeOptionJokerOnPressed}
-                            disabled={this.state.isRemoveOptionJokerDisabled}
-                        >
-                            <View style={styles.jokerAndTextContainer}>
-                                <Image
-                                    source={
-                                        this.state
-                                            .isRemoveOptionJokerDisabled ===
-                                        false
-                                            ? FIFTY_FIFTY
-                                            : null
-                                    }
-                                    style={styles.joker}
-                                />
-                                <Text style={styles.jokerText}>
-                                    {this.state.isRemoveOptionJokerDisabled ===
-                                    false
-                                        ? this.state.secondJokerName
-                                        : ''}
-                                </Text>
+                        <TouchableOpacity style={styles.jokerImageContainer}
+                                          onPress={this.removeOptionJokerOnPressed}
+                                          disabled={
+                                              this.state.isRemoveOptionJokerDisabled
+                                          }>
+                            <View style={[styles.jokerImageView, {borderColor: this.state.isRemoveOptionJokerDisabled === true ? '#FFD79C' : '#FF9900'}]}>
+                                <View style={[styles.jokerCounterView, { width: ((''+this.state.secondJokerAmount).length) < 3 ? hp(4) : hp(5.5), backgroundColor: this.state.isRemoveOptionJokerDisabled === true ? '#FE8B8B' : 'red'}]}>
+                                    <Text style={styles.jokerCounterText}>{this.state.secondJokerAmount}</Text>
+                                </View>
+                                <Image source={FIFTY_FIFTY} style={[styles.jokerImg, { opacity: this.state.isRemoveOptionJokerDisabled === true ? 0.3 : 1}]}/>
                             </View>
                         </TouchableOpacity>
+                        <View style={styles.jokerNameContainer}>
+                            <TouchableOpacity onPress={this.removeOptionJokerOnPressed}
+                                              disabled={
+                                                  this.state.isRemoveOptionJokerDisabled
+                                              }>
+                                <Text style={[styles.jokerNameText, {color: this.state.isRemoveOptionJokerDisabled === true ? 'rgba(0,0,0,0.5)' : 'black'}]}>{this.state.secondJokerNameFirstWord}</Text>
+                                <Text style={[styles.jokerNameText, {color: this.state.isRemoveOptionJokerDisabled === true ? 'rgba(0,0,0,0.5)' : 'black'}]}>{this.state.secondJokerNameSecondWord}</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                     <View style={styles.touchableJokerContainer}>
-                        <TouchableOpacity
-                            onPress={this.secondChangeJokerOnPressed}
-                            disabled={this.state.isSecondChanceJokerDisabled}
-                        >
-                            <View style={styles.jokerAndTextContainer}>
-                                <Image
-                                    source={
-                                        this.state
-                                            .isSecondChanceJokerDisabled ===
-                                        false
-                                            ? SECOND_CHANCE
-                                            : null
-                                    }
-                                    style={styles.joker}
-                                />
-                                <Text style={styles.jokerText}>
-                                    {this.state.isSecondChanceJokerDisabled ===
-                                    false
-                                        ? this.state.thirdJokerName
-                                        : ''}
-                                </Text>
+                        <TouchableOpacity style={styles.jokerImageContainer}
+                                          onPress={this.secondChangeJokerOnPressed}
+                                          disabled={
+                                              this.state.isSecondChanceJokerDisabled
+                                          }>
+                            <View style={[styles.jokerImageView, {borderColor: this.state.isSecondChanceJokerDisabled === true ? '#FFD79C' : '#FF9900'}]}>
+                                <View style={[styles.jokerCounterView, { width: ((''+this.state.thirdJokerAmount).length) < 3 ? hp(4) : hp(5.5), backgroundColor: this.state.isSecondChanceJokerDisabled === true ? '#FE8B8B' : 'red'}]}>
+                                    <Text style={styles.jokerCounterText}>{this.state.thirdJokerAmount}</Text>
+                                </View>
+                                <Image source={SECOND_CHANCE} style={[styles.jokerImg, { opacity: this.state.isSecondChanceJokerDisabled === true ? 0.3 : 1}]}/>
                             </View>
                         </TouchableOpacity>
+                        <View style={styles.jokerNameContainer}>
+                            <TouchableOpacity onPress={this.secondChangeJokerOnPressed}
+                                              disabled={
+                                                  this.state.isSecondChanceJokerDisabled
+                                              }>
+                                <Text style={[styles.jokerNameText, {color: this.state.isSecondChanceJokerDisabled === true ? 'rgba(0,0,0,0.5)' : 'black'}]}>{this.state.thirdJokerNameFirstWord}</Text>
+                                <Text style={[styles.jokerNameText, {color: this.state.isSecondChanceJokerDisabled === true ? 'rgba(0,0,0,0.5)' : 'black'}]}>{this.state.thirdJokerNameSecondWord}</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </View>

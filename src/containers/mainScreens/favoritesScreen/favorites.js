@@ -6,13 +6,13 @@ import {
     ScrollView,
     Text,
     TouchableOpacity,
-    View
+    View,
+    Dimensions
 } from 'react-native'
-import { SCENE_KEYS, navigationPop } from '../../../services/navigationService'
+import { navigationPop } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import styles from './style'
 import NotchView from '../../../components/notchView'
-import Gallery from 'react-native-image-gallery'
 import Share from 'react-native-share'
 import RNFetchBlob, { Dirs as DIRS } from 'rn-fetch-blob'
 import selectedFav from '../../../assets/favori.png'
@@ -21,29 +21,10 @@ import backButton from '../../../assets/backButton.png'
 import returnLogo from '../../../assets/return.png'
 import shareLogo from '../../../assets/share.png'
 
-const data = [
-    {
-        source: {
-            uri:
-                'http://testicoz.org/wp-content/uploads/2017/09/ygs-dilveanlatim-7-01.png'
-        },
-        id: 0
-    },
-    {
-        source: {
-            uri:
-                'http://testicoz.org/wp-content/uploads/2017/09/ygs-dilveanlatim-7-01.png'
-        },
-        id: 1
-    },
-    {
-        source: {
-            uri:
-                'https://prods3.imgix.net/images/articles/2017_04/Feature-restaurant-butcher-bakery-shops2.jpg?auto=format%2Ccompress&ixjsv=2.2.3'
-        },
-        id: 2
-    }
-]
+import { favouriteQuestion } from '../../../services/apiServices/favouriteQuestion'
+import { fetchUser } from '../../../sagas/user/fetchUser'
+
+const data = []
 
 // TODO write this file again according to the data from server
 class Favorites extends React.Component {
@@ -52,15 +33,15 @@ class Favorites extends React.Component {
         this.state = {
             data: data,
             isModalVisible: false,
-            initialIndex: 0,
-            galleryPosition: 0,
+            galleryPosition: 1,
             favIconSelected: false,
             // ScrollView item list
-            scrollViewList: []
+            scrollViewList: [],
+            startQuestionIndex: 1,
+            correctAnswer: ''
         }
     }
 
-    // TODO REMOVE GALLERY AND THINK OF SOMETHING ELSE
     async componentDidMount() {
         await this.loadScreen()
     }
@@ -99,7 +80,10 @@ class Favorites extends React.Component {
                             }
                         )
                         itemList.push(
-                            <View style={styles.card} key={index}>
+                            <View
+                                style={styles.subjectCardContainer}
+                                key={index}
+                            >
                                 <View style={styles.contentContainerWrapper}>
                                     <Text style={styles.contentText}>
                                         {examName} - {courseName}
@@ -107,24 +91,43 @@ class Favorites extends React.Component {
                                 </View>
                                 <View style={styles.questionsContainer}>
                                     <FlatList
-                                        horizontal={true}
+                                        horizontal={false}
                                         data={questionList}
-                                        showsHorizontalScrollIndicator={false}
-                                        renderItem={({ item }) => {
+                                        nestedScrollEnabled={true}
+                                        numColumns={2}
+                                        showsVerticalScrollIndicator={false}
+                                        extraData={questionList}
+                                        renderItem={({ item, index }) => {
                                             return (
                                                 <TouchableOpacity
-                                                    onPress={() =>
-                                                        this.questionOnPress(
-                                                            item
+                                                    onPress={() => {
+                                                        this.loadScreenQuestionModal(
+                                                            index,
+                                                            favouriteQuestions[
+                                                                examKey
+                                                            ][courseKey]
                                                         )
-                                                    }
+                                                    }}
                                                 >
-                                                    <Image
-                                                        source={{
-                                                            uri: item.source.uri
-                                                        }}
-                                                        style={styles.question}
-                                                    />
+                                                    <View
+                                                        style={
+                                                            styles.questionImgBorder
+                                                        }
+                                                    >
+                                                        <Image
+                                                            source={{
+                                                                uri:
+                                                                    item.source
+                                                                        .uri
+                                                            }}
+                                                            style={
+                                                                styles.question
+                                                            }
+                                                        />
+                                                        <Text>
+                                                            {item.subjectId}
+                                                        </Text>
+                                                    </View>
                                                 </TouchableOpacity>
                                             )
                                         }}
@@ -132,6 +135,19 @@ class Favorites extends React.Component {
                                             index.toString()
                                         }
                                     />
+                                    <View
+                                        style={
+                                            styles.subjectQuestionCounterView
+                                        }
+                                    >
+                                        <Text
+                                            style={
+                                                styles.subjectQuestionCounterText
+                                            }
+                                        >
+                                            {questionList.length} Soru
+                                        </Text>
+                                    </View>
                                 </View>
                             </View>
                         )
@@ -142,6 +158,20 @@ class Favorites extends React.Component {
 
             this.setState({ scrollViewList: scrollViewList })
             return true
+        })
+    }
+
+    loadScreenQuestionModal = (index, questionList) => {
+        this.goToIndex(index, questionList)
+    }
+
+    goToIndex(index, questionList) {
+        this.setState({
+            isModalVisible: true,
+            galleryPosition: index + 1,
+            startQuestionIndex: index,
+            data: questionList,
+            correctAnswer: questionList[index].question.correctAnswer
         })
     }
 
@@ -191,14 +221,6 @@ class Favorites extends React.Component {
         navigationPop()
     }
 
-    questionOnPress = item => {
-        this.setState({ isModalVisible: true, initialIndex: item.id })
-    }
-
-    galleryOnScroll = event => {
-        this.setState({ galleryPosition: event.position })
-    }
-
     shareImage = () => {
         const configOptions = {
             path: RNFetchBlob.fs.dirs.DownloadDir + '/question.png'
@@ -222,6 +244,42 @@ class Favorites extends React.Component {
                 Share.open(shareOptions)
             })
             .catch(err => console.log(err))
+    }
+
+    galleryOnScroll = event => {
+        this.scrollX = event.nativeEvent.contentOffset.x
+        this.setState({
+            galleryPosition: Math.min(
+                Math.max(
+                    Math.floor(
+                        this.scrollX /
+                            Math.round(Dimensions.get('window').width) +
+                            0.5
+                    ) + 1,
+                    0
+                ),
+                Object.keys(this.state.data).length /*Image count*/
+            ),
+            correctAnswer: this.state.data[this.state.galleryPosition - 1]
+                .question.correctAnswer
+        })
+    }
+
+    answerSwitcher(buttonNumber) {
+        switch (buttonNumber) {
+            case 1:
+                return 'A'
+            case 2:
+                return 'B'
+            case 3:
+                return 'C'
+            case 4:
+                return 'D'
+            case 5:
+                return 'E'
+            case 6:
+                return 'Boş'
+        }
     }
 
     render() {
@@ -258,7 +316,7 @@ class Favorites extends React.Component {
                         </View>
                         <View style={styles.questionNumberContainer}>
                             <Text style={styles.questionNumberText}>
-                                Soru {this.state.galleryPosition + 1}/
+                                Soru {this.state.galleryPosition}/
                                 {Object.keys(this.state.data).length}
                             </Text>
                         </View>
@@ -272,11 +330,54 @@ class Favorites extends React.Component {
                         </View>
                     </View>
                     <View style={styles.galleryContainer}>
-                        <Gallery
-                            style={styles.galleryView}
-                            images={this.state.data}
-                            initialPage={this.state.initialIndex}
-                            onPageScroll={event => this.galleryOnScroll(event)}
+                        <FlatList
+                            ref={ref => {
+                                this.flatListRef = ref
+                            }}
+                            horizontal={true}
+                            pagingEnabled={true}
+                            data={this.state.data}
+                            initialScrollIndex={this.state.startQuestionIndex}
+                            showsHorizontalScrollIndicator={false}
+                            onScroll={this.galleryOnScroll}
+                            renderItem={({ item, index }) => {
+                                return (
+                                    <View style={styles.galleryView}>
+                                        <View
+                                            style={
+                                                styles.questionSubjectNameView
+                                            }
+                                        >
+                                            <Text
+                                                style={
+                                                    styles.questionSubjectText
+                                                }
+                                            >
+                                                {
+                                                    this.props.gameContentMap
+                                                        .subjects[
+                                                        item.question
+                                                            .subjectId - 1
+                                                    ].name
+                                                }
+                                            </Text>
+                                        </View>
+                                        <View
+                                            style={styles.questionInModalView}
+                                        >
+                                            <Image
+                                                source={{
+                                                    uri:
+                                                        item.question
+                                                            .questionLink
+                                                }}
+                                                style={styles.questionInModal}
+                                            />
+                                        </View>
+                                    </View>
+                                )
+                            }}
+                            keyExtractor={(item, index) => index.toString()}
                         />
                     </View>
                     <View style={styles.modalFooter}>
@@ -293,7 +394,9 @@ class Favorites extends React.Component {
                                         { color: '#00D9EF' }
                                     ]}
                                 >
-                                    C
+                                    {this.answerSwitcher(
+                                        this.state.correctAnswer
+                                    )}
                                 </Text>
                             </View>
                             <Text style={styles.answerText}>Doğru cevap</Text>
@@ -323,43 +426,10 @@ class Favorites extends React.Component {
                 </Modal>
                 <View style={styles.scrollViewContainer}>
                     <ScrollView
-                        style={styles.cardsScrollView}
+                        horizontal={true}
                         showsVerticalScrollIndicator={false}
                     >
                         {this.state.scrollViewList}
-                        {/* <View style={styles.card}>
-                            <View style={styles.contentContainerWrapper}>
-                                <Text style={styles.contentText}>
-                                    YKS - TÜRKÇE
-                                </Text>
-                            </View>
-                            <View style={styles.questionsContainer}>
-                                <FlatList
-                                    horizontal={true}
-                                    data={this.state.data}
-                                    showsHorizontalScrollIndicator={false}
-                                    renderItem={({ item }) => {
-                                        return (
-                                            <TouchableOpacity
-                                                onPress={() =>
-                                                    this.questionOnPress(item)
-                                                }
-                                            >
-                                                <Image
-                                                    source={{
-                                                        uri: item.source.uri
-                                                    }}
-                                                    style={styles.question}
-                                                />
-                                            </TouchableOpacity>
-                                        )
-                                    }}
-                                    keyExtractor={(item, index) =>
-                                        index.toString()
-                                    }
-                                />
-                            </View>
-                        </View> */}
                     </ScrollView>
                 </View>
             </View>
@@ -374,7 +444,4 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({})
 
-export default connect(
-    mapStateToProps,
-    null
-)(Favorites)
+export default connect(mapStateToProps, null)(Favorites)

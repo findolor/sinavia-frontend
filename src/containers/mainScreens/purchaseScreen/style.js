@@ -8,8 +8,7 @@ export default StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fcfcfc'
+        alignItems: 'center'
     },
     premiumContainer: {
         flex: 33.5,
@@ -220,7 +219,7 @@ export default StyleSheet.create({
         borderRadius: 100,
         borderColor: '#fcfcfc',
         bottom: hp(2.75),
-        right: wp(7.5),
+        right: wp(6.5),
         zIndex: 1
     },
     jokerNameContainer: {
@@ -343,8 +342,8 @@ export default StyleSheet.create({
         width: hp(6.5)
     },
     premiumModalImg: {
-        height: hp(8),
-        width: hp(8)
+        resizeMode: 'contain',
+        height: hp(8)
     },
     premiumHeaderText: {
         fontFamily: 'Averta-Bold',
