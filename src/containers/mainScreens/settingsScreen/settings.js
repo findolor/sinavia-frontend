@@ -18,9 +18,16 @@ import {
 import { deviceStorage } from '../../../services/deviceStorage'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
+import { appActions } from '../../../redux/app/actions'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import moment from 'moment'
 import firebase from 'react-native-firebase'
+import ImagePicker from 'react-native-image-crop-picker'
+import { Appearance } from 'react-native-appearance'
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
 // Picture imports
 import returnLogo from '../../../assets/return.png'
 import EDIT from '../../../assets/edit.png'
@@ -43,12 +50,20 @@ class Settings extends React.Component {
                           this.props.clientInformation.birthDate,
                           'YYYY-MM-DD HH:mm'
                       ).format('DD-MM-YYYY'),
-            dateColor: '#7A7878'
+            dateColor: '#7A7878',
+            // User pictures
+            profilePicture: null,
+            coverPicture: null,
+            isCoverPictureChoosen: false,
+            isProfilePictureChoosen: false,
+            isDarkModeEnabled: null
         }
     }
 
-    // TODO STILL NEED TO GET PHOTOS AND UPLOAD THOSE TO OUR SERVER
     componentDidMount() {
+        const isDarkModeEnabled = Appearance.getColorScheme() === 'dark'
+        this.setState({ isDarkModeEnabled: isDarkModeEnabled })
+
         if (this.props.clientInformation.birthDate === '')
             this.setState({ birthDateUI: '' })
     }
@@ -135,8 +150,23 @@ class Settings extends React.Component {
         else false
     }
 
-    saveButtonOnPress = () => {
+    checkProfilePicture = () => {
+        if (this.state.profilePicture !== null) return true
+        else false
+    }
+
+    checkCoverPicture = () => {
+        if (this.state.coverPicture !== null) return true
+        else false
+    }
+
+    saveButtonOnPress = async () => {
+        const firebaseStorage = firebase.storage()
+
         let shouldUpdate = false
+        let isProfilePictureChanged = false
+        let isCoverPictureChanged = false
+
         const clientInformation = this.props.clientInformation
 
         if (this.checkCity()) {
@@ -160,6 +190,38 @@ class Settings extends React.Component {
             shouldUpdate = true
         }
 
+        if (this.checkCoverPicture()) {
+            clientInformation.coverPicture = this.state.coverPicture
+            shouldUpdate = true
+            isCoverPictureChanged = true
+        }
+
+        if (this.checkProfilePicture()) {
+            clientInformation.profilePicture = this.state.profilePicture
+            shouldUpdate = true
+            isProfilePictureChanged = true
+        }
+
+        if (shouldUpdate) this.props.lockUnlockButton()
+
+        let response
+
+        if (isProfilePictureChanged) {
+            response = await firebaseStorage
+                .ref(`profilePictures/${this.props.clientDBId}.jpg`)
+                .putFile(this.state.profilePicture.path)
+
+            clientInformation.profilePicture = response.downloadURL
+        }
+
+        if (isCoverPictureChanged) {
+            response = await firebaseStorage
+                .ref(`coverPictures/${this.props.clientDBId}.jpg`)
+                .putFile(this.state.coverPicture.path)
+
+            clientInformation.coverPicture = response.downloadURL
+        }
+
         if (shouldUpdate)
             this.props.updateUser(
                 this.props.clientToken,
@@ -167,6 +229,63 @@ class Settings extends React.Component {
                 clientInformation,
                 false
             )
+    }
+
+    pickProfileImage(cropit, circular = false, mediaType) {
+        ImagePicker.openPicker({
+            width: hp(18),
+            height: hp(18),
+            cropping: cropit,
+            cropperCircleOverlay: circular,
+            compressImageMaxWidth: 1000,
+            compressImageMaxHeight: 1000,
+            compressImageQuality: 1,
+            includeExif: true,
+            includeBase64: true
+        })
+            .then(image => {
+                this.setState({
+                    profilePicture: {
+                        uri: image.path,
+                        width: image.width,
+                        height: image.height,
+                        mime: image.mime,
+                        path: image.path
+                    },
+                    isProfilePictureChoosen: true
+                })
+            })
+            .catch(e => {
+                console.log(e)
+            })
+    }
+
+    pickCoverImage(cropit, circular = false, mediaType) {
+        ImagePicker.openPicker({
+            width: wp(90),
+            height: hp(30),
+            cropping: cropit,
+            cropperCircleOverlay: circular,
+            compressImageMaxWidth: 1000,
+            compressImageMaxHeight: 1000,
+            compressImageQuality: 1,
+            includeExif: true
+        })
+            .then(image => {
+                this.setState({
+                    coverPicture: {
+                        uri: image.path,
+                        width: image.width,
+                        height: image.height,
+                        mime: image.mime,
+                        path: image.path
+                    },
+                    isCoverPictureChoosen: true
+                })
+            })
+            .catch(e => {
+                console.log(e)
+            })
     }
 
     render() {
@@ -185,28 +304,44 @@ class Settings extends React.Component {
                 </View>
                 <View style={styles.profileContainer}>
                     <ImageBackground
-                        source={{
-                            uri: this.props.clientInformation.coverPicture
-                        }}
+                        source={
+                            this.state.isCoverPictureChoosen
+                                ? this.state.coverPicture
+                                : {
+                                      uri: this.props.clientInformation
+                                          .coverPicture
+                                  }
+                        }
                         style={styles.coverPhoto}
                         imageStyle={{ borderRadius: 30 }}
                     >
+                        <View style={styles.shadowCoverView} />
                         <View style={styles.editImgView}>
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => this.pickCoverImage(true, false)}
+                            >
                                 <Image source={EDIT} style={styles.editImg} />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.profilePicView}>
                             <ImageBackground
-                                source={{
-                                    uri: this.props.clientInformation
-                                        .profilePicture
-                                }}
+                                source={
+                                    this.state.isProfilePictureChoosen
+                                        ? this.state.profilePicture
+                                        : {
+                                              uri: this.props.clientInformation
+                                                  .profilePicture
+                                          }
+                                }
                                 style={styles.profilePic}
                                 imageStyle={{ borderRadius: 100 }}
                             >
                                 <View style={styles.editProfilePicView}>
-                                    <TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            this.pickProfileImage(true, true)
+                                        }
+                                    >
                                         <Image
                                             source={EDIT}
                                             style={styles.editImg}
@@ -294,6 +429,7 @@ class Settings extends React.Component {
                             isVisible={this.state.isDateTimePickerVisible}
                             onConfirm={this.datePickerHandler}
                             onCancel={this.showHideDatePicker}
+                            isDarkModeEnabled={this.state.isDarkModeEnabled}
                         />
                     </View>
                 </View>
@@ -331,7 +467,8 @@ const mapDispatchToProps = dispatch => ({
                 clientInformation,
                 isPasswordChange
             )
-        )
+        ),
+    lockUnlockButton: () => dispatch(appActions.lockUnlockButton())
 })
 
 export default connect(

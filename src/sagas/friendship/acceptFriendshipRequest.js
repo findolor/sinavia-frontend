@@ -24,7 +24,7 @@ export function* acceptFriendshipRequestSaga(action) {
             clientToken: action.clientToken,
             userId: action.clientDBId,
             friendId: action.friendId,
-            username: action.clientUsername
+            clientUsername: action.clientUsername
         }
     )
 

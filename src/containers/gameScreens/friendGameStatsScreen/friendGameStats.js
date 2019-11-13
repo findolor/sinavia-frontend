@@ -232,7 +232,9 @@ class FriendGameStatsScreen extends React.Component {
                     playerFriendMatchWinCount++
                 }
             } else {
-                playerFriendMatchWinCount++
+                this.props.isWon === true
+                    ? playerFriendMatchWinCount++
+                    : opponentFriendMatchWinCount++
                 this.setState({
                     matchResultLogo:
                         this.props.isWon === true

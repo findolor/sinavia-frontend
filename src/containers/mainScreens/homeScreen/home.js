@@ -123,7 +123,7 @@ class Home extends React.Component {
 
         this.removeMessageListener = firebase.messaging().onMessage(message => {
             console.log(message, 'mes')
-            //this.fcmMessagePicker(message)
+            this.fcmMessagePicker(message)
         })
         this.removeNotificationListener = firebase
             .notifications()
@@ -227,10 +227,29 @@ class Home extends React.Component {
                         },
                         {
                             text: 'Reddet',
-                            onPress: () =>
-                                this.rejectFriendGame({
-                                    roomCode: message.data.roomCode
-                                })
+                            onPress: () => {
+                                friendGameServices
+                                    .checkOngoingMatch(
+                                        this.props.clientToken,
+                                        message.data.userId,
+                                        message.data.roomCode
+                                    )
+                                    .then(data => {
+                                        if (!data)
+                                            this.rejectFriendGame({
+                                                roomCode: message.data.roomCode
+                                            })
+                                        else {
+                                            Alert.alert(
+                                                'Arkadaşın önden başladı!'
+                                            )
+                                            navigationPush(
+                                                SCENE_KEYS.mainScreens
+                                                    .notifications
+                                            )
+                                        }
+                                    })
+                            }
                         },
                         {
                             text: 'Kabul et',
@@ -279,20 +298,42 @@ class Home extends React.Component {
                                         })
                                     }
                                 } */
-
-                                this.playFriendGame({
-                                    opponentId: message.data.userId,
-                                    roomCode: message.data.roomCode,
-                                    examId: parseInt(message.data.examId, 10),
-                                    courseId: parseInt(
-                                        message.data.courseId,
-                                        10
-                                    ),
-                                    subjectId: parseInt(
-                                        message.data.subjectId,
-                                        10
+                                friendGameServices
+                                    .checkOngoingMatch(
+                                        this.props.clientToken,
+                                        message.data.userId,
+                                        message.data.roomCode
                                     )
-                                })
+                                    .then(data => {
+                                        // If the data is false we can play synchronized game
+                                        // If it is true other user either pressed play ahead or still waiting
+                                        if (!data)
+                                            this.tryJoiningFriendRoom({
+                                                opponentId: message.data.userId,
+                                                roomCode: message.data.roomCode,
+                                                examId: parseInt(
+                                                    message.data.examId,
+                                                    10
+                                                ),
+                                                courseId: parseInt(
+                                                    message.data.courseId,
+                                                    10
+                                                ),
+                                                subjectId: parseInt(
+                                                    message.data.subjectId,
+                                                    10
+                                                )
+                                            })
+                                        else {
+                                            Alert.alert(
+                                                'Arkadaşın önden başladı!'
+                                            )
+                                            navigationPush(
+                                                SCENE_KEYS.mainScreens
+                                                    .notifications
+                                            )
+                                        }
+                                    })
                             }
                         }
                     ],
@@ -306,6 +347,54 @@ class Home extends React.Component {
                 navigationPush(SCENE_KEYS.mainScreens.notifications)
                 break
         }
+    }
+
+    tryJoiningFriendRoom = params => {
+        // TODO Put a modal here and when the room is joined close it and navigaate
+        Alert.alert('Bekleniyor...')
+
+        let room
+        const client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
+        client.onOpen.add(() => {
+            room = client.join('friendRoom', {
+                databaseId: this.props.clientDBId,
+                roomCode: params.roomCode,
+                create: false
+            })
+
+            // We set a timeout for the time passed since join initiation
+            // TODO THINK ABOUT THE TIMEOUT NUMBER IN HERE
+            const timeout = setTimeout(() => {
+                Alert.alert('Üznügüm ama oda aktif değil')
+                room.leave()
+                client.close()
+            }, 5000)
+
+            // If room onJoin doesn't trigger we don't do anything
+            room.onJoin.add(() => {
+                // We clear the timeout as we don't need it anymore
+                clearTimeout(timeout)
+                // Getting the opponent information and navigatiing
+                userServices
+                    .getUser(this.props.clientToken, params.opponentId)
+                    .then(opponentInformation => {
+                        room.removeAllListeners()
+                        navigationReset('game', { isHardReset: true })
+                        navigationReplace(
+                            SCENE_KEYS.gameScreens.friendMatchingScreen,
+                            {
+                                isFriendJoining: true,
+                                room: room,
+                                client: client,
+                                opponentInformation: opponentInformation,
+                                examId: params.examId,
+                                courseId: params.courseId,
+                                subjectId: params.subjectId
+                            }
+                        )
+                    })
+            })
+        })
     }
 
     playFriendGame = async params => {

@@ -4,7 +4,7 @@ import {
     unfavouriteQuestion
 } from './favouriteQuestion'
 import { updateFCMToken } from './fcmToken'
-import { sendGameRequest } from './friendGame'
+import { sendGameRequest, checkOngoingMatch } from './friendGame'
 import {
     acceptFriendshipRequest,
     deleteFriendship,
@@ -56,7 +56,8 @@ export const apiServicesTree = {
         updateFCMToken: 'updateFCMToken'
     },
     friendGameApi: {
-        sendGameRequest: 'sendGameRequest'
+        sendGameRequest: 'sendGameRequest',
+        checkOngoingMatch: 'checkOngoingMatch'
     },
     friendshipApi: {
         acceptFriendshipRequest: 'acceptFriendshipRequest',
@@ -200,6 +201,10 @@ export const getRequest = async (functionName, params) => {
         case 'getUserScore':
             headers.Authorization = 'Bearer ' + params.clientToken
             return getUserScore(headers, params)
+        // FRIEND GAME
+        case 'checkOngoingMatch':
+            headers.Authorization = 'Bearer ' + params.clientToken
+            return checkOngoingMatch(headers, params)
     }
 }
 
@@ -226,8 +231,7 @@ export const postRequest = async (functionName, params) => {
         case 'postUser':
             return postUser(params)
         case 'forgotPassword':
-            headers.Authorization = 'Bearer ' + params.clientToken
-            return forgotPassword(headers, params)
+            return forgotPassword(params)
     }
 }
 

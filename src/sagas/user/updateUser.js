@@ -2,6 +2,7 @@ import { put, call } from 'redux-saga/effects'
 import { deviceStorage } from '../../services/deviceStorage'
 import { navigationPop, SCENE_KEYS } from '../../services/navigationService'
 import { clientTypes } from '../../redux/client/actions'
+import { appTypes } from '../../redux/app/actions'
 import firebase from 'react-native-firebase'
 import { apiServicesTree, makePutRequest } from '../../services/apiServices'
 
@@ -59,15 +60,23 @@ export function* updateUserSaga(action) {
                 type: clientTypes.SAVE_CLIENT_INFORMATION,
                 payload: action.clientInformation
             })
+            yield put({
+                type: appTypes.LOCK_UNLOCK_BUTTON
+            })
         } else {
+            navigationPop()
             yield put({
                 type: clientTypes.SAVE_CLIENT_INFORMATION,
                 payload: action.clientInformation
             })
-            navigationPop()
+            yield put({
+                type: appTypes.LOCK_UNLOCK_BUTTON
+            })
         }
     } catch (error) {
-        // TODO remove console.log later
+        yield put({
+            type: appTypes.LOCK_UNLOCK_BUTTON
+        })
         console.log(error)
     }
 }
