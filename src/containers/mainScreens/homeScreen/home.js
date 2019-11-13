@@ -9,7 +9,8 @@ import {
     View,
     AsyncStorage,
     Alert,
-    FlatList
+    FlatList,
+    AppState
 } from 'react-native'
 import { connect } from 'react-redux'
 import { gameContentActions } from '../../../redux/gameContent/actions'
@@ -58,7 +59,8 @@ import {
     navigationPush,
     navigationReset,
     SCENE_KEYS,
-    navigationReplace
+    navigationReplace,
+    getCurrentScreen
 } from '../../../services/navigationService'
 
 import { levelFinder } from '../../../services/userLevelFinder'
@@ -108,12 +110,17 @@ class Home extends React.Component {
             // Selected game mode variable
             selectedGameMode: 'ranked',
             // Selected content total score
-            selectedContentTotalPoints: 0
+            selectedContentTotalPoints: 0,
+            // Current app state (foreground, active, ...)
+            appState: AppState.currentState
         }
     }
 
     async componentDidMount() {
+        // Fills the lists
         await this.fillGameContent()
+        // Set up a listener for detecting the app state
+        AppState.addEventListener('change', this.handleAppStateChange)
 
         this.removeMessageListener = firebase.messaging().onMessage(message => {
             console.log(message, 'mes')
@@ -122,25 +129,42 @@ class Home extends React.Component {
         this.removeNotificationListener = firebase
             .notifications()
             .onNotification(notification => {
-                // Create the channel
-                const channel = new firebase.notifications.Android.Channel(
-                    'notification-channel',
-                    'Notification Channel',
-                    firebase.notifications.Android.Importance.Max
-                ).setDescription('Sinavia notification channel')
-                firebase.notifications().android.createChannel(channel)
-
                 console.log(notification, 'not')
-                const tempNotification = new firebase.notifications.Notification()
-                    .setNotificationId(notification.notificationId)
-                    .setTitle(notification.title)
-                    .setBody(notification.body)
-                    .setData(notification.data)
-                tempNotification.android.setChannelId('aaa')
-                tempNotification.android.setSmallIcon('ic_launcher')
-                tempNotification.ios.setBadge(2)
+                if (this.state.appState === 'active') {
+                    if (
+                        getCurrentScreen() !== 'rankedGame' &&
+                        getCurrentScreen() !== 'loading' &&
+                        getCurrentScreen() !== 'rankedMatchingScreen' &&
+                        getCurrentScreen() !== 'friendMatchingScreen' &&
+                        getCurrentScreen() !== 'groupGame' &&
+                        getCurrentScreen() !== 'friendGame' &&
+                        getCurrentScreen() !== 'soloFriendGameScreen' &&
+                        getCurrentScreen() !== 'soloModeLoadingScreen' &&
+                        getCurrentScreen() !== 'soloModeGameScreen'
+                    )
+                        this.fcmMessagePicker(notification)
+                } else {
+                    // Create the channel
+                    const channel = new firebase.notifications.Android.Channel(
+                        'notification-channel',
+                        'Notification Channel',
+                        firebase.notifications.Android.Importance.Max
+                    ).setDescription('Sinavia notification channel')
+                    firebase.notifications().android.createChannel(channel)
 
-                firebase.notifications().displayNotification(tempNotification)
+                    const tempNotification = new firebase.notifications.Notification()
+                        .setNotificationId(notification.notificationId)
+                        .setTitle(notification.title)
+                        .setBody(notification.body)
+                        .setData(notification.data)
+                    tempNotification.android.setChannelId('channelId')
+                    tempNotification.android.setSmallIcon('ic_launcher')
+                    tempNotification.ios.setBadge(2)
+
+                    firebase
+                        .notifications()
+                        .displayNotification(tempNotification)
+                }
             })
 
         // If the app was in foreground or background
@@ -154,6 +178,7 @@ class Home extends React.Component {
                 const notification = notificationOpen.notification
                 console.log(action, notification, 'app running')
                 this.fcmMessagePicker(notification)
+                this.props.saveNotificationOpen(null)
             })
         // If the app was closed when the notification is opened
         // This func fires up
@@ -171,6 +196,14 @@ class Home extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this.handleAppStateChange)
+    }
+
+    handleAppStateChange = nextAppState => {
+        this.setState({ appState: nextAppState })
+    }
+
     fillGameContent = () => {
         new Promise.resolve().then(() => {
             const examNames = []
@@ -181,8 +214,6 @@ class Home extends React.Component {
             this.setState({ examList: examNames })
         })
     }
-
-    componentWillUnmount() {}
 
     fcmMessagePicker = message => {
         switch (message.data.type) {
@@ -1516,7 +1547,4 @@ const mapDispatchToProps = dispatch => ({
         dispatch(appActions.saveNotificationOpen(notificationOpen))
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

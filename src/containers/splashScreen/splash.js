@@ -3,8 +3,7 @@ import { View, Image, Text, Alert } from 'react-native'
 import styles, { hp, wp } from './style'
 import {
     navigationReset,
-    getCurrentScreen,
-    SCENE_KEYS
+    getCurrentScreen
 } from '../../services/navigationService'
 import NetInfo from '@react-native-community/netinfo'
 import { deviceStorage } from '../../services/deviceStorage'
@@ -151,7 +150,4 @@ const mapDispatchToProps = dispatch => ({
         dispatch(appActions.setNetworkConnectionInfo(networkConnectionInfo))
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(SplashScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(SplashScreen)
