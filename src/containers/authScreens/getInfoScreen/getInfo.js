@@ -149,7 +149,8 @@ class GetInfo extends React.Component {
                             source={SINAVIA_LOGO}
                             style={{
                                 height: hp(36),
-                                resizeMode: 'contain'
+                                resizeMode: 'contain',
+                                marginLeft: wp(6.5)
                             }}
                         />
                     </View>
@@ -199,8 +200,9 @@ class GetInfo extends React.Component {
                             width={wp(85)}
                             color="#00D9EF"
                             buttonText="Onayla"
-                            borderRadius={10}
+                            borderRadius={hp(1.5)}
                             marginTop={hp(2)}
+                            fontSize={hp(3)}
                             onPress={this.registerOnPress}
                             disabled={this.props.buttonLock}
                         />

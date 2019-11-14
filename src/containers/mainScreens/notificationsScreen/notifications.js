@@ -14,6 +14,10 @@ import { appActions } from '../../../redux/app/actions'
 import { opponentActions } from '../../../redux/opponents/actions'
 import { getUserService } from '../../../sagas/user/fetchUser'
 import { notificationServices } from '../../../sagas/notification/'
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
 
 import PROFILE_PIC from '../../../assets/profile2.jpg'
 import ACCEPT_BUTTON from '../../../assets/gameScreens/correct.png'
@@ -249,7 +253,7 @@ class Notifications extends React.Component {
                 )
             case 'gameRequest':
                 return (
-                    <View style={styles.userRow}>
+                    <View style={[styles.userRow, { height: hp(12)}]}>
                         <View style={styles.userPicContainerInRow}>
                             <Image
                                 source={{
@@ -258,7 +262,7 @@ class Notifications extends React.Component {
                                 style={styles.userPic}
                             />
                         </View>
-                        <View style={styles.gameContentsContainer}>
+                        <View style={[styles.gameContentsContainer, { height: hp(12)}]}>
                             <Text style={styles.gameContentText}>
                                 {item.notificationData.examName}
                             </Text>
@@ -269,12 +273,10 @@ class Notifications extends React.Component {
                                 {item.notificationData.subjectName}
                             </Text>
                         </View>
-                        <View style={styles.gameRequestContainer}>
-                            <View style={styles.gameRequestTextContainer}>
+                        <View style={[styles.gameRequestContainer, { height: hp(12)}]}>
                                 <Text style={styles.gameRequestText}>
                                     {item.notificationData.message}
                                 </Text>
-                            </View>
                             <View style={styles.gameRequestButtonsContainer}>
                                 <TouchableOpacity
                                     onPress={() => {

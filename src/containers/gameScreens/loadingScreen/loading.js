@@ -213,15 +213,13 @@ class LoadingScreen extends React.Component {
                             />
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.animationView}>
-                        <LottieView
-                            source={require('../../../assets/gameScreens/rankedLoading.json')}
-                            autoPlay
-                            loop
-                            style={{ height: hp(92), width: wp(100), backgroundColor: 'red'}}
-                            speed={1.1}
-                        />
-                    </View>
+                    <LottieView
+                        source={require('../../../assets/gameScreens/gameLoading.json')}
+                        autoPlay
+                        loop
+                        style={{ resizeMode: 'cover'}}
+                        speed={1.1}
+                    />
                 </View>
             )
     }

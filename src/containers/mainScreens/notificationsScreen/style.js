@@ -35,8 +35,8 @@ export default StyleSheet.create({
     generalNotificationsContainer: {
         height: hp(5.5),
         width: wp(44),
-        borderTopLeftRadius: 6,
-        borderBottomLeftRadius: 6,
+        borderTopLeftRadius: hp(1),
+        borderBottomLeftRadius: hp(1),
         borderWidth: wp(0.5),
         borderColor: '#FF9900',
         backgroundColor: '#FF9900',
@@ -46,8 +46,8 @@ export default StyleSheet.create({
     friendsRequestsContainer: {
         height: hp(5.5),
         width: wp(44),
-        borderTopRightRadius: 6,
-        borderBottomRightRadius: 6,
+        borderTopRightRadius: hp(1),
+        borderBottomRightRadius: hp(1),
         borderWidth: wp(0.5),
         borderColor: '#FF9900',
         justifyContent: 'center',
@@ -69,7 +69,7 @@ export default StyleSheet.create({
         width: wp(88),
         flexDirection: 'row',
         alignItems: 'center',
-        borderBottomWidth: wp(0.1),
+        borderBottomWidth: hp(0.15),
         borderBottomColor: '#CACACA'
     },
     gameContentsContainer: {
@@ -86,20 +86,23 @@ export default StyleSheet.create({
     },
     gameRequestContainer: {
         height: hp(8),
-        width: wp(45)
+        width: wp(45),
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     gameRequestTextContainer: {
-        height: hp(3),
+        height: hp(6),
         width: wp(45),
         justifyContent: 'center',
         alignItems: 'center'
     },
     gameRequestButtonsContainer: {
-        height: hp(5),
+        height: hp(4),
         width: wp(45),
+        marginTop: hp(1),
         flexDirection: 'row',
         justifyContent: 'space-around',
-        alignItems: 'center'
+        alignItems: 'flex-start'
     },
     textsinRowWithPic: {
         height: hp(8),
@@ -110,6 +113,8 @@ export default StyleSheet.create({
     userPic: {
         height: hp(6.5),
         width: hp(6.5),
+        borderColor: '#FF9900',
+        borderWidth: hp(0.3),
         borderRadius: 100
     },
     nameContainer: {
@@ -151,12 +156,13 @@ export default StyleSheet.create({
     },
     gameContentText: {
         fontFamily: 'Averta-BoldItalic',
-        fontSize: hp(1.5),
+        fontSize: hp(2),
         color: '#FF9900'
     },
     gameRequestText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: hp(1.3),
+        fontSize: hp(2),
+        textAlign: 'center',
         color: '#2E313C'
     },
     acceptButton: {

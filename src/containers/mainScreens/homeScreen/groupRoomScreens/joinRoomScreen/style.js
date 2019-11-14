@@ -36,7 +36,7 @@ export default StyleSheet.create({
         marginLeft: wp(6.25),
         borderColor: '#00D9EF',
         borderWidth: wp(0.75),
-        borderRadius: 10,
+        borderRadius: hp(1.5),
         justifyContent: 'center',
         alignItems: 'center'
     },

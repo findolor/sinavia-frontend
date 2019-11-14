@@ -61,22 +61,22 @@ export default StyleSheet.create({
     contentContainerWrapper: {
         height: hp(7.5),
         width: wp(82),
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
+        borderTopLeftRadius: hp(1.5),
+        borderTopRightRadius: hp(1.5),
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#00D9EF',
         marginTop: hp(1.5)
     },
     questionsContainer: {
-        height: hp(78),
+        height: hp(75),
         width: wp(82),
-        borderLeftWidth: wp(0.6),
-        borderRightWidth: wp(0.6),
-        borderBottomWidth: wp(0.6),
+        borderLeftWidth: hp(0.5),
+        borderRightWidth: hp(0.5),
+        borderBottomWidth: hp(0.5),
         borderColor: '#00D9EF',
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10,
+        borderBottomLeftRadius: hp(1.5),
+        borderBottomRightRadius: hp(1.5),
         justifyContent: 'flex-start',
         alignItems: 'flex-start'
     },
@@ -99,9 +99,9 @@ export default StyleSheet.create({
     questionImgBorder: {
         height: hp(27),
         width: wp(36),
-        borderWidth: wp(0.5),
-        borderColor: '#00D9EF',
-        borderRadius: 10,
+        borderWidth: hp(0.4),
+        borderColor: '#FF9900',
+        borderRadius: hp(1.5),
         marginTop: hp(1.35),
         marginLeft: wp(3)
     },
@@ -145,7 +145,7 @@ export default StyleSheet.create({
     questionInModalView: {
         flex: 65,
         width: wp(90),
-        borderRadius: 30,
+        borderRadius: hp(3),
         backgroundColor: 'white'
     },
     questionInModal: {

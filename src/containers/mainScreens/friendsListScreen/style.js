@@ -47,9 +47,9 @@ export default StyleSheet.create({
         color: '#00D9EF'
     },
     searchBar: {
-        height: hp(6),
+        height: hp(5),
         width: wp(75),
-        borderRadius: 30,
+        borderRadius: hp(10),
         borderColor: '#00D9EF',
         borderWidth: hp(0.3),
         flexDirection: 'row',
@@ -96,6 +96,8 @@ export default StyleSheet.create({
     userPic: {
         height: hp(6.5),
         width: hp(6.5),
+        borderWidth: hp(0.3),
+        borderColor: '#FF9900',
         borderRadius: 100
     },
     nameContainer: {

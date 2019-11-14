@@ -23,7 +23,8 @@ export default class Opening extends React.Component {
                         style={{
                             height: hp(35),
                             resizeMode: 'contain',
-                            marginTop: hp(3)
+                            marginTop: hp(3),
+                            marginLeft: wp(6)
                         }}
                     />
                     <Text style={styles.sinaviaText}>Sınavia</Text>
@@ -35,7 +36,8 @@ export default class Opening extends React.Component {
                         color="#00D9EF"
                         underlayColor="#1a5d63"
                         buttonText="Giriş Yap"
-                        borderRadius={10}
+                        borderRadius={hp(1.5)}
+                        fontSize={hp(3)}
                         onPress={() => {
                             navigationPush(SCENE_KEYS.authScreens.login)
                         }}
@@ -46,7 +48,8 @@ export default class Opening extends React.Component {
                         color="#00D9EF"
                         underlayColor="#1a5d63"
                         buttonText="Kayıt Ol"
-                        borderRadius={10}
+                        borderRadius={hp(1.5)}
+                        fontSize={hp(3)}
                         onPress={() => {
                             navigationPush(SCENE_KEYS.authScreens.register)
                         }}
@@ -64,15 +67,17 @@ export default class Opening extends React.Component {
                         height={hp(7)}
                         width={wp(85)}
                         color="#4267B2"
-                        borderRadius={10}
+                        fontSize={hp(3)}
                         buttonText="Facebook ile Bağlan"
+                        borderRadius={hp(1.5)}
                     />
                     <AuthButton
                         height={hp(7)}
                         width={wp(85)}
                         color="#0F9D58"
-                        borderRadius={10}
+                        fontSize={hp(3)}
                         buttonText="Google ile Bağlan"
+                        borderRadius={hp(1.5)}
                     />
                 </View>
                 <View style={styles.spaceView} />

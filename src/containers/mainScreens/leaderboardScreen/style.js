@@ -39,8 +39,8 @@ export default StyleSheet.create({
     globalTabContainer: {
         height: hp(5.5),
         width: wp(25),
-        borderTopLeftRadius: 30,
-        borderBottomLeftRadius: 30,
+        borderTopLeftRadius: hp(5),
+        borderBottomLeftRadius: hp(5),
         borderWidth: wp(0.5),
         borderColor: '#FF6D00',
         backgroundColor: '#FF6D00',
@@ -50,8 +50,8 @@ export default StyleSheet.create({
     friendsTabContainer: {
         height: hp(5.5),
         width: wp(25),
-        borderTopRightRadius: 30,
-        borderBottomRightRadius: 30,
+        borderTopRightRadius: hp(5),
+        borderBottomRightRadius: hp(5),
         borderWidth: wp(0.5),
         borderColor: '#FF6D00',
         justifyContent: 'center',
@@ -95,7 +95,7 @@ export default StyleSheet.create({
         height: hp(13.5),
         width: hp(13.5),
         marginTop: hp(2.7),
-        borderRadius: 100,
+        borderRadius: hp(100),
         justifyContent: 'space-between',
         alignItems: 'center'
     },
@@ -133,12 +133,12 @@ export default StyleSheet.create({
     },
     nameText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: wp(4),
+        fontSize: hp(2.5),
         color: '#2E313C'
     },
     scoreText:{
-        fontFamily: 'Averta-RegularItalic',
-        fontSize: wp(4),
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(2.75),
         color: '#FF6D00'
     },
     continueOrderTextContainer: {
@@ -146,7 +146,7 @@ export default StyleSheet.create({
         width: wp(100),
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'flex-end'
+        alignItems: 'center'
     },
     continueOrderText: {
         fontFamily: 'Averta-RegularItalic',
@@ -193,12 +193,12 @@ export default StyleSheet.create({
     },
     topTenUserNameText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: wp(3.5),
+        fontSize: hp(2),
         color: '#2E313C'
     },
     topTenUserScoreText: {
-        fontFamily: 'Averta-RegularItalic',
-        fontSize: wp(4),
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(2.25),
         color: '#FF6D00'
     },
     topTenUserPicContainer: {
@@ -222,13 +222,11 @@ export default StyleSheet.create({
         height: hp(1),
         width: hp(2),
         marginRight: wp(1),
-        marginBottom : hp(0.9)
     },
     slideDownRightImg: {
         height: hp(1),
         width: hp(2),
         marginLeft: wp(1),
-        marginBottom : hp(0.9)
     },
     tenToHundredUserRow: {
         height: hp(6),

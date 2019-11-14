@@ -301,11 +301,11 @@ class Register extends React.Component {
                                     onPress={() => {
                                         alert('Model gelecek')
                                     }}
-                                    style={{ color: '#00D9EF' }}
+                                    style={{ textDecorationLine: 'underline', fontFamily: 'Averta-Semibold' }}
                                 >
                                     Kullanıcı sözleşmesi
                                 </Text>
-                                ni okudum ve kabul ediyorum.
+                                'ni okudum ve kabul ediyorum.
                             </Text>
                         </View>
                     </View>
@@ -315,7 +315,8 @@ class Register extends React.Component {
                             width={wp(85)}
                             color="#00D9EF"
                             buttonText="Kayıt Ol"
-                            borderRadius={10}
+                            borderRadius={hp(1.5)}
+                            fontSize={hp(3)}
                             onPress={this.registerOnPress}
                         />
                     </View>

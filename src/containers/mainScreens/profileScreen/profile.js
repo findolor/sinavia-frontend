@@ -163,7 +163,7 @@ class Profile extends React.Component {
                             uri: this.props.clientInformation.coverPicture
                         }}
                         style={styles.coverPhoto}
-                        imageStyle={{ borderRadius: 30 }}
+                        imageStyle={{ borderRadius: hp(3) }}
                     >
                         <View style={styles.profileContainerShadowView}>
                             <View style={styles.profilePicView}>
@@ -216,10 +216,9 @@ class Profile extends React.Component {
                                     </Text>
                                 </View>
                                 <View style={styles.boxLogoContainer}>
-                                    <Image
-                                        source={friendsLogo}
-                                        style={styles.boxLogo}
-                                    />
+                                    <Text style={styles.friendsCounterBoxText}>
+                                        {(this.props.friendIds).length}
+                                    </Text>
                                 </View>
                             </View>
                         </TouchableOpacity>
@@ -263,7 +262,8 @@ class Profile extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    clientInformation: state.client.clientInformation
+    clientInformation: state.client.clientInformation,
+    friendIds: state.friends.friendIds
 })
 
 const mapDispatchToProps = dispatch => ({})

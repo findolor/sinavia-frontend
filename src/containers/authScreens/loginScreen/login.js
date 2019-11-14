@@ -24,7 +24,8 @@ import NotchView from '../../../components/notchView'
 import { showMessage } from 'react-native-flash-message'
 
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
-import EYE from '../../../assets/eye.png'
+import OPENED_EYE from '../../../assets/openedEye.png'
+import CLOSED_EYE from '../../../assets/closedEye.png'
 
 class Login extends React.Component {
     constructor(props) {
@@ -102,7 +103,8 @@ class Login extends React.Component {
                                 {
                                     height: hp(45),
                                     resizeMode: 'contain',
-                                    marginTop: hp(3)
+                                    marginTop: hp(3),
+                                    marginLeft: wp(6)
                                 }
                             ]}
                         />
@@ -150,13 +152,26 @@ class Login extends React.Component {
                                     <TouchableOpacity
                                         onPress={this.managePasswordVisibility}
                                     >
-                                        <Image
-                                            source={EYE}
-                                            style={{
-                                                height: hp(3),
-                                                width: wp(9)
-                                            }}
-                                        />
+                                        {this.state.hidePassword ===
+                                        true && (
+                                            <Image
+                                                source={CLOSED_EYE}
+                                                style={{
+                                                    height: hp(3),
+                                                    width: hp(5)
+                                                }}
+                                            />
+                                        )}
+                                        {this.state.hidePassword ===
+                                        false && (
+                                            <Image
+                                                source={OPENED_EYE}
+                                                style={{
+                                                    height: hp(3),
+                                                    width: hp(5)
+                                                }}
+                                            />
+                                        )}
                                     </TouchableOpacity>
                                 </View>
                             )}
@@ -169,7 +184,8 @@ class Login extends React.Component {
                             marginBottom={hp(6)}
                             color="#00D9EF"
                             buttonText="Giriş Yap"
-                            borderRadius={10}
+                            borderRadius={hp(1.5)}
+                            fontSize={hp(3)}
                             onPress={this.loginOnPress}
                             disabled={this.props.buttonLock}
                         />

@@ -31,7 +31,7 @@ export default StyleSheet.create({
     searchBar: {
         height: hp(5),
         width: wp(66),
-        borderRadius: 30,
+        borderRadius: hp(10),
         borderColor: '#00D9EF',
         borderWidth: hp(0.3),
         flexDirection: 'row',
@@ -41,7 +41,7 @@ export default StyleSheet.create({
     profileContainerShadowView:{
         height: hp(30),
         width: wp(90),
-        borderRadius: 30,
+        borderRadius: hp(3),
         alignItems: 'center',
         backgroundColor: "rgba(0,0,0,0.5)"
     },
@@ -62,36 +62,36 @@ export default StyleSheet.create({
     coverPhoto: {
         height: hp(30),
         width: wp(90),
-        borderRadius: 30,
+        borderRadius: hp(3),
         marginTop: hp(1)
     },
     statisticsBox: {
         height: hp(25),
         width: wp(42.5),
-        borderRadius: 30,
+        borderRadius: hp(3),
         marginLeft: wp(5),
         borderColor: '#00D9EF',
-        borderWidth: hp(0.3),
+        borderWidth: hp(0.5),
         justifyContent: 'center',
         alignItems: 'center'
     },
     friendsBox: {
         height: hp(25),
         width: wp(42.5),
-        borderRadius: 30,
+        borderRadius: hp(3),
         marginRight: wp(5),
         borderColor: '#00D9EF',
-        borderWidth: hp(0.3),
+        borderWidth: hp(0.5),
         justifyContent: 'center',
         alignItems: 'center'
     },
     badgesBox: {
         height: hp(25),
         width: wp(42.5),
-        borderRadius: 30,
+        borderRadius: hp(3),
         marginLeft: wp(5),
         borderColor: '#00D9EF',
-        borderWidth: hp(0.3),
+        borderWidth: hp(0.5),
         marginBottom: hp(1),
         justifyContent: 'center',
         alignItems: 'center'
@@ -99,10 +99,10 @@ export default StyleSheet.create({
     favoritesBox: {
         height: hp(25),
         width: wp(42.5),
-        borderRadius: 30,
+        borderRadius: hp(3),
         marginRight: wp(5),
         borderColor: '#00D9EF',
-        borderWidth: hp(0.3),
+        borderWidth: hp(0.5),
         marginBottom: hp(1),
         justifyContent: 'center',
         alignItems: 'center'
@@ -116,8 +116,9 @@ export default StyleSheet.create({
     boxLogoContainer:{
         height: hp(13),
         width: wp(42.5),
-        justifyContent: 'flex-start',
-        alignItems: 'center'
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'flex-start'
     },
     boxText: {
         fontFamily: 'Averta-ExtraBoldItalic',
@@ -157,9 +158,9 @@ export default StyleSheet.create({
         height: hp(13.5),
         width: hp(13.5),
         marginTop: hp(2),
-        borderRadius: 100,
-        borderWidth: hp(0.3),
-        borderColor: '#00D9EF'
+        borderRadius: hp(100),
+        borderWidth: hp(0.4),
+        borderColor: '#FF9900'
     },
     profilePicView: {
         height: hp(16.5),
@@ -169,7 +170,7 @@ export default StyleSheet.create({
     },
     profileInfoView: {
         height: hp(12),
-        width: wp(70),
+        width: wp(80),
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -180,15 +181,21 @@ export default StyleSheet.create({
         paddingVertical: hp(0)
     },
     usernameText: {
-        fontFamily: 'Averta-Regular',
+        fontFamily: 'Averta-RegularItalic',
         fontSize: hp(2.4),
         color: 'white',
         paddingVertical: hp(0)
     },
     sinaviaScoreText: {
-        fontFamily: 'Averta-RegularItalic',
+        fontFamily: 'Averta-Semibold',
         fontSize: hp(2.4),
         color: '#FF9900',
         paddingVertical: hp(0)
+    },
+    friendsCounterBoxText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(7),
+        color: '#FF9900',
+        bottom: hp(1)
     }
 })
