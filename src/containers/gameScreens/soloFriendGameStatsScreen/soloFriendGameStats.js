@@ -227,23 +227,24 @@ class SoloFriendGameStatsScreen extends React.Component {
                 })
             } else questionList = this.props.questionList
 
-            this.setState({
-                correctAnswerNumber: playerCorrect,
-                incorrectAnswerNumber: playerIncorrect,
-                unansweredAnswerNumber: playerUnanswered,
-                opponentCorrectAnswerNumber: opponentCorrect,
-                opponentInorrectAnswerNumber: opponentIncorrect,
-                opponentUnansweredAnswerNumber: opponentUnanswered,
-                opponentProfilePicture: opponentProfilePicture,
-                opponentUsername: opponentUsername,
-                playerFriendMatchWinCount: playerFriendMatchWinCount,
-                opponentFriendMatchWinCount: opponentFriendMatchWinCount,
-                friendMatchesCount: friendMatchesCount,
-                clientAnswers: clientAnswers,
-                questionList: questionList
-            })
-
-            this.checkFavouriteStatus()
+            this.setState(
+                {
+                    correctAnswerNumber: playerCorrect,
+                    incorrectAnswerNumber: playerIncorrect,
+                    unansweredAnswerNumber: playerUnanswered,
+                    opponentCorrectAnswerNumber: opponentCorrect,
+                    opponentInorrectAnswerNumber: opponentIncorrect,
+                    opponentUnansweredAnswerNumber: opponentUnanswered,
+                    opponentProfilePicture: opponentProfilePicture,
+                    opponentUsername: opponentUsername,
+                    playerFriendMatchWinCount: playerFriendMatchWinCount,
+                    opponentFriendMatchWinCount: opponentFriendMatchWinCount,
+                    friendMatchesCount: friendMatchesCount,
+                    clientAnswers: clientAnswers,
+                    questionList: questionList
+                },
+                () => this.checkFavouriteStatus()
+            )
 
             resolve(true)
         })

@@ -149,7 +149,7 @@ class FriendGame extends React.Component {
             switch (userJoker.jokerId) {
                 case 1:
                     let splittedFirstJoker = userJoker.joker.name.split(/[ ,]+/)
-                    console.log(userJoker)
+
                     this.setState({
                         firstJokerNameFirstWord: splittedFirstJoker[0],
                         firstJokerNameSecondWord: splittedFirstJoker[1],
@@ -164,7 +164,7 @@ class FriendGame extends React.Component {
                     break
                 case 2:
                     let splittedSecondJoker = userJoker.joker.name.split(/[ ,]+/)
-                    console.log(userJoker)
+
                     this.setState({
                         secondJokerNameFirstWord: splittedSecondJoker[0],
                         secondJokerNameSecondWord: splittedSecondJoker[1],
@@ -179,7 +179,7 @@ class FriendGame extends React.Component {
                     break
                 case 3:
                     let splittedThirdJoker = userJoker.joker.name.split(/[ ,]+/)
-                    console.log(userJoker)
+
                     this.setState({
                         thirdJokerNameFirstWord: splittedThirdJoker[0],
                         thirdJokerNameSecondWord: splittedThirdJoker[1],
@@ -325,6 +325,9 @@ class FriendGame extends React.Component {
                     isWon: false
                 })
                 break
+                case 'save-questions':
+                    this.setState({ fullQuestionList: message.fullQuestionList })
+                break
         }
     }
 
@@ -410,9 +413,6 @@ class FriendGame extends React.Component {
                     isMatchFinished: true,
                     friendMatches: this.state.friendMatches
                 })
-                break
-            case 'save-questions':
-                this.setState({ fullQuestionList: message.fullQuestionList })
                 break
         }
     }
