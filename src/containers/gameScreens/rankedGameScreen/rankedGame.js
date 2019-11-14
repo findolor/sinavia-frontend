@@ -676,17 +676,6 @@ class RankedGame extends React.Component {
         this.buttonOnPress(6)
     }
 
-    backButtonOnPress = () => {
-        this.props.room.leave()
-        this.props.client.close()
-
-        // If the client has some correct answeres before leaving, we add them
-        const totalEarnedPoints = this.state.playerOneCorrect * 20
-        this.props.updateTotalPoints(totalEarnedPoints)
-
-        navigationReset('main')
-    }
-
     zoomButtonOnPress = () => {
         this.setState({ isQuestionModalVisible: true })
     }

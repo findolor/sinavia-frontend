@@ -9,7 +9,8 @@ import {
 } from 'react-native'
 import {
     navigationReset,
-    navigationReplace
+    navigationReplace,
+    SCENE_KEYS
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
@@ -24,8 +25,6 @@ import unanswered from '../../../assets/gameScreens/unanswered.png'
 import selectedFav from '../../../assets/favori.png'
 import unselectedFav from '../../../assets/favori_bos.png'
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
-
-import PROFILE_IMG from '../../../assets/profile2.jpg'
 
 class SoloModeGameStats extends React.Component {
     constructor(props) {
@@ -47,15 +46,128 @@ class SoloModeGameStats extends React.Component {
             screenPosition: 1,
             // User answer background color. Changes depending on the result
             answerBackgroundColor: '',
-            // Replay button press number
-            replayButtonPressNumber: 0,
             // Fav icon selection
             isFaved: false,
             // Fav icon
-            favouriteIcon: unselectedFav,
-            // Current match information
-            matchInformation: {},
-            isModalVisible: false
+            favouriteIcon: unselectedFav
+        }
+    }
+
+    async componentDidMount() {
+        await this.loadScreen()
+        this.props.room.onMessage.add(message => {
+            this.chooseMessageAction(message)
+        })
+        this.props.room.onError.add(err => console.log(err))
+    }
+
+    chooseMessageAction = message => {
+        switch (message.action) {
+            case 'replay':
+                setTimeout(() => {
+                    this.props.room.removeAllListeners()
+
+                    navigationReplace(
+                        SCENE_KEYS.gameScreens.soloModeGameScreen,
+                        {
+                            room: this.props.room,
+                            client: this.props.client,
+                            playerUsername: this.props.playerUsername,
+                            playerProfilePicture: this.props
+                                .playerProfilePicture,
+                            opponentUsername: this.props.opponentUsername,
+                            opponentId: this.props.opponentId,
+                            opponentProfilePicture: this.props
+                                .opponentProfilePicture
+                        }
+                    )
+                }, 1000)
+                return
+        }
+    }
+
+    loadScreen() {
+        return new Promise(resolve => {
+            // This is the same logic as ranked etc..
+            let undefinedQuestionIndex = -1
+
+            let playerCorrect = 0
+            let playerIncorrect = 0
+            let playerUnanswered = 0
+            let playerUsername = ''
+            let playerProfilePicture = ''
+
+            playerUsername = this.props.playerProps.username
+            playerProfilePicture = this.props.playerProps.profilePicture
+            this.props.playerProps.answers.forEach((result, index) => {
+                switch (result.result) {
+                    case null:
+                        playerUnanswered++
+                        return
+                    case true:
+                        playerCorrect++
+                        return
+                    case false:
+                        playerIncorrect++
+                }
+                undefinedQuestionIndex = index
+            })
+
+            if (!this.props.isMatchFinished) {
+                this.props.fullQuestionList.splice(
+                    undefinedQuestionIndex + 1,
+                    Object.keys(this.props.fullQuestionList).length -
+                        undefinedQuestionIndex +
+                        1
+                )
+                this.props.questionList.splice(
+                    undefinedQuestionIndex + 1,
+                    Object.keys(this.props.questionList).length -
+                        undefinedQuestionIndex +
+                        1
+                )
+            }
+
+            for (i = 0; i < Object.keys(this.props.questionList).length; i++) {
+                this.state.allQuestionsList.push(
+                    <View style={styles.scrollQuestionContainer} key={i}>
+                        <View style={styles.questionContainer}>
+                            <Image
+                                source={{ uri: this.props.questionList[i] }}
+                                style={styles.questionStyle}
+                            />
+                        </View>
+                    </View>
+                )
+            }
+
+            this.setState({
+                correctAnswerNumber: playerCorrect,
+                incorrectAnswerNumber: playerIncorrect,
+                unansweredAnswerNumber: playerUnanswered,
+                clientProfilePicture: playerProfilePicture,
+                clientUsername: playerUsername
+            })
+
+            this.checkFavouriteStatus()
+
+            resolve(true)
+        })
+    }
+
+    checkFavouriteStatus = () => {
+        const index = this.props.favouriteQuestions.findIndex(
+            x =>
+                x.question.id ===
+                this.props.fullQuestionList[this.state.questionPosition - 1].id
+        )
+        if (index === -1) {
+            this.setState({
+                favouriteIcon: unselectedFav,
+                isFaved: false
+            })
+        } else {
+            this.setState({ favouriteIcon: selectedFav, isFaved: true })
         }
     }
 
@@ -98,6 +210,55 @@ class SoloModeGameStats extends React.Component {
         })
     }
 
+    replayButtonOnPress = () => {
+        this.props.room.send({
+            action: 'replay'
+        })
+    }
+
+    answerSwitcher(buttonNumber) {
+        switch (buttonNumber) {
+            case 1:
+                return 'A'
+            case 2:
+                return 'B'
+            case 3:
+                return 'C'
+            case 4:
+                return 'D'
+            case 5:
+                return 'E'
+            case 6:
+                return 'Boş'
+        }
+    }
+
+    mainScreenButtonOnPress = () => {
+        this.props.room.leave()
+        this.props.client.close()
+        navigationReset('main')
+    }
+
+    favouriteOnPress = () => {
+        if (this.state.isFaved) {
+            this.props.unfavouriteQuestion(
+                this.props.clientToken,
+                this.props.clientDBId,
+                this.props.fullQuestionList[this.state.questionPosition - 1],
+                this.props.favouriteQuestions
+            )
+            this.setState({ favouriteIcon: unselectedFav, isFaved: false })
+        } else {
+            this.props.favouriteQuestion(
+                this.props.clientToken,
+                this.props.clientDBId,
+                this.props.fullQuestionList[this.state.questionPosition - 1],
+                this.props.favouriteQuestions
+            )
+            this.setState({ favouriteIcon: selectedFav, isFaved: true })
+        }
+    }
+
     render() {
         return (
             <ScrollView
@@ -120,11 +281,13 @@ class SoloModeGameStats extends React.Component {
                         <View style={styles.userAndResultView}>
                             <View style={styles.userView}>
                                 <Image
-                                    source={PROFILE_IMG}
+                                    source={{
+                                        uri: this.state.clientProfilePicture
+                                    }}
                                     style={styles.profilePic}
                                 />
                                 <Text style={styles.usernameText}>
-                                    arcaaltunsu
+                                    {this.state.clientUsername}
                                 </Text>
                             </View>
                             <View style={styles.resultView}>
@@ -133,33 +296,42 @@ class SoloModeGameStats extends React.Component {
                                         source={correct}
                                         style={styles.answerImg}
                                     />
-                                    <Text style={styles.numbers}>5 Doğru</Text>
+                                    <Text style={styles.numbers}>
+                                        {this.state.correctAnswerNumber} Doğru
+                                    </Text>
                                 </View>
                                 <View style={styles.dividedAnswer}>
                                     <Image
                                         source={incorrect}
                                         style={styles.answerImg}
                                     />
-                                    <Text style={styles.numbers}>5 Yanlış</Text>
+                                    <Text style={styles.numbers}>
+                                        {this.state.incorrectAnswerNumber}{' '}
+                                        Yanlış
+                                    </Text>
                                 </View>
                                 <View style={styles.dividedAnswer}>
                                     <Image
                                         source={unanswered}
                                         style={styles.answerImg}
                                     />
-                                    <Text style={styles.numbers}>5 Boş</Text>
+                                    <Text style={styles.numbers}>
+                                        {this.state.unansweredAnswerNumber} Boş
+                                    </Text>
                                 </View>
                             </View>
                         </View>
                     </View>
                     <View style={styles.buttonsContainer}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={this.replayButtonOnPress}>
                             <View style={styles.replayButton}>
                                 <Text style={styles.buttonText}>Yeniden</Text>
                                 <Text style={styles.buttonText}>Oyna</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={this.mainScreenButtonOnPress}
+                        >
                             <View style={styles.mainScreenButton}>
                                 <Text style={styles.buttonText}>Ana</Text>
                                 <Text style={styles.buttonText}>Menü</Text>
@@ -195,7 +367,10 @@ class SoloModeGameStats extends React.Component {
                 </View>
                 <View style={styles.secondScreenView}>
                     <View style={styles.questionNumberContainer}>
-                        <Text style={styles.questionNumberText}>4/ 5</Text>
+                        <Text style={styles.questionNumberText}>
+                            {this.state.questionPosition}/
+                            {Object.keys(this.state.allQuestionsList).length}
+                        </Text>
                     </View>
                     <ScrollView
                         horizontal={true}
@@ -203,7 +378,9 @@ class SoloModeGameStats extends React.Component {
                         pagingEnabled={true}
                         onScroll={this.handleScrollHorizontal}
                         scrollEventThrottle={8}
-                    ></ScrollView>
+                    >
+                        {this.state.allQuestionsList}
+                    </ScrollView>
                     <View style={styles.favAndAnswerContainer}>
                         <View style={styles.answerContainer}>
                             <View
@@ -218,7 +395,11 @@ class SoloModeGameStats extends React.Component {
                                         { color: '#00D9EF' }
                                     ]}
                                 >
-                                    D
+                                    {this.answerSwitcher(
+                                        this.props.playerProps.answers[
+                                            this.state.questionPosition - 1
+                                        ].correctAnswer
+                                    )}
                                 </Text>
                             </View>
                             <Text style={styles.answerText}>Doğru Cevap</Text>
@@ -226,7 +407,7 @@ class SoloModeGameStats extends React.Component {
                         <View style={styles.favIconContainer}>
                             <TouchableOpacity onPress={this.favouriteOnPress}>
                                 <Image
-                                    source={unselectedFav}
+                                    source={this.state.favouriteIcon}
                                     style={styles.favIcon}
                                 />
                             </TouchableOpacity>
@@ -246,7 +427,11 @@ class SoloModeGameStats extends React.Component {
                                         { color: '#00D9EF' }
                                     ]}
                                 >
-                                    A
+                                    {this.answerSwitcher(
+                                        this.props.playerProps.answers[
+                                            this.state.questionPosition - 1
+                                        ].answer
+                                    )}
                                 </Text>
                             </View>
                             <Text style={styles.answerText}>Senin Cevabın</Text>
