@@ -276,21 +276,25 @@ class FriendGameStatsScreen extends React.Component {
                 )
             }
 
-            this.setState({
-                correctAnswerNumber: playerCorrect,
-                incorrectAnswerNumber: playerIncorrect,
-                unansweredAnswerNumber: playerUnanswered,
-                opponentCorrectAnswerNumber: opponentCorrect,
-                opponentInorrectAnswerNumber: opponentIncorrect,
-                opponentUnansweredAnswerNumber: opponentUnanswered,
-                clientProfilePicture: playerProfilePicture,
-                opponentProfilePicture: opponentProfilePicture,
-                clientUsername: playerUsername,
-                opponentUsername: opponentUsername,
-                playerFriendMatchWinCount: playerFriendMatchWinCount,
-                opponentFriendMatchWinCount: opponentFriendMatchWinCount,
-                friendMatchesCount: friendMatchesCount
-            })
+            this.setState(
+                {
+                    correctAnswerNumber: playerCorrect,
+                    incorrectAnswerNumber: playerIncorrect,
+                    unansweredAnswerNumber: playerUnanswered,
+                    opponentCorrectAnswerNumber: opponentCorrect,
+                    opponentInorrectAnswerNumber: opponentIncorrect,
+                    opponentUnansweredAnswerNumber: opponentUnanswered,
+                    clientProfilePicture: playerProfilePicture,
+                    opponentProfilePicture: opponentProfilePicture,
+                    clientUsername: playerUsername,
+                    opponentUsername: opponentUsername,
+                    playerFriendMatchWinCount: playerFriendMatchWinCount,
+                    opponentFriendMatchWinCount: opponentFriendMatchWinCount,
+                    friendMatchesCount: friendMatchesCount
+                },
+                () => this.checkFavouriteStatus()
+            )
+
             resolve(true)
         })
     }
