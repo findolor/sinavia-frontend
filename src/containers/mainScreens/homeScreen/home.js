@@ -203,11 +203,9 @@ class Home extends React.Component {
         global.notificationOpenedListener = firebase
             .notifications()
             .onNotificationOpened(notificationOpen => {
-                // Get the action triggered by the notification being opened
-                const action = notificationOpen.action
                 // Get information about the notification that was opened
                 const notification = notificationOpen.notification
-                console.log(action, notification, 'app running')
+
                 this.fcmMessagePicker(notification)
                 this.props.saveNotificationOpen(null)
             })
@@ -215,13 +213,10 @@ class Home extends React.Component {
         // This func fires up
         if (this.props.notificationOpen) {
             // App was opened by a notification
-            // Get the action triggered by the notification being opened
-            const action = this.props.notificationOpen.action
             // Get information about the notification that was opened
             const notification = this.props.notificationOpen.notification
-            console.log(action, notification, 'app closed')
-            // TODO ACT ON ACTIONS HERE
-            // TODO DECIDE WHAT TO DO
+            if (notification === undefined) return
+
             this.fcmMessagePicker(notification)
             this.props.saveNotificationOpen(null)
         }
