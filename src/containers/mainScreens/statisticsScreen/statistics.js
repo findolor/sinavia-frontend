@@ -1,7 +1,7 @@
 import React from 'react'
 import { ProgressCircle } from 'react-native-svg-charts'
 import Rheostat from 'react-native-rheostat'
-import { Image, Text, TouchableOpacity, View, ScrollView } from 'react-native'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
@@ -60,11 +60,41 @@ class Statistics extends React.Component {
             friendCorrectPercentage: 0,
             friendIncorrectPercentage: 0,
             friendUnansweredPercentage: 0,
+            // Group game variables
+            totalGroupGames: 0,
+            totalGroupCorrect: 0,
+            totalGroupIncorrect: 0,
+            totalGroupUnanswered: 0,
+            groupTotalSolved: 0,
+            groupCorrectPercentage: 0,
+            groupIncorrectPercentage: 0,
+            groupUnansweredPercentage: 0,
+            // Solo game variables
+            totalSoloGames: 0,
+            totalSoloCorrect: 0,
+            totalSoloIncorrect: 0,
+            totalSoloUnanswered: 0,
+            soloTotalSolved: 0,
+            soloCorrectPercentage: 0,
+            soloIncorrectPercentage: 0,
+            soloUnansweredPercentage: 0,
             // Question variables
             totalCorrect: 0,
             totalIncorrect: 0,
             totalUnanswered: 0,
             totalQuestionsSolved: 0,
+            // Overall variables
+            overallGames: 0,
+            overallWin: 0,
+            overallLose: 0,
+            overallDraw: 0,
+            overallCorrect: 0,
+            overallIncorrect: 0,
+            overallUnanswered: 0,
+            overallCorrectPercentage: 0,
+            overallIncorrectPercentage: 0,
+            overallUnansweredPercentage: 0,
+            overallSolved: 0,
             // Choosen game contents
             choosenExamId: null,
             choosenCourseId: null,
@@ -78,7 +108,9 @@ class Statistics extends React.Component {
             sixMonthsStatList: [],
             // Variables to check if we fetched the other times
             isMonthlyFetched: false,
-            isSixMonthsFetched: false
+            isSixMonthsFetched: false,
+            // Swiper index
+            swiperIndex: 0
         }
     }
 
@@ -502,302 +534,63 @@ class Statistics extends React.Component {
     }
 
     weeklyRheostatValueUpdate = payload => {
-        // Ranked
-        let rankedWinCounter = 0,
-            rankedLoseCounter = 0,
-            rankedDrawCounter = 0,
-            rankedCorrectCounter = 0,
-            rankedIncorrectCounter = 0,
-            rankedUnansweredCounter = 0,
-            rankedTotalGames = 0,
-            rankedTotalSolved = 0
-        // Friend
-        let friendWinCounter = 0,
-            friendLoseCounter = 0,
-            friendDrawCounter = 0,
-            friendCorrectCounter = 0,
-            friendIncorrectCounter = 0,
-            friendUnansweredCounter = 0,
-            friendTotalGames = 0,
-            friendTotalSolved = 0
-        // Question counters
-        let correctCounter = 0,
-            incorrectCounter = 0,
-            unansweredCounter = 0,
-            totalQuestionsSolved = 0
-
-        this.setState({
-            thisWeek: payload,
-            startDate: Moment.utc()
-                .startOf('week')
-                .add(payload.values[0], 'days')
-                .format('YYYY-MM-DD'),
-            endDate: Moment.utc()
-                .startOf('week')
-                .add(payload.values[1], 'days')
-                .format('YYYY-MM-DD')
-        })
-        this.state.weeklyStatList.forEach(statistic => {
-            if (
-                statistic.createdAt >= this.state.startDate &&
-                statistic.createdAt <= this.state.endDate
-            ) {
-                if (
-                    statistic.gameResult &&
-                    (statistic.earnedPoints || statistic.earnedPoints === 0)
-                ) {
-                    rankedTotalGames++
-                    switch (statistic.gameResult) {
-                        case 'won':
-                            rankedWinCounter++
-                            break
-                        case 'lost':
-                            rankedLoseCounter++
-                            break
-                        case 'draw':
-                            rankedDrawCounter++
-                            break
-                    }
-                    correctCounter += statistic.correctNumber
-                    incorrectCounter += statistic.incorrectNumber
-                    unansweredCounter += statistic.unansweredNumber
-                    rankedCorrectCounter += statistic.correctNumber
-                    rankedIncorrectCounter += statistic.incorrectNumber
-                    rankedUnansweredCounter += statistic.unansweredNumber
-                } else if (statistic.gameResult) {
-                    friendTotalGames++
-                    switch (statistic.gameResult) {
-                        case 'won':
-                            friendWinCounter++
-                            break
-                        case 'lost':
-                            friendLoseCounter++
-                            break
-                        case 'draw':
-                            friendDrawCounter++
-                            break
-                    }
-                    correctCounter += statistic.correctNumber
-                    incorrectCounter += statistic.incorrectNumber
-                    unansweredCounter += statistic.unansweredNumber
-                    friendCorrectCounter += statistic.correctNumber
-                    friendIncorrectCounter += statistic.incorrectNumber
-                    friendUnansweredCounter += statistic.unansweredNumber
-                }
+        this.setState(
+            {
+                thisWeek: payload,
+                startDate: Moment.utc()
+                    .startOf('week')
+                    .add(payload.values[0], 'days')
+                    .format('YYYY-MM-DD'),
+                endDate: Moment.utc()
+                    .startOf('week')
+                    .add(payload.values[1], 'days')
+                    .format('YYYY-MM-DD')
+            },
+            () => {
+                this.calculateAllStatistics(0)
             }
-        })
-        rankedTotalSolved =
-            rankedCorrectCounter +
-            rankedIncorrectCounter +
-            rankedUnansweredCounter
-        friendTotalSolved =
-            friendCorrectCounter +
-            friendIncorrectCounter +
-            friendUnansweredCounter
-        totalQuestionsSolved =
-            correctCounter + incorrectCounter + unansweredCounter
-
-        this.setState({
-            // Ranked game variables
-            totalRankedWin: rankedWinCounter,
-            totalRankedLose: rankedLoseCounter,
-            totalRankedDraw: rankedDrawCounter,
-            totalRankedGames: rankedTotalGames,
-            rankedWinPercentage: (rankedWinCounter / rankedTotalGames) * 100,
-            rankedCorrectPercentage:
-                rankedTotalSolved === 0
-                    ? 0
-                    : (rankedCorrectCounter / rankedTotalSolved) * 100,
-            rankedIncorrectPercentage:
-                rankedTotalSolved === 0
-                    ? 0
-                    : (rankedIncorrectCounter / rankedTotalSolved) * 100,
-            rankedUnansweredPercentage:
-                rankedTotalSolved === 0
-                    ? 0
-                    : (rankedUnansweredCounter / rankedTotalSolved) * 100,
-            rankedTotalSolved: rankedTotalSolved,
-            totalRankedCorrect: rankedCorrectCounter,
-            totalRankedIncorrect: rankedIncorrectCounter,
-            totalRankedUnanswered: rankedUnansweredCounter,
-            // Friend game variables
-            totalFriendWin: friendWinCounter,
-            totalFriendLose: friendLoseCounter,
-            totalFriendDraw: friendDrawCounter,
-            totalFriendGames: friendTotalGames,
-            friendWinPercentage: (friendWinCounter / friendTotalGames) * 100,
-            friendCorrectPercentage:
-                friendTotalSolved === 0
-                    ? 0
-                    : (friendCorrectCounter / friendTotalSolved) * 100,
-            friendIncorrectPercentage:
-                friendTotalSolved === 0
-                    ? 0
-                    : (friendIncorrectCounter / friendTotalSolved) * 100,
-            friendUnansweredPercentage:
-                friendTotalSolved === 0
-                    ? 0
-                    : (friendUnansweredCounter / friendTotalSolved) * 100,
-            totalFriendCorrect: friendCorrectCounter,
-            totalFriendIncorrect: friendIncorrectCounter,
-            totalFriendUnanswered: friendUnansweredCounter,
-            // Question variables
-            totalCorrect: correctCounter,
-            totalIncorrect: incorrectCounter,
-            totalUnanswered: unansweredCounter,
-            totalQuestionsSolved: totalQuestionsSolved
-        })
+        )
     }
 
     monthlyRheostatValUpdated = payload => {
-        // Ranked
-        let rankedWinCounter = 0,
-            rankedLoseCounter = 0,
-            rankedDrawCounter = 0,
-            rankedCorrectCounter = 0,
-            rankedIncorrectCounter = 0,
-            rankedUnansweredCounter = 0,
-            rankedTotalGames = 0,
-            rankedTotalSolved = 0
-        // Friend
-        let friendWinCounter = 0,
-            friendLoseCounter = 0,
-            friendDrawCounter = 0,
-            friendCorrectCounter = 0,
-            friendIncorrectCounter = 0,
-            friendUnansweredCounter = 0,
-            friendTotalGames = 0,
-            friendTotalSolved = 0
-        // Question counters
-        let correctCounter = 0,
-            incorrectCounter = 0,
-            unansweredCounter = 0,
-            totalQuestionsSolved = 0
-
-        this.setState({
-            thisMonth: payload,
-            startDate: Moment.utc()
-                .startOf('month')
-                .add(payload.values[0], 'days')
-                .format('YYYY-MM-DD'),
-            endDate: Moment.utc()
-                .startOf('month')
-                .add(payload.values[1], 'days')
-                .format('YYYY-MM-DD')
-        })
-        this.state.monthlyStatList.forEach(statistic => {
-            if (
-                statistic.createdAt >= this.state.startDate &&
-                statistic.createdAt <= this.state.endDate
-            ) {
-                if (
-                    statistic.gameResult &&
-                    (statistic.earnedPoints || statistic.earnedPoints === 0)
-                ) {
-                    rankedTotalGames++
-                    switch (statistic.gameResult) {
-                        case 'won':
-                            rankedWinCounter++
-                            break
-                        case 'lost':
-                            rankedLoseCounter++
-                            break
-                        case 'draw':
-                            rankedDrawCounter++
-                            break
-                    }
-                    correctCounter += statistic.correctNumber
-                    incorrectCounter += statistic.incorrectNumber
-                    unansweredCounter += statistic.unansweredNumber
-                    rankedCorrectCounter += statistic.correctNumber
-                    rankedIncorrectCounter += statistic.incorrectNumber
-                    rankedUnansweredCounter += statistic.unansweredNumber
-                } else if (statistic.gameResult) {
-                    friendTotalGames++
-                    switch (statistic.gameResult) {
-                        case 'won':
-                            friendWinCounter++
-                            break
-                        case 'lost':
-                            friendLoseCounter++
-                            break
-                        case 'draw':
-                            friendDrawCounter++
-                            break
-                    }
-                    correctCounter += statistic.correctNumber
-                    incorrectCounter += statistic.incorrectNumber
-                    unansweredCounter += statistic.unansweredNumber
-                    friendCorrectCounter += statistic.correctNumber
-                    friendIncorrectCounter += statistic.incorrectNumber
-                    friendUnansweredCounter += statistic.unansweredNumber
-                }
+        this.setState(
+            {
+                thisMonth: payload,
+                startDate: Moment.utc()
+                    .startOf('month')
+                    .add(payload.values[0], 'days')
+                    .format('YYYY-MM-DD'),
+                endDate: Moment.utc()
+                    .startOf('month')
+                    .add(payload.values[1], 'days')
+                    .format('YYYY-MM-DD')
+            },
+            () => {
+                this.calculateAllStatistics(1)
             }
-        })
-        rankedTotalSolved =
-            rankedCorrectCounter +
-            rankedIncorrectCounter +
-            rankedUnansweredCounter
-        friendTotalSolved =
-            friendCorrectCounter +
-            friendIncorrectCounter +
-            friendUnansweredCounter
-        totalQuestionsSolved =
-            correctCounter + incorrectCounter + unansweredCounter
-
-        this.setState({
-            // Ranked game variables
-            totalRankedWin: rankedWinCounter,
-            totalRankedLose: rankedLoseCounter,
-            totalRankedDraw: rankedDrawCounter,
-            totalRankedGames: rankedTotalGames,
-            rankedWinPercentage: (rankedWinCounter / rankedTotalGames) * 100,
-            rankedCorrectPercentage:
-                rankedTotalSolved === 0
-                    ? 0
-                    : (rankedCorrectCounter / rankedTotalSolved) * 100,
-            rankedIncorrectPercentage:
-                rankedTotalSolved === 0
-                    ? 0
-                    : (rankedIncorrectCounter / rankedTotalSolved) * 100,
-            rankedUnansweredPercentage:
-                rankedTotalSolved === 0
-                    ? 0
-                    : (rankedUnansweredCounter / rankedTotalSolved) * 100,
-            rankedTotalSolved: rankedTotalSolved,
-            totalRankedCorrect: rankedCorrectCounter,
-            totalRankedIncorrect: rankedIncorrectCounter,
-            totalRankedUnanswered: rankedUnansweredCounter,
-            // Friend game variables
-            totalFriendWin: friendWinCounter,
-            totalFriendLose: friendLoseCounter,
-            totalFriendDraw: friendDrawCounter,
-            totalFriendGames: friendTotalGames,
-            friendWinPercentage: (friendWinCounter / friendTotalGames) * 100,
-            friendCorrectPercentage:
-                friendTotalSolved === 0
-                    ? 0
-                    : (friendCorrectCounter / friendTotalSolved) * 100,
-            friendIncorrectPercentage:
-                friendTotalSolved === 0
-                    ? 0
-                    : (friendIncorrectCounter / friendTotalSolved) * 100,
-            friendUnansweredPercentage:
-                friendTotalSolved === 0
-                    ? 0
-                    : (friendUnansweredCounter / friendTotalSolved) * 100,
-            totalFriendCorrect: friendCorrectCounter,
-            totalFriendIncorrect: friendIncorrectCounter,
-            totalFriendUnanswered: friendUnansweredCounter,
-            // Question variables
-            totalCorrect: correctCounter,
-            totalIncorrect: incorrectCounter,
-            totalUnanswered: unansweredCounter,
-            totalQuestionsSolved: totalQuestionsSolved
-        })
+        )
     }
 
     sixMonthsRheostatValUpdated = payload => {
+        this.setState(
+            {
+                lastSixMonths: payload,
+                startDate: Moment.utc()
+                    .startOf('month')
+                    .subtract(5 - payload.values[0], 'months')
+                    .format('YYYY-MM-DD'),
+                endDate: Moment.utc()
+                    .endOf('month')
+                    .subtract(5 - payload.values[1], 'months')
+                    .format('YYYY-MM-DD')
+            },
+            () => {
+                this.calculateAllStatistics(2)
+            }
+        )
+    }
+
+    calculateAllStatistics = rheostatFunctionNumber => {
         // Ranked
         let rankedWinCounter = 0,
             rankedLoseCounter = 0,
@@ -816,72 +609,221 @@ class Statistics extends React.Component {
             friendUnansweredCounter = 0,
             friendTotalGames = 0,
             friendTotalSolved = 0
+        // Group
+        let groupCorrectCounter = 0,
+            groupIncorrectCounter = 0,
+            groupUnansweredCounter = 0,
+            groupTotalGames = 0,
+            groupTotalSolved = 0
+        // Solo
+        let soloCorrectCounter = 0,
+            soloIncorrectCounter = 0,
+            soloUnansweredCounter = 0,
+            soloTotalGames = 0,
+            soloTotalSolved = 0
         // Question counters
         let correctCounter = 0,
             incorrectCounter = 0,
             unansweredCounter = 0,
             totalQuestionsSolved = 0
 
-        this.setState({
-            lastSixMonths: payload,
-            startDate: Moment.utc()
-                .startOf('month')
-                .subtract(5 - payload.values[0], 'months')
-                .format('YYYY-MM-DD'),
-            endDate: Moment.utc()
-                .endOf('month')
-                .subtract(5 - payload.values[1], 'months')
-                .format('YYYY-MM-DD')
-        })
-        this.state.sixMonthsStatList.forEach(statistic => {
-            if (
-                statistic.createdAt >= this.state.startDate &&
-                statistic.createdAt <= this.state.endDate
-            ) {
-                if (
-                    statistic.gameResult &&
-                    (statistic.earnedPoints || statistic.earnedPoints === 0)
-                ) {
-                    rankedTotalGames++
-                    switch (statistic.gameResult) {
-                        case 'won':
-                            rankedWinCounter++
-                            break
-                        case 'lost':
-                            rankedLoseCounter++
-                            break
-                        case 'draw':
-                            rankedDrawCounter++
-                            break
+        switch (rheostatFunctionNumber) {
+            case 0:
+                this.state.weeklyStatList.forEach(statistic => {
+                    if (
+                        statistic.createdAt >= this.state.startDate &&
+                        statistic.createdAt <= this.state.endDate
+                    ) {
+                        switch (statistic.gameModeType) {
+                            case 'ranked':
+                                rankedTotalGames++
+                                switch (statistic.gameResult) {
+                                    case 'won':
+                                        rankedWinCounter++
+                                        break
+                                    case 'lost':
+                                        rankedLoseCounter++
+                                        break
+                                    case 'draw':
+                                        rankedDrawCounter++
+                                        break
+                                }
+                                rankedCorrectCounter += statistic.correctNumber
+                                rankedIncorrectCounter +=
+                                    statistic.incorrectNumber
+                                rankedUnansweredCounter +=
+                                    statistic.unansweredNumber
+                                break
+                            case 'friend':
+                                friendTotalGames++
+                                switch (statistic.gameResult) {
+                                    case 'won':
+                                        friendWinCounter++
+                                        break
+                                    case 'lost':
+                                        friendLoseCounter++
+                                        break
+                                    case 'draw':
+                                        friendDrawCounter++
+                                        break
+                                }
+                                friendCorrectCounter += statistic.correctNumber
+                                friendIncorrectCounter +=
+                                    statistic.incorrectNumber
+                                friendUnansweredCounter +=
+                                    statistic.unansweredNumber
+                                break
+                            case 'group':
+                                groupTotalGames++
+                                groupCorrectCounter += statistic.correctNumber
+                                groupIncorrectCounter +=
+                                    statistic.incorrectNumber
+                                groupUnansweredCounter +=
+                                    statistic.unansweredNumber
+                                break
+                            case 'solo':
+                                soloTotalGames++
+                                soloCorrectCounter += statistic.correctNumber
+                                soloIncorrectCounter +=
+                                    statistic.incorrectNumber
+                                soloUnansweredCounter +=
+                                    statistic.unansweredNumber
+                                break
+                        }
                     }
-                    correctCounter += statistic.correctNumber
-                    incorrectCounter += statistic.incorrectNumber
-                    unansweredCounter += statistic.unansweredNumber
-                    rankedCorrectCounter += statistic.correctNumber
-                    rankedIncorrectCounter += statistic.incorrectNumber
-                    rankedUnansweredCounter += statistic.unansweredNumber
-                } else if (statistic.gameResult) {
-                    friendTotalGames++
-                    switch (statistic.gameResult) {
-                        case 'won':
-                            friendWinCounter++
-                            break
-                        case 'lost':
-                            friendLoseCounter++
-                            break
-                        case 'draw':
-                            friendDrawCounter++
-                            break
+                })
+                break
+            case 1:
+                this.state.monthlyStatList.forEach(statistic => {
+                    if (
+                        statistic.createdAt >= this.state.startDate &&
+                        statistic.createdAt <= this.state.endDate
+                    ) {
+                        switch (statistic.gameModeType) {
+                            case 'ranked':
+                                rankedTotalGames++
+                                switch (statistic.gameResult) {
+                                    case 'won':
+                                        rankedWinCounter++
+                                        break
+                                    case 'lost':
+                                        rankedLoseCounter++
+                                        break
+                                    case 'draw':
+                                        rankedDrawCounter++
+                                        break
+                                }
+                                rankedCorrectCounter += statistic.correctNumber
+                                rankedIncorrectCounter +=
+                                    statistic.incorrectNumber
+                                rankedUnansweredCounter +=
+                                    statistic.unansweredNumber
+                                break
+                            case 'friend':
+                                friendTotalGames++
+                                switch (statistic.gameResult) {
+                                    case 'won':
+                                        friendWinCounter++
+                                        break
+                                    case 'lost':
+                                        friendLoseCounter++
+                                        break
+                                    case 'draw':
+                                        friendDrawCounter++
+                                        break
+                                }
+                                friendCorrectCounter += statistic.correctNumber
+                                friendIncorrectCounter +=
+                                    statistic.incorrectNumber
+                                friendUnansweredCounter +=
+                                    statistic.unansweredNumber
+                                break
+                            case 'group':
+                                groupTotalGames++
+                                groupCorrectCounter += statistic.correctNumber
+                                groupIncorrectCounter +=
+                                    statistic.incorrectNumber
+                                groupUnansweredCounter +=
+                                    statistic.unansweredNumber
+                                break
+                            case 'solo':
+                                soloTotalGames++
+                                soloCorrectCounter += statistic.correctNumber
+                                soloIncorrectCounter +=
+                                    statistic.incorrectNumber
+                                soloUnansweredCounter +=
+                                    statistic.unansweredNumber
+                                break
+                        }
                     }
-                    correctCounter += statistic.correctNumber
-                    incorrectCounter += statistic.incorrectNumber
-                    unansweredCounter += statistic.unansweredNumber
-                    friendCorrectCounter += statistic.correctNumber
-                    friendIncorrectCounter += statistic.incorrectNumber
-                    friendUnansweredCounter += statistic.unansweredNumber
-                }
-            }
-        })
+                })
+                break
+            case 2:
+                this.state.sixMonthsStatList.forEach(statistic => {
+                    if (
+                        statistic.createdAt >= this.state.startDate &&
+                        statistic.createdAt <= this.state.endDate
+                    ) {
+                        switch (statistic.gameModeType) {
+                            case 'ranked':
+                                rankedTotalGames++
+                                switch (statistic.gameResult) {
+                                    case 'won':
+                                        rankedWinCounter++
+                                        break
+                                    case 'lost':
+                                        rankedLoseCounter++
+                                        break
+                                    case 'draw':
+                                        rankedDrawCounter++
+                                        break
+                                }
+                                rankedCorrectCounter += statistic.correctNumber
+                                rankedIncorrectCounter +=
+                                    statistic.incorrectNumber
+                                rankedUnansweredCounter +=
+                                    statistic.unansweredNumber
+                                break
+                            case 'friend':
+                                friendTotalGames++
+                                switch (statistic.gameResult) {
+                                    case 'won':
+                                        friendWinCounter++
+                                        break
+                                    case 'lost':
+                                        friendLoseCounter++
+                                        break
+                                    case 'draw':
+                                        friendDrawCounter++
+                                        break
+                                }
+                                friendCorrectCounter += statistic.correctNumber
+                                friendIncorrectCounter +=
+                                    statistic.incorrectNumber
+                                friendUnansweredCounter +=
+                                    statistic.unansweredNumber
+                                break
+                            case 'group':
+                                groupTotalGames++
+                                groupCorrectCounter += statistic.correctNumber
+                                groupIncorrectCounter +=
+                                    statistic.incorrectNumber
+                                groupUnansweredCounter +=
+                                    statistic.unansweredNumber
+                                break
+                            case 'solo':
+                                soloTotalGames++
+                                soloCorrectCounter += statistic.correctNumber
+                                soloIncorrectCounter +=
+                                    statistic.incorrectNumber
+                                soloUnansweredCounter +=
+                                    statistic.unansweredNumber
+                                break
+                        }
+                    }
+                })
+                break
+        }
         rankedTotalSolved =
             rankedCorrectCounter +
             rankedIncorrectCounter +
@@ -890,8 +832,30 @@ class Statistics extends React.Component {
             friendCorrectCounter +
             friendIncorrectCounter +
             friendUnansweredCounter
+        groupTotalSolved =
+            groupCorrectCounter + groupIncorrectCounter + groupUnansweredCounter
+        soloTotalSolved =
+            soloCorrectCounter + soloIncorrectCounter + soloUnansweredCounter
+        correctCounter =
+            rankedCorrectCounter +
+            friendCorrectCounter +
+            groupCorrectCounter +
+            soloCorrectCounter
+        incorrectCounter =
+            rankedIncorrectCounter +
+            friendIncorrectCounter +
+            groupIncorrectCounter +
+            soloIncorrectCounter
+        unansweredCounter =
+            rankedUnansweredCounter +
+            friendUnansweredCounter +
+            groupUnansweredCounter +
+            soloUnansweredCounter
         totalQuestionsSolved =
-            correctCounter + incorrectCounter + unansweredCounter
+            rankedTotalSolved +
+            friendTotalSolved +
+            groupTotalSolved +
+            soloTotalSolved
 
         this.setState({
             // Ranked game variables
@@ -934,15 +898,143 @@ class Statistics extends React.Component {
                 friendTotalSolved === 0
                     ? 0
                     : (friendUnansweredCounter / friendTotalSolved) * 100,
+            friendTotalSolved: friendTotalSolved,
             totalFriendCorrect: friendCorrectCounter,
             totalFriendIncorrect: friendIncorrectCounter,
             totalFriendUnanswered: friendUnansweredCounter,
+            // Group game variables
+            totalGroupGames: groupTotalGames,
+            groupCorrectPercentage:
+                groupTotalSolved === 0
+                    ? 0
+                    : (groupCorrectCounter / groupTotalSolved) * 100,
+            groupIncorrectPercentage:
+                groupTotalSolved === 0
+                    ? 0
+                    : (groupIncorrectCounter / groupTotalSolved) * 100,
+            groupUnansweredPercentage:
+                groupTotalSolved === 0
+                    ? 0
+                    : (groupUnansweredCounter / groupTotalSolved) * 100,
+            groupTotalSolved: groupTotalSolved,
+            totalGroupCorrect: groupCorrectCounter,
+            totalGroupIncorrect: groupIncorrectCounter,
+            totalGroupUnanswered: groupUnansweredCounter,
+            // Solo game variables
+            totalSoloGames: soloTotalGames,
+            soloCorrectPercentage:
+                soloTotalSolved === 0
+                    ? 0
+                    : (soloCorrectCounter / soloTotalSolved) * 100,
+            soloIncorrectPercentage:
+                soloTotalSolved === 0
+                    ? 0
+                    : (soloIncorrectCounter / soloTotalSolved) * 100,
+            soloUnansweredPercentage:
+                soloTotalSolved === 0
+                    ? 0
+                    : (soloUnansweredCounter / soloTotalSolved) * 100,
+            soloTotalSolved: soloTotalSolved,
+            totalSoloCorrect: soloCorrectCounter,
+            totalSoloIncorrect: soloIncorrectCounter,
+            totalSoloUnanswered: soloUnansweredCounter,
             // Question variables
             totalCorrect: correctCounter,
             totalIncorrect: incorrectCounter,
             totalUnanswered: unansweredCounter,
-            totalQuestionsSolved: totalQuestionsSolved
+            totalQuestionsSolved: totalQuestionsSolved,
+            // Overall variables
+            overallGames:
+                rankedTotalGames +
+                friendTotalGames +
+                groupTotalGames +
+                soloTotalGames,
+            overallCorrectPercentage:
+                totalQuestionsSolved === 0
+                    ? 0
+                    : correctCounter / totalQuestionsSolved,
+            overallIncorrectPercentage:
+                totalQuestionsSolved === 0
+                    ? 0
+                    : incorrectCounter / totalQuestionsSolved,
+            overallUnansweredPercentage:
+                totalQuestionsSolved === 0
+                    ? 0
+                    : unansweredCounter / totalQuestionsSolved,
+            overallCorrect: correctCounter,
+            overallIncorrect: incorrectCounter,
+            overallUnanswered: unansweredCounter,
+            overallSolved: totalQuestionsSolved,
+            overallWin: rankedWinCounter + friendWinCounter,
+            overallLose: rankedLoseCounter + friendLoseCounter,
+            overallDraw: rankedDrawCounter + friendDrawCounter
         })
+    }
+
+    swiperOnIndexChange = index => {
+        this.setState({ swiperIndex: index })
+    }
+
+    questionStatsSwitcher = () => {
+        let returnValue = {
+            totalCorrect: null,
+            correctPercentage: null,
+            totalIncorrect: null,
+            incorrectPercentage: null,
+            totalUnanswered: null,
+            unansweredPercentage: null,
+            totalSolved: null
+        }
+
+        switch (this.state.swiperIndex) {
+            case 0:
+                returnValue.totalSolved = this.state.overallSolved
+                returnValue.totalCorrect = this.state.overallCorrect
+                returnValue.correctPercentage = this.state.overallCorrectPercentage
+                returnValue.totalIncorrect = this.state.overallIncorrect
+                returnValue.incorrectPercentage = this.state.overallIncorrectPercentage
+                returnValue.totalUnanswered = this.state.overallUnanswered
+                returnValue.unansweredPercentage = this.state.overallUnansweredPercentage
+                break
+            case 1:
+                returnValue.totalSolved = this.state.rankedTotalSolved
+                returnValue.totalCorrect = this.state.totalRankedCorrect
+                returnValue.correctPercentage = this.state.rankedCorrectPercentage
+                returnValue.totalIncorrect = this.state.totalRankedIncorrect
+                returnValue.incorrectPercentage = this.state.rankedIncorrectPercentage
+                returnValue.totalUnanswered = this.state.totalRankedUnanswered
+                returnValue.unansweredPercentage = this.state.rankedUnansweredPercentage
+                break
+            case 2:
+                returnValue.totalSolved = this.state.friendTotalSolved
+                returnValue.totalCorrect = this.state.totalFriendCorrect
+                returnValue.correctPercentage = this.state.friendCorrectPercentage
+                returnValue.totalIncorrect = this.state.totalFriendIncorrect
+                returnValue.incorrectPercentage = this.state.friendIncorrectPercentage
+                returnValue.totalUnanswered = this.state.totalFriendUnanswered
+                returnValue.unansweredPercentage = this.state.friendUnansweredPercentage
+                break
+            case 3:
+                returnValue.totalSolved = this.state.groupTotalSolved
+                returnValue.totalCorrect = this.state.totalGroupCorrect
+                returnValue.correctPercentage = this.state.groupCorrectPercentage
+                returnValue.totalIncorrect = this.state.totalGroupIncorrect
+                returnValue.incorrectPercentage = this.state.groupIncorrectPercentage
+                returnValue.totalUnanswered = this.state.totalGroupUnanswered
+                returnValue.unansweredPercentage = this.state.groupUnansweredPercentage
+                break
+            case 4:
+                returnValue.totalSolved = this.state.soloTotalSolved
+                returnValue.totalCorrect = this.state.totalSoloCorrect
+                returnValue.correctPercentage = this.state.soloCorrectPercentage
+                returnValue.totalIncorrect = this.state.totalSoloIncorrect
+                returnValue.incorrectPercentage = this.state.soloIncorrectPercentage
+                returnValue.totalUnanswered = this.state.totalSoloUnanswered
+                returnValue.unansweredPercentage = this.state.soloUnansweredPercentage
+                break
+        }
+
+        return returnValue
     }
 
     render() {
@@ -1004,7 +1096,73 @@ class Statistics extends React.Component {
                             paginationStyle={{ bottom: hp(0.5) }}
                             activeDotColor={'#FF9900'}
                             removeClippedSubviews={false}
+                            onIndexChanged={index => {
+                                this.swiperOnIndexChange(index)
+                            }}
                         >
+                            <View style={styles.totalGameStatsContainer}>
+                                <View
+                                    style={styles.totalGameStatsInfosContainer}
+                                >
+                                    <Text
+                                        style={
+                                            styles.totalGamesPlayedAndSolvedQuestionsCounter
+                                        }
+                                    >
+                                        {this.state.overallGames}
+                                    </Text>
+                                    <Text
+                                        style={
+                                            styles.totalGamesPlayedAndSolvedQuestionsText
+                                        }
+                                    >
+                                        Bütün Modlar
+                                    </Text>
+                                    <Text
+                                        style={
+                                            styles.totalGamesPlayedAndSolvedQuestionsAmountText
+                                        }
+                                    >
+                                        Oyun Sayısı
+                                    </Text>
+                                    <Text style={styles.wonText}>
+                                        Kazandığı: {this.state.overallWin}
+                                    </Text>
+                                    <Text style={styles.drawText}>
+                                        Beraberlik: {this.state.overallDraw}
+                                    </Text>
+                                    <Text style={styles.lostText}>
+                                        Kaybettiği: {this.state.overallLose}
+                                    </Text>
+                                </View>
+                                <View style={styles.semiCircleContainer}>
+                                    <SemiCircleProgress
+                                        percentage={
+                                            (this.state.overallWin /
+                                                this.state.overallGames) *
+                                            100
+                                        }
+                                        progressColor={'#00D9EF'}
+                                        circleRadius={wp(20)}
+                                        animationSpeed={0.1}
+                                        progressWidth={wp(5)}
+                                    >
+                                        <Text
+                                            style={styles.chartPercentageText}
+                                        >
+                                            {this.state.overallGames === 0
+                                                ? '0'
+                                                : (
+                                                      (this.state.overallWin /
+                                                          this.state
+                                                              .overallWin) *
+                                                      100
+                                                  ).toFixed(0)}
+                                            %
+                                        </Text>
+                                    </SemiCircleProgress>
+                                </View>
+                            </View>
                             <View style={styles.totalGameStatsContainer}>
                                 <View
                                     style={styles.totalGameStatsInfosContainer}
@@ -1133,6 +1291,60 @@ class Statistics extends React.Component {
                                     </SemiCircleProgress>
                                 </View>
                             </View>
+                            <View style={styles.totalGameStatsContainer}>
+                                <View
+                                    style={styles.totalGameStatsInfosContainer}
+                                >
+                                    <Text
+                                        style={
+                                            styles.totalGamesPlayedAndSolvedQuestionsCounter
+                                        }
+                                    >
+                                        {this.state.totalGroupGames}
+                                    </Text>
+                                    <Text
+                                        style={
+                                            styles.totalGamesPlayedAndSolvedQuestionsText
+                                        }
+                                    >
+                                        Grup Modu
+                                    </Text>
+                                    <Text
+                                        style={
+                                            styles.totalGamesPlayedAndSolvedQuestionsAmountText
+                                        }
+                                    >
+                                        Oyun Sayısı
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style={styles.totalGameStatsContainer}>
+                                <View
+                                    style={styles.totalGameStatsInfosContainer}
+                                >
+                                    <Text
+                                        style={
+                                            styles.totalGamesPlayedAndSolvedQuestionsCounter
+                                        }
+                                    >
+                                        {this.state.totalSoloGames}
+                                    </Text>
+                                    <Text
+                                        style={
+                                            styles.totalGamesPlayedAndSolvedQuestionsText
+                                        }
+                                    >
+                                        Solo Modu
+                                    </Text>
+                                    <Text
+                                        style={
+                                            styles.totalGamesPlayedAndSolvedQuestionsAmountText
+                                        }
+                                    >
+                                        Oyun Sayısı
+                                    </Text>
+                                </View>
+                            </View>
                         </Swiper>
                     </View>
                     <View style={styles.percentagesAndCirclesContainer}>
@@ -1143,7 +1355,7 @@ class Statistics extends React.Component {
                                         styles.totalGamesPlayedAndSolvedQuestionsCounter
                                     }
                                 >
-                                    {this.state.rankedTotalSolved}
+                                    {this.questionStatsSwitcher().totalSolved}
                                 </Text>
                                 <Text
                                     style={
@@ -1160,8 +1372,12 @@ class Statistics extends React.Component {
                                         DOĞRU
                                     </Text>
                                     <Text style={styles.percentagesText}>
-                                        {this.state.totalRankedCorrect} -{' '}
-                                        {this.state.rankedCorrectPercentage.toFixed(
+                                        {
+                                            this.questionStatsSwitcher()
+                                                .totalCorrect
+                                        }{' '}
+                                        -{' '}
+                                        {this.questionStatsSwitcher().correctPercentage.toFixed(
                                             2
                                         )}
                                         %
@@ -1175,8 +1391,12 @@ class Statistics extends React.Component {
                                         YANLIŞ
                                     </Text>
                                     <Text style={styles.percentagesText}>
-                                        {this.state.totalRankedIncorrect} -{' '}
-                                        {this.state.rankedIncorrectPercentage.toFixed(
+                                        {
+                                            this.questionStatsSwitcher()
+                                                .totalIncorrect
+                                        }{' '}
+                                        -{' '}
+                                        {this.questionStatsSwitcher().incorrectPercentage.toFixed(
                                             2
                                         )}
                                         %
@@ -1188,8 +1408,12 @@ class Statistics extends React.Component {
                                 <View style={styles.percentagesTextView}>
                                     <Text style={styles.optionsText}>BOŞ</Text>
                                     <Text style={styles.percentagesText}>
-                                        {this.state.totalRankedUnanswered} -{' '}
-                                        {this.state.rankedUnansweredPercentage.toFixed(
+                                        {
+                                            this.questionStatsSwitcher()
+                                                .totalUnanswered
+                                        }{' '}
+                                        -{' '}
+                                        {this.questionStatsSwitcher().unansweredPercentage.toFixed(
                                             2
                                         )}
                                         %
@@ -1201,8 +1425,8 @@ class Statistics extends React.Component {
                             <ProgressCircle
                                 style={styles.correctCircle}
                                 progress={
-                                    this.state.totalRankedCorrect /
-                                    this.state.rankedTotalSolved
+                                    this.questionStatsSwitcher().totalCorrect /
+                                    this.questionStatsSwitcher().totalSolved
                                 }
                                 progressColor={'#6AC259'}
                                 strokeWidth={hp(2.2)}
@@ -1211,8 +1435,9 @@ class Statistics extends React.Component {
                             <ProgressCircle
                                 style={styles.incorrectCircle}
                                 progress={
-                                    this.state.totalRankedIncorrect /
-                                    this.state.rankedTotalSolved
+                                    this.questionStatsSwitcher()
+                                        .totalIncorrect /
+                                    this.questionStatsSwitcher().totalSolved
                                 }
                                 progressColor={'#B72A2A'}
                                 strokeWidth={hp(2.2)}
@@ -1221,8 +1446,9 @@ class Statistics extends React.Component {
                             <ProgressCircle
                                 style={styles.unansweredCircle}
                                 progress={
-                                    this.state.totalRankedUnanswered /
-                                    this.state.rankedTotalSolved
+                                    this.questionStatsSwitcher()
+                                        .totalUnanswered /
+                                    this.questionStatsSwitcher().totalSolved
                                 }
                                 progressColor={'#00D9EF'}
                                 strokeWidth={hp(2.2)}
@@ -1364,7 +1590,4 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({})
 
-export default connect(
-    mapStateToProps,
-    null
-)(Statistics)
+export default connect(mapStateToProps, null)(Statistics)
