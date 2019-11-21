@@ -125,72 +125,6 @@ class LoadingScreen extends React.Component {
                 clientPoints: playerTotalPoints,
                 opponentPoints: opponentTotalPoints
             })
-
-            // If we use energy
-            /* if (this.props.clientInformation.isPremium) {
-                navigationReplace(SCENE_KEYS.gameScreens.rankedMatchingScreen, {
-                    // These are necessary for the game logic
-                    room: this.room,
-                    client: this.client,
-                    // These can be used in both screens
-                    playerUsername: playerUsername,
-                    playerProfilePicture: playerProfilePicture,
-                    playerCoverPicture: playerCoverPicture,
-                    opponentUsername: opponentUsername,
-                    opponentId: opponentId,
-                    opponentProfilePicture: opponentProfilePicture,
-                    opponentCoverPicture: opponentCoverPicture,
-                    // These are used in the match intro screen
-                    courseName: this.props.gameContentMap.courses[
-                        this.props.courseId - 1
-                    ].name,
-                    subjectName: this.props.gameContentMap.subjects[
-                        this.props.subjectId - 1
-                    ].name,
-                    clientPoints: playerTotalPoints,
-                    opponentPoints: opponentTotalPoints
-                })
-            } else {
-                gameEnergyServices
-                    .subtractGameEnergy(
-                        this.props.clientToken,
-                        this.props.clientDBId
-                    )
-                    .then(() => {
-                        // Removing one energy when the match starts
-                        this.props.removeOneEnergy()
-
-                        navigationReplace(
-                            SCENE_KEYS.gameScreens.rankedMatchingScreen,
-                            {
-                                // These are necessary for the game logic
-                                room: this.room,
-                                client: this.client,
-                                // These can be used in both screens
-                                playerUsername: playerUsername,
-                                playerProfilePicture: playerProfilePicture,
-                                playerCoverPicture: playerCoverPicture,
-                                opponentUsername: opponentUsername,
-                                opponentId: opponentId,
-                                opponentProfilePicture: opponentProfilePicture,
-                                opponentCoverPicture: opponentCoverPicture,
-                                // These are used in the match intro screen
-                                courseName: this.props.gameContentMap.courses[
-                                    this.props.courseId - 1
-                                ].name,
-                                subjectName: this.props.gameContentMap.subjects[
-                                    this.props.subjectId - 1
-                                ].name,
-                                clientPoints: playerTotalPoints,
-                                opponentPoints: opponentTotalPoints
-                            }
-                        )
-                    })
-                    .catch(error => {
-                        console.log(error)
-                        this.backButtonOnPress()
-                    })
-            } */
         })
     }
 
@@ -217,7 +151,6 @@ class LoadingScreen extends React.Component {
                         source={require('../../../assets/gameScreens/gameLoading.json')}
                         autoPlay
                         loop
-                        style={{ resizeMode: 'cover'}}
                         speed={1.1}
                     />
                 </View>
@@ -236,7 +169,4 @@ const mapDispatchToProps = dispatch => ({
     //removeOneEnergy: () => dispatch(appActions.removeOneEnergy())
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(LoadingScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(LoadingScreen)

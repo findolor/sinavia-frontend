@@ -7,7 +7,6 @@ import { appTypes } from '../../redux/app/actions'
 import { fcmService } from '../../services/fcmService'
 import { gameContentTypes } from '../../redux/gameContent/actions'
 import DeviceInfo from 'react-native-device-info'
-import { Alert } from 'react-native'
 import {
     apiServicesTree,
     makeGetRequest,
