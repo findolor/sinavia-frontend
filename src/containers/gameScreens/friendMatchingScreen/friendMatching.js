@@ -30,6 +30,7 @@ import SWORD from '../../../assets/sword.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
 //import { gameEnergyServices } from '../../../sagas/gameEnergy'
 import { levelFinder } from '../../../services/userLevelFinder'
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 class FriendMatchingScreen extends React.Component {
     constructor(props) {
@@ -197,7 +198,7 @@ class FriendMatchingScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <NotchView color={'#FF9900'} />
+                <NotchView color={'#00D9EF'} />
                 <View style={styles.contentContainer}>
                     <Text style={styles.courseText}>
                         {
@@ -234,13 +235,19 @@ class FriendMatchingScreen extends React.Component {
                                     />
                                 </View>
                                 <View style={styles.userInfoContainer}>
-                                    <Text style={styles.usernameText}>
+                                    <Text
+                                        style={[
+                                            styles.usernameText,
+                                            { marginLeft: wp(3) }
+                                        ]}
+                                    >
                                         @{this.props.clientInformation.username}
                                     </Text>
                                     <Text
-                                        style={
-                                            styles.subjectBasedSinaviaScoreText
-                                        }
+                                        style={[
+                                            styles.subjectBasedSinaviaScoreText,
+                                            { marginLeft: wp(3) }
+                                        ]}
                                     >
                                         Konu Seviyesi:{' '}
                                         {Math.floor(
@@ -262,7 +269,12 @@ class FriendMatchingScreen extends React.Component {
                         >
                             <View style={styles.playerView}>
                                 <View style={styles.opponentInfoContainer}>
-                                    <Text style={styles.usernameText}>
+                                    <Text
+                                        style={[
+                                            styles.usernameText,
+                                            { marginRight: wp(3) }
+                                        ]}
+                                    >
                                         @
                                         {
                                             this.props.opponentInformation
@@ -270,9 +282,10 @@ class FriendMatchingScreen extends React.Component {
                                         }
                                     </Text>
                                     <Text
-                                        style={
-                                            styles.subjectBasedSinaviaScoreText
-                                        }
+                                        style={[
+                                            styles.subjectBasedSinaviaScoreText,
+                                            { marginRight: wp(3) }
+                                        ]}
                                     >
                                         Konu Seviyesi:{' '}
                                         {Math.floor(
@@ -295,9 +308,11 @@ class FriendMatchingScreen extends React.Component {
                     </View>
                     <View style={styles.separatorView}>
                         <View style={styles.separatorLineUser}>
-                            <Text style={styles.winLoseText}>Kazanma</Text>
-                            <Text style={styles.winLoseCounterText}>
+                            <Text style={styles.winLoseText}>
                                 {this.state.friendMatchClientWinCount}
+                            </Text>
+                            <Text style={styles.winLoseCounterText}>
+                                Galibiyet
                             </Text>
                         </View>
                         <View style={styles.separatorCircle}>
@@ -307,14 +322,11 @@ class FriendMatchingScreen extends React.Component {
                                         until={this.state.countDownTime}
                                         size={countdownProps.size}
                                         digitStyle={{
-                                            backgroundColor: '#FF9900',
-                                            borderRadius: 100
+                                            backgroundColor: ''
                                         }}
                                         digitTxtStyle={styles.timerText}
                                         timeToShow={['S']}
                                         timeLabels={{ s: null }}
-                                        separatorStyle={{ color: '#fff' }}
-                                        showSeparator
                                         //running={!this.state.isCoundownFinished}
                                         onFinish={this.countdownOnFinish}
                                     />
@@ -324,7 +336,12 @@ class FriendMatchingScreen extends React.Component {
                                     <TouchableOpacity
                                         onPress={this.playAheadOnPress}
                                     >
-                                        <Text>ÖNDEN OYNA</Text>
+                                        <Text style={styles.startFirstText}>
+                                            ÖNDEN
+                                        </Text>
+                                        <Text style={styles.startFirstText}>
+                                            OYNA
+                                        </Text>
                                     </TouchableOpacity>
                                 )}
                             {this.state.isFriendJoined && (
@@ -332,9 +349,11 @@ class FriendMatchingScreen extends React.Component {
                             )}
                         </View>
                         <View style={styles.separatorLineOpponent}>
-                            <Text style={styles.winLoseText}>Kazanma</Text>
-                            <Text style={styles.winLoseCounterText}>
+                            <Text style={styles.winLoseText}>
                                 {this.state.friendMatchOpponentWinCount}
+                            </Text>
+                            <Text style={styles.winLoseCounterText}>
+                                Galibiyet
                             </Text>
                         </View>
                     </View>

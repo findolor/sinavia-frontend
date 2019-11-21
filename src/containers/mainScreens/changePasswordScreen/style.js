@@ -34,7 +34,7 @@ export default StyleSheet.create({
         height: hp(5),
         width: wp(22),
         backgroundColor: '#3EBB29',
-        borderRadius: 20,
+        borderRadius: hp(10),
         justifyContent: 'center',
         alignItems: 'center'
     },

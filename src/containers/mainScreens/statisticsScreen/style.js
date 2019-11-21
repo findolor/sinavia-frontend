@@ -177,12 +177,13 @@ export default StyleSheet.create({
     timezoneChartContainer: {
         height: hp(15),
         width: wp(88),
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center'
     },
     barRheostatContainer: {
         height: hp(8),
-        width: wp(75)
+        width: wp(75),
+        justifyContent: 'flex-start'
     },
     timezonesTextView: {
         height: hp(6),

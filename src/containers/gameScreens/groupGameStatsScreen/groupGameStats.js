@@ -471,18 +471,6 @@ class GroupGameStatsScreen extends React.Component {
                         />
                     </View>
                     <View style={styles.buttonsContainer}>
-                        <TouchableOpacity onPress={this.replayButtonOnPress}>
-                            <View style={styles.replayButton}>
-                                <Text style={styles.buttonText}>Yeniden</Text>
-                                <Text style={styles.buttonText}>Oyna</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <View style={styles.newOpponentButton}>
-                                <Text style={styles.buttonText}>Yeni</Text>
-                                <Text style={styles.buttonText}>Rakip</Text>
-                            </View>
-                        </TouchableOpacity>
                         <TouchableOpacity
                             onPress={this.mainScreenButtonOnPress}
                         >

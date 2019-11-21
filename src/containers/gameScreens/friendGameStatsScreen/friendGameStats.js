@@ -37,8 +37,8 @@ import premiumStyles from '../../mainScreens/purchaseScreen/style'
 import LinearGradient from 'react-native-linear-gradient'
 
 const REPLAY_NORMAL_BORDER = '#00D9EF'
-const REPLAY_ACTIVE_BORDER = 'green'
-const REPLAY_DEACTIVE_BORDER = 'red'
+const REPLAY_ACTIVE_BORDER = '#11DD56'
+const REPLAY_DEACTIVE_BORDER = ''
 
 class FriendGameStatsScreen extends React.Component {
     constructor(props) {
@@ -799,9 +799,9 @@ class FriendGameStatsScreen extends React.Component {
                                 style={[
                                     styles.replayButton,
                                     {
-                                        borderColor: this.state
+                                        backgroundColor: this.state
                                             .replayButtonBorderColor,
-                                        borderWidth: 2
+                                        opacity: this.state.replayButtonBorderColor === REPLAY_DEACTIVE_BORDER ? 0.5 : 1
                                     }
                                 ]}
                             >

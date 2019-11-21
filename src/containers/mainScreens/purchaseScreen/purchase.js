@@ -2,7 +2,8 @@ import React from 'react'
 import {
     Image,
     ImageBackground,
-    Linking, Modal,
+    Linking,
+    Modal,
     ScrollView,
     Text,
     TouchableOpacity,
@@ -28,6 +29,11 @@ import TWITTER_LOGO from '../../../assets/twitter_logo.png'
 import FACEBOOK_LOGO from '../../../assets/facebook_logo.png'
 
 import PREMIUM_ADS from '../../../assets/premiumAds.png'
+import PREMIUM_FAV from '../../../assets/premiumFav.png'
+import PREMIUM_JOKER from '../../../assets/premiumJoker.png'
+import PREMIUM_BACK from '../../../assets/premiumBack.png'
+import PREMIUM_MAP from '../../../assets/premiumMap.png'
+import PREMIUM_SINGLE_MODE from '../../../assets/premiumSingleMode.png'
 
 const instagram_page = 'https://www.instagram.com/sinavia.app/'
 const twitter_page = 'https://twitter.com/sinavia'
@@ -163,7 +169,8 @@ class PurchaseScreen extends React.Component {
                                             loop={true}
                                             loadMinimal={false}
                                             showsPagination={false}
-                                            scrollEnabled={false}>
+                                            scrollEnabled={false}
+                                            autoplayTimeout={5}>
                                         <View style={styles.premiumModalSwiperView}>
                                             <View style={styles.premiumModalSwiperImgView}>
                                                 <Image source={PREMIUM_ADS} style={styles.premiumModalImg}/>
@@ -171,52 +178,63 @@ class PurchaseScreen extends React.Component {
                                             <View style={styles.premiumModalSwiperHeaderView}>
                                                 <Text style={styles.premiumModalHeaderText}>Reklam Yok!</Text>
                                             </View>
-                                            <View style={[styles.premiumModalSwiperInfoView, {justifyContent: 'flex-start'}]}>
-                                                <Text style={[styles.premiumModalInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                            <View style={styles.premiumModalSwiperInfoView}>
+                                                <Text style={[styles.premiumModalInfoText, {marginBottom: hp(0.5)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
                                             </View>
                                         </View>
                                         <View style={styles.premiumModalSwiperView}>
                                             <View style={styles.premiumModalSwiperImgView}>
-                                                <Image source={PREMIUM_ADS} style={styles.premiumModalImg}/>
+                                                <Image source={PREMIUM_FAV} style={styles.premiumModalImg}/>
                                             </View>
                                             <View style={styles.premiumModalSwiperHeaderView}>
-                                                <Text style={styles.premiumModalHeaderText}>Reklam Yok!</Text>
+                                                <Text style={styles.premiumModalHeaderText}>Soru favorile!</Text>
                                             </View>
-                                            <View style={[styles.premiumModalSwiperInfoView, {justifyContent: 'flex-start'}]}>
-                                                <Text style={[styles.premiumModalInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                            <View style={styles.premiumModalSwiperInfoView}>
+                                                <Text style={[styles.premiumModalInfoText, {marginBottom: hp(0.5)}]}>Hoşuna giden ya da sonra tekrar bakmak istediğin soruları favorile</Text>
                                             </View>
                                         </View>
                                         <View style={styles.premiumModalSwiperView}>
                                             <View style={styles.premiumModalSwiperImgView}>
-                                                <Image source={PREMIUM_ADS} style={styles.premiumModalImg}/>
+                                                <Image source={PREMIUM_MAP} style={styles.premiumModalImg}/>
                                             </View>
                                             <View style={styles.premiumModalSwiperHeaderView}>
-                                                <Text style={styles.premiumModalHeaderText}>Reklam Yok!</Text>
+                                                <Text style={styles.premiumModalHeaderText}>Türkiye geneli deneme sınavları!</Text>
                                             </View>
-                                            <View style={[styles.premiumModalSwiperInfoView, {justifyContent: 'flex-start'}]}>
-                                                <Text style={[styles.premiumModalInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                            <View style={styles.premiumModalSwiperInfoView}>
+                                                <Text style={[styles.premiumModalInfoText, {marginBottom: hp(0.5)}]}>Ülke çapındaki deneme sınavlarına ücretsiz katıl, tüm öğrenciler arasındaki sıralamanı gör</Text>
                                             </View>
                                         </View>
                                         <View style={styles.premiumModalSwiperView}>
                                             <View style={styles.premiumModalSwiperImgView}>
-                                                <Image source={PREMIUM_ADS} style={styles.premiumModalImg}/>
+                                                <Image source={PREMIUM_SINGLE_MODE} style={styles.premiumModalImg}/>
                                             </View>
                                             <View style={styles.premiumModalSwiperHeaderView}>
-                                                <Text style={styles.premiumModalHeaderText}>Reklam Yok!</Text>
+                                                <Text style={styles.premiumModalHeaderText}>Tek başına!</Text>
                                             </View>
-                                            <View style={[styles.premiumModalSwiperInfoView, {justifyContent: 'flex-start'}]}>
-                                                <Text style={[styles.premiumModalInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                            <View style={styles.premiumModalSwiperInfoView}>
+                                                <Text style={[styles.premiumModalInfoText, {marginBottom: hp(0.5)}]}>"Tek rakibim kendim" diyenler için tek başına soru çözebilme imkanı</Text>
                                             </View>
                                         </View>
                                         <View style={styles.premiumModalSwiperView}>
                                             <View style={styles.premiumModalSwiperImgView}>
-                                                <Image source={PREMIUM_ADS} style={styles.premiumModalImg}/>
+                                                <Image source={PREMIUM_BACK} style={styles.premiumModalImg}/>
                                             </View>
                                             <View style={styles.premiumModalSwiperHeaderView}>
-                                                <Text style={styles.premiumModalHeaderText}>Reklam Yok!</Text>
+                                                <Text style={styles.premiumModalHeaderText}>Çözülmedik soru kalmasın!</Text>
                                             </View>
-                                            <View style={[styles.premiumModalSwiperInfoView, {justifyContent: 'flex-start'}]}>
-                                                <Text style={[styles.premiumModalInfoText, {marginTop: hp(0.4)}]}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                            <View style={styles.premiumModalSwiperInfoView}>
+                                                <Text style={[styles.premiumModalInfoText, {marginBottom: hp(0.5)}]}>Boş bıraktığın veya yanlış yaptığın soruları tekrar tekrar çözme fırsatı</Text>
+                                            </View>
+                                        </View>
+                                        <View style={styles.premiumModalSwiperView}>
+                                            <View style={styles.premiumModalSwiperImgView}>
+                                                <Image source={PREMIUM_JOKER} style={styles.premiumModalImg}/>
+                                            </View>
+                                            <View style={styles.premiumModalSwiperHeaderView}>
+                                                <Text style={styles.premiumModalHeaderText}>Günlük joker!</Text>
+                                            </View>
+                                            <View style={styles.premiumModalSwiperInfoView}>
+                                                <Text style={[styles.premiumModalInfoText, {marginBottom: hp(0.5)}]}>Her gün verilen jokerlerle soruların cevabına 1 adım daha yaklaş, rakiplerinin önüne geç</Text>
                                             </View>
                                         </View>
                                     </Swiper>
@@ -225,16 +243,12 @@ class PurchaseScreen extends React.Component {
                                     <TouchableOpacity onPress={this.oneMonthOnPress} style={styles.premiumOptionView}>
                                         <View style={[styles.premiumOptionUpperView,
                                             {
-                                                backgroundColor: this.state.premiumOption === 'oneMonth' ? '#00D9EF': 'rgba(0, 0, 0, 0)',
-                                                borderTopLeftRadius: this.state.premiumOption === 'oneMonth' ? 10 : 0,
-                                                borderTopRightRadius: this.state.premiumOption === 'oneMonth' ? 10 : 0
+                                                backgroundColor: this.state.premiumOption === 'oneMonth' ? '#00D9EF': 'rgba(0, 0, 0, 0)'
                                             }]}>
                                             <Text style={this.state.premiumOption === 'oneMonth' ? styles.selectedPremiumOptionHeaderText: styles.unselectedPremiumOptionHeaderText}>BAŞLANGIÇ</Text>
                                         </View>
                                         <View style={[styles.premiumOptionBottomView, {
-                                            borderColor: this.state.premiumOption === 'oneMonth' ? '#00D9EF': 'rgba(0, 0, 0, 0)',
-                                            borderBottomLeftRadius: this.state.premiumOption === 'oneMonth' ? 10 : 0,
-                                            borderBottomRightRadius: this.state.premiumOption === 'oneMonth' ? 10 : 0
+                                            borderColor: this.state.premiumOption === 'oneMonth' ? '#00D9EF': 'rgba(0, 0, 0, 0)'
                                         }]}>
                                             <View style={styles.premiumOptionMonthsView}>
                                                 <Text style={this.state.premiumOption === 'oneMonth' ? styles.selectedMonthNumberText: styles.unselectedMonthNumberText}>1</Text>
@@ -250,15 +264,11 @@ class PurchaseScreen extends React.Component {
                                         <View style={[styles.premiumOptionUpperView,
                                             {
                                                 backgroundColor: this.state.premiumOption === 'threeMonths' ? '#00D9EF': 'rgba(0, 0, 0, 0)',
-                                                borderTopLeftRadius: this.state.premiumOption === 'threeMonths' ? 10 : 0,
-                                                borderTopRightRadius: this.state.premiumOption === 'threeMonths' ? 10 : 0
                                             }]}>
                                             <Text style={this.state.premiumOption === 'threeMonths' ? styles.selectedPremiumOptionHeaderText: styles.unselectedPremiumOptionHeaderText}>EN POPÜLER</Text>
                                         </View>
                                         <View style={[styles.premiumOptionBottomView, {
                                             borderColor: this.state.premiumOption === 'threeMonths' ? '#00D9EF': 'rgba(0, 0, 0, 0)',
-                                            borderBottomLeftRadius: this.state.premiumOption === 'threeMonths' ? 10 : 0,
-                                            borderBottomRightRadius: this.state.premiumOption === 'threeMonths' ? 10 : 0
                                         }]}>
                                             <View style={styles.premiumOptionMonthsView}>
                                                 <Text style={this.state.premiumOption === 'threeMonths' ? styles.selectedMonthNumberText: styles.unselectedMonthNumberText}>3</Text>
@@ -273,16 +283,12 @@ class PurchaseScreen extends React.Component {
                                     <TouchableOpacity onPress={this.sixMonthsOnPress} style={styles.premiumOptionView}>
                                         <View style={[styles.premiumOptionUpperView,
                                             {
-                                                backgroundColor: this.state.premiumOption === 'sixMonths' ? '#00D9EF': 'rgba(0, 0, 0, 0)',
-                                                borderTopLeftRadius: this.state.premiumOption === 'sixMonths' ? 10 : 0,
-                                                borderTopRightRadius: this.state.premiumOption === 'sixMonths' ? 10 : 0
+                                                backgroundColor: this.state.premiumOption === 'sixMonths' ? '#00D9EF': 'rgba(0, 0, 0, 0)'
                                             }]}>
                                             <Text style={this.state.premiumOption === 'sixMonths' ? styles.selectedPremiumOptionHeaderText: styles.unselectedPremiumOptionHeaderText}>EN AVANTAJLI</Text>
                                         </View>
                                         <View style={[styles.premiumOptionBottomView, {
-                                            borderColor: this.state.premiumOption === 'sixMonths' ? '#00D9EF': 'rgba(0, 0, 0, 0)',
-                                            borderBottomLeftRadius: this.state.premiumOption === 'sixMonths' ? 10 : 0,
-                                            borderBottomRightRadius: this.state.premiumOption === 'sixMonths' ? 10 : 0
+                                            borderColor: this.state.premiumOption === 'sixMonths' ? '#00D9EF': 'rgba(0, 0, 0, 0)'
                                         }]}>
                                             <View style={styles.premiumOptionMonthsView}>
                                                 <Text style={this.state.premiumOption === 'sixMonths' ? styles.selectedMonthNumberText: styles.unselectedMonthNumberText}>6</Text>
@@ -311,7 +317,8 @@ class PurchaseScreen extends React.Component {
                     <View style={styles.bundlesView}>
                         <Swiper loop={false}
                                 paginationStyle={{ bottom: hp(0.25) }}
-                                activeDotColor={'#00D9EF'}
+                                activeDot={<View style={{height: hp(1.5), width: hp(1.5), backgroundColor: '#00D9EF', borderRadius: hp(100), marginLeft: wp(1), marginRight: wp(1)}}/>}
+                                dot={<View style={{height: hp(1.5), width: hp(1.5), backgroundColor: 'rgba(0,0,0,.2)', borderRadius: hp(100), marginLeft: wp(1), marginRight: wp(1)}}/>}
                         >
                             <View style={styles.swiperView}>
                                 <TouchableOpacity style={styles.bundleView}>
@@ -420,23 +427,7 @@ class PurchaseScreen extends React.Component {
                             <Image source={PLAY_BUTTON} style={styles.playButtonImg}/>
                         </View>
                         <View style={styles.watchTextContainer}>
-                            <Text style={styles.watchText}>İZLE &</Text>
-                            <Text style={styles.watchText}>KAZAN</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.adContainer}>
-                        <View style={styles.adView}>
-                            <ImageBackground source={FAVORITE} style={styles.adView}>
-                                <Text style={styles.adText}>OYUN</Text>
-                                <Text style={styles.adText}>HAKKI</Text>
-                            </ImageBackground>
-                        </View>
-                        <View style={styles.playButtonContainer}>
-                            <Image source={PLAY_BUTTON} style={styles.playButtonImg}/>
-                        </View>
-                        <View style={styles.watchTextContainer}>
-                            <Text style={styles.watchText}>İZLE &</Text>
-                            <Text style={styles.watchText}>KAZAN</Text>
+                            <Text style={styles.watchText}>İZLE & KAZAN</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -448,7 +439,8 @@ class PurchaseScreen extends React.Component {
                                         loop={true}
                                         loadMinimal={false}
                                         showsPagination={false}
-                                        scrollEnabled={false}>
+                                        scrollEnabled={false}
+                                        autoplayTimeout={5}>
                                     <View style={styles.premiumSwiperView}>
                                         <View style={styles.premiumSwiperImgView}>
                                             <Image source={PREMIUM_ADS} style={styles.premiumImg}/>
@@ -462,46 +454,57 @@ class PurchaseScreen extends React.Component {
                                     </View>
                                     <View style={styles.premiumSwiperView}>
                                         <View style={styles.premiumSwiperImgView}>
-                                            <Image source={PREMIUM_ADS} style={styles.premiumImg}/>
+                                            <Image source={PREMIUM_FAV} style={styles.premiumImg}/>
                                         </View>
                                         <View style={styles.premiumSwiperHeaderView}>
-                                            <Text style={styles.premiumHeaderText}>Reklam Yok!</Text>
+                                            <Text style={styles.premiumHeaderText}>Soru favorile!</Text>
                                         </View>
                                         <View style={styles.premiumSwiperInfoView}>
-                                            <Text style={styles.premiumInfoText}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                            <Text style={styles.premiumInfoText}>Hoşuna giden ya da sonra tekrar bakmak istediğin soruları favorile</Text>
                                         </View>
                                     </View>
                                     <View style={styles.premiumSwiperView}>
                                         <View style={styles.premiumSwiperImgView}>
-                                            <Image source={PREMIUM_ADS} style={styles.premiumImg}/>
+                                            <Image source={PREMIUM_MAP} style={styles.premiumImg}/>
                                         </View>
                                         <View style={styles.premiumSwiperHeaderView}>
-                                            <Text style={styles.premiumHeaderText}>Reklam Yok!</Text>
+                                            <Text style={styles.premiumHeaderText}>Türkiye geneli deneme sınavları!</Text>
                                         </View>
                                         <View style={styles.premiumSwiperInfoView}>
-                                            <Text style={styles.premiumInfoText}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                            <Text style={styles.premiumInfoText}>Ülke çapındaki deneme sınavlarına ücretsiz katıl, tüm öğrenciler arasındaki sıralamanı gör</Text>
                                         </View>
                                     </View>
                                     <View style={styles.premiumSwiperView}>
                                         <View style={styles.premiumSwiperImgView}>
-                                            <Image source={PREMIUM_ADS} style={styles.premiumImg}/>
+                                            <Image source={PREMIUM_SINGLE_MODE} style={styles.premiumImg}/>
                                         </View>
                                         <View style={styles.premiumSwiperHeaderView}>
-                                            <Text style={styles.premiumHeaderText}>Reklam Yok!</Text>
+                                            <Text style={styles.premiumHeaderText}>Tek başına!</Text>
                                         </View>
                                         <View style={styles.premiumSwiperInfoView}>
-                                            <Text style={styles.premiumInfoText}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                            <Text style={styles.premiumInfoText}>"Tek rakibim kendim" diyenler için tek başına soru çözebilme imkanı</Text>
                                         </View>
                                     </View>
                                     <View style={styles.premiumSwiperView}>
                                         <View style={styles.premiumSwiperImgView}>
-                                            <Image source={PREMIUM_ADS} style={styles.premiumImg}/>
+                                            <Image source={PREMIUM_BACK} style={styles.premiumImg}/>
                                         </View>
                                         <View style={styles.premiumSwiperHeaderView}>
-                                            <Text style={styles.premiumHeaderText}>Reklam Yok!</Text>
+                                            <Text style={styles.premiumHeaderText}>Çözülmedik soru kalmasın!</Text>
                                         </View>
                                         <View style={styles.premiumSwiperInfoView}>
-                                            <Text style={styles.premiumInfoText}>Reklamsız oyun oynamanın keyfini sen de çıkar</Text>
+                                            <Text style={styles.premiumInfoText}>Boş bıraktığın veya yanlış yaptığın soruları tekrar tekrar çözme fırsatı</Text>
+                                        </View>
+                                    </View>
+                                    <View style={styles.premiumSwiperView}>
+                                        <View style={styles.premiumSwiperImgView}>
+                                            <Image source={PREMIUM_JOKER} style={styles.premiumImg}/>
+                                        </View>
+                                        <View style={styles.premiumSwiperHeaderView}>
+                                            <Text style={styles.premiumHeaderText}>Günlük joker!</Text>
+                                        </View>
+                                        <View style={styles.premiumSwiperInfoView}>
+                                            <Text style={styles.premiumInfoText}>Her gün sana verilen jokerler ile soruların cevabına 1 adım daha yaklaş, rakiplerinin önüne geç</Text>
                                         </View>
                                     </View>
                                 </Swiper>

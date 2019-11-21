@@ -353,7 +353,7 @@ export default class ModalDropdown extends Component {
         return ds.cloneWithRows(options)
     }
 
-    _renderRow = (rowData, sectionID, rowID, highlightRow) => {
+    _renderRow = (rowData, sectionID, rowID) => {
         const {
             renderRow,
             dropdownTextStyle,
@@ -381,7 +381,7 @@ export default class ModalDropdown extends Component {
             key,
             accessible,
             onPress: () =>
-                this._onRowPress(rowData, sectionID, rowID, highlightRow)
+                this._onRowPress(rowData, sectionID, rowID)
         }
         if (TOUCHABLE_ELEMENTS.find(name => name == row.type.displayName)) {
             const props = { ...row.props }
@@ -422,14 +422,13 @@ export default class ModalDropdown extends Component {
             }
         }
         return (
-            <TouchableHighlight {...preservedProps}>{row}</TouchableHighlight>
+            <TouchableOpacity {...preservedProps}>{row}</TouchableOpacity>
         )
     }
 
-    _onRowPress(rowData, sectionID, rowID, highlightRow) {
+    _onRowPress(rowData, sectionID, rowID) {
         const { onSelect, renderButtonText, onDropdownWillHide } = this.props
         if (!onSelect || onSelect(rowID, rowData) !== false) {
-            highlightRow(sectionID, rowID)
             const value =
                 (renderButtonText && renderButtonText(rowData)) ||
                 rowData.toString()

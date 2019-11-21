@@ -35,41 +35,17 @@ export default StyleSheet.create({
         backgroundColor: '#F2FEFF',
         marginTop: hp(21.44),
         marginLeft: wp(6.4),
-        borderRadius: 20,
+        borderRadius: hp(4),
         position: 'absolute',
-        alignItems: 'center'
-    },
-    replayButton: {
-        height: hp(7),
-        width: wp(23),
-        borderRadius: 10,
-        backgroundColor: '#00D9EF',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginLeft: wp(10)
-    },
-    newOpponentButton: {
-        height: hp(7),
-        width: wp(23),
-        borderRadius: 10,
-        backgroundColor: '#00D9EF',
-        justifyContent: 'center',
         alignItems: 'center'
     },
     mainScreenButton: {
         height: hp(7),
         width: wp(23),
-        borderRadius: 10,
+        borderRadius: hp(1.5),
         backgroundColor: '#00D9EF',
-        marginRight: wp(10),
         justifyContent: 'center',
         alignItems: 'center'
-    },
-    buttonText: {
-        fontFamily: 'Averta-Semibold',
-        color: '#FFFFFF',
-        letterSpacing: wp(0.1),
-        fontSize: hp(1.8)
     },
     buttonsContainer: {
         height: hp(10),
@@ -80,11 +56,16 @@ export default StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
     },
+    buttonText: {
+        fontFamily: 'Averta-Semibold',
+        color: '#FFFFFF',
+        fontSize: hp(2)
+    },
     slideView: {
         height: hp(10),
         width: wp(100),
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
+        borderTopLeftRadius: hp(3),
+        borderTopRightRadius: hp(3),
         backgroundColor: '#00D9EF',
         position: 'absolute',
         marginTop: hp(93.7),
@@ -148,6 +129,8 @@ export default StyleSheet.create({
         height: hp(14),
         width: hp(14),
         marginTop: hp(1.5),
+        borderWidth: hp(0.5),
+        borderColor: '#FF9900',
         borderRadius: 100
     },
     usernameText: {

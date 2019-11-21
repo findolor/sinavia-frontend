@@ -22,7 +22,8 @@ import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
 
 import CLOSE_BUTTON from '../../../assets/closeButton.png'
-import ZOOM_BUTTON from '../../../assets/gameScreens/zoomButton.png'
+import ZOOM_IN_BUTTON from '../../../assets/gameScreens/zoomInButton.png'
+import ZOOM_OUT_BUTTON from '../../../assets/gameScreens/zoomOutButton.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
 import FIFTY_FIFTY from '../../../assets/gameScreens/jokers/fiftyFifty.png'
 import SECOND_CHANCE from '../../../assets/gameScreens/jokers/secondChance.png'
@@ -782,7 +783,8 @@ class GroupGame extends React.Component {
                             width={wp(42)}
                             color="#00D9EF"
                             buttonText="Evet"
-                            borderRadius={10}
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
                             onPress={() =>
                                 this.props.room.send({
                                     action: 'leave-match'
@@ -793,7 +795,8 @@ class GroupGame extends React.Component {
                             width={wp(42)}
                             color="#00D9EF"
                             buttonText="Hayır"
-                            borderRadius={10}
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
                             onPress={() => this.setState({isQuitGameModalVisible: false})}
                         />
                     </View>
@@ -1028,7 +1031,7 @@ class GroupGame extends React.Component {
                                     onPress={this.questionModalCloseOnPress}
                                 >
                                     <Image
-                                        source={CLOSE_BUTTON}
+                                        source={ZOOM_OUT_BUTTON}
                                         style={styles.closeModal}
                                     />
                                 </TouchableOpacity>
@@ -1049,7 +1052,7 @@ class GroupGame extends React.Component {
                                     onPress={this.zoomButtonOnPress}
                                 >
                                     <Image
-                                        source={ZOOM_BUTTON}
+                                        source={ZOOM_IN_BUTTON}
                                         style={styles.zoomButton}
                                     />
                                 </TouchableOpacity>

@@ -35,7 +35,7 @@ export default StyleSheet.create({
         backgroundColor: '#F2FEFF',
         marginTop: hp(21.44),
         marginLeft: wp(6.4),
-        borderRadius: 20,
+        borderRadius: hp(4),
         position: 'absolute',
         alignItems: 'center'
     },
@@ -59,17 +59,15 @@ export default StyleSheet.create({
     mainScreenButton: {
         height: hp(7),
         width: wp(23),
-        borderRadius: 10,
+        borderRadius: hp(1.5),
         backgroundColor: '#00D9EF',
-        marginRight: wp(10),
         justifyContent: 'center',
         alignItems: 'center'
     },
     buttonText: {
         fontFamily: 'Averta-Semibold',
         color: '#FFFFFF',
-        letterSpacing: wp(0.1),
-        fontSize: hp(1.8)
+        fontSize: hp(2)
     },
     buttonsContainer: {
         height: hp(10),
@@ -83,8 +81,8 @@ export default StyleSheet.create({
     slideView: {
         height: hp(10),
         width: wp(100),
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
+        borderTopLeftRadius: hp(3),
+        borderTopRightRadius: hp(3),
         backgroundColor: '#00D9EF',
         position: 'absolute',
         marginTop: hp(93.7),
@@ -134,6 +132,8 @@ export default StyleSheet.create({
         height: hp(14),
         width: hp(14),
         marginTop: hp(1.5),
+        borderWidth: hp(0.5),
+        borderColor: '#FF9900',
         borderRadius: 100
     },
     usernameText: {
@@ -390,6 +390,8 @@ export default StyleSheet.create({
     },
     friendMatchWaitingText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: hp(4)
+        fontSize: hp(4),
+        color: '#FF9900',
+        textAlign: 'center'
     }
 })

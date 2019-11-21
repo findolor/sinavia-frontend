@@ -52,26 +52,25 @@ export default StyleSheet.create({
     },
     userPicContainer: {
         height: hp(20),
-        width: wp(30),
-        alignItems: 'flex-start',
-        marginBottom: hp(3),
-        marginLeft: wp(10)
+        width: wp(33),
+        alignItems: 'flex-end',
+        marginBottom: hp(3)
     },
     userInfoContainer: {
         height: hp(20),
-        width: wp(60),
+        width: wp(67),
         marginBottom: hp(3),
         justifyContent: 'center'
     },
     opponentPicContainer: {
         height: hp(20),
-        width: wp(30),
-        alignItems: 'flex-end',
+        width: wp(33),
+        alignItems: 'flex-start',
         marginTop: hp(3)
     },
     opponentInfoContainer: {
         height: hp(20),
-        width: wp(60),
+        width: wp(67),
         justifyContent: 'center',
         alignItems: 'flex-end',
         marginTop: hp(3)
@@ -81,7 +80,7 @@ export default StyleSheet.create({
         width: hp(15),
         marginTop: hp(2.7),
         borderWidth: hp(0.5),
-        borderColor: 'white',
+        borderColor: '#FF9900',
         borderRadius: 100
     },
     usernameText: {
@@ -140,7 +139,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         borderWidth: hp(0.5),
         borderColor: 'white',
-        borderRadius: 100,
+        borderRadius: hp(100),
         backgroundColor: 'rgba(0,0,0,0.5)'
     },
     swordPic: {

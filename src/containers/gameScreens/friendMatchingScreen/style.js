@@ -13,7 +13,7 @@ export default StyleSheet.create({
     contentContainer: {
         flex: 10,
         width: wp(100),
-        backgroundColor: '#FF9900',
+        backgroundColor: '#00D9EF',
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
@@ -48,26 +48,25 @@ export default StyleSheet.create({
     },
     userPicContainer: {
         height: hp(20),
-        width: wp(30),
-        alignItems: 'flex-start',
-        marginBottom: hp(3),
-        marginLeft: wp(10)
+        width: wp(33),
+        alignItems: 'flex-end',
+        marginBottom: hp(3)
     },
     userInfoContainer: {
         height: hp(20),
-        width: wp(60),
+        width: wp(67),
         marginBottom: hp(3),
         justifyContent: 'center'
     },
     opponentPicContainer: {
         height: hp(20),
-        width: wp(30),
-        alignItems: 'flex-end',
+        width: wp(33),
+        alignItems: 'flex-start',
         marginTop: hp(3)
     },
     opponentInfoContainer: {
         height: hp(20),
-        width: wp(60),
+        width: wp(67),
         justifyContent: 'center',
         alignItems: 'flex-end',
         marginTop: hp(3)
@@ -163,7 +162,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         borderWidth: hp(1),
         borderColor: 'white',
-        borderRadius: 100,
+        borderRadius: hp(100),
         backgroundColor: '#FF9900',
         zIndex: 1
     },
@@ -185,6 +184,7 @@ export default StyleSheet.create({
     timerText: {
         fontFamily: 'Averta-BoldItalic',
         fontSize: hp(9),
+        marginBottom: hp(1),
         color: '#FFFFFF'
     },
     backButtonContainer: {
@@ -196,6 +196,12 @@ export default StyleSheet.create({
     backButton: {
         height: hp(3.5),
         width: hp(3.5)
+    },
+    startFirstText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(3),
+        color: '#FFFFFF',
+        textAlign: 'center'
     }
 })
 

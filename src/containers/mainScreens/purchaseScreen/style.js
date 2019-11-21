@@ -48,9 +48,13 @@ export default StyleSheet.create({
         width: wp(93),
         borderWidth: hp(0.4),
         borderColor: '#CC7A00',
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
+        borderTopLeftRadius: hp(1.8),
+        borderTopRightRadius: hp(1.8),
         overflow: 'hidden'
+    },
+    linearGradientUpperView: {
+        height: hp(23.7),
+        width: wp(92.2)
     },
     premiumBottomView: {
         zIndex: 1,
@@ -61,19 +65,19 @@ export default StyleSheet.create({
         borderLeftWidth: hp(0.4),
         borderRightWidth: hp(0.4),
         borderColor: '#CC7A00',
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10,
+        borderBottomLeftRadius: hp(1.8),
+        borderBottomRightRadius: hp(1.8),
         justifyContent: 'center',
         alignItems: 'center',
         overflow: 'hidden'
     },
     adContainer: {
         height: hp(8),
-        width: wp(45),
-        borderRadius: 10,
+        width: wp(93),
+        borderRadius: hp(1.8),
         backgroundColor: '#00D9EF',
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-evenly',
         alignItems: 'center'
     },
     bundlesView: {
@@ -81,7 +85,7 @@ export default StyleSheet.create({
         width: wp(93),
         borderWidth: hp(0.25),
         borderColor: '#00D9EF',
-        borderRadius: 10,
+        borderRadius: hp(1.8),
         backgroundColor: '#CCF7FC',
         overflow: 'hidden'
     },
@@ -95,10 +99,6 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
-    },
-    linearGradientUpperView: {
-        height: hp(24.5),
-        width: wp(93)
     },
     swiperView: {
         height: hp(21),
@@ -122,19 +122,19 @@ export default StyleSheet.create({
     },
     adView: {
         height: hp(8),
-        width: wp(17.5),
+        width: wp(20),
         justifyContent: 'center',
         alignItems: 'center'
     },
     playButtonContainer: {
         height: hp(8),
-        width: wp(10),
+        width: wp(12),
         justifyContent: 'center',
         alignItems: 'center'
     },
     watchTextContainer: {
         height: hp(8),
-        width: wp(17.5),
+        width: wp(20),
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -205,7 +205,7 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: hp(0.25),
-        borderRadius: 100,
+        borderRadius: hp(100),
         borderColor: '#FF9900'
     },
     jokerCounterView: {
@@ -216,7 +216,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'red',
         borderWidth: hp(0.35),
-        borderRadius: 100,
+        borderRadius: hp(100),
         borderColor: '#fcfcfc',
         bottom: hp(2.75),
         right: wp(6.5),
@@ -235,6 +235,7 @@ export default StyleSheet.create({
         color: 'black'
     },
     jokerImg: {
+        resizeMode: 'contain',
         height: hp(3),
         width: hp(3)
     },
@@ -281,7 +282,7 @@ export default StyleSheet.create({
         backgroundColor: '#FF9900',
         borderWidth: hp(0.35),
         borderColor: '#fcfcfc',
-        borderRadius: 30
+        borderRadius: hp(4),
     },
     premiumButtonText: {
         fontFamily: 'Averta-Bold',
@@ -310,7 +311,7 @@ export default StyleSheet.create({
     premiumModalSwiperImgView: {
         height: hp(11),
         width: wp(93),
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         alignItems: 'center'
     },
     premiumSwiperHeaderView: {
@@ -320,30 +321,31 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     premiumModalSwiperHeaderView: {
-        height: hp(7),
+        height: hp(5),
         width: wp(93),
         justifyContent: 'flex-end',
         alignItems: 'center'
     },
     premiumSwiperInfoView: {
         height: hp(5.5),
-        width: wp(55),
+        width: wp(70),
         justifyContent: 'center',
         alignItems: 'center'
     },
     premiumModalSwiperInfoView: {
-        height: hp(8),
-        width: wp(65),
+        height: hp(10),
+        width: wp(85),
         justifyContent: 'center',
         alignItems: 'center'
     },
     premiumImg: {
-        height: hp(6.5),
-        width: hp(6.5)
+        resizeMode: 'contain',
+        height: hp(6.5)
     },
     premiumModalImg: {
         resizeMode: 'contain',
-        height: hp(8)
+        height: hp(8),
+        marginTop: hp(1)
     },
     premiumHeaderText: {
         fontFamily: 'Averta-Bold',
@@ -404,7 +406,7 @@ export default StyleSheet.create({
         width: wp(22),
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 20,
+        borderRadius: hp(4),
         backgroundColor: '#00C72C'
     },
     normalPriceText: {
@@ -451,7 +453,7 @@ export default StyleSheet.create({
         height: hp(71),
         width: wp(93),
         borderWidth: hp(0.5),
-        borderRadius: 10,
+        borderRadius: hp(1.5),
         borderColor: '#D27E00',
         overflow: 'hidden',
         justifyContent: 'center',
@@ -485,11 +487,11 @@ export default StyleSheet.create({
         width: wp(75),
         borderWidth: hp(0.2),
         borderColor: 'white',
-        borderRadius: 30,
+        borderRadius: hp(4),
         backgroundColor: '#00D9EF',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: hp(1.5)
+        marginTop: hp(2.5)
     },
     purchasePremiumButtonText: {
         fontFamily: 'Averta-Bold',
@@ -513,6 +515,8 @@ export default StyleSheet.create({
     premiumOptionUpperView: {
         height: hp(3),
         width: wp(28),
+        borderTopLeftRadius: hp(2),
+        borderTopRightRadius: hp(2),
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -521,8 +525,8 @@ export default StyleSheet.create({
         width: wp(28),
         borderWidth: hp(0.35),
         borderColor: '#00D9EF',
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10,
+        borderBottomLeftRadius: hp(2),
+        borderBottomRightRadius: hp(2),
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -602,21 +606,21 @@ export default StyleSheet.create({
         height: hp(8),
         width: wp(93),
         backgroundColor: '#FF9900',
-        borderRadius: 10,
+        borderRadius: hp(1.8),
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
     socialMediaLogosView: {
         height: hp(8),
-        width: wp(16),
+        width: wp(15),
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center'
     },
     socialMediaInfoView: {
         height: hp(8),
-        width: wp(40),
+        width: wp(42),
         justifyContent: 'center',
         alignItems: 'center',
         marginLeft: wp(2.5)
@@ -625,7 +629,7 @@ export default StyleSheet.create({
         height: hp(6),
         width: hp(6),
         backgroundColor: 'white',
-        borderRadius: 100,
+        borderRadius: hp(100),
         justifyContent: 'center',
         alignItems: 'center'
     },

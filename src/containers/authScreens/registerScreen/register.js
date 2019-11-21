@@ -4,7 +4,6 @@ import {
     View,
     Text,
     TouchableOpacity,
-    Switch,
     TextInput,
     Keyboard,
     Alert,
@@ -22,6 +21,7 @@ import {
 import { AuthButton, AuthTextInput } from '../../../components/authScreen'
 import styles from './style'
 import DateTimePicker from 'react-native-modal-datetime-picker'
+import SwitchToggle from 'react-native-switch-toggle'
 import moment from 'moment'
 import NotchView from '../../../components/notchView'
 import { showMessage } from 'react-native-flash-message'
@@ -63,8 +63,8 @@ class Register extends React.Component {
         this.setState({ hidePasswordSecond: !this.state.hidePasswordSecond })
     }
 
-    toggleSwitch = value => {
-        this.setState({ switchValue: value })
+    toggleSwitch = () => {
+        this.setState({ switchValue: !this.state.switchValue })
     }
 
     showDateTimePicker = () => {
@@ -282,17 +282,26 @@ class Register extends React.Component {
                     </View>
                     <View style={styles.toggleContainer}>
                         <View style={styles.switchView}>
-                            <Switch
-                                style={{
-                                    transform: [
-                                        { scaleX: 0.8 },
-                                        { scaleY: 0.8 }
-                                    ]
+                            <SwitchToggle
+                                containerStyle={{
+                                    width: wp(12),
+                                    height: hp(4),
+                                    borderRadius: hp(5),
+                                    padding: wp(0.5)
                                 }}
-                                onValueChange={this.toggleSwitch}
-                                value={this.state.switchValue}
-                                trackColor="#00D9EF"
-                                thumbColor="#00D9EF"
+                                backgroundColorOn='#a0e1e5'
+                                backgroundColorOff='#e5e1e0'
+                                circleStyle={{
+                                    width: hp(4),
+                                    height: hp(4),
+                                    borderRadius: hp(5),
+                                    backgroundColor: '#00D9EF'
+                                }}
+                                switchOn={this.state.switchValue}
+                                onPress={this.toggleSwitch}
+                                circleColorOff='#00D9EF'
+                                circleColorOn='#00D9EF'
+                                duration={500}
                             />
                         </View>
                         <View style={styles.licenseTextContainer}>

@@ -1096,6 +1096,30 @@ class Statistics extends React.Component {
                             paginationStyle={{ bottom: hp(0.5) }}
                             activeDotColor={'#FF9900'}
                             removeClippedSubviews={false}
+                            activeDot={
+                                <View
+                                    style={{
+                                        height: hp(1.5),
+                                        width: hp(1.5),
+                                        backgroundColor: '#FF9900',
+                                        borderRadius: hp(100),
+                                        marginLeft: wp(1),
+                                        marginRight: wp(1)
+                                    }}
+                                />
+                            }
+                            dot={
+                                <View
+                                    style={{
+                                        height: hp(1.5),
+                                        width: hp(1.5),
+                                        backgroundColor: 'rgba(0,0,0,.2)',
+                                        borderRadius: hp(100),
+                                        marginLeft: wp(1),
+                                        marginRight: wp(1)
+                                    }}
+                                />
+                            }
                             onIndexChanged={index => {
                                 this.swiperOnIndexChange(index)
                             }}
@@ -1532,6 +1556,7 @@ class Statistics extends React.Component {
                                             grey: '#CACACA'
                                         }
                                     }}
+                                    style={{ height: hp(90) }}
                                     snap={false}
                                     onValuesUpdated={
                                         this.weeklyRheostatValueUpdate
