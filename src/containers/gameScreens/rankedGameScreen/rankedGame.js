@@ -99,6 +99,10 @@ class RankedGame extends React.Component {
             // Joker active variables
             isSeeOpponentAnswerJokerActive: false,
             isSecondChanceJokerActive: false,
+            // Joker usage variables
+            isRemoveOptionJokerUsed: false,
+            isSeeOpponentAnswerJokerUsed: false,
+            isSecondChanceJokerUsed: false,
             // Current question answer for second chance
             questionAnswer: 0,
             // Contains every information about question
@@ -211,9 +215,7 @@ class RankedGame extends React.Component {
         switch (message.action) {
             // Which options to remove comes from the server
             case 'remove-options-joker':
-                this.setState({ isRemoveOptionJokerDisabled: true,
-                                        secondJokerAmount: this.state.secondJokerAmount-1
-                })
+                this.setState({ isRemoveOptionJokerDisabled: true, secondJokerAmount: this.state.secondJokerAmount-1, isRemoveOptionJokerUsed: true})
                 this.props.subtractJoker(2)
 
                 this.removeOptions(message.optionsToRemove)
@@ -223,7 +225,8 @@ class RankedGame extends React.Component {
                 this.setState({
                     isSecondChanceJokerDisabled: true,
                     isSecondChanceJokerActive: true,
-                    thirdJokerAmount: this.state.thirdJokerAmount-1
+                    thirdJokerAmount: this.state.thirdJokerAmount-1,
+                    isSecondChanceJokerUsed: true
                 })
                 this.props.subtractJoker(3)
 
@@ -233,7 +236,8 @@ class RankedGame extends React.Component {
                 this.setState({
                     isSeeOpponentAnswerJokerDisabled: true,
                     isSeeOpponentAnswerJokerActive: true,
-                    firstJokerAmount: this.state.firstJokerAmount-1
+                    firstJokerAmount: this.state.firstJokerAmount-1,
+                    isSeeOpponentAnswerJokerUsed: true
                 })
                 this.props.subtractJoker(1)
 
@@ -569,7 +573,7 @@ class RankedGame extends React.Component {
 
         let that = this
 
-        this.setState({ playerOneButton: buttonNumber })
+        this.setState({ playerOneButton: buttonNumber, isRemoveOptionJokerDisabled: true, isSecondChanceJokerDisabled: true, isSeeOpponentAnswerJokerDisabled: true })
         this.highlightButton(buttonNumber)
 
         this.props.room.send({
@@ -668,6 +672,9 @@ class RankedGame extends React.Component {
             buttonFiveName: 'E',
             buttonSixName: 'Boş'
         })
+        if(!this.state.isRemoveOptionJokerUsed) this.setState({ isRemoveOptionJokerDisabled: false })
+        if(!this.state.isSecondChanceJokerUsed) this.setState({ isSecondChanceJokerDisabled: false })
+        if(!this.state.isSeeOpponentAnswerJokerUsed) this.setState({ isSeeOpponentAnswerJokerDisabled: false })
     }
 
     countdownOnFinish = () => {
