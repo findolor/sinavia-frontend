@@ -53,7 +53,7 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     userRow: {
-        height: hp(6),
+        height: hp(8),
         width: wp(66),
         flexDirection: 'row',
         alignItems: 'center',
@@ -67,13 +67,15 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     userPic: {
-        height: hp(5),
-        width: hp(5),
-        borderRadius: 100
+        height: hp(6),
+        width: hp(6),
+        borderRadius: hp(100),
+        borderWidth: hp(0.3),
+        borderColor: '#FF9900'
     },
     nameContainer: {
         height: hp(6),
-        width: wp(41),
+        width: wp(45),
         justifyContent: 'center',
         alignItems: 'flex-start'
     },
@@ -82,11 +84,30 @@ export default StyleSheet.create({
         fontSize: wp(4),
         color: '#5C5C5C'
     },
-    usersCounterContainer: {
+    usersAndQuestionsCounterContainer: {
         height: hp(5),
         width: wp(87.5),
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    usersCounterContainer: {
+        height: hp(5),
+        width: wp(30),
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    questionsCounterContainer: {
+        height: hp(5),
+        width: wp(30),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    peopleCounterImg: {
+        height: hp(3.8),
+        width: hp(1.9),
+        marginRight: wp(1.5)
     },
     quitView: {
         backgroundColor: '#ffffff',
@@ -116,8 +137,20 @@ export default StyleSheet.create({
         flex: 1,
         alignItems: 'center'
     },
+    playerStatusView: {
+        height: hp(3),
+        borderRadius: hp(3),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    playerStatusText: {
+        fontFamily: 'Averta-SemiboldItalic',
+        fontSize: hp(2),
+        color: 'white'
+    },
     leaderContainer: {
-        width: wp(10)
+        width: wp(6),
+        alignItems: 'flex-end'
     },
     leaderLogo: {
         resizeMode: 'contain',
@@ -136,41 +169,6 @@ export default StyleSheet.create({
         fontSize: wp(4.5),
         color: '#5C5C5C',
         marginBottom: hp(1)
-    },
-    questionNumberPicker: {
-        height: hp(6),
-        width: wp(15),
-        borderColor: '#707070',
-        borderWidth: wp(0.5),
-        borderRadius: 10,
-        marginBottom: hp(1)
-    },
-    questionPickerText: {
-        marginTop: hp(1.3),
-        marginBottom: hp(1),
-        marginLeft: wp(1),
-        marginRight: wp(1),
-        fontSize: hp(2),
-        color: '#F7941E',
-        textAlign: 'center',
-        textAlignVertical: 'center'
-    },
-    questionPickerDropdownText: {
-        marginTop: hp(1.3),
-        marginBottom: hp(1),
-        fontSize: hp(2),
-        color: '#F7941E',
-        textAlign: 'center',
-        textAlignVertical: 'center'
-    },
-    questionPickerDropdown: {
-        height: hp(32),
-        width: wp(15),
-        borderColor: '#707070',
-        borderWidth: wp(0.5),
-        borderRadius: 10,
-        marginTop: hp(0.5),
-        marginRight: wp(-0.5)
     },
     gameCodeContainer: {
         height: hp(12),
@@ -235,5 +233,18 @@ export default StyleSheet.create({
         backgroundColor: '#000000DE',
         justifyContent: 'flex-start',
         alignItems: 'center'
+    },
+    questionNumberText: {
+        fontFamily: 'Averta-Light',
+        fontSize: hp(3.5),
+        color: '#FF9900'
+    },
+    questionNumberCircle: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: hp(6),
+        width: hp(6),
+        borderRadius: hp(100),
+        marginBottom: hp(1)
     }
 })

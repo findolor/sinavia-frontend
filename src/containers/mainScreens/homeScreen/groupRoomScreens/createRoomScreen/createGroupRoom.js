@@ -32,6 +32,7 @@ import {
 // Image imports
 const COPY_IMAGE = require('../../../../../assets/mainScreens/copy.png')
 const LEADER_LOGO = require('../../../../../assets/mainScreens/groupLeaderSword.png')
+const PEOPLE_COUNTER_IMG = require('../../../../../assets/mainScreens/peopleCounterImg.png')
 
 // Question amounts that can be taken
 const QUESTION_AMOUNTS_LIST = ['5', '10', '15', '20']
@@ -56,7 +57,7 @@ class CreateGroupRoom extends React.Component {
             matchCourseId: null,
             matchSubjectId: null,
             // choosen question amount
-            choosenQuesionAmount: '5'
+            choosenQuestionAmount: 5
         }
     }
 
@@ -150,7 +151,7 @@ class CreateGroupRoom extends React.Component {
                         subjectName: this.props.gameContentMap.subjects[
                             this.state.matchSubjectId - 1
                         ].name,
-                        choosenQuestionAmount: this.state.choosenQuesionAmount
+                        choosenQuestionAmount: this.state.choosenQuestionAmount
                     })
                     break
                 case 'content-ids':
@@ -180,12 +181,12 @@ class CreateGroupRoom extends React.Component {
     }
 
     // Selected question amount is sent to the server
-    questionAmountPicker(idx, value) {
+    questionAmountPicker(questionNumber){
         this.room.send({
             action: 'set-question-number',
-            questionAmount: value
+            questionAmount: questionNumber
         })
-        this.setState({ choosenQuesionAmount: value })
+        this.setState({ choosenQuestionAmount: questionNumber })
     }
 
     closeGroupGameOnPress = () => {
@@ -255,26 +256,18 @@ class CreateGroupRoom extends React.Component {
                                 </View>
                                 <View style={styles.questionsNumberContainer}>
                                     <Text style={styles.questionsNumberText}>
-                                        Soru Sayısı:{' '}
+                                        Soru Sayısı
                                     </Text>
-                                    <DropDown
-                                        style={styles.questionNumberPicker}
-                                        textStyle={styles.questionPickerText}
-                                        dropdownTextStyle={
-                                            styles.questionPickerDropdownText
-                                        }
-                                        dropdownStyle={
-                                            styles.questionPickerDropdown
-                                        }
-                                        options={QUESTION_AMOUNTS_LIST}
-                                        defaultValue={this.state.questionNumber}
-                                        onSelect={(idx, value) =>
-                                            this.questionAmountPicker(
-                                                idx,
-                                                value
-                                            )
-                                        }
-                                    />
+                                    <TouchableOpacity style={[styles.questionNumberCircle, {marginLeft: wp(1), backgroundColor: this.state.choosenQuestionAmount === 5 ? '#FF9900' : '#fff'}]} onPress={() => {this.questionAmountPicker(5)}}>
+                                        <Text style={[styles.questionNumberText, {color: this.state.choosenQuestionAmount === 5 ? 'white' : '#FF9900', fontFamily: this.state.choosenQuestionAmount === 5 ? 'Averta-Bold' : 'Averta-Regular'}]}>
+                                            5
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={[styles.questionNumberCircle, {backgroundColor: this.state.choosenQuestionAmount === 10 ? '#FF9900' : '#fff'}]} onPress={() => {this.questionAmountPicker(10)}}>
+                                        <Text style={[styles.questionNumberText, {color: this.state.choosenQuestionAmount === 10 ? 'white' : '#FF9900', fontFamily: this.state.choosenQuestionAmount === 10 ? 'Averta-Bold' : 'Averta-Regular'}]}>
+                                            10
+                                        </Text>
+                                    </TouchableOpacity>
                                 </View>
                                 <View style={styles.usersListContainer}>
                                     <FlatList
@@ -311,9 +304,11 @@ class CreateGroupRoom extends React.Component {
                                                         >
                                                             {item.username}
                                                         </Text>
-                                                        <Text>
-                                                            {item.status}
-                                                        </Text>
+                                                        <View style={[styles.playerStatusView, {backgroundColor: item.status === 'Hazır' ? '#00E312' : '#FF9900'}]}>
+                                                            <Text style={styles.playerStatusText}>
+                                                                {'   '}{item.status}{'   '}
+                                                            </Text>
+                                                        </View>
                                                     </View>
                                                     {item.isLeader && (
                                                         <View
@@ -340,6 +335,7 @@ class CreateGroupRoom extends React.Component {
                                     />
                                 </View>
                                 <View style={styles.usersCounterContainer}>
+                                    <Image source={PEOPLE_COUNTER_IMG} style={styles.peopleCounterImg}/>
                                     <Text style={styles.usersCounterText}>
                                         {
                                             Object.keys(
@@ -356,7 +352,7 @@ class CreateGroupRoom extends React.Component {
                                 height={hp(7)}
                                 width={wp(87.5)}
                                 color="#00D9EF"
-                                buttonText="Başla"
+                                buttonText="Başlat"
                                 fontSize={hp(3)}
                                 borderRadius={hp(1.5)}
                                 position={'absolute'}
