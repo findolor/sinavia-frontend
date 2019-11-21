@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
-import { flashMessages } from '../../flashMessageBuilder'
 
 export const getToken = async params => {
     try {
@@ -16,9 +15,6 @@ export const getToken = async params => {
 
         return { token: response.data.data.token, id: response.data.data.id }
     } catch (err) {
-        if (err.message === 'Network Error') {
-            flashMessages.networkError()
-            throw err
-        }
+        throw err
     }
 }
