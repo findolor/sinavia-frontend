@@ -15,7 +15,7 @@ import {
 import { AuthButton, AuthTextInput } from '../../../components/authScreen'
 import styles from './style'
 import { userServices } from '../../../sagas/user'
-
+import { flashMessages } from '../../../services/flashMessageBuilder'
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
 import { navigationReset } from '../../../services/navigationService'
 import { connect } from 'react-redux'
@@ -40,7 +40,9 @@ class ResetPassword extends React.Component {
             .then(data => {
                 this.props.lockUnlockButton()
 
-                Alert.alert('Yeni şifren e-postana gönderildi!')
+                flashMessages.generalMessage(
+                    'Yeni şifren e-postana gönderildi!'
+                )
                 navigationReset('auth')
             })
             .catch(error => {

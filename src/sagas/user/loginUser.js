@@ -37,7 +37,7 @@ export function* loginUser(action) {
         const firebaseResponse = yield call(firebaseSignIn)
 
         if (!firebaseResponse.user.emailVerified) {
-            Alert.alert('Lütfen e-postana gelen linki onayla.')
+            flashMessages.generalMessage('Lütfen e-postana gelen linki onayla.')
             yield put({
                 type: appTypes.LOCK_UNLOCK_BUTTON
             })

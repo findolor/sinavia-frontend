@@ -15,6 +15,7 @@ import {
     makePutRequest
 } from '../../services/apiServices'
 import firebase from 'react-native-firebase'
+import { flashMessages } from '../../services/flashMessageBuilder'
 
 async function getFromStorage(key) {
     const item = await deviceStorage.getItemFromStorage(key)
@@ -81,7 +82,7 @@ export function* authenticateUser(action) {
         // If the response is false that means the user is logged in on another device
         // We dont log them in and reset to the auth screen
         if (!res) {
-            Alert.alert(
+            flashMessages.generalMessage(
                 'Başka bir cihazdan oturum açıldı. Tekrar giriş yapınız.'
             )
             yield call(deviceStorage.clearDeviceStorage)

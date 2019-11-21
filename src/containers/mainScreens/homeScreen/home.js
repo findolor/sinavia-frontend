@@ -1385,17 +1385,6 @@ class Home extends React.Component {
 
         switch (this.state.selectedGameMode) {
             case 'ranked':
-                /* if (this.props.clientInformation.isPremium) {
-                    navigationReset('game', this.calculateContentIds())
-                } else if (this.props.energyAmount !== 0)
-                    navigationReset('game', this.calculateContentIds())
-                else {
-                    this.setState({
-                        visibleRankedGameStartPress: false,
-                        rankedModeButtonBorderColor: EMPTY_MODE_COLOR
-                    })
-                    Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
-                } */
                 navigationReset('game', this.calculateContentIds())
                 break
             case 'solo':

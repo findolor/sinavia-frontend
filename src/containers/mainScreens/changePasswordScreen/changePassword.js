@@ -13,6 +13,7 @@ import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
 import { navigationPop } from '../../../services/navigationService'
 import returnLogo from '../../../assets/return.png'
+import { flashMessages } from '../../../services/flashMessageBuilder'
 
 class ChangePassword extends React.Component {
     constructor(props) {
@@ -76,10 +77,12 @@ class ChangePassword extends React.Component {
                     true
                 )
             } else {
-                Alert.alert('Lütfen yeni şifreyi doğru giriniz!')
+                flashMessages.generalMessage(
+                    'Lütfen yeni şifreyi doğru giriniz!'
+                )
             }
         } else {
-            Alert.alert('Lütfen mevcut şifreyi doğru giriniz!')
+            flashMessages.generalMessage('Lütfen mevcut şifreyi doğru giriniz!')
         }
     }
 
@@ -167,7 +170,4 @@ const mapDispatchToProps = dispatch => ({
         )
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ChangePassword)
+export default connect(mapStateToProps, mapDispatchToProps)(ChangePassword)
