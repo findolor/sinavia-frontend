@@ -4,11 +4,16 @@ import { navigationReset } from '../../services/navigationService'
 import { apiServicesTree, makeGetRequest } from '../../services/apiServices'
 
 export function* getAllContentSaga(action) {
-    const response = yield call(
-        makeGetRequest,
-        apiServicesTree.gameContentApi.getAllContent,
-        { clientToken: action.clientToken }
-    )
+    let response
+    try {
+        response = yield call(
+            makeGetRequest,
+            apiServicesTree.gameContentApi.getAllContent,
+            { clientToken: action.clientToken }
+        )
+    } catch (err) {
+        return
+    }
 
     const examList = []
 

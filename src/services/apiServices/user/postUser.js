@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
+import { flashMessages } from '../../flashMessageBuilder'
 
 export const postUser = async params => {
     try {
@@ -10,6 +11,9 @@ export const postUser = async params => {
 
         return response.data.data
     } catch (error) {
-        throw new Error(error)
+        if (err.message === 'Network Error') {
+            flashMessages.networkError()
+            throw err
+        }
     }
 }

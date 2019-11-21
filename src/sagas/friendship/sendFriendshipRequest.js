@@ -20,14 +20,18 @@ export async function sendFriendshipRequestService(
 }
 
 export function* sendFriendshipRequestSaga(action) {
-    yield call(
-        makePostRequest,
-        apiServicesTree.friendshipApi.sendFriendshipRequest,
-        {
-            clientToken: action.clientToken,
-            userId: action.clientDBId,
-            friendId: action.friendId,
-            clientUsername: action.clientUsername
-        }
-    )
+    try {
+        yield call(
+            makePostRequest,
+            apiServicesTree.friendshipApi.sendFriendshipRequest,
+            {
+                clientToken: action.clientToken,
+                userId: action.clientDBId,
+                friendId: action.friendId,
+                clientUsername: action.clientUsername
+            }
+        )
+    } catch (err) {
+        return
+    }
 }

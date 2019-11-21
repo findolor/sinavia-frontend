@@ -2,6 +2,7 @@ import axios from 'axios'
 import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
 import { deviceStorage } from '../../deviceStorage'
 import DeviceInfo from 'react-native-device-info'
+import { flashMessages } from '../../flashMessageBuilder'
 
 export const renewToken = async () => {
     try {
@@ -27,6 +28,9 @@ export const renewToken = async () => {
 
         return { token: response.data.data.token, id: response.data.data.id }
     } catch (err) {
-        throw new Error(err.message)
+        if (err.message === 'Network Error') {
+            flashMessages.networkError()
+            throw err
+        }
     }
 }

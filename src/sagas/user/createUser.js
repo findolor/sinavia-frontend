@@ -4,11 +4,7 @@ import { clientTypes } from '../../redux/client/actions'
 import { appTypes } from '../../redux/app/actions'
 import { gameContentTypes } from '../../redux/gameContent/actions'
 import DeviceInfo from 'react-native-device-info'
-import {
-    apiServicesTree,
-    makeGetRequest,
-    makePostRequest
-} from '../../services/apiServices'
+import { apiServicesTree, makePostRequest } from '../../services/apiServices'
 
 export function* createUser(action) {
     yield put({
@@ -22,11 +18,16 @@ export function* createUser(action) {
         action.payload.deviceId = deviceId
 
         // We send the client information to our server
-        const res = yield call(
-            makePostRequest,
-            apiServicesTree.userApi.postUser,
-            { userInformation: action.payload }
-        )
+        let res
+        try {
+            res = yield call(
+                makePostRequest,
+                apiServicesTree.userApi.postUser,
+                { userInformation: action.payload }
+            )
+        } catch (error) {
+            return
+        }
 
         // Saving the credentials to storage
         deviceStorage.saveItemToStorage('clientCredentials', {

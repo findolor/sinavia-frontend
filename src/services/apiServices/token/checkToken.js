@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { API_ENDPOINT, APP_VERSION } from '../../../config/index'
+import { flashMessages } from '../../flashMessageBuilder'
 
 export const checkToken = async (headers, params) => {
     try {
@@ -15,7 +16,9 @@ export const checkToken = async (headers, params) => {
 
         return response.data.success
     } catch (err) {
-        console.log(err.response)
-        throw new Error(err.message)
+        if (err.message === 'Network Error') {
+            flashMessages.networkError()
+            throw new Error(err.message)
+        }
     }
 }
