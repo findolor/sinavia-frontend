@@ -183,8 +183,8 @@ export default StyleSheet.create({
     },
     zoomButton: {
         resizeMode: 'contain',
-        height: hp(6),
-        width: wp(6)
+        height: hp(5),
+        width: wp(5)
     },
     zoomButtonContainer: {
         height: hp(6),

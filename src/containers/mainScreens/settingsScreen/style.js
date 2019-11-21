@@ -153,7 +153,8 @@ export default StyleSheet.create({
         height: hp(7),
         width: wp(72),
         fontSize: hp(2.5),
-        paddingHorizontal: wp(3)
+        paddingHorizontal: wp(3),
+        color: '#2E313C'
     },
     dateTimeTextStyle: {
         fontFamily: 'Averta-Regular',

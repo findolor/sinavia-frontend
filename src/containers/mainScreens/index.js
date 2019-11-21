@@ -12,7 +12,6 @@ import {
 } from './homeScreen/groupRoomScreens/index'
 import OpponentsProfile from './opponentsProfileScreen/opponentsProfile'
 import Statistics from './statisticsScreen/statistics'
-import Modals from './modalsScreen/modals'
 
 export {
     Profile,
@@ -26,6 +25,5 @@ export {
     JoinGroupRoom,
     OpponentsProfile,
     Notifications,
-    Statistics,
-    Modals
+    Statistics
 }
