@@ -198,10 +198,15 @@ export function* loginUser(action) {
                     type: appTypes.LOCK_UNLOCK_BUTTON
                 })
 
-                navigationReplace('getInfo', {
-                    email: this.email,
-                    password: this.password
-                })
+                if (error.message === 'Network Error') {
+                    Alert.alert('Server bağlantı hatası!')
+                    return
+                }
+                if (error.response.data.error === 'Invalid User')
+                    navigationReplace('getInfo', {
+                        email: this.email,
+                        password: this.password
+                    })
             }
         }
     } catch (error) {

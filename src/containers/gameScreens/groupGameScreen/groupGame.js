@@ -640,12 +640,6 @@ class GroupGame extends React.Component {
         this.buttonOnPress(6)
     }
 
-    backButtonOnPress = () => {
-        this.props.room.leave()
-        this.props.client.close()
-        navigationReset('main')
-    }
-
     zoomButtonOnPress = () => {
         this.setState({ isQuestionModalVisible: true })
     }

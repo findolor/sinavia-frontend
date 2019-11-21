@@ -114,7 +114,7 @@ class FriendGame extends React.Component {
             thirdJokerNameSecondWord: '',
             thirdJokerAmount: '',
             // Friend matches that was played before
-            friendMatches: []
+            friendMatches: this.props.friendMatches
         }
     }
 
@@ -150,7 +150,7 @@ class FriendGame extends React.Component {
             switch (userJoker.jokerId) {
                 case 1:
                     let splittedFirstJoker = userJoker.joker.name.split(/[ ,]+/)
-                    console.log(userJoker)
+
                     this.setState({
                         firstJokerNameFirstWord: splittedFirstJoker[0],
                         firstJokerNameSecondWord: splittedFirstJoker[1],
@@ -165,7 +165,7 @@ class FriendGame extends React.Component {
                     break
                 case 2:
                     let splittedSecondJoker = userJoker.joker.name.split(/[ ,]+/)
-                    console.log(userJoker)
+
                     this.setState({
                         secondJokerNameFirstWord: splittedSecondJoker[0],
                         secondJokerNameSecondWord: splittedSecondJoker[1],
@@ -180,7 +180,7 @@ class FriendGame extends React.Component {
                     break
                 case 3:
                     let splittedThirdJoker = userJoker.joker.name.split(/[ ,]+/)
-                    console.log(userJoker)
+
                     this.setState({
                         thirdJokerNameFirstWord: splittedThirdJoker[0],
                         thirdJokerNameSecondWord: splittedThirdJoker[1],
@@ -287,13 +287,10 @@ class FriendGame extends React.Component {
                         opponentProfilePicture: that.props.opponentProfilePicture,
                         fullQuestionList: message.fullQuestionList,
                         isMatchFinished: false,
-                        friendMatches: message.friendMatches,
+                        friendMatches: this.state.friendMatches,
                         isWon: true
                     })
                 }, 3000)
-                break
-            case 'friend-matches':
-                this.setState({ friendMatches: message.friendMatches })
                 break
             case 'leave-match':
                 // If the client hasn't answered any of the questions, we just navigate him to main screen
@@ -322,9 +319,12 @@ class FriendGame extends React.Component {
                     opponentProfilePicture: this.props.opponentProfilePicture,
                     fullQuestionList: message.fullQuestionList,
                     isMatchFinished: false,
-                    friendMatches: message.friendMatches,
+                    friendMatches: this.state.friendMatches,
                     isWon: false
                 })
+                break
+                case 'save-questions':
+                    this.setState({ fullQuestionList: message.fullQuestionList })
                 break
         }
     }
@@ -411,9 +411,6 @@ class FriendGame extends React.Component {
                     isMatchFinished: true,
                     friendMatches: this.state.friendMatches
                 })
-                break
-            case 'save-questions':
-                this.setState({ fullQuestionList: message.fullQuestionList })
                 break
         }
     }
@@ -673,12 +670,6 @@ class FriendGame extends React.Component {
         if (this.state.isQuestionAnswered) return
         // We send the same response as 'leave empty' option
         this.buttonOnPress(6)
-    }
-
-    backButtonOnPress = () => {
-        this.props.room.leave()
-        this.props.client.close()
-        navigationReset('main')
     }
 
     zoomButtonOnPress = () => {

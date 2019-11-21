@@ -136,16 +136,16 @@ class Home extends React.Component {
         // Set up a listener for detecting the app state
         AppState.addEventListener('change', this.handleAppStateChange)
 
-        // TODO RIGHT NOW THE PROBLEM IS
-        // BECAUSE WE DONT REMOVE THE LISTENERS
-        // EVERYTIME WE COME TO THIS SCREEN
-        // WE GET MULTIPLE LISTENERS HERE
-        // GOTTA FIX THIS
-        this.removeMessageListener = firebase.messaging().onMessage(message => {
+        if (global.messageListener !== undefined) {
+            global.messageListener()
+            global.notificationListener()
+            global.notificationOpenedListener()
+        }
+        global.messageListener = firebase.messaging().onMessage(message => {
             console.log(message, 'mes')
             this.fcmMessagePicker(message)
         })
-        this.removeNotificationListener = firebase
+        global.notificationListener = firebase
             .notifications()
             .onNotification(notification => {
                 console.log(notification, 'not')
@@ -200,14 +200,12 @@ class Home extends React.Component {
 
         // If the app was in foreground or background
         // This func fires up
-        this.removeNotificationOpenedListener = firebase
+        global.notificationOpenedListener = firebase
             .notifications()
             .onNotificationOpened(notificationOpen => {
-                // Get the action triggered by the notification being opened
-                const action = notificationOpen.action
                 // Get information about the notification that was opened
                 const notification = notificationOpen.notification
-                console.log(action, notification, 'app running')
+
                 this.fcmMessagePicker(notification)
                 this.props.saveNotificationOpen(null)
             })
@@ -215,13 +213,10 @@ class Home extends React.Component {
         // This func fires up
         if (this.props.notificationOpen) {
             // App was opened by a notification
-            // Get the action triggered by the notification being opened
-            const action = this.props.notificationOpen.action
             // Get information about the notification that was opened
             const notification = this.props.notificationOpen.notification
-            console.log(action, notification, 'app closed')
-            // TODO ACT ON ACTIONS HERE
-            // TODO DECIDE WHAT TO DO
+            if (notification === undefined) return
+
             this.fcmMessagePicker(notification)
             this.props.saveNotificationOpen(null)
         }

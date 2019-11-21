@@ -7,38 +7,39 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Dimensions
+    Dimensions,
+    PermissionsAndroid,
+    Platform
 } from 'react-native'
 import { navigationPop } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import Share from 'react-native-share'
-import RNFetchBlob, { Dirs as DIRS } from 'rn-fetch-blob'
+import RNFetchBlob from 'rn-fetch-blob'
 import selectedFav from '../../../assets/favori.png'
 import unselectedFav from '../../../assets/favori_bos.png'
 import backButton from '../../../assets/backButton.png'
 import returnLogo from '../../../assets/return.png'
 import shareLogo from '../../../assets/share.png'
 
-import { favouriteQuestion } from '../../../services/apiServices/favouriteQuestion'
-import { fetchUser } from '../../../sagas/user/fetchUser'
+import { clientActions } from '../../../redux/client/actions'
 
-const data = []
-
-// TODO write this file again according to the data from server
 class Favorites extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            data: data,
+            data: [],
             isModalVisible: false,
             galleryPosition: 1,
             favIconSelected: false,
             // ScrollView item list
             scrollViewList: [],
             startQuestionIndex: 1,
-            correctAnswer: ''
+            correctAnswer: '',
+            // Favoruite variables
+            favouriteIcon: unselectedFav,
+            isFaved: false
         }
     }
 
@@ -46,6 +47,20 @@ class Favorites extends React.Component {
         await this.loadScreen()
     }
 
+    async requestCameraPermission() {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.CAMERA
+            )
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                console.log('You can use the camera')
+            } else {
+                console.log('Camera permission denied')
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
     // Takes the transformed favouriteQuestions and makes the proper ui
     loadScreen = () => {
         new Promise.resolve().then(() => {
@@ -166,13 +181,16 @@ class Favorites extends React.Component {
     }
 
     goToIndex(index, questionList) {
-        this.setState({
-            isModalVisible: true,
-            galleryPosition: index + 1,
-            startQuestionIndex: index,
-            data: questionList,
-            correctAnswer: questionList[index].question.correctAnswer
-        })
+        this.setState(
+            {
+                isModalVisible: true,
+                galleryPosition: index + 1,
+                startQuestionIndex: index,
+                data: questionList,
+                correctAnswer: questionList[index].question.correctAnswer
+            },
+            () => this.checkFavouriteStatus()
+        )
     }
 
     // This function takes favouriteQuestions ( it is an array )
@@ -217,52 +235,105 @@ class Favorites extends React.Component {
         return favouriteQuestions
     }
 
+    checkFavouriteStatus = () => {
+        const index = this.props.favouriteQuestions.findIndex(
+            x =>
+                x.questionId ===
+                this.state.data[this.state.galleryPosition - 1].questionId
+        )
+        if (index === -1) {
+            this.setState({
+                favouriteIcon: unselectedFav,
+                isFaved: false
+            })
+        } else {
+            this.setState({ favouriteIcon: selectedFav, isFaved: true })
+        }
+    }
+
+    favouriteOnPress = () => {
+        if (this.state.isFaved) {
+            this.props.unfavouriteQuestion(
+                this.props.clientToken,
+                this.props.clientDBId,
+                this.state.data[this.state.galleryPosition - 1].question,
+                this.props.favouriteQuestions
+            )
+            this.setState({ favouriteIcon: unselectedFav, isFaved: false })
+        } else {
+            this.props.favouriteQuestion(
+                this.props.clientToken,
+                this.props.clientDBId,
+                this.state.data[this.state.galleryPosition - 1].question,
+                this.props.favouriteQuestions
+            )
+            this.setState({ favouriteIcon: selectedFav, isFaved: true })
+        }
+    }
+
     returnButtonOnPress = () => {
         navigationPop()
     }
 
-    shareImage = () => {
+    shareImage = async () => {
+        await this.requestCameraPermission()
+
         const configOptions = {
-            path: RNFetchBlob.fs.dirs.DownloadDir + '/question.png'
+            path: RNFetchBlob.fs.dirs.CacheDir + '/question.png'
         }
+
         RNFetchBlob.config(configOptions)
             .fetch(
                 'GET',
-                'http://testicoz.org/wp-content/uploads/2017/09/ygs-dilveanlatim-7-01.png'
+                this.state.data[this.state.galleryPosition - 1].question
+                    .questionLink
             )
-            .then(async resp => {
-                console.log('The file saved to ', resp.path())
-                console.log('response : ', resp)
-                console.log(resp.data)
-                let filePath = resp.path()
-                let base64image = resp.data
-                let shareOptions = {
-                    url: `file://${configOptions.path}`,
-                    message:
-                        'Merhaba, bu soruyu çözmeme yardımcı olabilir misin?'
+            .then(response => {
+                let base64Str
+                if (response.info().status == 200)
+                    // the conversion is done in native code
+                    base64Str = response.base64()
+
+                let shareOptions = { message: 'pls help' }
+
+                if (Platform.OS === 'ios') {
+                    shareOptions.url = `file://${response.path()}`
+                    delete shareOptions.message
+                } else {
+                    shareOptions.url = `data:image/png;base64,${base64Str}`
                 }
+
                 Share.open(shareOptions)
+                    .then(data => {
+                        console.log(data)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
             })
             .catch(err => console.log(err))
     }
 
     galleryOnScroll = event => {
         this.scrollX = event.nativeEvent.contentOffset.x
-        this.setState({
-            galleryPosition: Math.min(
-                Math.max(
-                    Math.floor(
-                        this.scrollX /
-                            Math.round(Dimensions.get('window').width) +
-                            0.5
-                    ) + 1,
-                    0
+        this.setState(
+            {
+                galleryPosition: Math.min(
+                    Math.max(
+                        Math.floor(
+                            this.scrollX /
+                                Math.round(Dimensions.get('window').width) +
+                                0.5
+                        ) + 1,
+                        0
+                    ),
+                    Object.keys(this.state.data).length /*Image count*/
                 ),
-                Object.keys(this.state.data).length /*Image count*/
-            ),
-            correctAnswer: this.state.data[this.state.galleryPosition - 1]
-                .question.correctAnswer
-        })
+                correctAnswer: this.state.data[this.state.galleryPosition - 1]
+                    .question.correctAnswer
+            },
+            this.checkFavouriteStatus()
+        )
     }
 
     answerSwitcher(buttonNumber) {
@@ -299,14 +370,21 @@ class Favorites extends React.Component {
                         <Text style={styles.headerText}>Favori Sorular</Text>
                     </View>
                 </View>
-                <Modal visible={this.state.isModalVisible}>
+                <Modal
+                    visible={this.state.isModalVisible}
+                    onRequestClose={async () => {
+                        this.setState({ isModalVisible: false })
+                        await this.loadScreen()
+                    }}
+                >
                     <NotchView color={'#00D9EF'} />
                     <View style={styles.modalHeader}>
                         <View style={styles.backButtonContainer}>
                             <TouchableOpacity
-                                onPress={() =>
+                                onPress={async () => {
                                     this.setState({ isModalVisible: false })
-                                }
+                                    await this.loadScreen()
+                                }}
                             >
                                 <Image
                                     source={backButton}
@@ -340,6 +418,7 @@ class Favorites extends React.Component {
                             initialScrollIndex={this.state.startQuestionIndex}
                             showsHorizontalScrollIndicator={false}
                             onScroll={this.galleryOnScroll}
+                            onScrollToIndexFailed={() => {}}
                             renderItem={({ item, index }) => {
                                 return (
                                     <View style={styles.galleryView}>
@@ -402,24 +481,16 @@ class Favorites extends React.Component {
                             <Text style={styles.answerText}>Doğru cevap</Text>
                         </View>
                         <View style={styles.favIconContainer}>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    this.setState({
-                                        favIconSelected: true
-                                    })
-                                }}
-                            >
+                            <TouchableOpacity onPress={this.favouriteOnPress}>
                                 <Image
-                                    source={
-                                        this.state.favIconSelected === true
-                                            ? selectedFav
-                                            : unselectedFav
-                                    }
+                                    source={this.state.favouriteIcon}
                                     style={styles.favIcon}
                                 />
                             </TouchableOpacity>
                             <Text style={styles.answerText}>
-                                Favoriden çıkar
+                                {this.state.isFaved === true
+                                    ? 'Favoriden çıkar'
+                                    : 'Favoriye ekle'}
                             </Text>
                         </View>
                     </View>
@@ -438,10 +509,31 @@ class Favorites extends React.Component {
 }
 
 const mapStateToProps = state => ({
+    clientToken: state.client.clientToken,
+    clientDBId: state.client.clientDBId,
     favouriteQuestions: state.client.favouriteQuestions,
     gameContentMap: state.gameContent.gameContentMap
 })
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+    favouriteQuestion: (clientToken, clientId, question, favedQuestionList) =>
+        dispatch(
+            clientActions.favouriteQuestion(
+                clientToken,
+                clientId,
+                question,
+                favedQuestionList
+            )
+        ),
+    unfavouriteQuestion: (clientToken, clientId, question, favedQuestionList) =>
+        dispatch(
+            clientActions.unfavouriteQuestion(
+                clientToken,
+                clientId,
+                question,
+                favedQuestionList
+            )
+        )
+})
 
-export default connect(mapStateToProps, null)(Favorites)
+export default connect(mapStateToProps, mapDispatchToProps)(Favorites)

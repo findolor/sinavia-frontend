@@ -30,7 +30,7 @@ import SWORD from '../../../assets/sword.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
 //import { gameEnergyServices } from '../../../sagas/gameEnergy'
 import { levelFinder } from '../../../services/userLevelFinder'
-import { widthPercentageToDP as wp } from "react-native-responsive-screen"
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 class FriendMatchingScreen extends React.Component {
     constructor(props) {
@@ -40,7 +40,10 @@ class FriendMatchingScreen extends React.Component {
             isCoundownFinished: false,
             clientPoint: 0,
             friendPoint: 0,
-            isFriendJoined: false
+            isFriendJoined: false,
+            friendMatches: [],
+            friendMatchClientWinCount: null,
+            friendMatchOpponentWinCount: null
         }
     }
 
@@ -88,9 +91,6 @@ class FriendMatchingScreen extends React.Component {
         return text.replace(' ', '_')
     }
 
-    // TODO Implement logic for the closed game
-    // If the user closes the game
-    // Friend should not be able to enter the game
     roomMessage = () => {
         // Opponent information
         let opponentUsername
@@ -115,6 +115,27 @@ class FriendMatchingScreen extends React.Component {
                 })
                 return
             }
+            if (message.action === 'friend-matches') {
+                let clientWinCount = 0,
+                    opponentWinCount = 0
+
+                message.friendMatches.forEach(friendMatch => {
+                    if (!friendMatch.isMatchDraw) {
+                        if (
+                            this.props.clientInformation.id ===
+                            friendMatch.winnerId
+                        )
+                            clientWinCount++
+                        else opponentWinCount++
+                    }
+                })
+                this.setState({
+                    friendMatches: message.friendMatches,
+                    friendMatchClientWinCount: clientWinCount,
+                    friendMatchOpponentWinCount: opponentWinCount
+                })
+                return
+            }
             // Message is playerProps
             const playerIds = Object.keys(message)
 
@@ -131,54 +152,6 @@ class FriendMatchingScreen extends React.Component {
             })
 
             this.room.removeAllListeners()
-
-            /* if (this.props.clientInformation.isPremium) {
-                setTimeout(() => {
-                    navigationReplace(SCENE_KEYS.gameScreens.friendGame, {
-                        // These are necessary for the game logic
-                        room: this.room,
-                        client: this.client,
-                        // These can be used in both screens
-                        playerUsername: playerUsername,
-                        playerProfilePicture: playerProfilePicture,
-                        opponentUsername: opponentUsername,
-                        opponentId: opponentId,
-                        opponentProfilePicture: opponentProfilePicture
-                    })
-                }, 3000)
-            } else {
-                gameEnergyServices
-                    .subtractGameEnergy(
-                        this.props.clientToken,
-                        this.props.clientDBId
-                    )
-                    .then(() => {
-                        // Removing one energy when the match starts
-                        this.props.removeOneEnergy()
-
-                        setTimeout(() => {
-                            navigationReplace(
-                                SCENE_KEYS.gameScreens.friendGame,
-                                {
-                                    // These are necessary for the game logic
-                                    room: this.room,
-                                    client: this.client,
-                                    // These can be used in both screens
-                                    playerUsername: playerUsername,
-                                    playerProfilePicture: playerProfilePicture,
-                                    opponentUsername: opponentUsername,
-                                    opponentId: opponentId,
-                                    opponentProfilePicture: opponentProfilePicture
-                                }
-                            )
-                        }, 3000)
-                    })
-                    .catch(error => {
-                        console.log(error)
-                        this.backButtonOnPress()
-                    })
-            } */
-
             setTimeout(() => {
                 navigationReplace(SCENE_KEYS.gameScreens.friendGame, {
                     // These are necessary for the game logic
@@ -189,7 +162,8 @@ class FriendMatchingScreen extends React.Component {
                     playerProfilePicture: playerProfilePicture,
                     opponentUsername: opponentUsername,
                     opponentId: opponentId,
-                    opponentProfilePicture: opponentProfilePicture
+                    opponentProfilePicture: opponentProfilePicture,
+                    friendMatches: this.state.friendMatches
                 })
             }, 3000)
         })
@@ -205,47 +179,6 @@ class FriendMatchingScreen extends React.Component {
         })
 
         this.room.removeAllListeners()
-
-        /* if (this.props.clientInformation.isPremium) {
-            navigationReplace(SCENE_KEYS.gameScreens.soloFriendGameScreen, {
-                // These are necessary for the game logic
-                room: this.room,
-                client: this.client,
-                // These can be used in both screens
-                playerUsername: this.props.clientInformation.username,
-                playerProfilePicture: this.props.clientInformation
-                    .profilePicture
-            })
-        } else {
-            gameEnergyServices
-                .subtractGameEnergy(
-                    this.props.clientToken,
-                    this.props.clientDBId
-                )
-                .then(() => {
-                    // Removing one energy when the match starts
-                    this.props.removeOneEnergy()
-
-                    navigationReplace(
-                        SCENE_KEYS.gameScreens.soloFriendGameScreen,
-                        {
-                            // These are necessary for the game logic
-                            room: this.room,
-                            client: this.client,
-                            // These can be used in both screens
-                            playerUsername: this.props.clientInformation
-                                .username,
-                            playerProfilePicture: this.props.clientInformation
-                                .profilePicture
-                        }
-                    )
-                })
-                .catch(error => {
-                    console.log(error)
-                    this.backButtonOnPress()
-                })
-        } */
-
         navigationReplace(SCENE_KEYS.gameScreens.soloFriendGameScreen, {
             // These are necessary for the game logic
             room: this.room,
@@ -302,12 +235,18 @@ class FriendMatchingScreen extends React.Component {
                                     />
                                 </View>
                                 <View style={styles.userInfoContainer}>
-                                    <Text style={[styles.usernameText, {marginLeft: wp(3)}]}>
+                                    <Text
+                                        style={[
+                                            styles.usernameText,
+                                            { marginLeft: wp(3) }
+                                        ]}
+                                    >
                                         @{this.props.clientInformation.username}
                                     </Text>
                                     <Text
                                         style={[
-                                            styles.subjectBasedSinaviaScoreText, {marginLeft: wp(3)}
+                                            styles.subjectBasedSinaviaScoreText,
+                                            { marginLeft: wp(3) }
                                         ]}
                                     >
                                         Konu Seviyesi:{' '}
@@ -330,7 +269,12 @@ class FriendMatchingScreen extends React.Component {
                         >
                             <View style={styles.playerView}>
                                 <View style={styles.opponentInfoContainer}>
-                                    <Text style={[styles.usernameText, {marginRight: wp(3)}]}>
+                                    <Text
+                                        style={[
+                                            styles.usernameText,
+                                            { marginRight: wp(3) }
+                                        ]}
+                                    >
                                         @
                                         {
                                             this.props.opponentInformation
@@ -339,7 +283,8 @@ class FriendMatchingScreen extends React.Component {
                                     </Text>
                                     <Text
                                         style={[
-                                            styles.subjectBasedSinaviaScoreText, {marginRight: wp(3)}
+                                            styles.subjectBasedSinaviaScoreText,
+                                            { marginRight: wp(3) }
                                         ]}
                                     >
                                         Konu Seviyesi:{' '}
@@ -363,8 +308,12 @@ class FriendMatchingScreen extends React.Component {
                     </View>
                     <View style={styles.separatorView}>
                         <View style={styles.separatorLineUser}>
-                            <Text style={styles.winLoseText}>20</Text>
-                            <Text style={styles.winLoseCounterText}>Galibiyet</Text>
+                            <Text style={styles.winLoseText}>
+                                {this.state.friendMatchClientWinCount}
+                            </Text>
+                            <Text style={styles.winLoseCounterText}>
+                                Galibiyet
+                            </Text>
                         </View>
                         <View style={styles.separatorCircle}>
                             {!this.state.isFriendJoined &&
@@ -387,8 +336,12 @@ class FriendMatchingScreen extends React.Component {
                                     <TouchableOpacity
                                         onPress={this.playAheadOnPress}
                                     >
-                                        <Text style={styles.startFirstText}>ÖNDEN</Text>
-                                        <Text style={styles.startFirstText}>OYNA</Text>
+                                        <Text style={styles.startFirstText}>
+                                            ÖNDEN
+                                        </Text>
+                                        <Text style={styles.startFirstText}>
+                                            OYNA
+                                        </Text>
                                     </TouchableOpacity>
                                 )}
                             {this.state.isFriendJoined && (
@@ -396,8 +349,12 @@ class FriendMatchingScreen extends React.Component {
                             )}
                         </View>
                         <View style={styles.separatorLineOpponent}>
-                            <Text style={styles.winLoseText}>10</Text>
-                            <Text style={styles.winLoseCounterText}>Galibiyet</Text>
+                            <Text style={styles.winLoseText}>
+                                {this.state.friendMatchOpponentWinCount}
+                            </Text>
+                            <Text style={styles.winLoseCounterText}>
+                                Galibiyet
+                            </Text>
                         </View>
                     </View>
                 </View>

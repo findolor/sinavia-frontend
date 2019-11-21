@@ -8,7 +8,10 @@ import {
     Dimensions,
     Modal
 } from 'react-native'
-import { navigationReset } from '../../../services/navigationService'
+import {
+    navigationReset,
+    navigationReplace
+} from '../../../services/navigationService'
 import { SCENE_KEYS } from '../../../config/'
 import styles from './style'
 import { connect } from 'react-redux'
@@ -83,7 +86,9 @@ class FriendGameStatsScreen extends React.Component {
             isFaved: false,
             // Fav icon
             favouriteIcon: unselectedFav,
-            isModalVisible: false
+            isModalVisible: false,
+            // All the friend matches
+            friendMatches: null
         }
     }
 
@@ -106,8 +111,7 @@ class FriendGameStatsScreen extends React.Component {
                 } else {
                     setTimeout(() => {
                         this.props.room.removeAllListeners()
-
-                        navigationReset(SCENE_KEYS.gameScreens.friendGame, {
+                        navigationReplace(SCENE_KEYS.gameScreens.friendGame, {
                             room: this.props.room,
                             client: this.props.client,
                             playerUsername: this.props.playerUsername,
@@ -116,7 +120,8 @@ class FriendGameStatsScreen extends React.Component {
                             opponentUsername: this.props.opponentUsername,
                             opponentId: this.props.opponentId,
                             opponentProfilePicture: this.props
-                                .opponentProfilePicture
+                                .opponentProfilePicture,
+                            friendMatches: this.state.friendMatches
                         })
                     }, 2000)
                 }
@@ -127,6 +132,9 @@ class FriendGameStatsScreen extends React.Component {
                     isReplayButtonDisabled: true
                 })
                 return
+            case 'friend-matches':
+                this.setState({ friendMatches: message.friendMatches })
+                break
         }
     }
 
@@ -276,21 +284,25 @@ class FriendGameStatsScreen extends React.Component {
                 )
             }
 
-            this.setState({
-                correctAnswerNumber: playerCorrect,
-                incorrectAnswerNumber: playerIncorrect,
-                unansweredAnswerNumber: playerUnanswered,
-                opponentCorrectAnswerNumber: opponentCorrect,
-                opponentInorrectAnswerNumber: opponentIncorrect,
-                opponentUnansweredAnswerNumber: opponentUnanswered,
-                clientProfilePicture: playerProfilePicture,
-                opponentProfilePicture: opponentProfilePicture,
-                clientUsername: playerUsername,
-                opponentUsername: opponentUsername,
-                playerFriendMatchWinCount: playerFriendMatchWinCount,
-                opponentFriendMatchWinCount: opponentFriendMatchWinCount,
-                friendMatchesCount: friendMatchesCount
-            })
+            this.setState(
+                {
+                    correctAnswerNumber: playerCorrect,
+                    incorrectAnswerNumber: playerIncorrect,
+                    unansweredAnswerNumber: playerUnanswered,
+                    opponentCorrectAnswerNumber: opponentCorrect,
+                    opponentInorrectAnswerNumber: opponentIncorrect,
+                    opponentUnansweredAnswerNumber: opponentUnanswered,
+                    clientProfilePicture: playerProfilePicture,
+                    opponentProfilePicture: opponentProfilePicture,
+                    clientUsername: playerUsername,
+                    opponentUsername: opponentUsername,
+                    playerFriendMatchWinCount: playerFriendMatchWinCount,
+                    opponentFriendMatchWinCount: opponentFriendMatchWinCount,
+                    friendMatchesCount: friendMatchesCount
+                },
+                () => this.checkFavouriteStatus()
+            )
+
             resolve(true)
         })
     }
@@ -385,15 +397,15 @@ class FriendGameStatsScreen extends React.Component {
             })
             setTimeout(() => {
                 this.props.room.removeAllListeners()
-
-                navigationReset(SCENE_KEYS.gameScreens.friendGame, {
+                navigationReplace(SCENE_KEYS.gameScreens.friendGame, {
                     room: this.props.room,
                     client: this.props.client,
                     playerUsername: this.props.playerUsername,
                     playerProfilePicture: this.props.playerProfilePicture,
                     opponentUsername: this.props.opponentUsername,
                     opponentId: this.props.opponentId,
-                    opponentProfilePicture: this.props.opponentProfilePicture
+                    opponentProfilePicture: this.props.opponentProfilePicture,
+                    friendMatches: this.state.friendMatches
                 })
             }, 2000)
         }
