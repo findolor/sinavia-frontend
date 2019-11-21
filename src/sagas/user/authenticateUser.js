@@ -127,14 +127,33 @@ export function* authenticateUser(action) {
             getFromStorage,
             'favouriteQuestions'
         )
-        // TODO FETCH THE USER QUESTIONS HERE???
+        let favouriteQuestionsList = yield call(
+            makeGetRequest,
+            apiServicesTree.favouriteQuestionApi.getFavouriteQuestions,
+            {
+                userId: clientDBId,
+                clientToken: action.payload
+            }
+        )
         // Save it to redux state
-        if (favouriteQuestions !== null && favouriteQuestions !== []) {
+        if (
+            favouriteQuestions === null ||
+            Object.keys(favouriteQuestionsList).length !==
+                Object.keys(favouriteQuestions).length
+        ) {
+            deviceStorage.saveItemToStorage(
+                'favouriteQuestions',
+                favouriteQuestionsList
+            )
+            yield put({
+                type: clientTypes.SAVE_FAVOURITE_QUESTIONS,
+                payload: favouriteQuestionsList
+            })
+        } else
             yield put({
                 type: clientTypes.SAVE_FAVOURITE_QUESTIONS,
                 payload: favouriteQuestions
             })
-        }
 
         // TODO TAKE A LOOK HERE
         // We get all of our friend ids

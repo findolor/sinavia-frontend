@@ -794,14 +794,22 @@ class FriendGameStatsScreen extends React.Component {
                         </View>
                     </View>
                     <View style={styles.buttonsContainer}>
-                        <TouchableOpacity onPress={this.replayButtonOnPress}>
+                        <TouchableOpacity
+                            onPress={this.replayButtonOnPress}
+                            disabled={this.state.isReplayButtonDisabled}
+                        >
                             <View
                                 style={[
                                     styles.replayButton,
                                     {
                                         backgroundColor: this.state
                                             .replayButtonBorderColor,
-                                        opacity: this.state.replayButtonBorderColor === REPLAY_DEACTIVE_BORDER ? 0.5 : 1
+                                        opacity:
+                                            this.state
+                                                .replayButtonBorderColor ===
+                                            REPLAY_DEACTIVE_BORDER
+                                                ? 0.5
+                                                : 1
                                     }
                                 ]}
                             >
