@@ -67,7 +67,8 @@ class ResetPassword extends React.Component {
                                 {
                                     height: hp(45),
                                     resizeMode: 'contain',
-                                    marginTop: hp(7)
+                                    marginTop: hp(7),
+                                    marginLeft: wp(9)
                                 }
                             ]}
                         />
@@ -91,8 +92,9 @@ class ResetPassword extends React.Component {
                             width={wp(85)}
                             marginBottom={hp(6)}
                             color="#00D9EF"
-                            borderRadius={10}
                             buttonText="Gönder"
+                            borderRadius={hp(1.5)}
+                            fontSize={hp(3)}
                             onPress={this.sendLinkOnPress}
                             disabled={this.props.buttonLock}
                         />

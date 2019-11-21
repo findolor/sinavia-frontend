@@ -44,7 +44,7 @@ export default StyleSheet.create({
     coverPhoto: {
         height: hp(30),
         width: wp(90),
-        borderRadius: 30,
+        borderRadius: hp(3),
         marginTop: hp(1)
     },
     returnLogo: {
@@ -71,9 +71,9 @@ export default StyleSheet.create({
         height: hp(13.5),
         width: hp(13.5),
         marginTop: hp(2),
-        borderRadius: 100,
-        borderWidth: hp(0.3),
-        borderColor: '#00D9EF'
+        borderRadius: hp(100),
+        borderWidth: hp(0.4),
+        borderColor: '#FF9900'
     },
     profilePicView: {
         height: hp(16.5),
@@ -94,7 +94,7 @@ export default StyleSheet.create({
         paddingVertical: hp(0)
     },
     usernameText: {
-        fontFamily: 'Averta-Regular',
+        fontFamily: 'Averta-RegularItalic',
         fontSize: hp(2.4),
         color: 'white',
         paddingVertical: hp(0)
@@ -116,21 +116,21 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: hp(0.3),
-        borderRadius: 10,
+        borderRadius: hp(1),
         borderColor: '#00D9EF'
     },
     yourFriendshipStatusBox: {
         height: hp(10),
         width: wp(43),
         borderWidth: hp(0.3),
-        borderRadius: 10,
+        borderRadius: hp(1),
         borderColor: '#00D9EF'
     },
     swiperContainer: {
         height: hp(23),
         width: wp(90),
         borderWidth: hp(0.3),
-        borderRadius: 10,
+        borderRadius: hp(1),
         borderColor: '#00D9EF',
         marginTop: hp(2.5)
     },
@@ -143,7 +143,7 @@ export default StyleSheet.create({
         height: hp(16),
         width: wp(90),
         borderWidth: hp(0.3),
-        borderRadius: 10,
+        borderRadius: hp(1),
         borderColor: '#00D9EF',
         marginTop: hp(2.5),
         alignItems: 'center'
@@ -152,19 +152,19 @@ export default StyleSheet.create({
         height: hp(16),
         width: wp(90),
         borderWidth: hp(0.3),
-        borderRadius: 10,
+        borderRadius: hp(1),
         borderColor: '#00D9EF',
         marginTop: hp(2.5),
         marginBottom: hp(2)
     },
     opponentsFriendsTextView: {
-        height: hp(3.5),
+        height: hp(4.5),
         width: wp(40),
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         alignItems: 'center'
     },
     opponentsFriendsCounterView: {
-        height: hp(6.5),
+        height: hp(5.5),
         width: wp(40),
         justifyContent: 'center',
         alignItems: 'center'
@@ -224,7 +224,7 @@ export default StyleSheet.create({
         alignItems: 'flex-start'
     },
     totalGameStatsText: {
-        fontFamily: 'Averta-Semibold',
+        fontFamily: 'Averta-Bold',
         fontSize: hp(2.3),
         color: '#2E313C',
         marginLeft: wp(4)
@@ -288,13 +288,18 @@ export default StyleSheet.create({
         fontSize: hp(2.3),
         color: '#2E313C'
     },
+    versusGamePlayersTitleText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(2.3),
+        color: '#2E313C'
+    },
     versusTotalText: {
         fontFamily: 'Averta-Semibold',
         fontSize: hp(2.3),
         color: '#00D9EF'
     },
     versusTotalCounter: {
-        fontFamily: 'Averta-SemiboldItalic',
+        fontFamily: 'Averta-Semibold',
         fontSize: hp(2.7),
         color: '#FF9900'
     },
@@ -307,15 +312,15 @@ export default StyleSheet.create({
     },
     yourWinsView: {
         height: hp(5),
-        borderTopLeftRadius: 10,
-        borderBottomLeftRadius: 10,
+        borderTopLeftRadius: hp(1),
+        borderBottomLeftRadius: hp(1),
         backgroundColor: '#6AC259'
     },
     opponentsWinsView: {
         height: hp(5),
         width: wp(41),
-        borderTopRightRadius: 10,
-        borderBottomRightRadius: 10,
+        borderTopRightRadius: hp(1),
+        borderBottomRightRadius: hp(1),
         backgroundColor: '#B72A2A'
     },
     noneWinsView: {
@@ -323,7 +328,7 @@ export default StyleSheet.create({
         width: wp(82),
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 10,
+        borderRadius: hp(1),
         backgroundColor: '#FF9900'
     },
     noneWinsInfoText: {
@@ -360,7 +365,7 @@ export default StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.5)'
     },
     sinaviaScoreText: {
-        fontFamily: 'Averta-RegularItalic',
+        fontFamily: 'Averta-Semibold',
         fontSize: hp(2.4),
         color: '#FF9900',
         paddingVertical: hp(0)

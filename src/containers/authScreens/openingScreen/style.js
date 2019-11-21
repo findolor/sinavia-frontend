@@ -39,7 +39,7 @@ export default StyleSheet.create({
         width: wp(85)
     },
     separatorLine: {
-        borderWidth: wp(0.1),
+        borderWidth: hp(0.1),
         height: hp(0.1),
         width: wp(35),
         borderColor: '#9B9FA4'
@@ -52,6 +52,8 @@ export default StyleSheet.create({
     },
     separatorOrText: {
         fontFamily: 'Averta-Semibold',
-        color: '#9B9FA4'
+        color: '#9B9FA4',
+        fontSize: hp(3),
+        marginBottom: hp(0.5)
     }
 })

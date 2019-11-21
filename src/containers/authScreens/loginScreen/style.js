@@ -66,6 +66,10 @@ export default StyleSheet.create({
         marginLeft: wp(66),
         position: 'absolute'
     },
+    eyeImg: {
+        height: hp(3),
+        width: hp(9),
+    },
     forgetPasswordText: {
         fontFamily: 'Averta-Bold',
         color: '#00D9EF',

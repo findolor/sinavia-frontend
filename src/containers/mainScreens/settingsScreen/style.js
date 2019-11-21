@@ -40,7 +40,7 @@ export default StyleSheet.create({
         height: hp(5),
         width: wp(22),
         backgroundColor: '#3EBB29',
-        borderRadius: 20,
+        borderRadius: hp(10),
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -60,16 +60,17 @@ export default StyleSheet.create({
     profilePic: {
         height: hp(18),
         width: hp(18),
-        borderRadius: 100,
-        borderWidth: hp(0.3),
-        borderColor: '#00D9EF',
+        borderRadius: hp(100),
+        borderWidth: hp(0.4),
+        borderColor: '#FF9900',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        position: 'absolute'
     },
     editImg: {
-        height: hp(3.5),
-        width: hp(3.5)
+        height: hp(5),
+        width: hp(5)
     },
     profilePicView: {
         height: hp(18),
@@ -88,7 +89,7 @@ export default StyleSheet.create({
         height: hp(7.5),
         width: wp(70),
         borderWidth: wp(0.5),
-        borderRadius: 20,
+        borderRadius: hp(2),
         borderColor: '#C8C8C8'
     },
     textInputTitle: {
@@ -105,7 +106,7 @@ export default StyleSheet.create({
     changePasswordButton: {
         height: hp(7.5),
         width: wp(89),
-        borderRadius: 20,
+        borderRadius: hp(1.5),
         backgroundColor: '#00D9EF',
         marginTop: hp(1.5),
         justifyContent: 'center',
@@ -114,7 +115,7 @@ export default StyleSheet.create({
     logoutButton: {
         height: hp(7.5),
         width: wp(89),
-        borderRadius: 20,
+        borderRadius: hp(1.5),
         backgroundColor: '#CC3636',
         marginTop: hp(2.25),
         justifyContent: 'center',
@@ -135,18 +136,23 @@ export default StyleSheet.create({
     editImgView: {
         height: hp(7),
         width: wp(80),
-        justifyContent: 'center',
+        marginLeft: wp(4),
+        justifyContent: 'flex-end',
         alignItems: 'flex-end'
     },
     editProfilePicView: {
-        height: hp(16),
-        width: hp(11),
-        alignItems: 'flex-end'
+        height: hp(17.6),
+        width: hp(17.6),
+        borderRadius: hp(100),
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: "rgba(0,0,0,0.5)"
     },
     textInputStyle: {
         fontFamily: 'Averta-Regular',
         height: hp(7),
         width: wp(72),
+        fontSize: hp(2.5),
         paddingHorizontal: wp(3)
     },
     dateTimeTextStyle: {
@@ -160,7 +166,7 @@ export default StyleSheet.create({
         position: 'absolute',
         height: hp(30),
         width: wp(90),
-        borderRadius: 30,
+        borderRadius: hp(3),
         backgroundColor: "rgba(0,0,0,0.5)",
         alignItems: 'center'
     }

@@ -357,7 +357,7 @@ class OpponentsProfile extends React.Component {
                             uri: this.props.opponentInformation.coverPicture
                         }}
                         style={styles.coverPhoto}
-                        imageStyle={{ borderRadius: 30 }}
+                        imageStyle={{ borderRadius: hp(3) }}
                     >
                         <View style={styles.profileContainerShadowView}>
                             <View style={styles.profilePicView}>
@@ -745,8 +745,8 @@ class OpponentsProfile extends React.Component {
                                                 styles.yourWinsView,
                                                 {
                                                     width: wp(82),
-                                                    borderTopRightRadius: 10,
-                                                    borderBottomRightRadius: 10
+                                                    borderTopRightRadius: hp(1),
+                                                    borderBottomRightRadius: hp(1)
                                                 }
                                             ]}
                                         />
@@ -770,8 +770,8 @@ class OpponentsProfile extends React.Component {
                                                 styles.opponentsWinsView,
                                                 {
                                                     width: wp(82),
-                                                    borderTopLeftRadius: 10,
-                                                    borderBottomLeftRadius: 10
+                                                    borderTopLeftRadius: hp(1),
+                                                    borderBottomLeftRadius: hp(1)
                                                 }
                                             ]}
                                         />
@@ -795,8 +795,8 @@ class OpponentsProfile extends React.Component {
                                                 styles.noneWinsView,
                                                 {
                                                     width: wp(82),
-                                                    borderTopLeftRadius: 10,
-                                                    borderBottomLeftRadius: 10
+                                                    borderTopLeftRadius: hp(1),
+                                                    borderBottomLeftRadius: hp(1)
                                                 }
                                             ]}
                                         >
@@ -818,13 +818,11 @@ class OpponentsProfile extends React.Component {
                                     </View>
                                 )}
                             <View style={styles.versusGameNamesContainer}>
-                                <Text style={styles.versusGameTitleText}>
+                                <Text style={styles.versusGamePlayersTitleText}>
                                     Sen
                                 </Text>
-                                <Text style={styles.versusGameTitleText}>
-                                    {this.props.opponentInformation.name +
-                                        ' ' +
-                                        this.props.opponentInformation.lastname}
+                                <Text style={styles.versusGamePlayersTitleText}>
+                                    {this.props.opponentInformation.username}
                                 </Text>
                             </View>
                         </View>

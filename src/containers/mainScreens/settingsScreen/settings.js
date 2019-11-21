@@ -30,6 +30,7 @@ import {
 } from 'react-native-responsive-screen'
 // Picture imports
 import returnLogo from '../../../assets/return.png'
+import CHANGE_PHOTO from '../../../assets/changePhoto.png'
 import EDIT from '../../../assets/edit.png'
 
 class Settings extends React.Component {
@@ -313,18 +314,18 @@ class Settings extends React.Component {
                                   }
                         }
                         style={styles.coverPhoto}
-                        imageStyle={{ borderRadius: 30 }}
+                        imageStyle={{ borderRadius: hp(3) }}
                     >
                         <View style={styles.shadowCoverView} />
                         <View style={styles.editImgView}>
                             <TouchableOpacity
                                 onPress={() => this.pickCoverImage(true, false)}
                             >
-                                <Image source={EDIT} style={styles.editImg} />
+                                <Image source={CHANGE_PHOTO} style={styles.editImg} />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.profilePicView}>
-                            <ImageBackground
+                            <Image
                                 source={
                                     this.state.isProfilePictureChoosen
                                         ? this.state.profilePicture
@@ -334,21 +335,19 @@ class Settings extends React.Component {
                                           }
                                 }
                                 style={styles.profilePic}
-                                imageStyle={{ borderRadius: 100 }}
-                            >
-                                <View style={styles.editProfilePicView}>
-                                    <TouchableOpacity
-                                        onPress={() =>
-                                            this.pickProfileImage(true, true)
-                                        }
-                                    >
-                                        <Image
-                                            source={EDIT}
-                                            style={styles.editImg}
-                                        />
-                                    </TouchableOpacity>
-                                </View>
-                            </ImageBackground>
+                            />
+                            <View style={styles.editProfilePicView}>
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        this.pickProfileImage(true, true)
+                                    }
+                                >
+                                    <Image
+                                        source={CHANGE_PHOTO}
+                                        style={styles.editImg}
+                                    />
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </ImageBackground>
                 </View>

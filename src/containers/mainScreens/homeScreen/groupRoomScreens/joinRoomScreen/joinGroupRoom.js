@@ -369,7 +369,8 @@ class JoinGroupRoom extends React.Component {
                                         ? 'Başlat'
                                         : 'Hazır'
                                 }
-                                borderRadius={10}
+                                fontSize={hp(3)}
+                                borderRadius={hp(1.5)}
                                 onPress={this.groupGameReadyOnPress}
                             />
                         </TouchableOpacity>
@@ -395,7 +396,8 @@ class JoinGroupRoom extends React.Component {
                                         width={wp(42)}
                                         color="#00D9EF"
                                         buttonText="Evet"
-                                        borderRadius={10}
+                                        fontSize={hp(3)}
+                                        borderRadius={hp(1.5)}
                                         onPress={this.quitGameYes}
                                     />
                                     <AuthButton
@@ -403,7 +405,8 @@ class JoinGroupRoom extends React.Component {
                                         width={wp(42)}
                                         color="#00D9EF"
                                         buttonText="Hayır"
-                                        borderRadius={10}
+                                        fontSize={hp(3)}
+                                        borderRadius={hp(1.5)}
                                         onPress={this.quitGameNo}
                                     />
                                 </View>

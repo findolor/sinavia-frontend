@@ -714,7 +714,8 @@ class Home extends React.Component {
                     width={wp(87.5)}
                     color="#00D9EF"
                     buttonText="Başlat"
-                    borderRadius={10}
+                    fontSize={hp(3)}
+                    borderRadius={hp(1.5)}
                     position={'absolute'}
                     onPress={this.playButtonOnPress}
                 />
@@ -789,7 +790,8 @@ class Home extends React.Component {
                             width={wp(60)}
                             color="#00D9EF"
                             buttonText="Oyun kur"
-                            borderRadius={10}
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
                             onPress={this.createGroupRoomOnPress}
                         />
                         <AuthButton
@@ -797,7 +799,8 @@ class Home extends React.Component {
                             width={wp(60)}
                             color="#00D9EF"
                             buttonText="Oyuna katıl"
-                            borderRadius={10}
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
                             onPress={() =>
                                 this.setState({ visibleView: 'JOIN_ROOM' })
                             }
@@ -1003,7 +1006,8 @@ class Home extends React.Component {
                     width={wp(87.5)}
                     color="#00D9EF"
                     buttonText="Başla"
-                    borderRadius={10}
+                    fontSize={hp(3)}
+                    borderRadius={hp(1.5)}
                     position={'absolute'}
                     onPress={this.friendGameModeOnPress}
                 />
@@ -1113,7 +1117,8 @@ class Home extends React.Component {
                     width={wp(87.5)}
                     color="#00D9EF"
                     buttonText="Onayla"
-                    borderRadius={10}
+                    fontSize={hp(3)}
+                    borderRadius={hp(1.5)}
                     onPress={this.joinGroupRoomOnPress}
                 />
             </View>
@@ -1184,7 +1189,8 @@ class Home extends React.Component {
                             width={wp(42)}
                             color="#B72A2A"
                             buttonText="Reddet"
-                            borderRadius={10}
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
                             onPress={() => {
                                 friendGameServices
                                     .checkOngoingMatch(
@@ -1223,7 +1229,8 @@ class Home extends React.Component {
                             width={wp(42)}
                             color="#FF9900"
                             buttonText="Daha Sonra"
-                            borderRadius={10}
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
                             onPress={() =>
                                 this.setState({
                                     isFriendGameRequestModalVisible: false
@@ -1236,7 +1243,8 @@ class Home extends React.Component {
                         width={wp(87.5)}
                         color="#3EBB29"
                         buttonText="Şimdi Oyna"
-                        borderRadius={10}
+                        fontSize={hp(3)}
+                        borderRadius={hp(1.5)}
                         onPress={() => {
                             friendGameServices
                                 .checkOngoingMatch(

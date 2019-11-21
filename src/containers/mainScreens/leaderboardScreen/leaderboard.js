@@ -13,6 +13,10 @@ import {
 import { connect } from 'react-redux'
 import { leaderboardServices } from '../../../sagas/leaderboard/'
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
 import styles from './style'
 
 import FIRST_TITLE from '../../../assets/firstTitle.png'
@@ -493,7 +497,7 @@ class Leaderboard extends React.Component {
                                                     : null
                                         }}
                                         style={styles.firstUserPic}
-                                        imageStyle={{ borderRadius: 100 }}
+                                        imageStyle={{ borderRadius: hp(100), borderWidth: hp(0.4), borderColor: '#FF9900'}}
                                     >
                                         <Image
                                             source={FIRST_TITLE}
@@ -543,7 +547,6 @@ class Leaderboard extends React.Component {
                                         undefined && ''}
                                 </Text>
                                 <Text style={styles.scoreText}>
-                                    Puan:{' '}
                                     {this.state.topTenPoints[0] !== undefined &&
                                         this.state.topTenPoints[0]}
                                     {this.state.topTenPoints[0] === undefined &&
@@ -568,7 +571,7 @@ class Leaderboard extends React.Component {
                                             style={
                                                 styles.secondAndThirdUsersFromTopTenPic
                                             }
-                                            imageStyle={{ borderRadius: 100 }}
+                                            imageStyle={{ borderRadius: hp(100), borderWidth: hp(0.4), borderColor: '#FF9900'}}
                                         >
                                             <Image
                                                 source={SECOND_TITLE}
@@ -608,7 +611,6 @@ class Leaderboard extends React.Component {
                                         <Text
                                             style={styles.topTenUserScoreText}
                                         >
-                                            Puan:{' '}
                                             {this.state.topTenPoints[1] !==
                                                 undefined &&
                                                 this.state.topTenPoints[1]}
@@ -632,7 +634,7 @@ class Leaderboard extends React.Component {
                                             style={
                                                 styles.secondAndThirdUsersFromTopTenPic
                                             }
-                                            imageStyle={{ borderRadius: 100 }}
+                                            imageStyle={{ borderRadius: hp(100), borderWidth: hp(0.4), borderColor: '#FF9900'}}
                                         >
                                             <Image
                                                 source={THIRD_TITLE}
@@ -672,7 +674,6 @@ class Leaderboard extends React.Component {
                                         <Text
                                             style={styles.topTenUserScoreText}
                                         >
-                                            Puan:{' '}
                                             {this.state.topTenPoints[2] !==
                                                 undefined &&
                                                 this.state.topTenPoints[2]}
@@ -696,7 +697,7 @@ class Leaderboard extends React.Component {
                                             style={
                                                 styles.otherUsersFromTopTenPic
                                             }
-                                            imageStyle={{ borderRadius: 100 }}
+                                            imageStyle={{ borderRadius: hp(100), borderWidth: hp(0.4), borderColor: '#FF9900'}}
                                         >
                                             <View
                                                 style={
@@ -730,7 +731,6 @@ class Leaderboard extends React.Component {
                                         <Text
                                             style={styles.topTenUserScoreText}
                                         >
-                                            Puan:{' '}
                                             {this.state.topTenPoints[3] !==
                                                 undefined &&
                                                 this.state.topTenPoints[3]}
@@ -756,7 +756,7 @@ class Leaderboard extends React.Component {
                                             style={
                                                 styles.otherUsersFromTopTenPic
                                             }
-                                            imageStyle={{ borderRadius: 100 }}
+                                            imageStyle={{ borderRadius: hp(100), borderWidth: hp(0.4), borderColor: '#FF9900'}}
                                         >
                                             <View
                                                 style={
@@ -790,7 +790,6 @@ class Leaderboard extends React.Component {
                                         <Text
                                             style={styles.topTenUserScoreText}
                                         >
-                                            Puan:{' '}
                                             {this.state.topTenPoints[4] !==
                                                 undefined &&
                                                 this.state.topTenPoints[4]}
@@ -814,7 +813,7 @@ class Leaderboard extends React.Component {
                                             style={
                                                 styles.otherUsersFromTopTenPic
                                             }
-                                            imageStyle={{ borderRadius: 100 }}
+                                            imageStyle={{ borderRadius: hp(100), borderWidth: hp(0.4), borderColor: '#FF9900'}}
                                         >
                                             <View
                                                 style={
@@ -848,7 +847,6 @@ class Leaderboard extends React.Component {
                                         <Text
                                             style={styles.topTenUserScoreText}
                                         >
-                                            Puan:{' '}
                                             {this.state.topTenPoints[5] !==
                                                 undefined &&
                                                 this.state.topTenPoints[5]}
@@ -872,7 +870,7 @@ class Leaderboard extends React.Component {
                                             style={
                                                 styles.otherUsersFromTopTenPic
                                             }
-                                            imageStyle={{ borderRadius: 100 }}
+                                            imageStyle={{ borderRadius: hp(100), borderWidth: hp(0.4), borderColor: '#FF9900'}}
                                         >
                                             <View
                                                 style={
@@ -906,7 +904,6 @@ class Leaderboard extends React.Component {
                                         <Text
                                             style={styles.topTenUserScoreText}
                                         >
-                                            Puan:{' '}
                                             {this.state.topTenPoints[6] !==
                                                 undefined &&
                                                 this.state.topTenPoints[6]}
@@ -932,7 +929,7 @@ class Leaderboard extends React.Component {
                                             style={
                                                 styles.otherUsersFromTopTenPic
                                             }
-                                            imageStyle={{ borderRadius: 100 }}
+                                            imageStyle={{ borderRadius: hp(100), borderWidth: hp(0.4), borderColor: '#FF9900'}}
                                         >
                                             <View
                                                 style={
@@ -966,7 +963,6 @@ class Leaderboard extends React.Component {
                                         <Text
                                             style={styles.topTenUserScoreText}
                                         >
-                                            Puan:{' '}
                                             {this.state.topTenPoints[7] !==
                                                 undefined &&
                                                 this.state.topTenPoints[7]}
@@ -990,7 +986,7 @@ class Leaderboard extends React.Component {
                                             style={
                                                 styles.otherUsersFromTopTenPic
                                             }
-                                            imageStyle={{ borderRadius: 100 }}
+                                            imageStyle={{ borderRadius: hp(100), borderWidth: hp(0.4), borderColor: '#FF9900'}}
                                         >
                                             <View
                                                 style={
@@ -1024,7 +1020,6 @@ class Leaderboard extends React.Component {
                                         <Text
                                             style={styles.topTenUserScoreText}
                                         >
-                                            Puan:{' '}
                                             {this.state.topTenPoints[8] !==
                                                 undefined &&
                                                 this.state.topTenPoints[8]}
@@ -1048,7 +1043,7 @@ class Leaderboard extends React.Component {
                                             style={
                                                 styles.otherUsersFromTopTenPic
                                             }
-                                            imageStyle={{ borderRadius: 100 }}
+                                            imageStyle={{ borderRadius: hp(100), borderWidth: hp(0.4), borderColor: '#FF9900'}}
                                         >
                                             <View
                                                 style={
@@ -1082,7 +1077,6 @@ class Leaderboard extends React.Component {
                                         <Text
                                             style={styles.topTenUserScoreText}
                                         >
-                                            Puan:{' '}
                                             {this.state.topTenPoints[9] !==
                                                 undefined &&
                                                 this.state.topTenPoints[9]}

@@ -32,7 +32,7 @@ export default StyleSheet.create({
     textContainer: {
         flex: 8,
         width: wp(85),
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'flex-start',
         marginLeft: wp(7.5)
     },

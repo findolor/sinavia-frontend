@@ -35,8 +35,8 @@ export default StyleSheet.create({
     card: {
         height: hp(9),
         width: wp(87),
-        borderWidth: wp(0.6),
-        borderRadius: 15,
+        borderWidth: hp(0.4),
+        borderRadius: hp(2.5),
         borderColor: '#FF9900',
         marginBottom: hp(1.4),
         justifyContent: 'center',
@@ -44,23 +44,24 @@ export default StyleSheet.create({
     },
     cardText: {
         fontFamily: 'Averta-SemiboldItalic',
-        color: '#00BACD',
+        color: '#2E313C',
         fontSize: hp(3.3)
     },
     picker: {
         height: hp(6),
         width: wp(30),
         borderColor: '#FF9900',
-        borderWidth: wp(0.5),
-        borderRadius: 15
+        borderWidth: hp(0.4),
+        borderRadius: hp(1.5)
     },
     pickerText: {
         marginTop: hp(1.3),
         marginBottom: hp(1),
         marginLeft: wp(1),
         marginRight: wp(1),
+        fontFamily: 'Averta-Semibold',
         fontSize: hp(2),
-        color: '#00BACD',
+        color: '#2E313C',
         textAlign: 'center',
         textAlignVertical: 'center'
     },
@@ -70,16 +71,16 @@ export default StyleSheet.create({
         marginLeft: wp(1),
         marginRight: wp(1),
         fontSize: hp(2),
-        color: '#F7941E',
+        color: '#2E313C',
         textAlign: 'center',
         textAlignVertical: 'center'
     },
     pickerDropdown: {
         height: hp(50.5),
         width: wp(30),
-        borderColor: '#00D9EF',
-        borderWidth: wp(0.5),
-        borderRadius: 15,
+        borderWidth: hp(0.4),
+        borderRadius: hp(1.5),
+        borderColor: '#FF9900',
         marginTop: hp(0.5),
         marginLeft: wp(-0.5)
     },
@@ -92,7 +93,7 @@ export default StyleSheet.create({
         marginTop: hp(14),
         borderColor: '#00D9EF',
         borderWidth: wp(0.75),
-        borderRadius: 10,
+        borderRadius: hp(1.5),
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -156,6 +157,8 @@ export default StyleSheet.create({
     profilePic: {
         height: hp(5.8),
         width: hp(5.8),
+        borderWidth: hp(0.3),
+        borderColor: '#FF9900',
         borderRadius: 100,
         marginLeft: wp(0)
     },
