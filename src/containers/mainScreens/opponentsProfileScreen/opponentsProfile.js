@@ -533,6 +533,8 @@ class OpponentsProfile extends React.Component {
                                 paginationStyle={{ bottom: hp(0.5) }}
                                 activeDotColor={'#FF9900'}
                                 removeClippedSubviews={false}
+                                activeDot={<View style={{height: hp(1.5), width: hp(1.5), backgroundColor: '#FF9900', borderRadius: hp(100), marginLeft: wp(1), marginRight: wp(1)}}/>}
+                                dot={<View style={{height: hp(1.5), width: hp(1.5), backgroundColor: 'rgba(0,0,0,.2)', borderRadius: hp(100), marginLeft: wp(1), marginRight: wp(1)}}/>}
                             >
                                 <View style={styles.totalGameStatsBox}>
                                     <View

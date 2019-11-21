@@ -50,7 +50,7 @@ const scene_keys = {
   splashScreen: "splash"
 };
 
-const API_ENDPOINT = ENV_API_ENDPOINT_LOCAL;
+const API_ENDPOINT =ENV_API_ENDPOINT_LOCAL;
 const GAME_ENGINE_ENDPOINT = ENV_GAME_ENGINE_ENDPOINT_LOCAL;
 const APP_VERSION = ENV_APP_VERSION;
 const SCENE_KEYS = scene_keys;

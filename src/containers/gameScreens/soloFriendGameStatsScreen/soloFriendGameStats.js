@@ -732,7 +732,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                     style={styles.friendMatchWaitingContainer}
                                 >
                                     <Text style={styles.friendMatchWaitingText}>
-                                        {this.state.opponentUsername} Bekleniyor
+                                        {this.state.opponentUsername} bekleniyor
                                     </Text>
                                 </View>
                             )}

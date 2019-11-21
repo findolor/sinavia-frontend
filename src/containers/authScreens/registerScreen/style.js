@@ -31,17 +31,18 @@ export default StyleSheet.create({
         flexDirection: 'row'
     },
     authButtonView:{
-        flex: 8,
+        flex: 7,
         justifyContent: 'center',
         alignItems: 'center',
         width: wp(100)
     },
     gotoLoginContainer: {
-        flex: 10,
+        flex: 11,
         width: wp(85),
         borderColor: '#989696',
         justifyContent: 'flex-start',
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
+        marginLeft: wp(7.5)
     },
     textInputContainer: {
         height: hp(7),
@@ -76,7 +77,7 @@ export default StyleSheet.create({
         height: hp(7),
         width: wp(15),
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'flex-start'
     },
     licenseTextContainer: {
         height: hp(7),

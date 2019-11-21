@@ -20,7 +20,8 @@ import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
 
 import CLOSE_BUTTON from '../../../assets/closeButton.png'
-import ZOOM_BUTTON from '../../../assets/gameScreens/zoomButton.png'
+import ZOOM_IN_BUTTON from '../../../assets/gameScreens/zoomInButton.png'
+import ZOOM_OUT_BUTTON from '../../../assets/gameScreens/zoomOutButton.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
 import OPPONENTS_ANSWER from '../../../assets/gameScreens/jokers/opponentsAnswer.png'
 import FIFTY_FIFTY from '../../../assets/gameScreens/jokers/fiftyFifty.png'
@@ -826,7 +827,8 @@ class FriendGame extends React.Component {
                             width={wp(42)}
                             color="#00D9EF"
                             buttonText="Evet"
-                            borderRadius={10}
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
                             onPress={() =>
                                 this.props.room.send({
                                     action: 'leave-match'
@@ -837,7 +839,8 @@ class FriendGame extends React.Component {
                             width={wp(42)}
                             color="#00D9EF"
                             buttonText="Hayır"
-                            borderRadius={10}
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
                             onPress={() => this.setState({isQuitGameModalVisible: false})}
                         />
                     </View>
@@ -962,7 +965,7 @@ class FriendGame extends React.Component {
                                     onPress={this.questionModalCloseOnPress}
                                 >
                                     <Image
-                                        source={CLOSE_BUTTON}
+                                        source={ZOOM_OUT_BUTTON}
                                         style={styles.closeModal}
                                     />
                                 </TouchableOpacity>
@@ -980,7 +983,7 @@ class FriendGame extends React.Component {
                         <View style={styles.zoomButtonContainer}>
                             <TouchableOpacity onPress={this.zoomButtonOnPress}>
                                 <Image
-                                    source={ZOOM_BUTTON}
+                                    source={ZOOM_IN_BUTTON}
                                     style={styles.zoomButton}
                                 />
                             </TouchableOpacity>

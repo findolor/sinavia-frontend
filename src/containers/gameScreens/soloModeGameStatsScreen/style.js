@@ -34,22 +34,22 @@ export default StyleSheet.create({
         backgroundColor: '#F2FEFF',
         marginTop: hp(42),
         marginLeft: wp(6.4),
-        borderRadius: 20,
+        borderRadius: hp(4),
         position: 'absolute',
         alignItems: 'center'
     },
     replayButton: {
         height: hp(7),
         width: wp(23),
-        borderRadius: 10,
+        borderRadius: hp(1.5),
         backgroundColor: '#00D9EF',
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     mainScreenButton: {
         height: hp(7),
         width: wp(23),
-        borderRadius: 10,
+        borderRadius: hp(1.5),
         backgroundColor: '#00D9EF',
         justifyContent: 'center',
         alignItems: 'center'
@@ -57,8 +57,7 @@ export default StyleSheet.create({
     buttonText: {
         fontFamily: 'Averta-Semibold',
         color: '#FFFFFF',
-        letterSpacing: wp(0.1),
-        fontSize: hp(1.8)
+        fontSize: hp(2)
     },
     buttonsContainer: {
         height: hp(10),
@@ -72,8 +71,8 @@ export default StyleSheet.create({
     slideView: {
         height: hp(10),
         width: wp(100),
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
+        borderTopLeftRadius: hp(3),
+        borderTopRightRadius: hp(3),
         backgroundColor: '#00D9EF',
         position: 'absolute',
         marginTop: hp(93.7),

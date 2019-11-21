@@ -103,9 +103,9 @@ class SplashScreen extends React.PureComponent {
                 {!this.state.shouldTryAgain && (
                     // TODO CHANGE THIS TO SPLASH SCREEN
                     <LottieView
-                        source={require('../../assets/splashScreen/sinavia.json')}
+                        source={require('../../assets/splashScreen/sinavia_opening.json')}
                         autoPlay
-                        loop
+                        loop={false}
                     />
                 )}
                 {this.state.shouldTryAgain && (

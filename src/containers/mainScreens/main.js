@@ -133,8 +133,9 @@ class Main extends React.Component {
                             }
                             style={{
                                 resizeMode: 'contain',
-                                height: hp(5),
-                                width: hp(5)
+                                height: hp(5.5),
+                                width: hp(10),
+                                marginRight: wp(3)
                             }}
                         />
                     </TouchableOpacity>
@@ -149,8 +150,8 @@ class Main extends React.Component {
                             }
                             style={{
                                 resizeMode: 'contain',
-                                height: hp(5),
-                                width: hp(5)
+                                height: hp(5.5),
+                                width: hp(10)
                             }}
                         />
                     </TouchableOpacity>
@@ -165,8 +166,9 @@ class Main extends React.Component {
                             }
                             style={{
                                 resizeMode: 'contain',
-                                height: hp(5),
-                                width: hp(5)
+                                height: hp(5.5),
+                                width: hp(10),
+                                marginLeft: wp(3)
                             }}
                         />
                     </TouchableOpacity>
@@ -202,11 +204,11 @@ const styles = StyleSheet.create({
     bottomBar: {
         flex: 9,
         width: wp(100),
-        borderTopRightRadius: 20,
-        borderTopLeftRadius: 20,
+        borderTopRightRadius: hp(2.5),
+        borderTopLeftRadius: hp(2.5),
         backgroundColor: '#00D9EF',
         alignItems: 'center',
-        justifyContent: 'space-around',
+        justifyContent: 'space-evenly',
         flexDirection: 'row'
     }
 })

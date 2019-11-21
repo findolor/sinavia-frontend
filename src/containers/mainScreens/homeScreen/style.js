@@ -68,8 +68,6 @@ export default StyleSheet.create({
     pickerDropdownText: {
         marginTop: hp(1.3),
         marginBottom: hp(1),
-        marginLeft: wp(1),
-        marginRight: wp(1),
         fontSize: hp(2),
         color: '#2E313C',
         textAlign: 'center',

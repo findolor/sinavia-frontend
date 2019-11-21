@@ -7,6 +7,10 @@ import {
     navigationReplace
 } from '../../../services/navigationService'
 import { levelFinder } from '../../../services/userLevelFinder'
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
 
 import SWORD from '../../../assets/sword.png'
 
@@ -62,10 +66,10 @@ class RankedMatchingScreen extends React.Component {
                                     />
                                 </View>
                                 <View style={styles.userInfoContainer}>
-                                    <Text style={styles.usernameText}>
+                                    <Text style={[styles.usernameText, {marginLeft: wp(3)}]}>
                                         @{this.props.playerUsername}
                                     </Text>
-                                    <Text style={styles.sinaviaScoreText}>
+                                    <Text style={[styles.sinaviaScoreText, {marginLeft: wp(3)}]}>
                                         Konu Seviyesi:{' '}
                                         {Math.floor(
                                             levelFinder(this.props.clientPoints)
@@ -84,10 +88,10 @@ class RankedMatchingScreen extends React.Component {
                         >
                             <View style={styles.playerView}>
                                 <View style={styles.opponentInfoContainer}>
-                                    <Text style={styles.usernameText}>
+                                    <Text style={[styles.usernameText, {marginRight: wp(3)}]}>
                                         @{this.props.opponentUsername}
                                     </Text>
-                                    <Text style={styles.sinaviaScoreText}>
+                                    <Text style={[styles.sinaviaScoreText, {marginRight: wp(3)}]}>
                                         Konu Seviyesi:{' '}
                                         {Math.floor(
                                             levelFinder(

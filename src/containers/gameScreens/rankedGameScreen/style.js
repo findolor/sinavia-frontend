@@ -14,11 +14,8 @@ export default StyleSheet.create({
         backgroundColor: '#3FC8D9',
         flex: 72,
         width: wp(100),
-        borderBottomLeftRadius: 30,
-        borderBottomRightRadius: 30,
-        shadowOpacity: 1,
-        shadowColor: '#adadad',
-        shadowOffset: { width: wp(0), height: hp(0.7) },
+        borderBottomLeftRadius: hp(3),
+        borderBottomRightRadius: hp(3),
         marginBottom: hp(1)
     },
     headerContainer: {
@@ -33,7 +30,7 @@ export default StyleSheet.create({
         flex: 52,
         width: wp(84),
         marginLeft: wp(8),
-        borderRadius: 10,
+        borderRadius: hp(2),
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -68,10 +65,10 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     button: {
-        borderWidth: 3,
+        borderWidth: hp(0.5),
         width: wp(27),
         height: hp(5.5),
-        borderRadius: 10,
+        borderRadius: hp(1.5),
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -89,16 +86,13 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     jokerContainer: {
-        backgroundColor: '#F4F6FB',
         width: wp(100),
         flex: 10,
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         marginTop: hp(1),
         borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
-        shadowOpacity: 1,
-        shadowColor: '#adadad'
+        borderTopRightRadius: 30
     },
     joker: {
         height: hp(3),
@@ -132,10 +126,12 @@ export default StyleSheet.create({
         width: wp(32)
     },
     userProfilePicture: {
-        resizeMode: 'contain',
         height: hp(6),
         width: hp(6),
-        borderRadius: 100
+        marginBottom: hp(0.5),
+        borderRadius: hp(100),
+        borderWidth: hp(0.3),
+        borderColor: '#FF9900'
     },
     usernameContainer: {
         justifyContent: 'center',
@@ -147,9 +143,8 @@ export default StyleSheet.create({
     },
     usernameText: {
         fontFamily: 'Averta-Bold',
-        fontSize: hp(2.3),
-        color: '#fff',
-        fontWeight: '800'
+        fontSize: hp(1.75),
+        color: '#fff'
     },
     answersText: {
         fontFamily: 'Averta-Semibold',
@@ -179,8 +174,8 @@ export default StyleSheet.create({
         fontWeight: '800'
     },
     backButton: {
-        resizeMode: 'contain',
-        flex: 1
+        height: hp(3),
+        width: hp(3)
     },
     backButtonContainer: {
         position: 'absolute',
@@ -188,8 +183,8 @@ export default StyleSheet.create({
     },
     zoomButton: {
         resizeMode: 'contain',
-        height: hp(7),
-        width: wp(7)
+        height: hp(5),
+        width: hp(5)
     },
     zoomButtonContainer: {
         height: hp(6),
