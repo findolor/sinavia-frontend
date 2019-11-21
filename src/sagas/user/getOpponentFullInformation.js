@@ -15,15 +15,20 @@ export async function getOpponentFullInformationService(
 }
 
 export function* getOpponentFullInformationSaga(action) {
-    const res = yield call(
-        makeGetRequest,
-        apiServicesTree.userApi.getOpponentFullInformation,
-        {
-            clientToken: action.clientToken,
-            userId: action.opponentInformation.id,
-            clientId: action.clientId
-        }
-    )
+    let res
+    try {
+        res = yield call(
+            makeGetRequest,
+            apiServicesTree.userApi.getOpponentFullInformation,
+            {
+                clientToken: action.clientToken,
+                userId: action.opponentInformation.id,
+                clientId: action.clientId
+            }
+        )
+    } catch (err) {
+        return
+    }
 
     // Calculating friend matches
     const opponentWinCount = Object.keys(res.friendGameDefeats).length

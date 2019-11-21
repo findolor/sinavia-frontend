@@ -3,14 +3,19 @@ import { put, call } from 'redux-saga/effects'
 import { friendTypes } from '../../redux/friends/actions'
 
 export function* getFriendRequestsSaga(action) {
-    const requestIds = yield call(
-        makeGetRequest,
-        apiServicesTree.friendshipApi.getFriendRequests,
-        {
-            clientToken: action.clientToken,
-            userId: action.clientId
-        }
-    )
+    let requestIds
+    try {
+        requestIds = yield call(
+            makeGetRequest,
+            apiServicesTree.friendshipApi.getFriendRequests,
+            {
+                clientToken: action.clientToken,
+                userId: action.clientId
+            }
+        )
+    } catch (err) {
+        return
+    }
 
     if (requestIds === undefined || Object.keys(requestIds).length === 0) {
         yield put({

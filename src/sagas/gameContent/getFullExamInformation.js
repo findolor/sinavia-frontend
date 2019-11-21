@@ -4,14 +4,19 @@ import { gameContentTypes } from '../../redux/gameContent/actions'
 import { apiServicesTree, makeGetRequest } from '../../services/apiServices'
 
 export function* getFullExamInformationSaga(action) {
-    const allContent = yield call(
-        makeGetRequest,
-        apiServicesTree.gameContentApi.getFullExamInformation,
-        {
-            clientToken: action.clientToken,
-            examId: action.examId
-        }
-    )
+    let allContent
+    try {
+        allContent = yield call(
+            makeGetRequest,
+            apiServicesTree.gameContentApi.getFullExamInformation,
+            {
+                clientToken: action.clientToken,
+                examId: action.examId
+            }
+        )
+    } catch (err) {
+        return
+    }
 
     const courseList = []
 

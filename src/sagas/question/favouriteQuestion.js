@@ -4,15 +4,20 @@ import { deviceStorage } from '../../services/deviceStorage'
 import { clientTypes } from '../../redux/client/actions'
 
 export function* favouriteQuestionSaga(action) {
-    const response = yield call(
-        makePostRequest,
-        apiServicesTree.favouriteQuestionApi.favouriteQuestion,
-        {
-            userId: action.clientId,
-            questionId: action.question.id,
-            clientToken: action.clientToken
-        }
-    )
+    let response
+    try {
+        response = yield call(
+            makePostRequest,
+            apiServicesTree.favouriteQuestionApi.favouriteQuestion,
+            {
+                userId: action.clientId,
+                questionId: action.question.id,
+                clientToken: action.clientToken
+            }
+        )
+    } catch (err) {
+        return
+    }
 
     const favedQuestionList = action.favedQuestionList
     favedQuestionList.push(response)

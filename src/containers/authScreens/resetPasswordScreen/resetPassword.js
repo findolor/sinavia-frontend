@@ -44,8 +44,9 @@ class ResetPassword extends React.Component {
                 navigationReset('auth')
             })
             .catch(error => {
+                console.log(error)
                 this.props.lockUnlockButton()
-                Alert.alert('E-postayı kontrol et!')
+                if (error.message === 'Network Error') return
             })
     }
 
@@ -113,7 +114,4 @@ const mapDispatchToProps = dispatch => ({
     lockUnlockButton: () => dispatch(appActions.lockUnlockButton())
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ResetPassword)
+export default connect(mapStateToProps, mapDispatchToProps)(ResetPassword)

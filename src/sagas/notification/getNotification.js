@@ -3,14 +3,19 @@ import { put, call } from 'redux-saga/effects'
 import { appTypes } from '../../redux/app/actions'
 
 export function* getNotificationsSaga(action) {
-    const notifications = yield call(
-        makeGetRequest,
-        apiServicesTree.notificationApi.getNotifications,
-        {
-            userId: action.clientId,
-            clientToken: action.clientToken
-        }
-    )
+    let notifications
+    try {
+        notifications = yield call(
+            makeGetRequest,
+            apiServicesTree.notificationApi.getNotifications,
+            {
+                userId: action.clientId,
+                clientToken: action.clientToken
+            }
+        )
+    } catch (err) {
+        return
+    }
 
     if (
         notifications === undefined ||

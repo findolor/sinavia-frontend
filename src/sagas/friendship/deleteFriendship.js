@@ -17,16 +17,21 @@ export async function deleteFriendshipService(
 }
 
 export function* deleteFriendshipRequestSaga(action) {
-    const response = yield call(
-        makeDeleteRequest,
-        apiServicesTree.friendshipApi.deleteFriendship,
-        {
-            clientToken: action.clientToken,
-            userId: action.clientDBId,
-            friendId: action.friendId,
-            isClientUser: action.isClientUser
-        }
-    )
+    let response
+    try {
+        response = yield call(
+            makeDeleteRequest,
+            apiServicesTree.friendshipApi.deleteFriendship,
+            {
+                clientToken: action.clientToken,
+                userId: action.clientDBId,
+                friendId: action.friendId,
+                isClientUser: action.isClientUser
+            }
+        )
+    } catch (err) {
+        return
+    }
 
     if (response.success) {
         let index = action.friendIds.indexOf(action.friendId)

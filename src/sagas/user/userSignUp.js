@@ -1,6 +1,6 @@
 import { put, call } from 'redux-saga/effects'
 import { navigationReset } from '../../services/navigationService'
-
+import { flashMessages } from '../../services/flashMessageBuilder'
 import firebase from 'react-native-firebase'
 import { Alert } from 'react-native'
 
@@ -19,14 +19,13 @@ export function* userSignUp(action) {
     try {
         const firebaseResponse = yield call(firebaseSignUp)
         firebaseResponse.user.sendEmailVerification().then(() => {
-            Alert.alert('Lütfen e-postanızı onaylayınız.')
+            flashMessages.generalMessage('Lütfen e-postanızı onaylayınız.')
             navigationReset('auth')
         })
     } catch (error) {
-        console.log(error.code)
-        console.log(error)
+        if (error.code === 'auth/invalid-email')
+            flashMessages.emailError('Lütfen e-postanı kontrol et')
         if (error.code === 'auth/email-already-in-use')
-            Alert.alert('Bu e-posta başka bir kullanıcıya aittir.')
-        return
+            flashMessages.emailError('Bu e-posta başka bir kullanıcıya aittir')
     }
 }
