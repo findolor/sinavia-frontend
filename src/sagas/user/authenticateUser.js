@@ -65,20 +65,15 @@ export function* authenticateUser(action) {
 
         // We first check if the token is valid.
         // If the response is true we continue to the main screen
-        let res
-        try {
-            res = yield call(
-                makeGetRequest,
-                apiServicesTree.tokenApi.checkToken,
-                {
-                    clientToken: action.payload,
-                    deviceId: deviceId,
-                    clientId: clientDBId
-                }
-            )
-        } catch (error) {
-            return
-        }
+        let res = yield call(
+            makeGetRequest,
+            apiServicesTree.tokenApi.checkToken,
+            {
+                clientToken: action.payload,
+                deviceId: deviceId,
+                clientId: clientDBId
+            }
+        )
         // If the response is false that means the user is logged in on another device
         // We dont log them in and reset to the auth screen
         if (!res) {

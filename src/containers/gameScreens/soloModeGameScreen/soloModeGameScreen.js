@@ -91,6 +91,9 @@ class SoloModeGameScreen extends React.Component {
             isSecondChanceJokerDisabled: true,
             // Joker active variables
             isSecondChanceJokerActive: false,
+            // Joker usage variables
+            isRemoveOptionJokerUsed: false,
+            isSecondChanceJokerUsed: false,
             // Current question answer for second chance
             questionAnswer: 0,
             // Contains every information about question
@@ -191,7 +194,8 @@ class SoloModeGameScreen extends React.Component {
             case 'remove-options-joker':
                 this.setState({
                     isRemoveOptionJokerDisabled: true,
-                    secondJokerAmount: this.state.secondJokerAmount - 1
+                    secondJokerAmount: this.state.secondJokerAmount - 1,
+                    isRemoveOptionJokerUsed: true
                 })
                 this.props.subtractJoker(2)
 
@@ -202,7 +206,8 @@ class SoloModeGameScreen extends React.Component {
                 this.setState({
                     isSecondChanceJokerDisabled: true,
                     isSecondChanceJokerActive: true,
-                    thirdJokerAmount: this.state.thirdJokerAmount - 1
+                    thirdJokerAmount: this.state.thirdJokerAmount - 1,
+                    isSecondChanceJokerUsed: true
                 })
                 this.props.subtractJoker(3)
 
@@ -427,7 +432,11 @@ class SoloModeGameScreen extends React.Component {
 
         let that = this
 
-        this.setState({ playerButton: buttonNumber })
+        this.setState({
+            playerButton: buttonNumber,
+            isRemoveOptionJokerDisabled: true,
+            isSecondChanceJokerDisabled: true
+        })
         this.highlightButton(buttonNumber)
 
         this.props.room.send({
@@ -502,6 +511,10 @@ class SoloModeGameScreen extends React.Component {
             buttonFiveName: 'E',
             buttonSixName: 'Boş'
         })
+        if (!this.state.isRemoveOptionJokerUsed)
+            this.setState({ isRemoveOptionJokerDisabled: false })
+        if (!this.state.isSecondChanceJokerUsed)
+            this.setState({ isSecondChanceJokerDisabled: false })
     }
 
     countdownOnFinish = () => {
