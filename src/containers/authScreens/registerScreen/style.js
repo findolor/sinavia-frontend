@@ -96,9 +96,9 @@ export default StyleSheet.create({
     textInput: {
         fontFamily: 'Averta-Regular',
         fontSize: hp(2),
-        color: '#7A7878',
         height: hp(7),
         width: wp(85),
-        paddingHorizontal: wp(4)
+        paddingHorizontal: wp(4),
+        color: '#2E313C',
     }
 })

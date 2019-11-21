@@ -218,8 +218,8 @@ export default StyleSheet.create({
     },
     zoomButton: {
         resizeMode: 'contain',
-        height: hp(6),
-        width: hp(6)
+        height: hp(5),
+        width: hp(5)
     },
     modalContainer: {
         backgroundColor: '#000000d0',

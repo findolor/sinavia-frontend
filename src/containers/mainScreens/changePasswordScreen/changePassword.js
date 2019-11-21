@@ -130,7 +130,7 @@ class ChangePassword extends React.Component {
                         <View style={styles.textInputTitleContainer}>
                             <Text style={styles.textInputTitle}>Yeni</Text>
                             <Text style={styles.textInputTitle}>şifre</Text>
-                            <Text style={styles.textInputTitle}>tekrar</Text>
+                            <Text style={styles.textInputTitle}>(tekrar)</Text>
                         </View>
                         <View style={styles.textInputView}>
                             <TextInput

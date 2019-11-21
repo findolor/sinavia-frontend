@@ -44,8 +44,7 @@ const scene_keys = {
         joinGroupRoom: 'joinGroupRoom',
         opponentsProfile: 'opponentsProfile',
         notifications: 'notifications',
-        statistics: 'statistics',
-        modals: 'modals'
+        statistics: 'statistics'
     },
     splashScreen: 'splash'
 }

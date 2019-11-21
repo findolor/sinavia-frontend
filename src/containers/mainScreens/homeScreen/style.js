@@ -301,7 +301,8 @@ export default StyleSheet.create({
     joinGameCodeTextInput: {
         fontFamily: 'Averta-Regular',
         fontSize: wp(5),
-        textAlign: 'center'
+        textAlign: 'center',
+        color: '#2E313C'
     },
     usersContainer: {
         height: hp(22),
@@ -403,7 +404,8 @@ export default StyleSheet.create({
     searchBarText: {
         fontFamily: 'Averta-Regular',
         fontSize: hp(2.2),
-        paddingVertical: hp(0)
+        paddingVertical: hp(0),
+        color: '#2E313C'
     },
     spaceView: {
         height: hp(1.5)

@@ -71,7 +71,8 @@ export default StyleSheet.create({
     searchBarText: {
         fontFamily: 'Averta-Regular',
         fontSize: hp(2.2),
-        paddingVertical: hp(0)
+        paddingVertical: hp(0),
+        color: '#2E313C'
     },
     searchBarLogo: {
         height: hp(2.7),
