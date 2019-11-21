@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 import styles, { countdownProps } from './style'
 import CountDown from 'react-native-countdown-component'
-import FlashMessage, { showMessage, hideMessage } from "react-native-flash-message";
+import { showMessage } from 'react-native-flash-message'
 import NotchView from '../../../components/notchView'
 import { SCENE_KEYS } from '../../../config/'
 import {
@@ -21,7 +21,6 @@ import {
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
 
-import CLOSE_BUTTON from '../../../assets/closeButton.png'
 import ZOOM_IN_BUTTON from '../../../assets/gameScreens/zoomInButton.png'
 import ZOOM_OUT_BUTTON from '../../../assets/gameScreens/zoomOutButton.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
@@ -30,7 +29,10 @@ import SECOND_CHANCE from '../../../assets/gameScreens/jokers/secondChance.png'
 import CORRECT_IMG from '../../../assets/gameScreens/correct.png'
 import UNANSWERED_IMG from '../../../assets/gameScreens/unanswered.png'
 import INCORRECT_IMG from '../../../assets/gameScreens/incorrect.png'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
 import AuthButton from '../../../components/authScreen/authButton'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
@@ -116,7 +118,11 @@ class GroupGame extends React.Component {
     async componentDidMount() {
         this.backHandler = BackHandler.addEventListener(
             'hardwareBackPress',
-            () => this.setState({isQuitGameModalVisible: true, visibleView: 'quitGameModal'})
+            () =>
+                this.setState({
+                    isQuitGameModalVisible: true,
+                    visibleView: 'quitGameModal'
+                })
         )
         // We check if the user has enough jokers
         this.checkJokerAmount()
@@ -144,18 +150,19 @@ class GroupGame extends React.Component {
         this.props.userJokers.forEach(userJoker => {
             switch (userJoker.jokerId) {
                 case 2:
-                    let splittedSecondJoker = userJoker.joker.name.split(/[ ,]+/)
+                    let splittedSecondJoker = userJoker.joker.name.split(
+                        /[ ,]+/
+                    )
                     console.log(userJoker)
                     this.setState({
                         secondJokerNameFirstWord: splittedSecondJoker[0],
                         secondJokerNameSecondWord: splittedSecondJoker[1],
                         secondJokerAmount: userJoker.amount
                     })
-                    if(userJoker.amount === 0){
-                        this.setState({isRemoveOptionJokerDisabled: true})
-                    }
-                    else {
-                        this.setState({isRemoveOptionJokerDisabled: false})
+                    if (userJoker.amount === 0) {
+                        this.setState({ isRemoveOptionJokerDisabled: true })
+                    } else {
+                        this.setState({ isRemoveOptionJokerDisabled: false })
                     }
                     break
                 case 3:
@@ -166,11 +173,10 @@ class GroupGame extends React.Component {
                         thirdJokerNameSecondWord: splittedThirdJoker[1],
                         thirdJokerAmount: userJoker.amount
                     })
-                    if(userJoker.amount === 0){
-                        this.setState({isSecondChanceJokerDisabled: true})
-                    }
-                    else {
-                        this.setState({isSecondChanceJokerDisabled: false})
+                    if (userJoker.amount === 0) {
+                        this.setState({ isSecondChanceJokerDisabled: true })
+                    } else {
+                        this.setState({ isSecondChanceJokerDisabled: false })
                     }
                     break
             }
@@ -210,25 +216,29 @@ class GroupGame extends React.Component {
         this.setState({ isCountDownRunning: false })
     }
 
-    showSimpleMessage( username, props = {}) {
+    showSimpleMessage(username, props = {}) {
         const message = {
             message: username,
-            description: "oyundan ayrıldı",
+            description: 'oyundan ayrıldı',
             duration: 3000,
-            titleStyle: {fontFamily: 'Averta-SemiboldItalic', color: '#FF9900'},
-            textStyle: {fontFamily: 'Averta-Regular', color: '#00D9EF'},
-            ...props,
-        };
+            titleStyle: {
+                fontFamily: 'Averta-SemiboldItalic',
+                color: '#FF9900'
+            },
+            textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
+            ...props
+        }
 
-        showMessage(message);
+        showMessage(message)
     }
 
     chooseMessageAction = message => {
         switch (message.action) {
             // Which options to remove comes from the server
             case 'remove-options-joker':
-                this.setState({ isRemoveOptionJokerDisabled: true,
-                    secondJokerAmount: this.state.secondJokerAmount-1
+                this.setState({
+                    isRemoveOptionJokerDisabled: true,
+                    secondJokerAmount: this.state.secondJokerAmount - 1
                 })
                 this.props.subtractJoker(2)
 
@@ -239,7 +249,7 @@ class GroupGame extends React.Component {
                 this.setState({
                     isSecondChanceJokerDisabled: true,
                     isSecondChanceJokerActive: true,
-                    thirdJokerAmount: this.state.thirdJokerAmount-1
+                    thirdJokerAmount: this.state.thirdJokerAmount - 1
                 })
                 this.props.subtractJoker(3)
 
@@ -249,8 +259,14 @@ class GroupGame extends React.Component {
                 Alert.alert('Joker hatası!')
                 break
             case 'client-leaving':
-                this.showSimpleMessage(`${message.username}`, {backgroundColor: '#FFFFFF', borderBottomLeftRadius: 10,
-                    borderBottomRightRadius: 10, borderColor: '#00D9EF', borderWidth: hp(0.25), height: hp(10)} )
+                this.showSimpleMessage(`${message.username}`, {
+                    backgroundColor: '#FFFFFF',
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    borderColor: '#00D9EF',
+                    borderWidth: hp(0.25),
+                    height: hp(10)
+                })
                 break
             case 'only-client':
                 const that = this
@@ -259,16 +275,22 @@ class GroupGame extends React.Component {
                     Object.keys(message.playerProps[message.clientId].answers)
                         .length === 0
                 ) {
-                    this.setState({isQuitGameModalVisible: true, visibleView: 'allOpponentsLeaveNoAnswer'})
-                    setTimeout(function(){
+                    this.setState({
+                        isQuitGameModalVisible: true,
+                        visibleView: 'allOpponentsLeaveNoAnswer'
+                    })
+                    setTimeout(function() {
                         that.props.room.leave()
                         that.onlyClientMatchQuit()
                     }, 5000)
                     break
                 }
                 // Do a shutdown routine
-                this.setState({isQuitGameModalVisible: true, visibleView: 'allOpponentLeaveAfterAnswer'})
-                setTimeout(function(){
+                this.setState({
+                    isQuitGameModalVisible: true,
+                    visibleView: 'allOpponentLeaveAfterAnswer'
+                })
+                setTimeout(function() {
                     that.shutdownGame()
                     navigationReplace(SCENE_KEYS.gameScreens.groupGameStats, {
                         playerProps: message.playerProps,
@@ -728,7 +750,11 @@ class GroupGame extends React.Component {
     allOpponentsLeaveNoAnswer() {
         return (
             <View
-                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
             >
                 <View style={styles.quitModalContainer}>
                     <View style={styles.quitView}>
@@ -747,7 +773,11 @@ class GroupGame extends React.Component {
     allOpponentLeaveAfterAnswer() {
         return (
             <View
-                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
             >
                 <View style={styles.quitModalContainer}>
                     <View style={styles.quitView}>
@@ -766,16 +796,18 @@ class GroupGame extends React.Component {
     quitGameModal() {
         return (
             <View
-                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
             >
                 <View style={styles.quitModalContainer}>
                     <View style={styles.quitView}>
                         <Text style={styles.areYouSureText}>
                             Oyundan çıkmak istediğine
                         </Text>
-                        <Text style={styles.areYouSureText}>
-                            emin misin?
-                        </Text>
+                        <Text style={styles.areYouSureText}>emin misin?</Text>
                     </View>
                     <View style={styles.yesOrNoButtonsContainer}>
                         <AuthButton
@@ -788,7 +820,8 @@ class GroupGame extends React.Component {
                             onPress={() =>
                                 this.props.room.send({
                                     action: 'leave-match'
-                                })}
+                                })
+                            }
                         />
                         <AuthButton
                             height={hp(7)}
@@ -797,7 +830,9 @@ class GroupGame extends React.Component {
                             buttonText="Hayır"
                             fontSize={hp(3)}
                             borderRadius={hp(1.5)}
-                            onPress={() => this.setState({isQuitGameModalVisible: false})}
+                            onPress={() =>
+                                this.setState({ isQuitGameModalVisible: false })
+                            }
                         />
                     </View>
                 </View>
@@ -1061,7 +1096,12 @@ class GroupGame extends React.Component {
                     </View>
                     <View style={styles.backButtonContainer}>
                         <TouchableOpacity
-                            onPress={() => this.setState({isQuitGameModalVisible: true, visibleView: 'quitGameModal'})}
+                            onPress={() =>
+                                this.setState({
+                                    isQuitGameModalVisible: true,
+                                    visibleView: 'quitGameModal'
+                                })
+                            }
                         >
                             <Image
                                 source={BACK_BUTTON}
@@ -1076,11 +1116,11 @@ class GroupGame extends React.Component {
                     animationType={'fade'}
                 >
                     {this.state.visibleView === 'allOpponentsLeaveNoAnswer' &&
-                    this.allOpponentsLeaveNoAnswer()}
+                        this.allOpponentsLeaveNoAnswer()}
                     {this.state.visibleView === 'allOpponentLeaveAfterAnswer' &&
-                    this.allOpponentLeaveAfterAnswer()}
+                        this.allOpponentLeaveAfterAnswer()}
                     {this.state.visibleView === 'quitGameModal' &&
-                    this.quitGameModal()}
+                        this.quitGameModal()}
                 </Modal>
                 <View style={styles.dummyButtonContainer}>
                     {this.state.start && (
@@ -1202,48 +1242,200 @@ class GroupGame extends React.Component {
                 </View>
                 <View style={styles.jokerContainer}>
                     <View style={styles.touchableJokerContainer}>
-                        <TouchableOpacity style={styles.jokerImageContainer}
-                                          onPress={this.removeOptionJokerOnPressed}
-                                          disabled={
-                                              this.state.isRemoveOptionJokerDisabled
-                                          }>
-                            <View style={[styles.jokerImageView, {borderColor: this.state.isRemoveOptionJokerDisabled === true ? '#FFD79C' : '#FF9900'}]}>
-                                <View style={[styles.jokerCounterView, { width: ((''+this.state.secondJokerAmount).length) < 3 ? hp(4) : hp(5.5), backgroundColor: this.state.isRemoveOptionJokerDisabled === true ? '#FE8B8B' : 'red'}]}>
-                                    <Text style={styles.jokerCounterText}>{this.state.secondJokerAmount}</Text>
+                        <TouchableOpacity
+                            style={styles.jokerImageContainer}
+                            onPress={this.removeOptionJokerOnPressed}
+                            disabled={this.state.isRemoveOptionJokerDisabled}
+                        >
+                            <View
+                                style={[
+                                    styles.jokerImageView,
+                                    {
+                                        borderColor:
+                                            this.state
+                                                .isRemoveOptionJokerDisabled ===
+                                            true
+                                                ? '#FFD79C'
+                                                : '#FF9900'
+                                    }
+                                ]}
+                            >
+                                <View
+                                    style={[
+                                        styles.jokerCounterView,
+                                        {
+                                            width:
+                                                (
+                                                    '' +
+                                                    this.state.secondJokerAmount
+                                                ).length < 3
+                                                    ? hp(4)
+                                                    : hp(5.5),
+                                            backgroundColor:
+                                                this.state
+                                                    .isRemoveOptionJokerDisabled ===
+                                                true
+                                                    ? '#FE8B8B'
+                                                    : 'red'
+                                        }
+                                    ]}
+                                >
+                                    <Text style={styles.jokerCounterText}>
+                                        {this.state.secondJokerAmount}
+                                    </Text>
                                 </View>
-                                <Image source={FIFTY_FIFTY} style={[styles.jokerImg, { opacity: this.state.isRemoveOptionJokerDisabled === true ? 0.3 : 1}]}/>
+                                <Image
+                                    source={FIFTY_FIFTY}
+                                    style={[
+                                        styles.jokerImg,
+                                        {
+                                            opacity:
+                                                this.state
+                                                    .isRemoveOptionJokerDisabled ===
+                                                true
+                                                    ? 0.3
+                                                    : 1
+                                        }
+                                    ]}
+                                />
                             </View>
                         </TouchableOpacity>
                         <View style={styles.jokerNameContainer}>
-                            <TouchableOpacity onPress={this.removeOptionJokerOnPressed}
-                                              disabled={
-                                                  this.state.isRemoveOptionJokerDisabled
-                                              }>
-                                <Text style={[styles.jokerNameText, {color: this.state.isRemoveOptionJokerDisabled === true ? 'rgba(0,0,0,0.5)' : 'black'}]}>{this.state.secondJokerNameFirstWord}</Text>
-                                <Text style={[styles.jokerNameText, {color: this.state.isRemoveOptionJokerDisabled === true ? 'rgba(0,0,0,0.5)' : 'black'}]}>{this.state.secondJokerNameSecondWord}</Text>
+                            <TouchableOpacity
+                                onPress={this.removeOptionJokerOnPressed}
+                                disabled={
+                                    this.state.isRemoveOptionJokerDisabled
+                                }
+                            >
+                                <Text
+                                    style={[
+                                        styles.jokerNameText,
+                                        {
+                                            color:
+                                                this.state
+                                                    .isRemoveOptionJokerDisabled ===
+                                                true
+                                                    ? 'rgba(0,0,0,0.5)'
+                                                    : 'black'
+                                        }
+                                    ]}
+                                >
+                                    {this.state.secondJokerNameFirstWord}
+                                </Text>
+                                <Text
+                                    style={[
+                                        styles.jokerNameText,
+                                        {
+                                            color:
+                                                this.state
+                                                    .isRemoveOptionJokerDisabled ===
+                                                true
+                                                    ? 'rgba(0,0,0,0.5)'
+                                                    : 'black'
+                                        }
+                                    ]}
+                                >
+                                    {this.state.secondJokerNameSecondWord}
+                                </Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                     <View style={styles.touchableJokerContainer}>
-                        <TouchableOpacity style={styles.jokerImageContainer}
-                                          onPress={this.secondChangeJokerOnPressed}
-                                          disabled={
-                                              this.state.isSecondChanceJokerDisabled
-                                          }>
-                            <View style={[styles.jokerImageView, {borderColor: this.state.isSecondChanceJokerDisabled === true ? '#FFD79C' : '#FF9900'}]}>
-                                <View style={[styles.jokerCounterView, { width: ((''+this.state.thirdJokerAmount).length) < 3 ? hp(4) : hp(5.5), backgroundColor: this.state.isSecondChanceJokerDisabled === true ? '#FE8B8B' : 'red'}]}>
-                                    <Text style={styles.jokerCounterText}>{this.state.thirdJokerAmount}</Text>
+                        <TouchableOpacity
+                            style={styles.jokerImageContainer}
+                            onPress={this.secondChangeJokerOnPressed}
+                            disabled={this.state.isSecondChanceJokerDisabled}
+                        >
+                            <View
+                                style={[
+                                    styles.jokerImageView,
+                                    {
+                                        borderColor:
+                                            this.state
+                                                .isSecondChanceJokerDisabled ===
+                                            true
+                                                ? '#FFD79C'
+                                                : '#FF9900'
+                                    }
+                                ]}
+                            >
+                                <View
+                                    style={[
+                                        styles.jokerCounterView,
+                                        {
+                                            width:
+                                                (
+                                                    '' +
+                                                    this.state.thirdJokerAmount
+                                                ).length < 3
+                                                    ? hp(4)
+                                                    : hp(5.5),
+                                            backgroundColor:
+                                                this.state
+                                                    .isSecondChanceJokerDisabled ===
+                                                true
+                                                    ? '#FE8B8B'
+                                                    : 'red'
+                                        }
+                                    ]}
+                                >
+                                    <Text style={styles.jokerCounterText}>
+                                        {this.state.thirdJokerAmount}
+                                    </Text>
                                 </View>
-                                <Image source={SECOND_CHANCE} style={[styles.jokerImg, { opacity: this.state.isSecondChanceJokerDisabled === true ? 0.3 : 1}]}/>
+                                <Image
+                                    source={SECOND_CHANCE}
+                                    style={[
+                                        styles.jokerImg,
+                                        {
+                                            opacity:
+                                                this.state
+                                                    .isSecondChanceJokerDisabled ===
+                                                true
+                                                    ? 0.3
+                                                    : 1
+                                        }
+                                    ]}
+                                />
                             </View>
                         </TouchableOpacity>
                         <View style={styles.jokerNameContainer}>
-                            <TouchableOpacity onPress={this.secondChangeJokerOnPressed}
-                                              disabled={
-                                                  this.state.isSecondChanceJokerDisabled
-                                              }>
-                                <Text style={[styles.jokerNameText, {color: this.state.isSecondChanceJokerDisabled === true ? 'rgba(0,0,0,0.5)' : 'black'}]}>{this.state.thirdJokerNameFirstWord}</Text>
-                                <Text style={[styles.jokerNameText, {color: this.state.isSecondChanceJokerDisabled === true ? 'rgba(0,0,0,0.5)' : 'black'}]}>{this.state.thirdJokerNameSecondWord}</Text>
+                            <TouchableOpacity
+                                onPress={this.secondChangeJokerOnPressed}
+                                disabled={
+                                    this.state.isSecondChanceJokerDisabled
+                                }
+                            >
+                                <Text
+                                    style={[
+                                        styles.jokerNameText,
+                                        {
+                                            color:
+                                                this.state
+                                                    .isSecondChanceJokerDisabled ===
+                                                true
+                                                    ? 'rgba(0,0,0,0.5)'
+                                                    : 'black'
+                                        }
+                                    ]}
+                                >
+                                    {this.state.thirdJokerNameFirstWord}
+                                </Text>
+                                <Text
+                                    style={[
+                                        styles.jokerNameText,
+                                        {
+                                            color:
+                                                this.state
+                                                    .isSecondChanceJokerDisabled ===
+                                                true
+                                                    ? 'rgba(0,0,0,0.5)'
+                                                    : 'black'
+                                        }
+                                    ]}
+                                >
+                                    {this.state.thirdJokerNameSecondWord}
+                                </Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -1262,7 +1454,4 @@ const mapDispatchToProps = dispatch => ({
     subtractJoker: jokerId => dispatch(clientActions.subtractJoker(jokerId))
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(GroupGame)
+export default connect(mapStateToProps, mapDispatchToProps)(GroupGame)
