@@ -109,11 +109,10 @@ export default StyleSheet.create({
         color: '#FFFFFF'
     },
     cover: {
-        flex: 1,
-        height: hp(43)
+        flex: 1
     },
     playerView: {
-        height: hp(43),
+        flex: 1,
         width: wp(100),
         flexDirection: 'row',
         alignItems: 'center',

@@ -117,7 +117,7 @@ export default StyleSheet.create({
         height: hp(43)
     },
     playerView: {
-        height: hp(43),
+        flex: 1,
         width: wp(100),
         flexDirection: 'row',
         alignItems: 'center',

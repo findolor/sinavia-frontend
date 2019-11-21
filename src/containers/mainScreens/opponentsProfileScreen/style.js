@@ -360,7 +360,7 @@ export default StyleSheet.create({
     profileContainerShadowView: {
         height: hp(30),
         width: wp(90),
-        borderRadius: 30,
+        borderRadius: hp(3),
         alignItems: 'center',
         backgroundColor: 'rgba(0,0,0,0.5)'
     },
