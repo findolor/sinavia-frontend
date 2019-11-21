@@ -50,6 +50,7 @@ import { userServices } from '../../../sagas/user/'
 import { GAME_ENGINE_ENDPOINT } from '../../../config'
 
 import NOTIFICATION_LOGO from '../../../assets/mainScreens/notification.png'
+import ON_NOTIFICATION_LOGO from '../../../assets/mainScreens/onNotification.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
 
 import CreateGroupRoomView from './groupRoomScreens/createRoomScreen/createGroupRoom'
@@ -126,7 +127,9 @@ class Home extends React.Component {
             requestedGameRoomCode: null,
             requestedGameOpponentId: null,
             // Variable to check if group game is initiated
-            isGroupGameInitiated: false
+            isGroupGameInitiated: false,
+            // Notification related
+            isNotificationReceived: false
         }
     }
 
@@ -148,6 +151,7 @@ class Home extends React.Component {
         global.notificationListener = firebase
             .notifications()
             .onNotification(notification => {
+                this.setState({ isNotificationReceived: true })
                 console.log(notification, 'not')
                 if (this.state.appState === 'active') {
                     if (
@@ -1464,7 +1468,7 @@ class Home extends React.Component {
             })
             return
         }
-
+        this.setState({ isNotificationReceived: false })
         navigationPush(SCENE_KEYS.mainScreens.notifications)
     }
 
@@ -1536,7 +1540,11 @@ class Home extends React.Component {
                     <View style={styles.notificationLogoContainer}>
                         <TouchableOpacity onPress={this.notificationPicOnPress}>
                             <Image
-                                source={NOTIFICATION_LOGO}
+                                source={
+                                    this.state.isNotificationReceived === true
+                                        ? ON_NOTIFICATION_LOGO
+                                        : NOTIFICATION_LOGO
+                                }
                                 style={styles.notificationLogo}
                             />
                         </TouchableOpacity>
