@@ -41,19 +41,7 @@ export default StyleSheet.create({
     separatorLine: {
         borderWidth: hp(0.1),
         height: hp(0.1),
-        width: wp(35),
+        width: wp(85),
         borderColor: '#9B9FA4'
-    },
-    separatorOrView: {
-        height: hp(3),
-        width: wp(15),
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    separatorOrText: {
-        fontFamily: 'Averta-Semibold',
-        color: '#9B9FA4',
-        fontSize: hp(3),
-        marginBottom: hp(0.5)
     }
 })

@@ -57,10 +57,6 @@ export default class Opening extends React.Component {
                 </View>
                 <View style={styles.separatorContainer}>
                     <View style={styles.separatorLine} />
-                    <View style={styles.separatorOrView}>
-                        <Text style={styles.separatorOrText}>{'veya'}</Text>
-                    </View>
-                    <View style={styles.separatorLine} />
                 </View>
                 <View style={styles.buttonContainer}>
                     <AuthButton

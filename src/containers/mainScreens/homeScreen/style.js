@@ -66,6 +66,7 @@ export default StyleSheet.create({
         textAlignVertical: 'center'
     },
     pickerDropdownText: {
+        fontFamily: 'Averta-Semibold',
         marginTop: hp(1.3),
         marginBottom: hp(1),
         fontSize: hp(2),
@@ -149,7 +150,7 @@ export default StyleSheet.create({
     },
     gameModeContextText: {
         fontFamily: 'Averta-Regular',
-        fontSize: hp(2),
+        fontSize: hp(1.8),
         color: '#A8A8A8'
     },
     profilePic: {
@@ -161,9 +162,8 @@ export default StyleSheet.create({
         marginLeft: wp(0)
     },
     notificationLogo: {
-        height: hp(4),
-        width: hp(4),
-        marginRight: wp(0)
+        resizeMode: 'contain',
+        height: hp(4)
     },
     profilePicContainer: {
         height: hp(7.5),
