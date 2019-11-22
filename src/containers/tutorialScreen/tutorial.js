@@ -61,6 +61,7 @@ class Tutorial extends React.Component {
                     loadMinimal={false}
                     showsPagination={true}
                     scrollEnabled={true}
+                    paginationStyle={{ bottom: hp(2) }}
                     activeDot={
                         <View
                             style={{
@@ -151,7 +152,7 @@ class Tutorial extends React.Component {
                             <Text
                                 style={[
                                     styles.headerText,
-                                    { fontSize: hp(4.5) }
+                                    { fontSize: hp(4.2) }
                                 ]}
                             >
                                 Kaçırdığın soru kalmasın
@@ -184,7 +185,7 @@ class Tutorial extends React.Component {
                             <Text
                                 style={[
                                     styles.headerText,
-                                    { fontSize: hp(3.5), marginBottom: hp(0) }
+                                    { fontSize: hp(3.2), marginBottom: hp(0) }
                                 ]}
                             >
                                 Türkiye geneli sıralamalara katıl

@@ -41,8 +41,7 @@ export default StyleSheet.create({
         fontSize: hp(2.5),
         textAlign: 'center',
         color: '#636363',
-        marginTop: hp(5),
-        lineHeight: hp(4)
+        marginTop: hp(5)
     },
     iconImg: {
         height: hp(25),
