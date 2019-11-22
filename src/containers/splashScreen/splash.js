@@ -55,14 +55,25 @@ class SplashScreen extends React.PureComponent {
     }
 
     async componentDidMount() {
+        const isAppOpenedBefore = await deviceStorage.getItemFromStorage(
+            'isAppOpenedBefore'
+        )
+        if (isAppOpenedBefore === null) {
+            setTimeout(() => {
+                navigationReset('tutorial')
+            }, 3000)
+            return
+        }
+
         await fcmService.checkPermissions()
+
         this.getJWTToken().then(async token => {
             // If we don't have any token saved, we go to the auth screen
             if (token === null) {
                 await deviceStorage.clearDeviceStorage()
                 setTimeout(() => {
                     navigationReset('auth')
-                }, 1700)
+                }, 3000)
                 return
             }
             // We check if the token is valid. If not we get a new token

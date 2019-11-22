@@ -257,6 +257,8 @@ export function* authenticateUser(action) {
             clientToken: action.payload,
             notificationOpen: notificationOpen
         })
+
+        deviceStorage.saveItemToStorage('isAppOpenedBefore', true)
     } catch (error) {
         // If we get unauthorized from api
         try {
