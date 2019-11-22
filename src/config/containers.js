@@ -39,6 +39,8 @@ import {
     SoloModeGameStats
 } from '../containers/gameScreens'
 
+import { TutorialScreen } from '../containers/tutorialScreen'
+
 import { SplashScreen } from '../containers/splashScreen'
 
 export const authScreens = {
@@ -83,3 +85,5 @@ export const gameScreens = {
 }
 
 export const splashScreen = SplashScreen
+
+export const tutorialScreen = TutorialScreen

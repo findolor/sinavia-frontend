@@ -4,7 +4,8 @@ import {
     authScreens,
     gameScreens,
     mainScreens,
-    splashScreen
+    splashScreen,
+    tutorialScreen
 } from './containers'
 import { SCENE_KEYS } from './index'
 
@@ -12,6 +13,12 @@ const RouterComp = () => {
     return (
         <Router>
             <Scene key="root" hideNavBar={true}>
+                <Scene key="tutorial" hideNavBar={true}>
+                    <Scene
+                        key={SCENE_KEYS.tutorialScreen}
+                        component={tutorialScreen}
+                    />
+                </Scene>
                 <Scene key="splash" hideNavBar={true}>
                     <Scene
                         key={SCENE_KEYS.splashScreen}

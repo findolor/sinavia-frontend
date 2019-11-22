@@ -46,7 +46,8 @@ const scene_keys = {
         notifications: 'notifications',
         statistics: 'statistics'
     },
-    splashScreen: 'splash'
+    splashScreen: 'splash',
+    tutorialScreen: 'tutorial'
 }
 
 const API_ENDPOINT = ENV_API_ENDPOINT_LOCAL
