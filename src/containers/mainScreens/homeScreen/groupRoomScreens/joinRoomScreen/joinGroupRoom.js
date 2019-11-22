@@ -172,6 +172,7 @@ class JoinGroupRoom extends React.Component {
                             onPress={this.closeGroupGameOnPress}
                             style={{ height: hp(120), width: wp(100) }}
                         >
+                        </TouchableOpacity>
                             <View style={styles.modalView}>
                                 {!this.state.isClientLeader && (
                                     <View
@@ -465,6 +466,7 @@ class JoinGroupRoom extends React.Component {
                                 </View>
                             </View>
                             <AuthButton
+                                position={'absolute'}
                                 marginTop={hp(83.5)}
                                 marginLeft={wp(6.25)}
                                 height={hp(7)}
@@ -489,14 +491,14 @@ class JoinGroupRoom extends React.Component {
                                 borderRadius={hp(1.5)}
                                 onPress={this.groupGameReadyOnPress}
                             />
-                        </TouchableOpacity>
                     </View>
                 )}
                 {this.state.isQuitGameModalVisible === true && (
                     <View style={styles.modal}>
-                        <TouchableOpacity
+                        <View
                             style={{ height: hp(120), width: wp(100) }}
                         >
+                        </View>
                             <View style={styles.modalContainer}>
                                 <View style={styles.quitView}>
                                     <Text style={styles.areYouSureText}>
@@ -527,7 +529,6 @@ class JoinGroupRoom extends React.Component {
                                     />
                                 </View>
                             </View>
-                        </TouchableOpacity>
                     </View>
                 )}
             </View>

@@ -19,6 +19,7 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     modalView: {
+        position: 'absolute',
         backgroundColor: '#ffffff',
         height: hp(67),
         width: wp(87.5),
@@ -211,6 +212,7 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     modalContainer: {
+        position: 'absolute',
         flex: 1,
         alignItems: 'center'
     },
