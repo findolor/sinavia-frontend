@@ -51,7 +51,7 @@ class Settings extends React.Component {
                           this.props.clientInformation.birthDate,
                           'YYYY-MM-DD HH:mm'
                       ).format('DD-MM-YYYY'),
-            dateColor: '#7A7878',
+            dateColor: '#8A8888',
             // User pictures
             profilePicture: null,
             coverPicture: null,

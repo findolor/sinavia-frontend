@@ -10,15 +10,15 @@ export function* updateUserSaga(action) {
     try {
         const totalPoints = action.clientInformation.totalPoints
         delete action.clientInformation.totalPoints
-        const response = yield call(
-            makePutRequest,
-            apiServicesTree.userApi.updateUser,
-            {
+        try {
+            yield call(makePutRequest, apiServicesTree.userApi.updateUser, {
                 clientToken: action.clientToken,
                 clientInformation: action.clientInformation,
                 clientId: action.clientId
-            }
-        )
+            })
+        } catch (err) {
+            return
+        }
 
         if (action.isPasswordChange) {
             // First save the credentials to storage

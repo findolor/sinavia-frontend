@@ -15,6 +15,7 @@ import {
     makePostRequest,
     makePutRequest
 } from '../../services/apiServices'
+import { flashMessages } from '../../services/flashMessageBuilder'
 
 function firebaseSignIn() {
     return Promise.resolve().then(async () => {
@@ -36,7 +37,7 @@ export function* loginUser(action) {
         const firebaseResponse = yield call(firebaseSignIn)
 
         if (!firebaseResponse.user.emailVerified) {
-            Alert.alert('Lütfen e-postana gelen linki onayla.')
+            flashMessages.generalMessage('Lütfen e-postana gelen linki onayla.')
             yield put({
                 type: appTypes.LOCK_UNLOCK_BUTTON
             })
@@ -198,10 +199,7 @@ export function* loginUser(action) {
                     type: appTypes.LOCK_UNLOCK_BUTTON
                 })
 
-                if (error.message === 'Network Error') {
-                    Alert.alert('Server bağlantı hatası!')
-                    return
-                }
+                if (error.message === 'Network Error') return
                 if (error.response.data.error === 'Invalid User')
                     navigationReplace('getInfo', {
                         email: this.email,
@@ -214,11 +212,10 @@ export function* loginUser(action) {
             type: appTypes.LOCK_UNLOCK_BUTTON
         })
 
-        console.log(error)
-        console.log(error.code)
-        if (error.code === 'auth/wrong-password')
-            Alert.alert('Lütfen şifrenini kontrol et.')
+        if (error.code === 'auth/invalid-email')
+            flashMessages.emailError('Lütfen e-postanı kontrol et')
+        if (error.code === 'auth/wrong-password') flashMessages.passwordError()
         if (error.code === 'auth/user-not-found')
-            Alert.alert('Lüften e-posta adresini kontrol et.')
+            flashMessages.emailError('Bu e-posta ile bir kullanıcı yok')
     }
 }

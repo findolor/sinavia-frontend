@@ -45,8 +45,12 @@ import {
 } from './user'
 import { getUserJokers } from './userJoker'
 import { getUserScore } from './userScore'
+import { checkOnline } from './api'
 
 export const apiServicesTree = {
+    api: {
+        checkOnline: 'checkOnline'
+    },
     favouriteQuestionApi: {
         favouriteQuestion: 'favouriteQuestion',
         getFavouriteQuestions: 'getFavouriteQuestions',
@@ -121,6 +125,9 @@ const headers = {
 
 export const getRequest = async (functionName, params) => {
     switch (functionName) {
+        // API
+        case 'checkOnline':
+            return checkOnline()
         // FAVOURITE QUESTIONS
         case 'getFavouriteQuestions':
             headers.Authorization = 'Bearer ' + params.clientToken

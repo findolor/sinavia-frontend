@@ -47,6 +47,7 @@ import firebase from 'react-native-firebase'
 import { friendGameServices } from '../../../sagas/friendGame/'
 import { userScoreServices } from '../../../sagas/userScore'
 import { userServices } from '../../../sagas/user/'
+import { apiServices } from '../../../sagas/api'
 import { GAME_ENGINE_ENDPOINT } from '../../../config'
 
 import NOTIFICATION_LOGO from '../../../assets/mainScreens/notification.png'
@@ -527,12 +528,17 @@ class Home extends React.Component {
     }
 
     groupGameModeOnPress = () => {
-        this.setState({
-            visibleView: 'GROUP_MODES',
-            visibleRankedGameStartPress: false,
-            rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
-            soloModeButtonBorderColor: EMPTY_MODE_COLOR
-        })
+        apiServices
+            .checkOnline()
+            .then(() => {
+                this.setState({
+                    visibleView: 'GROUP_MODES',
+                    visibleRankedGameStartPress: false,
+                    rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
+                    soloModeButtonBorderColor: EMPTY_MODE_COLOR
+                })
+            })
+            .catch(error => {})
     }
 
     gameModesView() {
@@ -828,6 +834,7 @@ class Home extends React.Component {
             </View>
         )
     }
+
     createGroupRoomOnPress = () => {
         if (!this.props.isNetworkConnected) {
             showMessage({
@@ -844,6 +851,7 @@ class Home extends React.Component {
             isGroupGameInitiated: true
         })
     }
+
     friendRoomOnPress = async () => {
         if (Object.keys(this.props.friendIds).length === 0) return
         this.setState({
@@ -860,6 +868,7 @@ class Home extends React.Component {
             originalFriends: friends
         })
     }
+
     friendRoomAndGameModesBackButtonOnPress = () => {
         this.setState({
             visibleView: 'GAME_MODES',
@@ -872,6 +881,7 @@ class Home extends React.Component {
             selectedGameMode: 'ranked'
         })
     }
+
     groupModesView() {
         return (
             <View style={styles.modal}>
@@ -916,6 +926,7 @@ class Home extends React.Component {
             </View>
         )
     }
+
     searchFilterFunction = text => {
         this.setState({
             value: text
@@ -944,6 +955,7 @@ class Home extends React.Component {
             friendSelected: true
         })
     }
+
     randomCodeGenerator() {
         var result = ''
         var characters = 'ABCDEF0123456789'
@@ -955,6 +967,7 @@ class Home extends React.Component {
         }
         return result
     }
+
     friendGameModeOnPress = () => {
         if (!this.props.isNetworkConnected) {
             showMessage({
@@ -966,33 +979,39 @@ class Home extends React.Component {
             })
             return
         }
-        if (!this.state.friendSelected) return
-        const randomNumber = this.randomCodeGenerator()
-        const Ids = this.calculateContentIds()
-        navigationReset('game', { isHardReset: true })
-        navigationReplace(SCENE_KEYS.gameScreens.friendMatchingScreen, {
-            roomCode: randomNumber,
-            opponentInformation: this.state.opponentInformation,
-            isCreateRoom: true,
-            examId: Ids.examId,
-            courseId: Ids.courseId,
-            subjectId: Ids.subjectId,
-            invitedFriendId: this.state.opponentInformation.id
-        })
-        friendGameServices
-            .sendFriendGameRequest(
-                this.props.clientToken,
-                this.props.clientInformation,
-                randomNumber,
-                this.state.opponentInformation.fcmToken,
-                {
+        apiServices
+            .checkOnline()
+            .then(() => {
+                if (!this.state.friendSelected) return
+                const randomNumber = this.randomCodeGenerator()
+                const Ids = this.calculateContentIds()
+                navigationReset('game', { isHardReset: true })
+                navigationReplace(SCENE_KEYS.gameScreens.friendMatchingScreen, {
+                    roomCode: randomNumber,
+                    opponentInformation: this.state.opponentInformation,
+                    isCreateRoom: true,
                     examId: Ids.examId,
                     courseId: Ids.courseId,
-                    subjectId: Ids.subjectId
-                }
-            )
-            .then(data => console.log(data))
+                    subjectId: Ids.subjectId,
+                    invitedFriendId: this.state.opponentInformation.id
+                })
+                friendGameServices
+                    .sendFriendGameRequest(
+                        this.props.clientToken,
+                        this.props.clientInformation,
+                        randomNumber,
+                        this.state.opponentInformation.fcmToken,
+                        {
+                            examId: Ids.examId,
+                            courseId: Ids.courseId,
+                            subjectId: Ids.subjectId
+                        }
+                    )
+                    .then(data => console.log(data))
+            })
+            .catch(error => {})
     }
+
     friendRoomView() {
         return (
             <View style={styles.modal}>
@@ -1043,7 +1062,9 @@ class Home extends React.Component {
                                     {this.state.opponentName}
                                 </Text>
                                 <Text style={styles.userNameText}>
-                                    {this.state.opponentUsername}
+                                    {this.state.opponentUsername === ''
+                                        ? ''
+                                        : '@' + this.state.opponentUsername}
                                 </Text>
                             </View>
                         </View>
@@ -1298,36 +1319,50 @@ class Home extends React.Component {
                             fontSize={hp(3)}
                             borderRadius={hp(1.5)}
                             onPress={() => {
-                                friendGameServices
-                                    .checkOngoingMatch(
-                                        this.props.clientToken,
-                                        this.state.requestedGameOpponentId,
-                                        this.state.requestedGameRoomCode
-                                    )
-                                    .then(data => {
-                                        this.setState(
-                                            {
-                                                isFriendGameRequestModalVisible: false
-                                            },
-                                            () => {
-                                                if (!data)
-                                                    this.rejectFriendGame({
-                                                        roomCode: this.state
-                                                            .requestedGameRoomCode
-                                                    })
-                                                else {
-                                                    // TODO MAKE A MODAL HERE
-                                                    Alert.alert(
-                                                        'Arkadaşın önden başladı!'
-                                                    )
-                                                    navigationPush(
-                                                        SCENE_KEYS.mainScreens
-                                                            .notifications
-                                                    )
-                                                }
-                                            }
-                                        )
+                                apiServices
+                                    .checkOnline()
+                                    .then(() => {
+                                        friendGameServices
+                                            .checkOngoingMatch(
+                                                this.props.clientToken,
+                                                this.state
+                                                    .requestedGameOpponentId,
+                                                this.state.requestedGameRoomCode
+                                            )
+                                            .then(data => {
+                                                this.setState(
+                                                    {
+                                                        isFriendGameRequestModalVisible: false
+                                                    },
+                                                    () => {
+                                                        if (!data)
+                                                            this.rejectFriendGame(
+                                                                {
+                                                                    roomCode: this
+                                                                        .state
+                                                                        .requestedGameRoomCode
+                                                                }
+                                                            )
+                                                        else {
+                                                            // TODO MAKE A MODAL HERE
+                                                            Alert.alert(
+                                                                'Arkadaşın önden başladı!'
+                                                            )
+                                                            navigationPush(
+                                                                SCENE_KEYS
+                                                                    .mainScreens
+                                                                    .notifications
+                                                            )
+                                                        }
+                                                    }
+                                                )
+                                            })
                                     })
+                                    .catch(error =>
+                                        this.setState({
+                                            isFriendGameRequestModalVisible: false
+                                        })
+                                    )
                             }}
                         />
                         <AuthButton
@@ -1352,45 +1387,62 @@ class Home extends React.Component {
                         fontSize={hp(3)}
                         borderRadius={hp(1.5)}
                         onPress={() => {
-                            friendGameServices
-                                .checkOngoingMatch(
-                                    this.props.clientToken,
-                                    this.state.requestedGameOpponentId,
-                                    this.state.requestedGameRoomCode
-                                )
-                                .then(data => {
-                                    this.setState(
-                                        {
-                                            isFriendGameRequestModalVisible: false
-                                        },
-                                        () => {
-                                            // If the data is false we can play synchronized game
-                                            // If it is true other user either pressed play ahead or still waiting
-                                            if (!data)
-                                                this.tryJoiningFriendRoom({
-                                                    opponentId: this.state
-                                                        .requestedGameOpponentId,
-                                                    roomCode: this.state
-                                                        .requestedGameRoomCode,
-                                                    examId: this.state
-                                                        .requestedGameExamId,
-                                                    courseId: this.state
-                                                        .requestedGameCourseId,
-                                                    subjectId: this.state
-                                                        .requestedGameSubjectId
-                                                })
-                                            else {
-                                                Alert.alert(
-                                                    'Arkadaşın önden başladı!'
-                                                )
-                                                navigationPush(
-                                                    SCENE_KEYS.mainScreens
-                                                        .notifications
-                                                )
-                                            }
-                                        }
-                                    )
+                            apiServices
+                                .checkOnline()
+                                .then(() => {
+                                    friendGameServices
+                                        .checkOngoingMatch(
+                                            this.props.clientToken,
+                                            this.state.requestedGameOpponentId,
+                                            this.state.requestedGameRoomCode
+                                        )
+                                        .then(data => {
+                                            this.setState(
+                                                {
+                                                    isFriendGameRequestModalVisible: false
+                                                },
+                                                () => {
+                                                    // If the data is false we can play synchronized game
+                                                    // If it is true other user either pressed play ahead or still waiting
+                                                    if (!data)
+                                                        this.tryJoiningFriendRoom(
+                                                            {
+                                                                opponentId: this
+                                                                    .state
+                                                                    .requestedGameOpponentId,
+                                                                roomCode: this
+                                                                    .state
+                                                                    .requestedGameRoomCode,
+                                                                examId: this
+                                                                    .state
+                                                                    .requestedGameExamId,
+                                                                courseId: this
+                                                                    .state
+                                                                    .requestedGameCourseId,
+                                                                subjectId: this
+                                                                    .state
+                                                                    .requestedGameSubjectId
+                                                            }
+                                                        )
+                                                    else {
+                                                        Alert.alert(
+                                                            'Arkadaşın önden başladı!'
+                                                        )
+                                                        navigationPush(
+                                                            SCENE_KEYS
+                                                                .mainScreens
+                                                                .notifications
+                                                        )
+                                                    }
+                                                }
+                                            )
+                                        })
                                 })
+                                .catch(error =>
+                                    this.setState({
+                                        isFriendGameRequestModalVisible: false
+                                    })
+                                )
                         }}
                     />
                 </View>
@@ -1487,22 +1539,19 @@ class Home extends React.Component {
 
         switch (this.state.selectedGameMode) {
             case 'ranked':
-                /* if (this.props.clientInformation.isPremium) {
-                    navigationReset('game', this.calculateContentIds())
-                } else if (this.props.energyAmount !== 0)
-                    navigationReset('game', this.calculateContentIds())
-                else {
-                    this.setState({
-                        visibleRankedGameStartPress: false,
-                        rankedModeButtonBorderColor: EMPTY_MODE_COLOR
+                apiServices
+                    .checkOnline()
+                    .then(() => {
+                        navigationReset('game', this.calculateContentIds())
                     })
-                    Alert.alert('Üzgünüm ama oyun hakkın bitti :(')
-                } */
-                navigationReset('game', this.calculateContentIds())
+                    .catch(error => {})
                 break
             case 'solo':
                 if (this.props.clientInformation.isPremium) {
-                    navigationReset('game', { isHardReset: true })
+                    apiServices
+                        .checkOnline()
+                        .then(() => {
+                            navigationReset('game', { isHardReset: true })
                     navigationReplace(
                         SCENE_KEYS.gameScreens.soloModeLoadingScreen,
                         {
@@ -1511,6 +1560,9 @@ class Home extends React.Component {
                                 .choosenQuestionAmountSolo
                         }
                     )
+                        })
+                        .catch(error => {})
+                    break
                 } else {
                     this.setState({
                         visibleRankedGameStartPress: false,

@@ -13,6 +13,7 @@ import { friendActions } from '../../../redux/friends/actions'
 import { appActions } from '../../../redux/app/actions'
 import { opponentActions } from '../../../redux/opponents/actions'
 import { getUserService } from '../../../sagas/user/fetchUser'
+import { apiServices } from '../../../sagas/api'
 import { notificationServices } from '../../../sagas/notification/'
 import {
     heightPercentageToDP as hp,
@@ -253,7 +254,7 @@ class Notifications extends React.Component {
                 )
             case 'gameRequest':
                 return (
-                    <View style={[styles.userRow, { height: hp(12)}]}>
+                    <View style={[styles.userRow, { height: hp(12) }]}>
                         <View style={styles.userPicContainerInRow}>
                             <Image
                                 source={{
@@ -262,7 +263,12 @@ class Notifications extends React.Component {
                                 style={styles.userPic}
                             />
                         </View>
-                        <View style={[styles.gameContentsContainer, { height: hp(12)}]}>
+                        <View
+                            style={[
+                                styles.gameContentsContainer,
+                                { height: hp(12) }
+                            ]}
+                        >
                             <Text style={styles.gameContentText}>
                                 {item.notificationData.examName}
                             </Text>
@@ -273,21 +279,31 @@ class Notifications extends React.Component {
                                 {item.notificationData.subjectName}
                             </Text>
                         </View>
-                        <View style={[styles.gameRequestContainer, { height: hp(12)}]}>
-                                <Text style={styles.gameRequestText}>
-                                    {item.notificationData.message}
-                                </Text>
+                        <View
+                            style={[
+                                styles.gameRequestContainer,
+                                { height: hp(12) }
+                            ]}
+                        >
+                            <Text style={styles.gameRequestText}>
+                                {item.notificationData.message}
+                            </Text>
                             <View style={styles.gameRequestButtonsContainer}>
                                 <TouchableOpacity
                                     onPress={() => {
-                                        this.setState({
-                                            refreshFlatlist: !this.state
-                                                .refreshFlatlist
-                                        })
-                                        this.acceptGameRequestOnPress(
-                                            item,
-                                            index
-                                        )
+                                        apiServices
+                                            .checkOnline()
+                                            .then(() => {
+                                                this.setState({
+                                                    refreshFlatlist: !this.state
+                                                        .refreshFlatlist
+                                                })
+                                                this.acceptGameRequestOnPress(
+                                                    item,
+                                                    index
+                                                )
+                                            })
+                                            .catch(error => {})
                                     }}
                                 >
                                     <View style={styles.acceptButton}>
@@ -302,14 +318,19 @@ class Notifications extends React.Component {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => {
-                                        this.setState({
-                                            refreshFlatlist: !this.state
-                                                .refreshFlatlist
-                                        })
-                                        this.rejectGameRequestOnPress(
-                                            item,
-                                            index
-                                        )
+                                        apiServices
+                                            .checkOnline()
+                                            .then(() => {
+                                                this.setState({
+                                                    refreshFlatlist: !this.state
+                                                        .refreshFlatlist
+                                                })
+                                                this.rejectGameRequestOnPress(
+                                                    item,
+                                                    index
+                                                )
+                                            })
+                                            .catch(error => {})
                                     }}
                                 >
                                     <View style={styles.rejectButton}>

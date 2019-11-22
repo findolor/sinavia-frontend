@@ -4,15 +4,19 @@ import { deviceStorage } from '../../services/deviceStorage'
 import { clientTypes } from '../../redux/client/actions'
 
 export function* unfavouriteQuestionSaga(action) {
-    yield call(
-        makeDeleteRequest,
-        apiServicesTree.favouriteQuestionApi.unfavouriteQuestion,
-        {
-            userId: action.clientId,
-            questionId: action.question.id,
-            clientToken: action.clientToken
-        }
-    )
+    try {
+        yield call(
+            makeDeleteRequest,
+            apiServicesTree.favouriteQuestionApi.unfavouriteQuestion,
+            {
+                userId: action.clientId,
+                questionId: action.question.id,
+                clientToken: action.clientToken
+            }
+        )
+    } catch (err) {
+        return
+    }
 
     const favedQuestionList = action.favedQuestionList
     const index = favedQuestionList.findIndex(

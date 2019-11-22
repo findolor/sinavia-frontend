@@ -37,7 +37,7 @@ class GetInfo extends React.Component {
             showPasswordEyeSecond: false,
             hidePasswordFirst: true,
             hidePasswordSecond: true,
-            dateColor: '#7A7878',
+            dateColor: '#2E313C',
             // User Information
             username: '',
             name: '',

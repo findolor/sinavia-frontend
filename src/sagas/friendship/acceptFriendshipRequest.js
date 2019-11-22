@@ -17,17 +17,22 @@ export async function acceptFriendshipRequestService(
 }
 
 export function* acceptFriendshipRequestSaga(action) {
-    const response = yield call(
-        makePutRequest,
-        apiServicesTree.friendshipApi.acceptFriendshipRequest,
-        {
-            clientToken: action.clientToken,
-            userId: action.clientDBId,
-            friendId: action.friendId,
-            clientUsername: action.clientUsername,
-            clientProfilePicture: action.profilePicture
-        }
-    )
+    let response
+    try {
+        response = yield call(
+            makePutRequest,
+            apiServicesTree.friendshipApi.acceptFriendshipRequest,
+            {
+                clientToken: action.clientToken,
+                userId: action.clientDBId,
+                friendId: action.friendId,
+                clientUsername: action.clientUsername,
+                clientProfilePicture: action.profilePicture
+            }
+        )
+    } catch (err) {
+        return
+    }
 
     if (response.success) {
         action.friendIds.push(action.friendId)

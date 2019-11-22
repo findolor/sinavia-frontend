@@ -7,7 +7,6 @@ import { appTypes } from '../../redux/app/actions'
 import { fcmService } from '../../services/fcmService'
 import { gameContentTypes } from '../../redux/gameContent/actions'
 import DeviceInfo from 'react-native-device-info'
-import { Alert } from 'react-native'
 import {
     apiServicesTree,
     makeGetRequest,
@@ -15,6 +14,7 @@ import {
     makePutRequest
 } from '../../services/apiServices'
 import firebase from 'react-native-firebase'
+import { flashMessages } from '../../services/flashMessageBuilder'
 
 async function getFromStorage(key) {
     const item = await deviceStorage.getItemFromStorage(key)
@@ -76,7 +76,7 @@ export function* authenticateUser(action) {
         // If the response is false that means the user is logged in on another device
         // We dont log them in and reset to the auth screen
         if (!res) {
-            Alert.alert(
+            flashMessages.generalMessage(
                 'Başka bir cihazdan oturum açıldı. Tekrar giriş yapınız.'
             )
             yield call(deviceStorage.clearDeviceStorage)
@@ -121,14 +121,33 @@ export function* authenticateUser(action) {
             getFromStorage,
             'favouriteQuestions'
         )
-        // TODO FETCH THE USER QUESTIONS HERE???
+        let favouriteQuestionsList = yield call(
+            makeGetRequest,
+            apiServicesTree.favouriteQuestionApi.getFavouriteQuestions,
+            {
+                userId: clientDBId,
+                clientToken: action.payload
+            }
+        )
         // Save it to redux state
-        if (favouriteQuestions !== null && favouriteQuestions !== []) {
+        if (
+            favouriteQuestions === null ||
+            Object.keys(favouriteQuestionsList).length !==
+                Object.keys(favouriteQuestions).length
+        ) {
+            deviceStorage.saveItemToStorage(
+                'favouriteQuestions',
+                favouriteQuestionsList
+            )
+            yield put({
+                type: clientTypes.SAVE_FAVOURITE_QUESTIONS,
+                payload: favouriteQuestionsList
+            })
+        } else
             yield put({
                 type: clientTypes.SAVE_FAVOURITE_QUESTIONS,
                 payload: favouriteQuestions
             })
-        }
 
         // TODO TAKE A LOOK HERE
         // We get all of our friend ids

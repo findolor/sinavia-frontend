@@ -15,7 +15,6 @@ export const checkToken = async (headers, params) => {
 
         return response.data.success
     } catch (err) {
-        console.log(err.response)
-        throw new Error(err.message)
+        throw err
     }
 }

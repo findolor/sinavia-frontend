@@ -72,6 +72,7 @@ export default StyleSheet.create({
     textInputStyle: {
         height: hp(7),
         width: wp(72),
-        paddingHorizontal: wp(3)
+        paddingHorizontal: wp(3),
+        color: '#2E313C'
     }
 })

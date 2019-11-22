@@ -54,7 +54,8 @@ export default StyleSheet.create({
     searchBarText: {
         fontFamily: 'Averta-Regular',
         fontSize: hp(2.2),
-        paddingVertical: hp(0)
+        paddingVertical: hp(0),
+        color: '#2E313C'
     },
     searchBarLogo: {
         height: hp(2.7),
@@ -360,7 +361,7 @@ export default StyleSheet.create({
     profileContainerShadowView: {
         height: hp(30),
         width: wp(90),
-        borderRadius: 30,
+        borderRadius: hp(3),
         alignItems: 'center',
         backgroundColor: 'rgba(0,0,0,0.5)'
     },

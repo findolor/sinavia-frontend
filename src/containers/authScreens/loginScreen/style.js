@@ -46,7 +46,8 @@ export default StyleSheet.create({
         height: hp(7),
         width: wp(85),
         paddingHorizontal: wp(4),
-        fontSize: hp(2)
+        fontSize: hp(2),
+        color: '#2E313C'
     },
     forgetPasswordContainer: {
         height: hp(6),
