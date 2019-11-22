@@ -13,10 +13,7 @@ import {
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
 
-import {
-    navigationReset,
-    SCENE_KEYS
-} from '../../services/navigationService'
+import { navigationReset } from '../../services/navigationService'
 
 import styles from './style'
 
@@ -36,7 +33,7 @@ class Tutorial extends React.Component {
     }
 
     goToOpeningScreen = () => {
-        navigationReset('auth', { isHardReset: true })
+        navigationReset('auth')
     }
 
     goToLastIndex = () => {
@@ -46,7 +43,7 @@ class Tutorial extends React.Component {
         this.refs.swiper.scrollBy(3)
     }
 
-    updatePagination = (index) => {
+    updatePagination = index => {
         this.setState({
             currentPage: index
         })
@@ -55,70 +52,164 @@ class Tutorial extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Swiper ref="swiper"
-                        index={this.state.currentPage}
-                        onIndexChanged={index => this.updatePagination(index)}
-                        autoplay={false}
-                        loop={false}
-                        loadMinimal={false}
-                        showsPagination={true}
-                        scrollEnabled={true}
-                        activeDot={<View style={{height: hp(3), width: hp(2.5), justifyContent: 'center', alignItems: 'center', marginBottom: hp(2), marginLeft: wp(1), marginRight: wp(1)}}>
-                            <Image source={SINAVIA_LOGO} style={styles.iconPaginationImg}></Image>
-                        </View>}
-                        dot={<View style={{height: hp(1.5), width: hp(1.5), backgroundColor: 'rgba(0,0,0,.2)', borderRadius: hp(100), marginBottom: hp(2), marginLeft: wp(1), marginRight: wp(1)}}/>}>
+                <Swiper
+                    ref="swiper"
+                    index={this.state.currentPage}
+                    onIndexChanged={index => this.updatePagination(index)}
+                    autoplay={false}
+                    loop={false}
+                    loadMinimal={false}
+                    showsPagination={true}
+                    scrollEnabled={true}
+                    activeDot={
+                        <View
+                            style={{
+                                height: hp(3),
+                                width: hp(2.5),
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginBottom: hp(2),
+                                marginLeft: wp(1),
+                                marginRight: wp(1)
+                            }}
+                        >
+                            <Image
+                                source={SINAVIA_LOGO}
+                                style={styles.iconPaginationImg}
+                            ></Image>
+                        </View>
+                    }
+                    dot={
+                        <View
+                            style={{
+                                height: hp(1.5),
+                                width: hp(1.5),
+                                backgroundColor: 'rgba(0,0,0,.2)',
+                                borderRadius: hp(100),
+                                marginBottom: hp(2),
+                                marginLeft: wp(1),
+                                marginRight: wp(1)
+                            }}
+                        />
+                    }
+                >
                     <View style={styles.onePageTutorialView}>
                         <View style={styles.iconContainer}>
-                            <TouchableOpacity style={styles.skipButton} onPress={this.goToLastIndex}>
+                            <TouchableOpacity
+                                style={styles.skipButton}
+                                onPress={this.goToLastIndex}
+                            >
                                 <Text style={styles.skipButtonText}>Atla</Text>
                             </TouchableOpacity>
-                            <Image source={firstPageTutorialImg} style={[styles.iconImg, {width: hp(25)}]}/>
+                            <Image
+                                source={firstPageTutorialImg}
+                                style={[styles.iconImg, { width: hp(25) }]}
+                            />
                         </View>
                         <View style={styles.headerTextContainer}>
-                            <Text style={styles.headerText}>Sınavia'ya hoş geldin!</Text>
+                            <Text style={styles.headerText}>
+                                Sınavia'ya hoş geldin!
+                            </Text>
                         </View>
                         <View style={styles.infoTextContainer}>
-                            <Text style={styles.infoText}>Başarı basamaklarını beraber çıkmaya ne dersin? Sınavia ile sen de kazanacaksın!</Text>
+                            <Text style={styles.infoText}>
+                                Başarı basamaklarını beraber çıkmaya ne dersin?
+                                Sınavia ile sen de kazanacaksın!
+                            </Text>
                         </View>
                     </View>
                     <View style={styles.onePageTutorialView}>
                         <View style={styles.iconContainer}>
-                            <Image source={secondPageTutorialImg} style={[styles.iconImg, {width: hp(25)}]}/>
+                            <Image
+                                source={secondPageTutorialImg}
+                                style={[styles.iconImg, { width: hp(25) }]}
+                            />
                         </View>
                         <View style={styles.headerTextContainer}>
-                            <Text style={styles.headerText}>Eğlenerek soru çöz</Text>
+                            <Text style={styles.headerText}>
+                                Eğlenerek soru çöz
+                            </Text>
                         </View>
                         <View style={styles.infoTextContainer}>
-                            <Text style={styles.infoText}>İster dereceli, istersen arkadaşın veya arkadaş grubunla soru çözerek yarış!</Text>
+                            <Text style={styles.infoText}>
+                                İster dereceli, istersen arkadaşın veya arkadaş
+                                grubunla soru çözerek yarış!
+                            </Text>
                         </View>
                     </View>
                     <View style={styles.onePageTutorialView}>
                         <View style={styles.iconContainer}>
-                            <Image source={thirdPageTutorialImg} style={[styles.iconImg, {resizeMode: 'contain'}]}/>
+                            <Image
+                                source={thirdPageTutorialImg}
+                                style={[
+                                    styles.iconImg,
+                                    { resizeMode: 'contain' }
+                                ]}
+                            />
                         </View>
                         <View style={styles.headerTextContainer}>
-                            <Text style={[styles.headerText, { fontSize: hp(4.5)}]}>Kaçırdığın soru kalmasın</Text>
+                            <Text
+                                style={[
+                                    styles.headerText,
+                                    { fontSize: hp(4.5) }
+                                ]}
+                            >
+                                Kaçırdığın soru kalmasın
+                            </Text>
                         </View>
                         <View style={styles.infoTextContainer}>
-                            <Text style={styles.infoText}>Tüm derslerinin istatistiklerini takip et, dilediğin soruyu favorile veya paylaş!</Text>
+                            <Text style={styles.infoText}>
+                                Tüm derslerinin istatistiklerini takip et,
+                                dilediğin soruyu favorile veya paylaş!
+                            </Text>
                         </View>
                     </View>
                     <View style={styles.onePageTutorialView}>
                         <View style={styles.iconContainer}>
-                            <Image source={fourthPageTutorialImg} style={[styles.iconImg, { resizeMode: 'contain', height: hp(20), marginBottom: hp(4.8)}]}/>
+                            <Image
+                                source={fourthPageTutorialImg}
+                                style={[
+                                    styles.iconImg,
+                                    {
+                                        resizeMode: 'contain',
+                                        height: hp(20),
+                                        marginBottom: hp(4.8)
+                                    }
+                                ]}
+                            />
                         </View>
-                        <View style={[styles.headerTextContainer, {flex: 11}]}>
-                            <Text style={[styles.headerText, { fontSize: hp(3.5), marginBottom: hp(0)}]}>Türkiye geneli sıralamalara katıl</Text>
+                        <View
+                            style={[styles.headerTextContainer, { flex: 11 }]}
+                        >
+                            <Text
+                                style={[
+                                    styles.headerText,
+                                    { fontSize: hp(3.5), marginBottom: hp(0) }
+                                ]}
+                            >
+                                Türkiye geneli sıralamalara katıl
+                            </Text>
                         </View>
-                        <View style={[styles.infoTextContainer, {flex: 39}]}>
-                            <Text style={[styles.infoText, {marginTop: hp(4.2)}]}>Ülke geneli sıralamalar ve canlı deneme sınavları seni bekliyor. Kendini göster, bu heyecana sen de ortak ol!</Text>
-                            <TouchableOpacity style={styles.startButton} onPress={() => this.goToOpeningScreen()}>
+                        <View style={[styles.infoTextContainer, { flex: 39 }]}>
+                            <Text
+                                style={[
+                                    styles.infoText,
+                                    { marginTop: hp(4.2) }
+                                ]}
+                            >
+                                Ülke geneli sıralamalar ve canlı deneme
+                                sınavları seni bekliyor. Kendini göster, bu
+                                heyecana sen de ortak ol!
+                            </Text>
+                            <TouchableOpacity
+                                style={styles.startButton}
+                                onPress={() => this.goToOpeningScreen()}
+                            >
                                 <Text style={styles.skipButtonText}>BAŞLA</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                 </Swiper>
-
             </View>
         )
     }
