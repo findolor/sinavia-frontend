@@ -1552,14 +1552,14 @@ class Home extends React.Component {
                         .checkOnline()
                         .then(() => {
                             navigationReset('game', { isHardReset: true })
-                    navigationReplace(
-                        SCENE_KEYS.gameScreens.soloModeLoadingScreen,
-                        {
-                            contentIds: this.calculateContentIds(),
-                            choosenQuestionAmount: this.state
-                                .choosenQuestionAmountSolo
-                        }
-                    )
+                            navigationReplace(
+                                SCENE_KEYS.gameScreens.soloModeLoadingScreen,
+                                {
+                                    contentIds: this.calculateContentIds(),
+                                    choosenQuestionAmount: this.state
+                                        .choosenQuestionAmountSolo
+                                }
+                            )
                         })
                         .catch(error => {})
                     break
