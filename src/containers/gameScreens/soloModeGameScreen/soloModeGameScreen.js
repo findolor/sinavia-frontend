@@ -300,7 +300,6 @@ class SoloModeGameScreen extends React.Component {
     updatePlayerResults = () => {
         // Player answers to the question
         const answers = this.state.playerProps.answers
-        console.log(answers)
         // Switch statement for the user
         this.updateAnswers(answers)
     }

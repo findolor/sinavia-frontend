@@ -130,7 +130,8 @@ class Home extends React.Component {
             isGroupGameInitiated: false,
             // Notification related
             isNotificationReceived: false,
-            choosenQuestionAmount: 5
+            // Solo choosen question amount
+            choosenQuestionAmountSolo: 5
         }
     }
 
@@ -488,8 +489,8 @@ class Home extends React.Component {
         return subjectList
     }
 
-    soloModeQuestionAmountPicker(questionNumber){
-        this.setState({ choosenQuestionAmount: questionNumber })
+    soloModeQuestionAmountPicker(questionNumber) {
+        this.setState({ choosenQuestionAmountSolo: questionNumber })
     }
 
     closeModalButtonOnPress = () => {
@@ -711,28 +712,105 @@ class Home extends React.Component {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.gameModeContextContainer}>
-                            {
-                                this.state.selectedGameMode === 'solo' ?
-                                    <View style={[styles.gameModeContextContainer, { flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}]}>
-                                        <Text style={styles.questionsNumberText}>
-                                            Soru sayısı
-                                        </Text>
-                                        <TouchableOpacity style={[styles.questionNumberCircle, {marginLeft: wp(1), backgroundColor: this.state.choosenQuestionAmount === 5 ? '#FF9900' : '#fff'}]} onPress={() => {this.soloModeQuestionAmountPicker(5)}}>
-                                            <Text style={[styles.questionNumberText, {color: this.state.choosenQuestionAmount === 5 ? 'white' : '#FF9900', fontFamily: this.state.choosenQuestionAmount === 5 ? 'Averta-Bold' : 'Averta-Regular'}]}>
-                                            5
-                                            </Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={[styles.questionNumberCircle, {backgroundColor: this.state.choosenQuestionAmount === 10 ? '#FF9900' : '#fff'}]} onPress={() => {this.soloModeQuestionAmountPicker(10)}}>
-                                            <Text style={[styles.questionNumberText, {color: this.state.choosenQuestionAmount === 10 ? 'white' : '#FF9900', fontFamily: this.state.choosenQuestionAmount === 10 ? 'Averta-Bold' : 'Averta-Regular'}]}>
-                                            10
-                                            </Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                    :
-                                    <Text style={styles.gameModeContextText}>
-                                        Tek başına soru çöz
+                            {this.state.selectedGameMode === 'solo' ? (
+                                <View
+                                    style={[
+                                        styles.gameModeContextContainer,
+                                        {
+                                            flexDirection: 'row',
+                                            justifyContent: 'flex-start',
+                                            alignItems: 'center'
+                                        }
+                                    ]}
+                                >
+                                    <Text style={styles.questionsNumberText}>
+                                        Soru sayısı
                                     </Text>
-                            }
+                                    <TouchableOpacity
+                                        style={[
+                                            styles.questionNumberCircle,
+                                            {
+                                                marginLeft: wp(1),
+                                                backgroundColor:
+                                                    this.state
+                                                        .choosenQuestionAmountSolo ===
+                                                    5
+                                                        ? '#FF9900'
+                                                        : '#fff'
+                                            }
+                                        ]}
+                                        onPress={() => {
+                                            this.soloModeQuestionAmountPicker(5)
+                                        }}
+                                    >
+                                        <Text
+                                            style={[
+                                                styles.questionNumberText,
+                                                {
+                                                    color:
+                                                        this.state
+                                                            .choosenQuestionAmountSolo ===
+                                                        5
+                                                            ? 'white'
+                                                            : '#FF9900',
+                                                    fontFamily:
+                                                        this.state
+                                                            .choosenQuestionAmountSolo ===
+                                                        5
+                                                            ? 'Averta-Bold'
+                                                            : 'Averta-Regular'
+                                                }
+                                            ]}
+                                        >
+                                            5
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={[
+                                            styles.questionNumberCircle,
+                                            {
+                                                backgroundColor:
+                                                    this.state
+                                                        .choosenQuestionAmountSolo ===
+                                                    10
+                                                        ? '#FF9900'
+                                                        : '#fff'
+                                            }
+                                        ]}
+                                        onPress={() => {
+                                            this.soloModeQuestionAmountPicker(
+                                                10
+                                            )
+                                        }}
+                                    >
+                                        <Text
+                                            style={[
+                                                styles.questionNumberText,
+                                                {
+                                                    color:
+                                                        this.state
+                                                            .choosenQuestionAmountSolo ===
+                                                        10
+                                                            ? 'white'
+                                                            : '#FF9900',
+                                                    fontFamily:
+                                                        this.state
+                                                            .choosenQuestionAmountSolo ===
+                                                        10
+                                                            ? 'Averta-Bold'
+                                                            : 'Averta-Regular'
+                                                }
+                                            ]}
+                                        >
+                                            10
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            ) : (
+                                <Text style={styles.gameModeContextText}>
+                                    Tek başına soru çöz
+                                </Text>
+                            )}
                         </View>
                     </View>
                 </View>
@@ -1427,7 +1505,11 @@ class Home extends React.Component {
                     navigationReset('game', { isHardReset: true })
                     navigationReplace(
                         SCENE_KEYS.gameScreens.soloModeLoadingScreen,
-                        this.calculateContentIds()
+                        {
+                            contentIds: this.calculateContentIds(),
+                            choosenQuestionAmount: this.state
+                                .choosenQuestionAmountSolo
+                        }
                     )
                 } else {
                     this.setState({

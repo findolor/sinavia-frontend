@@ -27,22 +27,21 @@ class SoloModeLoadingScreen extends React.Component {
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
         this.client.onOpen.add(() => {
             this.joinRoom({
-                examId: this.props.examId,
-                courseId: this.props.courseId,
-                subjectId: this.props.subjectId,
-                databaseId: this.props.clientDBId
+                examId: this.props.contentIds.examId,
+                courseId: this.props.contentIds.courseId,
+                subjectId: this.props.contentIds.subjectId,
+                databaseId: this.props.clientDBId,
+                choosenQuestionAmount: this.props.choosenQuestionAmount
             })
         })
     }
-
-
 
     // Client sends a ready signal when they join a room successfully
     joinRoom = playerOptions => {
         this.room = this.client.join('soloModeRoom', playerOptions)
 
-            this.room.onJoin.add(() => {
-                setTimeout(() => {
+        this.room.onJoin.add(() => {
+            setTimeout(() => {
                 navigationReplace(SCENE_KEYS.gameScreens.soloModeGameScreen, {
                     // These are necessary for the game logic
                     room: this.room,
@@ -52,8 +51,8 @@ class SoloModeLoadingScreen extends React.Component {
                     playerProfilePicture: this.props.clientInformation
                         .profilePicture
                 })
-                }, 5000 )
-            })
+            }, 5000)
+        })
     }
 
     render() {
@@ -63,30 +62,32 @@ class SoloModeLoadingScreen extends React.Component {
                     <View style={styles.shadowView}>
                         <View style={styles.logoView}>
                             <View style={styles.logoBorderView}>
-                                <Image source={LOGO} style={styles.logoImg}/>
+                                <Image source={LOGO} style={styles.logoImg} />
                             </View>
                         </View>
                         <View style={styles.textsView}>
                             <Text style={styles.courseText}>
                                 {
-                                this.props.gameContentMap.courses[
-                                this.props.courseId - 1
+                                    this.props.gameContentMap.courses[
+                                        this.props.contentIds.courseId - 1
                                     ].name
                                 }
                             </Text>
                             <Text style={styles.subjectText}>
                                 {
-                                this.props.gameContentMap.subjects[
-                                this.props.subjectId - 1
+                                    this.props.gameContentMap.subjects[
+                                        this.props.contentIds.subjectId - 1
                                     ].name
                                 }
                             </Text>
-                            <Text style={styles.questionCounterText}>Soru Sayısı: 15</Text>
+                            <Text style={styles.questionCounterText}>
+                                Soru Sayısı: {this.props.choosenQuestionAmount}
+                            </Text>
                         </View>
                     </View>
                 </ImageBackground>
             </View>
-        );
+        )
     }
 }
 
@@ -98,7 +99,4 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({})
 
-export default connect(
-    mapStateToProps,
-    null
-)(SoloModeLoadingScreen)
+export default connect(mapStateToProps, null)(SoloModeLoadingScreen)
