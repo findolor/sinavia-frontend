@@ -302,7 +302,7 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Regular',
         fontSize: wp(5),
         textAlign: 'center',
-        color: '#2E313C'
+        color: 'black'
     },
     usersContainer: {
         height: hp(22),
@@ -431,7 +431,7 @@ export default StyleSheet.create({
         color: '#00D9EF',
         fontSize: hp(3.3)
     },
-    progressBarView:{
+    progressBarView: {
         height: hp(5),
         width: wp(65),
         flexDirection: 'row',
@@ -494,5 +494,22 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-start'
+    },
+    questionsNumberText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: wp(4),
+        color: '#5C5C5C'
+    },
+    questionNumberText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(3.5),
+        color: '#FF9900'
+    },
+    questionNumberCircle: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: hp(6),
+        width: hp(6),
+        borderRadius: hp(100)
     }
 })
