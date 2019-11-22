@@ -1,12 +1,5 @@
 import React from 'react'
-import {
-    View,
-    TouchableOpacity,
-    Image,
-    Text,
-    FlatList,
-    Modal
-} from 'react-native'
+import { View, TouchableOpacity, Image, Text, FlatList } from 'react-native'
 import AuthButton from '../../../../../components/authScreen/authButton'
 import styles from './style'
 import {
@@ -14,7 +7,6 @@ import {
     navigationReset,
     SCENE_KEYS
 } from '../../../../../services/navigationService'
-import DropDown from '../../../../../components/mainScreen/dropdown/dropdown'
 import { connect } from 'react-redux'
 // Styling imports
 import {
@@ -26,9 +18,6 @@ const LEADER_LOGO = require('../../../../../assets/mainScreens/groupLeaderSword.
 const COPY_IMAGE = require('../../../../../assets/mainScreens/copy.png')
 const PEOPLE_COUNTER_IMG = require('../../../../../assets/mainScreens/peopleCounterImg.png')
 
-// Question amounts that can be taken
-const QUESTION_AMOUNTS_LIST = ['5', '10', '15', '20']
-
 class JoinGroupRoom extends React.Component {
     constructor(props) {
         super(props)
@@ -39,8 +28,6 @@ class JoinGroupRoom extends React.Component {
             isQuitGameModalVisible: false,
             // Variable for checking leader status
             isClientLeader: false,
-            // Group game question number
-            questionNumber: '5',
             // Match content ids
             matchCourseId: null,
             matchSubjectId: null,
@@ -109,6 +96,12 @@ class JoinGroupRoom extends React.Component {
                         matchSubjectId: message.subjectId
                     })
                     break
+                case 'set-question-number':
+                    console.log(message)
+                    this.setState({
+                        choosenQuestionAmount: message.questionAmount
+                    })
+                    break
             }
         })
     }
@@ -127,7 +120,9 @@ class JoinGroupRoom extends React.Component {
             this.props.joinGameParams.room.send({
                 action: 'ready-status'
             })
-            this.setState({joinGamePlayerReady: !this.state.joinGamePlayerReady})
+            this.setState({
+                joinGamePlayerReady: !this.state.joinGamePlayerReady
+            })
         } else {
             this.startGroupGameOnPress()
         }
@@ -272,13 +267,82 @@ class JoinGroupRoom extends React.Component {
                                             >
                                                 Soru Sayısı
                                             </Text>
-                                            <TouchableOpacity style={[styles.questionNumberCircle, {marginLeft: wp(1), backgroundColor: this.state.choosenQuestionAmount === 5 ? '#FF9900' : '#fff'}]} onPress={() => {this.questionAmountPicker(5)}}>
-                                                <Text style={[styles.questionNumberText, {color: this.state.choosenQuestionAmount === 5 ? 'white' : '#FF9900', fontFamily: this.state.choosenQuestionAmount === 5 ? 'Averta-Bold' : 'Averta-Regular'}]}>
+                                            <TouchableOpacity
+                                                style={[
+                                                    styles.questionNumberCircle,
+                                                    {
+                                                        marginLeft: wp(1),
+                                                        backgroundColor:
+                                                            this.state
+                                                                .choosenQuestionAmount ===
+                                                            5
+                                                                ? '#FF9900'
+                                                                : '#fff'
+                                                    }
+                                                ]}
+                                                onPress={() => {
+                                                    this.questionAmountPicker(5)
+                                                }}
+                                            >
+                                                <Text
+                                                    style={[
+                                                        styles.questionNumberText,
+                                                        {
+                                                            color:
+                                                                this.state
+                                                                    .choosenQuestionAmount ===
+                                                                5
+                                                                    ? 'white'
+                                                                    : '#FF9900',
+                                                            fontFamily:
+                                                                this.state
+                                                                    .choosenQuestionAmount ===
+                                                                5
+                                                                    ? 'Averta-Bold'
+                                                                    : 'Averta-Regular'
+                                                        }
+                                                    ]}
+                                                >
                                                     5
                                                 </Text>
                                             </TouchableOpacity>
-                                            <TouchableOpacity style={[styles.questionNumberCircle, {backgroundColor: this.state.choosenQuestionAmount === 10 ? '#FF9900' : '#fff'}]} onPress={() => {this.questionAmountPicker(10)}}>
-                                                <Text style={[styles.questionNumberText, {color: this.state.choosenQuestionAmount === 10 ? 'white' : '#FF9900', fontFamily: this.state.choosenQuestionAmount === 10 ? 'Averta-Bold' : 'Averta-Regular'}]}>
+                                            <TouchableOpacity
+                                                style={[
+                                                    styles.questionNumberCircle,
+                                                    {
+                                                        backgroundColor:
+                                                            this.state
+                                                                .choosenQuestionAmount ===
+                                                            10
+                                                                ? '#FF9900'
+                                                                : '#fff'
+                                                    }
+                                                ]}
+                                                onPress={() => {
+                                                    this.questionAmountPicker(
+                                                        10
+                                                    )
+                                                }}
+                                            >
+                                                <Text
+                                                    style={[
+                                                        styles.questionNumberText,
+                                                        {
+                                                            color:
+                                                                this.state
+                                                                    .choosenQuestionAmount ===
+                                                                10
+                                                                    ? 'white'
+                                                                    : '#FF9900',
+                                                            fontFamily:
+                                                                this.state
+                                                                    .choosenQuestionAmount ===
+                                                                10
+                                                                    ? 'Averta-Bold'
+                                                                    : 'Averta-Regular'
+                                                        }
+                                                    ]}
+                                                >
                                                     10
                                                 </Text>
                                             </TouchableOpacity>
@@ -313,9 +377,26 @@ class JoinGroupRoom extends React.Component {
                                                     >
                                                         {item.username}
                                                     </Text>
-                                                    <View style={[styles.playerStatusView, {backgroundColor: item.status === 'Hazır' ? '#00E312' : '#FF9900'}]}>
-                                                        <Text style={styles.playerStatusText}>
-                                                            {'   '}{item.status}{'   '}
+                                                    <View
+                                                        style={[
+                                                            styles.playerStatusView,
+                                                            {
+                                                                backgroundColor:
+                                                                    item.status ===
+                                                                    'Hazır'
+                                                                        ? '#00E312'
+                                                                        : '#FF9900'
+                                                            }
+                                                        ]}
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.playerStatusText
+                                                            }
+                                                        >
+                                                            {'   '}
+                                                            {item.status}
+                                                            {'   '}
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -340,22 +421,44 @@ class JoinGroupRoom extends React.Component {
                                         index.toString()
                                     }
                                 />
-                                <View style={styles.usersAndQuestionsCounterContainer}>
+                                <View
+                                    style={
+                                        styles.usersAndQuestionsCounterContainer
+                                    }
+                                >
                                     <View style={styles.usersCounterContainer}>
-                                        <Image source={PEOPLE_COUNTER_IMG} style={styles.peopleCounterImg}/>
+                                        <Image
+                                            source={PEOPLE_COUNTER_IMG}
+                                            style={styles.peopleCounterImg}
+                                        />
                                         <Text style={styles.usersCounterText}>
                                             {
                                                 Object.keys(
-                                                    this.state.groupRoomPlayerList
+                                                    this.state
+                                                        .groupRoomPlayerList
                                                 ).length
                                             }
                                             /30
                                         </Text>
                                     </View>
                                     {!this.state.isClientLeader && (
-                                        <View style={styles.questionsCounterContainer}>
-                                            <Text style={styles.usersCounterText}>
-                                                Soru sayısı <Text style={{color: '#FF9900'}}>10</Text>
+                                        <View
+                                            style={
+                                                styles.questionsCounterContainer
+                                            }
+                                        >
+                                            <Text
+                                                style={styles.usersCounterText}
+                                            >
+                                                Soru sayısı{' '}
+                                                <Text
+                                                    style={{ color: '#FF9900' }}
+                                                >
+                                                    {
+                                                        this.state
+                                                            .choosenQuestionAmount
+                                                    }
+                                                </Text>
                                             </Text>
                                         </View>
                                     )}
@@ -369,12 +472,18 @@ class JoinGroupRoom extends React.Component {
                                 color={
                                     this.state.isClientLeader === true
                                         ? '#00D9EF'
-                                        : this.state.joinGamePlayerReady === true ? '#00E312' : '#FF9900'
+                                        : this.state.joinGamePlayerReady ===
+                                          true
+                                        ? '#00E312'
+                                        : '#FF9900'
                                 }
                                 buttonText={
                                     this.state.isClientLeader === true
                                         ? 'Başlat'
-                                        : this.state.joinGamePlayerReady === true ? 'Hazır' : 'Beklemeye al'
+                                        : this.state.joinGamePlayerReady ===
+                                          true
+                                        ? 'Hazır'
+                                        : 'Beklemeye al'
                                 }
                                 fontSize={hp(3)}
                                 borderRadius={hp(1.5)}

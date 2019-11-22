@@ -16,8 +16,6 @@ import {
     SCENE_KEYS
 } from '../../../../../services/navigationService'
 import { connect } from 'react-redux'
-import { appActions } from '../../../../../redux/app/actions'
-import { gameEnergyServices } from '../../../../../sagas/gameEnergy'
 // Colyseus game engine imports
 import { Buffer } from 'buffer'
 import { AsyncStorage } from 'react-native'
@@ -34,8 +32,6 @@ const COPY_IMAGE = require('../../../../../assets/mainScreens/copy.png')
 const LEADER_LOGO = require('../../../../../assets/mainScreens/groupLeaderSword.png')
 const PEOPLE_COUNTER_IMG = require('../../../../../assets/mainScreens/peopleCounterImg.png')
 
-// Question amounts that can be taken
-const QUESTION_AMOUNTS_LIST = ['5', '10', '15', '20']
 // Game engine endpoint url
 import { GAME_ENGINE_ENDPOINT } from '../../../../../config'
 
@@ -45,8 +41,6 @@ class CreateGroupRoom extends React.Component {
         this.state = {
             // Room code
             groupCode: '',
-            // Group game question number
-            questionNumber: '5',
             // Group player list
             groupRoomPlayerList: [],
             // Quit modal visible variable
@@ -181,7 +175,7 @@ class CreateGroupRoom extends React.Component {
     }
 
     // Selected question amount is sent to the server
-    questionAmountPicker(questionNumber){
+    questionAmountPicker(questionNumber) {
         this.room.send({
             action: 'set-question-number',
             questionAmount: questionNumber
@@ -258,13 +252,80 @@ class CreateGroupRoom extends React.Component {
                                     <Text style={styles.questionsNumberText}>
                                         Soru Sayısı
                                     </Text>
-                                    <TouchableOpacity style={[styles.questionNumberCircle, {marginLeft: wp(1), backgroundColor: this.state.choosenQuestionAmount === 5 ? '#FF9900' : '#fff'}]} onPress={() => {this.questionAmountPicker(5)}}>
-                                        <Text style={[styles.questionNumberText, {color: this.state.choosenQuestionAmount === 5 ? 'white' : '#FF9900', fontFamily: this.state.choosenQuestionAmount === 5 ? 'Averta-Bold' : 'Averta-Regular'}]}>
+                                    <TouchableOpacity
+                                        style={[
+                                            styles.questionNumberCircle,
+                                            {
+                                                marginLeft: wp(1),
+                                                backgroundColor:
+                                                    this.state
+                                                        .choosenQuestionAmount ===
+                                                    5
+                                                        ? '#FF9900'
+                                                        : '#fff'
+                                            }
+                                        ]}
+                                        onPress={() => {
+                                            this.questionAmountPicker(5)
+                                        }}
+                                    >
+                                        <Text
+                                            style={[
+                                                styles.questionNumberText,
+                                                {
+                                                    color:
+                                                        this.state
+                                                            .choosenQuestionAmount ===
+                                                        5
+                                                            ? 'white'
+                                                            : '#FF9900',
+                                                    fontFamily:
+                                                        this.state
+                                                            .choosenQuestionAmount ===
+                                                        5
+                                                            ? 'Averta-Bold'
+                                                            : 'Averta-Regular'
+                                                }
+                                            ]}
+                                        >
                                             5
                                         </Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={[styles.questionNumberCircle, {backgroundColor: this.state.choosenQuestionAmount === 10 ? '#FF9900' : '#fff'}]} onPress={() => {this.questionAmountPicker(10)}}>
-                                        <Text style={[styles.questionNumberText, {color: this.state.choosenQuestionAmount === 10 ? 'white' : '#FF9900', fontFamily: this.state.choosenQuestionAmount === 10 ? 'Averta-Bold' : 'Averta-Regular'}]}>
+                                    <TouchableOpacity
+                                        style={[
+                                            styles.questionNumberCircle,
+                                            {
+                                                backgroundColor:
+                                                    this.state
+                                                        .choosenQuestionAmount ===
+                                                    10
+                                                        ? '#FF9900'
+                                                        : '#fff'
+                                            }
+                                        ]}
+                                        onPress={() => {
+                                            this.questionAmountPicker(10)
+                                        }}
+                                    >
+                                        <Text
+                                            style={[
+                                                styles.questionNumberText,
+                                                {
+                                                    color:
+                                                        this.state
+                                                            .choosenQuestionAmount ===
+                                                        10
+                                                            ? 'white'
+                                                            : '#FF9900',
+                                                    fontFamily:
+                                                        this.state
+                                                            .choosenQuestionAmount ===
+                                                        10
+                                                            ? 'Averta-Bold'
+                                                            : 'Averta-Regular'
+                                                }
+                                            ]}
+                                        >
                                             10
                                         </Text>
                                     </TouchableOpacity>
@@ -304,9 +365,26 @@ class CreateGroupRoom extends React.Component {
                                                         >
                                                             {item.username}
                                                         </Text>
-                                                        <View style={[styles.playerStatusView, {backgroundColor: item.status === 'Hazır' ? '#00E312' : '#FF9900'}]}>
-                                                            <Text style={styles.playerStatusText}>
-                                                                {'   '}{item.status}{'   '}
+                                                        <View
+                                                            style={[
+                                                                styles.playerStatusView,
+                                                                {
+                                                                    backgroundColor:
+                                                                        item.status ===
+                                                                        'Hazır'
+                                                                            ? '#00E312'
+                                                                            : '#FF9900'
+                                                                }
+                                                            ]}
+                                                        >
+                                                            <Text
+                                                                style={
+                                                                    styles.playerStatusText
+                                                                }
+                                                            >
+                                                                {'   '}
+                                                                {item.status}
+                                                                {'   '}
                                                             </Text>
                                                         </View>
                                                     </View>
@@ -335,7 +413,10 @@ class CreateGroupRoom extends React.Component {
                                     />
                                 </View>
                                 <View style={styles.usersCounterContainer}>
-                                    <Image source={PEOPLE_COUNTER_IMG} style={styles.peopleCounterImg}/>
+                                    <Image
+                                        source={PEOPLE_COUNTER_IMG}
+                                        style={styles.peopleCounterImg}
+                                    />
                                     <Text style={styles.usersCounterText}>
                                         {
                                             Object.keys(

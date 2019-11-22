@@ -301,7 +301,8 @@ export default StyleSheet.create({
     joinGameCodeTextInput: {
         fontFamily: 'Averta-Regular',
         fontSize: wp(5),
-        textAlign: 'center'
+        textAlign: 'center',
+        color: 'black'
     },
     usersContainer: {
         height: hp(22),
@@ -429,7 +430,7 @@ export default StyleSheet.create({
         color: '#00D9EF',
         fontSize: hp(3.3)
     },
-    progressBarView:{
+    progressBarView: {
         height: hp(5),
         width: wp(65),
         flexDirection: 'row',
