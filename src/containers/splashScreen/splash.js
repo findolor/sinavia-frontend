@@ -59,7 +59,6 @@ class SplashScreen extends React.PureComponent {
             'isAppOpenedBefore'
         )
         if (isAppOpenedBefore === null) {
-            await deviceStorage.saveItemToStorage('isAppOpenedBefore', true)
             setTimeout(() => {
                 navigationReset('tutorial')
             }, 3000)
