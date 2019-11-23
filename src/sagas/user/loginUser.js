@@ -8,7 +8,6 @@ import { fcmService } from '../../services/fcmService'
 import { gameContentTypes } from '../../redux/gameContent/actions'
 import DeviceInfo from 'react-native-device-info'
 import firebase from 'react-native-firebase'
-import { Alert } from 'react-native'
 import {
     apiServicesTree,
     makeGetRequest,
@@ -201,7 +200,10 @@ export function* loginUser(action) {
                     type: appTypes.LOCK_UNLOCK_BUTTON
                 })
 
-                if (error.message === 'Network Error') return
+                if (error.message === 'Network Error') {
+                    flashMessages.networkError()
+                    return
+                }
                 if (error.response.data.error === 'Invalid User')
                     navigationReplace('getInfo', {
                         email: this.email,

@@ -134,6 +134,7 @@ export default StyleSheet.create({
         alignItems: 'flex-start'
     },
     modalContainer: {
+        position: 'absolute',
         flex: 1,
         alignItems: 'center'
     },

@@ -210,6 +210,7 @@ class CreateGroupRoom extends React.Component {
                             onPress={this.closeGroupGameOnPress}
                             style={{ height: hp(120), width: wp(100) }}
                         >
+                        </TouchableOpacity>
                             <View style={styles.modalView}>
                                 <View style={styles.gameCodeContainer}>
                                     <View style={styles.gameCodeBox}>
@@ -439,14 +440,14 @@ class CreateGroupRoom extends React.Component {
                                 position={'absolute'}
                                 onPress={this.startGroupGameOnPress}
                             />
-                        </TouchableOpacity>
                     </View>
                 )}
                 {this.state.isQuitGameModalVisible === true && (
                     <View style={styles.modal}>
-                        <TouchableOpacity
+                        <View
                             style={{ height: hp(120), width: wp(100) }}
                         >
+                        </View>
                             <View style={styles.modalContainer}>
                                 <View style={styles.quitView}>
                                     <Text style={styles.areYouSureText}>
@@ -477,7 +478,6 @@ class CreateGroupRoom extends React.Component {
                                     />
                                 </View>
                             </View>
-                        </TouchableOpacity>
                     </View>
                 )}
             </View>
