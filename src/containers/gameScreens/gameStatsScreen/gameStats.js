@@ -5,7 +5,8 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Dimensions, Modal
+    Dimensions,
+    Modal
 } from 'react-native'
 import {
     navigationReset,
@@ -29,8 +30,11 @@ import YOU_WIN_LOGO from '../../../assets/gameScreens/win.png'
 import YOU_LOSE_LOGO from '../../../assets/gameScreens/lose.png'
 import DRAW_LOGO from '../../../assets/gameScreens/draw.png'
 import premiumStyles from '../../mainScreens/purchaseScreen/style'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import LinearGradient from "react-native-linear-gradient"
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
+import LinearGradient from 'react-native-linear-gradient'
 import { levelFinder } from '../../../services/userLevelFinder'
 
 const REPLAY_NORMAL_BORDER = '#00D9EF'
@@ -85,7 +89,9 @@ class GameStatsScreen extends React.Component {
             favouriteIcon: unselectedFav,
             // Current match information
             matchInformation: {},
-            isModalVisible: false
+            isModalVisible: false,
+            // Client level variable
+            clientTotalPoints: this.props.clientInformation.totalPoints
         }
     }
 
@@ -138,6 +144,7 @@ class GameStatsScreen extends React.Component {
         return new Promise(resolve => {
             const playerProps = this.props.playerProps
             const playerIds = Object.keys(playerProps)
+            const oldPoints = this.props.clientInformation.totalPoints
 
             // If one of the users leave the game early
             // We mark number of questions they played in the match and delete the rest
@@ -263,10 +270,14 @@ class GameStatsScreen extends React.Component {
 
             totalEarnedPoints += playerCorrect * 20
 
-            if (this.props.isWon)
+            if (this.props.isMatchFinished) {
                 this.props.updateTotalPoints(totalEarnedPoints)
-            else if (playerCorrect !== 0)
-                this.props.updateTotalPoints(totalEarnedPoints)
+            } else {
+                if (this.props.isWon)
+                    this.props.updateTotalPoints(totalEarnedPoints)
+                else if (playerCorrect !== 0)
+                    this.props.updateTotalPoints(totalEarnedPoints)
+            }
 
             for (i = 0; i < Object.keys(this.props.questionList).length; i++) {
                 if (this.props.playerProps)
@@ -296,6 +307,12 @@ class GameStatsScreen extends React.Component {
                 correctAnswerPoint: playerCorrect * 20,
                 totalEarnedPoints: totalEarnedPoints
             })
+
+            setTimeout(() => {
+                this.setState({
+                    clientTotalPoints: totalEarnedPoints + oldPoints
+                })
+            }, 3000)
 
             this.checkFavouriteStatus()
 
@@ -420,12 +437,14 @@ class GameStatsScreen extends React.Component {
     }
 
     favouriteOnPress = () => {
-        if(this.props.clientInformation.isPremium){
+        if (this.props.clientInformation.isPremium) {
             if (this.state.isFaved) {
                 this.props.unfavouriteQuestion(
                     this.props.clientToken,
                     this.props.clientDBId,
-                    this.props.fullQuestionList[this.state.questionPosition - 1],
+                    this.props.fullQuestionList[
+                        this.state.questionPosition - 1
+                    ],
                     this.props.favouriteQuestions
                 )
                 this.setState({ favouriteIcon: unselectedFav, isFaved: false })
@@ -433,15 +452,16 @@ class GameStatsScreen extends React.Component {
                 this.props.favouriteQuestion(
                     this.props.clientToken,
                     this.props.clientDBId,
-                    this.props.fullQuestionList[this.state.questionPosition - 1],
+                    this.props.fullQuestionList[
+                        this.state.questionPosition - 1
+                    ],
                     this.props.favouriteQuestions
                 )
                 this.setState({ favouriteIcon: selectedFav, isFaved: true })
             }
-        }
-        else{
+        } else {
             this.setState({
-                isModalVisible: true,
+                isModalVisible: true
             })
         }
     }
@@ -455,22 +475,69 @@ class GameStatsScreen extends React.Component {
     premiumForFavoritesPage() {
         return (
             <View style={premiumStyles.premiumModal}>
-                <TouchableOpacity onPress={this.closeModalButtonOnPress} style={ {height: hp(120), width: wp(100)}}/>
-                <View style={[premiumStyles.premiumModalView, { height: hp(33)}]}>
-                    <LinearGradient colors={['white', '#FFE6BB', '#FFA800']} style={[premiumStyles.linearGradientPremiumModalView, { height: hp(33)}]}>
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{ height: hp(120), width: wp(100) }}
+                />
+                <View
+                    style={[premiumStyles.premiumModalView, { height: hp(33) }]}
+                >
+                    <LinearGradient
+                        colors={['white', '#FFE6BB', '#FFA800']}
+                        style={[
+                            premiumStyles.linearGradientPremiumModalView,
+                            { height: hp(33) }
+                        ]}
+                    >
                         <View style={premiumStyles.premiumModalHeaderView}>
-                            <Text style={premiumStyles.premiumModalHeaderText}>ELİT ÖĞRENCİ PAKETİ</Text>
+                            <Text style={premiumStyles.premiumModalHeaderText}>
+                                ELİT ÖĞRENCİ PAKETİ
+                            </Text>
                         </View>
                         <View style={premiumStyles.premiumModalSwiperContainer}>
                             <View style={premiumStyles.premiumModalSwiperView}>
-                                <View style={premiumStyles.premiumModalSwiperImgView}>
-                                    <Image source={selectedFav} style={premiumStyles.premiumModalImg}/>
+                                <View
+                                    style={
+                                        premiumStyles.premiumModalSwiperImgView
+                                    }
+                                >
+                                    <Image
+                                        source={selectedFav}
+                                        style={premiumStyles.premiumModalImg}
+                                    />
                                 </View>
-                                <View style={[premiumStyles.premiumModalSwiperHeaderView, { height: hp(5.5)}]}>
-                                    <Text style={premiumStyles.premiumModalHeaderText}>Soru Favorileme!</Text>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperHeaderView,
+                                        { height: hp(5.5) }
+                                    ]}
+                                >
+                                    <Text
+                                        style={
+                                            premiumStyles.premiumModalHeaderText
+                                        }
+                                    >
+                                        Soru Favorileme!
+                                    </Text>
                                 </View>
-                                <View style={[premiumStyles.premiumModalSwiperInfoView, {justifyContent: 'flex-start', height: hp(9.5)}]}>
-                                    <Text style={[premiumStyles.premiumModalInfoText, {marginTop: hp(1.5)}]}>Soru Favorileme şimdi Elit Öğrenci Paketi'nde</Text>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperInfoView,
+                                        {
+                                            justifyContent: 'flex-start',
+                                            height: hp(9.5)
+                                        }
+                                    ]}
+                                >
+                                    <Text
+                                        style={[
+                                            premiumStyles.premiumModalInfoText,
+                                            { marginTop: hp(1.5) }
+                                        ]}
+                                    >
+                                        Soru Favorileme şimdi Elit Öğrenci
+                                        Paketi'nde
+                                    </Text>
                                 </View>
                             </View>
                         </View>
@@ -609,7 +676,11 @@ class GameStatsScreen extends React.Component {
                             <View style={styles.progressBarView}>
                                 <Text style={styles.levelText}>
                                     Seviye{' '}
-                                    7
+                                    {Math.floor(
+                                        levelFinder(
+                                            this.state.clientTotalPoints
+                                        ).level
+                                    )}
                                 </Text>
                                 <View
                                     style={[
@@ -617,15 +688,43 @@ class GameStatsScreen extends React.Component {
                                         {
                                             width: wp(
                                                 (Math.floor(
-                                                    50 / 79)
-                                                )
+                                                    levelFinder(
+                                                        this.state
+                                                            .clientTotalPoints
+                                                    ).levelProgressScore
+                                                ) /
+                                                    Math.floor(
+                                                        levelFinder(
+                                                            this.state
+                                                                .clientTotalPoints !==
+                                                                0
+                                                                ? this.state
+                                                                      .clientTotalPoints
+                                                                : 1
+                                                        ).levelProgressLimit
+                                                    )) *
+                                                    79
                                             )
                                         }
                                     ]}
                                 />
                                 <View style={styles.progressScoreView}>
                                     <Text style={styles.levelInProgressText}>
-                                        50/65
+                                        {Math.floor(
+                                            levelFinder(
+                                                this.state.clientTotalPoints
+                                            ).levelProgressScore
+                                        )}
+                                        /
+                                        {Math.floor(
+                                            levelFinder(
+                                                this.state.clientTotalPoints !==
+                                                    0
+                                                    ? this.state
+                                                          .clientTotalPoints
+                                                    : 1000
+                                            ).levelProgressLimit
+                                        )}
                                     </Text>
                                 </View>
                             </View>
@@ -642,7 +741,12 @@ class GameStatsScreen extends React.Component {
                                     {
                                         backgroundColor: this.state
                                             .replayButtonBorderColor,
-                                        opacity: this.state.replayButtonBorderColor === REPLAY_DEACTIVE_BORDER ? 0.5 : 1
+                                        opacity:
+                                            this.state
+                                                .replayButtonBorderColor ===
+                                            REPLAY_DEACTIVE_BORDER
+                                                ? 0.5
+                                                : 1
                                     }
                                 ]}
                             >
@@ -813,7 +917,4 @@ const mapDispatchToProps = dispatch => ({
         dispatch(clientActions.updateTotalPoints(totalEarnedPoints))
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(GameStatsScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(GameStatsScreen)
