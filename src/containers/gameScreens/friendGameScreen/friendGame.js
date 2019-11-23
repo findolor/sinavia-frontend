@@ -271,7 +271,7 @@ class FriendGame extends React.Component {
                     this.setState({isQuitGameModalVisible: true, visibleView: 'opponentLeaveNoAnswer'})
                     this.shutdownGame()
                     this.props.client.close()
-                    setTimeout(function(){
+                    setTimeout(() => {
                         that.props.room.leave(),
                             navigationReset('main')
                     }, 3000)
@@ -279,7 +279,7 @@ class FriendGame extends React.Component {
                 }
                 // Do a shutdown routine
                 this.setState({isQuitGameModalVisible: true, visibleView: 'opponentLeaveAfterAnswer'})
-                setTimeout(function(){
+                setTimeout(() => {
                     that.shutdownGame()
                     navigationReplace(SCENE_KEYS.gameScreens.friendGameStats, {
                         playerProps: message.playerProps,

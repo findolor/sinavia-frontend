@@ -1075,19 +1075,17 @@ class Home extends React.Component {
                     subjectId: Ids.subjectId,
                     invitedFriendId: this.state.opponentInformation.id
                 })
-                friendGameServices
-                    .sendFriendGameRequest(
-                        this.props.clientToken,
-                        this.props.clientInformation,
-                        randomNumber,
-                        this.state.opponentInformation.fcmToken,
-                        {
-                            examId: Ids.examId,
-                            courseId: Ids.courseId,
-                            subjectId: Ids.subjectId
-                        }
-                    )
-                    .then(data => console.log(data))
+                friendGameServices.sendFriendGameRequest(
+                    this.props.clientToken,
+                    this.props.clientInformation,
+                    randomNumber,
+                    this.state.opponentInformation.fcmToken,
+                    {
+                        examId: Ids.examId,
+                        courseId: Ids.courseId,
+                        subjectId: Ids.subjectId
+                    }
+                )
             })
             .catch(error => {})
     }
