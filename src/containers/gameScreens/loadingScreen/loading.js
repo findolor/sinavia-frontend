@@ -93,11 +93,13 @@ class LoadingScreen extends React.Component {
                     opponentProfilePicture = message[element].profilePicture
                     opponentCoverPicture = message[element].coverPicture
                     opponentTotalPoints = message[element].totalPoints
+                    opponentCity = 'Istanbul'
                 } else {
                     playerUsername = message[element].username
                     playerProfilePicture = message[element].profilePicture
                     playerCoverPicture = message[element].coverPicture
                     playerTotalPoints = message[element].totalPoints
+                    playerCity = 'Izmir'
                 }
             })
             this.room.removeAllListeners()
@@ -111,10 +113,12 @@ class LoadingScreen extends React.Component {
                 playerUsername: playerUsername,
                 playerProfilePicture: playerProfilePicture,
                 playerCoverPicture: playerCoverPicture,
+                playerCity: playerCity,
                 opponentUsername: opponentUsername,
                 opponentId: opponentId,
                 opponentProfilePicture: opponentProfilePicture,
                 opponentCoverPicture: opponentCoverPicture,
+                opponentCity: opponentCity,
                 // These are used in the match intro screen
                 courseName: this.props.gameContentMap.courses[
                     this.props.courseId - 1

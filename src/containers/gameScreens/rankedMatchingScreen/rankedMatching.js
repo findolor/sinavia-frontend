@@ -13,6 +13,7 @@ import {
 } from 'react-native-responsive-screen'
 
 import SWORD from '../../../assets/sword.png'
+import LOCATION_IMG from '../../../assets/gameScreens/location.png'
 
 class RankedMatchingScreen extends React.Component {
     constructor(props) {
@@ -34,7 +35,7 @@ class RankedMatchingScreen extends React.Component {
                 playerCoverPicture: this.props.playerCoverPicture,
                 opponentCoverPicture: this.props.opponentCoverPicture
             })
-        }, 5000)
+        }, 500000000000)
     }
 
     render() {
@@ -76,6 +77,10 @@ class RankedMatchingScreen extends React.Component {
                                                 .level
                                         )}
                                     </Text>
+                                    <View style={styles.locationView}>
+                                        <Image source={LOCATION_IMG} style={[styles.locationImg, {marginLeft: wp(3)}]}/>
+                                        <Text style={[styles.locationText, {marginLeft: wp(1.7)}]}>{this.props.playerCity}</Text>
+                                    </View>
                                 </View>
                             </View>
                         </ImageBackground>
@@ -99,6 +104,10 @@ class RankedMatchingScreen extends React.Component {
                                             ).level
                                         )}
                                     </Text>
+                                    <View style={[styles.locationView, {justifyContent: 'flex-end'}]}>
+                                        <Image source={LOCATION_IMG} style={[styles.locationImg, {marginRight: wp(1.7)}]}/>
+                                        <Text style={[styles.locationText, {marginRight: wp(3)}]}>{this.props.opponentCity}</Text>
+                                    </View>
                                 </View>
                                 <View style={styles.opponentPicContainer}>
                                     <Image
