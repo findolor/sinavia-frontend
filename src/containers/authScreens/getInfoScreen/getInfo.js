@@ -7,7 +7,8 @@ import {
     Keyboard,
     Alert,
     TouchableWithoutFeedback,
-    KeyboardAvoidingView
+    FlatList,
+    KeyboardAvoidingView, Modal
 } from 'react-native'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
@@ -24,13 +25,29 @@ import { showMessage } from 'react-native-flash-message'
 import { Appearance } from 'react-native-appearance'
 
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
+import PROFILE_PIC from '../../../assets/profile2.jpg'
+
+const citiesList = [
+    { cityName: 'Adana' },{ cityName: 'Adıyaman' },{ cityName: 'Afyonkarahisar' },{ cityName: 'Ağrı' },{ cityName: 'Aksaray' },{ cityName: 'Amasya' },{ cityName: 'Ankara' },{ cityName: 'Antalya' },
+    { cityName: 'Ardahan' },{ cityName: 'Artvin' },{ cityName: 'Aydın' },{ cityName: 'Balıkesir' },{ cityName: 'Bartın' },{ cityName: 'Batman' },{ cityName: 'Bayburt' },{ cityName: 'Bilecik' },
+    { cityName: 'Bingöl' },{ cityName: 'Bitlis' },{ cityName: 'Bolu' },{ cityName: 'Burdur' },{ cityName: 'Bursa' },{ cityName: 'Çanakkale' },{ cityName: 'Çankırı' },{ cityName: 'Çorum' },
+    { cityName: 'Denizli' },{ cityName: 'Diyarbakır' },{ cityName: 'Düzce' },{ cityName: 'Edirne' },{ cityName: 'Elazığ' },{ cityName: 'Erzincan' },{ cityName: 'Erzurum' },{ cityName: 'Eskişehir' },
+    { cityName: 'Gaziantep' },{ cityName: 'Giresun' },{ cityName: 'Gümüşhane' },{ cityName: 'Hakkari' },{ cityName: 'Hatay' },{ cityName: 'Iğdır' },{ cityName: 'Isparta' },{ cityName: 'İstanbul' },
+    { cityName: 'İzmir' },{ cityName: 'Kahramanmaraş' },{ cityName: 'Karabük' },{ cityName: 'Karaman' },{ cityName: 'Kars' },{ cityName: 'Kastamonu' },{ cityName: 'Kayseri' },{ cityName: 'Kırıkkale' },
+    { cityName: 'Kırklareli' },{ cityName: 'Kırşehir' },{ cityName: 'Kilis' },{ cityName: 'Kocaeli' },{ cityName: 'Konya' },{ cityName: 'Kütahya' },{ cityName: 'Malatya' },{ cityName: 'Manisa' },
+    { cityName: 'Mardin' },{ cityName: 'Mersin' },{ cityName: 'Muğla' },{ cityName: 'Muş' },{ cityName: 'Nevşehir' },{ cityName: 'Niğde' },{ cityName: 'Ordu' },{ cityName: 'Osmaniye' },
+    { cityName: 'Rize' },{ cityName: 'Sakarya' },{ cityName: 'Samsun' },{ cityName: 'Siirt' },{ cityName: 'Sinop' },{ cityName: 'Sivas' },{ cityName: 'Şanlıurfa' },{ cityName: 'Şırnak' },
+    { cityName: 'Tekirdağ' },{ cityName: 'Tokat' },{ cityName: 'Trabzon' },{ cityName: 'Tunceli' },{ cityName: 'Uşak' },{ cityName: 'Van' },{ cityName: 'Yalova' },{ cityName: 'Yozgat' },
+    { cityName: 'Zonguldak' }
+]
 
 class GetInfo extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             // Register related stuff
-            birthDateUI: 'Doğum Tarihi',
+            cityUI: 'Yaşadığın şehri seç',
+            birthDateUI: 'Doğum tarihi seç',
             isDateTimePickerVisible: false,
             switchValue: false,
             showPasswordEyeFirst: false,
@@ -42,12 +59,14 @@ class GetInfo extends React.Component {
             username: '',
             name: '',
             lastname: '',
-            city: null,
+            city: '',
             email: '',
             password: '',
             birthDate: null,
             // Dark mode for date time picker
-            isDarkModeEnabled: null
+            isDarkModeEnabled: null,
+            isModalVisible: false,
+            citiesList: citiesList
         }
     }
 
@@ -58,6 +77,58 @@ class GetInfo extends React.Component {
 
     showDateTimePicker = () => {
         this.setState({ isDateTimePickerVisible: true })
+    }
+
+    cityOnPress = (cityName) => {
+        this.setState({
+            city: cityName,
+            cityUI: cityName,
+            isModalVisible: false
+        })
+    }
+
+    cityPicker = () => {
+        return(
+            <View style={styles.modal}>
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{
+                        height: hp(120),
+                        width: wp(100)
+                    }}
+                />
+                <View style={styles.modalView}>
+                    <Text style={styles.pickCityText}>Şehir Seç</Text>
+                    <FlatList
+                        data={this.state.citiesList}
+                        vertical={true}
+                        showsVerticalScrollIndicator={false}
+                        renderItem={({ item }) => {
+                            return (
+                                    <View style={styles.cityRow}>
+                                        <TouchableOpacity onPress={() => this.cityOnPress(item.cityName)}>
+                                            <Text style={styles.cityRowText}>{item.cityName}</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                            )
+                        }}
+                        keyExtractor={(item, index) => index.toString()}
+                    />
+                </View>
+            </View>
+        )
+    }
+
+    closeModalButtonOnPress = () => {
+        this.setState({
+            isModalVisible: false
+        })
+    }
+
+    openModalVisible = () => {
+        this.setState({
+            isModalVisible: true
+        })
     }
 
     hideDateTimePicker = () => {
@@ -144,6 +215,13 @@ class GetInfo extends React.Component {
                     behavior={'position'}
                 >
                     <NotchView color={'#fcfcfc'} />
+                    <Modal
+                        visible={this.state.isModalVisible}
+                        transparent={true}
+                        animationType={'fade'}
+                    >
+                        {this.cityPicker()}
+                    </Modal>
                     <View style={styles.imageContainer}>
                         <Image
                             source={SINAVIA_LOGO}
@@ -175,7 +253,7 @@ class GetInfo extends React.Component {
                                 <Text
                                     style={[
                                         styles.textInput,
-                                        { color: this.state.dateColor }
+                                        { color: this.state.birthDate === null ? '#8A8888' : '#2E313C' }
                                     ]}
                                 >
                                     {this.state.birthDateUI}
@@ -188,11 +266,18 @@ class GetInfo extends React.Component {
                             onCancel={this.hideDateTimePicker}
                             isDarkModeEnabled={this.state.isDarkModeEnabled}
                         />
-                        <AuthTextInput
-                            placeholder="Şehir"
-                            placeholderTextColor="#8A8888"
-                            onChangeText={this.cityOnChange}
-                        />
+                        <TouchableOpacity onPress={this.openModalVisible}>
+                            <View style={styles.textInputContainer}>
+                                <Text
+                                    style={[
+                                        styles.textInput,
+                                        { color: this.state.city === '' ? '#8A8888' : '#2E313C' }
+                                    ]}
+                                >
+                                    {this.state.cityUI}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.authButtonView}>
                         <AuthButton
