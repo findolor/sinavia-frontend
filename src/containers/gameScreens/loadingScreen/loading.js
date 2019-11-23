@@ -155,6 +155,7 @@ class LoadingScreen extends React.Component {
                         source={require('../../../assets/gameScreens/gameLoading.json')}
                         autoPlay
                         loop
+                        resizeMode={'cover'}
                         speed={1.1}
                     />
                 </View>
