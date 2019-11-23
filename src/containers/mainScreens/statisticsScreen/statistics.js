@@ -1175,7 +1175,7 @@ class Statistics extends React.Component {
                                                 : (
                                                       (this.state.overallWin /
                                                           this.state
-                                                              .overallWin) *
+                                                              .overallGames) *
                                                       100
                                                   ).toFixed(0)}
                                             %
