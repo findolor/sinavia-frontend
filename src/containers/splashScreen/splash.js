@@ -130,7 +130,7 @@ class SplashScreen extends React.PureComponent {
                                     { fontSize: hp(4) }
                                 ]}
                             >
-                                Bağlantı problemi
+                                {this.props.connectionErrorMessage}
                             </Text>
                         </View>
                         <View style={styles.tryAgainButtonContainer}>
@@ -152,7 +152,8 @@ class SplashScreen extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-    isNetworkConnected: state.app.isNetworkConnected
+    isNetworkConnected: state.app.isNetworkConnected,
+    connectionErrorMessage: state.app.connectionErrorMessage
 })
 
 const mapDispatchToProps = dispatch => ({

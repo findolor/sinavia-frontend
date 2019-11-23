@@ -30,7 +30,10 @@ const scene_keys = {
         soloModeGameScreen: 'soloModeGameScreen',
         soloFriendGameStatsScreen: 'soloFriendGameStatsScreen',
         groupLoading: 'groupLoading',
-        soloModeGameStats: 'soloModeGameStats'
+        soloModeGameStats: 'soloModeGameStats',
+        unsolvedModeLoadingScreen: 'unsolvedModeLoadingScreen',
+        unsolvedModeGameScreen: 'unsolvedModeGameScreen',
+        unsolvedModeGameStatsScreen: 'unsolvedModeGameStatsScreen'
     },
     mainScreens: {
         main: 'main',

@@ -538,7 +538,7 @@ class Home extends React.Component {
             soloModeButtonBorderColor: EMPTY_MODE_COLOR,
             rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
             unsolvedQuestionsModeBorderColor: SELECTED_MODE_COLOR,
-            selectedGameMode: 'unsolvedQuestions'
+            selectedGameMode: 'unsolved'
         })
     }
 
@@ -597,11 +597,18 @@ class Home extends React.Component {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.gameModeContextContainer}>
-                            <Text
-                                style={styles.gameModeContextText}
-                            >
-                                <Text style={{fontFamily: 'Averta-Bold', fontSize: hp(2), color: '#636363'}}>Dereceli</Text> - Sınavia Puanı'nı artır, Türkiye
-                                sıralamanı yükselt
+                            <Text style={styles.gameModeContextText}>
+                                <Text
+                                    style={{
+                                        fontFamily: 'Averta-Bold',
+                                        fontSize: hp(2),
+                                        color: '#636363'
+                                    }}
+                                >
+                                    Dereceli
+                                </Text>{' '}
+                                - Sınavia Puanı'nı artır, Türkiye sıralamanı
+                                yükselt
                             </Text>
                         </View>
                     </View>
@@ -689,7 +696,16 @@ class Home extends React.Component {
                         </View>
                         <View style={styles.gameModeContextContainer}>
                             <Text style={styles.gameModeContextText}>
-                                <Text style={{fontFamily: 'Averta-Bold',  fontSize: hp(2), color: '#636363'}}>Arkadaşla</Text> - Bir arkadaşın ile bilgilerini yarıştır
+                                <Text
+                                    style={{
+                                        fontFamily: 'Averta-Bold',
+                                        fontSize: hp(2),
+                                        color: '#636363'
+                                    }}
+                                >
+                                    Arkadaşla
+                                </Text>{' '}
+                                - Bir arkadaşın ile bilgilerini yarıştır
                             </Text>
                         </View>
                     </View>
@@ -707,7 +723,16 @@ class Home extends React.Component {
                         </View>
                         <View style={styles.gameModeContextContainer}>
                             <Text style={styles.gameModeContextText}>
-                                <Text style={{fontFamily: 'Averta-Bold',  fontSize: hp(2),  color: '#636363'}}>Grupla</Text> - Arkadaş grubun ile yarış
+                                <Text
+                                    style={{
+                                        fontFamily: 'Averta-Bold',
+                                        fontSize: hp(2),
+                                        color: '#636363'
+                                    }}
+                                >
+                                    Grupla
+                                </Text>{' '}
+                                - Arkadaş grubun ile yarış
                             </Text>
                         </View>
                     </View>
@@ -826,7 +851,16 @@ class Home extends React.Component {
                                 </View>
                             ) : (
                                 <Text style={styles.gameModeContextText}>
-                                    <Text style={{fontFamily: 'Averta-Bold',  fontSize: hp(2),  color: '#636363'}}>Solo</Text> - Tek başına soru çöz, pratiğini geliştir
+                                    <Text
+                                        style={{
+                                            fontFamily: 'Averta-Bold',
+                                            fontSize: hp(2),
+                                            color: '#636363'
+                                        }}
+                                    >
+                                        Solo
+                                    </Text>{' '}
+                                    - Tek başına soru çöz, pratiğini geliştir
                                 </Text>
                             )}
                         </View>
@@ -851,7 +885,17 @@ class Home extends React.Component {
                         </View>
                         <View style={styles.gameModeContextContainer}>
                             <Text style={styles.gameModeContextText}>
-                                <Text style={{fontFamily: 'Averta-Bold',  fontSize: hp(2),  color: '#636363'}}>TekrarÇöz</Text> - Yanlış veya boş cevapladığın soruları tekrar çöz
+                                <Text
+                                    style={{
+                                        fontFamily: 'Averta-Bold',
+                                        fontSize: hp(2),
+                                        color: '#636363'
+                                    }}
+                                >
+                                    TekrarÇöz
+                                </Text>{' '}
+                                - Yanlış veya boş cevapladığın soruları tekrar
+                                çöz
                             </Text>
                         </View>
                     </View>
@@ -1573,20 +1617,15 @@ class Home extends React.Component {
             return
         }
 
-        switch (this.state.selectedGameMode) {
-            case 'ranked':
-                apiServices
-                    .checkOnline()
-                    .then(() => {
+        apiServices
+            .checkOnline()
+            .then(() => {
+                switch (this.state.selectedGameMode) {
+                    case 'ranked':
                         navigationReset('game', this.calculateContentIds())
-                    })
-                    .catch(error => {})
-                break
-            case 'solo':
-                if (this.props.clientInformation.isPremium) {
-                    apiServices
-                        .checkOnline()
-                        .then(() => {
+                        break
+                    case 'solo':
+                        if (this.props.clientInformation.isPremium) {
                             navigationReset('game', { isHardReset: true })
                             navigationReplace(
                                 SCENE_KEYS.gameScreens.soloModeLoadingScreen,
@@ -1596,21 +1635,43 @@ class Home extends React.Component {
                                         .choosenQuestionAmountSolo
                                 }
                             )
-                        })
-                        .catch(error => {})
-                    break
-                } else {
-                    this.setState({
-                        visibleRankedGameStartPress: false,
-                        soloModeButtonBorderColor: EMPTY_MODE_COLOR,
-                        rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
-                        selectedGameMode: 'ranked',
-                        isModalVisible: true,
-                        visibleView: 'PREMIUM_MODAL_FOR_SOLO'
-                    })
+                            break
+                        } else {
+                            this.setState({
+                                visibleRankedGameStartPress: false,
+                                soloModeButtonBorderColor: EMPTY_MODE_COLOR,
+                                rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
+                                selectedGameMode: 'ranked',
+                                isModalVisible: true,
+                                visibleView: 'PREMIUM_MODAL_FOR_SOLO'
+                            })
+                        }
+                        break
+                    case 'unsolved':
+                        if (this.props.clientInformation.isPremium) {
+                            navigationReset('game', { isHardReset: true })
+                            navigationReplace(
+                                SCENE_KEYS.gameScreens
+                                    .unsolvedModeLoadingScreen,
+                                {
+                                    contentIds: this.calculateContentIds()
+                                }
+                            )
+                            break
+                        } else {
+                            this.setState({
+                                visibleRankedGameStartPress: false,
+                                soloModeButtonBorderColor: EMPTY_MODE_COLOR,
+                                rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
+                                selectedGameMode: 'ranked',
+                                isModalVisible: true,
+                                visibleView: 'PREMIUM_MODAL_FOR_SOLO'
+                            })
+                        }
+                        break
                 }
-                break
-        }
+            })
+            .catch(error => {})
     }
 
     // Gets the exam/content/subject ids based on selected subject

@@ -66,10 +66,20 @@ class RankedMatchingScreen extends React.Component {
                                     />
                                 </View>
                                 <View style={styles.userInfoContainer}>
-                                    <Text style={[styles.usernameText, {marginLeft: wp(3)}]}>
+                                    <Text
+                                        style={[
+                                            styles.usernameText,
+                                            { marginLeft: wp(3) }
+                                        ]}
+                                    >
                                         @{this.props.playerUsername}
                                     </Text>
-                                    <Text style={[styles.sinaviaScoreText, {marginLeft: wp(3)}]}>
+                                    <Text
+                                        style={[
+                                            styles.sinaviaScoreText,
+                                            { marginLeft: wp(3) }
+                                        ]}
+                                    >
                                         Konu Seviyesi:{' '}
                                         {Math.floor(
                                             levelFinder(this.props.clientPoints)
@@ -88,10 +98,20 @@ class RankedMatchingScreen extends React.Component {
                         >
                             <View style={styles.playerView}>
                                 <View style={styles.opponentInfoContainer}>
-                                    <Text style={[styles.usernameText, {marginRight: wp(3)}]}>
+                                    <Text
+                                        style={[
+                                            styles.usernameText,
+                                            { marginRight: wp(3) }
+                                        ]}
+                                    >
                                         @{this.props.opponentUsername}
                                     </Text>
-                                    <Text style={[styles.sinaviaScoreText, {marginRight: wp(3)}]}>
+                                    <Text
+                                        style={[
+                                            styles.sinaviaScoreText,
+                                            { marginRight: wp(3) }
+                                        ]}
+                                    >
                                         Konu Seviyesi:{' '}
                                         {Math.floor(
                                             levelFinder(

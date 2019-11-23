@@ -13,6 +13,9 @@ import SoloModeLoadingScreen from './soloModeLoadingScreen/soloModeLoadingScreen
 import SoloModeGameScreen from './soloModeGameScreen/soloModeGameScreen'
 import GroupLoading from './groupLoadingScreen/groupLoading'
 import SoloModeGameStats from './soloModeGameStatsScreen/soloModeGameStats'
+import UnsolvedModeGameScreen from './unsolvedModeGameScreen/unsolvedModeGameScreen'
+import UnsolvedModeLoadingScreen from './unsolvedModeLoadingScreen/unsolvedModeLoadingScreen'
+import UnsolvedModeGameStatsScreen from './unsolvedModeGameStatsScreen/unsolvedModeGameStats'
 
 export {
     RankedGame,
@@ -29,5 +32,8 @@ export {
     SoloModeGameScreen,
     SoloFriendGameStatsScreen,
     GroupLoading,
-    SoloModeGameStats
+    SoloModeGameStats,
+    UnsolvedModeLoadingScreen,
+    UnsolvedModeGameScreen,
+    UnsolvedModeGameStatsScreen
 }
