@@ -35,7 +35,7 @@ class RankedMatchingScreen extends React.Component {
                 playerCoverPicture: this.props.playerCoverPicture,
                 opponentCoverPicture: this.props.opponentCoverPicture
             })
-        }, 500000000000)
+        }, 5000)
     }
 
     render() {
