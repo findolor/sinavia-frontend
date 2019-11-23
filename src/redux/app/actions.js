@@ -9,7 +9,8 @@ export const appTypes = {
     /* REMOVE_ONE_ENERGY: 'remove_one_energy',
     SAVE_ENERGY_AMOUNT: 'save_energy_amount', */
     LOCK_UNLOCK_BUTTON: 'lock_unlock_button',
-    SAVE_NOTIFICATION_OPEN: 'save_notification_open'
+    SAVE_NOTIFICATION_OPEN: 'save_notification_open',
+    SET_CONNECTION_ERROR_MESSAGE: 'set_connection_error_message'
 }
 
 const setNetworkConnectionInfo = isNetworkConnected => {
@@ -63,6 +64,13 @@ const saveNotificationOpen = notificationOpen => {
     }
 }
 
+const setConnectionErrorMessage = message => {
+    return {
+        type: appTypes.SET_CONNECTION_ERROR_MESSAGE,
+        payload: message
+    }
+}
+
 export const appActions = {
     setNetworkConnectionInfo: setNetworkConnectionInfo,
     getLeaderboard: getLeaderboard,
@@ -70,5 +78,6 @@ export const appActions = {
     removeFromNotifications: removeFromNotifications,
     //removeOneEnergy: removeOneEnergy,
     lockUnlockButton: lockUnlockButton,
-    saveNotificationOpen: saveNotificationOpen
+    saveNotificationOpen: saveNotificationOpen,
+    setConnectionErrorMessage: setConnectionErrorMessage
 }

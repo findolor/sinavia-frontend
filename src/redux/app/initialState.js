@@ -5,5 +5,6 @@ export const INITIAL_STATE = {
     userNotificationList: null,
     //energyAmount: null,
     buttonLock: false,
-    notificationOpen: {}
+    notificationOpen: {},
+    connectionErrorMessage: null
 }

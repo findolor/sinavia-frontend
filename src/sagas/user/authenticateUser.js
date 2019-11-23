@@ -444,7 +444,19 @@ export function* authenticateUser(action) {
                 notificationOpen: notificationOpen
             })
         } catch (error) {
-            console.log(error)
+            if (
+                error.response !== undefined &&
+                error.response.data.includes('Cannot POST')
+            )
+                yield put({
+                    type: appTypes.SET_CONNECTION_ERROR_MESSAGE,
+                    payload: 'Lüften uygulamayı son versiyonuna güncelleyin'
+                })
+            else
+                yield put({
+                    type: appTypes.SET_CONNECTION_ERROR_MESSAGE,
+                    payload: 'Sunucu bağlantı problemi'
+                })
         }
     }
 }

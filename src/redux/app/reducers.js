@@ -49,6 +49,11 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 notificationOpen: action.payload
             }
+        case appTypes.SET_CONNECTION_ERROR_MESSAGE:
+            return {
+                ...state,
+                connectionErrorMessage: action.payload
+            }
         default:
             return state
     }
