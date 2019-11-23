@@ -36,7 +36,10 @@ import {
     SoloModeGameScreen,
     SoloFriendGameStatsScreen,
     GroupLoading,
-    SoloModeGameStats
+    SoloModeGameStats,
+    UnsolvedModeGameScreen,
+    UnsolvedModeLoadingScreen,
+    UnsolvedModeGameStatsScreen
 } from '../containers/gameScreens'
 
 import { TutorialScreen } from '../containers/tutorialScreen'
@@ -81,7 +84,10 @@ export const gameScreens = {
     soloModeGameScreen: SoloModeGameScreen,
     soloFriendGameStatsScreen: SoloFriendGameStatsScreen,
     groupLoading: GroupLoading,
-    soloModeGameStats: SoloModeGameStats
+    soloModeGameStats: SoloModeGameStats,
+    unsolvedModeGameScreen: UnsolvedModeGameScreen,
+    unsolvedModeGameStatsScreen: UnsolvedModeGameStatsScreen,
+    unsolvedModeLoadingScreen: UnsolvedModeLoadingScreen
 }
 
 export const splashScreen = SplashScreen

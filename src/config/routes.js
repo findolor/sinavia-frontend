@@ -158,6 +158,18 @@ const RouterComp = () => {
                         key={SCENE_KEYS.gameScreens.soloModeGameStats}
                         component={gameScreens.soloModeGameStats}
                     />
+                    <Scene
+                        key={SCENE_KEYS.gameScreens.unsolvedModeGameScreen}
+                        component={gameScreens.unsolvedModeGameScreen}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.gameScreens.unsolvedModeGameStatsScreen}
+                        component={gameScreens.unsolvedModeGameStatsScreen}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.gameScreens.unsolvedModeLoadingScreen}
+                        component={gameScreens.unsolvedModeLoadingScreen}
+                    />
                 </Scene>
             </Scene>
         </Router>
