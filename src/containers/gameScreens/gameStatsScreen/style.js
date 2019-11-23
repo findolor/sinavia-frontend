@@ -30,10 +30,10 @@ export default StyleSheet.create({
         width: hp(40)
     },
     resultsContainer: {
-        height: hp(58),
+        height: hp(64),
         width: wp(87.8),
         backgroundColor: '#F2FEFF',
-        marginTop: hp(21.44),
+        marginTop: hp(17),
         marginLeft: wp(6.4),
         borderRadius: hp(4),
         position: 'absolute',
@@ -294,5 +294,47 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Semibold',
         letterSpacing: wp(0.1),
         fontSize: hp(3.5)
+    },
+    levelProgressBarContainer: {
+        height: hp(9),
+        width: wp(80),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    progressBarView: {
+        height: hp(5),
+        width: wp(79),
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderRadius: 6,
+        backgroundColor: '#B0B0B0'
+    },
+    levelText: {
+        fontFamily: 'Averta-Semibold',
+        zIndex: 1,
+        marginLeft: wp(1),
+        fontSize: hp(2.5),
+        color: 'white'
+    },
+    instantProgressView: {
+        position: 'absolute',
+        height: hp(5),
+        borderTopLeftRadius: 6,
+        borderBottomLeftRadius: 6,
+        backgroundColor: '#FF9900'
+    },
+    progressScoreView: {
+        height: hp(4),
+        width: wp(25),
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    levelInProgressText: {
+        fontFamily: 'Averta-Semibold',
+        marginRight: wp(1),
+        fontSize: hp(2.5),
+        color: 'white'
     }
 })

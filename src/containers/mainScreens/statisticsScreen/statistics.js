@@ -18,7 +18,7 @@ import SemiCircleProgress from '../../../components/semiCircleProgress'
 import Swiper from 'react-native-swiper'
 import { connect } from 'react-redux'
 
-const timezonesList = ['Bu hafta', 'Bu ay', 'Son 6 ay', 'Ay seçin']
+const timezonesList = ['Bu hafta', 'Bu ay', 'Son 6 ay']
 
 class Statistics extends React.Component {
     constructor(props) {
@@ -519,11 +519,6 @@ class Statistics extends React.Component {
                                 }
                             }
                         })
-                })
-                break
-            case 'Ay seçin':
-                this.setState({
-                    timezone: 'Ay Seçin'
                 })
                 break
         }
@@ -1088,6 +1083,7 @@ class Statistics extends React.Component {
                             onSelect={(idx, value) =>
                                 this.timezoneSelect(idx, value)
                             }
+                            animated={true}
                         />
                     </View>
                     <View style={styles.scrollViewContainer}>
@@ -1179,7 +1175,7 @@ class Statistics extends React.Component {
                                                 : (
                                                       (this.state.overallWin /
                                                           this.state
-                                                              .overallWin) *
+                                                              .overallGames) *
                                                       100
                                                   ).toFixed(0)}
                                             %

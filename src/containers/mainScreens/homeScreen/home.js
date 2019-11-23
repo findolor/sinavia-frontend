@@ -81,6 +81,7 @@ const RANKED_IMAGE = require('../../../assets/sword.png')
 const FRIENDS_IMAGE = require('../../../assets/mainScreens/arkadas_siyah.png')
 const GROUP_IMAGE = require('../../../assets/mainScreens/group_siyah.png')
 const SOLO_IMAGE = require('../../../assets/mainScreens/tek.png')
+const UNSOLVED_QUESTIONS_MODE = require('../../../assets/mainScreens/unsolvedQuestionsModeImg.png')
 const SOLO_PREMIUM = require('../../../assets/soloPremium.png')
 
 class Home extends React.Component {
@@ -98,6 +99,7 @@ class Home extends React.Component {
             // Mode button variables
             rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
             soloModeButtonBorderColor: EMPTY_MODE_COLOR,
+            unsolvedQuestionsModeBorderColor: EMPTY_MODE_COLOR,
             // Carousel slide item
             carouselActiveSlide: carouselFirstItem,
             // On change text for the group room code
@@ -504,6 +506,7 @@ class Home extends React.Component {
             opponentInformation: {},
             rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
             soloModeButtonBorderColor: EMPTY_MODE_COLOR,
+            unsolvedQuestionsModeBorderColor: EMPTY_MODE_COLOR,
             visibleRankedGameStartPress: false,
             selectedGameMode: 'ranked'
         })
@@ -514,6 +517,7 @@ class Home extends React.Component {
             visibleRankedGameStartPress: true,
             rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
             soloModeButtonBorderColor: EMPTY_MODE_COLOR,
+            unsolvedQuestionsModeBorderColor: EMPTY_MODE_COLOR,
             selectedGameMode: 'ranked'
         })
     }
@@ -523,7 +527,18 @@ class Home extends React.Component {
             visibleRankedGameStartPress: true,
             soloModeButtonBorderColor: SELECTED_MODE_COLOR,
             rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
+            unsolvedQuestionsModeBorderColor: EMPTY_MODE_COLOR,
             selectedGameMode: 'solo'
+        })
+    }
+
+    unsolvedQuestionsModeOnPress = () => {
+        this.setState({
+            visibleRankedGameStartPress: true,
+            soloModeButtonBorderColor: EMPTY_MODE_COLOR,
+            rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
+            unsolvedQuestionsModeBorderColor: SELECTED_MODE_COLOR,
+            selectedGameMode: 'unsolvedQuestions'
         })
     }
 
@@ -583,19 +598,16 @@ class Home extends React.Component {
                         </View>
                         <View style={styles.gameModeContextContainer}>
                             <Text
-                                style={[
-                                    styles.gameModeContextText,
-                                    { fontSize: hp(1.7) }
-                                ]}
+                                style={styles.gameModeContextText}
                             >
-                                Dereceli - Sınavia Puanı'nı artır, Türkiye
+                                <Text style={{fontFamily: 'Averta-Bold', fontSize: hp(2), color: '#636363'}}>Dereceli</Text> - Sınavia Puanı'nı artır, Türkiye
                                 sıralamanı yükselt
                             </Text>
                         </View>
                     </View>
                     <View style={styles.scoreContainer}>
                         <Text style={styles.scoreTextInModal}>
-                            Sınavia Puanı:
+                            Sınavia Puanı:{' '}
                         </Text>
                         <Text style={styles.scoreInModal}>
                             {this.state.selectedContentTotalPoints}
@@ -677,7 +689,7 @@ class Home extends React.Component {
                         </View>
                         <View style={styles.gameModeContextContainer}>
                             <Text style={styles.gameModeContextText}>
-                                Arkadaşın ile yarış
+                                <Text style={{fontFamily: 'Averta-Bold',  fontSize: hp(2), color: '#636363'}}>Arkadaşla</Text> - Bir arkadaşın ile bilgilerini yarıştır
                             </Text>
                         </View>
                     </View>
@@ -695,7 +707,7 @@ class Home extends React.Component {
                         </View>
                         <View style={styles.gameModeContextContainer}>
                             <Text style={styles.gameModeContextText}>
-                                Arkadaş grubun ile yarış
+                                <Text style={{fontFamily: 'Averta-Bold',  fontSize: hp(2),  color: '#636363'}}>Grupla</Text> - Arkadaş grubun ile yarış
                             </Text>
                         </View>
                     </View>
@@ -814,9 +826,33 @@ class Home extends React.Component {
                                 </View>
                             ) : (
                                 <Text style={styles.gameModeContextText}>
-                                    Tek başına soru çöz
+                                    <Text style={{fontFamily: 'Averta-Bold',  fontSize: hp(2),  color: '#636363'}}>Solo</Text> - Tek başına soru çöz, pratiğini geliştir
                                 </Text>
                             )}
+                        </View>
+                    </View>
+                    <View style={styles.gameModeContainer}>
+                        <View style={styles.gameModeButtonContainer}>
+                            <TouchableOpacity
+                                style={[
+                                    styles.gameModeLogoContainer,
+                                    {
+                                        borderColor: this.state
+                                            .unsolvedQuestionsModeBorderColor
+                                    }
+                                ]}
+                                onPress={this.unsolvedQuestionsModeOnPress}
+                            >
+                                <Image
+                                    source={UNSOLVED_QUESTIONS_MODE}
+                                    style={styles.gameModeImage}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.gameModeContextContainer}>
+                            <Text style={styles.gameModeContextText}>
+                                <Text style={{fontFamily: 'Averta-Bold',  fontSize: hp(2),  color: '#636363'}}>TekrarÇöz</Text> - Yanlış veya boş cevapladığın soruları tekrar çöz
+                            </Text>
                         </View>
                     </View>
                 </View>

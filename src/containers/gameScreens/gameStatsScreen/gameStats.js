@@ -31,6 +31,7 @@ import DRAW_LOGO from '../../../assets/gameScreens/draw.png'
 import premiumStyles from '../../mainScreens/purchaseScreen/style'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import LinearGradient from "react-native-linear-gradient"
+import { levelFinder } from '../../../services/userLevelFinder'
 
 const REPLAY_NORMAL_BORDER = '#00D9EF'
 const REPLAY_ACTIVE_BORDER = '#11DD56'
@@ -602,6 +603,31 @@ class GameStatsScreen extends React.Component {
                                 <Text style={styles.sinaviaScoreText}>
                                     {this.state.totalEarnedPoints}
                                 </Text>
+                            </View>
+                        </View>
+                        <View style={styles.levelProgressBarContainer}>
+                            <View style={styles.progressBarView}>
+                                <Text style={styles.levelText}>
+                                    Seviye{' '}
+                                    7
+                                </Text>
+                                <View
+                                    style={[
+                                        styles.instantProgressView,
+                                        {
+                                            width: wp(
+                                                (Math.floor(
+                                                    50 / 79)
+                                                )
+                                            )
+                                        }
+                                    ]}
+                                />
+                                <View style={styles.progressScoreView}>
+                                    <Text style={styles.levelInProgressText}>
+                                        50/65
+                                    </Text>
+                                </View>
                             </View>
                         </View>
                     </View>

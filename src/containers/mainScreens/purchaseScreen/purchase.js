@@ -22,14 +22,13 @@ import {
 
 import PLAY_BUTTON from '../../../assets/play_Button.png'
 import JOKER_ADS from '../../../assets/joker_ads.png'
-import FAVORITE from '../../../assets/favori.png'
 
 import INSTAGRAM_LOGO from '../../../assets/instagram_logo.png'
 import TWITTER_LOGO from '../../../assets/twitter_logo.png'
 import FACEBOOK_LOGO from '../../../assets/facebook_logo.png'
 
 import PREMIUM_ADS from '../../../assets/premiumAds.png'
-import PREMIUM_FAV from '../../../assets/premiumFav.png'
+import PREMIUM_FAV from '../../../assets/favori.png'
 import PREMIUM_JOKER from '../../../assets/premiumJoker.png'
 import PREMIUM_BACK from '../../../assets/premiumBack.png'
 import PREMIUM_MAP from '../../../assets/premiumMap.png'
