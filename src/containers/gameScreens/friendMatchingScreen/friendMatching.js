@@ -16,7 +16,6 @@ import {
     navigationReset
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
-import { appActions } from '../../../redux/app/actions'
 
 // Colyseus imports
 import { Buffer } from 'buffer'
