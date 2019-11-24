@@ -734,7 +734,12 @@ class SoloFriendGameScreen extends React.Component {
             <View style={styles.container}>
                 <NotchView color={styles.topContainer.backgroundColor} />
                 <View style={styles.topContainer}>
-                    <View style={styles.headerContainer}>
+                    <Animatable.View
+                        style={styles.headerContainer}
+                        useNativeDriver={true}
+                        delay={750}
+                        animation="fadeIn"
+                    >
                         <View style={styles.userContainer}>
                             <Image
                                 source={{
@@ -783,7 +788,7 @@ class SoloFriendGameScreen extends React.Component {
                                 />
                             </View>
                         </View>
-                    </View>
+                    </Animatable.View>
                     <View style={styles.questionContainer}>
                         <Image
                             source={{
@@ -1064,7 +1069,12 @@ class SoloFriendGameScreen extends React.Component {
                         </View>
                     )}
                 </View>
-                <View style={styles.jokerContainer}>
+                <Animatable.View
+                    style={styles.jokerContainer}
+                    useNativeDriver={true}
+                    delay={750}
+                    animation="fadeIn"
+                >
                     <View style={styles.touchableJokerContainer}>
                         <TouchableOpacity
                             style={styles.jokerImageContainer}
@@ -1263,7 +1273,7 @@ class SoloFriendGameScreen extends React.Component {
                             </TouchableOpacity>
                         </View>
                     </View>
-                </View>
+                </Animatable.View>
             </View>
         )
     }
