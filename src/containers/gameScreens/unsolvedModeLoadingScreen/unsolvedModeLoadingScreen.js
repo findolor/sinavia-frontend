@@ -13,6 +13,7 @@ import { GAME_ENGINE_ENDPOINT, SCENE_KEYS } from '../../../config'
 import { connect } from 'react-redux'
 import BACKGROUND from '../../../assets/gameScreens/gameStatsBackground.jpg'
 import LOGO from '../../../assets/sinavia_logo_cut.png'
+import * as Animatable from 'react-native-animatable'
 
 class UnsolvedModeLoadingScreen extends React.Component {
     constructor(props) {
@@ -64,7 +65,12 @@ class UnsolvedModeLoadingScreen extends React.Component {
                                 <Image source={LOGO} style={styles.logoImg} />
                             </View>
                         </View>
-                        <View style={styles.textsView}>
+                        <Animatable.View
+                            style={styles.textsView}
+                            useNativeDriver={true}
+                            animation="fadeIn"
+                            delay={500}
+                        >
                             <Text style={styles.courseText}>
                                 {
                                     this.props.gameContentMap.courses[
@@ -79,7 +85,7 @@ class UnsolvedModeLoadingScreen extends React.Component {
                                     ].name
                                 }
                             </Text>
-                        </View>
+                        </Animatable.View>
                     </View>
                 </ImageBackground>
             </View>
