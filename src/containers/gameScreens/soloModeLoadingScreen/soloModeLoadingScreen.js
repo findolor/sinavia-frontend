@@ -8,14 +8,11 @@ window.localStorage = AsyncStorage
 global.Buffer = Buffer
 import * as Colyseus from 'colyseus.js'
 // App service imports
-import {
-    navigationReplace,
-    navigationReset
-} from '../../../services/navigationService'
+import { navigationReplace } from '../../../services/navigationService'
 import { GAME_ENGINE_ENDPOINT, SCENE_KEYS } from '../../../config'
 import { connect } from 'react-redux'
-import BACKGROUND from '../../../assets/gameScreens/gameStatsBackground.jpg'
 import LOGO from '../../../assets/sinavia_logo_cut.png'
+import { chooseImage } from '../../../services/courseAssetChooser'
 
 class SoloModeLoadingScreen extends React.Component {
     constructor(props) {
@@ -56,9 +53,10 @@ class SoloModeLoadingScreen extends React.Component {
     }
 
     render() {
+        const background = chooseImage(this.props.contentIds.examId, true)
         return (
             <View style={styles.container}>
-                <ImageBackground source={BACKGROUND} style={styles.background}>
+                <ImageBackground source={background} style={styles.background}>
                     <View style={styles.shadowView}>
                         <View style={styles.logoView}>
                             <View style={styles.logoBorderView}>

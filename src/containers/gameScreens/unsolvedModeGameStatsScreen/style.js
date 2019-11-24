@@ -16,6 +16,12 @@ export default StyleSheet.create({
         height: hp(100),
         width: wp(100)
     },
+    backgroundImgShadowView: {
+        height: hp(100),
+        width: wp(100),
+        position: 'absolute',
+        backgroundColor: 'rgba(0,0,0,0.45)'
+    },
     logoContainer: {
         height: hp(42),
         width: wp(100),
@@ -36,7 +42,9 @@ export default StyleSheet.create({
         marginLeft: wp(6.4),
         borderRadius: hp(4),
         position: 'absolute',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderWidth: hp(0.5),
+        borderColor: '#FF9900'
     },
     replayButton: {
         height: hp(7),
