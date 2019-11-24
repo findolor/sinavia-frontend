@@ -67,6 +67,7 @@ import {
 } from '../../../services/navigationService'
 
 import { levelFinder } from '../../../services/userLevelFinder'
+import { chooseImage } from '../../../services/courseAssetChooser'
 
 import SWORD from '../../../assets/sword.png'
 import LinearGradient from 'react-native-linear-gradient'
@@ -452,7 +453,7 @@ class Home extends React.Component {
         this.props.examList[index].courseEntities.forEach(course => {
             courseList.push({
                 courseName: course.name,
-                illustration: course.imageLink
+                illustration: chooseImage(course.id, false)
             })
         })
 
