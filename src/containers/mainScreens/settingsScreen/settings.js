@@ -527,7 +527,9 @@ class Settings extends React.Component {
                                 placeholderTextColor="#8A8888"
                                 autoCapitalize={'none'}
                                 maxLength={16}
-                                onChangeText={this.nameOnChange}
+                                onChangeText={text =>
+                                    this.nameOnChange(text)
+                                }
                             />
                         </View>
                     </View>
@@ -542,7 +544,9 @@ class Settings extends React.Component {
                                 placeholderTextColor="#8A8888"
                                 autoCapitalize={'none'}
                                 maxLength={16}
-                                onChangeText={this.lastnameOnChange}
+                                onChangeText={text =>
+                                    this.lastnameOnChange(text)
+                                }
                             />
                         </View>
                     </View>

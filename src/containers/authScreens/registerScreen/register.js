@@ -29,6 +29,7 @@ import { showMessage } from 'react-native-flash-message'
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
 import OPENED_EYE from '../../../assets/openedEye.png'
 import CLOSED_EYE from '../../../assets/closedEye.png'
+import { flashMessages } from '../../../services/flashMessageBuilder'
 
 class Register extends React.Component {
     constructor(props) {
@@ -50,7 +51,10 @@ class Register extends React.Component {
             city: '',
             email: '',
             password: '',
-            birthDate: ''
+            secondPassword: '',
+            birthDate: '',
+            passwordBorderColor: '#989696',
+            secondPasswordBorderColor: '#989696'
         }
     }
 
@@ -109,42 +113,135 @@ class Register extends React.Component {
         this.setState({ email: text })
     }
 
-    registerOnPress = () => {
-        if (!this.props.isNetworkConnected) {
-            showMessage({
-                message: 'Lütfen internet bağlantınızı kontrol ediniz',
-                type: 'danger',
-                duration: 2000,
-                titleStyle: styles.networkErrorStyle,
-                icon: 'auto'
+    passwordOnChange = text => {
+        if (text === '') {
+            this.setState({
+                showPasswordEyeFirst: false
             })
-            return
+        } else {
+            this.setState({
+                showPasswordEyeFirst: true,
+                password: text
+            })
         }
+    }
 
-        let userInformation = {
-            //username: this.state.username,
-            //name: this.state.name,
-            //lastname: this.state.lastname,
-            email: this.state.email,
-            //city: this.state.city,
-            //birthDate: this.state.birthDate,
-            password: this.state.password
+    secondPasswordOnChange = text => {
+        if (text === '') {
+            this.setState({
+                showPasswordEyeSecond: false
+            })
+        } else {
+            this.setState({
+                showPasswordEyeSecond: true,
+                secondPassword: text
+            })
         }
+    }
 
-        let userInformationKeys = Object.keys(userInformation)
-        let wrongInformationList = []
-        let wrongInformationString = 'Yanlış alanlar! ->'
-
-        userInformationKeys.forEach(element => {
-            if (userInformation[element] === '') {
-                wrongInformationList.push(element)
-                wrongInformationString += `${element}, `
+    registerOnPress = () => {
+        if(this.state.email === '' || this.state.password === '' || this.state.secondPassword === ''){
+            flashMessages.blankSpaceError({
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
+        }
+        else if(this.state.password.length < 6) {
+            flashMessages.passwordCharacterLengthError({
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
+            this.setState({passwordBorderColor: 'red'})
+        }
+        else if(this.state.secondPassword.length < 6) {
+            flashMessages.passwordCharacterLengthError({
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
+            this.setState({secondPasswordBorderColor: 'red'})
+        }
+        else if(this.state.password.includes(' ')){
+            flashMessages.spaceCharacterInPasswordError({
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
+            this.setState({passwordBoderColor: 'red'})
+        }
+        else if(this.state.secondPassword.includes(' ')){
+            flashMessages.spaceCharacterInPasswordError({
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
+            this.setState({secondPasswordBoderColor: 'red'})
+        }
+        else if(this.state.password !== this.state.secondPassword){
+            flashMessages.passwordsNotMatchError({
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
+            this.setState({passwordBorderColor: 'red', secondPasswordBorderColor: 'red'})
+        }
+        else{
+            if (!this.props.isNetworkConnected) {
+                showMessage({
+                    message: 'Lütfen internet bağlantınızı kontrol ediniz',
+                    type: 'danger',
+                    duration: 2000,
+                    titleStyle: styles.networkErrorStyle,
+                    icon: 'auto'
+                })
+                return
             }
-        })
 
-        if (Object.keys(wrongInformationList).length === 0)
-            this.props.userSignUp(userInformation)
-        else Alert.alert(wrongInformationString)
+            let userInformation = {
+                //username: this.state.username,
+                //name: this.state.name,
+                //lastname: this.state.lastname,
+                email: this.state.email,
+                //city: this.state.city,
+                //birthDate: this.state.birthDate,
+                password: this.state.password
+            }
+
+            let userInformationKeys = Object.keys(userInformation)
+            let wrongInformationList = []
+            let wrongInformationString = 'Yanlış alanlar! ->'
+
+            userInformationKeys.forEach(element => {
+                if (userInformation[element] === '') {
+                    wrongInformationList.push(element)
+                    wrongInformationString += `${element}, `
+                }
+            })
+
+            if (Object.keys(wrongInformationList).length === 0)
+                this.props.userSignUp(userInformation)
+            else Alert.alert(wrongInformationString)
+        }
     }
 
     render() {
@@ -176,24 +273,16 @@ class Register extends React.Component {
                             borderColor={'#989696'}
                             onChangeText={this.emailOnChange}
                         />
-                        <View style={styles.textInputContainer}>
+                        <View style={[styles.textInputContainer, {borderColor: this.state.passwordBorderColor}]}>
                             <TextInput
                                 style={styles.textInput}
                                 secureTextEntry={this.state.hidePasswordFirst}
                                 placeholder="Şifre"
                                 placeholderTextColor={'#8A8888'}
-                                onChangeText={text => {
-                                    if (text === '') {
-                                        this.setState({
-                                            showPasswordEyeFirst: false
-                                        })
-                                    } else {
-                                        this.setState({
-                                            showPasswordEyeFirst: true,
-                                            password: text
-                                        })
-                                    }
-                                }}
+                                maxLength={16}
+                                onChangeText={text =>
+                                    this.passwordOnChange(text)
+                                }
                             />
                             {this.state.showPasswordEyeFirst &&
                                 this.state.showPasswordEyeFirst === true && (
@@ -227,26 +316,16 @@ class Register extends React.Component {
                                     </View>
                                 )}
                         </View>
-                        <View style={styles.textInputContainer}>
+                        <View style={[styles.textInputContainer, {borderColor: this.state.secondPasswordBorderColor}]}>
                             <TextInput
                                 style={styles.textInput}
                                 secureTextEntry={this.state.hidePasswordSecond}
                                 placeholder="Şifre (Tekrar)                                                                     "
                                 placeholderTextColor={'#8A8888'}
-                                onChangeText={text => {
-                                    if (text === '') {
-                                        this.setState({
-                                            showPasswordEyeSecond: false
-                                        })
-                                    } else {
-                                        if (this.state.password !== text) {
-                                        }
-                                        this.setState({
-                                            showPasswordEyeSecond: true,
-                                            secondPassword: text
-                                        })
-                                    }
-                                }}
+                                maxLength={16}
+                                onChangeText={text =>
+                                    this.secondPasswordOnChange(text)
+                                }
                             />
                             {this.state.showPasswordEyeSecond &&
                                 this.state.showPasswordEyeSecond === true && (

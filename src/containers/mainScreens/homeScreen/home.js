@@ -307,7 +307,7 @@ class Home extends React.Component {
             // We set a timeout for the time passed since join initiation
             // TODO THINK ABOUT THE TIMEOUT NUMBER IN HERE
             const timeout = setTimeout(() => {
-                Alert.alert('Üznügüm ama oda aktif değil')
+                Alert.alert('Üzgünüm ama oda aktif değil')
                 room.leave()
                 client.close()
             }, 5000)
