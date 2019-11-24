@@ -1,4 +1,8 @@
 import { showMessage } from 'react-native-flash-message'
+import {
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp
+} from 'react-native-responsive-screen'
 
 export const flashMessages = {
     generalMessage: message =>
@@ -44,5 +48,38 @@ export const flashMessages = {
             },
             textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
             backgroundColor: 'white'
-        })
+        }),
+    nameError: (props = {}) =>
+        showMessage({
+            message: 'Ad hatası',
+            description: 'Ad sadece harflerden oluşmalıdır',
+            titleStyle: {
+                fontFamily: 'Averta-SemiboldItalic',
+                color: '#FF9900'
+            },
+            textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
+            ...props
+        }),
+    lastnameError: (props = {}) =>
+        showMessage({
+            message: 'Soyad hatası',
+            description: 'Soyad sadece harflerden oluşmalıdır',
+            titleStyle: {
+                fontFamily: 'Averta-SemiboldItalic',
+                color: '#FF9900'
+            },
+            textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
+            ...props
+        }),
+    usernameError: (props = {}) =>
+        showMessage({
+            message: 'Kullanıcı adı hatası',
+            description: 'Kullanıcı adı sadece harf veya rakamlardan oluşabilir',
+            titleStyle: {
+                fontFamily: 'Averta-SemiboldItalic',
+                color: '#FF9900'
+            },
+            textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
+            ...props
+        }),
 }

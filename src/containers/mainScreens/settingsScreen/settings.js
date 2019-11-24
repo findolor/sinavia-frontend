@@ -24,6 +24,8 @@ import moment from 'moment'
 import firebase from 'react-native-firebase'
 import ImagePicker from 'react-native-image-crop-picker'
 import { Appearance } from 'react-native-appearance'
+import { showMessage } from 'react-native-flash-message'
+import { flashMessages } from '../../../services/flashMessageBuilder'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
@@ -74,7 +76,10 @@ class Settings extends React.Component {
             isProfilePictureChoosen: false,
             isDarkModeEnabled: null,
             citiesList: citiesList,
-            isCityModalVisible: false
+            isCityModalVisible: false,
+            nameBorderColor: '#C8C8C8',
+            lastnameBorderColor: '#C8C8C8',
+            usernameBorderColor: '#C8C8C8'
         }
     }
 
@@ -124,17 +129,48 @@ class Settings extends React.Component {
         })
     }
 
+    showSimpleMessage(errorName, restriction, props = {}) {
+        const message = {
+            message: errorName + ' hatası',
+            description: restriction,
+            duration: 5000,
+            titleStyle: {
+                fontFamily: 'Averta-SemiboldItalic',
+                color: '#FF9900'
+            },
+            textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
+            ...props
+        }
+
+        showMessage(message)
+    }
+
     nameOnChange = text => {
-        this.setState({ name: text.replace(/[^a-zA-Z]/g, '') })
+        const invalidCharacters = (/[^a-zA-Z]/g)
+        if (invalidCharacters.test(text)) {
+            this.setState({nameBorderColor: 'red'})
+        }
+        else this.setState({nameBorderColor: '#C8C8C8'})
+        this.setState({ name: text })
     }
 
     lastnameOnChange = text => {
-        this.setState({ lastname: text.replace(/[^a-zA-Z]/g, '') })
+        const invalidCharacters = (/[^a-zA-Z]/g)
+        if (invalidCharacters.test(text)) {
+            this.setState({lastnameBorderColor: 'red'})
+        }
+        else this.setState({lastnameBorderColor: '#C8C8C8'})
+        this.setState({ lastname: text })
     }
 
     usernameOnChange = text => {
+        const invalidCharacters = (/[^a-zA-Z0-9]/g)
+        if (invalidCharacters.test(text)) {
+            this.setState({usernameBorderColor: 'red'})
+        }
+        else this.setState({usernameBorderColor: '#C8C8C8'})
         if (text === '') text = null
-        this.setState({ username: text.replace(/[^a-zA-Z0-9]/g, '') })
+        this.setState({ username: text })
     }
 
     checkName = () => {
@@ -148,7 +184,7 @@ class Settings extends React.Component {
     }
 
     checkCity = () => {
-        if (this.state.city !== null) return true
+        if (this.state.city !== this.props.clientInformation.city) return true
         else false
     }
 
@@ -173,78 +209,110 @@ class Settings extends React.Component {
     }
 
     saveButtonOnPress = async () => {
-        const firebaseStorage = firebase.storage()
-
-        let shouldUpdate = false
-        let isProfilePictureChanged = false
-        let isCoverPictureChanged = false
-
-        const clientInformation = this.props.clientInformation
-
-        if (this.checkCity()) {
-            clientInformation.city = this.state.city
-            shouldUpdate = true
+        if ( this.state.nameBorderColor === 'red'){
+            flashMessages.nameError({
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
         }
-
-        if (this.checkUsername()) {
-            clientInformation.username = this.state.username
-            shouldUpdate = true
+        else if (this.state.lastnameBorderColor === 'red') {
+            flashMessages.lastnameError({
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
         }
-
-        if (this.checkName()) {
-            clientInformation.name = this.state.name
-            shouldUpdate = true
+        else if (this.state.usernameBorderColor === 'red') {
+                flashMessages.usernameError({
+                    backgroundColor: '#FFFFFF',
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    borderColor: '#00D9EF',
+                    borderWidth: hp(0.25),
+                    height: hp(10)
+                })
         }
+        else {
+            const firebaseStorage = firebase.storage()
 
-        if (this.checkLastname()) {
-            clientInformation.lastname = this.state.lastname
-            shouldUpdate = true
+            let shouldUpdate = false
+            let isProfilePictureChanged = false
+            let isCoverPictureChanged = false
+
+            const clientInformation = this.props.clientInformation
+
+            if (this.checkCity()) {
+                clientInformation.city = this.state.city
+                shouldUpdate = true
+            }
+
+            if (this.checkUsername()) {
+                clientInformation.username = this.state.username
+                shouldUpdate = true
+            }
+
+            if (this.checkName()) {
+                clientInformation.name = this.state.name
+                shouldUpdate = true
+            }
+
+            if (this.checkLastname()) {
+                clientInformation.lastname = this.state.lastname
+                shouldUpdate = true
+            }
+
+            if (this.checkBirthDate()) {
+                clientInformation.birthDate = this.state.birthDate
+                shouldUpdate = true
+            }
+
+            if (this.checkCoverPicture()) {
+                clientInformation.coverPicture = this.state.coverPicture
+                shouldUpdate = true
+                isCoverPictureChanged = true
+            }
+
+            if (this.checkProfilePicture()) {
+                clientInformation.profilePicture = this.state.profilePicture
+                shouldUpdate = true
+                isProfilePictureChanged = true
+            }
+
+            if (shouldUpdate) this.props.lockUnlockButton()
+
+            let response
+
+            if (isProfilePictureChanged) {
+                response = await firebaseStorage
+                    .ref(`profilePictures/${this.props.clientDBId}.jpg`)
+                    .putFile(this.state.profilePicture.path)
+
+                clientInformation.profilePicture = response.downloadURL
+            }
+
+            if (isCoverPictureChanged) {
+                response = await firebaseStorage
+                    .ref(`coverPictures/${this.props.clientDBId}.jpg`)
+                    .putFile(this.state.coverPicture.path)
+
+                clientInformation.coverPicture = response.downloadURL
+            }
+
+            if (shouldUpdate)
+                this.props.updateUser(
+                    this.props.clientToken,
+                    this.props.clientDBId,
+                    clientInformation,
+                    false
+                )
         }
-
-        if (this.checkBirthDate()) {
-            clientInformation.birthDate = this.state.birthDate
-            shouldUpdate = true
-        }
-
-        if (this.checkCoverPicture()) {
-            clientInformation.coverPicture = this.state.coverPicture
-            shouldUpdate = true
-            isCoverPictureChanged = true
-        }
-
-        if (this.checkProfilePicture()) {
-            clientInformation.profilePicture = this.state.profilePicture
-            shouldUpdate = true
-            isProfilePictureChanged = true
-        }
-
-        if (shouldUpdate) this.props.lockUnlockButton()
-
-        let response
-
-        if (isProfilePictureChanged) {
-            response = await firebaseStorage
-                .ref(`profilePictures/${this.props.clientDBId}.jpg`)
-                .putFile(this.state.profilePicture.path)
-
-            clientInformation.profilePicture = response.downloadURL
-        }
-
-        if (isCoverPictureChanged) {
-            response = await firebaseStorage
-                .ref(`coverPictures/${this.props.clientDBId}.jpg`)
-                .putFile(this.state.coverPicture.path)
-
-            clientInformation.coverPicture = response.downloadURL
-        }
-
-        if (shouldUpdate)
-            this.props.updateUser(
-                this.props.clientToken,
-                this.props.clientDBId,
-                clientInformation,
-                false
-            )
     }
 
     pickProfileImage(cropit, circular = false, mediaType) {
@@ -357,7 +425,7 @@ class Settings extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <KeyboardAvoidingView style={styles.container}>
                 <NotchView color={'#fcfcfc'} />
                 <Modal
                     visible={this.state.isCityModalVisible}
@@ -429,7 +497,7 @@ class Settings extends React.Component {
                         <View style={styles.textInputTitleContainer}>
                             <Text style={styles.textInputTitle}>Ad</Text>
                         </View>
-                        <View style={styles.textInputView}>
+                        <View style={[styles.textInputView, {borderColor: this.state.nameBorderColor}]}>
                             <TextInput
                                 placeholder={this.props.clientInformation.name}
                                 style={styles.textInputStyle}
@@ -444,7 +512,7 @@ class Settings extends React.Component {
                         <View style={styles.textInputTitleContainer}>
                             <Text style={styles.textInputTitle}>Soyad</Text>
                         </View>
-                        <View style={styles.textInputView}>
+                        <View style={[styles.textInputView, {borderColor: this.state.lastnameBorderColor}]}>
                             <TextInput
                                 placeholder={this.props.clientInformation.lastname}
                                 style={styles.textInputStyle}
@@ -461,7 +529,7 @@ class Settings extends React.Component {
                                 Kullanıcı Adı
                             </Text>
                         </View>
-                        <View style={styles.textInputView}>
+                        <View style={[styles.textInputView, {borderColor: this.state.usernameBorderColor}]}>
                             <TextInput
                                 placeholder={
                                     this.props.clientInformation.username
@@ -503,7 +571,7 @@ class Settings extends React.Component {
                         </View>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         )
     }
 }
