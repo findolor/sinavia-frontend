@@ -82,4 +82,15 @@ export const flashMessages = {
             textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
             ...props
         }),
+    blankSpaceError: (props = {}) =>
+        showMessage({
+            message: 'Boş alan hatası',
+            description: 'Bütün alanları doldurmalısın',
+            titleStyle: {
+                fontFamily: 'Averta-SemiboldItalic',
+                color: '#FF9900'
+            },
+            textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
+            ...props
+        })
 }

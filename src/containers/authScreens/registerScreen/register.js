@@ -173,6 +173,7 @@ class Register extends React.Component {
                         <AuthTextInput
                             placeholder="E-Posta"
                             placeholderTextColor="#8A8888"
+                            borderColor={'#989696'}
                             onChangeText={this.emailOnChange}
                         />
                         <View style={styles.textInputContainer}>

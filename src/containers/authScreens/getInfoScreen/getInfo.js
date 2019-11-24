@@ -23,6 +23,7 @@ import moment from 'moment'
 import NotchView from '../../../components/notchView'
 import { showMessage } from 'react-native-flash-message'
 import { Appearance } from 'react-native-appearance'
+import { flashMessages } from '../../../services/flashMessageBuilder'
 
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
 import PROFILE_PIC from '../../../assets/profile2.jpg'
@@ -56,17 +57,20 @@ class GetInfo extends React.Component {
             hidePasswordSecond: true,
             dateColor: '#2E313C',
             // User Information
-            username: '',
-            name: '',
-            lastname: '',
-            city: '',
+            username: null,
+            name: null,
+            lastname: null,
+            city: null,
             email: '',
             password: '',
             birthDate: null,
             // Dark mode for date time picker
             isDarkModeEnabled: null,
             isModalVisible: false,
-            citiesList: citiesList
+            citiesList: citiesList,
+            nameBorderColor: '#989696',
+            lastnameBorderColor: '#989696',
+            usernameBorderColor: '#989696'
         }
     }
 
@@ -147,61 +151,115 @@ class GetInfo extends React.Component {
     }
 
     usernameOnChange = text => {
-        this.setState({ username: text.replace(/[^a-zA-Z0-9]/g, '') })
+        const invalidCharacters = (/[^a-zA-Z0-9]/g)
+        if (invalidCharacters.test(text)) {
+            this.setState({usernameBorderColor: 'red'})
+        }
+        else this.setState({usernameBorderColor: '#989696'})
+        if (text === '') text = null
+        this.setState({ username: text })
     }
 
     nameOnChange = text => {
-        this.setState({ name: text.replace(/[^a-zA-Z]/g, '') })
+        const invalidCharacters = (/[^a-zA-Z]/g)
+        if (invalidCharacters.test(text)) {
+            this.setState({nameBorderColor: 'red'})
+        }
+        else this.setState({nameBorderColor: '#989696'})
+        this.setState({ name: text })
     }
 
     lastnameOnChange = text => {
-        this.setState({ lastname: text.replace(/[^a-zA-Z]/g, '') })
-    }
-
-    cityOnChange = text => {
-        this.setState({ city: text })
+        const invalidCharacters = (/[^a-zA-Z]/g)
+        if (invalidCharacters.test(text)) {
+            this.setState({lastnameBorderColor: 'red'})
+        }
+        else this.setState({lastnameBorderColor: '#989696'})
+        this.setState({ lastname: text })
     }
 
     registerOnPress = () => {
-        if (!this.props.isNetworkConnected) {
-            showMessage({
-                message: 'Lütfen internet bağlantınızı kontrol ediniz',
-                type: 'danger',
-                duration: 2000,
-                titleStyle: styles.networkErrorStyle,
-                icon: 'auto'
+        if ( this.state.nameBorderColor === 'red'){
+            flashMessages.nameError({
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
             })
-            return
         }
-
-        let userInformation = {
-            username: this.state.username,
-            name: this.state.name,
-            lastname: this.state.lastname,
-            email: this.props.email,
-            city: this.state.city,
-            birthDate: this.state.birthDate,
-            password: this.props.password
+        else if (this.state.lastnameBorderColor === 'red') {
+            flashMessages.lastnameError({
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
         }
-
-        let userInformationKeys = Object.keys(userInformation)
-        let wrongInformationList = []
-        let wrongInformationString = 'Yanlış alanlar! ->'
-
-        userInformationKeys.forEach(element => {
-            if (
-                userInformation[element] === '' &&
-                element !== 'birthDate' &&
-                element !== 'city'
-            ) {
-                wrongInformationList.push(element)
-                wrongInformationString += `${element}, `
+        else if (this.state.usernameBorderColor === 'red') {
+            flashMessages.usernameError({
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
+        }
+        else if (this.state.username === null || this.state.name === null || this.state.lastname === null || this.state.birthDate === null || this.state.city === null) {
+            flashMessages.blankSpaceError({
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
+        }
+        else {
+            if (!this.props.isNetworkConnected) {
+                showMessage({
+                    message: 'Lütfen internet bağlantınızı kontrol ediniz',
+                    type: 'danger',
+                    duration: 2000,
+                    titleStyle: styles.networkErrorStyle,
+                    icon: 'auto'
+                })
+                return
             }
-        })
 
-        if (Object.keys(wrongInformationList).length === 0)
-            this.props.createUser(userInformation)
-        else Alert.alert(wrongInformationString)
+            let userInformation = {
+                username: this.state.username,
+                name: this.state.name,
+                lastname: this.state.lastname,
+                email: this.props.email,
+                city: this.state.city,
+                birthDate: this.state.birthDate,
+                password: this.props.password
+            }
+
+            let userInformationKeys = Object.keys(userInformation)
+            let wrongInformationList = []
+            let wrongInformationString = 'Yanlış alanlar! ->'
+
+            userInformationKeys.forEach(element => {
+                if (
+                    userInformation[element] === '' &&
+                    element !== 'birthDate' &&
+                    element !== 'city'
+                ) {
+                    wrongInformationList.push(element)
+                    wrongInformationString += `${element}, `
+                }
+            })
+
+            if (Object.keys(wrongInformationList).length === 0)
+                this.props.createUser(userInformation)
+            else Alert.alert(wrongInformationString)
+        }
     }
 
     render() {
@@ -238,18 +296,21 @@ class GetInfo extends React.Component {
                             placeholder="Kullanıcı adı"
                             placeholderTextColor="#8A8888"
                             maxLength={16}
+                            borderColor={this.state.usernameBorderColor}
                             onChangeText={this.usernameOnChange}
                         />
                         <AuthTextInput
                             placeholder="Ad"
                             placeholderTextColor="#8A8888"
                             maxLength={16}
+                            borderColor={this.state.nameBorderColor}
                             onChangeText={this.nameOnChange}
                         />
                         <AuthTextInput
                             placeholder="Soyad"
                             placeholderTextColor="#8A8888"
                             maxLength={16}
+                            borderColor={this.state.lastnameBorderColor}
                             onChangeText={this.lastnameOnChange}
                         />
                         <TouchableOpacity onPress={this.showDateTimePicker}>

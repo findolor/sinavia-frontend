@@ -151,6 +151,7 @@ class Settings extends React.Component {
             this.setState({nameBorderColor: 'red'})
         }
         else this.setState({nameBorderColor: '#C8C8C8'})
+        if (text === '') text = null
         this.setState({ name: text })
     }
 
@@ -160,6 +161,7 @@ class Settings extends React.Component {
             this.setState({lastnameBorderColor: 'red'})
         }
         else this.setState({lastnameBorderColor: '#C8C8C8'})
+        if (text === '') text = null
         this.setState({ lastname: text })
     }
 
@@ -209,7 +211,17 @@ class Settings extends React.Component {
     }
 
     saveButtonOnPress = async () => {
-        if ( this.state.nameBorderColor === 'red'){
+        if ( this.state.usernameBorderColor === 'red'){
+            flashMessages.usernameError({
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
+        }
+        else if (this.state.nameBorderColor === 'red') {
             flashMessages.nameError({
                 backgroundColor: '#FFFFFF',
                 borderBottomLeftRadius: 10,
@@ -220,17 +232,7 @@ class Settings extends React.Component {
             })
         }
         else if (this.state.lastnameBorderColor === 'red') {
-            flashMessages.lastnameError({
-                backgroundColor: '#FFFFFF',
-                borderBottomLeftRadius: 10,
-                borderBottomRightRadius: 10,
-                borderColor: '#00D9EF',
-                borderWidth: hp(0.25),
-                height: hp(10)
-            })
-        }
-        else if (this.state.usernameBorderColor === 'red') {
-                flashMessages.usernameError({
+                flashMessages.lastnameError({
                     backgroundColor: '#FFFFFF',
                     borderBottomLeftRadius: 10,
                     borderBottomRightRadius: 10,
@@ -495,6 +497,27 @@ class Settings extends React.Component {
                 <View style={styles.textInputsContainer}>
                     <View style={styles.textInputContainer}>
                         <View style={styles.textInputTitleContainer}>
+                            <Text style={styles.textInputTitle}>
+                                Kullanıcı Adı
+                            </Text>
+                        </View>
+                        <View style={[styles.textInputView, {borderColor: this.state.usernameBorderColor}]}>
+                            <TextInput
+                                placeholder={
+                                    this.props.clientInformation.username
+                                }
+                                style={styles.textInputStyle}
+                                placeholderTextColor="#8A8888"
+                                autoCapitalize={'none'}
+                                maxLength={16}
+                                onChangeText={text =>
+                                    this.usernameOnChange(text)
+                                }
+                            />
+                        </View>
+                    </View>
+                    <View style={styles.textInputContainer}>
+                        <View style={styles.textInputTitleContainer}>
                             <Text style={styles.textInputTitle}>Ad</Text>
                         </View>
                         <View style={[styles.textInputView, {borderColor: this.state.nameBorderColor}]}>
@@ -520,27 +543,6 @@ class Settings extends React.Component {
                                 autoCapitalize={'none'}
                                 maxLength={16}
                                 onChangeText={this.lastnameOnChange}
-                            />
-                        </View>
-                    </View>
-                    <View style={styles.textInputContainer}>
-                        <View style={styles.textInputTitleContainer}>
-                            <Text style={styles.textInputTitle}>
-                                Kullanıcı Adı
-                            </Text>
-                        </View>
-                        <View style={[styles.textInputView, {borderColor: this.state.usernameBorderColor}]}>
-                            <TextInput
-                                placeholder={
-                                    this.props.clientInformation.username
-                                }
-                                style={styles.textInputStyle}
-                                placeholderTextColor="#8A8888"
-                                autoCapitalize={'none'}
-                                maxLength={16}
-                                onChangeText={text =>
-                                    this.usernameOnChange(text)
-                                }
                             />
                         </View>
                     </View>

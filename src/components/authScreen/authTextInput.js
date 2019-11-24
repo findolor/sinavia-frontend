@@ -10,10 +10,11 @@ export default AuthTextInput = ({
     placeholderTextColor,
     onChangeText,
     value,
-    maxLength
+    maxLength,
+    borderColor
 }) => {
     return (
-        <View style={styles.textInputContainer}>
+        <View style={[styles.textInputContainer, {borderColor: borderColor}]}>
             <TextInput
                 style={styles.textInput}
                 placeholder={placeholder}
