@@ -32,6 +32,7 @@ import SliderEntry from '../../../components/mainScreen/carousel/components/Slid
 import styles from './style'
 import premiumStyles from '../purchaseScreen/style'
 import { showMessage } from 'react-native-flash-message'
+import * as Animatable from 'react-native-animatable'
 
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
 import AuthButton from '../../../components/authScreen/authButton'
@@ -463,15 +464,10 @@ class Home extends React.Component {
     subjectCardsMaker = (examName, carouselActiveSlide) => {
         let examIndex
         let subjectList = []
+
+        if (carouselActiveSlide === null) return subjectList
+
         examIndex = this.props.examList.findIndex(x => x.name === examName)
-        /* if (!this.props.clientInformation.isPremium)
-            subjectList.push(
-                <View style={styles.card}>
-                    <Text style={styles.cardText}>
-                        Kalan enerji sayısı: {this.props.energyAmount}
-                    </Text>
-                </View>
-            ) */
         this.props.examList[examIndex].courseEntities[
             carouselActiveSlide
         ].subjectEntities.forEach((subject, index) => {
@@ -482,9 +478,15 @@ class Home extends React.Component {
                     }}
                     key={index}
                 >
-                    <View style={styles.card}>
+                    <Animatable.View
+                        style={styles.card}
+                        animation="fadeIn"
+                        duration={800}
+                        delay={index * 25 + 75}
+                        useNativeDriver={true}
+                    >
                         <Text style={styles.cardText}>{subject.name}</Text>
-                    </View>
+                    </Animatable.View>
                 </TouchableOpacity>
             )
         })
@@ -1817,9 +1819,11 @@ class Home extends React.Component {
                         inactiveSlideScale={0.8}
                         inactiveSlideOpacity={0.65}
                         loop={false}
-                        onSnapToItem={index =>
-                            this.setState({ carouselActiveSlide: index })
-                        }
+                        onSnapToItem={index => {
+                            this.setState({ carouselActiveSlide: null }, () => {
+                                this.setState({ carouselActiveSlide: index })
+                            })
+                        }}
                     />
                 </View>
                 <View style={styles.scrollViewContainer}>
