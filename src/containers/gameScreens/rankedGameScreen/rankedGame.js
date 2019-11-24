@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     Modal,
     Alert,
-    BackHandler
+    BackHandler,
+    Vibration
 } from 'react-native'
 import styles, { countdownProps } from './style'
 import CountDown from 'react-native-countdown-component'
@@ -431,6 +432,8 @@ class RankedGame extends React.Component {
         this.updateAnswers(answers, true)
         // Switch statement for the opponent
         this.updateAnswers(answersOpponent, false)
+
+        Vibration.vibrate(400)
     }
 
     updateAnswers = (answers, isClient) => {

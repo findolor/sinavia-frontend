@@ -7,7 +7,8 @@ import {
     Modal,
     Alert,
     FlatList,
-    BackHandler
+    BackHandler,
+    Vibration
 } from 'react-native'
 import styles, { countdownProps } from './style'
 import CountDown from 'react-native-countdown-component'
@@ -417,6 +418,8 @@ class GroupGame extends React.Component {
         this.updateAnswers(answers)
         // Update group leaderboard
         this.updateGroupLeaderboard()
+
+        Vibration.vibrate(400)
     }
 
     updateGroupLeaderboard = () => {

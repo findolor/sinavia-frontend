@@ -580,7 +580,13 @@ class Home extends React.Component {
                     <View style={styles.separatorContainer}>
                         <View style={styles.separatorLine} />
                     </View>
-                    <View style={styles.gameModeContainer}>
+                    <Animatable.View
+                        style={styles.gameModeContainer}
+                        animation="fadeIn"
+                        useNativeDriver={true}
+                        delay={50}
+                        duration={500}
+                    >
                         <View style={styles.gameModeButtonContainer}>
                             <TouchableOpacity
                                 onPress={this.rankedGameModeOnPress}
@@ -613,15 +619,21 @@ class Home extends React.Component {
                                 yükselt
                             </Text>
                         </View>
-                    </View>
-                    <View style={styles.scoreContainer}>
+                    </Animatable.View>
+                    <Animatable.View
+                        style={styles.scoreContainer}
+                        animation="pulse"
+                        useNativeDriver={true}
+                        delay={200}
+                        duration={1750}
+                    >
                         <Text style={styles.scoreTextInModal}>
                             Sınavia Puanı:{' '}
                         </Text>
                         <Text style={styles.scoreInModal}>
                             {this.state.selectedContentTotalPoints}
                         </Text>
-                    </View>
+                    </Animatable.View>
                     <View style={styles.levelProgressBarContainer}>
                         <View style={styles.progressBarView}>
                             <Text style={styles.levelText}>
@@ -684,7 +696,13 @@ class Home extends React.Component {
                     <View style={styles.separatorContainer}>
                         <View style={styles.separatorLine} />
                     </View>
-                    <View style={styles.gameModeContainer}>
+                    <Animatable.View
+                        style={styles.gameModeContainer}
+                        animation="fadeIn"
+                        useNativeDriver={true}
+                        delay={75}
+                        duration={500}
+                    >
                         <View style={styles.gameModeButtonContainer}>
                             <TouchableOpacity
                                 onPress={this.friendRoomOnPress}
@@ -710,8 +728,14 @@ class Home extends React.Component {
                                 - Bir arkadaşın ile bilgilerini yarıştır
                             </Text>
                         </View>
-                    </View>
-                    <View style={styles.gameModeContainer}>
+                    </Animatable.View>
+                    <Animatable.View
+                        style={styles.gameModeContainer}
+                        animation="fadeIn"
+                        useNativeDriver={true}
+                        delay={100}
+                        duration={500}
+                    >
                         <View style={styles.gameModeButtonContainer}>
                             <TouchableOpacity
                                 onPress={this.groupGameModeOnPress}
@@ -737,8 +761,14 @@ class Home extends React.Component {
                                 - Arkadaş grubun ile yarış
                             </Text>
                         </View>
-                    </View>
-                    <View style={styles.gameModeContainer}>
+                    </Animatable.View>
+                    <Animatable.View
+                        style={styles.gameModeContainer}
+                        animation="fadeIn"
+                        useNativeDriver={true}
+                        delay={125}
+                        duration={500}
+                    >
                         <View style={styles.gameModeButtonContainer}>
                             <TouchableOpacity
                                 style={[
@@ -866,8 +896,14 @@ class Home extends React.Component {
                                 </Text>
                             )}
                         </View>
-                    </View>
-                    <View style={styles.gameModeContainer}>
+                    </Animatable.View>
+                    <Animatable.View
+                        style={styles.gameModeContainer}
+                        animation="fadeIn"
+                        useNativeDriver={true}
+                        delay={150}
+                        duration={500}
+                    >
                         <View style={styles.gameModeButtonContainer}>
                             <TouchableOpacity
                                 style={[
@@ -900,7 +936,7 @@ class Home extends React.Component {
                                 çöz
                             </Text>
                         </View>
-                    </View>
+                    </Animatable.View>
                 </View>
                 <AuthButton
                     marginTop={hp(83.5)}

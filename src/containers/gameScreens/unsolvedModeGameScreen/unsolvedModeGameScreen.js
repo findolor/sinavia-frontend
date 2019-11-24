@@ -5,7 +5,8 @@ import {
     Image,
     TouchableOpacity,
     Modal,
-    BackHandler
+    BackHandler,
+    Vibration
 } from 'react-native'
 import styles, { countdownProps } from './style'
 import CountDown from 'react-native-countdown-component'
@@ -317,6 +318,8 @@ class UnsolvedModeGameScreen extends React.Component {
         const answers = this.state.playerProps.answers
         // Switch statement for the user
         this.updateAnswers(answers)
+
+        Vibration.vibrate(400)
     }
 
     updateAnswers = answers => {
