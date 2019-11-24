@@ -9,7 +9,8 @@ export default AuthTextInput = ({
     placeholder,
     placeholderTextColor,
     onChangeText,
-    value
+    value,
+    maxLength
 }) => {
     return (
         <View style={styles.textInputContainer}>
@@ -20,6 +21,7 @@ export default AuthTextInput = ({
                 onChangeText={onChangeText}
                 value={value}
                 autoCapitalize="none"
+                maxLength={maxLength}
             />
         </View>
     )

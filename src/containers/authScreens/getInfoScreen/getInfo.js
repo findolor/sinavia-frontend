@@ -147,14 +147,15 @@ class GetInfo extends React.Component {
     }
 
     usernameOnChange = text => {
-        this.setState({ username: text })
+        this.setState({ username: text.replace(/[^a-zA-Z0-9]/g, '') })
     }
 
-    nameLastameOnChange = text => {
-        let splittedText = text.split(/[ ,]+/)
-        let name = splittedText[0]
-        let lastname = splittedText[1]
-        this.setState({ name: name, lastname: lastname })
+    nameOnChange = text => {
+        this.setState({ name: text.replace(/[^a-zA-Z]/g, '') })
+    }
+
+    lastnameOnChange = text => {
+        this.setState({ lastname: text.replace(/[^a-zA-Z]/g, '') })
     }
 
     cityOnChange = text => {
@@ -226,27 +227,30 @@ class GetInfo extends React.Component {
                         <Image
                             source={SINAVIA_LOGO}
                             style={{
-                                height: hp(36),
+                                height: hp(32),
                                 resizeMode: 'contain',
-                                marginLeft: wp(6.5)
+                                marginLeft: wp(6)
                             }}
                         />
                     </View>
-                    <View style={styles.compulsoryTextContainer}>
-                        <Text style={styles.compulsoryText}>
-                            *Doldurulması zorunlu alanlar
-                        </Text>
-                    </View>
                     <View style={styles.allTextInputsContainer}>
                         <AuthTextInput
-                            placeholder="Kullanıcı Adı*"
+                            placeholder="Kullanıcı adı"
                             placeholderTextColor="#8A8888"
+                            maxLength={16}
                             onChangeText={this.usernameOnChange}
                         />
                         <AuthTextInput
-                            placeholder="Ad Soyad*"
+                            placeholder="Ad"
                             placeholderTextColor="#8A8888"
-                            onChangeText={this.nameLastameOnChange}
+                            maxLength={16}
+                            onChangeText={this.nameOnChange}
+                        />
+                        <AuthTextInput
+                            placeholder="Soyad"
+                            placeholderTextColor="#8A8888"
+                            maxLength={16}
+                            onChangeText={this.lastnameOnChange}
                         />
                         <TouchableOpacity onPress={this.showDateTimePicker}>
                             <View style={styles.textInputContainer}>
@@ -286,7 +290,7 @@ class GetInfo extends React.Component {
                             color="#00D9EF"
                             buttonText="Onayla"
                             borderRadius={hp(1.5)}
-                            marginTop={hp(2)}
+                            marginTop={hp(3)}
                             fontSize={hp(3)}
                             onPress={this.registerOnPress}
                             disabled={this.props.buttonLock}

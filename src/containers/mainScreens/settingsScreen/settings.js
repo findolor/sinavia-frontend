@@ -32,6 +32,7 @@ import {
 import returnLogo from '../../../assets/return.png'
 import CHANGE_PHOTO from '../../../assets/changePhoto.png'
 import EDIT from '../../../assets/edit.png'
+import { AuthTextInput } from '../../../components/authScreen'
 
 const citiesList = [
     { cityName: 'Adana' },{ cityName: 'Adıyaman' },{ cityName: 'Afyonkarahisar' },{ cityName: 'Ağrı' },{ cityName: 'Aksaray' },{ cityName: 'Amasya' },{ cityName: 'Ankara' },{ cityName: 'Antalya' },
@@ -123,28 +124,27 @@ class Settings extends React.Component {
         })
     }
 
-    nameLastnameOnChange = text => {
-        let splittedText = text.split(/[ ,]+/)
-        let name = splittedText[0]
-        let lastname = splittedText[1]
-        if (name === '') {
-            name = null
-            lastname = null
-        }
-        if (lastname === undefined) lastname = null
-        this.setState({ name: name, lastname: lastname })
+    nameOnChange = text => {
+        this.setState({ name: text.replace(/[^a-zA-Z]/g, '') })
+    }
+
+    lastnameOnChange = text => {
+        this.setState({ lastname: text.replace(/[^a-zA-Z]/g, '') })
     }
 
     usernameOnChange = text => {
         if (text === '') text = null
-        this.setState({ username: text })
+        this.setState({ username: text.replace(/[^a-zA-Z0-9]/g, '') })
     }
 
-    checkNameLastname = () => {
-        if (this.state.name !== null && this.state.lastname !== null) {
-            if (this.state.lastname !== '') return true
-            else return false
-        } else false
+    checkName = () => {
+        if (this.state.name !== null) return true
+            else false
+    }
+
+    checkLastname = () => {
+        if (this.state.lastname !== null) return true
+        else false
     }
 
     checkCity = () => {
@@ -191,8 +191,12 @@ class Settings extends React.Component {
             shouldUpdate = true
         }
 
-        if (this.checkNameLastname()) {
+        if (this.checkName()) {
             clientInformation.name = this.state.name
+            shouldUpdate = true
+        }
+
+        if (this.checkLastname()) {
             clientInformation.lastname = this.state.lastname
             shouldUpdate = true
         }
@@ -424,21 +428,30 @@ class Settings extends React.Component {
                     <View style={styles.textInputContainer}>
                         <View style={styles.textInputTitleContainer}>
                             <Text style={styles.textInputTitle}>Ad</Text>
+                        </View>
+                        <View style={styles.textInputView}>
+                            <TextInput
+                                placeholder={this.props.clientInformation.name}
+                                style={styles.textInputStyle}
+                                placeholderTextColor="#8A8888"
+                                autoCapitalize={'none'}
+                                maxLength={16}
+                                onChangeText={this.nameOnChange}
+                            />
+                        </View>
+                    </View>
+                    <View style={styles.textInputContainer}>
+                        <View style={styles.textInputTitleContainer}>
                             <Text style={styles.textInputTitle}>Soyad</Text>
                         </View>
                         <View style={styles.textInputView}>
                             <TextInput
-                                placeholder={
-                                    this.props.clientInformation.name +
-                                    ' ' +
-                                    this.props.clientInformation.lastname
-                                }
+                                placeholder={this.props.clientInformation.lastname}
                                 style={styles.textInputStyle}
                                 placeholderTextColor="#8A8888"
                                 autoCapitalize={'none'}
-                                onChangeText={text =>
-                                    this.nameLastnameOnChange(text)
-                                }
+                                maxLength={16}
+                                onChangeText={this.lastnameOnChange}
                             />
                         </View>
                     </View>
@@ -456,6 +469,7 @@ class Settings extends React.Component {
                                 style={styles.textInputStyle}
                                 placeholderTextColor="#8A8888"
                                 autoCapitalize={'none'}
+                                maxLength={16}
                                 onChangeText={text =>
                                     this.usernameOnChange(text)
                                 }

@@ -12,28 +12,22 @@ export default StyleSheet.create({
         flexDirection: 'column'
     },
     imageContainer: {
-        flex: 41,
+        flex: 40,
         width: wp(100),
         justifyContent: 'center',
         alignItems: 'center'
     },
-    compulsoryTextContainer: {
-        flex: 5,
-        width: wp(85),
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end'
-    },
     allTextInputsContainer: {
-        flex: 33,
+        flex: 41,
         width: wp(100),
         alignItems: 'center',
         justifyContent: 'space-between'
     },
     authButtonView:{
-        flex: 17,
+        flex: 15,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        width: wp(100),
+        width: wp(100)
     },
     textInputContainer: {
         height: hp(7),
