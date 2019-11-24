@@ -1034,14 +1034,14 @@ class FriendGame extends React.Component {
                                             NORMAL_BUTTON_COLOR
                                                 ? 'bounceIn'
                                                 : this.state
-                                                      .buttonOneBorderColor !==
-                                                  SELECTED_BUTTON_COLOR
-                                                ? this.state
-                                                      .buttonOneBorderColor !==
-                                                  CORRECT_ANSWER_COLOR
-                                                    ? 'swing'
-                                                    : 'pulse'
-                                                : null
+                                                .buttonOneBorderColor !==
+                                            SELECTED_BUTTON_COLOR
+                                          ? this.state.buttonOneBorderColor !== OPPONENT_ANSWER_COLOR ? this.state
+                                          .buttonOneBorderColor !==
+                                      CORRECT_ANSWER_COLOR
+                                        ? 'swing'
+                                        : 'pulse'
+                                    : null : null
                                         }
                                         useNativeDriver={true}
                                     >
@@ -1067,14 +1067,14 @@ class FriendGame extends React.Component {
                                             NORMAL_BUTTON_COLOR
                                                 ? 'bounceIn'
                                                 : this.state
-                                                      .buttonTwoBorderColor !==
-                                                  SELECTED_BUTTON_COLOR
-                                                ? this.state
-                                                      .buttonTwoBorderColor !==
-                                                  CORRECT_ANSWER_COLOR
-                                                    ? 'swing'
-                                                    : 'pulse'
-                                                : null
+                                                .buttonTwoBorderColor !==
+                                            SELECTED_BUTTON_COLOR
+                                          ? this.state.buttonTwoBorderColor !== OPPONENT_ANSWER_COLOR ? this.state
+                                          .buttonTwoBorderColor !==
+                                      CORRECT_ANSWER_COLOR
+                                        ? 'swing'
+                                        : 'pulse'
+                                    : null : null
                                         }
                                         delay={200}
                                         useNativeDriver={true}
@@ -1102,14 +1102,14 @@ class FriendGame extends React.Component {
                                             NORMAL_BUTTON_COLOR
                                                 ? 'bounceIn'
                                                 : this.state
-                                                      .buttonThreeBorderColor !==
-                                                  SELECTED_BUTTON_COLOR
-                                                ? this.state
-                                                      .buttonThreeBorderColor !==
-                                                  CORRECT_ANSWER_COLOR
-                                                    ? 'swing'
-                                                    : 'pulse'
-                                                : null
+                                                .buttonThreeBorderColor !==
+                                            SELECTED_BUTTON_COLOR
+                                          ? this.state.buttonThreeBorderColor !== OPPONENT_ANSWER_COLOR ? this.state
+                                          .buttonThreeBorderColor !==
+                                      CORRECT_ANSWER_COLOR
+                                        ? 'swing'
+                                        : 'pulse'
+                                    : null : null
                                         }
                                         delay={100}
                                         useNativeDriver={true}
@@ -1138,14 +1138,14 @@ class FriendGame extends React.Component {
                                             NORMAL_BUTTON_COLOR
                                                 ? 'bounceIn'
                                                 : this.state
-                                                      .buttonFourBorderColor !==
-                                                  SELECTED_BUTTON_COLOR
-                                                ? this.state
-                                                      .buttonFourBorderColor !==
-                                                  CORRECT_ANSWER_COLOR
-                                                    ? 'swing'
-                                                    : 'pulse'
-                                                : null
+                                                .buttonFourBorderColor !==
+                                            SELECTED_BUTTON_COLOR
+                                          ? this.state.buttonFourBorderColor !== OPPONENT_ANSWER_COLOR ? this.state
+                                          .buttonFourBorderColor !==
+                                      CORRECT_ANSWER_COLOR
+                                        ? 'swing'
+                                        : 'pulse'
+                                    : null : null
                                         }
                                         delay={150}
                                         useNativeDriver={true}
@@ -1172,14 +1172,14 @@ class FriendGame extends React.Component {
                                             NORMAL_BUTTON_COLOR
                                                 ? 'bounceIn'
                                                 : this.state
-                                                      .buttonFiveBorderColor !==
-                                                  SELECTED_BUTTON_COLOR
-                                                ? this.state
-                                                      .buttonFiveBorderColor !==
-                                                  CORRECT_ANSWER_COLOR
-                                                    ? 'swing'
-                                                    : 'pulse'
-                                                : null
+                                                .buttonFiveBorderColor !==
+                                            SELECTED_BUTTON_COLOR
+                                          ? this.state.buttonFiveBorderColor !== OPPONENT_ANSWER_COLOR ? this.state
+                                          .buttonFiveBorderColor !==
+                                      CORRECT_ANSWER_COLOR
+                                        ? 'swing'
+                                        : 'pulse'
+                                    : null : null
                                         }
                                         delay={50}
                                         useNativeDriver={true}
