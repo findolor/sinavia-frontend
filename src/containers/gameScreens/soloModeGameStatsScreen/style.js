@@ -16,6 +16,12 @@ export default StyleSheet.create({
         height: hp(100),
         width: wp(100)
     },
+    backgroundImgShadowView: {
+        height: hp(100),
+        width: wp(100),
+        position: 'absolute',
+        backgroundColor: 'rgba(0,0,0,0.45)'
+    },
     logoContainer: {
         height: hp(42),
         width: wp(100),
@@ -35,6 +41,8 @@ export default StyleSheet.create({
         marginTop: hp(42),
         marginLeft: wp(6.4),
         borderRadius: hp(4),
+        borderWidth: hp(0.5),
+        borderColor: '#FF9900',
         position: 'absolute',
         alignItems: 'center'
     },

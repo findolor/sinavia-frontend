@@ -5,7 +5,8 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Dimensions
+    Dimensions,
+    ImageBackground
 } from 'react-native'
 import {
     navigationReset,
@@ -25,6 +26,7 @@ import unanswered from '../../../assets/gameScreens/unanswered.png'
 import selectedFav from '../../../assets/favori.png'
 import unselectedFav from '../../../assets/favori_bos.png'
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
+import { chooseImage } from '../../../services/courseAssetChooser'
 
 class UnsolvedModeGameStats extends React.Component {
     constructor(props) {
@@ -49,7 +51,9 @@ class UnsolvedModeGameStats extends React.Component {
             // Fav icon selection
             isFaved: false,
             // Fav icon
-            favouriteIcon: unselectedFav
+            favouriteIcon: unselectedFav,
+            // ExamId of the match
+            examId: null
         }
     }
 
@@ -146,7 +150,8 @@ class UnsolvedModeGameStats extends React.Component {
                 incorrectAnswerNumber: playerIncorrect,
                 unansweredAnswerNumber: playerUnanswered,
                 clientProfilePicture: playerProfilePicture,
-                clientUsername: playerUsername
+                clientUsername: playerUsername,
+                examId: this.props.playerProps.examId
             })
 
             this.checkFavouriteStatus()
@@ -260,6 +265,7 @@ class UnsolvedModeGameStats extends React.Component {
     }
 
     render() {
+        const background = chooseImage(this.state.examId, true)
         return (
             <ScrollView
                 pagingEnabled={true}
@@ -268,7 +274,12 @@ class UnsolvedModeGameStats extends React.Component {
                 scrollEventThrottle={8}
             >
                 <View style={styles.container}>
-                    <Image source={background} style={styles.background} />
+                    <ImageBackground
+                        source={background}
+                        style={styles.background}
+                    >
+                        <View style={styles.backgroundImgShadowView} />
+                    </ImageBackground>
                     <View style={styles.logoContainer}>
                         <Image source={SINAVIA_LOGO} style={styles.logoImg} />
                     </View>

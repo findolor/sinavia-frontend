@@ -5,7 +5,8 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Dimensions
+    Dimensions,
+    ImageBackground
 } from 'react-native'
 import {
     navigationReset,
@@ -14,9 +15,9 @@ import {
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
+import { chooseImage } from '../../../services/courseAssetChooser'
 
 import styles from './style'
-import background from '../../../assets/gameScreens/gameStatsBackground.jpg'
 import slideUp from '../../../assets/gameScreens/slideUp.png'
 import slideDown from '../../../assets/gameScreens/slideDown.png'
 import correct from '../../../assets/gameScreens/correct.png'
@@ -49,7 +50,9 @@ class SoloModeGameStats extends React.Component {
             // Fav icon selection
             isFaved: false,
             // Fav icon
-            favouriteIcon: unselectedFav
+            favouriteIcon: unselectedFav,
+            // ExamId of the match
+            examId: null
         }
     }
 
@@ -146,7 +149,8 @@ class SoloModeGameStats extends React.Component {
                 incorrectAnswerNumber: playerIncorrect,
                 unansweredAnswerNumber: playerUnanswered,
                 clientProfilePicture: playerProfilePicture,
-                clientUsername: playerUsername
+                clientUsername: playerUsername,
+                examId: this.props.playerProps.examId
             })
 
             this.checkFavouriteStatus()
@@ -260,6 +264,7 @@ class SoloModeGameStats extends React.Component {
     }
 
     render() {
+        const background = chooseImage(this.state.examId, true)
         return (
             <ScrollView
                 pagingEnabled={true}
@@ -268,7 +273,12 @@ class SoloModeGameStats extends React.Component {
                 scrollEventThrottle={8}
             >
                 <View style={styles.container}>
-                    <Image source={background} style={styles.background} />
+                    <ImageBackground
+                        source={background}
+                        style={styles.background}
+                    >
+                        <View style={styles.backgroundImgShadowView} />
+                    </ImageBackground>
                     <View style={styles.logoContainer}>
                         <Image source={SINAVIA_LOGO} style={styles.logoImg} />
                     </View>
