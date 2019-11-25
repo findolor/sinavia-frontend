@@ -141,7 +141,7 @@ class Register extends React.Component {
 
     registerOnPress = () => {
         if(this.state.email === '' || this.state.password === '' || this.state.secondPassword === ''){
-            flashMessages.blankSpaceError({
+            flashMessages.authInfosOrSettingsError('Boş alan hatası', 'Bütün alanları doldurmalısın',{
                 backgroundColor: '#FFFFFF',
                 borderBottomLeftRadius: 10,
                 borderBottomRightRadius: 10,
@@ -151,7 +151,7 @@ class Register extends React.Component {
             })
         }
         else if(this.state.password.length < 6) {
-            flashMessages.passwordCharacterLengthError({
+            flashMessages.authInfosOrSettingsError('Şifre hatası', 'Şifren en az 6, en fazla 16 karakterden oluşmalıdır',{
                 backgroundColor: '#FFFFFF',
                 borderBottomLeftRadius: 10,
                 borderBottomRightRadius: 10,
@@ -162,7 +162,7 @@ class Register extends React.Component {
             this.setState({passwordBorderColor: 'red'})
         }
         else if(this.state.secondPassword.length < 6) {
-            flashMessages.passwordCharacterLengthError({
+            flashMessages.authInfosOrSettingsError('Şifre hatası', 'Şifren en az 6, en fazla 16 karakterden oluşmalıdır',{
                 backgroundColor: '#FFFFFF',
                 borderBottomLeftRadius: 10,
                 borderBottomRightRadius: 10,
@@ -173,7 +173,7 @@ class Register extends React.Component {
             this.setState({secondPasswordBorderColor: 'red'})
         }
         else if(this.state.password.includes(' ')){
-            flashMessages.spaceCharacterInPasswordError({
+            flashMessages.authInfosOrSettingsError('Şifre hatası', 'Şifren içerisinde boşluk bulunmamalıdır',{
                 backgroundColor: '#FFFFFF',
                 borderBottomLeftRadius: 10,
                 borderBottomRightRadius: 10,
@@ -184,7 +184,7 @@ class Register extends React.Component {
             this.setState({passwordBoderColor: 'red'})
         }
         else if(this.state.secondPassword.includes(' ')){
-            flashMessages.spaceCharacterInPasswordError({
+            flashMessages.authInfosOrSettingsError('Şifre hatası', 'Şifren içerisinde boşluk bulunmamalıdır',{
                 backgroundColor: '#FFFFFF',
                 borderBottomLeftRadius: 10,
                 borderBottomRightRadius: 10,
@@ -195,7 +195,7 @@ class Register extends React.Component {
             this.setState({secondPasswordBoderColor: 'red'})
         }
         else if(this.state.password !== this.state.secondPassword){
-            flashMessages.passwordsNotMatchError({
+            flashMessages.authInfosOrSettingsError('Şifre hatası', 'Şifreler birbiriyle uyuşmamaktadır',{
                 backgroundColor: '#FFFFFF',
                 borderBottomLeftRadius: 10,
                 borderBottomRightRadius: 10,

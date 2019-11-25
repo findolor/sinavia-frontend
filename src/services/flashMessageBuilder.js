@@ -49,76 +49,10 @@ export const flashMessages = {
             textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
             backgroundColor: 'white'
         }),
-    nameError: (props = {}) =>
+    authInfosOrSettingsError: (message, description, props = {}) =>
         showMessage({
-            message: 'Ad hatası',
-            description: 'Ad sadece harflerden oluşmalıdır',
-            titleStyle: {
-                fontFamily: 'Averta-SemiboldItalic',
-                color: '#FF9900'
-            },
-            textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
-            ...props
-        }),
-    lastnameError: (props = {}) =>
-        showMessage({
-            message: 'Soyad hatası',
-            description: 'Soyad sadece harflerden oluşmalıdır',
-            titleStyle: {
-                fontFamily: 'Averta-SemiboldItalic',
-                color: '#FF9900'
-            },
-            textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
-            ...props
-        }),
-    usernameError: (props = {}) =>
-        showMessage({
-            message: 'Kullanıcı adı hatası',
-            description: 'Kullanıcı adı sadece harf veya rakamlardan oluşabilir',
-            titleStyle: {
-                fontFamily: 'Averta-SemiboldItalic',
-                color: '#FF9900'
-            },
-            textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
-            ...props
-        }),
-    blankSpaceError: (props = {}) =>
-        showMessage({
-            message: 'Boş alan hatası',
-            description: 'Bütün alanları doldurmalısın',
-            titleStyle: {
-                fontFamily: 'Averta-SemiboldItalic',
-                color: '#FF9900'
-            },
-            textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
-            ...props
-        }),
-    passwordCharacterLengthError: (props = {}) =>
-        showMessage({
-            message: 'Şifre hatası',
-            description: 'Şifren en az 6, en fazla 16 karakterden oluşmalıdır',
-            titleStyle: {
-                fontFamily: 'Averta-SemiboldItalic',
-                color: '#FF9900'
-            },
-            textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
-            ...props
-        }),
-    spaceCharacterInPasswordError: (props = {}) =>
-        showMessage({
-            message: 'Şifre hatası',
-            description: 'Şifren içerisinde boşluk bulunmamalıdır',
-            titleStyle: {
-                fontFamily: 'Averta-SemiboldItalic',
-                color: '#FF9900'
-            },
-            textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
-            ...props
-        }),
-    passwordsNotMatchError: (props = {}) =>
-        showMessage({
-            message: 'Şifre hatası',
-            description: 'Şifreler birbiriyle uyuşmamaktadır',
+            message: message,
+            description: description,
             titleStyle: {
                 fontFamily: 'Averta-SemiboldItalic',
                 color: '#FF9900'

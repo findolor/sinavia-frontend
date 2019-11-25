@@ -180,7 +180,7 @@ class GetInfo extends React.Component {
 
     registerOnPress = () => {
         if ( this.state.nameBorderColor === 'red'){
-            flashMessages.nameError({
+            flashMessages.authInfosOrSettingsError('Ad hatası', 'Ad sadece harflerden oluşmalıdır',{
                 backgroundColor: '#FFFFFF',
                 borderBottomLeftRadius: 10,
                 borderBottomRightRadius: 10,
@@ -190,7 +190,7 @@ class GetInfo extends React.Component {
             })
         }
         else if (this.state.lastnameBorderColor === 'red') {
-            flashMessages.lastnameError({
+            flashMessages.authInfosOrSettingsError('Soyad hatası', 'Soyad sadece harflerden oluşmalıdır',{
                 backgroundColor: '#FFFFFF',
                 borderBottomLeftRadius: 10,
                 borderBottomRightRadius: 10,
@@ -200,7 +200,7 @@ class GetInfo extends React.Component {
             })
         }
         else if (this.state.usernameBorderColor === 'red') {
-            flashMessages.usernameError({
+            flashMessages.authInfosOrSettingsError('Kullanıcı adı hatası', 'Kullanıcı adı sadece harf veya rakamlardan oluşabilir',{
                 backgroundColor: '#FFFFFF',
                 borderBottomLeftRadius: 10,
                 borderBottomRightRadius: 10,
@@ -210,7 +210,7 @@ class GetInfo extends React.Component {
             })
         }
         else if (this.state.username === null || this.state.name === null || this.state.lastname === null || this.state.birthDate === null || this.state.city === null) {
-            flashMessages.blankSpaceError({
+            flashMessages.authInfosOrSettingsError('Boş alan hatası', 'Bütün alanları doldurmalısın',{
                 backgroundColor: '#FFFFFF',
                 borderBottomLeftRadius: 10,
                 borderBottomRightRadius: 10,

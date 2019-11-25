@@ -212,7 +212,7 @@ class Settings extends React.Component {
 
     saveButtonOnPress = async () => {
         if ( this.state.usernameBorderColor === 'red'){
-            flashMessages.usernameError({
+            flashMessages.authInfosOrSettingsError('Kullanıcı adı hatası', 'Kullanıcı adı sadece harf veya rakamlardan oluşabilir',{
                 backgroundColor: '#FFFFFF',
                 borderBottomLeftRadius: 10,
                 borderBottomRightRadius: 10,
@@ -222,7 +222,7 @@ class Settings extends React.Component {
             })
         }
         else if (this.state.nameBorderColor === 'red') {
-            flashMessages.nameError({
+            flashMessages.authInfosOrSettingsError('Ad hatası', 'Ad sadece harflerden oluşmalıdır',{
                 backgroundColor: '#FFFFFF',
                 borderBottomLeftRadius: 10,
                 borderBottomRightRadius: 10,
@@ -232,7 +232,7 @@ class Settings extends React.Component {
             })
         }
         else if (this.state.lastnameBorderColor === 'red') {
-                flashMessages.lastnameError({
+            flashMessages.authInfosOrSettingsError('Soyad hatası', 'Soyad sadece harflerden oluşmalıdır',{
                     backgroundColor: '#FFFFFF',
                     borderBottomLeftRadius: 10,
                     borderBottomRightRadius: 10,
