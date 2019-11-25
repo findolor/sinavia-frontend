@@ -296,7 +296,7 @@ class Home extends React.Component {
         const client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
         client.onOpen.add(() => {
             // TODO PUT A MODAL HERE FOR WAITING
-            Alert.alert('Bekleniyor...')
+            this.setState({isModalVisible: true, visibleView: 'WAITING_TO_JOIN_FRIEND_ROOM'})
 
             room = client.join('friendRoom', {
                 databaseId: this.props.clientDBId,
@@ -307,7 +307,7 @@ class Home extends React.Component {
             // We set a timeout for the time passed since join initiation
             // TODO THINK ABOUT THE TIMEOUT NUMBER IN HERE
             const timeout = setTimeout(() => {
-                Alert.alert('Üzgünüm ama oda aktif değil')
+                this.setState({isModalVisible: true, visibleView: 'ROOM_IS_NOT_ACTIVE'})
                 room.leave()
                 client.close()
             }, 5000)
@@ -316,6 +316,7 @@ class Home extends React.Component {
             room.onJoin.add(() => {
                 // We clear the timeout as we don't need it anymore
                 clearTimeout(timeout)
+                this.setState({visibleView: ''})
                 // Getting the opponent information and navigatiing
                 userServices
                     .getUser(this.props.clientToken, params.opponentId)
@@ -1345,9 +1346,7 @@ class Home extends React.Component {
                                                             )
                                                         else {
                                                             // TODO MAKE A MODAL HERE
-                                                            Alert.alert(
-                                                                'Arkadaşın önden başladı!'
-                                                            )
+                                                            this.setState({isModalVisible: true, visibleView: 'YOUR_FRIEND_STARTED_GAME'})
                                                             navigationPush(
                                                                 SCENE_KEYS
                                                                     .mainScreens
@@ -1525,6 +1524,88 @@ class Home extends React.Component {
         )
     }
 
+    waitingToJoinFriendRoomView() {
+        return(
+            <View
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.gameRequestView}>
+                        <Text style={styles.gameRequestText}>
+                            Odaya giriş yapman bekleniyor...
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
+    roomIsNotActiveView() {
+        return(
+            <View
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.gameRequestView}>
+                        <Text style={styles.gameRequestText}>
+                            Üzgünüm, ancak oda aktif değil :(
+                        </Text>
+                    </View>
+                    <View style={styles.yesOrNoButtonsContainer}>
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(87.5)}
+                            color="#00D9EF"
+                            buttonText="Tamam"
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
+                            onPress={this.closeModalButtonOnPress}
+                        />
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
+    yourFriendStartedGameView() {
+        return(
+            <View
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.gameRequestView}>
+                        <Text style={styles.gameRequestText}>
+                            Arkadaşın önden oynamaya başladı, oyununu bitirdikten sonra sıra sende olacak, bol şans :)
+                        </Text>
+                    </View>
+                    <View style={styles.yesOrNoButtonsContainer}>
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(87.5)}
+                            color="#00D9EF"
+                            buttonText="Tamam"
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
+                            onPress={this.closeModalButtonOnPress}
+                        />
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     playButtonOnPress = () => {
         if (!this.props.isNetworkConnected) {
             showMessage({
@@ -1662,6 +1743,12 @@ class Home extends React.Component {
                     )}
                     {this.state.visibleView === 'PREMIUM_MODAL_FOR_SOLO' &&
                         this.premiumForSoloView()}
+                    {this.state.visibleView === 'WAITING_TO_JOIN_FRIEND_ROOM' &&
+                    this.waitingToJoinFriendRoomView()}
+                    {this.state.visibleView === 'ROOM_IS_NOT_ACTIVE' &&
+                    this.roomIsNotActiveView()}
+                    {this.state.visibleView === 'YOUR_FRIEND_STARTED_GAME' &&
+                    this.yourFriendStartedGameView()}
                 </Modal>
                 <Modal
                     visible={this.state.isFriendGameRequestModalVisible}
