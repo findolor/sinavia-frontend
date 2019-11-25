@@ -33,7 +33,7 @@ class Leaderboard extends React.Component {
             globalButtonTextColor: '#FFFFFF',
             friendsButtonBackgroundColor: '#FFFFFF',
             friendsButtonTextColor: '#2E313C',
-            // Dropwodn list variables
+            // Dropdown list variables
             courseList: [],
             subjectList: [],
             subjectListDefaultValue: '',
@@ -484,6 +484,29 @@ class Leaderboard extends React.Component {
                                             this.pickerSelectCourse(idx, value)
                                         }
                                     />
+                                    {this.state.isSubjectDropdownVisible && (
+                                            <DropDown
+                                                style={styles.picker}
+                                                textStyle={styles.pickerText}
+                                                dropdownTextStyle={
+                                                    styles.pickerDropdownText
+                                                }
+                                                dropdownStyle={
+                                                    styles.pickerDropdown
+                                                }
+                                                defaultValue={
+                                                    this.state
+                                                        .subjectListDefaultValue
+                                                }
+                                                options={this.state.subjectList}
+                                                onSelect={(idx, value) =>
+                                                    this.selectSubjectDropdown(
+                                                        idx,
+                                                        value
+                                                    )
+                                                }
+                                            />
+                                    )}
                                 </View>
                                 <View style={styles.leaderImageContainer}>
                                     <ImageBackground
@@ -512,31 +535,12 @@ class Leaderboard extends React.Component {
                                         </View>
                                     </ImageBackground>
                                 </View>
-                                {this.state.isSubjectDropdownVisible && (
-                                    <View style={styles.dropdownContainer}>
-                                        <DropDown
-                                            style={styles.picker}
-                                            textStyle={styles.pickerText}
-                                            dropdownTextStyle={
-                                                styles.pickerDropdownText
-                                            }
-                                            dropdownStyle={
-                                                styles.pickerDropdown
-                                            }
-                                            defaultValue={
-                                                this.state
-                                                    .subjectListDefaultValue
-                                            }
-                                            options={this.state.subjectList}
-                                            onSelect={(idx, value) =>
-                                                this.selectSubjectDropdown(
-                                                    idx,
-                                                    value
-                                                )
-                                            }
-                                        />
+                                    <View style={[styles.dropdownContainer, {justifyContent: 'flex-end'}]}>
+                                        <View style={styles.lastUpdateView}>
+                                            <Text style={styles.lastUpdateText}>Son Güncelleme Tarihi</Text>
+                                            <Text style={styles.lastUpdateTimeText}>10 saat önce</Text>
+                                        </View>
                                     </View>
-                                )}
                             </View>
                             <View style={styles.nameAndScoreContainer}>
                                 <Text style={styles.nameText}>
