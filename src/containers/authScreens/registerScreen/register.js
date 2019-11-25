@@ -69,6 +69,7 @@ class Register extends React.Component {
 
     toggleSwitch = () => {
         this.setState({ switchValue: !this.state.switchValue })
+        alert(this.state.switchValue)
     }
 
     showDateTimePicker = () => {
@@ -204,6 +205,16 @@ class Register extends React.Component {
                 height: hp(10)
             })
             this.setState({passwordBorderColor: 'red', secondPasswordBorderColor: 'red'})
+        }
+        else if(this.state.switchValue === false){
+            flashMessages.authInfosOrSettingsError('Son bir adım', 'Kullanıcı sözleşmesini onaylamalısın',{
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
         }
         else{
             if (!this.props.isNetworkConnected) {
@@ -387,9 +398,6 @@ class Register extends React.Component {
                         <View style={styles.licenseTextContainer}>
                             <Text style={styles.toggleText}>
                                 <Text
-                                    onPress={() => {
-                                        alert('Model gelecek')
-                                    }}
                                     style={{ textDecorationLine: 'underline', fontFamily: 'Averta-Semibold' }}
                                 >
                                     Kullanıcı sözleşmesi

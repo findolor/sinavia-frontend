@@ -432,8 +432,7 @@ class PurchaseScreen extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.premiumContainer}>
-                    <View  style={styles.premiumUpperView}>
-                        <LinearGradient colors={['white', '#F3CE97']} style={styles.linearGradientUpperView}>
+                    <LinearGradient colors={['white', '#F3CE97']} style={styles.premiumUpperView}>
                             <View style={styles.premiumSwiperContainer}>
                                 <Swiper autoplay={true}
                                         loop={true}
@@ -517,8 +516,7 @@ class PurchaseScreen extends React.Component {
                                     <Text style={styles.premiumButtonText}>ELİT ÖĞRENCİ PAKETİ'Nİ ŞİMDİ AL</Text>
                                 </TouchableOpacity>
                             </View>
-                        </LinearGradient>
-                    </View>
+                    </LinearGradient>
                     <TouchableOpacity style={styles.premiumBottomView}>
                         <Text style={styles.inviteText}>Arkadaşını davet et</Text>
                         <Text style={styles.earnPremiumWithInviteText}>1 Haftalık Elit Öğrenci Paketi Kazan!</Text>

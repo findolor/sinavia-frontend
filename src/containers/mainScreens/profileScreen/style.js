@@ -171,7 +171,7 @@ export default StyleSheet.create({
     },
     profileInfoView: {
         height: hp(12),
-        width: wp(80),
+        width: wp(90),
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -179,6 +179,7 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Bold',
         fontSize: hp(3.5),
         color: 'white',
+        textAlign: 'center',
         paddingVertical: hp(0)
     },
     usernameText: {

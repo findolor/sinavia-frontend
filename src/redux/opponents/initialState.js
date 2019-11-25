@@ -19,7 +19,7 @@ export const INITIAL_STATE = {
     clientWinCount: 0,
     opponentList: [
         {
-            opponentInformation: {},
+            opponentInformation: {name: '', lastname: ''},
             totalRankedWin: 0,
             totalRankedLose: 0,
             totalRankedDraw: 0,
