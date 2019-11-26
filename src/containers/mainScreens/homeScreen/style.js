@@ -437,7 +437,7 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        borderRadius: 6,
+        borderRadius: hp(1),
         backgroundColor: '#B0B0B0'
     },
     instantProgressView: {

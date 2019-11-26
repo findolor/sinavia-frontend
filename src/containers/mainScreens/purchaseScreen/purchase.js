@@ -340,11 +340,11 @@ class PurchaseScreen extends React.Component {
                                         </View>
                                     </View>
                                     <View style={styles.jokerPricesView}>
-                                        <Text style={styles.normalPriceText}>9 TL</Text>
+                                        <Text style={styles.normalPriceText}>9 ₺ yerine</Text>
                                     </View>
                                     <View style={styles.purchaseJokerButtonView}>
                                         <TouchableOpacity style={styles.purchaseJokerButton}>
-                                            <Text style={styles.discountPriceText}>6 TL</Text>
+                                            <Text style={styles.discountPriceText}>6 ₺</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </TouchableOpacity>
@@ -356,23 +356,23 @@ class PurchaseScreen extends React.Component {
                                     <View style={styles.jokersView}>
                                         <View style={styles.jokerView}>
                                             <Image source={{ uri: this.state.firstJoker.joker.imageLink }} style={styles.jokerImg}/>
-                                            <Text style={styles.jokerAmountText}>x10</Text>
+                                            <Text style={styles.jokerAmountText}>x30</Text>
                                         </View>
                                         <View style={styles.jokerView}>
                                             <Image source={{ uri: this.state.secondJoker.joker.imageLink }} style={styles.jokerImg}/>
-                                            <Text style={styles.jokerAmountText}>x10</Text>
+                                            <Text style={styles.jokerAmountText}>x30</Text>
                                         </View>
                                         <View style={styles.jokerView}>
                                             <Image source={{ uri: this.state.thirdJoker.joker.imageLink }} style={styles.jokerImg}/>
-                                            <Text style={styles.jokerAmountText}>x10</Text>
+                                            <Text style={styles.jokerAmountText}>x30</Text>
                                         </View>
                                     </View>
                                     <View style={styles.jokerPricesView}>
-                                        <Text style={styles.normalPriceText}>9 TL</Text>
+                                        <Text style={styles.normalPriceText}>27 ₺ yerine</Text>
                                     </View>
                                     <View style={styles.purchaseJokerButtonView}>
                                         <TouchableOpacity style={styles.purchaseJokerButton}>
-                                            <Text style={styles.discountPriceText}>6 TL</Text>
+                                            <Text style={styles.discountPriceText}>15 ₺</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </TouchableOpacity>
@@ -384,36 +384,191 @@ class PurchaseScreen extends React.Component {
                                     <View style={styles.jokersView}>
                                         <View style={styles.jokerView}>
                                             <Image source={{ uri: this.state.firstJoker.joker.imageLink }} style={styles.jokerImg}/>
-                                            <Text style={styles.jokerAmountText}>x10</Text>
+                                            <Text style={styles.jokerAmountText}>x60</Text>
                                         </View>
                                         <View style={styles.jokerView}>
                                             <Image source={{ uri: this.state.secondJoker.joker.imageLink }} style={styles.jokerImg}/>
-                                            <Text style={styles.jokerAmountText}>x10</Text>
+                                            <Text style={styles.jokerAmountText}>x60</Text>
                                         </View>
                                         <View style={styles.jokerView}>
                                             <Image source={{ uri: this.state.thirdJoker.joker.imageLink }} style={styles.jokerImg}/>
-                                            <Text style={styles.jokerAmountText}>x10</Text>
+                                            <Text style={styles.jokerAmountText}>x60</Text>
                                         </View>
                                     </View>
                                     <View style={styles.jokerPricesView}>
-                                        <Text style={styles.normalPriceText}>9 TL</Text>
+                                        <Text style={styles.normalPriceText}>54 ₺ yerine</Text>
                                     </View>
                                     <View style={styles.purchaseJokerButtonView}>
                                         <TouchableOpacity style={styles.purchaseJokerButton}>
-                                            <Text style={styles.discountPriceText}>6 TL</Text>
+                                            <Text style={styles.discountPriceText}>25 ₺</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </TouchableOpacity>
                             </View>
                             <View style={styles.swiperView}>
-                                <View style={styles.bundleView}/>
-                                <View style={styles.bundleView}/>
-                                <View style={styles.bundleView}/>
+                                <TouchableOpacity style={styles.bundleView}>
+                                    <View style={styles.totalJokerAmountView}>
+                                        <Text style={styles.jokerAmountsText}>Rakibi Gör</Text>
+                                    </View>
+                                    <View style={styles.jokersView}>
+                                        <Image source={{ uri: this.state.firstJoker.joker.imageLink }} style={[styles.jokerImg, {height: hp(4), width: hp(4)}]}/>
+                                        <Text style={[styles.jokerAmountText, { fontFamily: 'Averta-Semibold',fontSize: hp(3.75), color: '#FF9900'}]}>x30</Text>
+                                    </View>
+                                    <View style={styles.jokerPricesView}>
+                                        <Text style={styles.normalPriceText}>12 ₺ yerine</Text>
+                                    </View>
+                                    <View style={styles.purchaseJokerButtonView}>
+                                        <TouchableOpacity style={styles.purchaseJokerButton}>
+                                            <Text style={styles.discountPriceText}>8 ₺</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </TouchableOpacity>
+                                <View style={styles.bundleDivider}/>
+                                <TouchableOpacity style={styles.bundleView}>
+                                    <View style={styles.totalJokerAmountView}>
+                                        <Text style={styles.jokerAmountsText}>Şık Ele</Text>
+                                    </View>
+                                    <View style={styles.jokersView}>
+                                        <Image source={{ uri: this.state.secondJoker.joker.imageLink }} style={[styles.jokerImg, {height: hp(4), width: hp(4)}]}/>
+                                        <Text style={[styles.jokerAmountText, { fontFamily: 'Averta-Semibold',fontSize: hp(3.75), color: '#FF9900'}]}>x30</Text>
+                                    </View>
+                                    <View style={styles.jokerPricesView}>
+                                        <Text style={styles.normalPriceText}>8 ₺ yerine</Text>
+                                    </View>
+                                    <View style={styles.purchaseJokerButtonView}>
+                                        <TouchableOpacity style={styles.purchaseJokerButton}>
+                                            <Text style={styles.discountPriceText}>5 ₺</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </TouchableOpacity>
+                                <View style={styles.bundleDivider}/>
+                                <TouchableOpacity style={styles.bundleView}>
+                                    <View style={styles.totalJokerAmountView}>
+                                        <Text style={styles.jokerAmountsText}>Çifte Şans</Text>
+                                    </View>
+                                    <View style={styles.jokersView}>
+                                        <Image source={{ uri: this.state.thirdJoker.joker.imageLink }} style={[styles.jokerImg, {height: hp(4), width: hp(4)}]}/>
+                                        <Text style={[styles.jokerAmountText, { fontFamily: 'Averta-Semibold',fontSize: hp(3.75), color: '#FF9900'}]}>x30</Text>
+                                    </View>
+                                    <View style={styles.jokerPricesView}>
+                                        <Text style={styles.normalPriceText}>10 ₺ yerine</Text>
+                                    </View>
+                                    <View style={styles.purchaseJokerButtonView}>
+                                        <TouchableOpacity style={styles.purchaseJokerButton}>
+                                            <Text style={styles.discountPriceText}>7 ₺</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </TouchableOpacity>
                             </View>
                             <View style={styles.swiperView}>
-                                <View style={styles.bundleView}/>
-                                <View style={styles.bundleView}/>
-                                <View style={styles.bundleView}/>
+                                <TouchableOpacity style={styles.bundleView}>
+                                    <View style={styles.totalJokerAmountView}>
+                                        <Text style={styles.jokerAmountsText}>Rakibi Gör</Text>
+                                    </View>
+                                    <View style={styles.jokersView}>
+                                        <Image source={{ uri: this.state.firstJoker.joker.imageLink }} style={[styles.jokerImg, {height: hp(4), width: hp(4)}]}/>
+                                        <Text style={[styles.jokerAmountText, { fontFamily: 'Averta-Semibold',fontSize: hp(3.75), color: '#FF9900'}]}>x90</Text>
+                                    </View>
+                                    <View style={styles.jokerPricesView}>
+                                        <Text style={styles.normalPriceText}>36 ₺ yerine</Text>
+                                    </View>
+                                    <View style={styles.purchaseJokerButtonView}>
+                                        <TouchableOpacity style={styles.purchaseJokerButton}>
+                                            <Text style={styles.discountPriceText}>21 ₺</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </TouchableOpacity>
+                                <View style={styles.bundleDivider}/>
+                                <TouchableOpacity style={styles.bundleView}>
+                                    <View style={styles.totalJokerAmountView}>
+                                        <Text style={styles.jokerAmountsText}>Şık Ele</Text>
+                                    </View>
+                                    <View style={styles.jokersView}>
+                                        <Image source={{ uri: this.state.secondJoker.joker.imageLink }} style={[styles.jokerImg, {height: hp(4), width: hp(4)}]}/>
+                                        <Text style={[styles.jokerAmountText, { fontFamily: 'Averta-Semibold',fontSize: hp(3.75), color: '#FF9900'}]}>x90</Text>
+                                    </View>
+                                    <View style={styles.jokerPricesView}>
+                                        <Text style={styles.normalPriceText}>24 ₺ yerine</Text>
+                                    </View>
+                                    <View style={styles.purchaseJokerButtonView}>
+                                        <TouchableOpacity style={styles.purchaseJokerButton}>
+                                            <Text style={styles.discountPriceText}>14 ₺</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </TouchableOpacity>
+                                <View style={styles.bundleDivider}/>
+                                <TouchableOpacity style={styles.bundleView}>
+                                    <View style={styles.totalJokerAmountView}>
+                                        <Text style={styles.jokerAmountsText}>Çifte Şans</Text>
+                                    </View>
+                                    <View style={styles.jokersView}>
+                                        <Image source={{ uri: this.state.thirdJoker.joker.imageLink }} style={[styles.jokerImg, {height: hp(4), width: hp(4)}]}/>
+                                        <Text style={[styles.jokerAmountText, { fontFamily: 'Averta-Semibold',fontSize: hp(3.75), color: '#FF9900'}]}>x90</Text>
+                                    </View>
+                                    <View style={styles.jokerPricesView}>
+                                        <Text style={styles.normalPriceText}>30 ₺ yerine</Text>
+                                    </View>
+                                    <View style={styles.purchaseJokerButtonView}>
+                                        <TouchableOpacity style={styles.purchaseJokerButton}>
+                                            <Text style={styles.discountPriceText}>18 ₺</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styles.swiperView}>
+                                <TouchableOpacity style={styles.bundleView}>
+                                    <View style={styles.totalJokerAmountView}>
+                                        <Text style={styles.jokerAmountsText}>Rakibi Gör</Text>
+                                    </View>
+                                    <View style={styles.jokersView}>
+                                        <Image source={{ uri: this.state.firstJoker.joker.imageLink }} style={[styles.jokerImg, {height: hp(4), width: hp(4)}]}/>
+                                        <Text style={[styles.jokerAmountText, { fontFamily: 'Averta-Semibold',fontSize: hp(3.75), color: '#FF9900'}]}>x180</Text>
+                                    </View>
+                                    <View style={styles.jokerPricesView}>
+                                        <Text style={styles.normalPriceText}>72 ₺ yerine</Text>
+                                    </View>
+                                    <View style={styles.purchaseJokerButtonView}>
+                                        <TouchableOpacity style={styles.purchaseJokerButton}>
+                                            <Text style={styles.discountPriceText}>36 ₺</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </TouchableOpacity>
+                                <View style={styles.bundleDivider}/>
+                                <TouchableOpacity style={styles.bundleView}>
+                                    <View style={styles.totalJokerAmountView}>
+                                        <Text style={styles.jokerAmountsText}>Şık Ele</Text>
+                                    </View>
+                                    <View style={styles.jokersView}>
+                                        <Image source={{ uri: this.state.secondJoker.joker.imageLink }} style={[styles.jokerImg, {height: hp(4), width: hp(4)}]}/>
+                                        <Text style={[styles.jokerAmountText, { fontFamily: 'Averta-Semibold',fontSize: hp(3.75), color: '#FF9900'}]}>x180</Text>
+                                    </View>
+                                    <View style={styles.jokerPricesView}>
+                                        <Text style={styles.normalPriceText}>48 ₺ yerine</Text>
+                                    </View>
+                                    <View style={styles.purchaseJokerButtonView}>
+                                        <TouchableOpacity style={styles.purchaseJokerButton}>
+                                            <Text style={styles.discountPriceText}>27 ₺</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </TouchableOpacity>
+                                <View style={styles.bundleDivider}/>
+                                <TouchableOpacity style={styles.bundleView}>
+                                    <View style={styles.totalJokerAmountView}>
+                                        <Text style={styles.jokerAmountsText}>Çifte Şans</Text>
+                                    </View>
+                                    <View style={styles.jokersView}>
+                                        <Image source={{ uri: this.state.thirdJoker.joker.imageLink }} style={[styles.jokerImg, {height: hp(4), width: hp(4)}]}/>
+                                        <Text style={[styles.jokerAmountText, { fontFamily: 'Averta-Semibold',fontSize: hp(3.75), color: '#FF9900'}]}>x180</Text>
+                                    </View>
+                                    <View style={styles.jokerPricesView}>
+                                        <Text style={styles.normalPriceText}>60 ₺ yerine</Text>
+                                    </View>
+                                    <View style={styles.purchaseJokerButtonView}>
+                                        <TouchableOpacity style={styles.purchaseJokerButton}>
+                                            <Text style={styles.discountPriceText}>30 ₺</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </TouchableOpacity>
                             </View>
                         </Swiper>
                     </View>

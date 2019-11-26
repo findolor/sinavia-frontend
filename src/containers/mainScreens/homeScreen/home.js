@@ -10,7 +10,8 @@ import {
     AsyncStorage,
     Alert,
     FlatList,
-    AppState
+    AppState,
+    Animated
 } from 'react-native'
 import { connect } from 'react-redux'
 import { gameContentActions } from '../../../redux/gameContent/actions'
@@ -70,6 +71,9 @@ import { levelFinder } from '../../../services/userLevelFinder'
 import SWORD from '../../../assets/sword.png'
 import LinearGradient from 'react-native-linear-gradient'
 
+
+var progress_bar_available_width = wp(65)
+
 const carouselFirstItem = 0
 
 const SELECTED_MODE_COLOR = '#00D9EF'
@@ -86,6 +90,7 @@ const SOLO_PREMIUM = require('../../../assets/soloPremium.png')
 class Home extends React.Component {
     constructor(props) {
         super(props)
+        this.progress = new Animated.Value(0)
         this.state = {
             // Dropdown default value
             defaultExam: this.props.choosenExam,
@@ -134,6 +139,31 @@ class Home extends React.Component {
             // Solo choosen question amount
             choosenQuestionAmountSolo: 5
         }
+    }
+
+    async componentDidUpdate() {
+        this.progress.setValue(0);
+
+        Animated.timing(this.progress, {
+            duration: 1500,
+            toValue: (Math.floor(
+                levelFinder(
+                    this.state
+                        .selectedContentTotalPoints
+                ).levelProgressScore
+                )
+                /
+                Math.floor(
+                    levelFinder(
+                        this.state
+                            .selectedContentTotalPoints !==
+                        0
+                            ? this.state
+                                .selectedContentTotalPoints
+                            : 1000
+                    ).levelProgressLimit
+                )) * 100
+        }).start();
     }
 
     async componentDidMount() {
@@ -612,32 +642,10 @@ class Home extends React.Component {
                                     ).level
                                 )}
                             </Text>
-                            <View
-                                style={[
-                                    styles.instantProgressView,
-                                    {
-                                        width: wp(
-                                            (Math.floor(
-                                                levelFinder(
-                                                    this.state
-                                                        .selectedContentTotalPoints
-                                                ).levelProgressScore
-                                            ) /
-                                                Math.floor(
-                                                    levelFinder(
-                                                        this.state
-                                                            .selectedContentTotalPoints !==
-                                                            0
-                                                            ? this.state
-                                                                  .selectedContentTotalPoints
-                                                            : 1
-                                                    ).levelProgressLimit
-                                                )) *
-                                                65
-                                        )
-                                    }
-                                ]}
-                            />
+                            <Animated.View
+                                style={[this.getProgressStyles.call(this)]}
+                            >
+                            </Animated.View>
                             <View style={styles.progressScoreView}>
                                 <Text style={styles.levelInProgressText}>
                                     {Math.floor(
@@ -1709,6 +1717,26 @@ class Home extends React.Component {
         }
         this.setState({ isNotificationReceived: false })
         navigationPush(SCENE_KEYS.mainScreens.notifications)
+    }
+
+    getProgressStyles() {
+        var animated_width = this.progress.interpolate({
+            inputRange: [0, 50, 100],
+            outputRange: [0, progress_bar_available_width / 2, progress_bar_available_width]
+        });
+        //red -> orange -> green
+        const color_animation = this.progress.interpolate({
+            inputRange: [0, 50, 100],
+            outputRange: ['rgb(199, 45, 50)', 'rgb(224, 150, 39)', 'rgb(101, 203, 25)']
+        });
+
+        return {
+            position: 'absolute',
+            width: animated_width,
+            height: hp(5),
+            borderRadius: hp(1),
+            backgroundColor: color_animation
+        }
     }
 
     render() {
