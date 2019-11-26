@@ -76,8 +76,27 @@ export default StyleSheet.create({
     dropdownContainer: {
         height: hp(18),
         width: wp(35),
+        justifyContent: 'space-evenly',
+        alignItems: 'center'
+    },
+    lastUpdateView: {
+        height: hp(13.5),
+        width: wp(35),
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    lastUpdateText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(2.3),
+        color: '#2E313C',
+        textAlign: 'center',
+        marginRight: wp(3)
+    },
+    lastUpdateTimeText: {
+        fontFamily: 'Averta-SemiboldItalic',
+        fontSize: hp(2.5),
+        color: '#2E313C',
+        marginRight: wp(3)
     },
     leaderImageContainer: {
         height: hp(18),

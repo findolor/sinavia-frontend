@@ -84,7 +84,7 @@ export default StyleSheet.create({
     },
     profileInfoView: {
         height: hp(12),
-        width: wp(70),
+        width: wp(90),
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -138,7 +138,9 @@ export default StyleSheet.create({
     totalGameStatsBox: {
         height: hp(23),
         width: wp(90),
-        flexDirection: 'row'
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     versusGameStatsBox: {
         height: hp(16),
@@ -167,20 +169,18 @@ export default StyleSheet.create({
     opponentsFriendsCounterView: {
         height: hp(5.5),
         width: wp(40),
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center'
     },
     opponentsFriendsText: {
         fontFamily: 'Averta-Semibold',
         fontSize: hp(2.5),
-        color: '#2E313C',
-        marginTop: hp(0.5)
+        color: '#2E313C'
     },
     opponentsFriendsCounter: {
         fontFamily: 'Averta-BoldItalic',
-        fontSize: hp(5),
-        color: '#FF9900',
-        marginBottom: hp(0.5)
+        fontSize: hp(4),
+        color: '#FF9900'
     },
     friendshipLogo: {
         height: hp(4.5),

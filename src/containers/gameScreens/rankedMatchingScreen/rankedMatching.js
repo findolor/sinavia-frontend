@@ -13,6 +13,7 @@ import {
 } from 'react-native-responsive-screen'
 import * as Animatable from 'react-native-animatable'
 import SWORD from '../../../assets/sword.png'
+import LOCATION_IMG from '../../../assets/gameScreens/location.png'
 
 class RankedMatchingScreen extends React.Component {
     constructor(props) {
@@ -98,6 +99,23 @@ class RankedMatchingScreen extends React.Component {
                                                 .level
                                         )}
                                     </Text>
+                                    <View style={styles.locationView}>
+                                        <Image
+                                            source={LOCATION_IMG}
+                                            style={[
+                                                styles.locationImg,
+                                                { marginLeft: wp(3) }
+                                            ]}
+                                        />
+                                        <Text
+                                            style={[
+                                                styles.locationText,
+                                                { marginLeft: wp(1.7) }
+                                            ]}
+                                        >
+                                            {this.props.playerCity}
+                                        </Text>
+                                    </View>
                                 </Animatable.View>
                             </View>
                         </ImageBackground>
@@ -137,6 +155,28 @@ class RankedMatchingScreen extends React.Component {
                                             ).level
                                         )}
                                     </Text>
+                                    <View
+                                        style={[
+                                            styles.locationView,
+                                            { justifyContent: 'flex-end' }
+                                        ]}
+                                    >
+                                        <Image
+                                            source={LOCATION_IMG}
+                                            style={[
+                                                styles.locationImg,
+                                                { marginRight: wp(1.7) }
+                                            ]}
+                                        />
+                                        <Text
+                                            style={[
+                                                styles.locationText,
+                                                { marginRight: wp(3) }
+                                            ]}
+                                        >
+                                            {this.props.opponentCity}
+                                        </Text>
+                                    </View>
                                 </Animatable.View>
                                 <Animatable.View
                                     style={styles.opponentPicContainer}

@@ -7,7 +7,8 @@ import {
     Keyboard,
     Alert,
     TouchableWithoutFeedback,
-    KeyboardAvoidingView
+    FlatList,
+    KeyboardAvoidingView, Modal
 } from 'react-native'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
@@ -22,15 +23,32 @@ import moment from 'moment'
 import NotchView from '../../../components/notchView'
 import { showMessage } from 'react-native-flash-message'
 import { Appearance } from 'react-native-appearance'
+import { flashMessages } from '../../../services/flashMessageBuilder'
 
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
+import PROFILE_PIC from '../../../assets/profile2.jpg'
+
+const citiesList = [
+    { cityName: 'Adana' },{ cityName: 'Adıyaman' },{ cityName: 'Afyonkarahisar' },{ cityName: 'Ağrı' },{ cityName: 'Aksaray' },{ cityName: 'Amasya' },{ cityName: 'Ankara' },{ cityName: 'Antalya' },
+    { cityName: 'Ardahan' },{ cityName: 'Artvin' },{ cityName: 'Aydın' },{ cityName: 'Balıkesir' },{ cityName: 'Bartın' },{ cityName: 'Batman' },{ cityName: 'Bayburt' },{ cityName: 'Bilecik' },
+    { cityName: 'Bingöl' },{ cityName: 'Bitlis' },{ cityName: 'Bolu' },{ cityName: 'Burdur' },{ cityName: 'Bursa' },{ cityName: 'Çanakkale' },{ cityName: 'Çankırı' },{ cityName: 'Çorum' },
+    { cityName: 'Denizli' },{ cityName: 'Diyarbakır' },{ cityName: 'Düzce' },{ cityName: 'Edirne' },{ cityName: 'Elazığ' },{ cityName: 'Erzincan' },{ cityName: 'Erzurum' },{ cityName: 'Eskişehir' },
+    { cityName: 'Gaziantep' },{ cityName: 'Giresun' },{ cityName: 'Gümüşhane' },{ cityName: 'Hakkari' },{ cityName: 'Hatay' },{ cityName: 'Iğdır' },{ cityName: 'Isparta' },{ cityName: 'İstanbul' },
+    { cityName: 'İzmir' },{ cityName: 'Kahramanmaraş' },{ cityName: 'Karabük' },{ cityName: 'Karaman' },{ cityName: 'Kars' },{ cityName: 'Kastamonu' },{ cityName: 'Kayseri' },{ cityName: 'Kırıkkale' },
+    { cityName: 'Kırklareli' },{ cityName: 'Kırşehir' },{ cityName: 'Kilis' },{ cityName: 'Kocaeli' },{ cityName: 'Konya' },{ cityName: 'Kütahya' },{ cityName: 'Malatya' },{ cityName: 'Manisa' },
+    { cityName: 'Mardin' },{ cityName: 'Mersin' },{ cityName: 'Muğla' },{ cityName: 'Muş' },{ cityName: 'Nevşehir' },{ cityName: 'Niğde' },{ cityName: 'Ordu' },{ cityName: 'Osmaniye' },
+    { cityName: 'Rize' },{ cityName: 'Sakarya' },{ cityName: 'Samsun' },{ cityName: 'Siirt' },{ cityName: 'Sinop' },{ cityName: 'Sivas' },{ cityName: 'Şanlıurfa' },{ cityName: 'Şırnak' },
+    { cityName: 'Tekirdağ' },{ cityName: 'Tokat' },{ cityName: 'Trabzon' },{ cityName: 'Tunceli' },{ cityName: 'Uşak' },{ cityName: 'Van' },{ cityName: 'Yalova' },{ cityName: 'Yozgat' },
+    { cityName: 'Zonguldak' }
+]
 
 class GetInfo extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             // Register related stuff
-            birthDateUI: 'Doğum Tarihi',
+            cityUI: 'Yaşadığın şehri seç',
+            birthDateUI: 'Doğum tarihi seç',
             isDateTimePickerVisible: false,
             switchValue: false,
             showPasswordEyeFirst: false,
@@ -39,15 +57,20 @@ class GetInfo extends React.Component {
             hidePasswordSecond: true,
             dateColor: '#2E313C',
             // User Information
-            username: '',
-            name: '',
-            lastname: '',
+            username: null,
+            name: null,
+            lastname: null,
             city: null,
             email: '',
             password: '',
             birthDate: null,
             // Dark mode for date time picker
-            isDarkModeEnabled: null
+            isDarkModeEnabled: null,
+            isModalVisible: false,
+            citiesList: citiesList,
+            nameBorderColor: '#989696',
+            lastnameBorderColor: '#989696',
+            usernameBorderColor: '#989696'
         }
     }
 
@@ -58,6 +81,58 @@ class GetInfo extends React.Component {
 
     showDateTimePicker = () => {
         this.setState({ isDateTimePickerVisible: true })
+    }
+
+    cityOnPress = (cityName) => {
+        this.setState({
+            city: cityName,
+            cityUI: cityName,
+            isModalVisible: false
+        })
+    }
+
+    cityPicker = () => {
+        return(
+            <View style={styles.modal}>
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{
+                        height: hp(120),
+                        width: wp(100)
+                    }}
+                />
+                <View style={styles.modalView}>
+                    <Text style={styles.pickCityText}>Şehir Seç</Text>
+                    <FlatList
+                        data={this.state.citiesList}
+                        vertical={true}
+                        showsVerticalScrollIndicator={false}
+                        renderItem={({ item }) => {
+                            return (
+                                    <View style={styles.cityRow}>
+                                        <TouchableOpacity onPress={() => this.cityOnPress(item.cityName)}>
+                                            <Text style={styles.cityRowText}>{item.cityName}</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                            )
+                        }}
+                        keyExtractor={(item, index) => index.toString()}
+                    />
+                </View>
+            </View>
+        )
+    }
+
+    closeModalButtonOnPress = () => {
+        this.setState({
+            isModalVisible: false
+        })
+    }
+
+    openModalVisible = () => {
+        this.setState({
+            isModalVisible: true
+        })
     }
 
     hideDateTimePicker = () => {
@@ -76,60 +151,115 @@ class GetInfo extends React.Component {
     }
 
     usernameOnChange = text => {
+        const invalidCharacters = (/[^a-zA-Z0-9]/g)
+        if (invalidCharacters.test(text)) {
+            this.setState({usernameBorderColor: 'red'})
+        }
+        else this.setState({usernameBorderColor: '#989696'})
+        if (text === '') text = null
         this.setState({ username: text })
     }
 
-    nameLastameOnChange = text => {
-        let splittedText = text.split(/[ ,]+/)
-        let name = splittedText[0]
-        let lastname = splittedText[1]
-        this.setState({ name: name, lastname: lastname })
+    nameOnChange = text => {
+        const invalidCharacters = (/[^a-zA-Z]/g)
+        if (invalidCharacters.test(text)) {
+            this.setState({nameBorderColor: 'red'})
+        }
+        else this.setState({nameBorderColor: '#989696'})
+        this.setState({ name: text })
     }
 
-    cityOnChange = text => {
-        this.setState({ city: text })
+    lastnameOnChange = text => {
+        const invalidCharacters = (/[^a-zA-Z]/g)
+        if (invalidCharacters.test(text)) {
+            this.setState({lastnameBorderColor: 'red'})
+        }
+        else this.setState({lastnameBorderColor: '#989696'})
+        this.setState({ lastname: text })
     }
 
     registerOnPress = () => {
-        if (!this.props.isNetworkConnected) {
-            showMessage({
-                message: 'Lütfen internet bağlantınızı kontrol ediniz',
-                type: 'danger',
-                duration: 2000,
-                titleStyle: styles.networkErrorStyle,
-                icon: 'auto'
+        if ( this.state.nameBorderColor === 'red'){
+            flashMessages.authInfosOrSettingsError('Ad hatası', 'Ad sadece harflerden oluşmalıdır',{
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
             })
-            return
         }
-
-        let userInformation = {
-            username: this.state.username,
-            name: this.state.name,
-            lastname: this.state.lastname,
-            email: this.props.email,
-            city: this.state.city,
-            birthDate: this.state.birthDate,
-            password: this.props.password
+        else if (this.state.lastnameBorderColor === 'red') {
+            flashMessages.authInfosOrSettingsError('Soyad hatası', 'Soyad sadece harflerden oluşmalıdır',{
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
         }
-
-        let userInformationKeys = Object.keys(userInformation)
-        let wrongInformationList = []
-        let wrongInformationString = 'Yanlış alanlar! ->'
-
-        userInformationKeys.forEach(element => {
-            if (
-                userInformation[element] === '' &&
-                element !== 'birthDate' &&
-                element !== 'city'
-            ) {
-                wrongInformationList.push(element)
-                wrongInformationString += `${element}, `
+        else if (this.state.usernameBorderColor === 'red') {
+            flashMessages.authInfosOrSettingsError('Kullanıcı adı hatası', 'Kullanıcı adı sadece harf veya rakamlardan oluşabilir',{
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
+        }
+        else if (this.state.username === null || this.state.name === null || this.state.lastname === null || this.state.birthDate === null || this.state.city === null) {
+            flashMessages.authInfosOrSettingsError('Boş alan hatası', 'Bütün alanları doldurmalısın',{
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
+        }
+        else {
+            if (!this.props.isNetworkConnected) {
+                showMessage({
+                    message: 'Lütfen internet bağlantınızı kontrol ediniz',
+                    type: 'danger',
+                    duration: 2000,
+                    titleStyle: styles.networkErrorStyle,
+                    icon: 'auto'
+                })
+                return
             }
-        })
 
-        if (Object.keys(wrongInformationList).length === 0)
-            this.props.createUser(userInformation)
-        else Alert.alert(wrongInformationString)
+            let userInformation = {
+                username: this.state.username,
+                name: this.state.name,
+                lastname: this.state.lastname,
+                email: this.props.email,
+                city: this.state.city,
+                birthDate: this.state.birthDate,
+                password: this.props.password
+            }
+
+            let userInformationKeys = Object.keys(userInformation)
+            let wrongInformationList = []
+            let wrongInformationString = 'Yanlış alanlar! ->'
+
+            userInformationKeys.forEach(element => {
+                if (
+                    userInformation[element] === '' &&
+                    element !== 'birthDate' &&
+                    element !== 'city'
+                ) {
+                    wrongInformationList.push(element)
+                    wrongInformationString += `${element}, `
+                }
+            })
+
+            if (Object.keys(wrongInformationList).length === 0)
+                this.props.createUser(userInformation)
+            else Alert.alert(wrongInformationString)
+        }
     }
 
     render() {
@@ -144,38 +274,51 @@ class GetInfo extends React.Component {
                     behavior={'position'}
                 >
                     <NotchView color={'#fcfcfc'} />
+                    <Modal
+                        visible={this.state.isModalVisible}
+                        transparent={true}
+                        animationType={'fade'}
+                    >
+                        {this.cityPicker()}
+                    </Modal>
                     <View style={styles.imageContainer}>
                         <Image
                             source={SINAVIA_LOGO}
                             style={{
-                                height: hp(36),
+                                height: hp(32),
                                 resizeMode: 'contain',
-                                marginLeft: wp(6.5)
+                                marginLeft: wp(6)
                             }}
                         />
                     </View>
-                    <View style={styles.compulsoryTextContainer}>
-                        <Text style={styles.compulsoryText}>
-                            *Doldurulması zorunlu alanlar
-                        </Text>
-                    </View>
                     <View style={styles.allTextInputsContainer}>
                         <AuthTextInput
-                            placeholder="Kullanıcı Adı*"
+                            placeholder="Kullanıcı adı"
                             placeholderTextColor="#8A8888"
+                            maxLength={16}
+                            borderColor={this.state.usernameBorderColor}
                             onChangeText={this.usernameOnChange}
                         />
                         <AuthTextInput
-                            placeholder="Ad Soyad*"
+                            placeholder="Ad"
                             placeholderTextColor="#8A8888"
-                            onChangeText={this.nameLastameOnChange}
+                            maxLength={16}
+                            borderColor={this.state.nameBorderColor}
+                            onChangeText={this.nameOnChange}
+                        />
+                        <AuthTextInput
+                            placeholder="Soyad"
+                            placeholderTextColor="#8A8888"
+                            maxLength={16}
+                            borderColor={this.state.lastnameBorderColor}
+                            onChangeText={this.lastnameOnChange}
                         />
                         <TouchableOpacity onPress={this.showDateTimePicker}>
                             <View style={styles.textInputContainer}>
                                 <Text
                                     style={[
                                         styles.textInput,
-                                        { color: this.state.dateColor }
+                                        { color: this.state.birthDate === null ? '#8A8888' : '#2E313C' }
                                     ]}
                                 >
                                     {this.state.birthDateUI}
@@ -188,11 +331,18 @@ class GetInfo extends React.Component {
                             onCancel={this.hideDateTimePicker}
                             isDarkModeEnabled={this.state.isDarkModeEnabled}
                         />
-                        <AuthTextInput
-                            placeholder="Şehir"
-                            placeholderTextColor="#8A8888"
-                            onChangeText={this.cityOnChange}
-                        />
+                        <TouchableOpacity onPress={this.openModalVisible}>
+                            <View style={styles.textInputContainer}>
+                                <Text
+                                    style={[
+                                        styles.textInput,
+                                        { color: this.state.city === '' ? '#8A8888' : '#2E313C' }
+                                    ]}
+                                >
+                                    {this.state.cityUI}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.authButtonView}>
                         <AuthButton
@@ -201,7 +351,7 @@ class GetInfo extends React.Component {
                             color="#00D9EF"
                             buttonText="Onayla"
                             borderRadius={hp(1.5)}
-                            marginTop={hp(2)}
+                            marginTop={hp(3)}
                             fontSize={hp(3)}
                             onPress={this.registerOnPress}
                             disabled={this.props.buttonLock}

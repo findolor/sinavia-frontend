@@ -146,7 +146,7 @@ export default StyleSheet.create({
         marginRight: wp(3)
     },
     textInputView: {
-        height: hp(3.8),
+        height: hp(4),
         width: wp(55),
         justifyContent: 'center',
         marginLeft: wp(2.7)
@@ -171,7 +171,7 @@ export default StyleSheet.create({
     },
     profileInfoView: {
         height: hp(12),
-        width: wp(80),
+        width: wp(90),
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -179,6 +179,7 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Bold',
         fontSize: hp(3.5),
         color: 'white',
+        textAlign: 'center',
         paddingVertical: hp(0)
     },
     usernameText: {

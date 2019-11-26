@@ -370,7 +370,7 @@ class OpponentsProfile extends React.Component {
                                 />
                             </View>
                             <View style={styles.profileInfoView}>
-                                <Text style={styles.nameSurnameText}>
+                                <Text style={[styles.nameSurnameText, {fontSize: ((this.props.opponentInformation.name.length+this.props.opponentInformation.lastname.length) > 21) ? hp(2.25) : hp(3.5)}]}>
                                     {this.props.opponentInformation.name}{' '}
                                     {this.props.opponentInformation.lastname}
                                 </Text>

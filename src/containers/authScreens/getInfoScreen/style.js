@@ -12,28 +12,22 @@ export default StyleSheet.create({
         flexDirection: 'column'
     },
     imageContainer: {
-        flex: 41,
+        flex: 40,
         width: wp(100),
         justifyContent: 'center',
         alignItems: 'center'
     },
-    compulsoryTextContainer: {
-        flex: 5,
-        width: wp(85),
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end'
-    },
     allTextInputsContainer: {
-        flex: 33,
+        flex: 41,
         width: wp(100),
         alignItems: 'center',
         justifyContent: 'space-between'
     },
     authButtonView:{
-        flex: 17,
+        flex: 15,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        width: wp(100),
+        width: wp(100)
     },
     textInputContainer: {
         height: hp(7),
@@ -85,5 +79,41 @@ export default StyleSheet.create({
         fontSize: hp(1.75),
         color: '#7A7878',
         marginBottom: hp(1)
+    },
+    modal: {
+        flex: 1,
+        backgroundColor: '#000000DE',
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    modalView: {
+        position: 'absolute',
+        zIndex: 1,
+        backgroundColor: '#ffffff',
+        height: hp(67),
+        width: wp(87.5),
+        marginTop: hp(16.5),
+        borderColor: '#00D9EF',
+        borderWidth: wp(0.75),
+        borderRadius: hp(1.5),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    cityRow: {
+        height: hp(6),
+        width: wp(80),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    cityRowText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(3),
+        color: 'black'
+    },
+    pickCityText: {
+        fontFamily: 'Averta-SemiboldItalic',
+        fontSize: hp(4),
+        color: '#FF9900',
+        marginTop: hp(1)
     }
 })
