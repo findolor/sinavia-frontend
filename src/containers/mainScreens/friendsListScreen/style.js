@@ -57,8 +57,8 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     textInputView: {
-        height: hp(3.8),
-        width: wp(63),
+        height: hp(4),
+        width: wp(70),
         justifyContent: 'center',
         marginLeft: wp(2.7)
     },

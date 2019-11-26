@@ -248,25 +248,9 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    gameCodeBoxLeftView: {
-        height: hp(10),
-        width: wp(10)
-    },
-    gameCodeBoxTextView: {
-        height: hp(10),
-        width: wp(46),
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    gameCodeBoxRightView: {
-        height: hp(10),
-        width: wp(10),
-        justifyContent: 'flex-end',
-        alignItems: 'center'
-    },
     gameCodeText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: wp(7),
+        fontSize: hp(5),
         letterSpacing: wp(1),
         color: '#5C5C5C'
     },

@@ -146,7 +146,7 @@ export default StyleSheet.create({
         marginRight: wp(3)
     },
     textInputView: {
-        height: hp(3.8),
+        height: hp(4),
         width: wp(55),
         justifyContent: 'center',
         marginLeft: wp(2.7)
