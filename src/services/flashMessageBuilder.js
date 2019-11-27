@@ -1,4 +1,8 @@
 import { showMessage } from 'react-native-flash-message'
+import {
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp
+} from 'react-native-responsive-screen'
 
 export const flashMessages = {
     generalMessage: message =>
@@ -44,5 +48,16 @@ export const flashMessages = {
             },
             textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
             backgroundColor: 'white'
+        }),
+    authInfosOrSettingsError: (message, description, props = {}) =>
+        showMessage({
+            message: message,
+            description: description,
+            titleStyle: {
+                fontFamily: 'Averta-SemiboldItalic',
+                color: '#FF9900'
+            },
+            textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
+            ...props
         })
 }

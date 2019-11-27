@@ -90,7 +90,7 @@ export default StyleSheet.create({
     },
     sinaviaScoreText: {
         fontFamily: 'Averta-BoldItalic',
-        fontSize: hp(2.5),
+        fontSize: hp(3),
         color: '#FF9900'
     },
     subjectBasedSinaviaScoreText: {
@@ -144,5 +144,19 @@ export default StyleSheet.create({
     swordPic: {
         height: wp(19.5),
         width: wp(12.75)
+    },
+    locationView: {
+        flexDirection: 'row',
+        marginTop: hp(1),
+        alignItems: 'flex-start'
+    },
+    locationImg: {
+        height: hp(3),
+        width: hp(2.25)
+    },
+    locationText: {
+        fontFamily: 'Averta-ExtraBoldItalic',
+        fontSize: hp(3),
+        color: '#FFFFFF'
     }
 })

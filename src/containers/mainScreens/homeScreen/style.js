@@ -248,25 +248,9 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    gameCodeBoxLeftView: {
-        height: hp(10),
-        width: wp(10)
-    },
-    gameCodeBoxTextView: {
-        height: hp(10),
-        width: wp(46),
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    gameCodeBoxRightView: {
-        height: hp(10),
-        width: wp(10),
-        justifyContent: 'flex-end',
-        alignItems: 'center'
-    },
     gameCodeText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: wp(7),
+        fontSize: hp(5),
         letterSpacing: wp(1),
         color: '#5C5C5C'
     },
@@ -437,7 +421,7 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        borderRadius: 6,
+        borderRadius: hp(1),
         backgroundColor: '#B0B0B0'
     },
     instantProgressView: {
@@ -485,7 +469,8 @@ export default StyleSheet.create({
     gameRequestText: {
         fontFamily: 'Averta-Regular',
         fontSize: wp(4.5),
-        color: '#5C5C5C'
+        color: '#5C5C5C',
+        textAlign: 'center'
     },
     yesOrNoButtonsContainer: {
         height: hp(9),

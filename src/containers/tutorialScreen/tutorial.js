@@ -65,27 +65,22 @@ class Tutorial extends React.Component {
                     activeDot={
                         <View
                             style={{
-                                height: hp(3),
-                                width: hp(2.5),
-                                justifyContent: 'center',
-                                alignItems: 'center',
+                                height: hp(1.5),
+                                width: hp(1.5),
+                                backgroundColor: '#FF9900',
+                                borderRadius: hp(100),
                                 marginBottom: hp(2),
                                 marginLeft: wp(1),
                                 marginRight: wp(1)
                             }}
-                        >
-                            <Image
-                                source={SINAVIA_LOGO}
-                                style={styles.iconPaginationImg}
-                            ></Image>
-                        </View>
+                        />
                     }
                     dot={
                         <View
                             style={{
                                 height: hp(1.5),
                                 width: hp(1.5),
-                                backgroundColor: 'rgba(0,0,0,.2)',
+                                backgroundColor: '#D2D2D2',
                                 borderRadius: hp(100),
                                 marginBottom: hp(2),
                                 marginLeft: wp(1),

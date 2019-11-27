@@ -377,7 +377,7 @@ class Notifications extends React.Component {
                 return (
                     <View style={styles.userRow}>
                         <Text style={styles.notificationRowsText}>
-                            Geçen {item.timePeriod} Türkiye siralaman{' '}
+                            Geçen {item.timePeriod} Türkiye sıralaman{' '}
                             <Text style={{ color: '#FF9900' }}>
                                 {item.order}
                             </Text>

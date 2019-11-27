@@ -11,8 +11,9 @@ import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
-
+import * as Animatable from 'react-native-animatable'
 import SWORD from '../../../assets/sword.png'
+import LOCATION_IMG from '../../../assets/gameScreens/location.png'
 
 class RankedMatchingScreen extends React.Component {
     constructor(props) {
@@ -57,15 +58,27 @@ class RankedMatchingScreen extends React.Component {
                             style={styles.cover}
                         >
                             <View style={styles.playerView}>
-                                <View style={styles.userPicContainer}>
+                                <Animatable.View
+                                    style={styles.userPicContainer}
+                                    animation="slideInLeft"
+                                    useNativeDriver={true}
+                                    duration={800}
+                                    delay={400}
+                                >
                                     <Image
                                         source={{
                                             uri: this.props.playerProfilePicture
                                         }}
                                         style={styles.playerPic}
                                     />
-                                </View>
-                                <View style={styles.userInfoContainer}>
+                                </Animatable.View>
+                                <Animatable.View
+                                    style={styles.userInfoContainer}
+                                    animation="slideInRight"
+                                    useNativeDriver={true}
+                                    duration={800}
+                                    delay={800}
+                                >
                                     <Text
                                         style={[
                                             styles.usernameText,
@@ -86,7 +99,24 @@ class RankedMatchingScreen extends React.Component {
                                                 .level
                                         )}
                                     </Text>
-                                </View>
+                                    <View style={styles.locationView}>
+                                        <Image
+                                            source={LOCATION_IMG}
+                                            style={[
+                                                styles.locationImg,
+                                                { marginLeft: wp(3) }
+                                            ]}
+                                        />
+                                        <Text
+                                            style={[
+                                                styles.locationText,
+                                                { marginLeft: wp(1.7) }
+                                            ]}
+                                        >
+                                            {this.props.playerCity}
+                                        </Text>
+                                    </View>
+                                </Animatable.View>
                             </View>
                         </ImageBackground>
                     </View>
@@ -97,7 +127,13 @@ class RankedMatchingScreen extends React.Component {
                             style={styles.cover}
                         >
                             <View style={styles.playerView}>
-                                <View style={styles.opponentInfoContainer}>
+                                <Animatable.View
+                                    style={styles.opponentInfoContainer}
+                                    animation="slideInLeft"
+                                    useNativeDriver={true}
+                                    duration={800}
+                                    delay={800}
+                                >
                                     <Text
                                         style={[
                                             styles.usernameText,
@@ -119,8 +155,36 @@ class RankedMatchingScreen extends React.Component {
                                             ).level
                                         )}
                                     </Text>
-                                </View>
-                                <View style={styles.opponentPicContainer}>
+                                    <View
+                                        style={[
+                                            styles.locationView,
+                                            { justifyContent: 'flex-end' }
+                                        ]}
+                                    >
+                                        <Image
+                                            source={LOCATION_IMG}
+                                            style={[
+                                                styles.locationImg,
+                                                { marginRight: wp(1.7) }
+                                            ]}
+                                        />
+                                        <Text
+                                            style={[
+                                                styles.locationText,
+                                                { marginRight: wp(3) }
+                                            ]}
+                                        >
+                                            {this.props.opponentCity}
+                                        </Text>
+                                    </View>
+                                </Animatable.View>
+                                <Animatable.View
+                                    style={styles.opponentPicContainer}
+                                    animation="slideInRight"
+                                    useNativeDriver={true}
+                                    duration={800}
+                                    delay={400}
+                                >
                                     <Image
                                         source={{
                                             uri: this.props
@@ -128,14 +192,20 @@ class RankedMatchingScreen extends React.Component {
                                         }}
                                         style={styles.playerPic}
                                     />
-                                </View>
+                                </Animatable.View>
                             </View>
                         </ImageBackground>
                     </View>
                     <View style={styles.separatorView}>
                         <View style={styles.separatorLine} />
                         <View style={styles.separatorCircle}>
-                            <Image source={SWORD} style={styles.swordPic} />
+                            <Animatable.View
+                                animation="bounceIn"
+                                duration={800}
+                                delay={2000}
+                            >
+                                <Image source={SWORD} style={styles.swordPic} />
+                            </Animatable.View>
                         </View>
                         <View style={styles.separatorLine} />
                     </View>

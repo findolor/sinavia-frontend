@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image, Text, Alert } from 'react-native'
+import { View, Image, ImageBackground, Text, Alert } from 'react-native'
 import styles, { hp, wp } from './style'
 import {
     navigationReset,
@@ -14,6 +14,9 @@ import { appActions } from '../../redux/app/actions'
 import { AuthButton } from '../../components/authScreen'
 import { showMessage } from 'react-native-flash-message'
 import { fcmService } from '../../services/fcmService'
+
+import CONNECTION_ERROR_COLORED from '../../assets/connection_error_colored.png'
+import CONNECTION_ERROR_SHADOW from '../../assets/connection_error_shadow.png'
 
 class SplashScreen extends React.PureComponent {
     constructor(props) {
@@ -120,30 +123,58 @@ class SplashScreen extends React.PureComponent {
                     />
                 )}
                 {this.state.shouldTryAgain && (
-                    <View style={{ flex: 1 }}>
-                        <View style={{ flex: 1.2 }}></View>
-                        <View style={styles.tryAgainTextContainer}>
-                            <Text style={styles.tryAgainText}>:(</Text>
-                            <Text
-                                style={[
-                                    styles.tryAgainText,
-                                    { fontSize: hp(4) }
-                                ]}
+                    <View
+                        style={{
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}
+                    >
+                        <View style={{ flex: 10 }} />
+                        <View style={{ flex: 80, width: wp(100) }}>
+                            <ImageBackground
+                                source={CONNECTION_ERROR_SHADOW}
+                                resizeMode={'stretch'}
+                                style={{ flex: 1 }}
                             >
-                                {this.props.connectionErrorMessage}
-                            </Text>
+                                <View
+                                    style={{
+                                        flex: 80,
+                                        justifyContent: 'flex-start',
+                                        alignItems: 'center'
+                                    }}
+                                >
+                                    <View style={styles.tryAgainImgContainer}>
+                                        <Image
+                                            source={CONNECTION_ERROR_COLORED}
+                                            style={
+                                                styles.connectionErrorColoredImg
+                                            }
+                                        />
+                                    </View>
+                                    <View style={styles.tryAgainTextContainer}>
+                                        <Text style={styles.tryAgainText}>
+                                            {this.props.connectionErrorMessage}
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={styles.tryAgainButtonContainer}
+                                    >
+                                        <AuthButton
+                                            height={hp(7)}
+                                            width={wp(50)}
+                                            color="#00D9EF"
+                                            buttonText="Yeniden Dene"
+                                            borderRadius={50}
+                                            fontSize={hp(3)}
+                                            marginTop={hp(6.5)}
+                                            onPress={this.tryConnectingAgain}
+                                        />
+                                    </View>
+                                </View>
+                            </ImageBackground>
                         </View>
-                        <View style={styles.tryAgainButtonContainer}>
-                            <AuthButton
-                                height={hp(8)}
-                                width={wp(50)}
-                                color="#2E313C"
-                                buttonText="Yeniden Dene"
-                                borderRadius={50}
-                                fontSize={hp(3)}
-                                onPress={this.tryConnectingAgain}
-                            />
-                        </View>
+                        <View style={{ flex: 10 }} />
                     </View>
                 )}
             </View>

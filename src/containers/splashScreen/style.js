@@ -24,22 +24,46 @@ export default StyleSheet.create({
         fontSize: hp(14),
         color: '#00D9EF'
     },
-    tryAgainTextContainer: {
-        flex: 2.4,
-        justifyContent: 'space-evenly',
+    tryAgainImgContainer: {
+        position: 'absolute',
+        height: hp(32),
+        width: wp(100),
+        justifyContent: 'flex-end',
         alignItems: 'center'
     },
-    tryAgainText: {
-        fontFamily: 'Averta-SemiBold',
-        fontSize: hp(9),
-        color: '#000000'
+    tryAgainTextContainer: {
+        position: 'absolute',
+        height: hp(23),
+        width: wp(100),
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        marginTop: hp(32),
     },
     tryAgainButtonContainer: {
-        flex: 2,
-        alignItems: 'center'
+        position: 'absolute',
+        height: hp(25),
+        width: wp(100),
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        marginTop: hp(55)
+    },
+    tryAgainText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(4),
+        color: '#2E313C'
     },
     networkErrorStyle: {
         fontFamily: 'Averta-Regular',
         fontSize: hp(2.5)
+    },
+    connectionErrorShadowImg: {
+        position: 'absolute',
+        height: hp(80),
+        width: wp(100)
+    },
+    connectionErrorColoredImg: {
+        position: 'absolute',
+        height: hp(18),
+        width: hp(18)
     }
 })

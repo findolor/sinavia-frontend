@@ -176,7 +176,7 @@ class Profile extends React.Component {
                                 />
                             </View>
                             <View style={styles.profileInfoView}>
-                                <Text style={styles.nameSurnameText}>
+                                <Text style={[styles.nameSurnameText, {fontSize: ((this.props.clientInformation.name.length+this.props.clientInformation.lastname.length) > 21) ? hp(2.25) : hp(3.5)}]}>
                                     {this.props.clientInformation.name}{' '}
                                     {this.props.clientInformation.lastname}
                                 </Text>

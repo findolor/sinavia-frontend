@@ -380,11 +380,14 @@ export default StyleSheet.create({
     jokersView: {
         height: hp(5.5),
         width: wp(27),
-        flexDirection: 'row'
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignItems: 'center'
+
     },
     jokerPricesView: {
         height: hp(4),
-        width: wp(16),
+        width: wp(27),
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
@@ -411,11 +414,9 @@ export default StyleSheet.create({
     },
     normalPriceText: {
         fontFamily: 'Averta-Bold',
-        fontSize: hp(3),
+        fontSize: hp(2.25),
         textAlign: 'center',
-        color: '#858585',
-        textDecorationLine: 'line-through',
-        textDecorationStyle: 'solid'
+        color: '#858585'
     },
     discountPriceText: {
         fontFamily: 'Averta-Bold',

@@ -43,7 +43,7 @@ export default StyleSheet.create({
     questionInformation: {
         alignItems: 'center',
         height: hp(6),
-        width: wp(70),
+        width: wp(54),
         justifyContent: 'center'
     },
     questionInformationText: {
@@ -183,13 +183,14 @@ export default StyleSheet.create({
     },
     zoomButton: {
         resizeMode: 'contain',
-        height: hp(5),
-        width: wp(5)
+        height: hp(4),
+        width: wp(4)
     },
     zoomButtonContainer: {
         height: hp(6),
         width: wp(15),
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'flex-end'
     },
     questionModalContainer: {
         backgroundColor: '#000000d0',

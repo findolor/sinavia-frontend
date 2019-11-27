@@ -16,6 +16,7 @@ import {
     navigationReset
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
+import * as Animatable from 'react-native-animatable'
 
 // Colyseus imports
 import { Buffer } from 'buffer'
@@ -224,7 +225,13 @@ class FriendMatchingScreen extends React.Component {
                             style={styles.cover}
                         >
                             <View style={styles.playerView}>
-                                <View style={styles.userPicContainer}>
+                                <Animatable.View
+                                    style={styles.userPicContainer}
+                                    animation="slideInLeft"
+                                    useNativeDriver={true}
+                                    duration={800}
+                                    delay={400}
+                                >
                                     <Image
                                         source={{
                                             uri: this.props.clientInformation
@@ -232,8 +239,14 @@ class FriendMatchingScreen extends React.Component {
                                         }}
                                         style={styles.userPic}
                                     />
-                                </View>
-                                <View style={styles.userInfoContainer}>
+                                </Animatable.View>
+                                <Animatable.View
+                                    style={styles.userInfoContainer}
+                                    animation="slideInRight"
+                                    useNativeDriver={true}
+                                    duration={800}
+                                    delay={800}
+                                >
                                     <Text
                                         style={[
                                             styles.usernameText,
@@ -254,7 +267,7 @@ class FriendMatchingScreen extends React.Component {
                                                 .level
                                         )}
                                     </Text>
-                                </View>
+                                </Animatable.View>
                             </View>
                         </ImageBackground>
                     </View>
@@ -267,7 +280,13 @@ class FriendMatchingScreen extends React.Component {
                             style={styles.cover}
                         >
                             <View style={styles.playerView}>
-                                <View style={styles.opponentInfoContainer}>
+                                <Animatable.View
+                                    style={styles.opponentInfoContainer}
+                                    animation="slideInLeft"
+                                    useNativeDriver={true}
+                                    duration={800}
+                                    delay={800}
+                                >
                                     <Text
                                         style={[
                                             styles.usernameText,
@@ -292,8 +311,14 @@ class FriendMatchingScreen extends React.Component {
                                                 .level
                                         )}
                                     </Text>
-                                </View>
-                                <View style={styles.opponentPicContainer}>
+                                </Animatable.View>
+                                <Animatable.View
+                                    style={styles.opponentPicContainer}
+                                    animation="slideInRight"
+                                    useNativeDriver={true}
+                                    duration={800}
+                                    delay={400}
+                                >
                                     <Image
                                         source={{
                                             uri: this.props.opponentInformation
@@ -301,7 +326,7 @@ class FriendMatchingScreen extends React.Component {
                                         }}
                                         style={styles.opponentPic}
                                     />
-                                </View>
+                                </Animatable.View>
                             </View>
                         </ImageBackground>
                     </View>

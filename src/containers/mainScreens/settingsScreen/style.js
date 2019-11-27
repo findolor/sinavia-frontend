@@ -26,7 +26,9 @@ export default StyleSheet.create({
     },
     textInputsContainer: {
         flex: 36,
-        width: wp(89)
+        width: wp(89),
+        justifyContent: 'space-evenly',
+        alignItems: 'center'
     },
     buttonsContainer: {
         flex: 22,
@@ -91,6 +93,21 @@ export default StyleSheet.create({
         borderWidth: wp(0.5),
         borderRadius: hp(2),
         borderColor: '#C8C8C8'
+    },
+    cityInputView: {
+        height: hp(7.5),
+        width: wp(70),
+        borderWidth: wp(0.5),
+        borderRadius: hp(2),
+        borderColor: '#C8C8C8',
+        justifyContent: 'center',
+        alignItems: 'flex-start'
+    },
+    cityTextInputStyle: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(2.5),
+        paddingHorizontal: wp(3),
+        color: '#8A8888'
     },
     textInputTitle: {
         fontFamily: 'Averta-Semibold',
@@ -170,5 +187,41 @@ export default StyleSheet.create({
         borderRadius: hp(3),
         backgroundColor: "rgba(0,0,0,0.5)",
         alignItems: 'center'
+    },
+    modal: {
+        flex: 1,
+        backgroundColor: '#000000DE',
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    modalView: {
+        position: 'absolute',
+        zIndex: 1,
+        backgroundColor: '#ffffff',
+        height: hp(67),
+        width: wp(87.5),
+        marginTop: hp(16.5),
+        borderColor: '#00D9EF',
+        borderWidth: wp(0.75),
+        borderRadius: hp(1.5),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    cityRow: {
+        height: hp(6),
+        width: wp(80),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    cityRowText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(3),
+        color: 'black'
+    },
+    pickCityText: {
+        fontFamily: 'Averta-SemiboldItalic',
+        fontSize: hp(4),
+        color: '#FF9900',
+        marginTop: hp(1)
     }
 })

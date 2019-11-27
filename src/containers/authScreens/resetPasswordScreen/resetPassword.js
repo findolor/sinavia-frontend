@@ -80,6 +80,7 @@ class ResetPassword extends React.Component {
                         <AuthTextInput
                             placeholder="E-posta"
                             placeholderTextColor="#8A8888"
+                            borderColor={'#989696'}
                             onChangeText={email => this.emailOnChange(email)}
                         />
                     </View>

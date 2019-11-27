@@ -6,5 +6,5 @@ export const INITIAL_STATE = {
     //energyAmount: null,
     buttonLock: false,
     notificationOpen: {},
-    connectionErrorMessage: null
+    connectionErrorMessage: 'Bağlantı problemi'
 }

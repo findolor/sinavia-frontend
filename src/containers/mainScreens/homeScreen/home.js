@@ -10,7 +10,8 @@ import {
     AsyncStorage,
     Alert,
     FlatList,
-    AppState
+    AppState,
+    Animated
 } from 'react-native'
 import { connect } from 'react-redux'
 import { gameContentActions } from '../../../redux/gameContent/actions'
@@ -32,6 +33,7 @@ import SliderEntry from '../../../components/mainScreen/carousel/components/Slid
 import styles from './style'
 import premiumStyles from '../purchaseScreen/style'
 import { showMessage } from 'react-native-flash-message'
+import * as Animatable from 'react-native-animatable'
 
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
 import AuthButton from '../../../components/authScreen/authButton'
@@ -71,6 +73,9 @@ import { chooseImage } from '../../../services/courseAssetChooser'
 import SWORD from '../../../assets/sword.png'
 import LinearGradient from 'react-native-linear-gradient'
 
+
+var progress_bar_available_width = wp(65)
+
 const carouselFirstItem = 0
 
 const SELECTED_MODE_COLOR = '#00D9EF'
@@ -88,6 +93,7 @@ const SOLO_PREMIUM = require('../../../assets/soloPremium.png')
 class Home extends React.Component {
     constructor(props) {
         super(props)
+        this.progress = new Animated.Value(0)
         this.state = {
             // Dropdown default value
             defaultExam: this.props.choosenExam,
@@ -137,6 +143,31 @@ class Home extends React.Component {
             // Solo choosen question amount
             choosenQuestionAmountSolo: 5
         }
+    }
+
+    async componentDidUpdate() {
+        this.progress.setValue(0);
+
+        Animated.timing(this.progress, {
+            duration: 1500,
+            toValue: (Math.floor(
+                levelFinder(
+                    this.state
+                        .selectedContentTotalPoints
+                ).levelProgressScore
+                )
+                /
+                Math.floor(
+                    levelFinder(
+                        this.state
+                            .selectedContentTotalPoints !==
+                        0
+                            ? this.state
+                                .selectedContentTotalPoints
+                            : 1000
+                    ).levelProgressLimit
+                )) * 100
+        }).start();
     }
 
     async componentDidMount() {
@@ -299,7 +330,7 @@ class Home extends React.Component {
         const client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
         client.onOpen.add(() => {
             // TODO PUT A MODAL HERE FOR WAITING
-            Alert.alert('Bekleniyor...')
+            this.setState({isModalVisible: true, visibleView: 'WAITING_TO_JOIN_FRIEND_ROOM'})
 
             room = client.join('friendRoom', {
                 databaseId: this.props.clientDBId,
@@ -310,7 +341,7 @@ class Home extends React.Component {
             // We set a timeout for the time passed since join initiation
             // TODO THINK ABOUT THE TIMEOUT NUMBER IN HERE
             const timeout = setTimeout(() => {
-                Alert.alert('Üznügüm ama oda aktif değil')
+                this.setState({isModalVisible: true, visibleView: 'ROOM_IS_NOT_ACTIVE'})
                 room.leave()
                 client.close()
             }, 5000)
@@ -319,6 +350,7 @@ class Home extends React.Component {
             room.onJoin.add(() => {
                 // We clear the timeout as we don't need it anymore
                 clearTimeout(timeout)
+                this.setState({visibleView: ''})
                 // Getting the opponent information and navigatiing
                 userServices
                     .getUser(this.props.clientToken, params.opponentId)
@@ -464,15 +496,10 @@ class Home extends React.Component {
     subjectCardsMaker = (examName, carouselActiveSlide) => {
         let examIndex
         let subjectList = []
+
+        if (carouselActiveSlide === null) return subjectList
+
         examIndex = this.props.examList.findIndex(x => x.name === examName)
-        /* if (!this.props.clientInformation.isPremium)
-            subjectList.push(
-                <View style={styles.card}>
-                    <Text style={styles.cardText}>
-                        Kalan enerji sayısı: {this.props.energyAmount}
-                    </Text>
-                </View>
-            ) */
         this.props.examList[examIndex].courseEntities[
             carouselActiveSlide
         ].subjectEntities.forEach((subject, index) => {
@@ -483,9 +510,15 @@ class Home extends React.Component {
                     }}
                     key={index}
                 >
-                    <View style={styles.card}>
+                    <Animatable.View
+                        style={styles.card}
+                        animation="fadeIn"
+                        duration={800}
+                        delay={index * 25 + 75}
+                        useNativeDriver={true}
+                    >
                         <Text style={styles.cardText}>{subject.name}</Text>
-                    </View>
+                    </Animatable.View>
                 </TouchableOpacity>
             )
         })
@@ -579,7 +612,13 @@ class Home extends React.Component {
                     <View style={styles.separatorContainer}>
                         <View style={styles.separatorLine} />
                     </View>
-                    <View style={styles.gameModeContainer}>
+                    <Animatable.View
+                        style={styles.gameModeContainer}
+                        animation="fadeIn"
+                        useNativeDriver={true}
+                        delay={50}
+                        duration={500}
+                    >
                         <View style={styles.gameModeButtonContainer}>
                             <TouchableOpacity
                                 onPress={this.rankedGameModeOnPress}
@@ -612,15 +651,21 @@ class Home extends React.Component {
                                 yükselt
                             </Text>
                         </View>
-                    </View>
-                    <View style={styles.scoreContainer}>
+                    </Animatable.View>
+                    <Animatable.View
+                        style={styles.scoreContainer}
+                        animation="pulse"
+                        useNativeDriver={true}
+                        delay={200}
+                        duration={1750}
+                    >
                         <Text style={styles.scoreTextInModal}>
                             Sınavia Puanı:{' '}
                         </Text>
                         <Text style={styles.scoreInModal}>
                             {this.state.selectedContentTotalPoints}
                         </Text>
-                    </View>
+                    </Animatable.View>
                     <View style={styles.levelProgressBarContainer}>
                         <View style={styles.progressBarView}>
                             <Text style={styles.levelText}>
@@ -631,32 +676,10 @@ class Home extends React.Component {
                                     ).level
                                 )}
                             </Text>
-                            <View
-                                style={[
-                                    styles.instantProgressView,
-                                    {
-                                        width: wp(
-                                            (Math.floor(
-                                                levelFinder(
-                                                    this.state
-                                                        .selectedContentTotalPoints
-                                                ).levelProgressScore
-                                            ) /
-                                                Math.floor(
-                                                    levelFinder(
-                                                        this.state
-                                                            .selectedContentTotalPoints !==
-                                                            0
-                                                            ? this.state
-                                                                  .selectedContentTotalPoints
-                                                            : 1
-                                                    ).levelProgressLimit
-                                                )) *
-                                                65
-                                        )
-                                    }
-                                ]}
-                            />
+                            <Animated.View
+                                style={[this.getProgressStyles.call(this)]}
+                            >
+                            </Animated.View>
                             <View style={styles.progressScoreView}>
                                 <Text style={styles.levelInProgressText}>
                                     {Math.floor(
@@ -683,7 +706,13 @@ class Home extends React.Component {
                     <View style={styles.separatorContainer}>
                         <View style={styles.separatorLine} />
                     </View>
-                    <View style={styles.gameModeContainer}>
+                    <Animatable.View
+                        style={styles.gameModeContainer}
+                        animation="fadeIn"
+                        useNativeDriver={true}
+                        delay={75}
+                        duration={500}
+                    >
                         <View style={styles.gameModeButtonContainer}>
                             <TouchableOpacity
                                 onPress={this.friendRoomOnPress}
@@ -709,8 +738,14 @@ class Home extends React.Component {
                                 - Bir arkadaşın ile bilgilerini yarıştır
                             </Text>
                         </View>
-                    </View>
-                    <View style={styles.gameModeContainer}>
+                    </Animatable.View>
+                    <Animatable.View
+                        style={styles.gameModeContainer}
+                        animation="fadeIn"
+                        useNativeDriver={true}
+                        delay={100}
+                        duration={500}
+                    >
                         <View style={styles.gameModeButtonContainer}>
                             <TouchableOpacity
                                 onPress={this.groupGameModeOnPress}
@@ -736,8 +771,14 @@ class Home extends React.Component {
                                 - Arkadaş grubun ile yarış
                             </Text>
                         </View>
-                    </View>
-                    <View style={styles.gameModeContainer}>
+                    </Animatable.View>
+                    <Animatable.View
+                        style={styles.gameModeContainer}
+                        animation="fadeIn"
+                        useNativeDriver={true}
+                        delay={125}
+                        duration={500}
+                    >
                         <View style={styles.gameModeButtonContainer}>
                             <TouchableOpacity
                                 style={[
@@ -865,8 +906,14 @@ class Home extends React.Component {
                                 </Text>
                             )}
                         </View>
-                    </View>
-                    <View style={styles.gameModeContainer}>
+                    </Animatable.View>
+                    <Animatable.View
+                        style={styles.gameModeContainer}
+                        animation="fadeIn"
+                        useNativeDriver={true}
+                        delay={150}
+                        duration={500}
+                    >
                         <View style={styles.gameModeButtonContainer}>
                             <TouchableOpacity
                                 style={[
@@ -899,7 +946,7 @@ class Home extends React.Component {
                                 çöz
                             </Text>
                         </View>
-                    </View>
+                    </Animatable.View>
                 </View>
                 <AuthButton
                     marginTop={hp(83.5)}
@@ -1424,9 +1471,7 @@ class Home extends React.Component {
                                                             )
                                                         else {
                                                             // TODO MAKE A MODAL HERE
-                                                            Alert.alert(
-                                                                'Arkadaşın önden başladı!'
-                                                            )
+                                                            this.setState({isModalVisible: true, visibleView: 'YOUR_FRIEND_STARTED_GAME'})
                                                             navigationPush(
                                                                 SCENE_KEYS
                                                                     .mainScreens
@@ -1604,6 +1649,88 @@ class Home extends React.Component {
         )
     }
 
+    waitingToJoinFriendRoomView() {
+        return(
+            <View
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.gameRequestView}>
+                        <Text style={styles.gameRequestText}>
+                            Odaya giriş yapman bekleniyor...
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
+    roomIsNotActiveView() {
+        return(
+            <View
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.gameRequestView}>
+                        <Text style={styles.gameRequestText}>
+                            Üzgünüm, ancak oda aktif değil :(
+                        </Text>
+                    </View>
+                    <View style={styles.yesOrNoButtonsContainer}>
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(87.5)}
+                            color="#00D9EF"
+                            buttonText="Tamam"
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
+                            onPress={this.closeModalButtonOnPress}
+                        />
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
+    yourFriendStartedGameView() {
+        return(
+            <View
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.gameRequestView}>
+                        <Text style={styles.gameRequestText}>
+                            Arkadaşın önden oynamaya başladı, oyununu bitirdikten sonra sıra sende olacak, bol şans :)
+                        </Text>
+                    </View>
+                    <View style={styles.yesOrNoButtonsContainer}>
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(87.5)}
+                            color="#00D9EF"
+                            buttonText="Tamam"
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
+                            onPress={this.closeModalButtonOnPress}
+                        />
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     playButtonOnPress = () => {
         if (!this.props.isNetworkConnected) {
             showMessage({
@@ -1726,6 +1853,26 @@ class Home extends React.Component {
         navigationPush(SCENE_KEYS.mainScreens.notifications)
     }
 
+    getProgressStyles() {
+        var animated_width = this.progress.interpolate({
+            inputRange: [0, 50, 100],
+            outputRange: [0, progress_bar_available_width / 2, progress_bar_available_width]
+        });
+        //red -> orange -> green
+        const color_animation = this.progress.interpolate({
+            inputRange: [0, 50, 100],
+            outputRange: ['rgb(199, 45, 50)', 'rgb(224, 150, 39)', 'rgb(101, 203, 25)']
+        });
+
+        return {
+            position: 'absolute',
+            width: animated_width,
+            height: hp(5),
+            borderRadius: hp(1),
+            backgroundColor: color_animation
+        }
+    }
+
     render() {
         const subjectCards = this.subjectCardsMaker(
             this.state.defaultExam,
@@ -1758,6 +1905,12 @@ class Home extends React.Component {
                     )}
                     {this.state.visibleView === 'PREMIUM_MODAL_FOR_SOLO' &&
                         this.premiumForSoloView()}
+                    {this.state.visibleView === 'WAITING_TO_JOIN_FRIEND_ROOM' &&
+                    this.waitingToJoinFriendRoomView()}
+                    {this.state.visibleView === 'ROOM_IS_NOT_ACTIVE' &&
+                    this.roomIsNotActiveView()}
+                    {this.state.visibleView === 'YOUR_FRIEND_STARTED_GAME' &&
+                    this.yourFriendStartedGameView()}
                 </Modal>
                 <Modal
                     visible={this.state.isFriendGameRequestModalVisible}
@@ -1818,9 +1971,11 @@ class Home extends React.Component {
                         inactiveSlideScale={0.8}
                         inactiveSlideOpacity={0.65}
                         loop={false}
-                        onSnapToItem={index =>
-                            this.setState({ carouselActiveSlide: index })
-                        }
+                        onSnapToItem={index => {
+                            this.setState({ carouselActiveSlide: null }, () => {
+                                this.setState({ carouselActiveSlide: index })
+                            })
+                        }}
                     />
                 </View>
                 <View style={styles.scrollViewContainer}>

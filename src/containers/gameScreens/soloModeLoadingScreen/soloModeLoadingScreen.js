@@ -12,6 +12,7 @@ import { navigationReplace } from '../../../services/navigationService'
 import { GAME_ENGINE_ENDPOINT, SCENE_KEYS } from '../../../config'
 import { connect } from 'react-redux'
 import LOGO from '../../../assets/sinavia_logo_cut.png'
+import * as Animatable from 'react-native-animatable'
 import { chooseImage } from '../../../services/courseAssetChooser'
 
 class SoloModeLoadingScreen extends React.Component {
@@ -63,7 +64,12 @@ class SoloModeLoadingScreen extends React.Component {
                                 <Image source={LOGO} style={styles.logoImg} />
                             </View>
                         </View>
-                        <View style={styles.textsView}>
+                        <Animatable.View
+                            style={styles.textsView}
+                            useNativeDriver={true}
+                            animation="fadeIn"
+                            delay={500}
+                        >
                             <Text style={styles.courseText}>
                                 {
                                     this.props.gameContentMap.courses[
@@ -78,10 +84,18 @@ class SoloModeLoadingScreen extends React.Component {
                                     ].name
                                 }
                             </Text>
-                            <Text style={styles.questionCounterText}>
-                                Soru Sayısı: {this.props.choosenQuestionAmount}
-                            </Text>
-                        </View>
+                            <Animatable.View
+                                useNativeDriver={true}
+                                animation="pulse"
+                                delay={2000}
+                                duration={1500}
+                            >
+                                <Text style={styles.questionCounterText}>
+                                    Soru Sayısı:{' '}
+                                    {this.props.choosenQuestionAmount}
+                                </Text>
+                            </Animatable.View>
+                        </Animatable.View>
                     </View>
                 </ImageBackground>
             </View>

@@ -5,7 +5,8 @@ import {
     Image,
     TouchableOpacity,
     Modal,
-    BackHandler
+    BackHandler,
+    Vibration
 } from 'react-native'
 import styles, { countdownProps } from './style'
 import CountDown from 'react-native-countdown-component'
@@ -28,6 +29,7 @@ import {
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
 import AuthButton from '../../../components/authScreen/authButton'
+import * as Animatable from 'react-native-animatable'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
@@ -316,6 +318,8 @@ class UnsolvedModeGameScreen extends React.Component {
         const answers = this.state.playerProps.answers
         // Switch statement for the user
         this.updateAnswers(answers)
+
+        Vibration.vibrate(400)
     }
 
     updateAnswers = answers => {
@@ -665,7 +669,12 @@ class UnsolvedModeGameScreen extends React.Component {
             <View style={styles.container}>
                 <NotchView color={styles.topContainer.backgroundColor} />
                 <View style={styles.topContainer}>
-                    <View style={styles.headerContainer}>
+                    <Animatable.View
+                        style={styles.headerContainer}
+                        useNativeDriver={true}
+                        delay={750}
+                        animation="fadeIn"
+                    >
                         <View style={styles.userContainer}>
                             <Image
                                 source={{
@@ -714,7 +723,7 @@ class UnsolvedModeGameScreen extends React.Component {
                                 />
                             </View>
                         </View>
-                    </View>
+                    </Animatable.View>
                     <View style={styles.questionContainer}>
                         <Image
                             source={{
@@ -802,7 +811,7 @@ class UnsolvedModeGameScreen extends React.Component {
                                     onPress={() => this.buttonOnPress(1)}
                                     disabled={this.state.isButtonOneDisabled}
                                 >
-                                    <View
+                                    <Animatable.View
                                         style={[
                                             styles.button,
                                             {
@@ -810,17 +819,32 @@ class UnsolvedModeGameScreen extends React.Component {
                                                     .buttonOneBorderColor
                                             }
                                         ]}
+                                        animation={
+                                            this.state.buttonOneBorderColor ===
+                                            NORMAL_BUTTON_COLOR
+                                                ? 'bounceIn'
+                                                : this.state
+                                                      .buttonOneBorderColor !==
+                                                  SELECTED_BUTTON_COLOR
+                                                ? this.state
+                                                      .buttonOneBorderColor !==
+                                                  CORRECT_ANSWER_COLOR
+                                                    ? 'swing'
+                                                    : 'pulse'
+                                                : null
+                                        }
+                                        useNativeDriver={true}
                                     >
                                         <Text style={styles.buttonText}>
                                             {this.state.buttonOneName}
                                         </Text>
-                                    </View>
+                                    </Animatable.View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => this.buttonOnPress(2)}
                                     disabled={this.state.isButtonTwoDisabled}
                                 >
-                                    <View
+                                    <Animatable.View
                                         style={[
                                             styles.button,
                                             {
@@ -828,17 +852,33 @@ class UnsolvedModeGameScreen extends React.Component {
                                                     .buttonTwoBorderColor
                                             }
                                         ]}
+                                        animation={
+                                            this.state.buttonTwoBorderColor ===
+                                            NORMAL_BUTTON_COLOR
+                                                ? 'bounceIn'
+                                                : this.state
+                                                      .buttonTwoBorderColor !==
+                                                  SELECTED_BUTTON_COLOR
+                                                ? this.state
+                                                      .buttonTwoBorderColor !==
+                                                  CORRECT_ANSWER_COLOR
+                                                    ? 'swing'
+                                                    : 'pulse'
+                                                : null
+                                        }
+                                        delay={200}
+                                        useNativeDriver={true}
                                     >
                                         <Text style={styles.buttonText}>
                                             {this.state.buttonTwoName}
                                         </Text>
-                                    </View>
+                                    </Animatable.View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => this.buttonOnPress(3)}
                                     disabled={this.state.isButtonThreeDisabled}
                                 >
-                                    <View
+                                    <Animatable.View
                                         style={[
                                             styles.button,
                                             {
@@ -846,11 +886,28 @@ class UnsolvedModeGameScreen extends React.Component {
                                                     .buttonThreeBorderColor
                                             }
                                         ]}
+                                        animation={
+                                            this.state
+                                                .buttonThreeBorderColor ===
+                                            NORMAL_BUTTON_COLOR
+                                                ? 'bounceIn'
+                                                : this.state
+                                                      .buttonThreeBorderColor !==
+                                                  SELECTED_BUTTON_COLOR
+                                                ? this.state
+                                                      .buttonThreeBorderColor !==
+                                                  CORRECT_ANSWER_COLOR
+                                                    ? 'swing'
+                                                    : 'pulse'
+                                                : null
+                                        }
+                                        delay={100}
+                                        useNativeDriver={true}
                                     >
                                         <Text style={styles.buttonText}>
                                             {this.state.buttonThreeName}
                                         </Text>
-                                    </View>
+                                    </Animatable.View>
                                 </TouchableOpacity>
                             </View>
                             <View style={styles.bottomButtonRowContainer}>
@@ -858,7 +915,7 @@ class UnsolvedModeGameScreen extends React.Component {
                                     onPress={() => this.buttonOnPress(4)}
                                     disabled={this.state.isButtonFourDisabled}
                                 >
-                                    <View
+                                    <Animatable.View
                                         style={[
                                             styles.button,
                                             {
@@ -866,17 +923,33 @@ class UnsolvedModeGameScreen extends React.Component {
                                                     .buttonFourBorderColor
                                             }
                                         ]}
+                                        animation={
+                                            this.state.buttonFourBorderColor ===
+                                            NORMAL_BUTTON_COLOR
+                                                ? 'bounceIn'
+                                                : this.state
+                                                      .buttonFourBorderColor !==
+                                                  SELECTED_BUTTON_COLOR
+                                                ? this.state
+                                                      .buttonFourBorderColor !==
+                                                  CORRECT_ANSWER_COLOR
+                                                    ? 'swing'
+                                                    : 'pulse'
+                                                : null
+                                        }
+                                        delay={150}
+                                        useNativeDriver={true}
                                     >
                                         <Text style={styles.buttonText}>
                                             {this.state.buttonFourName}
                                         </Text>
-                                    </View>
+                                    </Animatable.View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => this.buttonOnPress(5)}
                                     disabled={this.state.isButtonFiveDisabled}
                                 >
-                                    <View
+                                    <Animatable.View
                                         style={[
                                             styles.button,
                                             {
@@ -884,17 +957,33 @@ class UnsolvedModeGameScreen extends React.Component {
                                                     .buttonFiveBorderColor
                                             }
                                         ]}
+                                        animation={
+                                            this.state.buttonFiveBorderColor ===
+                                            NORMAL_BUTTON_COLOR
+                                                ? 'bounceIn'
+                                                : this.state
+                                                      .buttonFiveBorderColor !==
+                                                  SELECTED_BUTTON_COLOR
+                                                ? this.state
+                                                      .buttonFiveBorderColor !==
+                                                  CORRECT_ANSWER_COLOR
+                                                    ? 'swing'
+                                                    : 'pulse'
+                                                : null
+                                        }
+                                        delay={50}
+                                        useNativeDriver={true}
                                     >
                                         <Text style={styles.buttonText}>
                                             {this.state.buttonFiveName}
                                         </Text>
-                                    </View>
+                                    </Animatable.View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => this.buttonOnPress(6)}
                                     disabled={this.state.isButtonSixDisabled}
                                 >
-                                    <View
+                                    <Animatable.View
                                         style={[
                                             styles.button,
                                             {
@@ -902,17 +991,25 @@ class UnsolvedModeGameScreen extends React.Component {
                                                     .buttonSixBorderColor
                                             }
                                         ]}
+                                        animation="bounceIn"
+                                        delay={250}
+                                        useNativeDriver={true}
                                     >
                                         <Text style={styles.buttonText}>
                                             {this.state.buttonSixName}
                                         </Text>
-                                    </View>
+                                    </Animatable.View>
                                 </TouchableOpacity>
                             </View>
                         </View>
                     )}
                 </View>
-                <View style={styles.jokerContainer}>
+                <Animatable.View
+                    style={styles.jokerContainer}
+                    useNativeDriver={true}
+                    delay={750}
+                    animation="fadeIn"
+                >
                     <View style={styles.touchableJokerContainer}>
                         <TouchableOpacity
                             style={styles.jokerImageContainer}
@@ -1111,7 +1208,7 @@ class UnsolvedModeGameScreen extends React.Component {
                             </TouchableOpacity>
                         </View>
                     </View>
-                </View>
+                </Animatable.View>
             </View>
         )
     }

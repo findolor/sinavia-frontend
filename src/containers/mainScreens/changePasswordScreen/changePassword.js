@@ -14,6 +14,7 @@ import { clientActions } from '../../../redux/client/actions'
 import { navigationPop } from '../../../services/navigationService'
 import returnLogo from '../../../assets/return.png'
 import { flashMessages } from '../../../services/flashMessageBuilder'
+import { heightPercentageToDP as hp } from "react-native-responsive-screen"
 
 class ChangePassword extends React.Component {
     constructor(props) {
@@ -23,7 +24,9 @@ class ChangePassword extends React.Component {
             existingPassword: '',
             // New passwords
             newPasswordFirst: '',
-            newPasswordSecond: ''
+            newPasswordSecond: '',
+            newPasswordFirstBorder: '#C8C8C8',
+            newPasswordSecondBorder: '#C8C8C8'
         }
     }
 
@@ -64,25 +67,103 @@ class ChangePassword extends React.Component {
     }
 
     saveButtonOnPress = () => {
-        if (this.checkPasswordMatch()) {
-            if (this.checkNewPasswordsMatch()) {
-                const clientInformation = this.props.clientInformation
+        if(this.state.existingPassword === '' || this.state.newPasswordFirst === '' || this.state.newPasswordSecond === ''){
+            flashMessages.authInfosOrSettingsError('Boş alan hatası', 'Bütün alanları doldurmalısın',{
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
+        }
+        else if(this.state.existingPassword === this.state.newPasswordFirst){
+            flashMessages.authInfosOrSettingsError('Şifre hatası', 'Yeni şifren, eskisinden farklı olmalıdır', {
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
+            this.setState({newPasswordFirstBorder: 'red', newPasswordSecondBorder: 'red'})
+        }
+        else if(this.state.newPasswordFirst.length < 6) {
+            flashMessages.authInfosOrSettingsError('Şifre hatası', 'Şifren en az 6, en fazla 16 karakterden oluşmalıdır',{
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
+            this.setState({newPasswordFirstBorder: 'red'})
+        }
+        else if(this.state.newPasswordSecond.length < 6) {
+            flashMessages.authInfosOrSettingsError('Şifre hatası', 'Şifren en az 6, en fazla 16 karakterden oluşmalıdır',{
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
+            this.setState({newPasswordSecondBorder: 'red'})
+        }
+        else if(this.state.newPasswordFirst.includes(' ')){
+            flashMessages.authInfosOrSettingsError('Şifre hatası', 'Şifren içerisinde boşluk bulunmamalıdır',{
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
+            this.setState({newPasswordFirstBorder: 'red'})
+        }
+        else if(this.state.newPasswordSecond.includes(' ')){
+            flashMessages.authInfosOrSettingsError('Şifre hatası', 'Şifren içerisinde boşluk bulunmamalıdır',{
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
+            this.setState({newPasswordSecondBorder: 'red'})
+        }
+        else if(this.state.newPasswordFirst !== this.state.newPasswordSecond){
+            flashMessages.authInfosOrSettingsError('Şifre hatası', 'Şifreler birbiriyle uyuşmamaktadır',{
+                backgroundColor: '#FFFFFF',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                borderColor: '#00D9EF',
+                borderWidth: hp(0.25),
+                height: hp(10)
+            })
+            this.setState({newPasswordFirstBorder: 'red', newPasswordSecondBorder: 'red'})
+        }
+        else{
+            if (this.checkPasswordMatch()) {
+                if (this.checkNewPasswordsMatch()) {
+                    const clientInformation = this.props.clientInformation
 
-                clientInformation.password = this.state.newPasswordFirst
+                    clientInformation.password = this.state.newPasswordFirst
 
-                this.props.updateUser(
-                    this.props.clientToken,
-                    this.props.clientDBId,
-                    clientInformation,
-                    true
-                )
+                    this.props.updateUser(
+                        this.props.clientToken,
+                        this.props.clientDBId,
+                        clientInformation,
+                        true
+                    )
+                } else {
+                    flashMessages.generalMessage(
+                        'Lütfen yeni şifreyi doğru giriniz!'
+                    )
+                }
             } else {
-                flashMessages.generalMessage(
-                    'Lütfen yeni şifreyi doğru giriniz!'
-                )
+                flashMessages.generalMessage('Lütfen mevcut şifreyi doğru giriniz!')
             }
-        } else {
-            flashMessages.generalMessage('Lütfen mevcut şifreyi doğru giriniz!')
         }
     }
 
@@ -120,7 +201,7 @@ class ChangePassword extends React.Component {
                             <Text style={styles.textInputTitle}>Yeni</Text>
                             <Text style={styles.textInputTitle}>şifre</Text>
                         </View>
-                        <View style={styles.textInputView}>
+                        <View style={[styles.textInputView, {borderColor: this.state.newPasswordFirstBorder}]}>
                             <TextInput
                                 style={styles.textInputStyle}
                                 placeholderTextColor="#8A8888"
@@ -135,7 +216,7 @@ class ChangePassword extends React.Component {
                             <Text style={styles.textInputTitle}>şifre</Text>
                             <Text style={styles.textInputTitle}>(tekrar)</Text>
                         </View>
-                        <View style={styles.textInputView}>
+                        <View style={[styles.textInputView, {borderColor: this.state.newPasswordSecondBorder}]}>
                             <TextInput
                                 style={styles.textInputStyle}
                                 placeholderTextColor="#8A8888"

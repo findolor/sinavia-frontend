@@ -18,6 +18,7 @@ import {
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
 import styles from './style'
+import * as Animatable from 'react-native-animatable'
 
 import FIRST_TITLE from '../../../assets/firstTitle.png'
 import SECOND_TITLE from '../../../assets/secondTitle.png'
@@ -33,7 +34,7 @@ class Leaderboard extends React.Component {
             globalButtonTextColor: '#FFFFFF',
             friendsButtonBackgroundColor: '#FFFFFF',
             friendsButtonTextColor: '#2E313C',
-            // Dropwodn list variables
+            // Dropdown list variables
             courseList: [],
             subjectList: [],
             subjectListDefaultValue: '',
@@ -484,36 +485,7 @@ class Leaderboard extends React.Component {
                                             this.pickerSelectCourse(idx, value)
                                         }
                                     />
-                                </View>
-                                <View style={styles.leaderImageContainer}>
-                                    <ImageBackground
-                                        source={{
-                                            uri:
-                                                this.state
-                                                    .topTenProfilePictures[0] !==
-                                                undefined
-                                                    ? this.state
-                                                          .topTenProfilePictures[0]
-                                                    : null
-                                        }}
-                                        style={styles.firstUserPic}
-                                        imageStyle={{ borderRadius: hp(100), borderWidth: hp(0.4), borderColor: '#FF9900'}}
-                                    >
-                                        <Image
-                                            source={FIRST_TITLE}
-                                            style={styles.firstUserTitlePic}
-                                        />
-                                        <View style={styles.firstUserOrderView}>
-                                            <Text
-                                                style={styles.topTenOrderNumber}
-                                            >
-                                                1
-                                            </Text>
-                                        </View>
-                                    </ImageBackground>
-                                </View>
-                                {this.state.isSubjectDropdownVisible && (
-                                    <View style={styles.dropdownContainer}>
+                                    {this.state.isSubjectDropdownVisible && (
                                         <DropDown
                                             style={styles.picker}
                                             textStyle={styles.pickerText}
@@ -535,10 +507,73 @@ class Leaderboard extends React.Component {
                                                 )
                                             }
                                         />
+                                    )}
+                                </View>
+                                <Animatable.View
+                                    style={styles.leaderImageContainer}
+                                    useNativeDriver={true}
+                                    animation="zoomIn"
+                                    duration={600}
+                                >
+                                    <ImageBackground
+                                        source={{
+                                            uri:
+                                                this.state
+                                                    .topTenProfilePictures[0] !==
+                                                undefined
+                                                    ? this.state
+                                                          .topTenProfilePictures[0]
+                                                    : null
+                                        }}
+                                        style={styles.firstUserPic}
+                                        imageStyle={{
+                                            borderRadius: hp(100),
+                                            borderWidth: hp(0.4),
+                                            borderColor: '#FF9900'
+                                        }}
+                                    >
+                                        <Animatable.View
+                                            useNativeDriver={true}
+                                            animation="slideInDown"
+                                            duration={1250}
+                                            delay={200}
+                                        >
+                                            <Image
+                                                source={FIRST_TITLE}
+                                                style={styles.firstUserTitlePic}
+                                            />
+                                        </Animatable.View>
+                                        <View style={styles.firstUserOrderView}>
+                                            <Text
+                                                style={styles.topTenOrderNumber}
+                                            >
+                                                1
+                                            </Text>
+                                        </View>
+                                    </ImageBackground>
+                                </Animatable.View>
+                                <View
+                                    style={[
+                                        styles.dropdownContainer,
+                                        { justifyContent: 'flex-end' }
+                                    ]}
+                                >
+                                    <View style={styles.lastUpdateView}>
+                                        <Text style={styles.lastUpdateText}>
+                                            Son Güncelleme Tarihi
+                                        </Text>
+                                        <Text style={styles.lastUpdateTimeText}>
+                                            10 saat önce
+                                        </Text>
                                     </View>
-                                )}
+                                </View>
                             </View>
-                            <View style={styles.nameAndScoreContainer}>
+                            <Animatable.View
+                                style={styles.nameAndScoreContainer}
+                                useNativeDriver={true}
+                                animation="fadeIn"
+                                duration={600}
+                            >
                                 <Text style={styles.nameText}>
                                     {this.state.topTenUsernames[0] !==
                                         undefined &&
@@ -552,11 +587,16 @@ class Leaderboard extends React.Component {
                                     {this.state.topTenPoints[0] === undefined &&
                                         ''}
                                 </Text>
-                            </View>
+                            </Animatable.View>
                         </View>
                         <View style={styles.topTenContainer}>
                             <View style={styles.dividedTopTenContainer}>
-                                <View style={styles.topTenUserContainer}>
+                                <Animatable.View
+                                    style={styles.topTenUserContainer}
+                                    useNativeDriver={true}
+                                    animation="fadeIn"
+                                    duration={600}
+                                >
                                     <View style={styles.topTenUserPicContainer}>
                                         <ImageBackground
                                             source={{
@@ -571,7 +611,11 @@ class Leaderboard extends React.Component {
                                             style={
                                                 styles.secondAndThirdUsersFromTopTenPic
                                             }
-                                            imageStyle={{ borderRadius: hp(100), borderWidth: hp(0.4), borderColor: '#FF9900'}}
+                                            imageStyle={{
+                                                borderRadius: hp(100),
+                                                borderWidth: hp(0.4),
+                                                borderColor: '#FF9900'
+                                            }}
                                         >
                                             <Image
                                                 source={SECOND_TITLE}
@@ -618,8 +662,13 @@ class Leaderboard extends React.Component {
                                                 undefined && ''}
                                         </Text>
                                     </View>
-                                </View>
-                                <View style={styles.topTenUserContainer}>
+                                </Animatable.View>
+                                <Animatable.View
+                                    style={styles.topTenUserContainer}
+                                    useNativeDriver={true}
+                                    animation="fadeIn"
+                                    duration={600}
+                                >
                                     <View style={styles.topTenUserPicContainer}>
                                         <ImageBackground
                                             source={{
@@ -634,7 +683,11 @@ class Leaderboard extends React.Component {
                                             style={
                                                 styles.secondAndThirdUsersFromTopTenPic
                                             }
-                                            imageStyle={{ borderRadius: hp(100), borderWidth: hp(0.4), borderColor: '#FF9900'}}
+                                            imageStyle={{
+                                                borderRadius: hp(100),
+                                                borderWidth: hp(0.4),
+                                                borderColor: '#FF9900'
+                                            }}
                                         >
                                             <Image
                                                 source={THIRD_TITLE}
@@ -681,8 +734,13 @@ class Leaderboard extends React.Component {
                                                 undefined && ''}
                                         </Text>
                                     </View>
-                                </View>
-                                <View style={styles.topTenUserContainer}>
+                                </Animatable.View>
+                                <Animatable.View
+                                    style={styles.topTenUserContainer}
+                                    useNativeDriver={true}
+                                    animation="fadeIn"
+                                    duration={600}
+                                >
                                     <View style={styles.topTenUserPicContainer}>
                                         <ImageBackground
                                             source={{
@@ -697,7 +755,11 @@ class Leaderboard extends React.Component {
                                             style={
                                                 styles.otherUsersFromTopTenPic
                                             }
-                                            imageStyle={{ borderRadius: hp(100), borderWidth: hp(0.4), borderColor: '#FF9900'}}
+                                            imageStyle={{
+                                                borderRadius: hp(100),
+                                                borderWidth: hp(0.4),
+                                                borderColor: '#FF9900'
+                                            }}
                                         >
                                             <View
                                                 style={
@@ -738,10 +800,15 @@ class Leaderboard extends React.Component {
                                                 undefined && ''}
                                         </Text>
                                     </View>
-                                </View>
+                                </Animatable.View>
                             </View>
                             <View style={styles.dividedTopTenContainer}>
-                                <View style={styles.topTenUserContainer}>
+                                <Animatable.View
+                                    style={styles.topTenUserContainer}
+                                    useNativeDriver={true}
+                                    animation="fadeIn"
+                                    duration={600}
+                                >
                                     <View style={styles.topTenUserPicContainer}>
                                         <ImageBackground
                                             source={{
@@ -756,7 +823,11 @@ class Leaderboard extends React.Component {
                                             style={
                                                 styles.otherUsersFromTopTenPic
                                             }
-                                            imageStyle={{ borderRadius: hp(100), borderWidth: hp(0.4), borderColor: '#FF9900'}}
+                                            imageStyle={{
+                                                borderRadius: hp(100),
+                                                borderWidth: hp(0.4),
+                                                borderColor: '#FF9900'
+                                            }}
                                         >
                                             <View
                                                 style={
@@ -797,8 +868,13 @@ class Leaderboard extends React.Component {
                                                 undefined && ''}
                                         </Text>
                                     </View>
-                                </View>
-                                <View style={styles.topTenUserContainer}>
+                                </Animatable.View>
+                                <Animatable.View
+                                    style={styles.topTenUserContainer}
+                                    useNativeDriver={true}
+                                    animation="fadeIn"
+                                    duration={600}
+                                >
                                     <View style={styles.topTenUserPicContainer}>
                                         <ImageBackground
                                             source={{
@@ -813,7 +889,11 @@ class Leaderboard extends React.Component {
                                             style={
                                                 styles.otherUsersFromTopTenPic
                                             }
-                                            imageStyle={{ borderRadius: hp(100), borderWidth: hp(0.4), borderColor: '#FF9900'}}
+                                            imageStyle={{
+                                                borderRadius: hp(100),
+                                                borderWidth: hp(0.4),
+                                                borderColor: '#FF9900'
+                                            }}
                                         >
                                             <View
                                                 style={
@@ -854,8 +934,13 @@ class Leaderboard extends React.Component {
                                                 undefined && ''}
                                         </Text>
                                     </View>
-                                </View>
-                                <View style={styles.topTenUserContainer}>
+                                </Animatable.View>
+                                <Animatable.View
+                                    style={styles.topTenUserContainer}
+                                    useNativeDriver={true}
+                                    animation="fadeIn"
+                                    duration={600}
+                                >
                                     <View style={styles.topTenUserPicContainer}>
                                         <ImageBackground
                                             source={{
@@ -870,7 +955,11 @@ class Leaderboard extends React.Component {
                                             style={
                                                 styles.otherUsersFromTopTenPic
                                             }
-                                            imageStyle={{ borderRadius: hp(100), borderWidth: hp(0.4), borderColor: '#FF9900'}}
+                                            imageStyle={{
+                                                borderRadius: hp(100),
+                                                borderWidth: hp(0.4),
+                                                borderColor: '#FF9900'
+                                            }}
                                         >
                                             <View
                                                 style={
@@ -911,10 +1000,15 @@ class Leaderboard extends React.Component {
                                                 undefined && ''}
                                         </Text>
                                     </View>
-                                </View>
+                                </Animatable.View>
                             </View>
                             <View style={styles.dividedTopTenContainer}>
-                                <View style={styles.topTenUserContainer}>
+                                <Animatable.View
+                                    style={styles.topTenUserContainer}
+                                    useNativeDriver={true}
+                                    animation="fadeIn"
+                                    duration={600}
+                                >
                                     <View style={styles.topTenUserPicContainer}>
                                         <ImageBackground
                                             source={{
@@ -929,7 +1023,11 @@ class Leaderboard extends React.Component {
                                             style={
                                                 styles.otherUsersFromTopTenPic
                                             }
-                                            imageStyle={{ borderRadius: hp(100), borderWidth: hp(0.4), borderColor: '#FF9900'}}
+                                            imageStyle={{
+                                                borderRadius: hp(100),
+                                                borderWidth: hp(0.4),
+                                                borderColor: '#FF9900'
+                                            }}
                                         >
                                             <View
                                                 style={
@@ -970,8 +1068,13 @@ class Leaderboard extends React.Component {
                                                 undefined && ''}
                                         </Text>
                                     </View>
-                                </View>
-                                <View style={styles.topTenUserContainer}>
+                                </Animatable.View>
+                                <Animatable.View
+                                    style={styles.topTenUserContainer}
+                                    useNativeDriver={true}
+                                    animation="fadeIn"
+                                    duration={600}
+                                >
                                     <View style={styles.topTenUserPicContainer}>
                                         <ImageBackground
                                             source={{
@@ -986,7 +1089,11 @@ class Leaderboard extends React.Component {
                                             style={
                                                 styles.otherUsersFromTopTenPic
                                             }
-                                            imageStyle={{ borderRadius: hp(100), borderWidth: hp(0.4), borderColor: '#FF9900'}}
+                                            imageStyle={{
+                                                borderRadius: hp(100),
+                                                borderWidth: hp(0.4),
+                                                borderColor: '#FF9900'
+                                            }}
                                         >
                                             <View
                                                 style={
@@ -1027,8 +1134,13 @@ class Leaderboard extends React.Component {
                                                 undefined && ''}
                                         </Text>
                                     </View>
-                                </View>
-                                <View style={styles.topTenUserContainer}>
+                                </Animatable.View>
+                                <Animatable.View
+                                    style={styles.topTenUserContainer}
+                                    useNativeDriver={true}
+                                    animation="fadeIn"
+                                    duration={600}
+                                >
                                     <View style={styles.topTenUserPicContainer}>
                                         <ImageBackground
                                             source={{
@@ -1043,7 +1155,11 @@ class Leaderboard extends React.Component {
                                             style={
                                                 styles.otherUsersFromTopTenPic
                                             }
-                                            imageStyle={{ borderRadius: hp(100), borderWidth: hp(0.4), borderColor: '#FF9900'}}
+                                            imageStyle={{
+                                                borderRadius: hp(100),
+                                                borderWidth: hp(0.4),
+                                                borderColor: '#FF9900'
+                                            }}
                                         >
                                             <View
                                                 style={
@@ -1084,7 +1200,7 @@ class Leaderboard extends React.Component {
                                                 undefined && ''}
                                         </Text>
                                     </View>
-                                </View>
+                                </Animatable.View>
                             </View>
                         </View>
                         <View style={styles.continueOrderTextContainer}>
@@ -1176,7 +1292,4 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({})
 
-export default connect(
-    mapStateToProps,
-    null
-)(Leaderboard)
+export default connect(mapStateToProps, null)(Leaderboard)
