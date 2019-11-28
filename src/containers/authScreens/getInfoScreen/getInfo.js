@@ -121,10 +121,6 @@ class GetInfo extends React.Component {
             birthDateUI: 'Doğum tarihi seç',
             isDateTimePickerVisible: false,
             switchValue: false,
-            showPasswordEyeFirst: false,
-            showPasswordEyeSecond: false,
-            hidePasswordFirst: true,
-            hidePasswordSecond: true,
             dateColor: '#2E313C',
             // User Information
             username: null,
@@ -240,10 +236,12 @@ class GetInfo extends React.Component {
         if (
             validCharacters.test(text) ||
             text.substr(-2) === '  ' ||
-            text.charAt(0) === ' '
+            text.charAt(0) === ' ' ||
+            text.endsWith(' ')
         ) {
             this.setState({ nameBorderColor: 'red' })
         } else this.setState({ nameBorderColor: '#989696' })
+        text = text.replace(/\s\s+/g, ' ')
         this.setState({ name: text })
     }
 
@@ -332,7 +330,15 @@ class GetInfo extends React.Component {
             )
             return
         }
-        this.props.createUser(userInformation)
+        this.props.createUser({
+            username: this.state.username,
+            name: this.state.name,
+            lastname: this.state.lastname,
+            birthDate: this.state.birthDate,
+            city: this.state.city,
+            email: this.props.email,
+            password: this.props.password
+        })
     }
 
     render() {
