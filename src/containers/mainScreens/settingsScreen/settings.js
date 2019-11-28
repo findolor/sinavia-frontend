@@ -5,7 +5,10 @@ import {
     TouchableOpacity,
     Image,
     ImageBackground,
-    TextInput, Modal, KeyboardAvoidingView, FlatList
+    TextInput,
+    Modal,
+    KeyboardAvoidingView,
+    FlatList
 } from 'react-native'
 import styles from './style'
 import NotchView from '../../../components/notchView'
@@ -37,16 +40,86 @@ import EDIT from '../../../assets/edit.png'
 import { AuthTextInput } from '../../../components/authScreen'
 
 const citiesList = [
-    { cityName: 'Adana' },{ cityName: 'Adıyaman' },{ cityName: 'Afyonkarahisar' },{ cityName: 'Ağrı' },{ cityName: 'Aksaray' },{ cityName: 'Amasya' },{ cityName: 'Ankara' },{ cityName: 'Antalya' },
-    { cityName: 'Ardahan' },{ cityName: 'Artvin' },{ cityName: 'Aydın' },{ cityName: 'Balıkesir' },{ cityName: 'Bartın' },{ cityName: 'Batman' },{ cityName: 'Bayburt' },{ cityName: 'Bilecik' },
-    { cityName: 'Bingöl' },{ cityName: 'Bitlis' },{ cityName: 'Bolu' },{ cityName: 'Burdur' },{ cityName: 'Bursa' },{ cityName: 'Çanakkale' },{ cityName: 'Çankırı' },{ cityName: 'Çorum' },
-    { cityName: 'Denizli' },{ cityName: 'Diyarbakır' },{ cityName: 'Düzce' },{ cityName: 'Edirne' },{ cityName: 'Elazığ' },{ cityName: 'Erzincan' },{ cityName: 'Erzurum' },{ cityName: 'Eskişehir' },
-    { cityName: 'Gaziantep' },{ cityName: 'Giresun' },{ cityName: 'Gümüşhane' },{ cityName: 'Hakkari' },{ cityName: 'Hatay' },{ cityName: 'Iğdır' },{ cityName: 'Isparta' },{ cityName: 'İstanbul' },
-    { cityName: 'İzmir' },{ cityName: 'Kahramanmaraş' },{ cityName: 'Karabük' },{ cityName: 'Karaman' },{ cityName: 'Kars' },{ cityName: 'Kastamonu' },{ cityName: 'Kayseri' },{ cityName: 'Kırıkkale' },
-    { cityName: 'Kırklareli' },{ cityName: 'Kırşehir' },{ cityName: 'Kilis' },{ cityName: 'Kocaeli' },{ cityName: 'Konya' },{ cityName: 'Kütahya' },{ cityName: 'Malatya' },{ cityName: 'Manisa' },
-    { cityName: 'Mardin' },{ cityName: 'Mersin' },{ cityName: 'Muğla' },{ cityName: 'Muş' },{ cityName: 'Nevşehir' },{ cityName: 'Niğde' },{ cityName: 'Ordu' },{ cityName: 'Osmaniye' },
-    { cityName: 'Rize' },{ cityName: 'Sakarya' },{ cityName: 'Samsun' },{ cityName: 'Siirt' },{ cityName: 'Sinop' },{ cityName: 'Sivas' },{ cityName: 'Şanlıurfa' },{ cityName: 'Şırnak' },
-    { cityName: 'Tekirdağ' },{ cityName: 'Tokat' },{ cityName: 'Trabzon' },{ cityName: 'Tunceli' },{ cityName: 'Uşak' },{ cityName: 'Van' },{ cityName: 'Yalova' },{ cityName: 'Yozgat' },
+    { cityName: 'Adana' },
+    { cityName: 'Adıyaman' },
+    { cityName: 'Afyonkarahisar' },
+    { cityName: 'Ağrı' },
+    { cityName: 'Aksaray' },
+    { cityName: 'Amasya' },
+    { cityName: 'Ankara' },
+    { cityName: 'Antalya' },
+    { cityName: 'Ardahan' },
+    { cityName: 'Artvin' },
+    { cityName: 'Aydın' },
+    { cityName: 'Balıkesir' },
+    { cityName: 'Bartın' },
+    { cityName: 'Batman' },
+    { cityName: 'Bayburt' },
+    { cityName: 'Bilecik' },
+    { cityName: 'Bingöl' },
+    { cityName: 'Bitlis' },
+    { cityName: 'Bolu' },
+    { cityName: 'Burdur' },
+    { cityName: 'Bursa' },
+    { cityName: 'Çanakkale' },
+    { cityName: 'Çankırı' },
+    { cityName: 'Çorum' },
+    { cityName: 'Denizli' },
+    { cityName: 'Diyarbakır' },
+    { cityName: 'Düzce' },
+    { cityName: 'Edirne' },
+    { cityName: 'Elazığ' },
+    { cityName: 'Erzincan' },
+    { cityName: 'Erzurum' },
+    { cityName: 'Eskişehir' },
+    { cityName: 'Gaziantep' },
+    { cityName: 'Giresun' },
+    { cityName: 'Gümüşhane' },
+    { cityName: 'Hakkari' },
+    { cityName: 'Hatay' },
+    { cityName: 'Iğdır' },
+    { cityName: 'Isparta' },
+    { cityName: 'İstanbul' },
+    { cityName: 'İzmir' },
+    { cityName: 'Kahramanmaraş' },
+    { cityName: 'Karabük' },
+    { cityName: 'Karaman' },
+    { cityName: 'Kars' },
+    { cityName: 'Kastamonu' },
+    { cityName: 'Kayseri' },
+    { cityName: 'Kırıkkale' },
+    { cityName: 'Kırklareli' },
+    { cityName: 'Kırşehir' },
+    { cityName: 'Kilis' },
+    { cityName: 'Kocaeli' },
+    { cityName: 'Konya' },
+    { cityName: 'Kütahya' },
+    { cityName: 'Malatya' },
+    { cityName: 'Manisa' },
+    { cityName: 'Mardin' },
+    { cityName: 'Mersin' },
+    { cityName: 'Muğla' },
+    { cityName: 'Muş' },
+    { cityName: 'Nevşehir' },
+    { cityName: 'Niğde' },
+    { cityName: 'Ordu' },
+    { cityName: 'Osmaniye' },
+    { cityName: 'Rize' },
+    { cityName: 'Sakarya' },
+    { cityName: 'Samsun' },
+    { cityName: 'Siirt' },
+    { cityName: 'Sinop' },
+    { cityName: 'Sivas' },
+    { cityName: 'Şanlıurfa' },
+    { cityName: 'Şırnak' },
+    { cityName: 'Tekirdağ' },
+    { cityName: 'Tokat' },
+    { cityName: 'Trabzon' },
+    { cityName: 'Tunceli' },
+    { cityName: 'Uşak' },
+    { cityName: 'Van' },
+    { cityName: 'Yalova' },
+    { cityName: 'Yozgat' },
     { cityName: 'Zonguldak' }
 ]
 
@@ -146,38 +219,39 @@ class Settings extends React.Component {
     }
 
     nameOnChange = text => {
-        const invalidCharacters = (/[^a-zA-Z]/g)
-        if (invalidCharacters.test(text)) {
-            this.setState({nameBorderColor: 'red'})
-        }
-        else this.setState({nameBorderColor: '#C8C8C8'})
+        const validCharacters = /[^a-zA-Z\s]/g
+        if (
+            validCharacters.test(text) ||
+            text.substr(-2) === '  ' ||
+            text.charAt(0) === ' '
+        ) {
+            this.setState({ nameBorderColor: 'red' })
+        } else this.setState({ nameBorderColor: '#C8C8C8' })
         if (text === '') text = null
         this.setState({ name: text })
     }
 
     lastnameOnChange = text => {
-        const invalidCharacters = (/[^a-zA-Z]/g)
-        if (invalidCharacters.test(text)) {
-            this.setState({lastnameBorderColor: 'red'})
-        }
-        else this.setState({lastnameBorderColor: '#C8C8C8'})
+        const validCharacters = /[^a-zA-Z]/g
+        if (validCharacters.test(text)) {
+            this.setState({ lastnameBorderColor: 'red' })
+        } else this.setState({ lastnameBorderColor: '#C8C8C8' })
         if (text === '') text = null
         this.setState({ lastname: text })
     }
 
     usernameOnChange = text => {
-        const invalidCharacters = (/[^a-zA-Z0-9]/g)
-        if (invalidCharacters.test(text)) {
-            this.setState({usernameBorderColor: 'red'})
-        }
-        else this.setState({usernameBorderColor: '#C8C8C8'})
+        const validCharacters = /[^a-zA-Z0-9]/g
+        if (validCharacters.test(text)) {
+            this.setState({ usernameBorderColor: 'red' })
+        } else this.setState({ usernameBorderColor: '#C8C8C8' })
         if (text === '') text = null
         this.setState({ username: text })
     }
 
     checkName = () => {
         if (this.state.name !== null) return true
-            else false
+        else false
     }
 
     checkLastname = () => {
@@ -211,37 +285,46 @@ class Settings extends React.Component {
     }
 
     saveButtonOnPress = async () => {
-        if ( this.state.usernameBorderColor === 'red'){
-            flashMessages.authInfosOrSettingsError('Kullanıcı adı hatası', 'Kullanıcı adı sadece harf veya rakamlardan oluşabilir',{
-                backgroundColor: '#FFFFFF',
-                borderBottomLeftRadius: 10,
-                borderBottomRightRadius: 10,
-                borderColor: '#00D9EF',
-                borderWidth: hp(0.25),
-                height: hp(10)
-            })
-        }
-        else if (this.state.nameBorderColor === 'red') {
-            flashMessages.authInfosOrSettingsError('Ad hatası', 'Ad sadece harflerden oluşmalıdır',{
-                backgroundColor: '#FFFFFF',
-                borderBottomLeftRadius: 10,
-                borderBottomRightRadius: 10,
-                borderColor: '#00D9EF',
-                borderWidth: hp(0.25),
-                height: hp(10)
-            })
-        }
-        else if (this.state.lastnameBorderColor === 'red') {
-            flashMessages.authInfosOrSettingsError('Soyad hatası', 'Soyad sadece harflerden oluşmalıdır',{
+        if (this.state.usernameBorderColor === 'red') {
+            flashMessages.authInfosOrSettingsError(
+                'Kullanıcı adı hatası',
+                'Kullanıcı adı sadece harf veya rakamlardan oluşabilir',
+                {
                     backgroundColor: '#FFFFFF',
                     borderBottomLeftRadius: 10,
                     borderBottomRightRadius: 10,
                     borderColor: '#00D9EF',
                     borderWidth: hp(0.25),
                     height: hp(10)
-                })
-        }
-        else {
+                }
+            )
+        } else if (this.state.nameBorderColor === 'red') {
+            flashMessages.authInfosOrSettingsError(
+                'Ad hatası',
+                'Ad sadece harflerden oluşmalıdır',
+                {
+                    backgroundColor: '#FFFFFF',
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    borderColor: '#00D9EF',
+                    borderWidth: hp(0.25),
+                    height: hp(10)
+                }
+            )
+        } else if (this.state.lastnameBorderColor === 'red') {
+            flashMessages.authInfosOrSettingsError(
+                'Soyad hatası',
+                'Soyad sadece harflerden oluşmalıdır',
+                {
+                    backgroundColor: '#FFFFFF',
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    borderColor: '#00D9EF',
+                    borderWidth: hp(0.25),
+                    height: hp(10)
+                }
+            )
+        } else {
             const firebaseStorage = firebase.storage()
 
             let shouldUpdate = false
@@ -386,7 +469,7 @@ class Settings extends React.Component {
         })
     }
 
-    cityOnPress = (cityName) => {
+    cityOnPress = cityName => {
         this.setState({
             city: cityName,
             isCityModalVisible: false
@@ -394,7 +477,7 @@ class Settings extends React.Component {
     }
 
     cityPicker = () => {
-        return(
+        return (
             <View style={styles.modal}>
                 <TouchableOpacity
                     onPress={this.closeCityModalButtonOnPress}
@@ -412,8 +495,14 @@ class Settings extends React.Component {
                         renderItem={({ item }) => {
                             return (
                                 <View style={styles.cityRow}>
-                                    <TouchableOpacity onPress={() => this.cityOnPress(item.cityName)}>
-                                        <Text style={styles.cityRowText}>{item.cityName}</Text>
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            this.cityOnPress(item.cityName)
+                                        }
+                                    >
+                                        <Text style={styles.cityRowText}>
+                                            {item.cityName}
+                                        </Text>
                                     </TouchableOpacity>
                                 </View>
                             )
@@ -464,7 +553,10 @@ class Settings extends React.Component {
                             <TouchableOpacity
                                 onPress={() => this.pickCoverImage(true, false)}
                             >
-                                <Image source={CHANGE_PHOTO} style={styles.editImg} />
+                                <Image
+                                    source={CHANGE_PHOTO}
+                                    style={styles.editImg}
+                                />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.profilePicView}>
@@ -501,7 +593,12 @@ class Settings extends React.Component {
                                 Kullanıcı Adı
                             </Text>
                         </View>
-                        <View style={[styles.textInputView, {borderColor: this.state.usernameBorderColor}]}>
+                        <View
+                            style={[
+                                styles.textInputView,
+                                { borderColor: this.state.usernameBorderColor }
+                            ]}
+                        >
                             <TextInput
                                 placeholder={
                                     this.props.clientInformation.username
@@ -520,16 +617,19 @@ class Settings extends React.Component {
                         <View style={styles.textInputTitleContainer}>
                             <Text style={styles.textInputTitle}>Ad</Text>
                         </View>
-                        <View style={[styles.textInputView, {borderColor: this.state.nameBorderColor}]}>
+                        <View
+                            style={[
+                                styles.textInputView,
+                                { borderColor: this.state.nameBorderColor }
+                            ]}
+                        >
                             <TextInput
                                 placeholder={this.props.clientInformation.name}
                                 style={styles.textInputStyle}
                                 placeholderTextColor="#8A8888"
                                 autoCapitalize={'none'}
                                 maxLength={16}
-                                onChangeText={text =>
-                                    this.nameOnChange(text)
-                                }
+                                onChangeText={text => this.nameOnChange(text)}
                             />
                         </View>
                     </View>
@@ -537,9 +637,16 @@ class Settings extends React.Component {
                         <View style={styles.textInputTitleContainer}>
                             <Text style={styles.textInputTitle}>Soyad</Text>
                         </View>
-                        <View style={[styles.textInputView, {borderColor: this.state.lastnameBorderColor}]}>
+                        <View
+                            style={[
+                                styles.textInputView,
+                                { borderColor: this.state.lastnameBorderColor }
+                            ]}
+                        >
                             <TextInput
-                                placeholder={this.props.clientInformation.lastname}
+                                placeholder={
+                                    this.props.clientInformation.lastname
+                                }
                                 style={styles.textInputStyle}
                                 placeholderTextColor="#8A8888"
                                 autoCapitalize={'none'}
@@ -601,7 +708,4 @@ const mapDispatchToProps = dispatch => ({
     lockUnlockButton: () => dispatch(appActions.lockUnlockButton())
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Settings)
+export default connect(mapStateToProps, mapDispatchToProps)(Settings)
