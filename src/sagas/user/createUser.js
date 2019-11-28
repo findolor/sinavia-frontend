@@ -102,6 +102,8 @@ export function* createUser(action) {
             clientToken: response.token
         })
 
+        deviceStorage.saveItemToStorage('isAppOpenedBefore', true)
+
         yield put({
             type: appTypes.LOCK_UNLOCK_BUTTON
         })
