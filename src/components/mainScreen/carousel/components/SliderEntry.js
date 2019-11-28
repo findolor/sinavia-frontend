@@ -20,6 +20,7 @@ export default class SliderEntry extends Component {
         return (
             <View>
                 <ImageBackground
+                    //source={{ uri: illustration }}
                     source={illustration}
                     imageStyle={{ borderRadius: hp(5) }}
                     style={styles.image}

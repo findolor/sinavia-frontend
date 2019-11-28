@@ -93,13 +93,13 @@ class LoadingScreen extends React.Component {
                     opponentProfilePicture = message[element].profilePicture
                     opponentCoverPicture = message[element].coverPicture
                     opponentTotalPoints = message[element].totalPoints
-                    opponentCity = 'Istanbul'
+                    opponentCity = message[element].city
                 } else {
                     playerUsername = message[element].username
                     playerProfilePicture = message[element].profilePicture
                     playerCoverPicture = message[element].coverPicture
                     playerTotalPoints = message[element].totalPoints
-                    playerCity = 'Izmir'
+                    playerCity = message[element].city
                 }
             })
             this.room.removeAllListeners()

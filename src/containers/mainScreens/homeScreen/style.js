@@ -75,7 +75,7 @@ export default StyleSheet.create({
         textAlignVertical: 'center'
     },
     pickerDropdown: {
-        height: hp(50.5),
+        height: hp(20),
         width: wp(30),
         borderWidth: hp(0.4),
         borderRadius: hp(1.5),

@@ -22,8 +22,8 @@ import { clientActions } from '../../../redux/client/actions'
 import ZOOM_IN_BUTTON from '../../../assets/gameScreens/zoomInButton.png'
 import ZOOM_OUT_BUTTON from '../../../assets/gameScreens/zoomOutButton.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
-import FIFTY_FIFTY from '../../../assets/gameScreens/jokers/fiftyFifty.png'
-import SECOND_CHANCE from '../../../assets/gameScreens/jokers/secondChance.png'
+import REMOVE_OPTIONS from '../../../assets/jokers/removeOptions.png'
+import SECOND_CHANCE from '../../../assets/jokers/secondChance.png'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
@@ -1119,7 +1119,7 @@ class SoloFriendGameScreen extends React.Component {
                                     </Text>
                                 </View>
                                 <Image
-                                    source={FIFTY_FIFTY}
+                                    source={REMOVE_OPTIONS}
                                     style={[
                                         styles.jokerImg,
                                         {
@@ -1128,7 +1128,8 @@ class SoloFriendGameScreen extends React.Component {
                                                     .isRemoveOptionJokerDisabled ===
                                                 true
                                                     ? 0.3
-                                                    : 1
+                                                    : 1,
+                                            resizeMode: 'contain'
                                         }
                                     ]}
                                 />
@@ -1227,7 +1228,8 @@ class SoloFriendGameScreen extends React.Component {
                                                     .isSecondChanceJokerDisabled ===
                                                 true
                                                     ? 0.3
-                                                    : 1
+                                                    : 1,
+                                            resizeMode: 'contain'
                                         }
                                     ]}
                                 />

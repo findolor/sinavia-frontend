@@ -5,7 +5,6 @@ import {
     Text,
     TouchableOpacity,
     Keyboard,
-    Alert,
     TouchableWithoutFeedback,
     FlatList,
     KeyboardAvoidingView,
@@ -228,8 +227,8 @@ class GetInfo extends React.Component {
     }
 
     usernameOnChange = text => {
-        const invalidCharacters = /[^a-zA-Z0-9]/g
-        if (invalidCharacters.test(text)) {
+        const validCharacters = /[^a-zA-Z0-9]/g
+        if (validCharacters.test(text)) {
             this.setState({ usernameBorderColor: 'red' })
         } else this.setState({ usernameBorderColor: '#989696' })
         if (text === '') text = null
@@ -237,22 +236,36 @@ class GetInfo extends React.Component {
     }
 
     nameOnChange = text => {
-        const invalidCharacters = /[^a-zA-Z]/g
-        if (invalidCharacters.test(text)) {
+        const validCharacters = /[^a-zA-Z\s]/g
+        if (
+            validCharacters.test(text) ||
+            text.substr(-2) === '  ' ||
+            text.charAt(0) === ' '
+        ) {
             this.setState({ nameBorderColor: 'red' })
         } else this.setState({ nameBorderColor: '#989696' })
         this.setState({ name: text })
     }
 
     lastnameOnChange = text => {
-        const invalidCharacters = /[^a-zA-Z]/g
-        if (invalidCharacters.test(text)) {
+        const validCharacters = /[^a-zA-Z]/g
+        if (validCharacters.test(text)) {
             this.setState({ lastnameBorderColor: 'red' })
         } else this.setState({ lastnameBorderColor: '#989696' })
         this.setState({ lastname: text })
     }
 
     registerOnPress = () => {
+        if (!this.props.isNetworkConnected) {
+            showMessage({
+                message: 'Lütfen internet bağlantınızı kontrol ediniz',
+                type: 'danger',
+                duration: 2000,
+                titleStyle: styles.networkErrorStyle,
+                icon: 'auto'
+            })
+            return
+        }
         if (this.state.nameBorderColor === 'red') {
             flashMessages.authInfosOrSettingsError(
                 'Ad hatası',
@@ -317,16 +330,6 @@ class GetInfo extends React.Component {
                     height: hp(10)
                 }
             )
-            return
-        }
-        if (!this.props.isNetworkConnected) {
-            showMessage({
-                message: 'Lütfen internet bağlantınızı kontrol ediniz',
-                type: 'danger',
-                duration: 2000,
-                titleStyle: styles.networkErrorStyle,
-                icon: 'auto'
-            })
             return
         }
         this.props.createUser(userInformation)

@@ -46,8 +46,6 @@ export default StyleSheet.create({
         zIndex: 1,
         height: hp(24.5),
         width: wp(93),
-        borderWidth: hp(0.4),
-        borderColor: '#CC7A00',
         borderTopLeftRadius: hp(1.8),
         borderTopRightRadius: hp(1.8),
         overflow: 'hidden'
@@ -61,15 +59,16 @@ export default StyleSheet.create({
         height: hp(9),
         width: wp(93),
         backgroundColor: '#F3CE97',
-        borderBottomWidth: hp(0.4),
+        /* borderBottomWidth: hp(0.4),
         borderLeftWidth: hp(0.4),
-        borderRightWidth: hp(0.4),
+        borderRightWidth: hp(0.4), */
         borderColor: '#CC7A00',
         borderBottomLeftRadius: hp(1.8),
         borderBottomRightRadius: hp(1.8),
         justifyContent: 'center',
         alignItems: 'center',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        borderWidth: hp(0.4)
     },
     adContainer: {
         height: hp(8),
@@ -262,7 +261,14 @@ export default StyleSheet.create({
     },
     premiumSwiperContainer: {
         height: hp(17.5),
-        width: wp(93)
+        width: wp(93),
+        marginTop: hp(1),
+        borderTopWidth: hp(0.4),
+        borderLeftWidth: hp(0.4),
+        borderRightWidth: hp(0.4),
+        borderColor: '#CC7A00',
+        borderTopLeftRadius: hp(1.8),
+        borderTopRightRadius: hp(1.8)
     },
     premiumModalSwiperContainer: {
         height: hp(26),
@@ -272,7 +278,10 @@ export default StyleSheet.create({
         height: hp(7),
         width: wp(93),
         justifyContent: 'flex-start',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderRightWidth: hp(0.4),
+        borderLeftWidth: hp(0.4),
+        borderColor: '#CC7A00'
     },
     premiumButton: {
         height: hp(5),
@@ -282,7 +291,7 @@ export default StyleSheet.create({
         backgroundColor: '#FF9900',
         borderWidth: hp(0.35),
         borderColor: '#fcfcfc',
-        borderRadius: hp(4),
+        borderRadius: hp(4)
     },
     premiumButtonText: {
         fontFamily: 'Averta-Bold',
@@ -383,7 +392,6 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         alignItems: 'center'
-
     },
     jokerPricesView: {
         height: hp(4),
