@@ -73,7 +73,6 @@ import { chooseImage } from '../../../services/courseAssetChooser'
 import SWORD from '../../../assets/sword.png'
 import LinearGradient from 'react-native-linear-gradient'
 
-
 var progress_bar_available_width = wp(65)
 
 const carouselFirstItem = 0
@@ -146,28 +145,24 @@ class Home extends React.Component {
     }
 
     async componentDidUpdate() {
-        this.progress.setValue(0);
+        this.progress.setValue(0)
 
         Animated.timing(this.progress, {
             duration: 1500,
-            toValue: (Math.floor(
-                levelFinder(
-                    this.state
-                        .selectedContentTotalPoints
-                ).levelProgressScore
-                )
-                /
-                Math.floor(
-                    levelFinder(
-                        this.state
-                            .selectedContentTotalPoints !==
-                        0
-                            ? this.state
-                                .selectedContentTotalPoints
-                            : 1000
-                    ).levelProgressLimit
-                )) * 100
-        }).start();
+            toValue:
+                (Math.floor(
+                    levelFinder(this.state.selectedContentTotalPoints)
+                        .levelProgressScore
+                ) /
+                    Math.floor(
+                        levelFinder(
+                            this.state.selectedContentTotalPoints !== 0
+                                ? this.state.selectedContentTotalPoints
+                                : 1000
+                        ).levelProgressLimit
+                    )) *
+                100
+        }).start()
     }
 
     async componentDidMount() {
@@ -330,7 +325,10 @@ class Home extends React.Component {
         const client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
         client.onOpen.add(() => {
             // TODO PUT A MODAL HERE FOR WAITING
-            this.setState({isModalVisible: true, visibleView: 'WAITING_TO_JOIN_FRIEND_ROOM'})
+            this.setState({
+                isModalVisible: true,
+                visibleView: 'WAITING_TO_JOIN_FRIEND_ROOM'
+            })
 
             room = client.join('friendRoom', {
                 databaseId: this.props.clientDBId,
@@ -341,7 +339,10 @@ class Home extends React.Component {
             // We set a timeout for the time passed since join initiation
             // TODO THINK ABOUT THE TIMEOUT NUMBER IN HERE
             const timeout = setTimeout(() => {
-                this.setState({isModalVisible: true, visibleView: 'ROOM_IS_NOT_ACTIVE'})
+                this.setState({
+                    isModalVisible: true,
+                    visibleView: 'ROOM_IS_NOT_ACTIVE'
+                })
                 room.leave()
                 client.close()
             }, 5000)
@@ -350,7 +351,7 @@ class Home extends React.Component {
             room.onJoin.add(() => {
                 // We clear the timeout as we don't need it anymore
                 clearTimeout(timeout)
-                this.setState({visibleView: ''})
+                this.setState({ visibleView: '' })
                 // Getting the opponent information and navigatiing
                 userServices
                     .getUser(this.props.clientToken, params.opponentId)
@@ -678,8 +679,7 @@ class Home extends React.Component {
                             </Text>
                             <Animated.View
                                 style={[this.getProgressStyles.call(this)]}
-                            >
-                            </Animated.View>
+                            ></Animated.View>
                             <View style={styles.progressScoreView}>
                                 <Text style={styles.levelInProgressText}>
                                     {Math.floor(
@@ -1469,15 +1469,6 @@ class Home extends React.Component {
                                                                         .requestedGameRoomCode
                                                                 }
                                                             )
-                                                        else {
-                                                            // TODO MAKE A MODAL HERE
-                                                            this.setState({isModalVisible: true, visibleView: 'YOUR_FRIEND_STARTED_GAME'})
-                                                            navigationPush(
-                                                                SCENE_KEYS
-                                                                    .mainScreens
-                                                                    .notifications
-                                                            )
-                                                        }
                                                     }
                                                 )
                                             })
@@ -1549,9 +1540,11 @@ class Home extends React.Component {
                                                             }
                                                         )
                                                     else {
-                                                        Alert.alert(
-                                                            'Arkadaşın önden başladı!'
-                                                        )
+                                                        this.setState({
+                                                            isModalVisible: true,
+                                                            visibleView:
+                                                                'YOUR_FRIEND_STARTED_GAME'
+                                                        })
                                                         navigationPush(
                                                             SCENE_KEYS
                                                                 .mainScreens
@@ -1650,7 +1643,7 @@ class Home extends React.Component {
     }
 
     waitingToJoinFriendRoomView() {
-        return(
+        return (
             <View
                 style={{
                     height: hp(120),
@@ -1670,7 +1663,7 @@ class Home extends React.Component {
     }
 
     roomIsNotActiveView() {
-        return(
+        return (
             <View
                 style={{
                     height: hp(120),
@@ -1701,7 +1694,7 @@ class Home extends React.Component {
     }
 
     yourFriendStartedGameView() {
-        return(
+        return (
             <View
                 style={{
                     height: hp(120),
@@ -1712,7 +1705,8 @@ class Home extends React.Component {
                 <View style={styles.modalContainer}>
                     <View style={styles.gameRequestView}>
                         <Text style={styles.gameRequestText}>
-                            Arkadaşın önden oynamaya başladı, oyununu bitirdikten sonra sıra sende olacak, bol şans :)
+                            Arkadaşın önden oynamaya başladı, oyununu
+                            bitirdikten sonra sıra sende olacak, bol şans :)
                         </Text>
                     </View>
                     <View style={styles.yesOrNoButtonsContainer}>
@@ -1856,13 +1850,21 @@ class Home extends React.Component {
     getProgressStyles() {
         var animated_width = this.progress.interpolate({
             inputRange: [0, 50, 100],
-            outputRange: [0, progress_bar_available_width / 2, progress_bar_available_width]
-        });
+            outputRange: [
+                0,
+                progress_bar_available_width / 2,
+                progress_bar_available_width
+            ]
+        })
         //red -> orange -> green
         const color_animation = this.progress.interpolate({
             inputRange: [0, 50, 100],
-            outputRange: ['rgb(199, 45, 50)', 'rgb(224, 150, 39)', 'rgb(101, 203, 25)']
-        });
+            outputRange: [
+                'rgb(199, 45, 50)',
+                'rgb(224, 150, 39)',
+                'rgb(101, 203, 25)'
+            ]
+        })
 
         return {
             position: 'absolute',
@@ -1906,11 +1908,11 @@ class Home extends React.Component {
                     {this.state.visibleView === 'PREMIUM_MODAL_FOR_SOLO' &&
                         this.premiumForSoloView()}
                     {this.state.visibleView === 'WAITING_TO_JOIN_FRIEND_ROOM' &&
-                    this.waitingToJoinFriendRoomView()}
+                        this.waitingToJoinFriendRoomView()}
                     {this.state.visibleView === 'ROOM_IS_NOT_ACTIVE' &&
-                    this.roomIsNotActiveView()}
+                        this.roomIsNotActiveView()}
                     {this.state.visibleView === 'YOUR_FRIEND_STARTED_GAME' &&
-                    this.yourFriendStartedGameView()}
+                        this.yourFriendStartedGameView()}
                 </Modal>
                 <Modal
                     visible={this.state.isFriendGameRequestModalVisible}
