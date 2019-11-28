@@ -96,6 +96,21 @@ export function* createUser(action) {
             payload: gameEnergy.energyAmount
         }) */
 
+        // Getting the user joker info from db
+        const userJokers = yield call(
+            makeGetRequest,
+            apiServicesTree.userJokerApi.getUserJokers,
+            {
+                userId: res.id,
+                clientToken: response.token
+            }
+        )
+        // Saving it to redux state
+        yield put({
+            type: clientTypes.SAVE_USER_JOKERS,
+            payload: userJokers
+        })
+
         // This action will navigate to main screen
         yield put({
             type: gameContentTypes.GET_ALL_CONTENT,
