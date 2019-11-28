@@ -13,7 +13,9 @@ import {
 import {
     SCENE_KEYS,
     navigationPop,
-    navigationPush, navigationReset, navigationReplace
+    navigationPush,
+    navigationReset,
+    navigationReplace
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import styles from './style'
@@ -28,13 +30,11 @@ import settingsLogo from '../../../assets/settings.png'
 import searchlogo from '../../../assets/search.png'
 import favori_dolu from '../../../assets/favori.png'
 
-import COVER from '../../../assets/cover.jpg'
-import PROFILE_PIC from '../../../assets/profile2.jpg'
-import { heightPercentageToDP as hp, widthPercentageToDP as  wp } from 'react-native-responsive-screen'
-import LinearGradient from "react-native-linear-gradient"
-import PREMIUM_ADS from '../../../assets/premiumAds.png'
-import CreateGroupRoomView from '../homeScreen/groupRoomScreens/createRoomScreen/createGroupRoom'
-import JoinGroupRoomView from '../homeScreen/groupRoomScreens/joinRoomScreen/joinGroupRoom'
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
+import LinearGradient from 'react-native-linear-gradient'
 
 class Profile extends React.Component {
     constructor(props) {
@@ -66,7 +66,7 @@ class Profile extends React.Component {
             navigationPush(SCENE_KEYS.mainScreens.favorites)
         } else {
             this.setState({
-                isModalVisible: true,
+                isModalVisible: true
             })
         }
     }
@@ -91,22 +91,69 @@ class Profile extends React.Component {
     premiumForFavoritesPage() {
         return (
             <View style={premiumStyles.premiumModal}>
-                <TouchableOpacity onPress={this.closeModalButtonOnPress} style={ {height: hp(120), width: wp(100)}}/>
-                <View style={[premiumStyles.premiumModalView, { height: hp(33)}]}>
-                    <LinearGradient colors={['white', '#FFE6BB', '#FFA800']} style={[premiumStyles.linearGradientPremiumModalView, { height: hp(33)}]}>
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{ height: hp(120), width: wp(100) }}
+                />
+                <View
+                    style={[premiumStyles.premiumModalView, { height: hp(33) }]}
+                >
+                    <LinearGradient
+                        colors={['white', '#FFE6BB', '#FFA800']}
+                        style={[
+                            premiumStyles.linearGradientPremiumModalView,
+                            { height: hp(33) }
+                        ]}
+                    >
                         <View style={premiumStyles.premiumModalHeaderView}>
-                            <Text style={premiumStyles.premiumModalHeaderText}>ELİT ÖĞRENCİ PAKETİ</Text>
+                            <Text style={premiumStyles.premiumModalHeaderText}>
+                                ELİT ÖĞRENCİ PAKETİ
+                            </Text>
                         </View>
                         <View style={premiumStyles.premiumModalSwiperContainer}>
                             <View style={premiumStyles.premiumModalSwiperView}>
-                                <View style={premiumStyles.premiumModalSwiperImgView}>
-                                    <Image source={favori_dolu} style={premiumStyles.premiumModalImg}/>
+                                <View
+                                    style={
+                                        premiumStyles.premiumModalSwiperImgView
+                                    }
+                                >
+                                    <Image
+                                        source={favori_dolu}
+                                        style={premiumStyles.premiumModalImg}
+                                    />
                                 </View>
-                                <View style={[premiumStyles.premiumModalSwiperHeaderView, { height: hp(5.5)}]}>
-                                    <Text style={premiumStyles.premiumModalHeaderText}>Soru Favorileme!</Text>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperHeaderView,
+                                        { height: hp(5.5) }
+                                    ]}
+                                >
+                                    <Text
+                                        style={
+                                            premiumStyles.premiumModalHeaderText
+                                        }
+                                    >
+                                        Soru Favorileme!
+                                    </Text>
                                 </View>
-                                <View style={[premiumStyles.premiumModalSwiperInfoView, {justifyContent: 'flex-start', height: hp(9.5)}]}>
-                                    <Text style={[premiumStyles.premiumModalInfoText, {marginTop: hp(1.5)}]}>Soru Favorileme şimdi Elit Öğrenci Paketi'nde</Text>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperInfoView,
+                                        {
+                                            justifyContent: 'flex-start',
+                                            height: hp(9.5)
+                                        }
+                                    ]}
+                                >
+                                    <Text
+                                        style={[
+                                            premiumStyles.premiumModalInfoText,
+                                            { marginTop: hp(1.5) }
+                                        ]}
+                                    >
+                                        Soru Favorileme şimdi Elit Öğrenci
+                                        Paketi'nde
+                                    </Text>
                                 </View>
                             </View>
                         </View>
@@ -176,7 +223,21 @@ class Profile extends React.Component {
                                 />
                             </View>
                             <View style={styles.profileInfoView}>
-                                <Text style={[styles.nameSurnameText, {fontSize: ((this.props.clientInformation.name.length+this.props.clientInformation.lastname.length) > 21) ? hp(2.25) : hp(3.5)}]}>
+                                <Text
+                                    style={[
+                                        styles.nameSurnameText,
+                                        {
+                                            fontSize:
+                                                this.props.clientInformation
+                                                    .name.length +
+                                                    this.props.clientInformation
+                                                        .lastname.length >
+                                                21
+                                                    ? hp(2.25)
+                                                    : hp(3.5)
+                                        }
+                                    ]}
+                                >
                                     {this.props.clientInformation.name}{' '}
                                     {this.props.clientInformation.lastname}
                                 </Text>
@@ -217,7 +278,7 @@ class Profile extends React.Component {
                                 </View>
                                 <View style={styles.boxLogoContainer}>
                                     <Text style={styles.friendsCounterBoxText}>
-                                        {(this.props.friendIds).length}
+                                        {this.props.friendIds.length}
                                     </Text>
                                 </View>
                             </View>
@@ -268,7 +329,4 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({})
 
-export default connect(
-    mapStateToProps,
-    null
-)(Profile)
+export default connect(mapStateToProps, null)(Profile)
