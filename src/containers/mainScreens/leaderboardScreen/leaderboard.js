@@ -56,7 +56,9 @@ class Leaderboard extends React.Component {
             clientRanking: 0,
             // Original lists
             originalGlobalLeaderboardList: [],
-            originalFriendsLeaderboardList: []
+            originalFriendsLeaderboardList: [],
+            // Last update date
+            hoursPassedSinceUpdate: null
         }
     }
 
@@ -70,6 +72,14 @@ class Leaderboard extends React.Component {
                         user = JSON.parse(user)
                         userList.push(user)
                     })
+
+                const hourDifference = Math.floor(
+                    Math.abs(new Date() - new Date(data.updatedAt)) / 36e5
+                )
+                this.setState({
+                    hoursPassedSinceUpdate:
+                        hourDifference === 0 ? 1 : hourDifference
+                })
 
                 this.makeLeaderboardLists(userList)
             })
@@ -563,7 +573,8 @@ class Leaderboard extends React.Component {
                                             Son Güncelleme Tarihi
                                         </Text>
                                         <Text style={styles.lastUpdateTimeText}>
-                                            10 saat önce
+                                            {this.state.hoursPassedSinceUpdate}{' '}
+                                            saat önce
                                         </Text>
                                     </View>
                                 </View>
