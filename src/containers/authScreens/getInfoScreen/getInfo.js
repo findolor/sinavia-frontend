@@ -5,7 +5,6 @@ import {
     Text,
     TouchableOpacity,
     Keyboard,
-    Alert,
     TouchableWithoutFeedback,
     FlatList,
     KeyboardAvoidingView,
@@ -122,10 +121,6 @@ class GetInfo extends React.Component {
             birthDateUI: 'Doğum tarihi seç',
             isDateTimePickerVisible: false,
             switchValue: false,
-            showPasswordEyeFirst: false,
-            showPasswordEyeSecond: false,
-            hidePasswordFirst: true,
-            hidePasswordSecond: true,
             dateColor: '#2E313C',
             // User Information
             username: null,
@@ -241,10 +236,12 @@ class GetInfo extends React.Component {
         if (
             validCharacters.test(text) ||
             text.substr(-2) === '  ' ||
-            text.charAt(0) === ' '
+            text.charAt(0) === ' ' ||
+            text.endsWith(' ')
         ) {
             this.setState({ nameBorderColor: 'red' })
         } else this.setState({ nameBorderColor: '#989696' })
+        text = text.replace(/\s\s+/g, ' ')
         this.setState({ name: text })
     }
 
@@ -257,6 +254,16 @@ class GetInfo extends React.Component {
     }
 
     registerOnPress = () => {
+        if (!this.props.isNetworkConnected) {
+            showMessage({
+                message: 'Lütfen internet bağlantınızı kontrol ediniz',
+                type: 'danger',
+                duration: 2000,
+                titleStyle: styles.networkErrorStyle,
+                icon: 'auto'
+            })
+            return
+        }
         if (this.state.nameBorderColor === 'red') {
             flashMessages.authInfosOrSettingsError(
                 'Ad hatası',
@@ -270,7 +277,9 @@ class GetInfo extends React.Component {
                     height: hp(10)
                 }
             )
-        } else if (this.state.lastnameBorderColor === 'red') {
+            return
+        }
+        if (this.state.lastnameBorderColor === 'red') {
             flashMessages.authInfosOrSettingsError(
                 'Soyad hatası',
                 'Soyad sadece harflerden oluşmalıdır',
@@ -283,7 +292,9 @@ class GetInfo extends React.Component {
                     height: hp(10)
                 }
             )
-        } else if (this.state.usernameBorderColor === 'red') {
+            return
+        }
+        if (this.state.usernameBorderColor === 'red') {
             flashMessages.authInfosOrSettingsError(
                 'Kullanıcı adı hatası',
                 'Kullanıcı adı sadece harf veya rakamlardan oluşabilir',
@@ -296,7 +307,9 @@ class GetInfo extends React.Component {
                     height: hp(10)
                 }
             )
-        } else if (
+            return
+        }
+        if (
             this.state.username === null ||
             this.state.name === null ||
             this.state.lastname === null ||
@@ -315,47 +328,17 @@ class GetInfo extends React.Component {
                     height: hp(10)
                 }
             )
-        } else {
-            if (!this.props.isNetworkConnected) {
-                showMessage({
-                    message: 'Lütfen internet bağlantınızı kontrol ediniz',
-                    type: 'danger',
-                    duration: 2000,
-                    titleStyle: styles.networkErrorStyle,
-                    icon: 'auto'
-                })
-                return
-            }
-
-            let userInformation = {
-                username: this.state.username,
-                name: this.state.name,
-                lastname: this.state.lastname,
-                email: this.props.email,
-                city: this.state.city,
-                birthDate: this.state.birthDate,
-                password: this.props.password
-            }
-
-            let userInformationKeys = Object.keys(userInformation)
-            let wrongInformationList = []
-            let wrongInformationString = 'Yanlış alanlar! ->'
-
-            userInformationKeys.forEach(element => {
-                if (
-                    userInformation[element] === '' &&
-                    element !== 'birthDate' &&
-                    element !== 'city'
-                ) {
-                    wrongInformationList.push(element)
-                    wrongInformationString += `${element}, `
-                }
-            })
-
-            if (Object.keys(wrongInformationList).length === 0)
-                this.props.createUser(userInformation)
-            else Alert.alert(wrongInformationString)
+            return
         }
+        this.props.createUser({
+            username: this.state.username,
+            name: this.state.name,
+            lastname: this.state.lastname,
+            birthDate: this.state.birthDate,
+            city: this.state.city,
+            email: this.props.email,
+            password: this.props.password
+        })
     }
 
     render() {
@@ -439,7 +422,7 @@ class GetInfo extends React.Component {
                                         styles.textInput,
                                         {
                                             color:
-                                                this.state.city === ''
+                                                this.state.city === null
                                                     ? '#8A8888'
                                                     : '#2E313C'
                                         }

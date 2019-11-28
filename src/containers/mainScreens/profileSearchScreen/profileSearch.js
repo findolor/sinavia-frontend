@@ -108,9 +108,6 @@ class ProfileSearch extends React.Component {
                                                 />
                                             </View>
                                             <View style={styles.namesContainer}>
-                                                <View
-                                                    style={styles.nameContainer}
-                                                >
                                                     <Text
                                                         style={styles.nameText}
                                                     >
@@ -118,12 +115,6 @@ class ProfileSearch extends React.Component {
                                                             ' ' +
                                                             item.lastname}
                                                     </Text>
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.usernameContainer
-                                                    }
-                                                >
                                                     <Text
                                                         style={
                                                             styles.usernameText
@@ -131,7 +122,6 @@ class ProfileSearch extends React.Component {
                                                     >
                                                         @{item.username}
                                                     </Text>
-                                                </View>
                                             </View>
                                         </View>
                                     </TouchableOpacity>

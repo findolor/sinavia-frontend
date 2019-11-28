@@ -38,7 +38,7 @@ export default StyleSheet.create({
     logoBorderView: {
         height: hp(19),
         width: hp(19),
-        borderRadius: 100,
+        borderRadius: hp(100),
         borderWidth: hp(0.7),
         borderColor: '#FF9900',
         backgroundColor: 'white',
@@ -52,12 +52,12 @@ export default StyleSheet.create({
     courseText: {
         color: '#fff',
         fontFamily: 'Averta-Bold',
-        fontSize: hp(4.5),
+        fontSize: hp(4.5)
     },
     subjectText: {
         color: '#fff',
         fontFamily: 'Averta-SemiboldItalic',
-        fontSize: hp(4),
+        fontSize: hp(4)
     },
     questionCounterText: {
         color: '#FF9900',

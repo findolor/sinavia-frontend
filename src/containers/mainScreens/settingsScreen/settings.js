@@ -22,7 +22,6 @@ import { deviceStorage } from '../../../services/deviceStorage'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
 import { appActions } from '../../../redux/app/actions'
-import DateTimePicker from 'react-native-modal-datetime-picker'
 import moment from 'moment'
 import firebase from 'react-native-firebase'
 import ImagePicker from 'react-native-image-crop-picker'
@@ -36,8 +35,6 @@ import {
 // Picture imports
 import returnLogo from '../../../assets/return.png'
 import CHANGE_PHOTO from '../../../assets/changePhoto.png'
-import EDIT from '../../../assets/edit.png'
-import { AuthTextInput } from '../../../components/authScreen'
 
 const citiesList = [
     { cityName: 'Adana' },
@@ -152,7 +149,8 @@ class Settings extends React.Component {
             isCityModalVisible: false,
             nameBorderColor: '#C8C8C8',
             lastnameBorderColor: '#C8C8C8',
-            usernameBorderColor: '#C8C8C8'
+            usernameBorderColor: '#C8C8C8',
+            cityBorderColor: '#C8C8C8'
         }
     }
 
@@ -223,10 +221,15 @@ class Settings extends React.Component {
         if (
             validCharacters.test(text) ||
             text.substr(-2) === '  ' ||
-            text.charAt(0) === ' '
+            text.charAt(0) === ' ' ||
+            text.endsWith(' ')
         ) {
-            this.setState({ nameBorderColor: 'red' })
-        } else this.setState({ nameBorderColor: '#C8C8C8' })
+            this.setState({ nameBorderColor: '#B72A2A' })
+        } else if (text === '' || text === this.props.clientInformation.name) {
+            this.setState({ nameBorderColor: '#C8C8C8' })
+            text = null
+        } else this.setState({ nameBorderColor: '#3EBB29' })
+        if (text !== null) text = text.replace(/\s\s+/g, ' ')
         if (text === '') text = null
         this.setState({ name: text })
     }
@@ -234,8 +237,14 @@ class Settings extends React.Component {
     lastnameOnChange = text => {
         const validCharacters = /[^a-zA-Z]/g
         if (validCharacters.test(text)) {
-            this.setState({ lastnameBorderColor: 'red' })
-        } else this.setState({ lastnameBorderColor: '#C8C8C8' })
+            this.setState({ lastnameBorderColor: '#B72A2A' })
+        } else if (
+            text === '' ||
+            text === this.props.clientInformation.lastname
+        ) {
+            this.setState({ lastnameBorderColor: '#C8C8C8' })
+            text = null
+        } else this.setState({ lastnameBorderColor: '#3EBB29' })
         if (text === '') text = null
         this.setState({ lastname: text })
     }
@@ -243,8 +252,14 @@ class Settings extends React.Component {
     usernameOnChange = text => {
         const validCharacters = /[^a-zA-Z0-9]/g
         if (validCharacters.test(text)) {
-            this.setState({ usernameBorderColor: 'red' })
-        } else this.setState({ usernameBorderColor: '#C8C8C8' })
+            this.setState({ usernameBorderColor: '#B72A2A' })
+        } else if (
+            text === '' ||
+            text === this.props.clientInformation.username
+        ) {
+            this.setState({ usernameBorderColor: '#C8C8C8' })
+            text = null
+        } else this.setState({ usernameBorderColor: '#3EBB29' })
         if (text === '') text = null
         this.setState({ username: text })
     }
@@ -285,7 +300,17 @@ class Settings extends React.Component {
     }
 
     saveButtonOnPress = async () => {
-        if (this.state.usernameBorderColor === 'red') {
+        if (!this.props.isNetworkConnected) {
+            showMessage({
+                message: 'Lütfen internet bağlantınızı kontrol ediniz',
+                type: 'danger',
+                duration: 2000,
+                titleStyle: styles.networkErrorStyle,
+                icon: 'auto'
+            })
+            return
+        }
+        if (this.state.usernameBorderColor === '#B72A2A') {
             flashMessages.authInfosOrSettingsError(
                 'Kullanıcı adı hatası',
                 'Kullanıcı adı sadece harf veya rakamlardan oluşabilir',
@@ -298,7 +323,9 @@ class Settings extends React.Component {
                     height: hp(10)
                 }
             )
-        } else if (this.state.nameBorderColor === 'red') {
+            return
+        }
+        if (this.state.nameBorderColor === '#B72A2A') {
             flashMessages.authInfosOrSettingsError(
                 'Ad hatası',
                 'Ad sadece harflerden oluşmalıdır',
@@ -311,7 +338,9 @@ class Settings extends React.Component {
                     height: hp(10)
                 }
             )
-        } else if (this.state.lastnameBorderColor === 'red') {
+            return
+        }
+        if (this.state.lastnameBorderColor === '#B72A2A') {
             flashMessages.authInfosOrSettingsError(
                 'Soyad hatası',
                 'Soyad sadece harflerden oluşmalıdır',
@@ -324,80 +353,110 @@ class Settings extends React.Component {
                     height: hp(10)
                 }
             )
-        } else {
-            const firebaseStorage = firebase.storage()
-
-            let shouldUpdate = false
-            let isProfilePictureChanged = false
-            let isCoverPictureChanged = false
-
-            const clientInformation = this.props.clientInformation
-
-            if (this.checkCity()) {
-                clientInformation.city = this.state.city
-                shouldUpdate = true
-            }
-
-            if (this.checkUsername()) {
-                clientInformation.username = this.state.username
-                shouldUpdate = true
-            }
-
-            if (this.checkName()) {
-                clientInformation.name = this.state.name
-                shouldUpdate = true
-            }
-
-            if (this.checkLastname()) {
-                clientInformation.lastname = this.state.lastname
-                shouldUpdate = true
-            }
-
-            if (this.checkBirthDate()) {
-                clientInformation.birthDate = this.state.birthDate
-                shouldUpdate = true
-            }
-
-            if (this.checkCoverPicture()) {
-                clientInformation.coverPicture = this.state.coverPicture
-                shouldUpdate = true
-                isCoverPictureChanged = true
-            }
-
-            if (this.checkProfilePicture()) {
-                clientInformation.profilePicture = this.state.profilePicture
-                shouldUpdate = true
-                isProfilePictureChanged = true
-            }
-
-            if (shouldUpdate) this.props.lockUnlockButton()
-
-            let response
-
-            if (isProfilePictureChanged) {
-                response = await firebaseStorage
-                    .ref(`profilePictures/${this.props.clientDBId}.jpg`)
-                    .putFile(this.state.profilePicture.path)
-
-                clientInformation.profilePicture = response.downloadURL
-            }
-
-            if (isCoverPictureChanged) {
-                response = await firebaseStorage
-                    .ref(`coverPictures/${this.props.clientDBId}.jpg`)
-                    .putFile(this.state.coverPicture.path)
-
-                clientInformation.coverPicture = response.downloadURL
-            }
-
-            if (shouldUpdate)
-                this.props.updateUser(
-                    this.props.clientToken,
-                    this.props.clientDBId,
-                    clientInformation,
-                    false
-                )
+            return
         }
+        if (this.state.nameBorderColor === 'red') {
+            flashMessages.authInfosOrSettingsError(
+                'Ad hatası',
+                'Ad sadece harflerden oluşmalıdır',
+                {
+                    backgroundColor: '#FFFFFF',
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    borderColor: '#00D9EF',
+                    borderWidth: hp(0.25),
+                    height: hp(10)
+                }
+            )
+            return
+        }
+        if (this.state.lastnameBorderColor === 'red') {
+            flashMessages.authInfosOrSettingsError(
+                'Soyad hatası',
+                'Soyad sadece harflerden oluşmalıdır',
+                {
+                    backgroundColor: '#FFFFFF',
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    borderColor: '#00D9EF',
+                    borderWidth: hp(0.25),
+                    height: hp(10)
+                }
+            )
+            return
+        }
+        const firebaseStorage = firebase.storage()
+
+        let shouldUpdate = false
+        let isProfilePictureChanged = false
+        let isCoverPictureChanged = false
+
+        const clientInformation = this.props.clientInformation
+
+        if (this.checkCity()) {
+            clientInformation.city = this.state.city
+            shouldUpdate = true
+        }
+
+        if (this.checkUsername()) {
+            clientInformation.username = this.state.username
+            shouldUpdate = true
+        }
+
+        if (this.checkName()) {
+            clientInformation.name = this.state.name
+            shouldUpdate = true
+        }
+
+        if (this.checkLastname()) {
+            clientInformation.lastname = this.state.lastname
+            shouldUpdate = true
+        }
+
+        if (this.checkBirthDate()) {
+            clientInformation.birthDate = this.state.birthDate
+            shouldUpdate = true
+        }
+
+        if (this.checkCoverPicture()) {
+            clientInformation.coverPicture = this.state.coverPicture
+            shouldUpdate = true
+            isCoverPictureChanged = true
+        }
+
+        if (this.checkProfilePicture()) {
+            clientInformation.profilePicture = this.state.profilePicture
+            shouldUpdate = true
+            isProfilePictureChanged = true
+        }
+
+        if (shouldUpdate) this.props.lockUnlockButton()
+
+        let response
+
+        if (isProfilePictureChanged) {
+            response = await firebaseStorage
+                .ref(`profilePictures/${this.props.clientDBId}.jpg`)
+                .putFile(this.state.profilePicture.path)
+
+            clientInformation.profilePicture = response.downloadURL
+        }
+
+        if (isCoverPictureChanged) {
+            response = await firebaseStorage
+                .ref(`coverPictures/${this.props.clientDBId}.jpg`)
+                .putFile(this.state.coverPicture.path)
+
+            clientInformation.coverPicture = response.downloadURL
+        }
+
+        if (shouldUpdate)
+            this.props.updateUser(
+                this.props.clientToken,
+                this.props.clientDBId,
+                clientInformation,
+                false
+            )
     }
 
     pickProfileImage(cropit, circular = false, mediaType) {
@@ -470,10 +529,18 @@ class Settings extends React.Component {
     }
 
     cityOnPress = cityName => {
-        this.setState({
-            city: cityName,
-            isCityModalVisible: false
-        })
+        if (cityName === this.props.clientInformation.city) {
+            this.setState({
+                city: cityName,
+                isCityModalVisible: false,
+                cityBorderColor: '#C8C8C8'
+            })
+        } else
+            this.setState({
+                city: cityName,
+                isCityModalVisible: false,
+                cityBorderColor: '#3EBB29'
+            })
     }
 
     cityPicker = () => {
@@ -662,7 +729,12 @@ class Settings extends React.Component {
                             <Text style={styles.textInputTitle}>Şehir</Text>
                         </View>
                         <TouchableOpacity onPress={this.openCityModalVisible}>
-                            <View style={styles.cityInputView}>
+                            <View
+                                style={[
+                                    styles.cityInputView,
+                                    { borderColor: this.state.cityBorderColor }
+                                ]}
+                            >
                                 <Text style={styles.cityTextInputStyle}>
                                     {this.state.city}
                                 </Text>
@@ -692,7 +764,8 @@ class Settings extends React.Component {
 const mapStateToProps = state => ({
     clientToken: state.client.clientToken,
     clientDBId: state.client.clientDBId,
-    clientInformation: state.client.clientInformation
+    clientInformation: state.client.clientInformation,
+    isNetworkConnected: state.app.isNetworkConnected
 })
 
 const mapDispatchToProps = dispatch => ({

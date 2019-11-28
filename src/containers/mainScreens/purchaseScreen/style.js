@@ -366,7 +366,7 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Bold',
         fontSize: hp(3),
         textAlign: 'center',
-        color: '#FF9900'
+        color: '#2E313C'
     },
     premiumInfoText: {
         fontFamily: 'Averta-Regular',
