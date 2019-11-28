@@ -89,6 +89,7 @@ const GROUP_IMAGE = require('../../../assets/mainScreens/group_siyah.png')
 const SOLO_IMAGE = require('../../../assets/mainScreens/tek.png')
 const UNSOLVED_QUESTIONS_MODE = require('../../../assets/mainScreens/unsolvedQuestionsModeImg.png')
 const SOLO_PREMIUM = require('../../../assets/soloPremium.png')
+const UNSOLVED_PREMIUM = require('../../../assets/premiumBack.png')
 
 class Home extends React.Component {
     constructor(props) {
@@ -145,7 +146,11 @@ class Home extends React.Component {
         }
     }
 
-    async componentDidUpdate() {
+    async componentDidUpdate(prevProps, prevState) {
+    if(prevState.selectedGameMode !== this.state.selectedGameMode) {
+        return
+    }
+    else if(this.state.visibleView === 'GAME_MODES'){
         this.progress.setValue(0);
 
         Animated.timing(this.progress, {
@@ -168,6 +173,7 @@ class Home extends React.Component {
                     ).levelProgressLimit
                 )) * 100
         }).start();
+    }
     }
 
     async componentDidMount() {
@@ -542,7 +548,8 @@ class Home extends React.Component {
             soloModeButtonBorderColor: EMPTY_MODE_COLOR,
             unsolvedQuestionsModeBorderColor: EMPTY_MODE_COLOR,
             visibleRankedGameStartPress: false,
-            selectedGameMode: 'ranked'
+            selectedGameMode: 'ranked',
+            visibleView: ''
         })
     }
 
@@ -1599,9 +1606,9 @@ class Home extends React.Component {
                         <View style={premiumStyles.premiumModalSwiperContainer}>
                             <View style={premiumStyles.premiumModalSwiperView}>
                                 <View
-                                    style={
+                                    style={[
                                         premiumStyles.premiumModalSwiperImgView
-                                    }
+                                            , { height: hp(12.5)}]}
                                 >
                                     <Image
                                         source={SOLO_PREMIUM}
@@ -1611,33 +1618,104 @@ class Home extends React.Component {
                                 <View
                                     style={[
                                         premiumStyles.premiumModalSwiperHeaderView,
-                                        { height: hp(5.5) }
-                                    ]}
+                                        { height: hp(4.5)}]}
                                 >
                                     <Text
-                                        style={
+                                        style={[
                                             premiumStyles.premiumModalHeaderText
-                                        }
+                                            , {color: '#2E313C', fontSize: hp(2.5)}]}
                                     >
-                                        Tek Başına Soru Çözme!
+                                        Tek başına soru çöz!
                                     </Text>
                                 </View>
                                 <View
                                     style={[
                                         premiumStyles.premiumModalSwiperInfoView,
                                         {
-                                            justifyContent: 'flex-start',
-                                            height: hp(9.5)
+                                            justifyContent: 'center',
+                                            height: hp(8.5)
                                         }
                                     ]}
                                 >
                                     <Text
                                         style={[
-                                            premiumStyles.premiumModalInfoText,
-                                            { marginTop: hp(1.5) }
-                                        ]}
+                                            premiumStyles.premiumModalInfoText
+                                            , {color: '#555861'}]}
                                     >
-                                        Tek Kişilik Soru Çözme Modu şimdi Elit
+                                        Solo Modu şimdi Elit
+                                        Öğrenci Paketi'nde
+                                    </Text>
+                                </View>
+                            </View>
+                        </View>
+                    </LinearGradient>
+                </View>
+            </View>
+        )
+    }
+
+    premiumForUnsolvedView() {
+        return (
+            <View style={premiumStyles.premiumModal}>
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{ height: hp(120), width: wp(100) }}
+                />
+                <View
+                    style={[premiumStyles.premiumModalView, { height: hp(33) }]}
+                >
+                    <LinearGradient
+                        colors={['white', '#FFE6BB', '#FFA800']}
+                        style={[
+                            premiumStyles.linearGradientPremiumModalView,
+                            { height: hp(33) }
+                        ]}
+                    >
+                        <View style={premiumStyles.premiumModalHeaderView}>
+                            <Text style={premiumStyles.premiumModalHeaderText}>
+                                ELİT ÖĞRENCİ PAKETİ
+                            </Text>
+                        </View>
+                        <View style={premiumStyles.premiumModalSwiperContainer}>
+                            <View style={premiumStyles.premiumModalSwiperView}>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperImgView
+                                        , { height: hp(12.5)}]}
+                                >
+                                    <Image
+                                        source={UNSOLVED_PREMIUM}
+                                        style={premiumStyles.premiumModalImg}
+                                    />
+                                </View>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperHeaderView,
+                                        { height: hp(4.5) }]}
+                                >
+                                    <Text
+                                        style={[
+                                            premiumStyles.premiumModalHeaderText
+                                        , {color: '#2E313C', fontSize: hp(2.5)}]}
+                                    >
+                                        Yapamadığın soruları tekrar çöz!
+                                    </Text>
+                                </View>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperInfoView,
+                                        {
+                                            justifyContent: 'center',
+                                            height: hp(8.5)
+                                        }
+                                    ]}
+                                >
+                                    <Text
+                                        style={[
+                                            premiumStyles.premiumModalInfoText
+                                            , {color: '#555861'}]}
+                                    >
+                                        TekrarÇöz Modu şimdi Elit
                                         Öğrenci Paketi'nde
                                     </Text>
                                 </View>
@@ -1791,7 +1869,7 @@ class Home extends React.Component {
                                 rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
                                 selectedGameMode: 'ranked',
                                 isModalVisible: true,
-                                visibleView: 'PREMIUM_MODAL_FOR_SOLO'
+                                visibleView: 'PREMIUM_MODAL_FOR_UNSOLVED'
                             })
                         }
                         break
@@ -1905,6 +1983,8 @@ class Home extends React.Component {
                     )}
                     {this.state.visibleView === 'PREMIUM_MODAL_FOR_SOLO' &&
                         this.premiumForSoloView()}
+                    {this.state.visibleView === 'PREMIUM_MODAL_FOR_UNSOLVED' &&
+                    this.premiumForUnsolvedView()}
                     {this.state.visibleView === 'WAITING_TO_JOIN_FRIEND_ROOM' &&
                     this.waitingToJoinFriendRoomView()}
                     {this.state.visibleView === 'ROOM_IS_NOT_ACTIVE' &&

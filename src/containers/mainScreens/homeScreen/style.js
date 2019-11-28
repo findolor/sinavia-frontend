@@ -308,14 +308,23 @@ export default StyleSheet.create({
     userPic: {
         height: hp(10.5),
         width: hp(10.5),
-        marginTop: hp(4.5),
-        borderRadius: 100
+        marginTop: hp(2.25),
+        borderWidth: hp(0.3),
+        borderColor: '#FF9900',
+        borderRadius: hp(100)
     },
     nameAndUsernameContainer: {
         height: hp(10),
         width: wp(43.75),
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    nameAndSurnameText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(1.9),
+        marginTop: hp(0.5),
+        textAlign: 'center',
+        color: '#5C5C5C'
     },
     sword: {
         height: hp(6.5),
@@ -328,7 +337,7 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     userRow: {
-        height: hp(8),
+        height: hp(10.5),
         width: wp(75),
         flexDirection: 'row',
         alignItems: 'center',
@@ -337,7 +346,7 @@ export default StyleSheet.create({
         marginBottom: hp(1)
     },
     userPicContainerInRow: {
-        height: hp(8),
+        height: hp(10.5),
         width: wp(14),
         justifyContent: 'center',
         alignItems: 'flex-start'
@@ -345,28 +354,24 @@ export default StyleSheet.create({
     userPicInRow: {
         height: hp(6.5),
         width: hp(6.5),
-        borderRadius: 100
+        borderWidth: hp(0.3),
+        borderColor: '#FF9900',
+        borderRadius: hp(100)
     },
     nameContainer: {
-        height: hp(8),
+        height: hp(10.5),
         width: wp(61),
         justifyContent: 'center',
         alignItems: 'flex-start'
     },
     nameText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: hp(2.2),
-        color: '#5C5C5C'
-    },
-    nameAndSurnameText: {
-        fontFamily: 'Averta-Semibold',
-        fontSize: hp(1.9),
-        marginTop: hp(2),
+        fontSize: hp(2.4),
         color: '#5C5C5C'
     },
     userNameText: {
         fontFamily: 'Averta-RegularItalic',
-        fontSize: hp(2.2),
+        fontSize: hp(2.4),
         color: '#FF9900'
     },
     searchBar: {

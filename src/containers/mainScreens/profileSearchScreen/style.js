@@ -55,7 +55,7 @@ export default StyleSheet.create({
         marginLeft: wp(3)
     },
     userRow: {
-        height: hp(8),
+        height: hp(10.5),
         width: wp(88),
         flexDirection: 'row',
         alignItems: 'center',
@@ -63,7 +63,7 @@ export default StyleSheet.create({
         borderBottomColor: '#CACACA'
     },
     userPicContainerInRow: {
-        height: hp(8),
+        height: hp(10.5),
         width: wp(16),
         justifyContent: 'center',
         alignItems: 'center'
@@ -74,24 +74,14 @@ export default StyleSheet.create({
         borderRadius: 100
     },
     namesContainer: {
-        height: hp(8),
-        width: wp(72)
-    },
-    nameContainer: {
-        height: hp(4),
-        width: wp(72),
-        justifyContent: 'center',
-        alignItems: 'flex-start'
-    },
-    usernameContainer: {
-        height: hp(4),
+        height: hp(10.5),
         width: wp(72),
         justifyContent: 'center',
         alignItems: 'flex-start'
     },
     nameText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: hp(2.5),
+        fontSize: hp(2.4),
         color: '#2E313C',
         marginTop: hp(1),
         marginLeft: wp(3)

@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     View,
     Dimensions,
-    Modal
+    Modal,
+    Animated
 } from 'react-native'
 import {
     navigationReset,
@@ -37,6 +38,8 @@ import {
 import LinearGradient from 'react-native-linear-gradient'
 import { levelFinder } from '../../../services/userLevelFinder'
 
+var progress_bar_available_width = wp(79)
+
 const REPLAY_NORMAL_BORDER = '#00D9EF'
 const REPLAY_ACTIVE_BORDER = '#11DD56'
 const REPLAY_DEACTIVE_BORDER = ''
@@ -44,6 +47,7 @@ const REPLAY_DEACTIVE_BORDER = ''
 class GameStatsScreen extends React.Component {
     constructor(props) {
         super(props)
+        this.progress = new Animated.Value(0)
         this.state = {
             // Client match results
             correctAnswerNumber: 0,
@@ -91,8 +95,30 @@ class GameStatsScreen extends React.Component {
             matchInformation: {},
             isModalVisible: false,
             // Client level variable
-            clientTotalPoints: this.props.clientInformation.totalPoints
+            clientTotalPoints: this.props.clientInformation.totalPoints,
+            oldPoints: this.props.clientInformation.totalPoints,
+            levelUp: false
         }
+    }
+
+    newLevelPoints = () => {
+        this.setState({ levelUp: false })
+        this.progress.setValue(0)
+        Animated.timing(this.progress, {
+            duration: 1500,
+            toValue:
+                (Math.floor(
+                    levelFinder(this.state.clientTotalPoints).levelProgressScore
+                ) /
+                    Math.floor(
+                        levelFinder(
+                            this.state.clientTotalPoints !== 0
+                                ? this.state.clientTotalPoints
+                                : 1
+                        ).levelProgressLimit
+                    )) *
+                100
+        }).start()
     }
 
     async componentDidMount() {
@@ -144,7 +170,6 @@ class GameStatsScreen extends React.Component {
         return new Promise(resolve => {
             const playerProps = this.props.playerProps
             const playerIds = Object.keys(playerProps)
-            const oldPoints = this.props.clientInformation.totalPoints
 
             // If one of the users leave the game early
             // We mark number of questions they played in the match and delete the rest
@@ -308,9 +333,76 @@ class GameStatsScreen extends React.Component {
                 totalEarnedPoints: totalEarnedPoints
             })
 
+            if (
+                totalEarnedPoints >=
+                Math.floor(
+                    levelFinder(
+                        this.state.oldPoints !== 0 ? this.state.oldPoints : 1
+                    ).levelProgressLimit
+                ) -
+                    Math.floor(
+                        levelFinder(this.state.oldPoints).levelProgressScore
+                    )
+            ) {
+                this.setState({ levelUp: true })
+                this.progress.setValue(
+                    (Math.floor(
+                        levelFinder(this.state.oldPoints).levelProgressScore
+                    ) /
+                        Math.floor(
+                            levelFinder(
+                                this.state.oldPoints !== 0
+                                    ? this.state.oldPoints
+                                    : 1
+                            ).levelProgressLimit
+                        )) *
+                        100
+                )
+                Animated.timing(this.progress, {
+                    duration: 3000,
+                    toValue: 100
+                }).start()
+                setTimeout(() => {
+                    this.newLevelPoints()
+                }, 7000)
+            } else {
+                this.progress.setValue(
+                    (Math.floor(
+                        levelFinder(this.state.oldPoints).levelProgressScore
+                    ) /
+                        Math.floor(
+                            levelFinder(
+                                this.state.oldPoints !== 0
+                                    ? this.state.oldPoints
+                                    : 1
+                            ).levelProgressLimit
+                        )) *
+                        100
+                )
+                Animated.timing(this.progress, {
+                    duration: 3000,
+                    toValue:
+                        (Math.floor(
+                            levelFinder(
+                                totalEarnedPoints + this.state.oldPoints
+                            ).levelProgressScore
+                        ) /
+                            Math.floor(
+                                levelFinder(
+                                    totalEarnedPoints + this.state.oldPoints !==
+                                        0
+                                        ? totalEarnedPoints +
+                                              this.state.oldPoints
+                                        : 1
+                                ).levelProgressLimit
+                            )) *
+                        100
+                }).start()
+            }
+
             setTimeout(() => {
                 this.setState({
-                    clientTotalPoints: totalEarnedPoints + oldPoints
+                    clientTotalPoints: totalEarnedPoints + this.state.oldPoints
                 })
             }, 3000)
 
@@ -547,6 +639,34 @@ class GameStatsScreen extends React.Component {
         )
     }
 
+    getProgressStyles() {
+        var animated_width = this.progress.interpolate({
+            inputRange: [0, 50, 100],
+            outputRange: [
+                0,
+                progress_bar_available_width / 2,
+                progress_bar_available_width
+            ]
+        })
+        //red -> orange -> green
+        const color_animation = this.progress.interpolate({
+            inputRange: [0, 50, 100],
+            outputRange: [
+                'rgb(199, 45, 50)',
+                'rgb(224, 150, 39)',
+                'rgb(101, 203, 25)'
+            ]
+        })
+
+        return {
+            position: 'absolute',
+            width: animated_width,
+            height: hp(5),
+            borderRadius: hp(1),
+            backgroundColor: color_animation
+        }
+    }
+
     render() {
         return (
             <ScrollView
@@ -564,168 +684,204 @@ class GameStatsScreen extends React.Component {
                         />
                     </View>
                     <View style={styles.resultsContainer}>
-                        <View style={styles.results1Container}>
-                            <View style={styles.user1Container}>
-                                <Image
-                                    source={{
-                                        uri: this.state.clientProfilePicture
-                                    }}
-                                    style={styles.profilePic}
-                                />
-                                <Text style={styles.usernameText}>
-                                    {this.state.clientUsername}
+                        {this.state.levelUp ? (
+                            <View style={styles.levelUpContainer}>
+                                <Text style={styles.levelUpText}>
+                                    Tebrikler!
+                                </Text>
+                                <Text style={styles.levelUpText}>
+                                    {Math.floor(
+                                        levelFinder(this.state.oldPoints)
+                                            .level
+                                    )+1}. seviyeye ulaştın
                                 </Text>
                             </View>
-                            <View style={styles.answersContainer}>
-                                <View style={styles.dividedAnswer}>
-                                    <Text style={styles.numbers}>
-                                        {this.state.correctAnswerNumber}
-                                    </Text>
-                                    <Image
-                                        source={correct}
-                                        style={styles.answerImg}
-                                    />
-                                    <Text style={styles.numbers}>
-                                        {this.state.opponentCorrectAnswerNumber}
-                                    </Text>
+                        ) : (
+                            <View style={{alignItems: 'center'}}>
+                                <View style={styles.results1Container}>
+                                    <View style={styles.user1Container}>
+                                        <Image
+                                            source={{
+                                                uri: this.state
+                                                    .clientProfilePicture
+                                            }}
+                                            style={styles.profilePic}
+                                        />
+                                        <Text style={styles.usernameText}>
+                                            {this.state.clientUsername}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.answersContainer}>
+                                        <View style={styles.dividedAnswer}>
+                                            <Text style={styles.numbers}>
+                                                {this.state.correctAnswerNumber}
+                                            </Text>
+                                            <Image
+                                                source={correct}
+                                                style={styles.answerImg}
+                                            />
+                                            <Text style={styles.numbers}>
+                                                {
+                                                    this.state
+                                                        .opponentCorrectAnswerNumber
+                                                }
+                                            </Text>
+                                        </View>
+                                        <View style={styles.dividedAnswer}>
+                                            <Text style={styles.numbers}>
+                                                {
+                                                    this.state
+                                                        .incorrectAnswerNumber
+                                                }
+                                            </Text>
+                                            <Image
+                                                source={incorrect}
+                                                style={styles.answerImg}
+                                            />
+                                            <Text style={styles.numbers}>
+                                                {
+                                                    this.state
+                                                        .opponentInorrectAnswerNumber
+                                                }
+                                            </Text>
+                                        </View>
+                                        <View style={styles.dividedAnswer}>
+                                            <Text style={styles.numbers}>
+                                                {
+                                                    this.state
+                                                        .unansweredAnswerNumber
+                                                }
+                                            </Text>
+                                            <Image
+                                                source={unanswered}
+                                                style={styles.answerImg}
+                                            />
+                                            <Text style={styles.numbers}>
+                                                {
+                                                    this.state
+                                                        .opponentUnansweredAnswerNumber
+                                                }
+                                            </Text>
+                                        </View>
+                                    </View>
+                                    <View style={styles.user2Container}>
+                                        <Image
+                                            source={{
+                                                uri: this.state
+                                                    .opponentProfilePicture
+                                            }}
+                                            style={styles.profilePic}
+                                        />
+                                        <Text style={styles.usernameText}>
+                                            {this.state.opponentUsername}
+                                        </Text>
+                                    </View>
                                 </View>
-                                <View style={styles.dividedAnswer}>
-                                    <Text style={styles.numbers}>
-                                        {this.state.incorrectAnswerNumber}
-                                    </Text>
-                                    <Image
-                                        source={incorrect}
-                                        style={styles.answerImg}
-                                    />
-                                    <Text style={styles.numbers}>
-                                        {
-                                            this.state
-                                                .opponentInorrectAnswerNumber
-                                        }
-                                    </Text>
-                                </View>
-                                <View style={styles.dividedAnswer}>
-                                    <Text style={styles.numbers}>
-                                        {this.state.unansweredAnswerNumber}
-                                    </Text>
-                                    <Image
-                                        source={unanswered}
-                                        style={styles.answerImg}
-                                    />
-                                    <Text style={styles.numbers}>
-                                        {
-                                            this.state
-                                                .opponentUnansweredAnswerNumber
-                                        }
-                                    </Text>
+                                <View style={styles.results2Container}>
+                                    <View style={styles.allScoresContainer}>
+                                        <View style={styles.scoreContainer}>
+                                            <Text style={styles.scoresText}>
+                                                Oyunu Bitirdin
+                                            </Text>
+                                            <Text style={styles.scoresText}>
+                                                {this.state.finishedGamePoint}
+                                            </Text>
+                                        </View>
+                                        <View style={styles.scoreContainer}>
+                                            <Text style={styles.scoresText}>
+                                                Doğru Cevap x{' '}
+                                                {this.state.correctAnswerNumber}
+                                            </Text>
+                                            <Text style={styles.scoresText}>
+                                                {this.state.correctAnswerPoint}
+                                            </Text>
+                                        </View>
+                                        <View style={styles.scoreContainer}>
+                                            <Text style={styles.scoresText}>
+                                                {this.state.matchResultText}
+                                            </Text>
+                                            <Text style={styles.scoresText}>
+                                                {this.state.matchResultPoint}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                    <View style={styles.separatorContainer}>
+                                        <View style={styles.separatorLine} />
+                                    </View>
+                                    <View style={styles.sinaviaScoreContainer}>
+                                        <Text style={styles.sinaviaScoreText}>
+                                            Sınavia Puanı
+                                        </Text>
+                                        <Text style={styles.sinaviaScoreText}>
+                                            {this.state.totalEarnedPoints}
+                                        </Text>
+                                    </View>
                                 </View>
                             </View>
-                            <View style={styles.user2Container}>
-                                <Image
-                                    source={{
-                                        uri: this.state.opponentProfilePicture
-                                    }}
-                                    style={styles.profilePic}
-                                />
-                                <Text style={styles.usernameText}>
-                                    {this.state.opponentUsername}
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.results2Container}>
-                            <View style={styles.allScoresContainer}>
-                                <View style={styles.scoreContainer}>
-                                    <Text style={styles.scoresText}>
-                                        Oyunu Bitirdin
-                                    </Text>
-                                    <Text style={styles.scoresText}>
-                                        {this.state.finishedGamePoint}
-                                    </Text>
-                                </View>
-                                <View style={styles.scoreContainer}>
-                                    <Text style={styles.scoresText}>
-                                        Doğru Cevap x{' '}
-                                        {this.state.correctAnswerNumber}
-                                    </Text>
-                                    <Text style={styles.scoresText}>
-                                        {this.state.correctAnswerPoint}
-                                    </Text>
-                                </View>
-                                <View style={styles.scoreContainer}>
-                                    <Text style={styles.scoresText}>
-                                        {this.state.matchResultText}
-                                    </Text>
-                                    <Text style={styles.scoresText}>
-                                        {this.state.matchResultPoint}
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style={styles.separatorContainer}>
-                                <View style={styles.separatorLine} />
-                            </View>
-                            <View style={styles.sinaviaScoreContainer}>
-                                <Text style={styles.sinaviaScoreText}>
-                                    Sınavia Puanı
-                                </Text>
-                                <Text style={styles.sinaviaScoreText}>
-                                    {this.state.totalEarnedPoints}
-                                </Text>
-                            </View>
-                        </View>
+                        )}
                         <View style={styles.levelProgressBarContainer}>
                             <View style={styles.progressBarView}>
-                                <Text style={styles.levelText}>
-                                    Seviye{' '}
-                                    {Math.floor(
-                                        levelFinder(
-                                            this.state.clientTotalPoints
-                                        ).level
-                                    )}
-                                </Text>
-                                <View
-                                    style={[
-                                        styles.instantProgressView,
-                                        {
-                                            width: wp(
-                                                (Math.floor(
-                                                    levelFinder(
-                                                        this.state
-                                                            .clientTotalPoints
-                                                    ).levelProgressScore
-                                                ) /
-                                                    Math.floor(
-                                                        levelFinder(
-                                                            this.state
-                                                                .clientTotalPoints !==
-                                                                0
-                                                                ? this.state
-                                                                      .clientTotalPoints
-                                                                : 1
-                                                        ).levelProgressLimit
-                                                    )) *
-                                                    79
-                                            )
-                                        }
-                                    ]}
-                                />
-                                <View style={styles.progressScoreView}>
-                                    <Text style={styles.levelInProgressText}>
+                                {this.state.levelUp ? (
+                                    <Text style={styles.levelText}>
+                                        Seviye{' '}
+                                        {Math.floor(
+                                            levelFinder(this.state.oldPoints)
+                                                .level
+                                        )}
+                                    </Text>
+                                ) : (
+                                    <Text style={styles.levelText}>
+                                        Seviye{' '}
                                         {Math.floor(
                                             levelFinder(
                                                 this.state.clientTotalPoints
-                                            ).levelProgressScore
-                                        )}
-                                        /
-                                        {Math.floor(
-                                            levelFinder(
-                                                this.state.clientTotalPoints !==
-                                                    0
-                                                    ? this.state
-                                                          .clientTotalPoints
-                                                    : 1000
-                                            ).levelProgressLimit
+                                            ).level
                                         )}
                                     </Text>
+                                )}
+                                <Animated.View
+                                    style={[this.getProgressStyles.call(this)]}
+                                />
+                                <View style={styles.progressScoreView}>
+                                    {this.state.levelUp ? (
+                                        <Text
+                                            style={styles.levelInProgressText}
+                                        >
+                                            {Math.floor(
+                                                levelFinder(
+                                                    this.state.oldPoints
+                                                ).levelProgressLimit
+                                            )}
+                                            /
+                                            {Math.floor(
+                                                levelFinder(
+                                                    this.state.oldPoints !== 0
+                                                        ? this.state.oldPoints
+                                                        : 1000
+                                                ).levelProgressLimit
+                                            )}
+                                        </Text>
+                                    ) : (
+                                        <Text
+                                            style={styles.levelInProgressText}
+                                        >
+                                            {Math.floor(
+                                                levelFinder(
+                                                    this.state.clientTotalPoints
+                                                ).levelProgressScore
+                                            )}
+                                            /
+                                            {Math.floor(
+                                                levelFinder(
+                                                    this.state
+                                                        .clientTotalPoints !== 0
+                                                        ? this.state
+                                                              .clientTotalPoints
+                                                        : 1000
+                                                ).levelProgressLimit
+                                            )}
+                                        </Text>
+                                    )}
                                 </View>
                             </View>
                         </View>

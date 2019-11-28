@@ -122,6 +122,18 @@ export default StyleSheet.create({
         borderRadius: hp(3),
         alignItems: 'center'
     },
+    levelUpContainer: {
+        height: hp(52),
+        width: wp(85),
+        marginTop: hp(1.4),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    levelUpText: {
+        fontFamily: 'Averta-Semibold',
+        color: '#FF9900',
+        fontSize: hp(5)
+    },
     user1Container: {
         height: hp(21),
         width: wp(35),
