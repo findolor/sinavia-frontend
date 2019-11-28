@@ -58,7 +58,7 @@ class Leaderboard extends React.Component {
             originalGlobalLeaderboardList: [],
             originalFriendsLeaderboardList: [],
             // Last update date
-            hoursPassedSinceUpdate: null
+            hoursPassedSinceUpdate: 1
         }
     }
 
