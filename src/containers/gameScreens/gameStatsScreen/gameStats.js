@@ -105,7 +105,7 @@ class GameStatsScreen extends React.Component {
         this.setState({ levelUp: false })
         this.progress.setValue(0)
         Animated.timing(this.progress, {
-            duration: 1500,
+            duration: 3000,
             toValue:
                 (Math.floor(
                     levelFinder(this.state.clientTotalPoints).levelProgressScore
@@ -345,26 +345,14 @@ class GameStatsScreen extends React.Component {
                     )
             ) {
                 this.setState({ levelUp: true })
-                this.progress.setValue(
-                    (Math.floor(
-                        levelFinder(this.state.oldPoints).levelProgressScore
-                    ) /
-                        Math.floor(
-                            levelFinder(
-                                this.state.oldPoints !== 0
-                                    ? this.state.oldPoints
-                                    : 1
-                            ).levelProgressLimit
-                        )) *
-                        100
-                )
+                this.progress.setValue(0)
                 Animated.timing(this.progress, {
                     duration: 3000,
                     toValue: 100
                 }).start()
                 setTimeout(() => {
                     this.newLevelPoints()
-                }, 7000)
+                }, 5000)
             } else {
                 this.progress.setValue(
                     (Math.floor(
@@ -687,13 +675,16 @@ class GameStatsScreen extends React.Component {
                         {this.state.levelUp ? (
                             <View style={styles.levelUpContainer}>
                                 <Text style={styles.levelUpText}>
-                                    Tebrikler!
+                                    SÜPER!
                                 </Text>
-                                <Text style={styles.levelUpText}>
+                                <Text style={[styles.levelUpText2, {fontSize: hp(8)}]}>
                                     {Math.floor(
                                         levelFinder(this.state.oldPoints)
                                             .level
-                                    )+1}. seviyeye ulaştın
+                                    )+1}
+                                </Text>
+                                <Text style={styles.levelUpText2}>
+                                    seviyeye ulaştın
                                 </Text>
                             </View>
                         ) : (

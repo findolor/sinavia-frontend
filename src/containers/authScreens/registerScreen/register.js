@@ -69,7 +69,6 @@ class Register extends React.Component {
 
     toggleSwitch = () => {
         this.setState({ switchValue: !this.state.switchValue })
-        alert(this.state.switchValue)
     }
 
     showDateTimePicker = () => {

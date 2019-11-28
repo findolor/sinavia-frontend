@@ -51,11 +51,10 @@ export default StyleSheet.create({
     },
     forgetPasswordContainer: {
         height: hp(6),
-        width: wp(50),
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        marginLeft: wp(30),
+        marginLeft: wp(54),
         marginBottom: wp(0.4),
         position: 'absolute'
     },

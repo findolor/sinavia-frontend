@@ -336,7 +336,7 @@ class GetInfo extends React.Component {
                                 <Text
                                     style={[
                                         styles.textInput,
-                                        { color: this.state.city === '' ? '#8A8888' : '#2E313C' }
+                                        { color: this.state.city === null ? '#8A8888' : '#2E313C' }
                                     ]}
                                 >
                                     {this.state.cityUI}

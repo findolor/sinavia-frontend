@@ -79,7 +79,8 @@ class Settings extends React.Component {
             isCityModalVisible: false,
             nameBorderColor: '#C8C8C8',
             lastnameBorderColor: '#C8C8C8',
-            usernameBorderColor: '#C8C8C8'
+            usernameBorderColor: '#C8C8C8',
+            cityBorderColor: '#C8C8C8'
         }
     }
 
@@ -148,9 +149,12 @@ class Settings extends React.Component {
     nameOnChange = text => {
         const invalidCharacters = (/[^a-zA-Z]/g)
         if (invalidCharacters.test(text)) {
-            this.setState({nameBorderColor: 'red'})
+            this.setState({nameBorderColor: '#B72A2A'})
         }
-        else this.setState({nameBorderColor: '#C8C8C8'})
+        else if(text === '' || text === this.props.clientInformation.name){
+            this.setState({nameBorderColor: '#C8C8C8'})
+        }
+        else this.setState({nameBorderColor: '#3EBB29'})
         if (text === '') text = null
         this.setState({ name: text })
     }
@@ -158,9 +162,12 @@ class Settings extends React.Component {
     lastnameOnChange = text => {
         const invalidCharacters = (/[^a-zA-Z]/g)
         if (invalidCharacters.test(text)) {
-            this.setState({lastnameBorderColor: 'red'})
+            this.setState({lastnameBorderColor: '#B72A2A'})
         }
-        else this.setState({lastnameBorderColor: '#C8C8C8'})
+        else if(text === '' || text === this.props.clientInformation.lastname){
+            this.setState({lastnameBorderColor: '#C8C8C8'})
+        }
+        else this.setState({lastnameBorderColor: '#3EBB29'})
         if (text === '') text = null
         this.setState({ lastname: text })
     }
@@ -168,9 +175,12 @@ class Settings extends React.Component {
     usernameOnChange = text => {
         const invalidCharacters = (/[^a-zA-Z0-9]/g)
         if (invalidCharacters.test(text)) {
-            this.setState({usernameBorderColor: 'red'})
+            this.setState({usernameBorderColor: '#B72A2A'})
         }
-        else this.setState({usernameBorderColor: '#C8C8C8'})
+        else if(text === '' || text === this.props.clientInformation.username){
+            this.setState({usernameBorderColor: '#C8C8C8'})
+        }
+        else this.setState({usernameBorderColor: '#3EBB29'})
         if (text === '') text = null
         this.setState({ username: text })
     }
@@ -211,7 +221,7 @@ class Settings extends React.Component {
     }
 
     saveButtonOnPress = async () => {
-        if ( this.state.usernameBorderColor === 'red'){
+        if ( this.state.usernameBorderColor === '#B72A2A'){
             flashMessages.authInfosOrSettingsError('Kullanıcı adı hatası', 'Kullanıcı adı sadece harf veya rakamlardan oluşabilir',{
                 backgroundColor: '#FFFFFF',
                 borderBottomLeftRadius: 10,
@@ -221,7 +231,7 @@ class Settings extends React.Component {
                 height: hp(10)
             })
         }
-        else if (this.state.nameBorderColor === 'red') {
+        else if (this.state.nameBorderColor === '#B72A2A') {
             flashMessages.authInfosOrSettingsError('Ad hatası', 'Ad sadece harflerden oluşmalıdır',{
                 backgroundColor: '#FFFFFF',
                 borderBottomLeftRadius: 10,
@@ -231,7 +241,7 @@ class Settings extends React.Component {
                 height: hp(10)
             })
         }
-        else if (this.state.lastnameBorderColor === 'red') {
+        else if (this.state.lastnameBorderColor === '#B72A2A') {
             flashMessages.authInfosOrSettingsError('Soyad hatası', 'Soyad sadece harflerden oluşmalıdır',{
                     backgroundColor: '#FFFFFF',
                     borderBottomLeftRadius: 10,
@@ -387,9 +397,18 @@ class Settings extends React.Component {
     }
 
     cityOnPress = (cityName) => {
+        if(cityName === this.props.clientInformation.city){
+            this.setState({
+                city: cityName,
+                isCityModalVisible: false,
+                cityBorderColor: '#C8C8C8'
+            })
+        }
+        else
         this.setState({
             city: cityName,
-            isCityModalVisible: false
+            isCityModalVisible: false,
+            cityBorderColor: '#3EBB29'
         })
     }
 
@@ -555,7 +574,7 @@ class Settings extends React.Component {
                             <Text style={styles.textInputTitle}>Şehir</Text>
                         </View>
                         <TouchableOpacity onPress={this.openCityModalVisible}>
-                            <View style={styles.cityInputView}>
+                            <View style={[styles.cityInputView, {borderColor: this.state.cityBorderColor}]}>
                                 <Text style={styles.cityTextInputStyle}>
                                     {this.state.city}
                                 </Text>

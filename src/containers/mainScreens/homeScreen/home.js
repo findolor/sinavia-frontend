@@ -591,7 +591,8 @@ class Home extends React.Component {
                     visibleView: 'GROUP_MODES',
                     visibleRankedGameStartPress: false,
                     rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
-                    soloModeButtonBorderColor: EMPTY_MODE_COLOR
+                    soloModeButtonBorderColor: EMPTY_MODE_COLOR,
+                    unsolvedQuestionsModeBorderColor: EMPTY_MODE_COLOR
                 })
             })
             .catch(error => {})
@@ -991,7 +992,9 @@ class Home extends React.Component {
         if (Object.keys(this.props.friendIds).length === 0) return
         this.setState({
             rankedModeButtonBorderColor: EMPTY_MODE_COLOR,
-            soloModeButtonBorderColor: EMPTY_MODE_COLOR
+            soloModeButtonBorderColor: EMPTY_MODE_COLOR,
+            unsolvedQuestionsModeBorderColor: EMPTY_MODE_COLOR
+
         })
         const friends = await userServices.getUsers(
             this.props.clientToken,
