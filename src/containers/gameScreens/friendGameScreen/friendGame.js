@@ -23,9 +23,9 @@ import { clientActions } from '../../../redux/client/actions'
 import ZOOM_IN_BUTTON from '../../../assets/gameScreens/zoomInButton.png'
 import ZOOM_OUT_BUTTON from '../../../assets/gameScreens/zoomOutButton.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
-import OPPONENTS_ANSWER from '../../../assets/gameScreens/jokers/opponentsAnswer.png'
-import FIFTY_FIFTY from '../../../assets/gameScreens/jokers/fiftyFifty.png'
-import SECOND_CHANCE from '../../../assets/gameScreens/jokers/secondChance.png'
+import SEE_OPPONENT from '../../../assets/jokers/seeOpponent.png'
+import REMOVE_OPTIONS from '../../../assets/jokers/removeOptions.png'
+import SECOND_CHANCE from '../../../assets/jokers/secondChance.png'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import AuthButton from '../../../components/authScreen/authButton'
 import * as Animatable from 'react-native-animatable'
@@ -1232,7 +1232,7 @@ class FriendGame extends React.Component {
                                 <View style={[styles.jokerCounterView, { width: ((''+this.state.firstJokerAmount).length) < 3 ? hp(4) : hp(5.5), backgroundColor: this.state.isSeeOpponentAnswerJokerDisabled === true ? '#FE8B8B' : 'red'}]}>
                                     <Text style={styles.jokerCounterText}>{this.state.firstJokerAmount}</Text>
                                 </View>
-                                <Image source={OPPONENTS_ANSWER} style={[styles.jokerImg, { opacity: this.state.isSeeOpponentAnswerJokerDisabled === true ? 0.3 : 1}]}/>
+                                <Image source={SEE_OPPONENT} style={[styles.jokerImg, { opacity: this.state.isSeeOpponentAnswerJokerDisabled === true ? 0.3 : 1, resizeMode: 'contain'}]}/>
                             </View>
                         </TouchableOpacity>
                         <View style={styles.jokerNameContainer}>
@@ -1255,7 +1255,7 @@ class FriendGame extends React.Component {
                                 <View style={[styles.jokerCounterView, { width: ((''+this.state.secondJokerAmount).length) < 3 ? hp(4) : hp(5.5), backgroundColor: this.state.isRemoveOptionJokerDisabled === true ? '#FE8B8B' : 'red'}]}>
                                     <Text style={styles.jokerCounterText}>{this.state.secondJokerAmount}</Text>
                                 </View>
-                                <Image source={FIFTY_FIFTY} style={[styles.jokerImg, { opacity: this.state.isRemoveOptionJokerDisabled === true ? 0.3 : 1}]}/>
+                                <Image source={REMOVE_OPTIONS} style={[styles.jokerImg, { opacity: this.state.isRemoveOptionJokerDisabled === true ? 0.3 : 1, resizeMode: 'contain'}]}/>
                             </View>
                         </TouchableOpacity>
                         <View style={styles.jokerNameContainer}>
@@ -1278,7 +1278,7 @@ class FriendGame extends React.Component {
                                 <View style={[styles.jokerCounterView, { width: ((''+this.state.thirdJokerAmount).length) < 3 ? hp(4) : hp(5.5), backgroundColor: this.state.isSecondChanceJokerDisabled === true ? '#FE8B8B' : 'red'}]}>
                                     <Text style={styles.jokerCounterText}>{this.state.thirdJokerAmount}</Text>
                                 </View>
-                                <Image source={SECOND_CHANCE} style={[styles.jokerImg, { opacity: this.state.isSecondChanceJokerDisabled === true ? 0.3 : 1}]}/>
+                                <Image source={SECOND_CHANCE} style={[styles.jokerImg, { opacity: this.state.isSecondChanceJokerDisabled === true ? 0.3 : 1, resizeMode: 'contain'}]}/>
                             </View>
                         </TouchableOpacity>
                         <View style={styles.jokerNameContainer}>

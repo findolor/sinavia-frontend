@@ -486,6 +486,7 @@ class Home extends React.Component {
             courseList.push({
                 courseName: course.name,
                 illustration: chooseImage(course.id, false)
+                //illustration: course.imageLink
             })
         })
 
