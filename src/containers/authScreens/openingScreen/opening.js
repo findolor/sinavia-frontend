@@ -9,10 +9,15 @@ import {
 import { AuthButton } from '../../../components/authScreen'
 import styles from './style'
 import NotchView from '../../../components/notchView'
+import { fcmService } from '../../../services/fcmService'
 
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
 
 export default class Opening extends React.Component {
+    async componentDidMount() {
+        await fcmService.checkPermissions()
+    }
+
     render() {
         return (
             <View style={styles.container}>
