@@ -148,6 +148,19 @@ class Leaderboard extends React.Component {
         })
     }
 
+    resetEveryField = () => {
+        this.setState({
+            topTenUsernames: [],
+            remainingUsernames: [],
+            topTenPoints: [],
+            remainingPoints: [],
+            topTenProfilePictures: [],
+            remainingProfilePictures: [],
+            remainingUsersFlatList: [],
+            clientRanking: 0
+        })
+    }
+
     // We set the choosen exam id based on users choosen exam
     setChoosenExamId = async () => {
         new Promise.resolve().then(() => {
@@ -383,8 +396,10 @@ class Leaderboard extends React.Component {
                 ) {
                     this.setState({ rankingMode: selectedMode }, () => {
                         // We dont send the request if the user don't have any friends
-                        if (Object.keys(this.props.friendIds).length === 0)
+                        if (Object.keys(this.props.friendIds).length === 0) {
+                            this.resetEveryField()
                             return
+                        }
                         this.fetchLeaderboard().then(data => {
                             let userList = []
 

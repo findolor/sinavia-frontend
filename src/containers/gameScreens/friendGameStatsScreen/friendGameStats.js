@@ -235,7 +235,6 @@ class FriendGameStatsScreen extends React.Component {
                         matchResultLogo: DRAW_LOGO,
                         matchResultText: 'Berabere'
                     })
-                    friendMatchesCount++
                 } else {
                     this.setState({
                         matchResultLogo: YOU_WIN_LOGO,

@@ -4,7 +4,11 @@ import { clientTypes } from '../../redux/client/actions'
 import { appTypes } from '../../redux/app/actions'
 import { gameContentTypes } from '../../redux/gameContent/actions'
 import DeviceInfo from 'react-native-device-info'
-import { apiServicesTree, makePostRequest } from '../../services/apiServices'
+import {
+    apiServicesTree,
+    makePostRequest,
+    makeGetRequest
+} from '../../services/apiServices'
 
 export function* createUser(action) {
     yield put({
