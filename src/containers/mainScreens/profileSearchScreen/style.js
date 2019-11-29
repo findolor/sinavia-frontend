@@ -71,7 +71,9 @@ export default StyleSheet.create({
     userPic: {
         height: hp(6.5),
         width: hp(6.5),
-        borderRadius: 100
+        borderWidth: hp(0.3),
+        borderColor: '#FF9900',
+        borderRadius: hp(100)
     },
     namesContainer: {
         height: hp(10.5),

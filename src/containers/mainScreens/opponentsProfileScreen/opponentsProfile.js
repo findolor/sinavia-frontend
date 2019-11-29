@@ -181,7 +181,7 @@ class OpponentsProfile extends React.Component {
                     this.setState({isModalVisible: true, visibleView: 'acceptFriendshipRequestModal'})
                 }
                 else{
-                    alert('... kisisine gonderdigin istegi iptal etmek istiyor musun')
+                    this.setState({isModalVisible: true, visibleView: 'removeFriendshipRequestModal'})
                 }
                 return
             case 'alreadyFriend':

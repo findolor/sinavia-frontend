@@ -21,9 +21,8 @@ export default StyleSheet.create({
     yourOrderTextContainer: {
         flex: 3.5,
         width: wp(100),
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fcfcfc'
+        justifyContent: 'flex-start',
+        alignItems: 'center'
     },
     leaderContainer: {
         height: hp(33),
@@ -174,8 +173,8 @@ export default StyleSheet.create({
     },
     yourOrderText: {
         fontFamily: 'Averta-RegularItalic',
-        fontSize: wp(5),
-        color: '#FF6D00',
+        fontSize: hp(2.5),
+        color: '#FF6D00'
     },
     topTenContainer: {
         height: hp(46.5),

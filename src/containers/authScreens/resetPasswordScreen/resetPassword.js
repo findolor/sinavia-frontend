@@ -6,7 +6,7 @@ import {
     TouchableWithoutFeedback,
     KeyboardAvoidingView,
     Image,
-    Alert
+    Alert, TouchableOpacity
 } from 'react-native'
 import {
     widthPercentageToDP as wp,
@@ -17,9 +17,10 @@ import styles from './style'
 import { userServices } from '../../../sagas/user'
 import { flashMessages } from '../../../services/flashMessageBuilder'
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
-import { navigationReset } from '../../../services/navigationService'
+import { navigationPop, navigationReset } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import { appActions } from '../../../redux/app/actions'
+import BACK_BUTTON from '../../../assets/return.png'
 
 class ResetPassword extends React.Component {
     constructor(props) {
@@ -52,6 +53,10 @@ class ResetPassword extends React.Component {
             })
     }
 
+    backButtonOnPress = () => {
+        navigationPop()
+    }
+
     render() {
         return (
             <TouchableWithoutFeedback
@@ -63,6 +68,14 @@ class ResetPassword extends React.Component {
                     style={[styles.container]}
                     behavior={'position'}
                 >
+                    <View style={styles.backButtonContainer}>
+                        <TouchableOpacity onPress={this.backButtonOnPress}>
+                            <Image
+                                source={BACK_BUTTON}
+                                style={styles.backButton}
+                            />
+                        </TouchableOpacity>
+                    </View>
                     <View style={styles.imageContainer}>
                         <Image
                             source={SINAVIA_LOGO}

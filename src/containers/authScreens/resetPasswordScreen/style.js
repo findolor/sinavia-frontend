@@ -40,5 +40,18 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Regular',
         color: '#8A8888',
         fontSize: hp(2)
+    },
+    backButtonContainer: {
+        height: hp(10),
+        width: wp(100),
+        justifyContent: 'flex-end',
+        alignItems: 'flex-start',
+        position: 'absolute',
+        zIndex: 1
+    },
+    backButton: {
+        height: hp(3.5),
+        width: hp(3.5),
+        marginLeft: wp(8)
     }
 })

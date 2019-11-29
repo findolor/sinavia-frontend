@@ -16,7 +16,8 @@ export default StyleSheet.create({
         width: wp(88),
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginLeft: wp(6)
     },
     profileContainer: {
         flex: 32,
@@ -28,11 +29,13 @@ export default StyleSheet.create({
         flex: 36,
         width: wp(89),
         justifyContent: 'space-evenly',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginLeft: wp(5.5)
     },
     buttonsContainer: {
         flex: 22,
-        width: wp(89)
+        width: wp(89),
+        marginLeft: wp(5.5)
     },
     returnLogo: {
         height: hp(3.5),

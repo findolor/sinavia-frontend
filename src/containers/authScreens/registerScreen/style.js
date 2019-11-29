@@ -100,5 +100,18 @@ export default StyleSheet.create({
         width: wp(85),
         paddingHorizontal: wp(4),
         color: '#2E313C',
+    },
+    backButtonContainer: {
+        height: hp(10),
+        width: wp(100),
+        justifyContent: 'flex-end',
+        alignItems: 'flex-start',
+        position: 'absolute',
+        zIndex: 1
+    },
+    backButton: {
+        height: hp(3.5),
+        width: hp(3.5),
+        marginLeft: wp(8)
     }
 })
