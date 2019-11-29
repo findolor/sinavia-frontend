@@ -217,7 +217,7 @@ class Settings extends React.Component {
     }
 
     nameOnChange = text => {
-        const validCharacters = /[^a-zA-Z\s]/g
+        const validCharacters = /[^a-zA-Z\sğüşiöç]/g
         if (
             validCharacters.test(text) ||
             text.substr(-2) === '  ' ||
@@ -235,7 +235,7 @@ class Settings extends React.Component {
     }
 
     lastnameOnChange = text => {
-        const validCharacters = /[^a-zA-Z]/g
+        const validCharacters = /[^a-zA-Zğüşiöç]/g
         if (validCharacters.test(text)) {
             this.setState({ lastnameBorderColor: '#B72A2A' })
         } else if (
@@ -250,7 +250,7 @@ class Settings extends React.Component {
     }
 
     usernameOnChange = text => {
-        const validCharacters = /[^a-zA-Z0-9]/g
+        const validCharacters = /[^a-zA-Z0-9ğüşiöç]/g
         if (validCharacters.test(text)) {
             this.setState({ usernameBorderColor: '#B72A2A' })
         } else if (
