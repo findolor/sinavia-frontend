@@ -53,7 +53,7 @@ export default StyleSheet.create({
         marginTop: hp(81.6),
         position: 'absolute',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center'
     },
     buttonText: {

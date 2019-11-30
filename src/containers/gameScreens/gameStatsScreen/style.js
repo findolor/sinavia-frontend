@@ -112,6 +112,7 @@ export default StyleSheet.create({
         width: wp(87.8),
         marginTop: hp(1.5),
         flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center'
     },
     results2Container: {
@@ -143,17 +144,17 @@ export default StyleSheet.create({
     },
     user1Container: {
         height: hp(21),
-        width: wp(35),
+        width: wp(35.9),
         alignItems: 'center'
     },
     user2Container: {
         height: hp(21),
-        width: wp(35),
+        width: wp(35.9),
         alignItems: 'center'
     },
     answersContainer: {
         height: hp(12),
-        width: wp(17.8),
+        width: wp(16),
         marginBottom: hp(4),
         justifyContent: 'space-around',
         alignItems: 'center'
@@ -178,9 +179,9 @@ export default StyleSheet.create({
     },
     dividedAnswer: {
         height: hp(4),
-        width: wp(17.8),
+        width: wp(16),
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
+        justifyContent: 'space-between',
         alignItems: 'center'
     },
     numbers: {
@@ -326,7 +327,7 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        borderRadius: 6,
+        borderRadius: hp(1),
         backgroundColor: '#B0B0B0'
     },
     levelText: {

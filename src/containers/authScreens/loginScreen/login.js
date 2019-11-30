@@ -10,7 +10,10 @@ import {
     TouchableWithoutFeedback,
     KeyboardAvoidingView
 } from 'react-native'
-import { navigationPush } from '../../../services/navigationService'
+import {
+    navigationPop,
+    navigationPush
+} from '../../../services/navigationService'
 import { SCENE_KEYS } from '../../../config/index'
 import {
     widthPercentageToDP as wp,
@@ -26,6 +29,7 @@ import { showMessage } from 'react-native-flash-message'
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
 import OPENED_EYE from '../../../assets/openedEye.png'
 import CLOSED_EYE from '../../../assets/closedEye.png'
+import BACK_BUTTON from '../../../assets/return.png'
 
 class Login extends React.Component {
     constructor(props) {
@@ -84,6 +88,10 @@ class Login extends React.Component {
         else Alert.alert(wrongCredentialString)
     }
 
+    backButtonOnPress = () => {
+        navigationPop()
+    }
+
     render() {
         return (
             <TouchableWithoutFeedback
@@ -96,6 +104,14 @@ class Login extends React.Component {
                     behavior={'position'}
                 >
                     <NotchView color={'#fcfcfc'} />
+                    <View style={styles.backButtonContainer}>
+                        <TouchableOpacity onPress={this.backButtonOnPress}>
+                            <Image
+                                source={BACK_BUTTON}
+                                style={styles.backButton}
+                            />
+                        </TouchableOpacity>
+                    </View>
                     <View style={styles.imageContainer}>
                         <Image
                             source={SINAVIA_LOGO}
@@ -153,8 +169,7 @@ class Login extends React.Component {
                                     <TouchableOpacity
                                         onPress={this.managePasswordVisibility}
                                     >
-                                        {this.state.hidePassword ===
-                                        true && (
+                                        {this.state.hidePassword === true && (
                                             <Image
                                                 source={CLOSED_EYE}
                                                 style={{
@@ -163,8 +178,7 @@ class Login extends React.Component {
                                                 }}
                                             />
                                         )}
-                                        {this.state.hidePassword ===
-                                        false && (
+                                        {this.state.hidePassword === false && (
                                             <Image
                                                 source={OPENED_EYE}
                                                 style={{
@@ -207,7 +221,4 @@ const mapDispatchToProps = dispatch => ({
         dispatch(clientActions.loginUser(userCredentials))
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

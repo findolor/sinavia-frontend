@@ -27,8 +27,9 @@ export default StyleSheet.create({
     },
     questionContainer: {
         backgroundColor: '#ffffff',
-        height: hp(52),
-        marginHorizontal: wp(5),
+        flex: 52,
+        width: wp(84),
+        marginLeft: wp(8),
         borderRadius: hp(2),
         justifyContent: 'center',
         alignItems: 'center',
@@ -37,7 +38,8 @@ export default StyleSheet.create({
     questionAndZoomButtonContainer: {
         flex: 6,
         width: wp(100),
-        flexDirection: 'row'
+        flexDirection: 'row',
+        justifyContent: 'center'
     },
     spaceContainer: {
         height: hp(6),
@@ -125,8 +127,8 @@ export default StyleSheet.create({
     },
     questionStyle: {
         resizeMode: 'contain',
-        height: hp(90),
-        width: wp(90),
+        height: hp(84),
+        width: wp(84),
         flex: 1
     },
     userContainer: {

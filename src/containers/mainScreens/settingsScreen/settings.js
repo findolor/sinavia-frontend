@@ -583,7 +583,7 @@ class Settings extends React.Component {
 
     render() {
         return (
-            <KeyboardAvoidingView style={styles.container}>
+            <KeyboardAvoidingView style={styles.container} behavior={'position'}>
                 <NotchView color={'#fcfcfc'} />
                 <Modal
                     visible={this.state.isCityModalVisible}

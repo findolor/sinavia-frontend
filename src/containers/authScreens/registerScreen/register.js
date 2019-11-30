@@ -10,7 +10,7 @@ import {
     TouchableWithoutFeedback,
     KeyboardAvoidingView
 } from 'react-native'
-import { navigationPush } from '../../../services/navigationService'
+import { navigationPop, navigationPush } from '../../../services/navigationService'
 import { SCENE_KEYS } from '../../../config/index'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
@@ -30,6 +30,7 @@ import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
 import OPENED_EYE from '../../../assets/openedEye.png'
 import CLOSED_EYE from '../../../assets/closedEye.png'
 import { flashMessages } from '../../../services/flashMessageBuilder'
+import BACK_BUTTON from '../../../assets/return.png'
 
 class Register extends React.Component {
     constructor(props) {
@@ -254,6 +255,10 @@ class Register extends React.Component {
         }
     }
 
+    backButtonOnPress = () => {
+        navigationPop()
+    }
+
     render() {
         return (
             <TouchableWithoutFeedback
@@ -266,6 +271,14 @@ class Register extends React.Component {
                     behavior={'position'}
                 >
                     <NotchView color={'#fcfcfc'} />
+                    <View style={styles.backButtonContainer}>
+                        <TouchableOpacity onPress={this.backButtonOnPress}>
+                            <Image
+                                source={BACK_BUTTON}
+                                style={styles.backButton}
+                            />
+                        </TouchableOpacity>
+                    </View>
                     <View style={styles.imageContainer}>
                         <Image
                             source={SINAVIA_LOGO}

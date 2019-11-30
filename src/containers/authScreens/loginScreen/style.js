@@ -51,10 +51,11 @@ export default StyleSheet.create({
     },
     forgetPasswordContainer: {
         height: hp(6),
+        width: wp(35),
         flexDirection: 'row',
-        justifyContent: 'flex-end',
+        justifyContent: 'flex-start',
         alignItems: 'center',
-        marginLeft: wp(54),
+        marginLeft: wp(48),
         marginBottom: wp(0.4),
         position: 'absolute'
     },
@@ -73,6 +74,20 @@ export default StyleSheet.create({
     forgetPasswordText: {
         fontFamily: 'Averta-Bold',
         color: '#00D9EF',
-        fontSize: hp(2)
+        fontSize: hp(2),
+        textAlign: 'center'
+    },
+    backButtonContainer: {
+        height: hp(10),
+        width: wp(100),
+        justifyContent: 'flex-end',
+        alignItems: 'flex-start',
+        position: 'absolute',
+        zIndex: 1
+    },
+    backButton: {
+        height: hp(3.5),
+        width: hp(3.5),
+        marginLeft: wp(8)
     }
 })
