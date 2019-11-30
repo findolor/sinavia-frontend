@@ -1,7 +1,8 @@
 import React from 'react'
 import {
     Image,
-    ImageBackground, Modal,
+    ImageBackground,
+    Modal,
     ScrollView,
     Text,
     TextInput,
@@ -177,15 +178,23 @@ class OpponentsProfile extends React.Component {
                 this.sendFriendshipRequest()
                 return
             case 'friendRequestSent':
-                if (this.state.isFriendRequestSent === false){
-                    this.setState({isModalVisible: true, visibleView: 'acceptFriendshipRequestModal'})
-                }
-                else{
-                    this.setState({isModalVisible: true, visibleView: 'removeFriendshipRequestModal'})
+                if (this.state.isFriendRequestSent === false) {
+                    this.setState({
+                        isModalVisible: true,
+                        visibleView: 'acceptFriendshipRequestModal'
+                    })
+                } else {
+                    this.setState({
+                        isModalVisible: true,
+                        visibleView: 'removeFriendshipRequestModal'
+                    })
                 }
                 return
             case 'alreadyFriend':
-                this.setState({isModalVisible: true, visibleView: 'removeFriendshipModal'})
+                this.setState({
+                    isModalVisible: true,
+                    visibleView: 'removeFriendshipModal'
+                })
                 return
         }
     }
@@ -193,12 +202,26 @@ class OpponentsProfile extends React.Component {
     acceptFriendshipRequestModal() {
         return (
             <View
-                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.quitView}>
                         <Text style={styles.areYouSureText}>
-                            <Text style={[{color: '#FF9900', fontFamily: 'Averta-SemiboldItalic'}]}>hakanyilmaz</Text> kişisinden
+                            <Text
+                                style={[
+                                    {
+                                        color: '#FF9900',
+                                        fontFamily: 'Averta-SemiboldItalic'
+                                    }
+                                ]}
+                            >
+                                hakanyilmaz
+                            </Text>{' '}
+                            kişisinden
                         </Text>
                         <Text style={styles.areYouSureText}>
                             gelen arkadaşlık isteğini
@@ -222,7 +245,9 @@ class OpponentsProfile extends React.Component {
                             color="#00D9EF"
                             buttonText="Hayır"
                             borderRadius={10}
-                            onPress={() => this.setState({isModalVisible: false})}
+                            onPress={() =>
+                                this.setState({ isModalVisible: false })
+                            }
                         />
                     </View>
                 </View>
@@ -233,12 +258,26 @@ class OpponentsProfile extends React.Component {
     removeFriendshipRequestModal() {
         return (
             <View
-                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.quitView}>
                         <Text style={styles.areYouSureText}>
-                            <Text style={[{color: '#FF9900', fontFamily: 'Averta-SemiboldItalic'}]}>hakanyilmaz</Text> kişisine
+                            <Text
+                                style={[
+                                    {
+                                        color: '#FF9900',
+                                        fontFamily: 'Averta-SemiboldItalic'
+                                    }
+                                ]}
+                            >
+                                hakanyilmaz
+                            </Text>{' '}
+                            kişisine
                         </Text>
                         <Text style={styles.areYouSureText}>
                             gönderdiğin arkadaşlık isteği
@@ -254,7 +293,7 @@ class OpponentsProfile extends React.Component {
                             color="#00D9EF"
                             buttonText="Evet"
                             borderRadius={10}
-                            onPress={() => this.setState({isModalVisible: false})}
+                            onPress={this.deleteFriendship}
                         />
                         <AuthButton
                             height={hp(7)}
@@ -262,7 +301,9 @@ class OpponentsProfile extends React.Component {
                             color="#00D9EF"
                             buttonText="Hayır"
                             borderRadius={10}
-                            onPress={() => this.setState({isModalVisible: false})}
+                            onPress={() =>
+                                this.setState({ isModalVisible: false })
+                            }
                         />
                     </View>
                 </View>
@@ -273,12 +314,26 @@ class OpponentsProfile extends React.Component {
     removeFriendshipModal() {
         return (
             <View
-                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.quitView}>
                         <Text style={styles.areYouSureText}>
-                            <Text style={[{color: '#FF9900', fontFamily: 'Averta-SemiboldItalic'}]}>{this.props.opponentInformation.username}</Text> kişisi
+                            <Text
+                                style={[
+                                    {
+                                        color: '#FF9900',
+                                        fontFamily: 'Averta-SemiboldItalic'
+                                    }
+                                ]}
+                            >
+                                {this.props.opponentInformation.username}
+                            </Text>{' '}
+                            kişisi
                         </Text>
                         <Text style={styles.areYouSureText}>
                             arkadaşlıktan çıkarılsın mı?
@@ -299,7 +354,9 @@ class OpponentsProfile extends React.Component {
                             color="#00D9EF"
                             buttonText="Hayır"
                             borderRadius={10}
-                            onPress={() => this.setState({isModalVisible: false})}
+                            onPress={() =>
+                                this.setState({ isModalVisible: false })
+                            }
                         />
                     </View>
                 </View>
@@ -316,11 +373,13 @@ class OpponentsProfile extends React.Component {
                     animationType={'fade'}
                 >
                     {this.state.visibleView === 'removeFriendshipModal' &&
-                    this.removeFriendshipModal()}
-                    {this.state.visibleView === 'removeFriendshipRequestModal' &&
-                    this.removeFriendshipRequestModal()}
-                    {this.state.visibleView === 'acceptFriendshipRequestModal' &&
-                    this.acceptFriendshipRequestModal()}
+                        this.removeFriendshipModal()}
+                    {this.state.visibleView ===
+                        'removeFriendshipRequestModal' &&
+                        this.removeFriendshipRequestModal()}
+                    {this.state.visibleView ===
+                        'acceptFriendshipRequestModal' &&
+                        this.acceptFriendshipRequestModal()}
                 </Modal>
                 <NotchView />
                 <View style={styles.header}>
@@ -370,7 +429,22 @@ class OpponentsProfile extends React.Component {
                                 />
                             </View>
                             <View style={styles.profileInfoView}>
-                                <Text style={[styles.nameSurnameText, {fontSize: ((this.props.opponentInformation.name.length+this.props.opponentInformation.lastname.length) > 21) ? hp(2.25) : hp(3.5)}]}>
+                                <Text
+                                    style={[
+                                        styles.nameSurnameText,
+                                        {
+                                            fontSize:
+                                                this.props.opponentInformation
+                                                    .name.length +
+                                                    this.props
+                                                        .opponentInformation
+                                                        .lastname.length >
+                                                21
+                                                    ? hp(2.25)
+                                                    : hp(3.5)
+                                        }
+                                    ]}
+                                >
                                     {this.props.opponentInformation.name}{' '}
                                     {this.props.opponentInformation.lastname}
                                 </Text>
@@ -533,8 +607,30 @@ class OpponentsProfile extends React.Component {
                                 paginationStyle={{ bottom: hp(0.5) }}
                                 activeDotColor={'#FF9900'}
                                 removeClippedSubviews={false}
-                                activeDot={<View style={{height: hp(1.5), width: hp(1.5), backgroundColor: '#FF9900', borderRadius: hp(100), marginLeft: wp(1), marginRight: wp(1)}}/>}
-                                dot={<View style={{height: hp(1.5), width: hp(1.5), backgroundColor: 'rgba(0,0,0,.2)', borderRadius: hp(100), marginLeft: wp(1), marginRight: wp(1)}}/>}
+                                activeDot={
+                                    <View
+                                        style={{
+                                            height: hp(1.5),
+                                            width: hp(1.5),
+                                            backgroundColor: '#FF9900',
+                                            borderRadius: hp(100),
+                                            marginLeft: wp(1),
+                                            marginRight: wp(1)
+                                        }}
+                                    />
+                                }
+                                dot={
+                                    <View
+                                        style={{
+                                            height: hp(1.5),
+                                            width: hp(1.5),
+                                            backgroundColor: 'rgba(0,0,0,.2)',
+                                            borderRadius: hp(100),
+                                            marginLeft: wp(1),
+                                            marginRight: wp(1)
+                                        }}
+                                    />
+                                }
                             >
                                 <View style={styles.totalGameStatsBox}>
                                     <View
@@ -748,7 +844,9 @@ class OpponentsProfile extends React.Component {
                                                 {
                                                     width: wp(82),
                                                     borderTopRightRadius: hp(1),
-                                                    borderBottomRightRadius: hp(1)
+                                                    borderBottomRightRadius: hp(
+                                                        1
+                                                    )
                                                 }
                                             ]}
                                         />
@@ -773,7 +871,9 @@ class OpponentsProfile extends React.Component {
                                                 {
                                                     width: wp(82),
                                                     borderTopLeftRadius: hp(1),
-                                                    borderBottomLeftRadius: hp(1)
+                                                    borderBottomLeftRadius: hp(
+                                                        1
+                                                    )
                                                 }
                                             ]}
                                         />
@@ -798,7 +898,9 @@ class OpponentsProfile extends React.Component {
                                                 {
                                                     width: wp(82),
                                                     borderTopLeftRadius: hp(1),
-                                                    borderBottomLeftRadius: hp(1)
+                                                    borderBottomLeftRadius: hp(
+                                                        1
+                                                    )
                                                 }
                                             ]}
                                         >
@@ -960,7 +1062,4 @@ const mapDispatchToProps = dispatch => ({
         dispatch(opponentActions.removeFromOpponentList())
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(OpponentsProfile)
+export default connect(mapStateToProps, mapDispatchToProps)(OpponentsProfile)

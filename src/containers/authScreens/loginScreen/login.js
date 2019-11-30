@@ -10,7 +10,10 @@ import {
     TouchableWithoutFeedback,
     KeyboardAvoidingView
 } from 'react-native'
-import { navigationPop, navigationPush, navigationReset } from '../../../services/navigationService'
+import {
+    navigationPop,
+    navigationPush
+} from '../../../services/navigationService'
 import { SCENE_KEYS } from '../../../config/index'
 import {
     widthPercentageToDP as wp,
@@ -166,8 +169,7 @@ class Login extends React.Component {
                                     <TouchableOpacity
                                         onPress={this.managePasswordVisibility}
                                     >
-                                        {this.state.hidePassword ===
-                                        true && (
+                                        {this.state.hidePassword === true && (
                                             <Image
                                                 source={CLOSED_EYE}
                                                 style={{
@@ -176,8 +178,7 @@ class Login extends React.Component {
                                                 }}
                                             />
                                         )}
-                                        {this.state.hidePassword ===
-                                        false && (
+                                        {this.state.hidePassword === false && (
                                             <Image
                                                 source={OPENED_EYE}
                                                 style={{
@@ -220,7 +221,4 @@ const mapDispatchToProps = dispatch => ({
         dispatch(clientActions.loginUser(userCredentials))
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(Login)
