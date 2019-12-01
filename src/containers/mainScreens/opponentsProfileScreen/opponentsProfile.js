@@ -57,7 +57,7 @@ class OpponentsProfile extends React.Component {
             searchText: '',
             // Friendship status
             friendshipStatus: 'addFriend',
-            isRequestSent: null,
+            isFriendRequestSent: null,
             isModalVisible: false,
             visibleView: ''
         }
@@ -115,7 +115,6 @@ class OpponentsProfile extends React.Component {
     }
 
     acceptFriendshipRequest = () => {
-        console.log(this.props.friendIds)
         this.props.acceptFriendshipRequest(
             this.props.clientToken,
             this.props.clientDBId,
@@ -132,7 +131,7 @@ class OpponentsProfile extends React.Component {
     }
 
     deleteFriendship = () => {
-        if (this.props.isRequested) {
+        if (this.props.isRequested || this.state.isFriendRequestSent) {
             this.props.deleteFriendshipRequest(
                 this.props.clientToken,
                 this.props.clientDBId,
@@ -1052,8 +1051,6 @@ const mapDispatchToProps = dispatch => ({
                 friendIdList
             )
         ),
-    changeIsFriendRequestSent: isFriendRequestSent =>
-        dispatch(friendActions.changeIsFriendRequestSent(isFriendRequestSent)),
     subtractFromFriendsList: opponentInformation =>
         dispatch(opponentActions.subtractFromFriendsList(opponentInformation)),
     addToFriendsList: opponentInformation =>
