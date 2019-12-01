@@ -219,7 +219,7 @@ class OpponentsProfile extends React.Component {
                                     }
                                 ]}
                             >
-                                hakanyilmaz
+                                {this.props.opponentInformation.username}
                             </Text>{' '}
                             kişisinden
                         </Text>
@@ -236,7 +236,8 @@ class OpponentsProfile extends React.Component {
                             width={wp(42)}
                             color="#00D9EF"
                             buttonText="Evet"
-                            borderRadius={10}
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
                             onPress={() => this.acceptFriendshipRequest()}
                         />
                         <AuthButton
@@ -244,7 +245,8 @@ class OpponentsProfile extends React.Component {
                             width={wp(42)}
                             color="#00D9EF"
                             buttonText="Hayır"
-                            borderRadius={10}
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
                             onPress={() =>
                                 this.setState({ isModalVisible: false })
                             }
@@ -275,7 +277,7 @@ class OpponentsProfile extends React.Component {
                                     }
                                 ]}
                             >
-                                hakanyilmaz
+                                {this.props.opponentInformation.username}
                             </Text>{' '}
                             kişisine
                         </Text>
@@ -292,7 +294,8 @@ class OpponentsProfile extends React.Component {
                             width={wp(42)}
                             color="#00D9EF"
                             buttonText="Evet"
-                            borderRadius={10}
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
                             onPress={this.deleteFriendship}
                         />
                         <AuthButton
@@ -300,7 +303,8 @@ class OpponentsProfile extends React.Component {
                             width={wp(42)}
                             color="#00D9EF"
                             buttonText="Hayır"
-                            borderRadius={10}
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
                             onPress={() =>
                                 this.setState({ isModalVisible: false })
                             }
@@ -345,7 +349,8 @@ class OpponentsProfile extends React.Component {
                             width={wp(42)}
                             color="#00D9EF"
                             buttonText="Evet"
-                            borderRadius={10}
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
                             onPress={() => this.deleteFriendship()}
                         />
                         <AuthButton
@@ -353,7 +358,8 @@ class OpponentsProfile extends React.Component {
                             width={wp(42)}
                             color="#00D9EF"
                             buttonText="Hayır"
-                            borderRadius={10}
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
                             onPress={() =>
                                 this.setState({ isModalVisible: false })
                             }

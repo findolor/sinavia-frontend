@@ -133,7 +133,8 @@ export default StyleSheet.create({
         borderWidth: hp(0.3),
         borderRadius: hp(1),
         borderColor: '#00D9EF',
-        marginTop: hp(2.5)
+        marginTop: hp(2.5),
+        overflow: 'hidden'
     },
     totalGameStatsBox: {
         height: hp(23),

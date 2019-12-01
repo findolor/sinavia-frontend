@@ -90,7 +90,8 @@ export default StyleSheet.create({
     },
     yourPremiumContainer: {
         height: hp(11),
-        width: wp(40)
+        width: wp(40),
+        overflow: 'hidden'
     },
     yourJokersContainer: {
         height: hp(11),
@@ -157,15 +158,15 @@ export default StyleSheet.create({
         color: 'white'
     },
     yourPremiumTextView: {
-        height: hp(6.5),
+        height: hp(5.5),
         width: wp(40),
         justifyContent: 'flex-end',
         alignItems: 'center'
     },
     yourPremiumCounterView: {
-        height: hp(4.5),
+        height: hp(5.5),
         width: wp(40),
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center'
     },
     yourPremiumText: {

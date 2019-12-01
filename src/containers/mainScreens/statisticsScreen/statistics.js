@@ -1199,7 +1199,7 @@ class Statistics extends React.Component {
                                             styles.totalGamesPlayedAndSolvedQuestionsText
                                         }
                                     >
-                                        Dereceli Mod
+                                        Dereceli
                                     </Text>
                                     <Text
                                         style={
@@ -1263,7 +1263,7 @@ class Statistics extends React.Component {
                                             styles.totalGamesPlayedAndSolvedQuestionsText
                                         }
                                     >
-                                        Arkadaş Mod
+                                        Arkadaşla
                                     </Text>
                                     <Text
                                         style={
@@ -1327,7 +1327,7 @@ class Statistics extends React.Component {
                                             styles.totalGamesPlayedAndSolvedQuestionsText
                                         }
                                     >
-                                        Grup Modu
+                                        Grupla
                                     </Text>
                                     <Text
                                         style={
@@ -1354,7 +1354,7 @@ class Statistics extends React.Component {
                                             styles.totalGamesPlayedAndSolvedQuestionsText
                                         }
                                     >
-                                        Solo Modu
+                                        Solo/TekrarÇöz
                                     </Text>
                                     <Text
                                         style={
