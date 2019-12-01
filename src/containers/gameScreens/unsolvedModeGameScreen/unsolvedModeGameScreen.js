@@ -95,6 +95,9 @@ class UnsolvedModeGameScreen extends React.Component {
             // Joker usage variables
             isRemoveOptionJokerUsed: false,
             isSecondChanceJokerUsed: false,
+            // Joker amount variables
+            isRemoveOptionJokerFinished: false,
+            isSecondChanceJokerFinished: false,
             // Current question answer for second chance
             questionAnswer: 0,
             // Contains every information about question
@@ -154,7 +157,10 @@ class UnsolvedModeGameScreen extends React.Component {
                         secondJokerAmount: userJoker.amount
                     })
                     if (userJoker.amount === 0) {
-                        this.setState({ isRemoveOptionJokerDisabled: true })
+                        this.setState({
+                            isRemoveOptionJokerDisabled: true,
+                            isRemoveOptionJokerFinished: true
+                        })
                     } else {
                         this.setState({ isRemoveOptionJokerDisabled: false })
                     }
@@ -168,7 +174,10 @@ class UnsolvedModeGameScreen extends React.Component {
                         thirdJokerAmount: userJoker.amount
                     })
                     if (userJoker.amount === 0) {
-                        this.setState({ isSecondChanceJokerDisabled: true })
+                        this.setState({
+                            isSecondChanceJokerDisabled: true,
+                            isSecondChanceJokerFinished: true
+                        })
                     } else {
                         this.setState({ isSecondChanceJokerDisabled: false })
                     }
@@ -523,9 +532,15 @@ class UnsolvedModeGameScreen extends React.Component {
             buttonFiveName: 'E',
             buttonSixName: 'Boş'
         })
-        if (!this.state.isRemoveOptionJokerUsed)
+        if (
+            !this.state.isRemoveOptionJokerFinished &&
+            !this.state.isRemoveOptionJokerUsed
+        )
             this.setState({ isRemoveOptionJokerDisabled: false })
-        if (!this.state.isSecondChanceJokerUsed)
+        if (
+            !this.state.isSecondChanceJokerFinished &&
+            !this.state.isSecondChanceJokerUsed
+        )
             this.setState({ isSecondChanceJokerDisabled: false })
     }
 
