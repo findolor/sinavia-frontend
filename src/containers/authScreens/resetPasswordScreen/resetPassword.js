@@ -6,7 +6,8 @@ import {
     TouchableWithoutFeedback,
     KeyboardAvoidingView,
     Image,
-    Alert, TouchableOpacity
+    Alert,
+    TouchableOpacity
 } from 'react-native'
 import {
     widthPercentageToDP as wp,
@@ -17,7 +18,10 @@ import styles from './style'
 import { userServices } from '../../../sagas/user'
 import { flashMessages } from '../../../services/flashMessageBuilder'
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
-import { navigationPop, navigationReset } from '../../../services/navigationService'
+import {
+    navigationPop,
+    navigationReset
+} from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import { appActions } from '../../../redux/app/actions'
 import BACK_BUTTON from '../../../assets/return.png'
@@ -47,9 +51,12 @@ class ResetPassword extends React.Component {
                 navigationReset('auth')
             })
             .catch(error => {
-                console.log(error)
                 this.props.lockUnlockButton()
                 if (error.message === 'Network Error') return
+                if (error.message === 'link-error') {
+                    this.backButtonOnPress()
+                    return
+                }
             })
     }
 
