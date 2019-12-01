@@ -68,7 +68,10 @@ class PurchaseScreen extends React.Component {
             },
             remainingPremiumDays: null,
             remainingPremiumWeeks: null,
-            remainingPremiumMonths: null
+            remainingPremiumMonths: null,
+            remainingExamDays: null,
+            remainingExamWeeks: null,
+            remainingExamMonths: null
         }
     }
 
@@ -90,6 +93,7 @@ class PurchaseScreen extends React.Component {
             }
         })
         this.calculateDateUntilPremiumEnd()
+        this.calculateRemainingExamTime()
     }
 
     calculateDateUntilPremiumEnd = () => {
@@ -119,6 +123,36 @@ class PurchaseScreen extends React.Component {
             remainingPremiumDays: remainingPremiumDays,
             remainingPremiumWeeks: remainingPremiumWeeks,
             remainingPremiumMonths: remainingPremiumMonths
+        })
+    }
+
+    calculateRemainingExamTime = () => {
+        const dateToday = moment()
+        const endDate = moment('6/7/2020', 'MM-DD-YYYY')
+        const remainingExamMonths = endDate.diff(dateToday, 'months')
+        let remainingExamWeeks = 0
+        let remainingExamDays = endDate.diff(dateToday, 'days')
+        let daysToSubtract = 0
+
+        if (remainingExamMonths !== 0) {
+            let tempDate = moment()
+            let daysInMonth = tempDate.daysInMonth()
+            for (let i = 1; i < remainingExamMonths + 1; i++) {
+                daysToSubtract += daysInMonth
+                tempDate = moment().add(i, 'months')
+                daysInMonth = tempDate.daysInMonth()
+            }
+        }
+        remainingExamDays -= daysToSubtract
+        if (remainingExamDays >= 7) {
+            remainingExamWeeks = Math.floor(remainingExamDays / 7)
+            remainingExamDays -= remainingPremiumWeeks * 7
+        }
+
+        this.setState({
+            remainingExamDays: remainingExamDays,
+            remainingExamWeeks: remainingExamWeeks,
+            remainingExamMonths: remainingExamMonths
         })
     }
 
@@ -1766,38 +1800,115 @@ class PurchaseScreen extends React.Component {
                 </View>
                 <View style={styles.yourPremiumAndJokersContainer}>
                     <View style={styles.yourPremiumContainer}>
-                        <View style={styles.yourPremiumTextView}>
-                            <Text style={styles.yourPremiumText}>
-                                Elit Öğrenci Paketi
-                            </Text>
-                            <Text style={styles.yourPremiumText}>
-                                Kalan Süre
-                            </Text>
-                        </View>
-                        <View style={styles.yourPremiumCounterView}>
-                            <Text style={styles.yourPremiumCounterText}>
-                                <Text
-                                    style={styles.yourPremiumCounterNumbersText}
-                                >
-                                    {this.state.remainingPremiumMonths}
-                                </Text>{' '}
-                                Ay
-                                <Text
-                                    style={styles.yourPremiumCounterNumbersText}
-                                >
-                                    {' '}
-                                    {this.state.remainingPremiumWeeks}
-                                </Text>{' '}
-                                Hafta
-                                <Text
-                                    style={styles.yourPremiumCounterNumbersText}
-                                >
-                                    {' '}
-                                    {this.state.remainingPremiumDays}
-                                </Text>{' '}
-                                Gün
-                            </Text>
-                        </View>
+                        <Swiper
+                            loop={false}
+                            paginationStyle={{ bottom: hp(0.7) }}
+                            activeDot={
+                                <View
+                                    style={{
+                                        height: hp(1),
+                                        width: hp(1),
+                                        backgroundColor: '#000000',
+                                        borderRadius: hp(100),
+                                        marginLeft: wp(1),
+                                        marginRight: wp(1)
+                                    }}
+                                />
+                            }
+                            dot={
+                                <View
+                                    style={{
+                                        height: hp(1),
+                                        width: hp(1),
+                                        backgroundColor: 'rgba(0,0,0,.2)',
+                                        borderRadius: hp(100),
+                                        marginLeft: wp(1),
+                                        marginRight: wp(1)
+                                    }}
+                                />
+                            }
+                        >
+                            <View>
+                                <View style={styles.yourPremiumTextView}>
+                                    <Text style={styles.yourPremiumText}>
+                                        LGS
+                                    </Text>
+                                    <Text style={styles.yourPremiumText}>
+                                        Kalan Süre
+                                    </Text>
+                                </View>
+                                <View style={styles.yourPremiumCounterView}>
+                                    <Text style={styles.yourPremiumCounterText}>
+                                        <Text
+                                            style={
+                                                styles.yourPremiumCounterNumbersText
+                                            }
+                                        >
+                                            {this.state.remainingExamMonths}
+                                        </Text>{' '}
+                                        Ay
+                                        <Text
+                                            style={
+                                                styles.yourPremiumCounterNumbersText
+                                            }
+                                        >
+                                            {' '}
+                                            {this.state.remainingExamWeeks}
+                                        </Text>{' '}
+                                        Hafta
+                                        <Text
+                                            style={
+                                                styles.yourPremiumCounterNumbersText
+                                            }
+                                        >
+                                            {' '}
+                                            {this.state.remainingExamDays}
+                                        </Text>{' '}
+                                        Gün
+                                    </Text>
+                                </View>
+                            </View>
+                            <View>
+                                <View style={styles.yourPremiumTextView}>
+                                    <Text style={styles.yourPremiumText}>
+                                        Elit Öğrenci Paketi
+                                    </Text>
+                                    <Text style={styles.yourPremiumText}>
+                                        Kalan Süre
+                                    </Text>
+                                </View>
+                                <View style={styles.yourPremiumCounterView}>
+                                    <Text style={styles.yourPremiumCounterText}>
+                                        <Text
+                                            style={
+                                                styles.yourPremiumCounterNumbersText
+                                            }
+                                        >
+                                            {this.state.remainingPremiumMonths}
+                                        </Text>{' '}
+                                        Ay
+                                        <Text
+                                            style={
+                                                styles.yourPremiumCounterNumbersText
+                                            }
+                                        >
+                                            {' '}
+                                            {this.state.remainingPremiumWeeks}
+                                        </Text>{' '}
+                                        Hafta
+                                        <Text
+                                            style={
+                                                styles.yourPremiumCounterNumbersText
+                                            }
+                                        >
+                                            {' '}
+                                            {this.state.remainingPremiumDays}
+                                        </Text>{' '}
+                                        Gün
+                                    </Text>
+                                </View>
+                            </View>
+                        </Swiper>
                     </View>
                     <View style={styles.yourJokersContainer}>
                         <View style={styles.jokerContainer}>

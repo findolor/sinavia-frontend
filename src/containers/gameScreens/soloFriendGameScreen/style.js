@@ -32,7 +32,8 @@ export default StyleSheet.create({
         marginLeft: wp(8),
         borderRadius: hp(2),
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        overflow: 'hidden'
     },
     questionAndZoomButtonContainer: {
         flex: 6,

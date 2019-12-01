@@ -250,7 +250,8 @@ export default StyleSheet.create({
         width: wp(90),
         borderRadius: 10,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        overflow: 'hidden'
     },
     questionStyle: {
         resizeMode: 'contain',

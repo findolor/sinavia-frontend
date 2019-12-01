@@ -48,7 +48,7 @@ export default StyleSheet.create({
     },
     headerText: {
         fontFamily: 'Averta-BoldItalic',
-        fontSize: wp(9),
+        fontSize: hp(3.7),
         color: '#00D9EF'
     },
     subjectCardContainer: {
@@ -103,7 +103,8 @@ export default StyleSheet.create({
         borderColor: '#FF9900',
         borderRadius: hp(1.5),
         marginTop: hp(1.35),
-        marginLeft: wp(3)
+        marginLeft: wp(3),
+        overflow: 'hidden'
     },
     question: {
         resizeMode: 'stretch',
@@ -146,7 +147,8 @@ export default StyleSheet.create({
         flex: 65,
         width: wp(90),
         borderRadius: hp(3),
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        overflow: 'hidden'
     },
     questionInModal: {
         resizeMode: 'contain',

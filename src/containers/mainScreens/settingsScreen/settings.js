@@ -8,7 +8,7 @@ import {
     TextInput,
     Modal,
     KeyboardAvoidingView,
-    FlatList
+    FlatList, TouchableWithoutFeedback, Keyboard
 } from 'react-native'
 import styles from './style'
 import NotchView from '../../../components/notchView'
@@ -583,6 +583,11 @@ class Settings extends React.Component {
 
     render() {
         return (
+            <TouchableWithoutFeedback
+                onPress={() => {
+                    Keyboard.dismiss()
+                }}
+            >
             <KeyboardAvoidingView style={styles.container} behavior={'position'}>
                 <NotchView color={'#fcfcfc'} />
                 <Modal
@@ -757,6 +762,7 @@ class Settings extends React.Component {
                     </TouchableOpacity>
                 </View>
             </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
         )
     }
 }
