@@ -16,6 +16,17 @@ export const flashMessages = {
             textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
             backgroundColor: 'white'
         }),
+    generalError: (message, description) =>
+        showMessage({
+            message: message,
+            description: description,
+            titleStyle: {
+                fontFamily: 'Averta-SemiboldItalic',
+                color: '#FF9900'
+            },
+            textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
+            backgroundColor: 'white'
+        }),
     networkError: () =>
         showMessage({
             message: 'Bağlantı hatası',

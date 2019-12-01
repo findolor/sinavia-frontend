@@ -24,6 +24,13 @@ export const acceptFriendshipRequest = async (headers, params) => {
             flashMessages.networkError()
             throw err
         }
+        if (err.response.data.error === 'Friendship does not exist') {
+            flashMessages.generalError(
+                'Hata!',
+                'Arkadaşlık isteği geçerli değil!'
+            )
+            throw err
+        }
         if (err.response.status === 401) {
             let res = await renewToken()
             headers.Authorization = 'Bearer ' + res.token
