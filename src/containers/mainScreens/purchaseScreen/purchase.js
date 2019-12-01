@@ -128,7 +128,7 @@ class PurchaseScreen extends React.Component {
 
     calculateRemainingExamTime = () => {
         const dateToday = moment()
-        const endDate = moment("6/7/2020", "MM-DD-YYYY")
+        const endDate = moment('6/7/2020', 'MM-DD-YYYY')
         const remainingExamMonths = endDate.diff(dateToday, 'months')
         let remainingExamWeeks = 0
         let remainingExamDays = endDate.diff(dateToday, 'days')
@@ -1840,20 +1840,26 @@ class PurchaseScreen extends React.Component {
                                 <View style={styles.yourPremiumCounterView}>
                                     <Text style={styles.yourPremiumCounterText}>
                                         <Text
-                                            style={styles.yourPremiumCounterNumbersText}
+                                            style={
+                                                styles.yourPremiumCounterNumbersText
+                                            }
                                         >
                                             {this.state.remainingExamMonths}
                                         </Text>{' '}
                                         Ay
                                         <Text
-                                            style={styles.yourPremiumCounterNumbersText}
+                                            style={
+                                                styles.yourPremiumCounterNumbersText
+                                            }
                                         >
                                             {' '}
                                             {this.state.remainingExamWeeks}
                                         </Text>{' '}
                                         Hafta
                                         <Text
-                                            style={styles.yourPremiumCounterNumbersText}
+                                            style={
+                                                styles.yourPremiumCounterNumbersText
+                                            }
                                         >
                                             {' '}
                                             {this.state.remainingExamDays}
@@ -1874,20 +1880,26 @@ class PurchaseScreen extends React.Component {
                                 <View style={styles.yourPremiumCounterView}>
                                     <Text style={styles.yourPremiumCounterText}>
                                         <Text
-                                            style={styles.yourPremiumCounterNumbersText}
+                                            style={
+                                                styles.yourPremiumCounterNumbersText
+                                            }
                                         >
                                             {this.state.remainingPremiumMonths}
                                         </Text>{' '}
                                         Ay
                                         <Text
-                                            style={styles.yourPremiumCounterNumbersText}
+                                            style={
+                                                styles.yourPremiumCounterNumbersText
+                                            }
                                         >
                                             {' '}
                                             {this.state.remainingPremiumWeeks}
                                         </Text>{' '}
                                         Hafta
                                         <Text
-                                            style={styles.yourPremiumCounterNumbersText}
+                                            style={
+                                                styles.yourPremiumCounterNumbersText
+                                            }
                                         >
                                             {' '}
                                             {this.state.remainingPremiumDays}

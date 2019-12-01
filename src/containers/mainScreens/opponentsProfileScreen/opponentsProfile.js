@@ -238,7 +238,7 @@ class OpponentsProfile extends React.Component {
                             buttonText="Evet"
                             fontSize={hp(3)}
                             borderRadius={hp(1.5)}
-                            onPress={() => this.acceptFriendshipRequest()}
+                            onPress={this.acceptFriendshipRequest}
                         />
                         <AuthButton
                             height={hp(7)}
