@@ -101,6 +101,9 @@ class GroupGame extends React.Component {
             // Joker usage variables
             isRemoveOptionJokerUsed: false,
             isSecondChanceJokerUsed: false,
+            // Joker amount variables
+            isRemoveOptionJokerFinished: false,
+            isSecondChanceJokerFinished: false,
             // Current question answer for second chance joker
             questionAnswer: 0,
             // Question visible variable
@@ -158,28 +161,32 @@ class GroupGame extends React.Component {
                     let splittedSecondJoker = userJoker.joker.name.split(
                         /[ ,]+/
                     )
-                    console.log(userJoker)
                     this.setState({
                         secondJokerNameFirstWord: splittedSecondJoker[0],
                         secondJokerNameSecondWord: splittedSecondJoker[1],
                         secondJokerAmount: userJoker.amount
                     })
                     if (userJoker.amount === 0) {
-                        this.setState({ isRemoveOptionJokerDisabled: true })
+                        this.setState({
+                            isRemoveOptionJokerDisabled: true,
+                            isRemoveOptionJokerFinished: true
+                        })
                     } else {
                         this.setState({ isRemoveOptionJokerDisabled: false })
                     }
                     break
                 case 3:
                     let splittedThirdJoker = userJoker.joker.name.split(/[ ,]+/)
-                    console.log(userJoker)
                     this.setState({
                         thirdJokerNameFirstWord: splittedThirdJoker[0],
                         thirdJokerNameSecondWord: splittedThirdJoker[1],
                         thirdJokerAmount: userJoker.amount
                     })
                     if (userJoker.amount === 0) {
-                        this.setState({ isSecondChanceJokerDisabled: true })
+                        this.setState({
+                            isSecondChanceJokerDisabled: true,
+                            isSecondChanceJokerFinished: true
+                        })
                     } else {
                         this.setState({ isSecondChanceJokerDisabled: false })
                     }
@@ -666,9 +673,15 @@ class GroupGame extends React.Component {
             buttonFiveName: 'E',
             buttonSixName: 'Boş'
         })
-        if (!this.state.isRemoveOptionJokerUsed)
+        if (
+            !this.state.isRemoveOptionJokerFinished &&
+            !this.state.isRemoveOptionJokerUsed
+        )
             this.setState({ isRemoveOptionJokerDisabled: false })
-        if (!this.state.isSecondChanceJokerUsed)
+        if (
+            !this.state.isSecondChanceJokerFinished &&
+            !this.state.isSecondChanceJokerUsed
+        )
             this.setState({ isSecondChanceJokerDisabled: false })
     }
 

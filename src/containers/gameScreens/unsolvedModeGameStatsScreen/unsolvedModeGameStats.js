@@ -53,7 +53,9 @@ class UnsolvedModeGameStats extends React.Component {
             // Fav icon
             favouriteIcon: unselectedFav,
             // ExamId of the match
-            examId: null
+            examId: null,
+            // Replay button disable var
+            isReplayDisabled: false
         }
     }
 
@@ -68,24 +70,21 @@ class UnsolvedModeGameStats extends React.Component {
     chooseMessageAction = message => {
         switch (message.action) {
             case 'replay':
-                setTimeout(() => {
-                    this.props.room.removeAllListeners()
+                this.props.room.removeAllListeners()
 
-                    navigationReplace(
-                        SCENE_KEYS.gameScreens.unsolvedModeGameScreen,
-                        {
-                            room: this.props.room,
-                            client: this.props.client,
-                            playerUsername: this.props.playerUsername,
-                            playerProfilePicture: this.props
-                                .playerProfilePicture,
-                            opponentUsername: this.props.opponentUsername,
-                            opponentId: this.props.opponentId,
-                            opponentProfilePicture: this.props
-                                .opponentProfilePicture
-                        }
-                    )
-                }, 1000)
+                navigationReplace(
+                    SCENE_KEYS.gameScreens.unsolvedModeGameScreen,
+                    {
+                        room: this.props.room,
+                        client: this.props.client,
+                        playerUsername: this.props.playerUsername,
+                        playerProfilePicture: this.props.playerProfilePicture,
+                        opponentUsername: this.props.opponentUsername,
+                        opponentId: this.props.opponentId,
+                        opponentProfilePicture: this.props
+                            .opponentProfilePicture
+                    }
+                )
                 return
         }
     }
@@ -218,7 +217,8 @@ class UnsolvedModeGameStats extends React.Component {
     replayButtonOnPress = () => {
         this.props.room.send({
             action: 'replay'
-        })
+        }),
+            this.setState({ isReplayDisabled: true })
     }
 
     answerSwitcher(buttonNumber) {
@@ -334,7 +334,10 @@ class UnsolvedModeGameStats extends React.Component {
                         </View>
                     </View>
                     <View style={styles.buttonsContainer}>
-                        <TouchableOpacity onPress={this.replayButtonOnPress}>
+                        <TouchableOpacity
+                            onPress={this.replayButtonOnPress}
+                            disabled={this.state.isReplayDisabled}
+                        >
                             <View style={styles.replayButton}>
                                 <Text style={styles.buttonText}>Yeniden</Text>
                                 <Text style={styles.buttonText}>Oyna</Text>
