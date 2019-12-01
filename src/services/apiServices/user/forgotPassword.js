@@ -23,5 +23,23 @@ export const forgotPassword = async params => {
             flashMessages.networkError()
             throw err
         }
+        if (
+            err.response !== undefined &&
+            err.response.data.error === 'Verify Email'
+        ) {
+            flashMessages.generalMessage(
+                'Lütfen e-posta adresine gelen linki onayla'
+            )
+            throw err
+        }
+        if (
+            err.response !== undefined &&
+            err.response.data.error === 'link-error'
+        ) {
+            flashMessages.generalMessage(
+                'Çok fazla deneme. Lütfen biraz bekleyiniz.'
+            )
+            throw Error('link-error')
+        }
     }
 }
