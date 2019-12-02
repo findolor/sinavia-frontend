@@ -136,8 +136,13 @@ class PurchaseScreen extends React.Component {
     }
 
     calculateRemainingExamTime = () => {
+        let examIndex = this.props.gameContentMap.exams.findIndex(
+            x => x.name === this.props.choosenExam
+        )
+        let examDate = this.props.gameContentMap.exams[examIndex].examDate
+
         const dateToday = moment()
-        const endDate = moment('6/7/2020', 'MM-DD-YYYY')
+        const endDate = moment(examDate)
         const remainingExamMonths = endDate.diff(dateToday, 'months')
         let remainingExamWeeks = 0
         let remainingExamDays = endDate.diff(dateToday, 'days')
@@ -1840,7 +1845,7 @@ class PurchaseScreen extends React.Component {
                             <View>
                                 <View style={styles.yourPremiumTextView}>
                                     <Text style={styles.yourPremiumText}>
-                                        LGS
+                                        {this.props.choosenExam}
                                     </Text>
                                     <Text style={styles.yourPremiumText}>
                                         Kalan Süre
@@ -2039,7 +2044,9 @@ class PurchaseScreen extends React.Component {
 }
 const mapStateToProps = state => ({
     userJokers: state.client.userJokers,
-    clientInformation: state.client.clientInformation
+    clientInformation: state.client.clientInformation,
+    gameContentMap: state.gameContent.gameContentMap,
+    choosenExam: state.gameContent.choosenExam
 })
 const mapDispatchToProps = dispatch => ({})
 export default connect(mapStateToProps, mapDispatchToProps)(PurchaseScreen)
