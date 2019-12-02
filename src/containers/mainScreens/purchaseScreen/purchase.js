@@ -97,6 +97,15 @@ class PurchaseScreen extends React.Component {
     }
 
     calculateDateUntilPremiumEnd = () => {
+        if (!this.props.clientInformation.isPremium) {
+            this.setState({
+                remainingPremiumDays: 0,
+                remainingPremiumWeeks: 0,
+                remainingPremiumMonths: 0
+            })
+            return
+        }
+
         const dateToday = moment()
         const endDate = moment(this.props.clientInformation.premiumEndDate)
         const remainingPremiumMonths = endDate.diff(dateToday, 'months')

@@ -13,9 +13,15 @@ export const updateUser = async (headers, params) => {
             }
         )
         return response.data.data
-    } catch (error) {
+    } catch (err) {
         if (err.message === 'Network Error') {
             flashMessages.networkError()
+            throw err
+        }
+        if (err.response.data.error === 'existing-information') {
+            flashMessages.generalMessage(
+                'Bu kullanıcı ismi başka bir kullanıcıya aittir.'
+            )
             throw err
         }
         if (err.response.status === 401) {
