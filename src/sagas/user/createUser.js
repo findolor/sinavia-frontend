@@ -30,7 +30,7 @@ export function* createUser(action) {
                 { userInformation: action.payload }
             )
         } catch (error) {
-            return
+            throw error
         }
 
         // Saving the credentials to storage
@@ -130,7 +130,5 @@ export function* createUser(action) {
         yield put({
             type: appTypes.LOCK_UNLOCK_BUTTON
         })
-        // TODO remove console.log later
-        console.log(error)
     }
 }

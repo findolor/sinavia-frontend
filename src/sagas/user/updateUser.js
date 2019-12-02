@@ -17,7 +17,7 @@ export function* updateUserSaga(action) {
                 clientId: action.clientId
             })
         } catch (err) {
-            return
+            throw err
         }
 
         if (action.isPasswordChange) {
@@ -77,6 +77,5 @@ export function* updateUserSaga(action) {
         yield put({
             type: appTypes.LOCK_UNLOCK_BUTTON
         })
-        console.log(error)
     }
 }

@@ -8,7 +8,9 @@ import {
     TextInput,
     Modal,
     KeyboardAvoidingView,
-    FlatList, TouchableWithoutFeedback, Keyboard
+    FlatList,
+    TouchableWithoutFeedback,
+    Keyboard
 } from 'react-native'
 import styles from './style'
 import NotchView from '../../../components/notchView'
@@ -391,7 +393,9 @@ class Settings extends React.Component {
         let isProfilePictureChanged = false
         let isCoverPictureChanged = false
 
-        const clientInformation = this.props.clientInformation
+        // This is for shallow copying
+        // If we don't do object.assing, as we change the values in clientInformation it changes the original object
+        let clientInformation = Object.assign({}, this.props.clientInformation)
 
         if (this.checkCity()) {
             clientInformation.city = this.state.city
@@ -588,65 +592,49 @@ class Settings extends React.Component {
                     Keyboard.dismiss()
                 }}
             >
-            <KeyboardAvoidingView style={styles.container} behavior={'position'}>
-                <NotchView color={'#fcfcfc'} />
-                <Modal
-                    visible={this.state.isCityModalVisible}
-                    transparent={true}
-                    animationType={'fade'}
+                <KeyboardAvoidingView
+                    style={styles.container}
+                    behavior={'position'}
                 >
-                    {this.cityPicker()}
-                </Modal>
-                <View style={styles.header}>
-                    <TouchableOpacity onPress={this.backButtonOnPress}>
-                        <Image source={returnLogo} style={styles.returnLogo} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this.saveButtonOnPress}>
-                        <View style={styles.saveButton}>
-                            <Text style={styles.saveText}>Kaydet</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.profileContainer}>
-                    <ImageBackground
-                        source={
-                            this.state.isCoverPictureChoosen
-                                ? this.state.coverPicture
-                                : {
-                                      uri: this.props.clientInformation
-                                          .coverPicture
-                                  }
-                        }
-                        style={styles.coverPhoto}
-                        imageStyle={{ borderRadius: hp(3) }}
+                    <NotchView color={'#fcfcfc'} />
+                    <Modal
+                        visible={this.state.isCityModalVisible}
+                        transparent={true}
+                        animationType={'fade'}
                     >
-                        <View style={styles.shadowCoverView} />
-                        <View style={styles.editImgView}>
-                            <TouchableOpacity
-                                onPress={() => this.pickCoverImage(true, false)}
-                            >
-                                <Image
-                                    source={CHANGE_PHOTO}
-                                    style={styles.editImg}
-                                />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.profilePicView}>
+                        {this.cityPicker()}
+                    </Modal>
+                    <View style={styles.header}>
+                        <TouchableOpacity onPress={this.backButtonOnPress}>
                             <Image
-                                source={
-                                    this.state.isProfilePictureChoosen
-                                        ? this.state.profilePicture
-                                        : {
-                                              uri: this.props.clientInformation
-                                                  .profilePicture
-                                          }
-                                }
-                                style={styles.profilePic}
+                                source={returnLogo}
+                                style={styles.returnLogo}
                             />
-                            <View style={styles.editProfilePicView}>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={this.saveButtonOnPress}>
+                            <View style={styles.saveButton}>
+                                <Text style={styles.saveText}>Kaydet</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.profileContainer}>
+                        <ImageBackground
+                            source={
+                                this.state.isCoverPictureChoosen
+                                    ? this.state.coverPicture
+                                    : {
+                                          uri: this.props.clientInformation
+                                              .coverPicture
+                                      }
+                            }
+                            style={styles.coverPhoto}
+                            imageStyle={{ borderRadius: hp(3) }}
+                        >
+                            <View style={styles.shadowCoverView} />
+                            <View style={styles.editImgView}>
                                 <TouchableOpacity
                                     onPress={() =>
-                                        this.pickProfileImage(true, true)
+                                        this.pickCoverImage(true, false)
                                     }
                                 >
                                     <Image
@@ -655,113 +643,153 @@ class Settings extends React.Component {
                                     />
                                 </TouchableOpacity>
                             </View>
-                        </View>
-                    </ImageBackground>
-                </View>
-                <View style={styles.textInputsContainer}>
-                    <View style={styles.textInputContainer}>
-                        <View style={styles.textInputTitleContainer}>
-                            <Text style={styles.textInputTitle}>
-                                Kullanıcı Adı
-                            </Text>
-                        </View>
-                        <View
-                            style={[
-                                styles.textInputView,
-                                { borderColor: this.state.usernameBorderColor }
-                            ]}
-                        >
-                            <TextInput
-                                placeholder={
-                                    this.props.clientInformation.username
-                                }
-                                style={styles.textInputStyle}
-                                placeholderTextColor="#8A8888"
-                                autoCapitalize={'none'}
-                                maxLength={16}
-                                onChangeText={text =>
-                                    this.usernameOnChange(text)
-                                }
-                            />
-                        </View>
+                            <View style={styles.profilePicView}>
+                                <Image
+                                    source={
+                                        this.state.isProfilePictureChoosen
+                                            ? this.state.profilePicture
+                                            : {
+                                                  uri: this.props
+                                                      .clientInformation
+                                                      .profilePicture
+                                              }
+                                    }
+                                    style={styles.profilePic}
+                                />
+                                <View style={styles.editProfilePicView}>
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            this.pickProfileImage(true, true)
+                                        }
+                                    >
+                                        <Image
+                                            source={CHANGE_PHOTO}
+                                            style={styles.editImg}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </ImageBackground>
                     </View>
-                    <View style={styles.textInputContainer}>
-                        <View style={styles.textInputTitleContainer}>
-                            <Text style={styles.textInputTitle}>Ad</Text>
-                        </View>
-                        <View
-                            style={[
-                                styles.textInputView,
-                                { borderColor: this.state.nameBorderColor }
-                            ]}
-                        >
-                            <TextInput
-                                placeholder={this.props.clientInformation.name}
-                                style={styles.textInputStyle}
-                                placeholderTextColor="#8A8888"
-                                autoCapitalize={'none'}
-                                maxLength={16}
-                                onChangeText={text => this.nameOnChange(text)}
-                            />
-                        </View>
-                    </View>
-                    <View style={styles.textInputContainer}>
-                        <View style={styles.textInputTitleContainer}>
-                            <Text style={styles.textInputTitle}>Soyad</Text>
-                        </View>
-                        <View
-                            style={[
-                                styles.textInputView,
-                                { borderColor: this.state.lastnameBorderColor }
-                            ]}
-                        >
-                            <TextInput
-                                placeholder={
-                                    this.props.clientInformation.lastname
-                                }
-                                style={styles.textInputStyle}
-                                placeholderTextColor="#8A8888"
-                                autoCapitalize={'none'}
-                                maxLength={16}
-                                onChangeText={text =>
-                                    this.lastnameOnChange(text)
-                                }
-                            />
-                        </View>
-                    </View>
-                    <View style={styles.textInputContainer}>
-                        <View style={styles.textInputTitleContainer}>
-                            <Text style={styles.textInputTitle}>Şehir</Text>
-                        </View>
-                        <TouchableOpacity onPress={this.openCityModalVisible}>
+                    <View style={styles.textInputsContainer}>
+                        <View style={styles.textInputContainer}>
+                            <View style={styles.textInputTitleContainer}>
+                                <Text style={styles.textInputTitle}>
+                                    Kullanıcı Adı
+                                </Text>
+                            </View>
                             <View
                                 style={[
-                                    styles.cityInputView,
-                                    { borderColor: this.state.cityBorderColor }
+                                    styles.textInputView,
+                                    {
+                                        borderColor: this.state
+                                            .usernameBorderColor
+                                    }
                                 ]}
                             >
-                                <Text style={styles.cityTextInputStyle}>
-                                    {this.state.city}
+                                <TextInput
+                                    placeholder={
+                                        this.props.clientInformation.username
+                                    }
+                                    style={styles.textInputStyle}
+                                    placeholderTextColor="#8A8888"
+                                    autoCapitalize={'none'}
+                                    maxLength={16}
+                                    onChangeText={text =>
+                                        this.usernameOnChange(text)
+                                    }
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.textInputContainer}>
+                            <View style={styles.textInputTitleContainer}>
+                                <Text style={styles.textInputTitle}>Ad</Text>
+                            </View>
+                            <View
+                                style={[
+                                    styles.textInputView,
+                                    { borderColor: this.state.nameBorderColor }
+                                ]}
+                            >
+                                <TextInput
+                                    placeholder={
+                                        this.props.clientInformation.name
+                                    }
+                                    style={styles.textInputStyle}
+                                    placeholderTextColor="#8A8888"
+                                    autoCapitalize={'none'}
+                                    maxLength={16}
+                                    onChangeText={text =>
+                                        this.nameOnChange(text)
+                                    }
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.textInputContainer}>
+                            <View style={styles.textInputTitleContainer}>
+                                <Text style={styles.textInputTitle}>Soyad</Text>
+                            </View>
+                            <View
+                                style={[
+                                    styles.textInputView,
+                                    {
+                                        borderColor: this.state
+                                            .lastnameBorderColor
+                                    }
+                                ]}
+                            >
+                                <TextInput
+                                    placeholder={
+                                        this.props.clientInformation.lastname
+                                    }
+                                    style={styles.textInputStyle}
+                                    placeholderTextColor="#8A8888"
+                                    autoCapitalize={'none'}
+                                    maxLength={16}
+                                    onChangeText={text =>
+                                        this.lastnameOnChange(text)
+                                    }
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.textInputContainer}>
+                            <View style={styles.textInputTitleContainer}>
+                                <Text style={styles.textInputTitle}>Şehir</Text>
+                            </View>
+                            <TouchableOpacity
+                                onPress={this.openCityModalVisible}
+                            >
+                                <View
+                                    style={[
+                                        styles.cityInputView,
+                                        {
+                                            borderColor: this.state
+                                                .cityBorderColor
+                                        }
+                                    ]}
+                                >
+                                    <Text style={styles.cityTextInputStyle}>
+                                        {this.state.city}
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={styles.buttonsContainer}>
+                        <TouchableOpacity onPress={this.changePasswordOnPress}>
+                            <View style={styles.changePasswordButton}>
+                                <Text style={styles.changePasswordText}>
+                                    Şifre değiştir
                                 </Text>
                             </View>
                         </TouchableOpacity>
+                        <TouchableOpacity onPress={this.logoutButtonOnPress}>
+                            <View style={styles.logoutButton}>
+                                <Text style={styles.logoutText}>Çıkış yap</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                </View>
-                <View style={styles.buttonsContainer}>
-                    <TouchableOpacity onPress={this.changePasswordOnPress}>
-                        <View style={styles.changePasswordButton}>
-                            <Text style={styles.changePasswordText}>
-                                Şifre değiştir
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={this.logoutButtonOnPress}>
-                        <View style={styles.logoutButton}>
-                            <Text style={styles.logoutText}>Çıkış yap</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            </KeyboardAvoidingView>
+                </KeyboardAvoidingView>
             </TouchableWithoutFeedback>
         )
     }
