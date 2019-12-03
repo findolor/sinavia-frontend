@@ -30,7 +30,7 @@ export default StyleSheet.create({
         width: wp(88),
         borderColor: '#FF9900',
         borderWidth: wp(0.5),
-        borderRadius: 6,
+        borderRadius: hp(1.5),
         alignItems: 'center'
     },
     spaceView: {
@@ -41,11 +41,10 @@ export default StyleSheet.create({
         width: hp(3.5)
     },
     picker: {
-        height: hp(7),
         width: wp(40),
         borderColor: '#FF9900',
         borderWidth: wp(0.5),
-        borderRadius: 6,
+        borderRadius: hp(1.5),
         marginTop: hp(0.5)
     },
     pickerText: {
@@ -75,7 +74,7 @@ export default StyleSheet.create({
         width: wp(40),
         borderColor: '#FF9900',
         borderWidth: wp(0.5),
-        borderRadius: 6,
+        borderRadius: hp(1.5),
         marginTop: hp(0.5),
         marginLeft: wp(-0.5)
     },

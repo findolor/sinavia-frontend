@@ -16,8 +16,16 @@ import {
     TouchableOpacity,
     TouchableHighlight,
     Modal,
-    ActivityIndicator
+    ActivityIndicator,
+    Image
 } from 'react-native'
+
+import {
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp
+} from 'react-native-responsive-screen'
+
+import DROPDOWN_SELECTOR from '../../../assets/dropdownSelector.png'
 
 import ListView from 'deprecated-react-native-listview'
 
@@ -208,6 +216,7 @@ export default class ModalDropdown extends Component {
                         >
                             {buttonText}
                         </Text>
+                        <Image source={DROPDOWN_SELECTOR} style={styles.dropdownSelectorImg}/>
                     </View>
                 )}
             </TouchableOpacity>
@@ -454,10 +463,13 @@ export default class ModalDropdown extends Component {
 
 const styles = StyleSheet.create({
     button: {
-        justifyContent: 'center'
+        height: hp(6),
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignItems: 'center'
     },
     buttonText: {
-        fontSize: 12
+        fontSize: hp(2)
     },
     modal: {
         flexGrow: 1
@@ -467,9 +479,10 @@ const styles = StyleSheet.create({
         height: (33 + StyleSheet.hairlineWidth) * 5,
         borderWidth: StyleSheet.hairlineWidth,
         borderColor: 'lightgray',
-        borderRadius: 2,
+        borderRadius: hp(1.5),
         backgroundColor: 'white',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        overflow: 'hidden'
     },
     loading: {
         alignSelf: 'center'
@@ -478,9 +491,8 @@ const styles = StyleSheet.create({
         //flexGrow: 1,
     },
     rowText: {
-        paddingHorizontal: 6,
-        paddingVertical: 10,
-        fontSize: 11,
+        paddingVertical: hp(2),
+        fontSize: hp(2),
         color: 'gray',
         backgroundColor: 'white',
         textAlignVertical: 'center'
@@ -491,5 +503,9 @@ const styles = StyleSheet.create({
     separator: {
         height: StyleSheet.hairlineWidth,
         backgroundColor: 'lightgray'
+    },
+    dropdownSelectorImg: {
+        height: hp(2),
+        width: hp(2)
     }
 })

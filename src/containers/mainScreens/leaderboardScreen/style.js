@@ -290,11 +290,10 @@ export default StyleSheet.create({
         alignItems: 'flex-start'
     },
     picker: {
-        height: hp(6),
         width: wp(25),
         borderColor: '#FF9900',
         borderWidth: wp(0.5),
-        borderRadius: 15,
+        borderRadius: hp(1.5),
         marginTop: hp(5)
     },
     pickerText: {
@@ -322,8 +321,7 @@ export default StyleSheet.create({
         width: wp(25),
         borderColor: '#00D9EF',
         borderWidth: wp(0.5),
-        borderRadius: 15,
-        marginTop: hp(0.5),
+        borderRadius: hp(1.5),
         marginLeft: wp(-0.5)
     }
 })
