@@ -106,6 +106,10 @@ class FriendGame extends React.Component {
             isRemoveOptionJokerUsed: false,
             isSeeOpponentAnswerJokerUsed: false,
             isSecondChanceJokerUsed: false,
+            // Joker amount variables
+            isRemoveOptionJokerFinished: false,
+            isSeeOpponentAnswerJokerFinished: false,
+            isSecondChanceJokerFinished: false,
             // Current question answer for second chance
             questionAnswer: 0,
             // Joker names
@@ -162,7 +166,7 @@ class FriendGame extends React.Component {
                         firstJokerAmount: userJoker.amount
                     })
                     if(userJoker.amount === 0){
-                        this.setState({isSeeOpponentAnswerJokerDisabled: true})
+                        this.setState({isSeeOpponentAnswerJokerDisabled: true, isSeeOpponentAnswerJokerFinished: true})
                     }
                     else {
                         this.setState({isSeeOpponentAnswerJokerDisabled: false})
@@ -177,7 +181,7 @@ class FriendGame extends React.Component {
                         secondJokerAmount: userJoker.amount
                     })
                     if(userJoker.amount === 0){
-                        this.setState({isRemoveOptionJokerDisabled: true})
+                        this.setState({isRemoveOptionJokerDisabled: true, isRemoveOptionJokerFinished: true})
                     }
                     else {
                         this.setState({isRemoveOptionJokerDisabled: false})
@@ -192,7 +196,7 @@ class FriendGame extends React.Component {
                         thirdJokerAmount: userJoker.amount
                     })
                     if(userJoker.amount === 0){
-                        this.setState({isSecondChanceJokerDisabled: true})
+                        this.setState({isSecondChanceJokerDisabled: true, isSecondChanceJokerFinished: true})
                     }
                     else {
                         this.setState({isSecondChanceJokerDisabled: false})
@@ -673,9 +677,9 @@ class FriendGame extends React.Component {
             buttonFiveName: 'E',
             buttonSixName: 'Boş'
         })
-        if(!this.state.isRemoveOptionJokerUsed) this.setState({ isRemoveOptionJokerDisabled: false })
-        if(!this.state.isSecondChanceJokerUsed) this.setState({ isSecondChanceJokerDisabled: false })
-        if(!this.state.isSeeOpponentAnswerJokerUsed) this.setState({ isSeeOpponentAnswerJokerDisabled: false })
+        if(!this.state.isRemoveOptionJokerUsed && !this.state.isRemoveOptionJokerFinished) this.setState({ isRemoveOptionJokerDisabled: false })
+        if(!this.state.isSecondChanceJokerUsed && !this.state.isSecondChanceJokerFinished) this.setState({ isSecondChanceJokerDisabled: false })
+        if(!this.state.isSeeOpponentAnswerJokerUsed && !this.state.isSeeOpponentAnswerJokerFinished) this.setState({ isSeeOpponentAnswerJokerDisabled: false })
     }
 
     countdownOnFinish = () => {
