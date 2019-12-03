@@ -10,7 +10,10 @@ import {
     TouchableWithoutFeedback,
     KeyboardAvoidingView
 } from 'react-native'
-import { navigationPop, navigationPush } from '../../../services/navigationService'
+import {
+    navigationPop,
+    navigationPush
+} from '../../../services/navigationService'
 import { SCENE_KEYS } from '../../../config/index'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
@@ -20,7 +23,6 @@ import {
 } from 'react-native-responsive-screen'
 import { AuthButton, AuthTextInput } from '../../../components/authScreen'
 import styles from './style'
-import DateTimePicker from 'react-native-modal-datetime-picker'
 import SwitchToggle from 'react-native-switch-toggle'
 import moment from 'moment'
 import NotchView from '../../../components/notchView'
@@ -141,82 +143,110 @@ class Register extends React.Component {
     }
 
     registerOnPress = () => {
-        if(this.state.email === '' || this.state.password === '' || this.state.secondPassword === ''){
-            flashMessages.authInfosOrSettingsError('Boş alan hatası', 'Bütün alanları doldurmalısın',{
-                backgroundColor: '#FFFFFF',
-                borderBottomLeftRadius: 10,
-                borderBottomRightRadius: 10,
-                borderColor: '#00D9EF',
-                borderWidth: hp(0.25),
-                height: hp(10)
+        if (
+            this.state.email === '' ||
+            this.state.password === '' ||
+            this.state.secondPassword === ''
+        ) {
+            flashMessages.authInfosOrSettingsError(
+                'Boş alan hatası',
+                'Bütün alanları doldurmalısın',
+                {
+                    backgroundColor: '#FFFFFF',
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    borderColor: '#00D9EF',
+                    borderWidth: hp(0.25),
+                    height: hp(10)
+                }
+            )
+        } else if (this.state.password.length < 6) {
+            flashMessages.authInfosOrSettingsError(
+                'Şifre hatası',
+                'Şifren en az 6, en fazla 16 karakterden oluşmalıdır',
+                {
+                    backgroundColor: '#FFFFFF',
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    borderColor: '#00D9EF',
+                    borderWidth: hp(0.25),
+                    height: hp(10)
+                }
+            )
+            this.setState({ passwordBorderColor: 'red' })
+        } else if (this.state.secondPassword.length < 6) {
+            flashMessages.authInfosOrSettingsError(
+                'Şifre hatası',
+                'Şifren en az 6, en fazla 16 karakterden oluşmalıdır',
+                {
+                    backgroundColor: '#FFFFFF',
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    borderColor: '#00D9EF',
+                    borderWidth: hp(0.25),
+                    height: hp(10)
+                }
+            )
+            this.setState({ secondPasswordBorderColor: 'red' })
+        } else if (this.state.password.includes(' ')) {
+            flashMessages.authInfosOrSettingsError(
+                'Şifre hatası',
+                'Şifren içerisinde boşluk bulunmamalıdır',
+                {
+                    backgroundColor: '#FFFFFF',
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    borderColor: '#00D9EF',
+                    borderWidth: hp(0.25),
+                    height: hp(10)
+                }
+            )
+            this.setState({ passwordBoderColor: 'red' })
+        } else if (this.state.secondPassword.includes(' ')) {
+            flashMessages.authInfosOrSettingsError(
+                'Şifre hatası',
+                'Şifren içerisinde boşluk bulunmamalıdır',
+                {
+                    backgroundColor: '#FFFFFF',
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    borderColor: '#00D9EF',
+                    borderWidth: hp(0.25),
+                    height: hp(10)
+                }
+            )
+            this.setState({ secondPasswordBoderColor: 'red' })
+        } else if (this.state.password !== this.state.secondPassword) {
+            flashMessages.authInfosOrSettingsError(
+                'Şifre hatası',
+                'Şifreler birbiriyle uyuşmamaktadır',
+                {
+                    backgroundColor: '#FFFFFF',
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    borderColor: '#00D9EF',
+                    borderWidth: hp(0.25),
+                    height: hp(10)
+                }
+            )
+            this.setState({
+                passwordBorderColor: 'red',
+                secondPasswordBorderColor: 'red'
             })
-        }
-        else if(this.state.password.length < 6) {
-            flashMessages.authInfosOrSettingsError('Şifre hatası', 'Şifren en az 6, en fazla 16 karakterden oluşmalıdır',{
-                backgroundColor: '#FFFFFF',
-                borderBottomLeftRadius: 10,
-                borderBottomRightRadius: 10,
-                borderColor: '#00D9EF',
-                borderWidth: hp(0.25),
-                height: hp(10)
-            })
-            this.setState({passwordBorderColor: 'red'})
-        }
-        else if(this.state.secondPassword.length < 6) {
-            flashMessages.authInfosOrSettingsError('Şifre hatası', 'Şifren en az 6, en fazla 16 karakterden oluşmalıdır',{
-                backgroundColor: '#FFFFFF',
-                borderBottomLeftRadius: 10,
-                borderBottomRightRadius: 10,
-                borderColor: '#00D9EF',
-                borderWidth: hp(0.25),
-                height: hp(10)
-            })
-            this.setState({secondPasswordBorderColor: 'red'})
-        }
-        else if(this.state.password.includes(' ')){
-            flashMessages.authInfosOrSettingsError('Şifre hatası', 'Şifren içerisinde boşluk bulunmamalıdır',{
-                backgroundColor: '#FFFFFF',
-                borderBottomLeftRadius: 10,
-                borderBottomRightRadius: 10,
-                borderColor: '#00D9EF',
-                borderWidth: hp(0.25),
-                height: hp(10)
-            })
-            this.setState({passwordBoderColor: 'red'})
-        }
-        else if(this.state.secondPassword.includes(' ')){
-            flashMessages.authInfosOrSettingsError('Şifre hatası', 'Şifren içerisinde boşluk bulunmamalıdır',{
-                backgroundColor: '#FFFFFF',
-                borderBottomLeftRadius: 10,
-                borderBottomRightRadius: 10,
-                borderColor: '#00D9EF',
-                borderWidth: hp(0.25),
-                height: hp(10)
-            })
-            this.setState({secondPasswordBoderColor: 'red'})
-        }
-        else if(this.state.password !== this.state.secondPassword){
-            flashMessages.authInfosOrSettingsError('Şifre hatası', 'Şifreler birbiriyle uyuşmamaktadır',{
-                backgroundColor: '#FFFFFF',
-                borderBottomLeftRadius: 10,
-                borderBottomRightRadius: 10,
-                borderColor: '#00D9EF',
-                borderWidth: hp(0.25),
-                height: hp(10)
-            })
-            this.setState({passwordBorderColor: 'red', secondPasswordBorderColor: 'red'})
-        }
-        else if(this.state.switchValue === false){
-            flashMessages.authInfosOrSettingsError('Son bir adım', 'Kullanıcı sözleşmesini onaylamalısın',{
-                backgroundColor: '#FFFFFF',
-                borderBottomLeftRadius: 10,
-                borderBottomRightRadius: 10,
-                borderColor: '#00D9EF',
-                borderWidth: hp(0.25),
-                height: hp(10)
-            })
-        }
-        else{
+        } else if (this.state.switchValue === false) {
+            flashMessages.authInfosOrSettingsError(
+                'Son bir adım',
+                'Kullanıcı sözleşmesini onaylamalısın',
+                {
+                    backgroundColor: '#FFFFFF',
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    borderColor: '#00D9EF',
+                    borderWidth: hp(0.25),
+                    height: hp(10)
+                }
+            )
+        } else {
             if (!this.props.isNetworkConnected) {
                 showMessage({
                     message: 'Lütfen internet bağlantınızı kontrol ediniz',
@@ -228,30 +258,10 @@ class Register extends React.Component {
                 return
             }
 
-            let userInformation = {
-                //username: this.state.username,
-                //name: this.state.name,
-                //lastname: this.state.lastname,
-                email: this.state.email,
-                //city: this.state.city,
-                //birthDate: this.state.birthDate,
-                password: this.state.password
-            }
-
-            let userInformationKeys = Object.keys(userInformation)
-            let wrongInformationList = []
-            let wrongInformationString = 'Yanlış alanlar! ->'
-
-            userInformationKeys.forEach(element => {
-                if (userInformation[element] === '') {
-                    wrongInformationList.push(element)
-                    wrongInformationString += `${element}, `
-                }
+            this.props.userSignUp({
+                email: this.state.email.replace(/ /g, ''),
+                password: this.state.password.replace(/ /g, '')
             })
-
-            if (Object.keys(wrongInformationList).length === 0)
-                this.props.userSignUp(userInformation)
-            else Alert.alert(wrongInformationString)
         }
     }
 
@@ -296,7 +306,12 @@ class Register extends React.Component {
                             borderColor={'#989696'}
                             onChangeText={this.emailOnChange}
                         />
-                        <View style={[styles.textInputContainer, {borderColor: this.state.passwordBorderColor}]}>
+                        <View
+                            style={[
+                                styles.textInputContainer,
+                                { borderColor: this.state.passwordBorderColor }
+                            ]}
+                        >
                             <TextInput
                                 style={styles.textInput}
                                 secureTextEntry={this.state.hidePasswordFirst}
@@ -339,7 +354,15 @@ class Register extends React.Component {
                                     </View>
                                 )}
                         </View>
-                        <View style={[styles.textInputContainer, {borderColor: this.state.secondPasswordBorderColor}]}>
+                        <View
+                            style={[
+                                styles.textInputContainer,
+                                {
+                                    borderColor: this.state
+                                        .secondPasswordBorderColor
+                                }
+                            ]}
+                        >
                             <TextInput
                                 style={styles.textInput}
                                 secureTextEntry={this.state.hidePasswordSecond}
@@ -392,8 +415,8 @@ class Register extends React.Component {
                                     borderRadius: hp(5),
                                     padding: wp(0.5)
                                 }}
-                                backgroundColorOn='#a0e1e5'
-                                backgroundColorOff='#e5e1e0'
+                                backgroundColorOn="#a0e1e5"
+                                backgroundColorOff="#e5e1e0"
                                 circleStyle={{
                                     width: hp(4),
                                     height: hp(4),
@@ -402,15 +425,18 @@ class Register extends React.Component {
                                 }}
                                 switchOn={this.state.switchValue}
                                 onPress={this.toggleSwitch}
-                                circleColorOff='#00D9EF'
-                                circleColorOn='#00D9EF'
+                                circleColorOff="#00D9EF"
+                                circleColorOn="#00D9EF"
                                 duration={500}
                             />
                         </View>
                         <View style={styles.licenseTextContainer}>
                             <Text style={styles.toggleText}>
                                 <Text
-                                    style={{ textDecorationLine: 'underline', fontFamily: 'Averta-Semibold' }}
+                                    style={{
+                                        textDecorationLine: 'underline',
+                                        fontFamily: 'Averta-Semibold'
+                                    }}
                                 >
                                     Kullanıcı sözleşmesi
                                 </Text>
@@ -455,7 +481,4 @@ const mapDispatchToProps = dispatch => ({
         dispatch(clientActions.userSignUp(userInformation))
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Register)
+export default connect(mapStateToProps, mapDispatchToProps)(Register)

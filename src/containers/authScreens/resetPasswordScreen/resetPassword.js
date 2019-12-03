@@ -6,7 +6,6 @@ import {
     TouchableWithoutFeedback,
     KeyboardAvoidingView,
     Image,
-    Alert,
     TouchableOpacity
 } from 'react-native'
 import {

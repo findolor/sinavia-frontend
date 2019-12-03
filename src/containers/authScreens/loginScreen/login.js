@@ -68,8 +68,8 @@ class Login extends React.Component {
         }
 
         let userCredentials = {
-            email: this.state.email,
-            password: this.state.password
+            email: this.state.email.replace(/ /g, ''),
+            password: this.state.password.replace(/ /g, '')
         }
 
         let userCredentialsKeys = Object.keys(userCredentials)
