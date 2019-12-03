@@ -67,25 +67,10 @@ class Login extends React.Component {
             return
         }
 
-        let userCredentials = {
+        this.props.loginUser({
             email: this.state.email.replace(/ /g, ''),
             password: this.state.password.replace(/ /g, '')
-        }
-
-        let userCredentialsKeys = Object.keys(userCredentials)
-        let wrongCredentialList = []
-        let wrongCredentialString = 'Yanlış alanlar! ->'
-
-        userCredentialsKeys.forEach(element => {
-            if (userCredentials[element] === '') {
-                wrongCredentialList.push(element)
-                wrongCredentialString += `${element}, `
-            }
         })
-
-        if (Object.keys(wrongCredentialList).length === 0)
-            this.props.loginUser(userCredentials)
-        else Alert.alert(wrongCredentialString)
     }
 
     backButtonOnPress = () => {
