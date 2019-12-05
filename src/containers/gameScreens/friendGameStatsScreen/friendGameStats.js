@@ -645,6 +645,51 @@ class FriendGameStatsScreen extends React.Component {
                                         </Text>
                                     </View>
                                 </View>
+                                {this.state.playerFriendMatchWinCount === 0 &&
+                                this.state.opponentFriendMatchWinCount === 0
+                                && (
+                                    <View
+                                        style={
+                                            styles.versusGameChartContainer
+                                        }
+                                    >
+                                        <View
+                                            style={[
+                                                styles.noneWinsView,
+                                                {
+                                                    width: wp(82),
+                                                    borderTopRightRadius: hp(1),
+                                                    borderBottomRightRadius: hp(1)
+                                                }
+                                            ]}
+                                        >
+                                            <Text
+                                                style={styles.noneWinsInfoText}
+                                            >
+                                                Henüz kazanan yok, hadi bunu
+                                                değiştir!
+                                            </Text>
+                                        </View>
+                                        <Text
+                                            style={styles.yourWinsCounter}
+                                        >
+                                            {
+                                                this.state
+                                                    .playerFriendMatchWinCount
+                                            }
+                                        </Text>
+                                        <Text
+                                            style={
+                                                styles.opponentWinsCounter
+                                            }
+                                        >
+                                            {
+                                                this.state
+                                                    .opponentFriendMatchWinCount
+                                            }
+                                        </Text>
+                                    </View>
+                                )}
                                 {this.state.playerFriendMatchWinCount > 0 &&
                                     this.state.opponentFriendMatchWinCount >
                                         0 && (
@@ -718,8 +763,8 @@ class FriendGameStatsScreen extends React.Component {
                                                     styles.yourWinsView,
                                                     {
                                                         width: wp(82),
-                                                        borderTopRightRadius: 10,
-                                                        borderBottomRightRadius: 10
+                                                        borderTopRightRadius: hp(1),
+                                                        borderBottomRightRadius: hp(1)
                                                     }
                                                 ]}
                                             />
@@ -756,8 +801,8 @@ class FriendGameStatsScreen extends React.Component {
                                                     styles.opponentsWinsView,
                                                     {
                                                         width: wp(82),
-                                                        borderTopLeftRadius: 10,
-                                                        borderBottomLeftRadius: 10
+                                                        borderTopLeftRadius: hp(1),
+                                                        borderBottomLeftRadius: hp(1)
                                                     }
                                                 ]}
                                             />
