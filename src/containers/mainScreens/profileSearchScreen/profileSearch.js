@@ -13,6 +13,7 @@ import { userServices } from '../../../sagas/user/'
 import { opponentActions } from '../../../redux/opponents/actions'
 
 import returnLogo from '../../../assets/return.png'
+import NO_RESULTS_USER from '../../../assets/noResultsUser.png'
 
 class ProfileSearch extends React.Component {
     constructor(props) {
@@ -133,7 +134,8 @@ class ProfileSearch extends React.Component {
                 )}
                 {Object.keys(this.state.returnedSearchList).length === 0 && (
                     <View style={styles.noResultsView}>
-                        <Text>Sonuç yok</Text>
+                        <Image source={NO_RESULTS_USER} style={styles.noResultImg}/>
+                        <Text style={styles.noResultsText}>Bu isimle bir kullanıcı bulamadık</Text>
                     </View>
                 )}
             </View>

@@ -38,7 +38,8 @@ export default StyleSheet.create({
         borderWidth: wp(0.75),
         borderRadius: hp(1.5),
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        overflow: 'hidden'
     },
     modalSubjectText: {
         fontFamily: 'Averta-BoldItalic',

@@ -895,21 +895,21 @@ class GroupGame extends React.Component {
                                 </Text>
                             </View>
                             <View style={styles.answersContainer}>
-                                <Text style={styles.answersText}>D:</Text>
-                                <Text> </Text>
-                                <Text style={styles.answersText}>
-                                    {this.state.playerOneCorrect}
-                                </Text>
-                                <Text style={styles.answersText}> Y:</Text>
-                                <Text> </Text>
-                                <Text style={styles.answersText}>
-                                    {this.state.playerOneIncorrect}
-                                </Text>
-                                <Text style={styles.answersText}> B:</Text>
-                                <Text> </Text>
-                                <Text style={styles.answersText}>
-                                    {this.state.playerOneUnanswered}
-                                </Text>
+                                <View style={[styles.answerView, {backgroundColor: '#6AC259'}]}>
+                                    <Text style={styles.answersText}>
+                                        {this.state.playerOneCorrect}
+                                    </Text>
+                                </View>
+                                <View style={[styles.answerView, {backgroundColor: '#B72A2A'}]}>
+                                    <Text style={styles.answersText}>
+                                        {this.state.playerOneIncorrect}
+                                    </Text>
+                                </View>
+                                <View style={[styles.answerView, {backgroundColor: '#3A52A3'}]}>
+                                    <Text style={styles.answersText}>
+                                        {this.state.playerOneUnanswered}
+                                    </Text>
+                                </View>
                             </View>
                         </View>
                         <View style={styles.countdownContainer}>

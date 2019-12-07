@@ -24,6 +24,7 @@ import returnLogo from '../../../assets/return.png'
 import shareLogo from '../../../assets/share.png'
 
 import { clientActions } from '../../../redux/client/actions'
+import NO_RESULTS_FAV from '../../../assets/noResultsFav.png'
 
 class Favorites extends React.Component {
     constructor(props) {
@@ -495,14 +496,22 @@ class Favorites extends React.Component {
                         </View>
                     </View>
                 </Modal>
-                <View style={styles.scrollViewContainer}>
-                    <ScrollView
-                        horizontal={true}
-                        showsVerticalScrollIndicator={false}
-                    >
-                        {this.state.scrollViewList}
-                    </ScrollView>
-                </View>
+                {Object.keys(this.state.scrollViewList).length !== 0 && (
+                    <View style={styles.scrollViewContainer}>
+                        <ScrollView
+                            horizontal={true}
+                            showsVerticalScrollIndicator={false}
+                        >
+                            {this.state.scrollViewList}
+                        </ScrollView>
+                    </View>
+                )}
+                {Object.keys(this.state.scrollViewList).length === 0 && (
+                    <View style={styles.noResultsView}>
+                        <Image source={NO_RESULTS_FAV} style={styles.noResultImg}/>
+                        <Text style={styles.noResultsText}>Henüz bir soruyu favorilemedin</Text>
+                    </View>
+                )}
             </View>
         )
     }

@@ -184,6 +184,24 @@ export default StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
     },
+    playerOneAnswerView: {
+        height: hp(4),
+        width: wp(5),
+        justifyContent: 'center',
+        alignItems: 'flex-start'
+    },
+    playerTwoAnswerView: {
+        height: hp(4),
+        width: wp(5),
+        justifyContent: 'center',
+        alignItems: 'flex-end'
+    },
+    answerIconView: {
+        height: hp(4),
+        width: wp(6),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     numbers: {
         fontFamily: 'Averta-Semibold',
         color: '#2E313C',

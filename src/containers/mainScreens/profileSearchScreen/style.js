@@ -18,11 +18,25 @@ export default StyleSheet.create({
     },
     flatListContainer: {
         flex: 88,
-        width: wp(88),
+        width: wp(88)
     },
     noResultsView: {
         flex: 88,
-        justifyContent: 'center'
+        width: wp(88),
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingBottom: hp(10)
+    },
+    noResultsText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(3),
+        color: '#FF9900',
+        textAlign: 'center',
+        marginTop: hp(5)
+    },
+    noResultImg: {
+        resizeMode: 'contain',
+        height: hp(20)
     },
     returnLogoContainer: {
         height: hp(6),

@@ -91,7 +91,8 @@ export default StyleSheet.create({
         borderWidth: wp(0.75),
         borderRadius: hp(1.5),
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        overflow: 'hidden'
     },
     modalSubjectText: {
         fontFamily: 'Averta-BoldItalic',
@@ -332,6 +333,24 @@ export default StyleSheet.create({
         height: hp(45),
         width: wp(87.35),
         alignItems: 'center'
+    },
+    noResultsView: {
+        height: hp(45),
+        width: wp(87.35),
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingBottom: hp(10)
+    },
+    noResultsText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(3),
+        color: '#FF9900',
+        textAlign: 'center',
+        marginTop: hp(5)
+    },
+    noResultImg: {
+        resizeMode: 'contain',
+        height: hp(20)
     },
     userRow: {
         height: hp(10.5),
