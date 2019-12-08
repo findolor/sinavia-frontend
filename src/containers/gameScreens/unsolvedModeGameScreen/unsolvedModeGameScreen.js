@@ -703,21 +703,21 @@ class UnsolvedModeGameScreen extends React.Component {
                                 </Text>
                             </View>
                             <View style={styles.answersContainer}>
-                                <Text style={styles.answersText}>D:</Text>
-                                <Text> </Text>
-                                <Text style={styles.answersText}>
-                                    {this.state.playerCorrect}
-                                </Text>
-                                <Text style={styles.answersText}> Y:</Text>
-                                <Text> </Text>
-                                <Text style={styles.answersText}>
-                                    {this.state.playerIncorrect}
-                                </Text>
-                                <Text style={styles.answersText}> B:</Text>
-                                <Text> </Text>
-                                <Text style={styles.answersText}>
-                                    {this.state.playerUnanswered}
-                                </Text>
+                                <View style={[styles.answerView, {backgroundColor: '#6AC259'}]}>
+                                    <Text style={styles.answersText}>
+                                        {this.state.playerCorrect}
+                                    </Text>
+                                </View>
+                                <View style={[styles.answerView, {backgroundColor: '#B72A2A'}]}>
+                                    <Text style={styles.answersText}>
+                                        {this.state.playerIncorrect}
+                                    </Text>
+                                </View>
+                                <View style={[styles.answerView, {backgroundColor: '#3A52A3'}]}>
+                                    <Text style={styles.answersText}>
+                                        {this.state.playerUnanswered}
+                                    </Text>
+                                </View>
                             </View>
                         </View>
                         <View style={styles.countdownContainer}>

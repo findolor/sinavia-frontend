@@ -290,11 +290,10 @@ export default StyleSheet.create({
         alignItems: 'flex-start'
     },
     picker: {
-        height: hp(6),
         width: wp(25),
         borderColor: '#FF9900',
         borderWidth: wp(0.5),
-        borderRadius: 15,
+        borderRadius: hp(1.5),
         marginTop: hp(5)
     },
     pickerText: {
@@ -304,8 +303,7 @@ export default StyleSheet.create({
         marginRight: wp(1),
         fontSize: hp(2),
         color: '#00BACD',
-        textAlign: 'center',
-        textAlignVertical: 'center'
+        textAlign: 'center'
     },
     pickerDropdownText: {
         marginTop: hp(1.3),
@@ -314,16 +312,14 @@ export default StyleSheet.create({
         marginRight: wp(1),
         fontSize: hp(2),
         color: '#F7941E',
-        textAlign: 'center',
-        textAlignVertical: 'center'
+        textAlign: 'center'
     },
     pickerDropdown: {
         height: hp(50.5),
         width: wp(25),
         borderColor: '#00D9EF',
         borderWidth: wp(0.5),
-        borderRadius: 15,
-        marginTop: hp(0.5),
+        borderRadius: hp(1.5),
         marginLeft: wp(-0.5)
     }
 })

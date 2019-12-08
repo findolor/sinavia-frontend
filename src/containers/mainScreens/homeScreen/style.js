@@ -45,10 +45,10 @@ export default StyleSheet.create({
     cardText: {
         fontFamily: 'Averta-SemiboldItalic',
         color: '#2E313C',
-        fontSize: hp(3.3)
+        fontSize: hp(3),
+        textAlign: 'center'
     },
     picker: {
-        height: hp(6),
         width: wp(30),
         borderColor: '#FF9900',
         borderWidth: hp(0.4),
@@ -67,8 +67,6 @@ export default StyleSheet.create({
     },
     pickerDropdownText: {
         fontFamily: 'Averta-Semibold',
-        marginTop: hp(1.3),
-        marginBottom: hp(1),
         fontSize: hp(2),
         color: '#2E313C',
         textAlign: 'center',
@@ -80,7 +78,6 @@ export default StyleSheet.create({
         borderWidth: hp(0.4),
         borderRadius: hp(1.5),
         borderColor: '#FF9900',
-        marginTop: hp(0.5),
         marginLeft: wp(-0.5)
     },
     modalView: {
@@ -94,7 +91,8 @@ export default StyleSheet.create({
         borderWidth: wp(0.75),
         borderRadius: hp(1.5),
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        overflow: 'hidden'
     },
     modalSubjectText: {
         fontFamily: 'Averta-BoldItalic',
@@ -335,6 +333,24 @@ export default StyleSheet.create({
         height: hp(45),
         width: wp(87.35),
         alignItems: 'center'
+    },
+    noResultsView: {
+        height: hp(45),
+        width: wp(87.35),
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingBottom: hp(10)
+    },
+    noResultsText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(3),
+        color: '#FF9900',
+        textAlign: 'center',
+        marginTop: hp(5)
+    },
+    noResultImg: {
+        resizeMode: 'contain',
+        height: hp(20)
     },
     userRow: {
         height: hp(10.5),

@@ -348,17 +348,30 @@ export default StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row'
     },
+    noneWinsView: {
+        height: hp(5),
+        width: wp(82),
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: hp(1),
+        backgroundColor: '#FF9900'
+    },
+    noneWinsInfoText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(1.5),
+        color: '#FFFFFF'
+    },
     yourWinsView: {
         height: hp(5),
-        borderTopLeftRadius: 10,
-        borderBottomLeftRadius: 10,
+        borderTopLeftRadius: hp(1),
+        borderBottomLeftRadius: hp(1),
         backgroundColor: '#6AC259'
     },
     opponentsWinsView: {
         height: hp(5),
         width: wp(41),
-        borderTopRightRadius: 10,
-        borderBottomRightRadius: 10,
+        borderTopRightRadius: hp(1),
+        borderBottomRightRadius: hp(1),
         backgroundColor: '#B72A2A'
     },
     yourWinsCounter: {

@@ -139,8 +139,19 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     answersContainer: {
+        height: hp(4),
+        width: wp(24),
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    answerView: {
+        height: hp(3.5),
+        width: hp(3.5),
+        borderRadius: hp(100),
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'red'
     },
     usernameText: {
         fontFamily: 'Averta-Bold',
@@ -148,7 +159,7 @@ export default StyleSheet.create({
         color: '#fff'
     },
     answersText: {
-        fontFamily: 'Averta-Semibold',
+        fontFamily: 'Averta-Bold',
         fontSize: hp(2.3),
         color: '#fff',
         fontWeight: '600'

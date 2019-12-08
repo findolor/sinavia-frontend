@@ -861,8 +861,8 @@ class RankedGame extends React.Component {
             <View style={styles.container}>
                 <NotchView color={styles.topContainer.backgroundColor} />
                 <View style={styles.topContainer}>
-                    <Animatable.View 
-                        style={styles.headerContainer} 
+                    <Animatable.View
+                        style={styles.headerContainer}
                         useNativeDriver={true}
                         delay={750}
                         animation="fadeIn">
@@ -879,21 +879,21 @@ class RankedGame extends React.Component {
                                 </Text>
                             </View>
                             <View style={styles.answersContainer}>
-                                <Text style={styles.answersText}>D:</Text>
-                                <Text> </Text>
-                                <Text style={styles.answersText}>
-                                    {this.state.playerOneCorrect}
-                                </Text>
-                                <Text style={styles.answersText}> Y:</Text>
-                                <Text> </Text>
-                                <Text style={styles.answersText}>
-                                    {this.state.playerOneIncorrect}
-                                </Text>
-                                <Text style={styles.answersText}> B:</Text>
-                                <Text> </Text>
-                                <Text style={styles.answersText}>
-                                    {this.state.playerOneUnanswered}
-                                </Text>
+                                <View style={[styles.answerView, {backgroundColor: '#6AC259'}]}>
+                                    <Text style={styles.answersText}>
+                                        {this.state.playerOneCorrect}
+                                    </Text>
+                                </View>
+                                <View style={[styles.answerView, {backgroundColor: '#B72A2A'}]}>
+                                    <Text style={styles.answersText}>
+                                        {this.state.playerOneIncorrect}
+                                    </Text>
+                                </View>
+                                <View style={[styles.answerView, {backgroundColor: '#3A52A3'}]}>
+                                    <Text style={styles.answersText}>
+                                        {this.state.playerOneUnanswered}
+                                    </Text>
+                                </View>
                             </View>
                         </View>
                         <View style={styles.countdownContainer}>
@@ -927,21 +927,21 @@ class RankedGame extends React.Component {
                                 </Text>
                             </View>
                             <View style={styles.answersContainer}>
-                                <Text style={styles.answersText}>D:</Text>
-                                <Text> </Text>
-                                <Text style={styles.answersText}>
-                                    {this.state.playerTwoCorrect}
-                                </Text>
-                                <Text style={styles.answersText}> Y:</Text>
-                                <Text> </Text>
-                                <Text style={styles.answersText}>
-                                    {this.state.playerTwoIncorrect}
-                                </Text>
-                                <Text style={styles.answersText}> B:</Text>
-                                <Text> </Text>
-                                <Text style={styles.answersText}>
-                                    {this.state.playerTwoUnanswered}
-                                </Text>
+                                <View style={[styles.answerView, {backgroundColor: '#6AC259'}]}>
+                                    <Text style={styles.answersText}>
+                                        {this.state.playerTwoCorrect}
+                                    </Text>
+                                </View>
+                                <View style={[styles.answerView, {backgroundColor: '#B72A2A'}]}>
+                                    <Text style={styles.answersText}>
+                                        {this.state.playerTwoIncorrect}
+                                    </Text>
+                                </View>
+                                <View style={[styles.answerView, {backgroundColor: '#3A52A3'}]}>
+                                    <Text style={styles.answersText}>
+                                        {this.state.playerTwoUnanswered}
+                                    </Text>
+                                </View>
                             </View>
                         </View>
                     </Animatable.View>

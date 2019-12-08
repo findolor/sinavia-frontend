@@ -704,55 +704,73 @@ class GameStatsScreen extends React.Component {
                                     </View>
                                     <View style={styles.answersContainer}>
                                         <View style={styles.dividedAnswer}>
-                                            <Text style={styles.numbers}>
-                                                {this.state.correctAnswerNumber}
-                                            </Text>
-                                            <Image
-                                                source={correct}
-                                                style={styles.answerImg}
-                                            />
-                                            <Text style={styles.numbers}>
-                                                {
-                                                    this.state
-                                                        .opponentCorrectAnswerNumber
-                                                }
-                                            </Text>
+                                            <View style={styles.playerOneAnswerView}>
+                                                <Text style={styles.numbers}>
+                                                    {this.state.correctAnswerNumber}
+                                                </Text>
+                                            </View>
+                                            <View style={styles.answerIconView}>
+                                                <Image
+                                                    source={correct}
+                                                    style={styles.answerImg}
+                                                />
+                                            </View>
+                                            <View style={styles.playerTwoAnswerView}>
+                                                <Text style={styles.numbers}>
+                                                    {
+                                                        this.state
+                                                            .opponentCorrectAnswerNumber
+                                                    }
+                                                </Text>
+                                            </View>
                                         </View>
                                         <View style={styles.dividedAnswer}>
-                                            <Text style={styles.numbers}>
-                                                {
-                                                    this.state
-                                                        .incorrectAnswerNumber
-                                                }
-                                            </Text>
-                                            <Image
-                                                source={incorrect}
-                                                style={styles.answerImg}
-                                            />
-                                            <Text style={styles.numbers}>
-                                                {
-                                                    this.state
-                                                        .opponentInorrectAnswerNumber
-                                                }
-                                            </Text>
+                                            <View style={styles.playerOneAnswerView}>
+                                                <Text style={styles.numbers}>
+                                                    {
+                                                        this.state
+                                                            .incorrectAnswerNumber
+                                                    }
+                                                </Text>
+                                            </View>
+                                            <View style={styles.answerIconView}>
+                                                <Image
+                                                    source={incorrect}
+                                                    style={styles.answerImg}
+                                                />
+                                            </View>
+                                            <View style={styles.playerTwoAnswerView}>
+                                                <Text style={styles.numbers}>
+                                                    {
+                                                        this.state
+                                                            .opponentInorrectAnswerNumber
+                                                    }
+                                                </Text>
+                                            </View>
                                         </View>
                                         <View style={styles.dividedAnswer}>
-                                            <Text style={styles.numbers}>
-                                                {
-                                                    this.state
-                                                        .unansweredAnswerNumber
-                                                }
-                                            </Text>
-                                            <Image
-                                                source={unanswered}
-                                                style={styles.answerImg}
-                                            />
-                                            <Text style={styles.numbers}>
-                                                {
-                                                    this.state
-                                                        .opponentUnansweredAnswerNumber
-                                                }
-                                            </Text>
+                                            <View style={styles.playerOneAnswerView}>
+                                                <Text style={styles.numbers}>
+                                                    {
+                                                        this.state
+                                                            .unansweredAnswerNumber
+                                                    }
+                                                </Text>
+                                            </View>
+                                            <View style={styles.answerIconView}>
+                                                <Image
+                                                    source={unanswered}
+                                                    style={styles.answerImg}
+                                                />
+                                            </View>
+                                            <View style={styles.playerTwoAnswerView}>
+                                                <Text style={styles.numbers}>
+                                                    {
+                                                        this.state
+                                                            .opponentUnansweredAnswerNumber
+                                                    }
+                                                </Text>
+                                            </View>
                                         </View>
                                     </View>
                                     <View style={styles.user2Container}>

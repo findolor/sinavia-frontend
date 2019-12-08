@@ -30,6 +30,24 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    noResultsView: {
+        flex: 90,
+        width: wp(88),
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingBottom: hp(10)
+    },
+    noResultsText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(3),
+        color: '#FF9900',
+        textAlign: 'center',
+        marginTop: hp(5)
+    },
+    noResultImg: {
+        resizeMode: 'contain',
+        height: hp(20)
+    },
     returnLogo: {
         height: hp(3.5),
         width: hp(3.5)

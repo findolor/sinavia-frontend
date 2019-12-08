@@ -19,6 +19,7 @@ import { opponentActions } from '../../../redux/opponents/actions'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import returnLogo from '../../../assets/return.png'
+import NO_RESULTS_USER from '../../../assets/noResultsUser.png';
 
 class FriendsList extends React.Component {
     constructor(props) {
@@ -147,45 +148,53 @@ class FriendsList extends React.Component {
                     </View>
                 </View>
                 <View style={styles.spaceView} />
-                <View style={styles.flatListView}>
-                    <FlatList
-                        data={this.state.friendsList}
-                        vertical={true}
-                        extraData={this.state.refreshFlatlist}
-                        showsVerticalScrollIndicator={false}
-                        renderItem={({ item, index }) => {
-                            return (
-                                <TouchableOpacity
-                                    onPress={() => this.friendOnPress(index)}
-                                >
-                                    <View style={styles.userRow}>
-                                        <View
-                                            style={styles.userPicContainerInRow}
-                                        >
-                                            <Image
-                                                source={{
-                                                    uri: item.profilePicture
-                                                }}
-                                                style={styles.userPic}
-                                            />
-                                        </View>
-                                        <View style={styles.nameContainer}>
-                                            <Text style={styles.nameText}>
-                                                {item.name +
+                {Object.keys(this.state.friendsList).length !== 0 && (
+                    <View style={styles.flatListView}>
+                        <FlatList
+                            data={this.state.friendsList}
+                            vertical={true}
+                            extraData={this.state.refreshFlatlist}
+                            showsVerticalScrollIndicator={false}
+                            renderItem={({ item, index }) => {
+                                return (
+                                    <TouchableOpacity
+                                        onPress={() => this.friendOnPress(index)}
+                                    >
+                                        <View style={styles.userRow}>
+                                            <View
+                                                style={styles.userPicContainerInRow}
+                                            >
+                                                <Image
+                                                    source={{
+                                                        uri: item.profilePicture
+                                                    }}
+                                                    style={styles.userPic}
+                                                />
+                                            </View>
+                                            <View style={styles.nameContainer}>
+                                                <Text style={styles.nameText}>
+                                                    {item.name +
                                                     ' ' +
                                                     item.lastname}
-                                            </Text>
-                                            <Text style={styles.userNameText}>
-                                                @{item.username}
-                                            </Text>
+                                                </Text>
+                                                <Text style={styles.userNameText}>
+                                                    @{item.username}
+                                                </Text>
+                                            </View>
                                         </View>
-                                    </View>
-                                </TouchableOpacity>
-                            )
-                        }}
-                        keyExtractor={(item, index) => index.toString()}
-                    />
-                </View>
+                                    </TouchableOpacity>
+                                )
+                            }}
+                            keyExtractor={(item, index) => index.toString()}
+                        />
+                    </View>
+                )}
+                {Object.keys(this.state.friendsList).length === 0 && (
+                    <View style={styles.noResultsView}>
+                        <Image source={NO_RESULTS_USER} style={styles.noResultImg}/>
+                        <Text style={styles.noResultsText}>Henüz bir arkadaşın yok</Text>
+                    </View>
+                )}
             </View>
         )
     }
