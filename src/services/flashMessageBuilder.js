@@ -1,8 +1,4 @@
 import { showMessage } from 'react-native-flash-message'
-import {
-    widthPercentageToDP as wp,
-    heightPercentageToDP as hp
-} from 'react-native-responsive-screen'
 
 export const flashMessages = {
     generalMessage: message =>
@@ -14,7 +10,8 @@ export const flashMessages = {
                 color: '#FF9900'
             },
             textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
-            backgroundColor: 'white'
+            backgroundColor: 'white',
+            duration: 5000
         }),
     generalError: (message, description) =>
         showMessage({
@@ -25,7 +22,8 @@ export const flashMessages = {
                 color: '#FF9900'
             },
             textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
-            backgroundColor: 'white'
+            backgroundColor: 'white',
+            duration: 5000
         }),
     networkError: () =>
         showMessage({
@@ -36,7 +34,8 @@ export const flashMessages = {
                 color: '#FF9900'
             },
             textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
-            backgroundColor: 'white'
+            backgroundColor: 'white',
+            duration: 5000
         }),
     emailError: message =>
         showMessage({
@@ -47,7 +46,8 @@ export const flashMessages = {
                 color: '#FF9900'
             },
             textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
-            backgroundColor: 'white'
+            backgroundColor: 'white',
+            duration: 5000
         }),
     passwordError: () =>
         showMessage({
@@ -58,7 +58,8 @@ export const flashMessages = {
                 color: '#FF9900'
             },
             textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
-            backgroundColor: 'white'
+            backgroundColor: 'white',
+            duration: 5000
         }),
     authInfosOrSettingsError: (message, description, props = {}) =>
         showMessage({
@@ -69,6 +70,7 @@ export const flashMessages = {
                 color: '#FF9900'
             },
             textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
-            ...props
+            ...props,
+            duration: 5000
         })
 }
