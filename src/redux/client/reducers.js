@@ -46,9 +46,7 @@ export default (state = INITIAL_STATE, action) => {
         case clientTypes.SUBTRACT_JOKER:
             let userJokers = state.userJokers
             let index = userJokers.findIndex(x => x.jokerId === action.jokerId)
-            // If that was the only joker, we delete it from the list
-            if (userJokers[index].amount === 1) userJokers.splice(index, 1)
-            else userJokers[index].amount--
+            userJokers[index].amount--
             return {
                 ...state,
                 userJokers: userJokers

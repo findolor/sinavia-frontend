@@ -160,7 +160,7 @@ class PurchaseScreen extends React.Component {
         remainingExamDays -= daysToSubtract
         if (remainingExamDays >= 7) {
             remainingExamWeeks = Math.floor(remainingExamDays / 7)
-            remainingExamDays -= remainingPremiumWeeks * 7
+            remainingExamDays -= remainingExamWeeks * 7
         }
 
         this.setState({

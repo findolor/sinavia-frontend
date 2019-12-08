@@ -34,7 +34,9 @@ export function* deleteFriendshipRequestSaga(action) {
     }
 
     if (response.success) {
-        let index = action.friendIds.indexOf(action.friendId)
+        let index = action.friendIds.indexOf(
+            action.isClientUser === true ? action.friendId : action.clientDBId
+        )
         action.friendIds.splice(index, 1)
 
         yield put({
