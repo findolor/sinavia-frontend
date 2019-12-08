@@ -947,15 +947,15 @@ class Statistics extends React.Component {
             overallCorrectPercentage:
                 totalQuestionsSolved === 0
                     ? 0
-                    : (correctCounter / totalQuestionsSolved)*100,
+                    : (correctCounter / totalQuestionsSolved) * 100,
             overallIncorrectPercentage:
                 totalQuestionsSolved === 0
                     ? 0
-                    : (incorrectCounter / totalQuestionsSolved)*100,
+                    : (incorrectCounter / totalQuestionsSolved) * 100,
             overallUnansweredPercentage:
                 totalQuestionsSolved === 0
                     ? 0
-                    : (unansweredCounter / totalQuestionsSolved)*100,
+                    : (unansweredCounter / totalQuestionsSolved) * 100,
             overallCorrect: correctCounter,
             overallIncorrect: incorrectCounter,
             overallUnanswered: unansweredCounter,
