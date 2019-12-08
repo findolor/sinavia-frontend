@@ -1116,10 +1116,11 @@ class Home extends React.Component {
             })
             return
         }
+        if (!this.state.friendSelected) return
+
         apiServices
             .checkOnline()
             .then(() => {
-                if (!this.state.friendSelected) return
                 const randomNumber = this.randomCodeGenerator()
                 const Ids = this.calculateContentIds()
                 navigationReset('game', { isHardReset: true })
@@ -1262,17 +1263,19 @@ class Home extends React.Component {
                         />
                     </View>
                 </View>
-                <AuthButton
-                    marginTop={hp(83.5)}
-                    height={hp(7)}
-                    width={wp(87.5)}
-                    color="#00D9EF"
-                    buttonText="Başla"
-                    fontSize={hp(3)}
-                    borderRadius={hp(1.5)}
-                    position={'absolute'}
-                    onPress={this.friendGameModeOnPress}
-                />
+                {this.state.friendSelected && (
+                    <AuthButton
+                        marginTop={hp(83.5)}
+                        height={hp(7)}
+                        width={wp(87.5)}
+                        color="#00D9EF"
+                        buttonText="Başla"
+                        fontSize={hp(3)}
+                        borderRadius={hp(1.5)}
+                        position={'absolute'}
+                        onPress={this.friendGameModeOnPress}
+                    />
+                )}
             </View>
         )
     }
