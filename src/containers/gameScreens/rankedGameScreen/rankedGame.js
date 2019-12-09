@@ -146,8 +146,8 @@ class RankedGame extends React.Component {
             this.chooseMessageAction(message)
         })
         this.props.room.onLeave(code => {
-            if(code === 1000) return
             let that = this
+            console.log(code)
             this.setState({isQuitGameModalVisible: true, visibleView: 'serverError'})
             setTimeout(function(){
                 that.props.room.leave()

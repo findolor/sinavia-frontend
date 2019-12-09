@@ -49,9 +49,11 @@ class LoadingScreen extends React.Component {
         this.client
             .joinOrCreate('rankedRoom', playerOptions)
             .then(room => {
+                this.room = room
+
                 // Initiate the bot game after 10 seconds
                 this.botTimeout = setTimeout(() => {
-                    room.send({
+                    this.room.send({
                         action: 'start-with-bot'
                     })
                 }, 20000)
@@ -70,12 +72,12 @@ class LoadingScreen extends React.Component {
                 let playerTotalPoints
                 let playerCity
 
-                room.onMessage(message => {
+                this.room.onMessage(message => {
                     // Message is playerProps
                     const playerIds = Object.keys(message)
 
                     playerIds.forEach(element => {
-                        if (room.sessionId !== element) {
+                        if (this.room.sessionId !== element) {
                             opponentUsername = message[element].username
                             opponentId = element
                             opponentProfilePicture =
@@ -92,14 +94,14 @@ class LoadingScreen extends React.Component {
                             playerCity = message[element].city
                         }
                     })
-                    room.removeAllListeners()
+                    this.room.removeAllListeners()
                     clearTimeout(this.botTimeout)
 
                     navigationReplace(
                         SCENE_KEYS.gameScreens.rankedMatchingScreen,
                         {
                             // These are necessary for the game logic
-                            room: room,
+                            room: this.room,
                             client: this.client,
                             // These can be used in both screens
                             playerUsername: playerUsername,
@@ -122,6 +124,16 @@ class LoadingScreen extends React.Component {
                             opponentPoints: opponentTotalPoints
                         }
                     )
+                })
+
+                this.room.onLeave(code => {
+                    console.log(code)
+                    this.backButtonOnPress()
+                })
+
+                this.room.onError(error => {
+                    console.log(error)
+                    this.backButtonOnPress()
                 })
             })
             .catch(error => {

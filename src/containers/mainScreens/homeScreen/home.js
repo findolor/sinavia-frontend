@@ -1297,26 +1297,27 @@ class Home extends React.Component {
         )
             return
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
-        this.client.onOpen.add(() => {
-            this.tryJoiningRoom()
-        })
+        this.tryJoiningRoom()
     }
 
-    tryJoiningRoom = async () => {
-        this.room = this.client.join('groupRoom', {
-            databaseId: this.props.clientDBId,
-            roomCode: this.state.groupCodeOnChangeText.toString(),
-            // Because we are joining a game, we don't want to create a new room
-            create: false
-        })
-
-        this.room.onJoin.add(() => {
-            this.room.removeAllListeners()
-            this.setState({
-                visibleView: 'JOINED_ROOM',
-                isGroupGameInitiated: true
+    tryJoiningRoom = () => {
+        this.client
+            .join('groupRoom', {
+                databaseId: this.props.clientDBId,
+                roomCode: this.state.groupCodeOnChangeText.toString()
             })
-        })
+            .then(room => {
+                this.room = room
+
+                this.room.removeAllListeners()
+                this.setState({
+                    visibleView: 'JOINED_ROOM',
+                    isGroupGameInitiated: true
+                })
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     joinGameParams = () => {

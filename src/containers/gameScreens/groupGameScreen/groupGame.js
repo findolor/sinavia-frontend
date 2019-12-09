@@ -139,15 +139,38 @@ class GroupGame extends React.Component {
         this.props.room.send({
             action: 'ready'
         })
-        this.props.room.onStateChange.add(state => {
+        this.props.room.onStateChange(state => {
             // We update the UI after state changes
             this.chooseStateAction(state.groupState)
         })
         // Joker messages come through here
-        this.props.room.onMessage.add(message => {
+        this.props.room.onMessage(message => {
             this.chooseMessageAction(message)
         })
-        this.props.room.onError.add(err => console.log(err))
+        this.props.room.onLeave(code => {
+            let that = this
+            console.log(code)
+            this.setState({
+                isQuitGameModalVisible: true,
+                visibleView: 'serverError'
+            })
+            setTimeout(function() {
+                that.props.room.leave()
+                navigationReset('main')
+            }, 3000)
+        })
+        this.props.room.onError(err => {
+            let that = this
+            console.log(err)
+            this.setState({
+                isQuitGameModalVisible: true,
+                visibleView: 'serverError'
+            })
+            setTimeout(function() {
+                that.props.room.leave()
+                navigationReset('main')
+            }, 3000)
+        })
     }
 
     componentWillUnmount() {
@@ -352,11 +375,9 @@ class GroupGame extends React.Component {
 
     onlyClientMatchQuit = () => {
         this.shutdownGame()
-        this.props.client.close()
         navigationReset('main')
     }
 
-    // TODO Move these actions to their functions
     chooseStateAction = groupState => {
         // We check the action that happened
         switch (groupState.stateInformation) {
@@ -419,7 +440,8 @@ class GroupGame extends React.Component {
     // TODO add a list here that has all the answers
     updatePlayerResults = () => {
         // Player answers to the question
-        const answers = this.state.playerProps[this.props.client.id].answers
+        const answers = this.state.playerProps[this.props.room.sessionId]
+            .answers
 
         // Switch statement for the user
         this.updateAnswers(answers)
@@ -823,6 +845,27 @@ class GroupGame extends React.Component {
         )
     }
 
+    serverError() {
+        return (
+            <View
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
+            >
+                <View style={styles.quitModalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>Sunucu hatası</Text>
+                        <Text style={styles.areYouSureText}>
+                            Sonuç sayfasına yönlendirileceksin
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     quitGameModal() {
         return (
             <View
@@ -895,17 +938,32 @@ class GroupGame extends React.Component {
                                 </Text>
                             </View>
                             <View style={styles.answersContainer}>
-                                <View style={[styles.answerView, {backgroundColor: '#6AC259'}]}>
+                                <View
+                                    style={[
+                                        styles.answerView,
+                                        { backgroundColor: '#6AC259' }
+                                    ]}
+                                >
                                     <Text style={styles.answersText}>
                                         {this.state.playerOneCorrect}
                                     </Text>
                                 </View>
-                                <View style={[styles.answerView, {backgroundColor: '#B72A2A'}]}>
+                                <View
+                                    style={[
+                                        styles.answerView,
+                                        { backgroundColor: '#B72A2A' }
+                                    ]}
+                                >
                                     <Text style={styles.answersText}>
                                         {this.state.playerOneIncorrect}
                                     </Text>
                                 </View>
-                                <View style={[styles.answerView, {backgroundColor: '#3A52A3'}]}>
+                                <View
+                                    style={[
+                                        styles.answerView,
+                                        { backgroundColor: '#3A52A3' }
+                                    ]}
+                                >
                                     <Text style={styles.answersText}>
                                         {this.state.playerOneUnanswered}
                                     </Text>
@@ -1156,6 +1214,8 @@ class GroupGame extends React.Component {
                         this.allOpponentLeaveAfterAnswer()}
                     {this.state.visibleView === 'quitGameModal' &&
                         this.quitGameModal()}
+                    {this.state.visibleView === 'serverError' &&
+                        this.serverError()}
                 </Modal>
                 <View style={styles.dummyButtonContainer}>
                     {this.state.start && (

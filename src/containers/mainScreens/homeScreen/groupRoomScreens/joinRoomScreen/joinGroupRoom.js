@@ -38,7 +38,7 @@ class JoinGroupRoom extends React.Component {
     }
 
     componentDidMount() {
-        this.props.joinGameParams.room.onMessage.add(message => {
+        this.props.joinGameParams.room.onMessage(message => {
             switch (message.action) {
                 case 'player-props':
                     const playerIds = Object.keys(message.playerProps)
@@ -65,8 +65,9 @@ class JoinGroupRoom extends React.Component {
                                 isLeader: message.playerProps[element].isLeader
                             })
                         }
-                        message.playerProps[this.props.joinGameParams.client.id]
-                            .isLeader === true
+                        message.playerProps[
+                            this.props.joinGameParams.room.sessionId
+                        ].isLeader === true
                             ? this.setState({ isClientLeader: true })
                             : this.setState({ isClientLeader: false })
                     })
@@ -102,6 +103,16 @@ class JoinGroupRoom extends React.Component {
                     })
                     break
             }
+        })
+
+        this.props.joinGameParams.room.onLeave(code => {
+            console.log(code)
+            this.shutdownRoutine()
+        })
+
+        this.props.joinGameParams.room.onError(error => {
+            console.log(error)
+            this.shutdownRoutine()
         })
     }
 
@@ -158,7 +169,6 @@ class JoinGroupRoom extends React.Component {
 
     shutdownRoutine = () => {
         this.props.joinGameParams.room.leave()
-        this.props.joinGameParams.client.close()
         navigationReset('main')
     }
 

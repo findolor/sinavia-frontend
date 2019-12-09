@@ -128,8 +128,12 @@ class GameStatsScreen extends React.Component {
         })
         this.props.room.onLeave(code => {
             console.log(code)
+            //this.mainScreenButtonOnPress()
         })
-        this.props.room.onError(err => console.log(err))
+        this.props.room.onError(err => {
+            console.log(err)
+            //this.mainScreenButtonOnPress()
+        })
     }
 
     chooseMessageAction = message => {
