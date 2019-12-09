@@ -23,7 +23,8 @@ class RankedMatchingScreen extends React.Component {
 
     componentDidMount() {
         // Waits for 5 sec and moves onto game screen
-        setTimeout(() => {
+        this.timeout = setTimeout(() => {
+            this.props.room.removeAllListeners()
             navigationReplace(SCENE_KEYS.gameScreens.rankedGame, {
                 room: this.props.room,
                 client: this.props.client,
@@ -36,6 +37,18 @@ class RankedMatchingScreen extends React.Component {
                 opponentCoverPicture: this.props.opponentCoverPicture
             })
         }, 5000)
+
+        this.props.room.onError(error => {
+            console.log(error)
+            clearTimeout(this.timeout)
+            navigationReset('main')
+        })
+
+        this.props.room.onLeave(code => {
+            console.log(code)
+            clearTimeout(this.timeout)
+            navigationReset('main')
+        })
     }
 
     render() {

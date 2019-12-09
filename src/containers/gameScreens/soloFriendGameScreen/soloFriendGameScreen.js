@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     Modal,
     BackHandler,
-    Vibration
+    Vibration,
+    Alert
 } from 'react-native'
 import styles, { countdownProps } from './style'
 import CountDown from 'react-native-countdown-component'
@@ -135,15 +136,39 @@ class SoloFriendGameScreen extends React.Component {
         this.props.room.send({
             action: 'ready-solo'
         })
-        this.props.room.onStateChange.add(state => {
+        this.props.room.onStateChange(state => {
             // We update the UI after state changes
             this.chooseStateAction(state.friendState)
         })
         // Joker messages come through here
-        this.props.room.onMessage.add(message => {
+        this.props.room.onMessage(message => {
             this.chooseMessageAction(message)
         })
-        this.props.room.onError.add(err => console.log(err))
+        this.props.room.onLeave(code => {
+            if (code === 1000) return
+            let that = this
+            console.log(code)
+            this.setState({
+                isQuitGameModalVisible: true,
+                visibleView: 'serverError'
+            })
+            setTimeout(function() {
+                that.props.room.leave()
+                navigationReset('main')
+            }, 3000)
+        })
+        this.props.room.onError(err => {
+            let that = this
+            console.log(err)
+            this.setState({
+                isQuitGameModalVisible: true,
+                visibleView: 'serverError'
+            })
+            setTimeout(function() {
+                that.props.room.leave()
+                navigationReset('main')
+            }, 3000)
+        })
     }
 
     componentWillUnmount() {
@@ -201,7 +226,6 @@ class SoloFriendGameScreen extends React.Component {
 
         // Clear room listeners
         this.props.room.leave()
-        this.props.client.close()
         // Clear other game related things
         this.setState({ isCountDownRunning: false })
     }
@@ -386,7 +410,8 @@ class SoloFriendGameScreen extends React.Component {
 
     updatePlayerResults = () => {
         // Player answers to the question
-        const answers = this.state.playerProps[this.props.client.id].answers
+        const answers = this.state.playerProps[this.props.room.sessionId]
+            .answers
 
         // Switch statement for the user
         this.updateAnswers(answers)
@@ -616,7 +641,6 @@ class SoloFriendGameScreen extends React.Component {
 
     backButtonOnPress = () => {
         this.props.room.leave()
-        this.props.client.close()
         navigationReset('main')
     }
 
@@ -744,6 +768,27 @@ class SoloFriendGameScreen extends React.Component {
         )
     }
 
+    serverError() {
+        return (
+            <View
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>Sunucu hatası</Text>
+                        <Text style={styles.areYouSureText}>
+                            Sonuç sayfasına yönlendirileceksin
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -768,17 +813,44 @@ class SoloFriendGameScreen extends React.Component {
                                 </Text>
                             </View>
                             <View style={styles.answersContainer}>
-                                <View style={[styles.answerView, {backgroundColor: '#6AC259'}]}>
+                                <View
+                                    style={[
+                                        styles.answerView,
+                                        {
+                                            backgroundColor: '#6AC259',
+                                            borderColor: 'white',
+                                            borderWidth: 1
+                                        }
+                                    ]}
+                                >
                                     <Text style={styles.answersText}>
                                         {this.state.playerCorrect}
                                     </Text>
                                 </View>
-                                <View style={[styles.answerView, {backgroundColor: '#B72A2A'}]}>
+                                <View
+                                    style={[
+                                        styles.answerView,
+                                        {
+                                            backgroundColor: '#B72A2A',
+                                            borderColor: 'white',
+                                            borderWidth: 1
+                                        }
+                                    ]}
+                                >
                                     <Text style={styles.answersText}>
                                         {this.state.playerIncorrect}
                                     </Text>
                                 </View>
-                                <View style={[styles.answerView, {backgroundColor: '#3A52A3'}]}>
+                                <View
+                                    style={[
+                                        styles.answerView,
+                                        {
+                                            backgroundColor: '#3A52A3',
+                                            borderColor: 'white',
+                                            borderWidth: 1
+                                        }
+                                    ]}
+                                >
                                     <Text style={styles.answersText}>
                                         {this.state.playerUnanswered}
                                     </Text>
@@ -882,6 +954,8 @@ class SoloFriendGameScreen extends React.Component {
                 >
                     {this.state.visibleView === 'quitGameModal' &&
                         this.quitGameModal()}
+                    {this.state.visibleView === 'serverError' &&
+                        this.serverError()}
                 </Modal>
                 <View style={styles.dummyButtonContainer}>
                     {this.state.start && (

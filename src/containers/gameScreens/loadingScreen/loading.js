@@ -128,16 +128,19 @@ class LoadingScreen extends React.Component {
 
                 this.room.onLeave(code => {
                     console.log(code)
+                    clearTimeout(this.botTimeout)
                     this.backButtonOnPress()
                 })
 
                 this.room.onError(error => {
                     console.log(error)
+                    clearTimeout(this.botTimeout)
                     this.backButtonOnPress()
                 })
             })
             .catch(error => {
                 console.log(error)
+                navigationReset('main')
             })
     }
 

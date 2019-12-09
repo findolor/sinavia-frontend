@@ -94,10 +94,10 @@ class FriendGameStatsScreen extends React.Component {
 
     async componentDidMount() {
         await this.loadScreen()
-        this.props.room.onMessage.add(message => {
+        this.props.room.onMessage(message => {
             this.chooseMessageAction(message)
         })
-        this.props.room.onError.add(err => console.log(err))
+        this.props.room.onError(err => console.log(err))
     }
 
     chooseMessageAction = message => {
@@ -168,7 +168,7 @@ class FriendGameStatsScreen extends React.Component {
 
             playerIds.forEach(element => {
                 if (element === 'matchInformation') return
-                if (this.props.client.id !== element) {
+                if (this.props.room.sessionId !== element) {
                     opponentUsername = playerProps[element].username
                     opponentProfilePicture = playerProps[element].profilePicture
                     playerProps[element].answers.forEach(result => {
@@ -388,6 +388,7 @@ class FriendGameStatsScreen extends React.Component {
                 action: 'replay'
             })
         } else {
+            this.setState({ isReplayButtonDisabled: true })
             this.props.room.send({
                 action: 'replay'
             })
@@ -412,7 +413,6 @@ class FriendGameStatsScreen extends React.Component {
 
     mainScreenButtonOnPress = () => {
         this.props.room.leave()
-        this.props.client.close()
         navigationReset('main')
     }
 
@@ -646,50 +646,56 @@ class FriendGameStatsScreen extends React.Component {
                                     </View>
                                 </View>
                                 {this.state.playerFriendMatchWinCount === 0 &&
-                                this.state.opponentFriendMatchWinCount === 0
-                                && (
-                                    <View
-                                        style={
-                                            styles.versusGameChartContainer
-                                        }
-                                    >
+                                    this.state.opponentFriendMatchWinCount ===
+                                        0 && (
                                         <View
-                                            style={[
-                                                styles.noneWinsView,
-                                                {
-                                                    width: wp(82),
-                                                    borderTopRightRadius: hp(1),
-                                                    borderBottomRightRadius: hp(1)
-                                                }
-                                            ]}
+                                            style={
+                                                styles.versusGameChartContainer
+                                            }
                                         >
-                                            <Text
-                                                style={styles.noneWinsInfoText}
+                                            <View
+                                                style={[
+                                                    styles.noneWinsView,
+                                                    {
+                                                        width: wp(82),
+                                                        borderTopRightRadius: hp(
+                                                            1
+                                                        ),
+                                                        borderBottomRightRadius: hp(
+                                                            1
+                                                        )
+                                                    }
+                                                ]}
                                             >
-                                                Henüz kazanan yok, hadi bunu
-                                                değiştir!
+                                                <Text
+                                                    style={
+                                                        styles.noneWinsInfoText
+                                                    }
+                                                >
+                                                    Henüz kazanan yok, hadi bunu
+                                                    değiştir!
+                                                </Text>
+                                            </View>
+                                            <Text
+                                                style={styles.yourWinsCounter}
+                                            >
+                                                {
+                                                    this.state
+                                                        .playerFriendMatchWinCount
+                                                }
+                                            </Text>
+                                            <Text
+                                                style={
+                                                    styles.opponentWinsCounter
+                                                }
+                                            >
+                                                {
+                                                    this.state
+                                                        .opponentFriendMatchWinCount
+                                                }
                                             </Text>
                                         </View>
-                                        <Text
-                                            style={styles.yourWinsCounter}
-                                        >
-                                            {
-                                                this.state
-                                                    .playerFriendMatchWinCount
-                                            }
-                                        </Text>
-                                        <Text
-                                            style={
-                                                styles.opponentWinsCounter
-                                            }
-                                        >
-                                            {
-                                                this.state
-                                                    .opponentFriendMatchWinCount
-                                            }
-                                        </Text>
-                                    </View>
-                                )}
+                                    )}
                                 {this.state.playerFriendMatchWinCount > 0 &&
                                     this.state.opponentFriendMatchWinCount >
                                         0 && (
@@ -763,8 +769,12 @@ class FriendGameStatsScreen extends React.Component {
                                                     styles.yourWinsView,
                                                     {
                                                         width: wp(82),
-                                                        borderTopRightRadius: hp(1),
-                                                        borderBottomRightRadius: hp(1)
+                                                        borderTopRightRadius: hp(
+                                                            1
+                                                        ),
+                                                        borderBottomRightRadius: hp(
+                                                            1
+                                                        )
                                                     }
                                                 ]}
                                             />
@@ -801,8 +811,12 @@ class FriendGameStatsScreen extends React.Component {
                                                     styles.opponentsWinsView,
                                                     {
                                                         width: wp(82),
-                                                        borderTopLeftRadius: hp(1),
-                                                        borderBottomLeftRadius: hp(1)
+                                                        borderTopLeftRadius: hp(
+                                                            1
+                                                        ),
+                                                        borderBottomLeftRadius: hp(
+                                                            1
+                                                        )
                                                     }
                                                 ]}
                                             />
@@ -936,7 +950,7 @@ class FriendGameStatsScreen extends React.Component {
                                 >
                                     {this.answerSwitcher(
                                         this.props.playerProps[
-                                            this.props.client.id
+                                            this.props.room.sessionId
                                         ].answers[
                                             this.state.questionPosition - 1
                                         ].correctAnswer
@@ -970,7 +984,7 @@ class FriendGameStatsScreen extends React.Component {
                                 >
                                     {this.answerSwitcher(
                                         this.props.playerProps[
-                                            this.props.client.id
+                                            this.props.room.sessionId
                                         ].answers[
                                             this.state.questionPosition - 1
                                         ].answer

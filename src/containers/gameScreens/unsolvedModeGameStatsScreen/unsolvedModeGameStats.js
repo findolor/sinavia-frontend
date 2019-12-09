@@ -61,10 +61,10 @@ class UnsolvedModeGameStats extends React.Component {
 
     async componentDidMount() {
         await this.loadScreen()
-        this.props.room.onMessage.add(message => {
+        this.props.room.onMessage(message => {
             this.chooseMessageAction(message)
         })
-        this.props.room.onError.add(err => console.log(err))
+        this.props.room.onError(err => console.log(err))
     }
 
     chooseMessageAction = message => {
@@ -240,7 +240,6 @@ class UnsolvedModeGameStats extends React.Component {
 
     mainScreenButtonOnPress = () => {
         this.props.room.leave()
-        this.props.client.close()
         navigationReset('main')
     }
 

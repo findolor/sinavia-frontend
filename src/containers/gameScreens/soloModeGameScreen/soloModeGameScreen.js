@@ -128,15 +128,39 @@ class SoloModeGameScreen extends React.Component {
         this.props.room.send({
             action: 'ready'
         })
-        this.props.room.onStateChange.add(state => {
+        this.props.room.onStateChange(state => {
             // We update the UI after state changes
             this.chooseStateAction(state.soloModeState)
         })
         // Joker messages come through here
-        this.props.room.onMessage.add(message => {
+        this.props.room.onMessage(message => {
             this.chooseMessageAction(message)
         })
-        this.props.room.onError.add(err => console.log(err))
+        this.props.room.onLeave(code => {
+            if (code === 1000) return
+            let that = this
+            console.log(code)
+            this.setState({
+                isQuitGameModalVisible: true,
+                visibleView: 'serverError'
+            })
+            setTimeout(function() {
+                that.props.room.leave()
+                navigationReset('main')
+            }, 3000)
+        })
+        this.props.room.onError(err => {
+            let that = this
+            console.log(err)
+            this.setState({
+                isQuitGameModalVisible: true,
+                visibleView: 'serverError'
+            })
+            setTimeout(function() {
+                that.props.room.leave()
+                navigationReset('main')
+            }, 3000)
+        })
     }
 
     componentWillUnmount() {
@@ -233,7 +257,6 @@ class SoloModeGameScreen extends React.Component {
                 // If the client hasn't answered any of the questions, we just navigate him to main screen
                 if (Object.keys(message.playerProps.answers).length === 0) {
                     this.shutdownGame()
-                    this.props.client.close()
                     this.props.room.leave()
                     navigationReset('main')
                     break
@@ -669,6 +692,27 @@ class SoloModeGameScreen extends React.Component {
         )
     }
 
+    serverError() {
+        return (
+            <View
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>Sunucu hatası</Text>
+                        <Text style={styles.areYouSureText}>
+                            Sonuç sayfasına yönlendirileceksin
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -693,17 +737,44 @@ class SoloModeGameScreen extends React.Component {
                                 </Text>
                             </View>
                             <View style={styles.answersContainer}>
-                                <View style={[styles.answerView, {backgroundColor: '#6AC259'}]}>
+                                <View
+                                    style={[
+                                        styles.answerView,
+                                        {
+                                            backgroundColor: '#6AC259',
+                                            borderColor: 'white',
+                                            borderWidth: 1
+                                        }
+                                    ]}
+                                >
                                     <Text style={styles.answersText}>
                                         {this.state.playerCorrect}
                                     </Text>
                                 </View>
-                                <View style={[styles.answerView, {backgroundColor: '#B72A2A'}]}>
+                                <View
+                                    style={[
+                                        styles.answerView,
+                                        {
+                                            backgroundColor: '#B72A2A',
+                                            borderColor: 'white',
+                                            borderWidth: 1
+                                        }
+                                    ]}
+                                >
                                     <Text style={styles.answersText}>
                                         {this.state.playerIncorrect}
                                     </Text>
                                 </View>
-                                <View style={[styles.answerView, {backgroundColor: '#3A52A3'}]}>
+                                <View
+                                    style={[
+                                        styles.answerView,
+                                        {
+                                            backgroundColor: '#3A52A3',
+                                            borderColor: 'white',
+                                            borderWidth: 1
+                                        }
+                                    ]}
+                                >
                                     <Text style={styles.answersText}>
                                         {this.state.playerUnanswered}
                                     </Text>
@@ -807,6 +878,8 @@ class SoloModeGameScreen extends React.Component {
                 >
                     {this.state.visibleView === 'quitGameModal' &&
                         this.quitGameModal()}
+                    {this.state.visibleView === 'serverError' &&
+                        this.serverError()}
                 </Modal>
                 <View style={styles.dummyButtonContainer}>
                     {this.state.start && (

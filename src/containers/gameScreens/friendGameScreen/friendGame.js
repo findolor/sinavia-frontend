@@ -139,15 +139,32 @@ class FriendGame extends React.Component {
         this.props.room.send({
             action: 'ready'
         })
-        this.props.room.onStateChange.add(state => {
+        this.props.room.onStateChange(state => {
             // We update the UI after state changes
             this.chooseStateAction(state.friendState)
         })
         // Joker messages come through here
-        this.props.room.onMessage.add(message => {
+        this.props.room.onMessage(message => {
             this.chooseMessageAction(message)
         })
-        this.props.room.onError.add(err => console.log(err))
+        this.props.room.onLeave(code => {
+            let that = this
+            console.log(code)
+            this.setState({isQuitGameModalVisible: true, visibleView: 'serverError'})
+            setTimeout(function(){
+                that.props.room.leave()
+                navigationReset('main')
+            }, 3000)
+        })
+        this.props.room.onError(err => {
+            let that = this
+            console.log(err)
+            this.setState({isQuitGameModalVisible: true, visibleView: 'serverError'})
+            setTimeout(function(){
+                that.props.room.leave()
+                navigationReset('main')
+            }, 3000)
+        })
     }
 
     componentWillUnmount() {
@@ -276,7 +293,6 @@ class FriendGame extends React.Component {
                 ) {
                     this.setState({isQuitGameModalVisible: true, visibleView: 'opponentLeaveNoAnswer'})
                     this.shutdownGame()
-                    this.props.client.close()
                     setTimeout(() => {
                         that.props.room.leave(),
                             navigationReset('main')
@@ -312,7 +328,6 @@ class FriendGame extends React.Component {
                 ) {
                     this.shutdownGame()
                     this.props.room.leave()
-                    this.props.client.close()
                     navigationReset('main')
                     break
                 }
@@ -378,7 +393,7 @@ class FriendGame extends React.Component {
                 if (
                     this.state.isSeeOpponentAnswerJokerActive &&
                     // We check if the answer is from the opponent, if not we don't proceed
-                    friendState.playerProps[this.props.client.id].answers[
+                    friendState.playerProps[this.props.room.sessionId].answers[
                         this.state.questionNumber
                     ] === undefined
                 ) {
@@ -429,7 +444,7 @@ class FriendGame extends React.Component {
 
     updatePlayerResults = () => {
         // Player answers to the question
-        const answers = this.state.playerProps[this.props.client.id].answers
+        const answers = this.state.playerProps[this.props.room.sessionId].answers
         const answersOpponent = this.state.playerProps[this.state.opponentId]
             .answers
 
@@ -815,6 +830,25 @@ class FriendGame extends React.Component {
         )
     }
 
+    serverError() {
+        return (
+            <View
+                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>
+                            Sunucu hatası
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            Sonuç sayfasına yönlendirileceksin
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     quitGameModal() {
         return (
             <View
@@ -878,17 +912,20 @@ class FriendGame extends React.Component {
                                 </Text>
                             </View>
                             <View style={styles.answersContainer}>
-                                <View style={[styles.answerView, {backgroundColor: '#6AC259'}]}>
+                                <View style={[styles.answerView, {backgroundColor: '#6AC259', borderColor: 'white',
+                                            borderWidth: 1}]}>
                                     <Text style={styles.answersText}>
                                         {this.state.playerOneCorrect}
                                     </Text>
                                 </View>
-                                <View style={[styles.answerView, {backgroundColor: '#B72A2A'}]}>
+                                <View style={[styles.answerView, {backgroundColor: '#B72A2A', borderColor: 'white',
+                                            borderWidth: 1}]}>
                                     <Text style={styles.answersText}>
                                         {this.state.playerOneIncorrect}
                                     </Text>
                                 </View>
-                                <View style={[styles.answerView, {backgroundColor: '#3A52A3'}]}>
+                                <View style={[styles.answerView, {backgroundColor: '#3A52A3', borderColor: 'white',
+                                            borderWidth: 1}]}>
                                     <Text style={styles.answersText}>
                                         {this.state.playerOneUnanswered}
                                     </Text>
@@ -1021,6 +1058,8 @@ class FriendGame extends React.Component {
                     this.opponentLeaveAfterAnswer()}
                     {this.state.visibleView === 'quitGameModal' &&
                     this.quitGameModal()}
+                    {this.state.visibleView === 'serverError' &&
+                    this.serverError()}
                 </Modal>
                 <View style={styles.dummyButtonContainer}>
                     {this.state.start && (

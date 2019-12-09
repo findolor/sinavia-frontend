@@ -445,18 +445,19 @@ class Notifications extends React.Component {
 
     acceptGameRequestOnPress = (notification, notificationIndex) => {
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
-        this.client.onOpen.add(() => {
-            // ids will come from the notification
-            // or we can put it inside the model???
-            this.room = this.client.join('friendSoloRoom', {
+        // ids will come from the notification
+        // or we can put it inside the model???
+        this.client
+            .create('friendSoloRoom', {
                 databaseId: this.props.clientDBId,
                 ongoingMatchId: notification.notificationData.ongoingMatchId,
                 examId: notification.notificationData.examId,
                 courseId: notification.notificationData.courseId,
                 subjectId: notification.notificationData.subjectId
             })
+            .then(room => {
+                this.room = room
 
-            this.room.onJoin.add(() => {
                 notification.read = true
                 notification.notificationData = JSON.stringify(
                     notification.notificationData
@@ -478,7 +479,9 @@ class Notifications extends React.Component {
                         .profilePicture
                 })
             })
-        })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     rejectGameRequestOnPress = (notification, notificationIndex) => {
@@ -672,19 +675,35 @@ class Notifications extends React.Component {
                                         <View
                                             style={styles.userPicContainerInRow}
                                         >
-                                            <Image
-                                                source={{
-                                                    uri: item.profilePicture
-                                                }}
-                                                style={styles.userPic}
-                                            />
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    this.friendshipAcceptedOnPress(
+                                                        item.id
+                                                    )
+                                                }
+                                            >
+                                                <Image
+                                                    source={{
+                                                        uri: item.profilePicture
+                                                    }}
+                                                    style={styles.userPic}
+                                                />
+                                            </TouchableOpacity>
                                         </View>
                                         <View style={styles.nameContainer}>
-                                            <Text style={styles.nameText}>
-                                                {item.name +
-                                                    ' ' +
-                                                    item.lastname}
-                                            </Text>
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    this.friendshipAcceptedOnPress(
+                                                        item.id
+                                                    )
+                                                }
+                                            >
+                                                <Text style={styles.nameText}>
+                                                    {item.name +
+                                                        ' ' +
+                                                        item.lastname}
+                                                </Text>
+                                            </TouchableOpacity>
                                         </View>
                                         <View
                                             style={

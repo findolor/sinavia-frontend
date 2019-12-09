@@ -92,8 +92,7 @@ class CreateGroupRoom extends React.Component {
                 courseId: this.props.calculateContentIds.courseId,
                 subjectId: this.props.calculateContentIds.subjectId,
                 databaseId: this.props.clientDBId,
-                roomCode: this.state.groupCode,
-                create: true
+                roomCode: this.state.groupCode
             })
             .then(room => {
                 this.room = room
