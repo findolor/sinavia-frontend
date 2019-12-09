@@ -137,15 +137,32 @@ class RankedGame extends React.Component {
         this.props.room.send({
             action: 'ready'
         })
-        this.props.room.onStateChange.add(state => {
+        this.props.room.onStateChange(state => {
             // We update the UI after state changes
             this.chooseStateAction(state.rankedState)
         })
         // Joker messages come through here
-        this.props.room.onMessage.add(message => {
+        this.props.room.onMessage(message => {
             this.chooseMessageAction(message)
         })
-        this.props.room.onError.add(err => console.log(err))
+        this.props.room.onLeave(code => {
+            if(code === 1000) return
+            let that = this
+            this.setState({isQuitGameModalVisible: true, visibleView: 'serverError'})
+            setTimeout(function(){
+                that.props.room.leave()
+                navigationReset('main')
+            }, 3000)
+        })
+        this.props.room.onError(err => {
+            let that = this
+            console.log(err)
+            this.setState({isQuitGameModalVisible: true, visibleView: 'serverError'})
+            setTimeout(function(){
+                that.props.room.leave()
+                navigationReset('main')
+            }, 3000)
+        })
     }
 
     checkJokerAmount = () => {
@@ -268,11 +285,10 @@ class RankedGame extends React.Component {
                 )
                 {
                     this.setState({isQuitGameModalVisible: true, visibleView: 'opponentLeaveNoAnswer'})
-                    this.props.updateTotalPoints(100),
-                        this.shutdownGame(),
-                        this.props.client.close(),
+                    this.props.updateTotalPoints(100)
+                    this.shutdownGame()
                     setTimeout(function(){
-                            that.props.room.leave(),
+                            that.props.room.leave()
                             navigationReset('main')
                     }, 3000)
                     break
@@ -315,7 +331,6 @@ class RankedGame extends React.Component {
                         .length === 0
                 ) {
                     this.shutdownGame()
-                    this.props.client.close()
                     this.props.room.leave()
                     navigationReset('main')
                     break
@@ -378,7 +393,7 @@ class RankedGame extends React.Component {
                 if (
                     this.state.isSeeOpponentAnswerJokerActive &&
                     // We check if the answer is from the opponent, if not we don't proceed
-                    rankedState.playerProps[this.props.client.id].answers[
+                    rankedState.playerProps[this.props.room.sessionId].answers[
                         this.state.questionNumber
                     ] === undefined
                 ) {
@@ -428,7 +443,7 @@ class RankedGame extends React.Component {
 
     updatePlayerResults = () => {
         // Player answers to the question
-        const answers = this.state.playerProps[this.props.client.id].answers
+        const answers = this.state.playerProps[this.props.room.sessionId].answers
         const answersOpponent = this.state.playerProps[this.state.opponentId]
             .answers
 
@@ -776,6 +791,25 @@ class RankedGame extends React.Component {
         })
     }
 
+    serverError() {
+        return (
+            <View
+                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>
+                            Sunucu hatası
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            Ana sayfaya yönlendirileceksin
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     opponentLeaveNoAnswer() {
         return (
             <View
@@ -1022,6 +1056,9 @@ class RankedGame extends React.Component {
                     this.opponentLeaveAfterAnswer()}
                     {this.state.visibleView === 'quitGameModal' &&
                     this.quitGameModal()}
+                    {this.state.visibleView === 'serverError' &&
+                    this.serverError()
+                    }
                 </Modal>
                 <View style={styles.dummyButtonContainer}>
                     {this.state.start && (

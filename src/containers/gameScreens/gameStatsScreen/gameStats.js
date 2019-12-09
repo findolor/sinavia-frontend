@@ -123,10 +123,13 @@ class GameStatsScreen extends React.Component {
 
     async componentDidMount() {
         await this.loadScreen()
-        this.props.room.onMessage.add(message => {
+        this.props.room.onMessage(message => {
             this.chooseMessageAction(message)
         })
-        this.props.room.onError.add(err => console.log(err))
+        this.props.room.onLeave(code => {
+            console.log(code)
+        })
+        this.props.room.onError(err => console.log(err))
     }
 
     chooseMessageAction = message => {
@@ -194,7 +197,7 @@ class GameStatsScreen extends React.Component {
                     this.setState({ matchInformation: playerProps[element] })
                     return
                 }
-                if (this.props.client.id !== element) {
+                if (this.props.room.sessionId !== element) {
                     opponentUsername = playerProps[element].username
                     opponentProfilePicture = playerProps[element].profilePicture
                     playerProps[element].answers.forEach(result => {
@@ -483,6 +486,7 @@ class GameStatsScreen extends React.Component {
                 action: 'replay'
             })
         } else {
+            this.setState({ isReplayButtonDisabled: true })
             this.props.room.send({
                 action: 'replay'
             })
@@ -512,7 +516,6 @@ class GameStatsScreen extends React.Component {
 
     mainScreenButtonOnPress = () => {
         this.props.room.leave()
-        this.props.client.close()
         navigationReset('main')
     }
 
@@ -674,21 +677,23 @@ class GameStatsScreen extends React.Component {
                     <View style={styles.resultsContainer}>
                         {this.state.levelUp ? (
                             <View style={styles.levelUpContainer}>
-                                <Text style={styles.levelUpText}>
-                                    SÜPER!
-                                </Text>
-                                <Text style={[styles.levelUpText2, {fontSize: hp(8)}]}>
+                                <Text style={styles.levelUpText}>SÜPER!</Text>
+                                <Text
+                                    style={[
+                                        styles.levelUpText2,
+                                        { fontSize: hp(8) }
+                                    ]}
+                                >
                                     {Math.floor(
-                                        levelFinder(this.state.oldPoints)
-                                            .level
-                                    )+1}
+                                        levelFinder(this.state.oldPoints).level
+                                    ) + 1}
                                 </Text>
                                 <Text style={styles.levelUpText2}>
                                     seviyeye ulaştın
                                 </Text>
                             </View>
                         ) : (
-                            <View style={{alignItems: 'center'}}>
+                            <View style={{ alignItems: 'center' }}>
                                 <View style={styles.results1Container}>
                                     <View style={styles.user1Container}>
                                         <Image
@@ -704,9 +709,16 @@ class GameStatsScreen extends React.Component {
                                     </View>
                                     <View style={styles.answersContainer}>
                                         <View style={styles.dividedAnswer}>
-                                            <View style={styles.playerOneAnswerView}>
+                                            <View
+                                                style={
+                                                    styles.playerOneAnswerView
+                                                }
+                                            >
                                                 <Text style={styles.numbers}>
-                                                    {this.state.correctAnswerNumber}
+                                                    {
+                                                        this.state
+                                                            .correctAnswerNumber
+                                                    }
                                                 </Text>
                                             </View>
                                             <View style={styles.answerIconView}>
@@ -715,7 +727,11 @@ class GameStatsScreen extends React.Component {
                                                     style={styles.answerImg}
                                                 />
                                             </View>
-                                            <View style={styles.playerTwoAnswerView}>
+                                            <View
+                                                style={
+                                                    styles.playerTwoAnswerView
+                                                }
+                                            >
                                                 <Text style={styles.numbers}>
                                                     {
                                                         this.state
@@ -725,7 +741,11 @@ class GameStatsScreen extends React.Component {
                                             </View>
                                         </View>
                                         <View style={styles.dividedAnswer}>
-                                            <View style={styles.playerOneAnswerView}>
+                                            <View
+                                                style={
+                                                    styles.playerOneAnswerView
+                                                }
+                                            >
                                                 <Text style={styles.numbers}>
                                                     {
                                                         this.state
@@ -739,7 +759,11 @@ class GameStatsScreen extends React.Component {
                                                     style={styles.answerImg}
                                                 />
                                             </View>
-                                            <View style={styles.playerTwoAnswerView}>
+                                            <View
+                                                style={
+                                                    styles.playerTwoAnswerView
+                                                }
+                                            >
                                                 <Text style={styles.numbers}>
                                                     {
                                                         this.state
@@ -749,7 +773,11 @@ class GameStatsScreen extends React.Component {
                                             </View>
                                         </View>
                                         <View style={styles.dividedAnswer}>
-                                            <View style={styles.playerOneAnswerView}>
+                                            <View
+                                                style={
+                                                    styles.playerOneAnswerView
+                                                }
+                                            >
                                                 <Text style={styles.numbers}>
                                                     {
                                                         this.state
@@ -763,7 +791,11 @@ class GameStatsScreen extends React.Component {
                                                     style={styles.answerImg}
                                                 />
                                             </View>
-                                            <View style={styles.playerTwoAnswerView}>
+                                            <View
+                                                style={
+                                                    styles.playerTwoAnswerView
+                                                }
+                                            >
                                                 <Text style={styles.numbers}>
                                                     {
                                                         this.state
@@ -1002,7 +1034,7 @@ class GameStatsScreen extends React.Component {
                                 >
                                     {this.answerSwitcher(
                                         this.props.playerProps[
-                                            this.props.client.id
+                                            this.props.room.sessionId
                                         ].answers[
                                             this.state.questionPosition - 1
                                         ].correctAnswer
@@ -1036,7 +1068,7 @@ class GameStatsScreen extends React.Component {
                                 >
                                     {this.answerSwitcher(
                                         this.props.playerProps[
-                                            this.props.client.id
+                                            this.props.room.sessionId
                                         ].answers[
                                             this.state.questionPosition - 1
                                         ].answer
