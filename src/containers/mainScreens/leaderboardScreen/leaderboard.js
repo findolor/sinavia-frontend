@@ -3,22 +3,20 @@ import {
     Image,
     ImageBackground,
     FlatList,
-    Modal,
     ScrollView,
-    StatusBar,
     Text,
     TouchableOpacity,
     View
 } from 'react-native'
 import { connect } from 'react-redux'
 import { leaderboardServices } from '../../../sagas/leaderboard/'
+import { getUserService } from '../../../sagas/user/fetchUser'
+import { opponentActions } from '../../../redux/opponents/actions'
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
-import {
-    heightPercentageToDP as hp,
-    widthPercentageToDP as wp
-} from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styles from './style'
 import * as Animatable from 'react-native-animatable'
+import { navigationPush, SCENE_KEYS } from '../../../services/navigationService'
 
 import FIRST_TITLE from '../../../assets/firstTitle.png'
 import SECOND_TITLE from '../../../assets/secondTitle.png'
@@ -58,7 +56,9 @@ class Leaderboard extends React.Component {
             originalGlobalLeaderboardList: [],
             originalFriendsLeaderboardList: [],
             // Last update date
-            hoursPassedSinceUpdate: 1
+            hoursPassedSinceUpdate: 1,
+            // All the users ids
+            allUserIds: []
         }
     }
 
@@ -98,11 +98,13 @@ class Leaderboard extends React.Component {
         let userProfilePictures = []
         let topTenProfilePictures = []
         let remainingProfilePictures = []
+        let userIds = []
 
         userList.forEach(leaderboardEntity => {
             userUsernames.push(leaderboardEntity.username)
             userPoints.push(leaderboardEntity.totalPoints)
             userProfilePictures.push(leaderboardEntity.profilePicture)
+            userIds.push(leaderboardEntity.id)
         })
 
         // Getting the top ten names to a list and save the rest
@@ -144,7 +146,8 @@ class Leaderboard extends React.Component {
             topTenProfilePictures: topTenProfilePictures,
             remainingProfilePictures: remainingProfilePictures,
             remainingUsersFlatList: remainingUsersFlatList,
-            clientRanking: clientIndex + 1
+            clientRanking: clientIndex + 1,
+            allUserIds: userIds
         })
     }
 
@@ -423,6 +426,22 @@ class Leaderboard extends React.Component {
         }
     }
 
+    userOnPress = userId => {
+        if (userId === this.props.clientDBId)
+            navigationPush(SCENE_KEYS.mainScreens.profile)
+        else
+            getUserService(this.props.clientToken, userId).then(
+                userInformation => {
+                    this.props.getOpponentFullInformation(
+                        userInformation,
+                        this.props.clientDBId,
+                        this.props.clientToken,
+                        false
+                    )
+                }
+            )
+    }
+
     // TODO CHANGE THE TOP THEN TO FLAT LIST
     // COMMENT OUT THE CODE HERE AND ADD THE NEW ONE
     // WILL USE THE OLD CODE FOR HELP LATER
@@ -534,49 +553,65 @@ class Leaderboard extends React.Component {
                                         />
                                     )}
                                 </View>
-                                <Animatable.View
-                                    style={styles.leaderImageContainer}
-                                    useNativeDriver={true}
-                                    animation="zoomIn"
-                                    duration={600}
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        this.userOnPress(
+                                            this.state.allUserIds[0]
+                                        )
+                                    }
                                 >
-                                    <ImageBackground
-                                        source={{
-                                            uri:
-                                                this.state
-                                                    .topTenProfilePictures[0] !==
-                                                undefined
-                                                    ? this.state
-                                                          .topTenProfilePictures[0]
-                                                    : null
-                                        }}
-                                        style={styles.firstUserPic}
-                                        imageStyle={{
-                                            borderRadius: hp(100),
-                                            borderWidth: hp(0.4),
-                                            borderColor: '#FF9900'
-                                        }}
+                                    <Animatable.View
+                                        style={styles.leaderImageContainer}
+                                        useNativeDriver={true}
+                                        animation="zoomIn"
+                                        duration={600}
                                     >
-                                        <Animatable.View
-                                            useNativeDriver={true}
-                                            animation="slideInDown"
-                                            duration={1250}
-                                            delay={200}
+                                        <ImageBackground
+                                            source={{
+                                                uri:
+                                                    this.state
+                                                        .topTenProfilePictures[0] !==
+                                                    undefined
+                                                        ? this.state
+                                                              .topTenProfilePictures[0]
+                                                        : null
+                                            }}
+                                            style={styles.firstUserPic}
+                                            imageStyle={{
+                                                borderRadius: hp(100),
+                                                borderWidth: hp(0.4),
+                                                borderColor: '#FF9900'
+                                            }}
                                         >
-                                            <Image
-                                                source={FIRST_TITLE}
-                                                style={styles.firstUserTitlePic}
-                                            />
-                                        </Animatable.View>
-                                        <View style={styles.firstUserOrderView}>
-                                            <Text
-                                                style={styles.topTenOrderNumber}
+                                            <Animatable.View
+                                                useNativeDriver={true}
+                                                animation="slideInDown"
+                                                duration={1250}
+                                                delay={200}
                                             >
-                                                1
-                                            </Text>
-                                        </View>
-                                    </ImageBackground>
-                                </Animatable.View>
+                                                <Image
+                                                    source={FIRST_TITLE}
+                                                    style={
+                                                        styles.firstUserTitlePic
+                                                    }
+                                                />
+                                            </Animatable.View>
+                                            <View
+                                                style={
+                                                    styles.firstUserOrderView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.topTenOrderNumber
+                                                    }
+                                                >
+                                                    1
+                                                </Text>
+                                            </View>
+                                        </ImageBackground>
+                                    </Animatable.View>
+                                </TouchableOpacity>
                                 <View
                                     style={[
                                         styles.dropdownContainer,
@@ -623,7 +658,20 @@ class Leaderboard extends React.Component {
                                     animation="fadeIn"
                                     duration={600}
                                 >
-                                    <View style={styles.topTenUserPicContainer}>
+                                    <TouchableOpacity
+                                        style={styles.topTenUserPicContainer}
+                                        onPress={() =>
+                                            this.userOnPress(
+                                                this.state.allUserIds[1]
+                                            )
+                                        }
+                                        disabled={
+                                            this.state.allUserIds[1] !==
+                                            undefined
+                                                ? false
+                                                : true
+                                        }
+                                    >
                                         <ImageBackground
                                             source={{
                                                 uri:
@@ -663,7 +711,7 @@ class Leaderboard extends React.Component {
                                                 </Text>
                                             </View>
                                         </ImageBackground>
-                                    </View>
+                                    </TouchableOpacity>
                                     <View
                                         style={styles.topTenUserNameContainer}
                                     >
@@ -695,7 +743,20 @@ class Leaderboard extends React.Component {
                                     animation="fadeIn"
                                     duration={600}
                                 >
-                                    <View style={styles.topTenUserPicContainer}>
+                                    <TouchableOpacity
+                                        style={styles.topTenUserPicContainer}
+                                        onPress={() =>
+                                            this.userOnPress(
+                                                this.state.allUserIds[2]
+                                            )
+                                        }
+                                        disabled={
+                                            this.state.allUserIds[2] !==
+                                            undefined
+                                                ? false
+                                                : true
+                                        }
+                                    >
                                         <ImageBackground
                                             source={{
                                                 uri:
@@ -735,7 +796,7 @@ class Leaderboard extends React.Component {
                                                 </Text>
                                             </View>
                                         </ImageBackground>
-                                    </View>
+                                    </TouchableOpacity>
                                     <View
                                         style={styles.topTenUserNameContainer}
                                     >
@@ -767,7 +828,20 @@ class Leaderboard extends React.Component {
                                     animation="fadeIn"
                                     duration={600}
                                 >
-                                    <View style={styles.topTenUserPicContainer}>
+                                    <TouchableOpacity
+                                        style={styles.topTenUserPicContainer}
+                                        onPress={() =>
+                                            this.userOnPress(
+                                                this.state.allUserIds[3]
+                                            )
+                                        }
+                                        disabled={
+                                            this.state.allUserIds[3] !==
+                                            undefined
+                                                ? false
+                                                : true
+                                        }
+                                    >
                                         <ImageBackground
                                             source={{
                                                 uri:
@@ -801,7 +875,7 @@ class Leaderboard extends React.Component {
                                                 </Text>
                                             </View>
                                         </ImageBackground>
-                                    </View>
+                                    </TouchableOpacity>
                                     <View
                                         style={styles.topTenUserNameContainer}
                                     >
@@ -835,7 +909,20 @@ class Leaderboard extends React.Component {
                                     animation="fadeIn"
                                     duration={600}
                                 >
-                                    <View style={styles.topTenUserPicContainer}>
+                                    <TouchableOpacity
+                                        style={styles.topTenUserPicContainer}
+                                        onPress={() =>
+                                            this.userOnPress(
+                                                this.state.allUserIds[4]
+                                            )
+                                        }
+                                        disabled={
+                                            this.state.allUserIds[4] !==
+                                            undefined
+                                                ? false
+                                                : true
+                                        }
+                                    >
                                         <ImageBackground
                                             source={{
                                                 uri:
@@ -869,7 +956,7 @@ class Leaderboard extends React.Component {
                                                 </Text>
                                             </View>
                                         </ImageBackground>
-                                    </View>
+                                    </TouchableOpacity>
                                     <View
                                         style={styles.topTenUserNameContainer}
                                     >
@@ -901,7 +988,20 @@ class Leaderboard extends React.Component {
                                     animation="fadeIn"
                                     duration={600}
                                 >
-                                    <View style={styles.topTenUserPicContainer}>
+                                    <TouchableOpacity
+                                        style={styles.topTenUserPicContainer}
+                                        onPress={() =>
+                                            this.userOnPress(
+                                                this.state.allUserIds[5]
+                                            )
+                                        }
+                                        disabled={
+                                            this.state.allUserIds[5] !==
+                                            undefined
+                                                ? false
+                                                : true
+                                        }
+                                    >
                                         <ImageBackground
                                             source={{
                                                 uri:
@@ -935,7 +1035,7 @@ class Leaderboard extends React.Component {
                                                 </Text>
                                             </View>
                                         </ImageBackground>
-                                    </View>
+                                    </TouchableOpacity>
                                     <View
                                         style={styles.topTenUserNameContainer}
                                     >
@@ -967,7 +1067,20 @@ class Leaderboard extends React.Component {
                                     animation="fadeIn"
                                     duration={600}
                                 >
-                                    <View style={styles.topTenUserPicContainer}>
+                                    <TouchableOpacity
+                                        style={styles.topTenUserPicContainer}
+                                        onPress={() =>
+                                            this.userOnPress(
+                                                this.state.allUserIds[6]
+                                            )
+                                        }
+                                        disabled={
+                                            this.state.allUserIds[6] !==
+                                            undefined
+                                                ? false
+                                                : true
+                                        }
+                                    >
                                         <ImageBackground
                                             source={{
                                                 uri:
@@ -1001,7 +1114,7 @@ class Leaderboard extends React.Component {
                                                 </Text>
                                             </View>
                                         </ImageBackground>
-                                    </View>
+                                    </TouchableOpacity>
                                     <View
                                         style={styles.topTenUserNameContainer}
                                     >
@@ -1035,7 +1148,20 @@ class Leaderboard extends React.Component {
                                     animation="fadeIn"
                                     duration={600}
                                 >
-                                    <View style={styles.topTenUserPicContainer}>
+                                    <TouchableOpacity
+                                        style={styles.topTenUserPicContainer}
+                                        onPress={() =>
+                                            this.userOnPress(
+                                                this.state.allUserIds[7]
+                                            )
+                                        }
+                                        disabled={
+                                            this.state.allUserIds[7] !==
+                                            undefined
+                                                ? false
+                                                : true
+                                        }
+                                    >
                                         <ImageBackground
                                             source={{
                                                 uri:
@@ -1069,7 +1195,7 @@ class Leaderboard extends React.Component {
                                                 </Text>
                                             </View>
                                         </ImageBackground>
-                                    </View>
+                                    </TouchableOpacity>
                                     <View
                                         style={styles.topTenUserNameContainer}
                                     >
@@ -1101,7 +1227,20 @@ class Leaderboard extends React.Component {
                                     animation="fadeIn"
                                     duration={600}
                                 >
-                                    <View style={styles.topTenUserPicContainer}>
+                                    <TouchableOpacity
+                                        style={styles.topTenUserPicContainer}
+                                        onPress={() =>
+                                            this.userOnPress(
+                                                this.state.allUserIds[8]
+                                            )
+                                        }
+                                        disabled={
+                                            this.state.allUserIds[8] !==
+                                            undefined
+                                                ? false
+                                                : true
+                                        }
+                                    >
                                         <ImageBackground
                                             source={{
                                                 uri:
@@ -1135,7 +1274,7 @@ class Leaderboard extends React.Component {
                                                 </Text>
                                             </View>
                                         </ImageBackground>
-                                    </View>
+                                    </TouchableOpacity>
                                     <View
                                         style={styles.topTenUserNameContainer}
                                     >
@@ -1167,7 +1306,20 @@ class Leaderboard extends React.Component {
                                     animation="fadeIn"
                                     duration={600}
                                 >
-                                    <View style={styles.topTenUserPicContainer}>
+                                    <TouchableOpacity
+                                        style={styles.topTenUserPicContainer}
+                                        onPress={() =>
+                                            this.userOnPress(
+                                                this.state.allUserIds[9]
+                                            )
+                                        }
+                                        disabled={
+                                            this.state.allUserIds[9] !==
+                                            undefined
+                                                ? false
+                                                : true
+                                        }
+                                    >
                                         <ImageBackground
                                             source={{
                                                 uri:
@@ -1201,7 +1353,7 @@ class Leaderboard extends React.Component {
                                                 </Text>
                                             </View>
                                         </ImageBackground>
-                                    </View>
+                                    </TouchableOpacity>
                                     <View
                                         style={styles.topTenUserNameContainer}
                                     >
@@ -1316,6 +1468,21 @@ const mapStateToProps = state => ({
     friendIds: state.friends.friendIds
 })
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+    getOpponentFullInformation: (
+        opponentInformation,
+        clientId,
+        clientToken,
+        isWithSearchBar
+    ) =>
+        dispatch(
+            opponentActions.getOpponentFullInformation(
+                opponentInformation,
+                clientId,
+                clientToken,
+                isWithSearchBar
+            )
+        )
+})
 
-export default connect(mapStateToProps, null)(Leaderboard)
+export default connect(mapStateToProps, mapDispatchToProps)(Leaderboard)

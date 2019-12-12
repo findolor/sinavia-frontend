@@ -182,7 +182,7 @@ class Profile extends React.Component {
                         <View style={styles.textInputView}>
                             <TextInput
                                 style={styles.searchBarText}
-                                placeholder="@kullanıcıadı ile ara..."
+                                placeholder="Kullanıcı adı ile ara..."
                                 placeholderTextColor={'#7B7B7B'}
                                 onChangeText={text =>
                                     this.setState({ searchText: text })

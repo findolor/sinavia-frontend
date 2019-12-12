@@ -7,8 +7,10 @@ import DeviceInfo from 'react-native-device-info'
 import {
     apiServicesTree,
     makePostRequest,
-    makeGetRequest
+    makeGetRequest,
+    makePutRequest
 } from '../../services/apiServices'
+import { fcmService } from '../../services/fcmService'
 
 export function* createUser(action) {
     yield put({
@@ -84,22 +86,6 @@ export function* createUser(action) {
             payload: res
         })
 
-        // This will be used later on
-        /* // We get the user's game energy info
-        let gameEnergy = yield call(
-            makeGetRequest,
-            apiServicesTree.gameEnergyApi.getGameEnergy,
-            {
-                clientId: response.id,
-                clientToken: response.token
-            }
-        )
-        // Saving the energy amount to redux
-        yield put({
-            type: appTypes.SAVE_ENERGY_AMOUNT,
-            payload: gameEnergy.energyAmount
-        }) */
-
         // Getting the user joker info from db
         const userJokers = yield call(
             makeGetRequest,
@@ -113,6 +99,20 @@ export function* createUser(action) {
         yield put({
             type: clientTypes.SAVE_USER_JOKERS,
             payload: userJokers
+        })
+
+        // We check if client has permissions for fcm
+        yield call(fcmService.checkPermissions)
+        // We get our fcm token and save it
+        const fcmToken = yield call(fcmService.getFcmToken)
+        deviceStorage.saveItemToStorage('fcmToken', fcmToken)
+        // We add the token to our client info
+        action.payload.fcmToken = fcmToken
+        delete action.payload.password
+        // We send a request to api to save our fcm token
+        yield call(makePutRequest, apiServicesTree.fcmTokenApi.updateFCMToken, {
+            userInformation: action.payload,
+            clientToken: res.token
         })
 
         // This action will navigate to main screen
