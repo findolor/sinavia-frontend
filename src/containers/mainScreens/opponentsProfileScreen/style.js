@@ -399,5 +399,86 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-start'
+    },
+    reportIconView: {
+        position: 'absolute',
+        height: hp(5),
+        width: wp(9),
+        justifyContent: 'flex-end',
+        alignItems: 'flex-start',
+        left: wp(81)
+    },
+    reportIcon: {
+        resizeMode: 'contain',
+        height: hp(3.5)
+    },
+    reportView: {
+        height: hp(30),
+        width: wp(90),
+        borderRadius: hp(3),
+        borderColor: '#00D9EF',
+        borderWidth: hp(0.3),
+        marginTop: hp(1)
+    },
+    reportViewHeader: {
+        height: hp(4.5),
+        width: wp(90),
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+    reportOptionsView: {
+        height: hp(19),
+        width: wp(90),
+        justifyContent: 'space-evenly'
+    },
+    reportButtonView: {
+        height: hp(6.5),
+        width: wp(90),
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    reportOptionView: {
+        height: hp(5),
+        width: wp(90),
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    checkBox: {
+        height: hp(4),
+        width: hp(4),
+        borderRadius: hp(0.5),
+        borderWidth: hp(0.3),
+        borderColor: '#FF9900',
+        marginLeft: wp(3),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    reportOptionText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(2.3),
+        color: '#000000',
+        marginLeft: wp(2)
+    },
+    reportHeaderText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(2.3),
+        color: '#000000'
+    },
+    reportButton: {
+        height: hp(4.5),
+        width: wp(30),
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: hp(0.5),
+        backgroundColor: '#FF9900'
+    },
+    reportButtonText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(2.3),
+        color: '#FFFFFF'
+    },
+    checkIcon: {
+        height: hp(2.5),
+        width: hp(2.5)
     }
 })
