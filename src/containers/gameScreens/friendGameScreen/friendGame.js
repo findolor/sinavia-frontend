@@ -915,17 +915,17 @@ class FriendGame extends React.Component {
                                 </Text>
                             </View>
                             <View style={styles.answersContainer}>
-                                <View style={[styles.answerView, {backgroundColor: '#6AC259'}]}>
+                                <View style={[styles.answerView, {backgroundColor: '#6AC259', borderColor: 'white', borderWidth: 1}]}>
                                     <Text style={styles.answersText}>
                                         {this.state.playerOneCorrect}
                                     </Text>
                                 </View>
-                                <View style={[styles.answerView, {backgroundColor: '#B72A2A'}]}>
+                                <View style={[styles.answerView, {backgroundColor: '#B72A2A', borderColor: 'white', borderWidth: 1}]}>
                                     <Text style={styles.answersText}>
                                         {this.state.playerOneIncorrect}
                                     </Text>
                                 </View>
-                                <View style={[styles.answerView, {backgroundColor: '#3A52A3'}]}>
+                                <View style={[styles.answerView, {backgroundColor: '#3A52A3', borderColor: 'white', borderWidth: 1}]}>
                                     <Text style={styles.answersText}>
                                         {this.state.playerOneUnanswered}
                                     </Text>
@@ -963,17 +963,17 @@ class FriendGame extends React.Component {
                                 </Text>
                             </View>
                             <View style={styles.answersContainer}>
-                                <View style={[styles.answerView, {backgroundColor: '#6AC259'}]}>
+                                <View style={[styles.answerView, {backgroundColor: '#6AC259', borderColor: 'white', borderWidth: 1}]}>
                                     <Text style={styles.answersText}>
                                         {this.state.playerTwoCorrect}
                                     </Text>
                                 </View>
-                                <View style={[styles.answerView, {backgroundColor: '#B72A2A'}]}>
+                                <View style={[styles.answerView, {backgroundColor: '#B72A2A', borderColor: 'white', borderWidth: 1}]}>
                                     <Text style={styles.answersText}>
                                         {this.state.playerTwoIncorrect}
                                     </Text>
                                 </View>
-                                <View style={[styles.answerView, {backgroundColor: '#3A52A3'}]}>
+                                <View style={[styles.answerView, {backgroundColor: '#3A52A3', borderColor: 'white', borderWidth: 1}]}>
                                     <Text style={styles.answersText}>
                                         {this.state.playerTwoUnanswered}
                                     </Text>

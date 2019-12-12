@@ -945,7 +945,11 @@ class GroupGame extends React.Component {
                                 <View
                                     style={[
                                         styles.answerView,
-                                        { backgroundColor: '#6AC259' }
+                                        {
+                                            backgroundColor: '#6AC259',
+                                            borderColor: 'white',
+                                            borderWidth: 1
+                                        }
                                     ]}
                                 >
                                     <Text style={styles.answersText}>
@@ -955,7 +959,11 @@ class GroupGame extends React.Component {
                                 <View
                                     style={[
                                         styles.answerView,
-                                        { backgroundColor: '#B72A2A' }
+                                        {
+                                            backgroundColor: '#B72A2A',
+                                            borderColor: 'white',
+                                            borderWidth: 1
+                                        }
                                     ]}
                                 >
                                     <Text style={styles.answersText}>
@@ -965,7 +973,11 @@ class GroupGame extends React.Component {
                                 <View
                                     style={[
                                         styles.answerView,
-                                        { backgroundColor: '#3A52A3' }
+                                        {
+                                            backgroundColor: '#3A52A3',
+                                            borderColor: 'white',
+                                            borderWidth: 1
+                                        }
                                     ]}
                                 >
                                     <Text style={styles.answersText}>
