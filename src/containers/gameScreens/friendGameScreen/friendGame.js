@@ -147,7 +147,25 @@ class FriendGame extends React.Component {
         this.props.room.onMessage.add(message => {
             this.chooseMessageAction(message)
         })
-        this.props.room.onError.add(err => console.log(err))
+        this.props.room.onError.add(err => {
+            let that = this
+            this.setState({isQuitGameModalVisible: true, visibleView: 'serverError'})
+            setTimeout(() => {
+                that.shutdownGame()
+                that.props.room.leave()
+                navigationReset('main')
+            }, 3000)
+        })
+        this.props.room.onLeave.add(res => {
+            let that = this
+            if(res.code === 1001) return
+            this.setState({isQuitGameModalVisible: true, visibleView: 'serverError'})
+            setTimeout(() => {
+                that.shutdownGame()
+                that.props.room.leave()
+                navigationReset('main')
+            }, 3000)
+        })
     }
 
     componentWillUnmount() {
@@ -815,6 +833,25 @@ class FriendGame extends React.Component {
         )
     }
 
+    serverError() {
+        return (
+            <View
+                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>
+                            Bağlantı hatası
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            Sonuç sayfasına yönlendirileceksin
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     quitGameModal() {
         return (
             <View
@@ -1021,6 +1058,8 @@ class FriendGame extends React.Component {
                     this.opponentLeaveAfterAnswer()}
                     {this.state.visibleView === 'quitGameModal' &&
                     this.quitGameModal()}
+                    {this.state.visibleView === 'serverError' &&
+                    this.serverError()}
                 </Modal>
                 <View style={styles.dummyButtonContainer}>
                     {this.state.start && (

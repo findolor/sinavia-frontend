@@ -159,12 +159,12 @@ class CreateGroupRoom extends React.Component {
 
         this.room.onError.add(error => {
             console.log(error)
-            this.backButtonOnPress()
+            this.shutdownRoutine()
         })
 
         this.room.onLeave.add(res => {
             if (res.code === 1001) return
-            this.backButtonOnPress()
+            this.shutdownRoutine()
         })
     }
 

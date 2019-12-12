@@ -55,18 +55,18 @@ class SoloModeLoadingScreen extends React.Component {
                 })
             }, 5000)
 
-            this.props.room.onError.add(error => {
+            this.room.onError.add(error => {
                 this.connectionErrorRoutine()
             })
 
-            this.props.room.onLeave.add(res => {
+            this.room.onLeave.add(res => {
                 this.connectionErrorRoutine()
             })
         })
     }
 
     connectionErrorRoutine = () => {
-        this.props.room.leave()
+        this.room.leave()
         clearTimeout(this.timeout)
         navigationReset('main')
     }

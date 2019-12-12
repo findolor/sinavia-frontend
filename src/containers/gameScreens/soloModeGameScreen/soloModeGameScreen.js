@@ -136,7 +136,31 @@ class SoloModeGameScreen extends React.Component {
         this.props.room.onMessage.add(message => {
             this.chooseMessageAction(message)
         })
-        this.props.room.onError.add(err => console.log(err))
+        this.props.room.onError.add(err => {
+            let that = this
+            this.setState({
+                isQuitGameModalVisible: true,
+                visibleView: 'serverError'
+            })
+            setTimeout(() => {
+                that.shutdownGame()
+                that.props.room.leave()
+                navigationReset('main')
+            }, 3000)
+        })
+        this.props.room.onLeave.add(res => {
+            let that = this
+            if (res.code === 1001) return
+            this.setState({
+                isQuitGameModalVisible: true,
+                visibleView: 'serverError'
+            })
+            setTimeout(() => {
+                that.shutdownGame()
+                that.props.room.leave()
+                navigationReset('main')
+            }, 3000)
+        })
     }
 
     componentWillUnmount() {
@@ -622,6 +646,29 @@ class SoloModeGameScreen extends React.Component {
         })
     }
 
+    serverError() {
+        return (
+            <View
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>
+                            Bağlantı hatası
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            Sonuç sayfasına yönlendirileceksin
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     quitGameModal() {
         return (
             <View
@@ -693,17 +740,32 @@ class SoloModeGameScreen extends React.Component {
                                 </Text>
                             </View>
                             <View style={styles.answersContainer}>
-                                <View style={[styles.answerView, {backgroundColor: '#6AC259'}]}>
+                                <View
+                                    style={[
+                                        styles.answerView,
+                                        { backgroundColor: '#6AC259' }
+                                    ]}
+                                >
                                     <Text style={styles.answersText}>
                                         {this.state.playerCorrect}
                                     </Text>
                                 </View>
-                                <View style={[styles.answerView, {backgroundColor: '#B72A2A'}]}>
+                                <View
+                                    style={[
+                                        styles.answerView,
+                                        { backgroundColor: '#B72A2A' }
+                                    ]}
+                                >
                                     <Text style={styles.answersText}>
                                         {this.state.playerIncorrect}
                                     </Text>
                                 </View>
-                                <View style={[styles.answerView, {backgroundColor: '#3A52A3'}]}>
+                                <View
+                                    style={[
+                                        styles.answerView,
+                                        { backgroundColor: '#3A52A3' }
+                                    ]}
+                                >
                                     <Text style={styles.answersText}>
                                         {this.state.playerUnanswered}
                                     </Text>
@@ -807,6 +869,8 @@ class SoloModeGameScreen extends React.Component {
                 >
                     {this.state.visibleView === 'quitGameModal' &&
                         this.quitGameModal()}
+                    {this.state.visibleView === 'serverError' &&
+                        this.serverError()}
                 </Modal>
                 <View style={styles.dummyButtonContainer}>
                     {this.state.start && (
