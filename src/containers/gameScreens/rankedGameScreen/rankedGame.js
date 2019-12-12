@@ -121,7 +121,9 @@ class RankedGame extends React.Component {
             secondJokerAmount: '',
             thirdJokerNameFirstWord: '',
             thirdJokerNameSecondWord: '',
-            thirdJokerAmount: ''
+            thirdJokerAmount: '',
+            // Server ping variable
+            isServerPinged: false
         }
     }
 
@@ -137,6 +139,12 @@ class RankedGame extends React.Component {
         this.props.room.send({
             action: 'ready'
         })
+
+        // We set ping intervals to check if we are still connected to the server
+        // This is used because with the current colyseus version this is not possible?
+        this.checkPingInterval = this.checkPingInterval()
+        this.pingInterval = this.pingInterval()
+        
         this.props.room.onStateChange.add(state => {
             // We update the UI after state changes
             this.chooseStateAction(state.rankedState)
@@ -164,6 +172,35 @@ class RankedGame extends React.Component {
                 navigationReset('main')
             }, 3000)
         })
+    }
+
+    // This timeout checks the ping variable every 20 seconds
+    // If the varible is false that means the connection has dropped
+    checkPingInterval = () => {
+        let that = this
+        return setInterval(() => {
+            if (this.state.isServerPinged)
+                this.setState({ isServerPinged: false })
+            else {
+                this.setState({
+                    isQuitGameModalVisible: true,
+                    visibleView: 'serverError'
+                })
+                setTimeout(() => {
+                    that.shutdownGame()
+                    that.props.room.leave()
+                    navigationReset('main')
+                }, 3000)
+            }
+        }, 15000)
+    }
+
+    // This interval pings the server every 10 seconds
+    pingInterval = () => {
+        let that = this
+        return setInterval(() => {
+            that.props.room.send({ action: 'ping' })
+        }, 10000)
     }
 
     checkJokerAmount = () => {
@@ -224,6 +261,8 @@ class RankedGame extends React.Component {
         clearTimeout(this.startTimeout)
         clearTimeout(this.updateTimeout)
         clearTimeout(this.finishedTimeout)
+        clearInterval(this.checkPingInterval)
+        clearInterval(this.pingInterval)
 
         // Clear room listeners
         this.props.room.removeAllListeners()
@@ -355,6 +394,9 @@ class RankedGame extends React.Component {
                     isMatchFinished: false,
                     isWon: false
                 })
+                break
+            case 'ping':
+                this.setState({ isServerPinged: true })
                 break
         }
     }
