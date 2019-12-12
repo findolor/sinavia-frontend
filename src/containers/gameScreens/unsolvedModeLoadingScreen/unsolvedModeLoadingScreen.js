@@ -38,7 +38,7 @@ class UnsolvedModeLoadingScreen extends React.Component {
         this.room = this.client.join('unsolvedModeRoom', playerOptions)
 
         this.room.onJoin.add(() => {
-            setTimeout(() => {
+            this.timeout = setTimeout(() => {
                 navigationReplace(
                     SCENE_KEYS.gameScreens.unsolvedModeGameScreen,
                     {
@@ -52,7 +52,21 @@ class UnsolvedModeLoadingScreen extends React.Component {
                     }
                 )
             }, 5000)
+
+            this.props.room.onError.add(error => {
+                this.connectionErrorRoutine()
+            })
+
+            this.props.room.onLeave.add(res => {
+                this.connectionErrorRoutine()
+            })
         })
+    }
+
+    connectionErrorRoutine = () => {
+        this.props.room.leave()
+        clearTimeout(this.timeout)
+        navigationReset('main')
     }
 
     render() {

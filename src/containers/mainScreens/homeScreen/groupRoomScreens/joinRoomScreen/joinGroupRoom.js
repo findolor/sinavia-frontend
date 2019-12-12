@@ -103,6 +103,16 @@ class JoinGroupRoom extends React.Component {
                     break
             }
         })
+
+        this.props.joinGameParams.room.onError.add(error => {
+            console.log(error)
+            this.shutdownRoutine()
+        })
+
+        this.props.joinGameParams.room.onLeave.add(res => {
+            if (res.code === 1001) return
+            this.shutdownRoutine()
+        })
     }
 
     // Selected question amount is sent to the server

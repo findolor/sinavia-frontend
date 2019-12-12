@@ -4,7 +4,8 @@ import styles from './style'
 import NotchView from '../../../components/notchView'
 import {
     SCENE_KEYS,
-    navigationReplace
+    navigationReplace,
+    navigationReset
 } from '../../../services/navigationService'
 import { levelFinder } from '../../../services/userLevelFinder'
 import {
@@ -23,7 +24,8 @@ class RankedMatchingScreen extends React.Component {
 
     componentDidMount() {
         // Waits for 5 sec and moves onto game screen
-        setTimeout(() => {
+        this.timeout = setTimeout(() => {
+            this.props.room.removeAllListeners()
             navigationReplace(SCENE_KEYS.gameScreens.rankedGame, {
                 room: this.props.room,
                 client: this.props.client,
@@ -36,6 +38,20 @@ class RankedMatchingScreen extends React.Component {
                 opponentCoverPicture: this.props.opponentCoverPicture
             })
         }, 5000)
+
+        this.props.room.onError.add(error => {
+            this.connectionErrorRoutine()
+        })
+
+        this.props.room.onLeave.add(res => {
+            this.connectionErrorRoutine()
+        })
+    }
+
+    connectionErrorRoutine = () => {
+        this.props.room.leave()
+        clearTimeout(this.timeout)
+        navigationReset('main')
     }
 
     render() {
