@@ -16,6 +16,7 @@ import { showMessage } from 'react-native-flash-message'
 
 import CONNECTION_ERROR_COLORED from '../../assets/connection_error_colored.png'
 import CONNECTION_ERROR_SHADOW from '../../assets/connection_error_shadow.png'
+import firebase from 'react-native-firebase'
 
 class SplashScreen extends React.PureComponent {
     constructor(props) {
@@ -66,6 +67,14 @@ class SplashScreen extends React.PureComponent {
             }, 3000)
             return
         }
+
+        let initialUrl = await firebase.links().getInitialLink()
+        console.log(initialUrl)
+
+        firebase.links().onLink(url => {
+            if (url.includes('passwordReset')) {
+            }
+        })
 
         this.getJWTToken().then(async token => {
             // If we don't have any token saved, we go to the auth screen

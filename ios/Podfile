@@ -42,6 +42,7 @@ target 'Sinavia' do
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
   pod 'Firebase/Auth', '~> 6.3.0'
   pod 'Firebase/Storage', '~> 6.3.0'
+  pod 'Firebase/DynamicLinks', '~> 6.3.0'
 
   pod 'RNShare', :path => '../node_modules/react-native-share'
 
