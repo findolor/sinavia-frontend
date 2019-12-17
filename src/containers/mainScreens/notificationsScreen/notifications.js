@@ -672,19 +672,35 @@ class Notifications extends React.Component {
                                         <View
                                             style={styles.userPicContainerInRow}
                                         >
-                                            <Image
-                                                source={{
-                                                    uri: item.profilePicture
-                                                }}
-                                                style={styles.userPic}
-                                            />
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    this.friendshipAcceptedOnPress(
+                                                        item.id
+                                                    )
+                                                }
+                                            >
+                                                <Image
+                                                    source={{
+                                                        uri: item.profilePicture
+                                                    }}
+                                                    style={styles.userPic}
+                                                />
+                                            </TouchableOpacity>
                                         </View>
                                         <View style={styles.nameContainer}>
-                                            <Text style={styles.nameText}>
-                                                {item.name +
-                                                    ' ' +
-                                                    item.lastname}
-                                            </Text>
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    this.friendshipAcceptedOnPress(
+                                                        item.id
+                                                    )
+                                                }
+                                            >
+                                                <Text style={styles.nameText}>
+                                                    {item.name +
+                                                        ' ' +
+                                                        item.lastname}
+                                                </Text>
+                                            </TouchableOpacity>
                                         </View>
                                         <View
                                             style={

@@ -38,6 +38,7 @@ class FriendMatchingScreen extends React.Component {
         this.state = {
             countDownTime: 30,
             isCoundownFinished: false,
+            isCoundownActive: true,
             clientPoint: 0,
             friendPoint: 0,
             isFriendJoined: false,
@@ -152,7 +153,7 @@ class FriendMatchingScreen extends React.Component {
             })
 
             this.room.removeAllListeners()
-            setTimeout(() => {
+            this.timeout = setTimeout(() => {
                 navigationReplace(SCENE_KEYS.gameScreens.friendGame, {
                     // These are necessary for the game logic
                     room: this.room,
@@ -166,6 +167,16 @@ class FriendMatchingScreen extends React.Component {
                     friendMatches: this.state.friendMatches
                 })
             }, 3000)
+        })
+
+        this.room.onError.add(error => {
+            console.log(error)
+            this.backButtonOnPress()
+        })
+
+        this.room.onLeave.add(res => {
+            if (res.code === 1001) return
+            this.backButtonOnPress()
         })
     }
 
@@ -190,9 +201,12 @@ class FriendMatchingScreen extends React.Component {
     }
 
     backButtonOnPress = () => {
-        this.room.leave()
-        this.client.close()
-        navigationReset('main')
+        this.setState({ isCoundownActive: false }, () => {
+            this.room.leave()
+            this.client.close()
+            clearTimeout(this.timeout)
+            navigationReset('main')
+        })
     }
 
     render() {
@@ -351,7 +365,7 @@ class FriendMatchingScreen extends React.Component {
                                         digitTxtStyle={styles.timerText}
                                         timeToShow={['S']}
                                         timeLabels={{ s: null }}
-                                        //running={!this.state.isCoundownFinished}
+                                        running={this.state.isCoundownActive}
                                         onFinish={this.countdownOnFinish}
                                     />
                                 )}

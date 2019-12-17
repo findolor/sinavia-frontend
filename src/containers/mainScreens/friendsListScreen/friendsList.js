@@ -19,7 +19,7 @@ import { opponentActions } from '../../../redux/opponents/actions'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import returnLogo from '../../../assets/return.png'
-import NO_RESULTS_USER from '../../../assets/noResultsUser.png';
+import NO_RESULTS_USER from '../../../assets/noResultsUser.png'
 
 class FriendsList extends React.Component {
     constructor(props) {
@@ -158,11 +158,15 @@ class FriendsList extends React.Component {
                             renderItem={({ item, index }) => {
                                 return (
                                     <TouchableOpacity
-                                        onPress={() => this.friendOnPress(index)}
+                                        onPress={() =>
+                                            this.friendOnPress(index)
+                                        }
                                     >
                                         <View style={styles.userRow}>
                                             <View
-                                                style={styles.userPicContainerInRow}
+                                                style={
+                                                    styles.userPicContainerInRow
+                                                }
                                             >
                                                 <Image
                                                     source={{
@@ -174,10 +178,12 @@ class FriendsList extends React.Component {
                                             <View style={styles.nameContainer}>
                                                 <Text style={styles.nameText}>
                                                     {item.name +
-                                                    ' ' +
-                                                    item.lastname}
+                                                        ' ' +
+                                                        item.lastname}
                                                 </Text>
-                                                <Text style={styles.userNameText}>
+                                                <Text
+                                                    style={styles.userNameText}
+                                                >
                                                     @{item.username}
                                                 </Text>
                                             </View>
@@ -191,8 +197,13 @@ class FriendsList extends React.Component {
                 )}
                 {Object.keys(this.state.friendsList).length === 0 && (
                     <View style={styles.noResultsView}>
-                        <Image source={NO_RESULTS_USER} style={styles.noResultImg}/>
-                        <Text style={styles.noResultsText}>Henüz bir arkadaşın yok</Text>
+                        <Image
+                            source={NO_RESULTS_USER}
+                            style={styles.noResultImg}
+                        />
+                        <Text style={styles.noResultsText}>
+                            Henüz bir arkadaşın yok
+                        </Text>
                     </View>
                 )}
             </View>
@@ -225,7 +236,4 @@ const mapDispatchToProps = dispatch => ({
         )
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(FriendsList)
+export default connect(mapStateToProps, mapDispatchToProps)(FriendsList)
