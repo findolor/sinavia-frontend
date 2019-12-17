@@ -433,14 +433,18 @@ class Notifications extends React.Component {
     }
 
     friendshipAcceptedOnPress = userId => {
-        getUserService(this.props.clientToken, userId).then(userInformation => {
-            this.props.getOpponentFullInformation(
-                userInformation,
-                this.props.clientDBId,
-                this.props.clientToken,
-                false
-            )
-        })
+        getUserService(this.props.clientToken, userId)
+            .then(userInformation => {
+                this.props.getOpponentFullInformation(
+                    userInformation,
+                    this.props.clientDBId,
+                    this.props.clientToken,
+                    false
+                )
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     acceptGameRequestOnPress = (notification, notificationIndex) => {
