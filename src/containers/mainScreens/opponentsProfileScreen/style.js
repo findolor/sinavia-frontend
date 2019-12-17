@@ -402,15 +402,15 @@ export default StyleSheet.create({
     },
     reportIconView: {
         position: 'absolute',
-        height: hp(5),
-        width: wp(9),
+        height: hp(5.5),
+        width: wp(10),
         justifyContent: 'flex-end',
         alignItems: 'flex-start',
-        left: wp(81)
+        left: wp(80)
     },
     reportIcon: {
-        resizeMode: 'contain',
-        height: hp(3.5)
+        height: hp(3.5),
+        width: hp(4.12)
     },
     reportView: {
         height: hp(30),
@@ -443,6 +443,12 @@ export default StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center'
     },
+    afterReportText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(3),
+        color: '#2E313C',
+        textAlign: 'center'
+    },
     checkBox: {
         height: hp(4),
         width: hp(4),
@@ -461,7 +467,7 @@ export default StyleSheet.create({
     },
     reportHeaderText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: hp(2.3),
+        fontSize: hp(2.2),
         color: '#000000'
     },
     reportButton: {

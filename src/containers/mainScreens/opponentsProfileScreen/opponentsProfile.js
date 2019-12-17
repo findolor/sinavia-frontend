@@ -12,8 +12,8 @@ import {
 import {
     SCENE_KEYS,
     navigationPop,
-    navigationPush
-} from '../../../services/navigationService'
+    navigationPush, navigationReplace,
+} from '../../../services/navigationService';
 import { connect } from 'react-redux'
 import Swiper from 'react-native-swiper'
 import styles from './style'
@@ -27,6 +27,7 @@ import ALREADY_FRIEND from '../../../assets/mainScreens/alreadyFriend.png'
 import REPORT_ICON from '../.././../assets/mainScreens/reportIcon.png'
 import CLOSE_ICON_BLACK from '../../../assets/mainScreens/CLOSE_BLACK.png'
 import CHECK_ICON from '../../../assets/mainScreens/checkIcon.png'
+import REPORT_APPLIED from '../../../assets/mainScreens/reportApplied.png'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
@@ -63,7 +64,7 @@ class OpponentsProfile extends React.Component {
             isFriendRequestSent: null,
             isModalVisible: false,
             visibleView: '',
-            reportViewVisible: false,
+            reportViewVisible: 'profile',
             reportName: false,
             reportUsername: false,
             reportPic: false
@@ -377,11 +378,11 @@ class OpponentsProfile extends React.Component {
     }
 
     reportIconOnPress = () => {
-        this.setState({reportViewVisible: true})
+        this.setState({reportViewVisible: 'beforeReport'})
     }
 
     closeReportIconOnPress = () => {
-        this.setState({reportViewVisible: false,
+        this.setState({reportViewVisible: 'profile',
                                 reportName: false,
                                 reportUsername: false,
                                 reportPic: false})
@@ -397,6 +398,19 @@ class OpponentsProfile extends React.Component {
 
     reportPicOnPress = () => {
         this.setState({reportPic: !this.state.reportPic})
+    }
+
+    reportButtonOnPress = () => {
+        if (this.state.reportName === true || this.state.reportUsername === true || this.state.reportPic === true){
+            this.setState({reportViewVisible: 'afterReport'})
+            setTimeout(() => {
+                this.setState({reportViewVisible: 'profile',
+                    reportName: false,
+                    reportUsername: false,
+                    reportPic: false})
+            }, 2500)
+        }
+        else return
     }
 
     render() {
@@ -446,11 +460,11 @@ class OpponentsProfile extends React.Component {
                     )}
                 </View>
                 <View style={styles.profileContainer}>
-                    {this.state.reportViewVisible === true && (
+                    {this.state.reportViewVisible === 'beforeReport' && (
                         <View style={styles.reportView}>
                             <View style={styles.reportIconView}>
                                 <TouchableOpacity onPress={this.closeReportIconOnPress} >
-                                    <Image source={CLOSE_ICON_BLACK} style={[styles.reportIcon, {height: hp(3)}]}/>
+                                    <Image source={CLOSE_ICON_BLACK} style={[styles.reportIcon, {height: hp(3), width: hp(3), marginBottom: hp(0.75)}]}/>
                                 </TouchableOpacity>
                             </View>
                             <View style={styles.reportViewHeader}>
@@ -495,13 +509,19 @@ class OpponentsProfile extends React.Component {
                                 </View>
                             </View>
                             <View style={styles.reportButtonView}>
-                                <TouchableOpacity style={styles.reportButton}>
+                                <TouchableOpacity onPress={this.reportButtonOnPress} style={styles.reportButton}>
                                     <Text style={styles.reportButtonText}>GÖNDER</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
                     )}
-                    {this.state.reportViewVisible === false && (
+                    {this.state.reportViewVisible === 'afterReport' && (
+                        <View style={[styles.reportView, {justifyContent: 'center', alignItems: 'center'}]}>
+                            <Image source={REPORT_APPLIED} style={{height: hp(8.5), width: hp(8.5), marginBottom: hp(2)}}/>
+                            <Text style={styles.afterReportText}>Geri bildirimde bulunduğun için teşekkürler!</Text>
+                        </View>
+                    )}
+                    {this.state.reportViewVisible === 'profile' && (
                         <ImageBackground
                             source={{
                                 uri: this.props.opponentInformation.coverPicture
