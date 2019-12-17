@@ -12,8 +12,8 @@ import {
 import {
     SCENE_KEYS,
     navigationPop,
-    navigationPush, navigationReplace,
-} from '../../../services/navigationService';
+    navigationPush
+} from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import Swiper from 'react-native-swiper'
 import styles from './style'
@@ -378,39 +378,46 @@ class OpponentsProfile extends React.Component {
     }
 
     reportIconOnPress = () => {
-        this.setState({reportViewVisible: 'beforeReport'})
+        this.setState({ reportViewVisible: 'beforeReport' })
     }
 
     closeReportIconOnPress = () => {
-        this.setState({reportViewVisible: 'profile',
-                                reportName: false,
-                                reportUsername: false,
-                                reportPic: false})
+        this.setState({
+            reportViewVisible: 'profile',
+            reportName: false,
+            reportUsername: false,
+            reportPic: false
+        })
     }
 
     reportNameOnPress = () => {
-        this.setState({reportName: !this.state.reportName})
+        this.setState({ reportName: !this.state.reportName })
     }
 
     reportUsernameOnPress = () => {
-        this.setState({reportUsername: !this.state.reportUsername})
+        this.setState({ reportUsername: !this.state.reportUsername })
     }
 
     reportPicOnPress = () => {
-        this.setState({reportPic: !this.state.reportPic})
+        this.setState({ reportPic: !this.state.reportPic })
     }
 
     reportButtonOnPress = () => {
-        if (this.state.reportName === true || this.state.reportUsername === true || this.state.reportPic === true){
-            this.setState({reportViewVisible: 'afterReport'})
+        if (
+            this.state.reportName === true ||
+            this.state.reportUsername === true ||
+            this.state.reportPic === true
+        ) {
+            this.setState({ reportViewVisible: 'afterReport' })
             setTimeout(() => {
-                this.setState({reportViewVisible: 'profile',
+                this.setState({
+                    reportViewVisible: 'profile',
                     reportName: false,
                     reportUsername: false,
-                    reportPic: false})
+                    reportPic: false
+                })
             }, 2500)
         }
-        else return
     }
 
     render() {
@@ -462,63 +469,128 @@ class OpponentsProfile extends React.Component {
                 <View style={styles.profileContainer}>
                     {this.state.reportViewVisible === 'beforeReport' && (
                         <View style={styles.reportView}>
-                            <View style={styles.reportIconView}>
-                                <TouchableOpacity onPress={this.closeReportIconOnPress} >
-                                    <Image source={CLOSE_ICON_BLACK} style={[styles.reportIcon, {height: hp(3), width: hp(3), marginBottom: hp(0.75)}]}/>
-                                </TouchableOpacity>
-                            </View>
+                            <TouchableOpacity
+                                style={[styles.reportIconView, { zIndex: 1 }]}
+                                onPress={this.closeReportIconOnPress}
+                            >
+                                <Image
+                                    source={CLOSE_ICON_BLACK}
+                                    style={[
+                                        styles.reportIcon,
+                                        {
+                                            height: hp(3),
+                                            width: hp(3),
+                                            marginBottom: hp(0.75)
+                                        }
+                                    ]}
+                                />
+                            </TouchableOpacity>
                             <View style={styles.reportViewHeader}>
-                                <Text style={styles.reportHeaderText}>Şikayet etmek istediğin konuyu seç</Text>
+                                <Text style={styles.reportHeaderText}>
+                                    Şikayet etmek istediğin konuyu seç
+                                </Text>
                             </View>
                             <View style={styles.reportOptionsView}>
                                 <View style={styles.reportOptionView}>
-                                    <TouchableOpacity onPress={this.reportNameOnPress} style={styles.checkBox}>
+                                    <TouchableOpacity
+                                        onPress={this.reportNameOnPress}
+                                        style={styles.checkBox}
+                                    >
                                         {this.state.reportName === true && (
                                             <View>
-                                                <Image source={CHECK_ICON} style={styles.checkIcon}/>
+                                                <Image
+                                                    source={CHECK_ICON}
+                                                    style={styles.checkIcon}
+                                                />
                                             </View>
                                         )}
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={this.reportNameOnPress}>
-                                        <Text style={styles.reportOptionText}>Uygunsuz ad/soyad</Text>
+                                    <TouchableOpacity
+                                        onPress={this.reportNameOnPress}
+                                    >
+                                        <Text style={styles.reportOptionText}>
+                                            Uygunsuz ad/soyad
+                                        </Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={styles.reportOptionView}>
-                                    <TouchableOpacity onPress={this.reportUsernameOnPress} style={styles.checkBox}>
+                                    <TouchableOpacity
+                                        onPress={this.reportUsernameOnPress}
+                                        style={styles.checkBox}
+                                    >
                                         {this.state.reportUsername === true && (
                                             <View>
-                                                <Image source={CHECK_ICON} style={styles.checkIcon}/>
+                                                <Image
+                                                    source={CHECK_ICON}
+                                                    style={styles.checkIcon}
+                                                />
                                             </View>
                                         )}
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={this.reportUsernameOnPress}>
-                                        <Text style={styles.reportOptionText}>Uygunsuz kullanıcı adı</Text>
+                                    <TouchableOpacity
+                                        onPress={this.reportUsernameOnPress}
+                                    >
+                                        <Text style={styles.reportOptionText}>
+                                            Uygunsuz kullanıcı adı
+                                        </Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={styles.reportOptionView}>
-                                    <TouchableOpacity onPress={this.reportPicOnPress} style={styles.checkBox}>
+                                    <TouchableOpacity
+                                        onPress={this.reportPicOnPress}
+                                        style={styles.checkBox}
+                                    >
                                         {this.state.reportPic === true && (
                                             <View>
-                                                <Image source={CHECK_ICON} style={styles.checkIcon}/>
+                                                <Image
+                                                    source={CHECK_ICON}
+                                                    style={styles.checkIcon}
+                                                />
                                             </View>
                                         )}
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={this.reportPicOnPress}>
-                                        <Text style={styles.reportOptionText}>Uygunsuz profil/kapak fotoğrafı</Text>
+                                    <TouchableOpacity
+                                        onPress={this.reportPicOnPress}
+                                    >
+                                        <Text style={styles.reportOptionText}>
+                                            Uygunsuz profil/kapak fotoğrafı
+                                        </Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
                             <View style={styles.reportButtonView}>
-                                <TouchableOpacity onPress={this.reportButtonOnPress} style={styles.reportButton}>
-                                    <Text style={styles.reportButtonText}>GÖNDER</Text>
+                                <TouchableOpacity
+                                    onPress={this.reportButtonOnPress}
+                                    style={styles.reportButton}
+                                >
+                                    <Text style={styles.reportButtonText}>
+                                        GÖNDER
+                                    </Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
                     )}
                     {this.state.reportViewVisible === 'afterReport' && (
-                        <View style={[styles.reportView, {justifyContent: 'center', alignItems: 'center'}]}>
-                            <Image source={REPORT_APPLIED} style={{height: hp(8.5), width: hp(8.5), marginBottom: hp(2)}}/>
-                            <Text style={styles.afterReportText}>Geri bildirimde bulunduğun için teşekkürler!</Text>
+                        <View
+                            style={[
+                                styles.reportView,
+                                {
+                                    justifyContent: 'center',
+                                    alignItems: 'center'
+                                }
+                            ]}
+                        >
+                            <Image
+                                source={REPORT_APPLIED}
+                                style={{
+                                    height: hp(8.5),
+                                    width: hp(8.5),
+                                    marginBottom: hp(2)
+                                }}
+                            />
+                            <Text style={styles.afterReportText}>
+                                Geri bildirimde bulunduğun için teşekkürler!
+                            </Text>
                         </View>
                     )}
                     {this.state.reportViewVisible === 'profile' && (
@@ -530,8 +602,14 @@ class OpponentsProfile extends React.Component {
                             imageStyle={{ borderRadius: hp(3) }}
                         >
                             <View style={styles.profileContainerShadowView}>
-                                <TouchableOpacity onPress={this.reportIconOnPress} style={styles.reportIconView}>
-                                    <Image source={REPORT_ICON} style={styles.reportIcon}/>
+                                <TouchableOpacity
+                                    onPress={this.reportIconOnPress}
+                                    style={styles.reportIconView}
+                                >
+                                    <Image
+                                        source={REPORT_ICON}
+                                        style={styles.reportIcon}
+                                    />
                                 </TouchableOpacity>
                                 <View style={styles.profilePicView}>
                                     <Image
@@ -548,11 +626,12 @@ class OpponentsProfile extends React.Component {
                                             styles.nameSurnameText,
                                             {
                                                 fontSize:
-                                                    this.props.opponentInformation
-                                                        .name.length +
                                                     this.props
                                                         .opponentInformation
-                                                        .lastname.length >
+                                                        .name.length +
+                                                        this.props
+                                                            .opponentInformation
+                                                            .lastname.length >
                                                     21
                                                         ? hp(2.25)
                                                         : hp(3.5)
@@ -560,14 +639,24 @@ class OpponentsProfile extends React.Component {
                                         ]}
                                     >
                                         {this.props.opponentInformation.name}{' '}
-                                        {this.props.opponentInformation.lastname}
+                                        {
+                                            this.props.opponentInformation
+                                                .lastname
+                                        }
                                     </Text>
                                     <Text style={styles.usernameText}>
-                                        @{this.props.opponentInformation.username}
+                                        @
+                                        {
+                                            this.props.opponentInformation
+                                                .username
+                                        }
                                     </Text>
                                     <Text style={styles.sinaviaScoreText}>
                                         Sınavia Puanı:{' '}
-                                        {this.props.opponentInformation.totalPoints}
+                                        {
+                                            this.props.opponentInformation
+                                                .totalPoints
+                                        }
                                     </Text>
                                 </View>
                             </View>
