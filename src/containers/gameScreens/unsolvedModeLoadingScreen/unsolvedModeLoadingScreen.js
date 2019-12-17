@@ -8,7 +8,10 @@ window.localStorage = AsyncStorage
 global.Buffer = Buffer
 import * as Colyseus from 'colyseus.js'
 // App service imports
-import { navigationReplace } from '../../../services/navigationService'
+import {
+    navigationReplace,
+    navigationReset
+} from '../../../services/navigationService'
 import { GAME_ENGINE_ENDPOINT, SCENE_KEYS } from '../../../config'
 import { connect } from 'react-redux'
 import LOGO from '../../../assets/sinavia_logo_cut.png'
@@ -38,7 +41,8 @@ class UnsolvedModeLoadingScreen extends React.Component {
         this.room = this.client.join('unsolvedModeRoom', playerOptions)
 
         this.room.onJoin.add(() => {
-            setTimeout(() => {
+            this.timeout = setTimeout(() => {
+                this.room.removeAllListeners()
                 navigationReplace(
                     SCENE_KEYS.gameScreens.unsolvedModeGameScreen,
                     {
@@ -52,7 +56,21 @@ class UnsolvedModeLoadingScreen extends React.Component {
                     }
                 )
             }, 5000)
+
+            this.room.onError.add(error => {
+                this.connectionErrorRoutine()
+            })
+
+            this.room.onLeave.add(res => {
+                this.connectionErrorRoutine()
+            })
         })
+    }
+
+    connectionErrorRoutine = () => {
+        this.room.leave()
+        clearTimeout(this.timeout)
+        navigationReset('main')
     }
 
     render() {

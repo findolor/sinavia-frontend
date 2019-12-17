@@ -6,8 +6,11 @@ import styles from './style'
 import BACKGROUND from '../../../assets/gameScreens/gameStatsBackground.jpg'
 import LOGO from '../../../assets/sinavia_logo_cut.png'
 import GROUP_PEOPLE from '../../../assets/groupPeople.png'
-import { SCENE_KEYS } from '../../../config'
-import { navigationReplace } from '../../../services/navigationService'
+import {
+    navigationReplace,
+    navigationReset,
+    SCENE_KEYS
+} from '../../../services/navigationService'
 
 export default class GroupLoading extends React.Component {
     constructor(props) {
@@ -16,7 +19,8 @@ export default class GroupLoading extends React.Component {
     }
 
     componentDidMount() {
-        setTimeout(() => {
+        this.timeout = setTimeout(() => {
+            this.props.room.removeAllListeners()
             navigationReplace(SCENE_KEYS.gameScreens.groupGame, {
                 // These are necessary for the game logic
                 room: this.props.room,
@@ -25,6 +29,20 @@ export default class GroupLoading extends React.Component {
                 groupRoomPlayerList: this.props.groupRoomPlayerList
             })
         }, 5000)
+
+        this.props.room.onError.add(error => {
+            this.connectionErrorRoutine()
+        })
+
+        this.props.room.onLeave.add(res => {
+            this.connectionErrorRoutine()
+        })
+    }
+
+    connectionErrorRoutine = () => {
+        this.props.room.leave()
+        clearTimeout(this.timeout)
+        navigationReset('main')
     }
 
     render() {

@@ -15,9 +15,6 @@ import {
 } from '../../../services/navigationService'
 import { GAME_ENGINE_ENDPOINT, SCENE_KEYS } from '../../../config'
 import { connect } from 'react-redux'
-import { appActions } from '../../../redux/app/actions'
-//import { gameEnergyServices } from '../../../sagas/gameEnergy/'
-import { wp, hp } from '../../splashScreen/style'
 import BACK_BUTTON from '../../../assets/return.png'
 
 class LoadingScreen extends React.Component {
@@ -130,9 +127,20 @@ class LoadingScreen extends React.Component {
                 opponentPoints: opponentTotalPoints
             })
         })
+
+        this.room.onError.add(error => {
+            console.log(error)
+            this.backButtonOnPress()
+        })
+
+        this.room.onLeave.add(res => {
+            if (res.code === 1001) return
+            this.backButtonOnPress()
+        })
     }
 
     backButtonOnPress = () => {
+        clearTimeout(this.botTimeout)
         this.room.leave()
         this.client.close()
         navigationReset('main')

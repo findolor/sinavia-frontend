@@ -156,6 +156,16 @@ class CreateGroupRoom extends React.Component {
                     break
             }
         })
+
+        this.room.onError.add(error => {
+            console.log(error)
+            this.shutdownRoutine()
+        })
+
+        this.room.onLeave.add(res => {
+            if (res.code === 1001) return
+            this.shutdownRoutine()
+        })
     }
 
     randomCodeGenerator() {
@@ -209,275 +219,258 @@ class CreateGroupRoom extends React.Component {
                         <TouchableOpacity
                             onPress={this.closeGroupGameOnPress}
                             style={{ height: hp(120), width: wp(100) }}
-                        >
-                        </TouchableOpacity>
-                            <View style={styles.modalView}>
-                                <View style={styles.gameCodeContainer}>
-                                    <View style={styles.gameCodeBox}>
-                                        <View
-                                            style={styles.gameCodeBoxLeftView}
-                                        />
-                                        <View
-                                            style={styles.gameCodeBoxTextView}
+                        ></TouchableOpacity>
+                        <View style={styles.modalView}>
+                            <View style={styles.gameCodeContainer}>
+                                <View style={styles.gameCodeBox}>
+                                    <View style={styles.gameCodeBoxLeftView} />
+                                    <View style={styles.gameCodeBoxTextView}>
+                                        <Text
+                                            style={styles.gameCodeText}
+                                            selectable={true}
                                         >
-                                            <Text
-                                                style={styles.gameCodeText}
-                                                selectable={true}
-                                            >
-                                                {this.state.groupCode}
-                                            </Text>
-                                        </View>
-                                        <View
-                                            style={styles.gameCodeBoxRightView}
+                                            {this.state.groupCode}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.gameCodeBoxRightView}>
+                                        <TouchableOpacity
+                                            onPress={this.writeToClipboard}
                                         >
-                                            <TouchableOpacity
-                                                onPress={this.writeToClipboard}
-                                            >
-                                                <Image
-                                                    source={COPY_IMAGE}
-                                                    style={styles.copyImage}
-                                                />
-                                            </TouchableOpacity>
-                                        </View>
+                                            <Image
+                                                source={COPY_IMAGE}
+                                                style={styles.copyImage}
+                                            />
+                                        </TouchableOpacity>
                                     </View>
                                 </View>
-                                <View style={styles.gameCodeInfoTextContainer}>
-                                    <Text style={styles.gameCodeInfoText}>
-                                        Grup olarak oynamak için{' '}
-                                    </Text>
-                                    <Text style={styles.gameCodeInfoText}>
-                                        yukarıdaki kodu arkadaşlarınla paylaş
-                                    </Text>
-                                </View>
-                                <View style={styles.questionsNumberContainer}>
-                                    <Text style={styles.questionsNumberText}>
-                                        Soru Sayısı
-                                    </Text>
-                                    <TouchableOpacity
+                            </View>
+                            <View style={styles.gameCodeInfoTextContainer}>
+                                <Text style={styles.gameCodeInfoText}>
+                                    Grup olarak oynamak için{' '}
+                                </Text>
+                                <Text style={styles.gameCodeInfoText}>
+                                    yukarıdaki kodu arkadaşlarınla paylaş
+                                </Text>
+                            </View>
+                            <View style={styles.questionsNumberContainer}>
+                                <Text style={styles.questionsNumberText}>
+                                    Soru Sayısı
+                                </Text>
+                                <TouchableOpacity
+                                    style={[
+                                        styles.questionNumberCircle,
+                                        {
+                                            marginLeft: wp(1),
+                                            backgroundColor:
+                                                this.state
+                                                    .choosenQuestionAmount === 5
+                                                    ? '#FF9900'
+                                                    : '#fff'
+                                        }
+                                    ]}
+                                    onPress={() => {
+                                        this.questionAmountPicker(5)
+                                    }}
+                                >
+                                    <Text
                                         style={[
-                                            styles.questionNumberCircle,
+                                            styles.questionNumberText,
                                             {
-                                                marginLeft: wp(1),
-                                                backgroundColor:
+                                                color:
                                                     this.state
                                                         .choosenQuestionAmount ===
                                                     5
-                                                        ? '#FF9900'
-                                                        : '#fff'
+                                                        ? 'white'
+                                                        : '#FF9900',
+                                                fontFamily:
+                                                    this.state
+                                                        .choosenQuestionAmount ===
+                                                    5
+                                                        ? 'Averta-Bold'
+                                                        : 'Averta-Regular'
                                             }
                                         ]}
-                                        onPress={() => {
-                                            this.questionAmountPicker(5)
-                                        }}
                                     >
-                                        <Text
-                                            style={[
-                                                styles.questionNumberText,
-                                                {
-                                                    color:
-                                                        this.state
-                                                            .choosenQuestionAmount ===
-                                                        5
-                                                            ? 'white'
-                                                            : '#FF9900',
-                                                    fontFamily:
-                                                        this.state
-                                                            .choosenQuestionAmount ===
-                                                        5
-                                                            ? 'Averta-Bold'
-                                                            : 'Averta-Regular'
-                                                }
-                                            ]}
-                                        >
-                                            5
-                                        </Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
+                                        5
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={[
+                                        styles.questionNumberCircle,
+                                        {
+                                            backgroundColor:
+                                                this.state
+                                                    .choosenQuestionAmount ===
+                                                10
+                                                    ? '#FF9900'
+                                                    : '#fff'
+                                        }
+                                    ]}
+                                    onPress={() => {
+                                        this.questionAmountPicker(10)
+                                    }}
+                                >
+                                    <Text
                                         style={[
-                                            styles.questionNumberCircle,
+                                            styles.questionNumberText,
                                             {
-                                                backgroundColor:
+                                                color:
                                                     this.state
                                                         .choosenQuestionAmount ===
                                                     10
-                                                        ? '#FF9900'
-                                                        : '#fff'
+                                                        ? 'white'
+                                                        : '#FF9900',
+                                                fontFamily:
+                                                    this.state
+                                                        .choosenQuestionAmount ===
+                                                    10
+                                                        ? 'Averta-Bold'
+                                                        : 'Averta-Regular'
                                             }
                                         ]}
-                                        onPress={() => {
-                                            this.questionAmountPicker(10)
-                                        }}
                                     >
-                                        <Text
-                                            style={[
-                                                styles.questionNumberText,
-                                                {
-                                                    color:
-                                                        this.state
-                                                            .choosenQuestionAmount ===
-                                                        10
-                                                            ? 'white'
-                                                            : '#FF9900',
-                                                    fontFamily:
-                                                        this.state
-                                                            .choosenQuestionAmount ===
-                                                        10
-                                                            ? 'Averta-Bold'
-                                                            : 'Averta-Regular'
-                                                }
-                                            ]}
-                                        >
-                                            10
-                                        </Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={styles.usersListContainer}>
-                                    <FlatList
-                                        data={this.state.groupRoomPlayerList}
-                                        vertical={true}
-                                        showsVerticalScrollIndicator={false}
-                                        renderItem={({ item }) => {
-                                            return (
-                                                <View style={styles.userRow}>
-                                                    <View
-                                                        style={
-                                                            styles.profilePicContainerinRow
-                                                        }
+                                        10
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styles.usersListContainer}>
+                                <FlatList
+                                    data={this.state.groupRoomPlayerList}
+                                    vertical={true}
+                                    showsVerticalScrollIndicator={false}
+                                    renderItem={({ item }) => {
+                                        return (
+                                            <View style={styles.userRow}>
+                                                <View
+                                                    style={
+                                                        styles.profilePicContainerinRow
+                                                    }
+                                                >
+                                                    <Image
+                                                        source={{
+                                                            uri:
+                                                                item.profilePicture
+                                                        }}
+                                                        style={styles.userPic}
+                                                    />
+                                                </View>
+                                                <View
+                                                    style={styles.nameContainer}
+                                                >
+                                                    <Text
+                                                        style={styles.nameText}
                                                     >
-                                                        <Image
-                                                            source={{
-                                                                uri:
-                                                                    item.profilePicture
-                                                            }}
-                                                            style={
-                                                                styles.userPic
-                                                            }
-                                                        />
-                                                    </View>
+                                                        {item.username}
+                                                    </Text>
                                                     <View
-                                                        style={
-                                                            styles.nameContainer
-                                                        }
+                                                        style={[
+                                                            styles.playerStatusView,
+                                                            {
+                                                                backgroundColor:
+                                                                    item.status ===
+                                                                    'Hazır'
+                                                                        ? '#00E312'
+                                                                        : '#FF9900'
+                                                            }
+                                                        ]}
                                                     >
                                                         <Text
                                                             style={
-                                                                styles.nameText
+                                                                styles.playerStatusText
                                                             }
                                                         >
-                                                            {item.username}
+                                                            {'   '}
+                                                            {item.status}
+                                                            {'   '}
                                                         </Text>
-                                                        <View
-                                                            style={[
-                                                                styles.playerStatusView,
-                                                                {
-                                                                    backgroundColor:
-                                                                        item.status ===
-                                                                        'Hazır'
-                                                                            ? '#00E312'
-                                                                            : '#FF9900'
-                                                                }
-                                                            ]}
-                                                        >
-                                                            <Text
-                                                                style={
-                                                                    styles.playerStatusText
-                                                                }
-                                                            >
-                                                                {'   '}
-                                                                {item.status}
-                                                                {'   '}
-                                                            </Text>
-                                                        </View>
                                                     </View>
-                                                    {item.isLeader && (
-                                                        <View
-                                                            style={
-                                                                styles.leaderContainer
-                                                            }
-                                                        >
-                                                            <Image
-                                                                source={
-                                                                    LEADER_LOGO
-                                                                }
-                                                                style={
-                                                                    styles.leaderLogo
-                                                                }
-                                                            />
-                                                        </View>
-                                                    )}
                                                 </View>
-                                            )
-                                        }}
-                                        keyExtractor={(item, index) =>
-                                            index.toString()
-                                        }
-                                    />
-                                </View>
-                                <View style={styles.usersCounterContainer}>
-                                    <Image
-                                        source={PEOPLE_COUNTER_IMG}
-                                        style={styles.peopleCounterImg}
-                                    />
-                                    <Text style={styles.usersCounterText}>
-                                        {
-                                            Object.keys(
-                                                this.state.groupRoomPlayerList
-                                            ).length
-                                        }
-                                        /30
-                                    </Text>
-                                </View>
+                                                {item.isLeader && (
+                                                    <View
+                                                        style={
+                                                            styles.leaderContainer
+                                                        }
+                                                    >
+                                                        <Image
+                                                            source={LEADER_LOGO}
+                                                            style={
+                                                                styles.leaderLogo
+                                                            }
+                                                        />
+                                                    </View>
+                                                )}
+                                            </View>
+                                        )
+                                    }}
+                                    keyExtractor={(item, index) =>
+                                        index.toString()
+                                    }
+                                />
                             </View>
-                            <AuthButton
-                                marginTop={hp(83.5)}
-                                marginLeft={wp(6.25)}
-                                height={hp(7)}
-                                width={wp(87.5)}
-                                color="#00D9EF"
-                                buttonText="Başlat"
-                                fontSize={hp(3)}
-                                borderRadius={hp(1.5)}
-                                position={'absolute'}
-                                onPress={this.startGroupGameOnPress}
-                            />
+                            <View style={styles.usersCounterContainer}>
+                                <Image
+                                    source={PEOPLE_COUNTER_IMG}
+                                    style={styles.peopleCounterImg}
+                                />
+                                <Text style={styles.usersCounterText}>
+                                    {
+                                        Object.keys(
+                                            this.state.groupRoomPlayerList
+                                        ).length
+                                    }
+                                    /30
+                                </Text>
+                            </View>
+                        </View>
+                        <AuthButton
+                            marginTop={hp(83.5)}
+                            marginLeft={wp(6.25)}
+                            height={hp(7)}
+                            width={wp(87.5)}
+                            color="#00D9EF"
+                            buttonText="Başlat"
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
+                            position={'absolute'}
+                            onPress={this.startGroupGameOnPress}
+                        />
                     </View>
                 )}
                 {this.state.isQuitGameModalVisible === true && (
                     <View style={styles.modal}>
                         <View
                             style={{ height: hp(120), width: wp(100) }}
-                        >
-                        </View>
-                            <View style={styles.modalContainer}>
-                                <View style={styles.quitView}>
-                                    <Text style={styles.areYouSureText}>
-                                        Odadan çıkış yapmak istediğine
-                                    </Text>
-                                    <Text style={styles.areYouSureText}>
-                                        emin misin?
-                                    </Text>
-                                </View>
-                                <View style={styles.yesOrNoButtonsContainer}>
-                                    <AuthButton
-                                        height={hp(7)}
-                                        width={wp(42)}
-                                        color="#00D9EF"
-                                        buttonText="Evet"
-                                        fontSize={hp(3)}
-                                        borderRadius={hp(1.5)}
-                                        onPress={this.quitGameYes}
-                                    />
-                                    <AuthButton
-                                        height={hp(7)}
-                                        width={wp(42)}
-                                        color="#00D9EF"
-                                        buttonText="Hayır"
-                                        fontSize={hp(3)}
-                                        borderRadius={hp(1.5)}
-                                        onPress={this.quitGameNo}
-                                    />
-                                </View>
+                        ></View>
+                        <View style={styles.modalContainer}>
+                            <View style={styles.quitView}>
+                                <Text style={styles.areYouSureText}>
+                                    Odadan çıkış yapmak istediğine
+                                </Text>
+                                <Text style={styles.areYouSureText}>
+                                    emin misin?
+                                </Text>
                             </View>
+                            <View style={styles.yesOrNoButtonsContainer}>
+                                <AuthButton
+                                    height={hp(7)}
+                                    width={wp(42)}
+                                    color="#00D9EF"
+                                    buttonText="Evet"
+                                    fontSize={hp(3)}
+                                    borderRadius={hp(1.5)}
+                                    onPress={this.quitGameYes}
+                                />
+                                <AuthButton
+                                    height={hp(7)}
+                                    width={wp(42)}
+                                    color="#00D9EF"
+                                    buttonText="Hayır"
+                                    fontSize={hp(3)}
+                                    borderRadius={hp(1.5)}
+                                    onPress={this.quitGameNo}
+                                />
+                            </View>
+                        </View>
                     </View>
                 )}
             </View>
