@@ -4,7 +4,7 @@ import {
     ImageBackground,
     Linking,
     Modal,
-    ScrollView,
+    Alert,
     Text,
     TouchableOpacity,
     View
@@ -37,6 +37,7 @@ import PREMIUM_SINGLE_MODE from '../../../assets/premiumSingleMode.png'
 import SEE_OPPONENT_JOKER_IMAGE from '../../../assets/jokers/seeOpponent.png'
 import REMOVE_OPTIONS_JOKER_IMAGE from '../../../assets/jokers/removeOptions.png'
 import SECOND_CHANGE_JOKER_IMAGE from '../../../assets/jokers/secondChance.png'
+import { rewardAd } from '../../../services/admobService'
 
 const instagram_page = 'https://www.instagram.com/sinavia.app/'
 const twitter_page = 'https://twitter.com/sinavia'
@@ -199,6 +200,14 @@ class PurchaseScreen extends React.Component {
         this.setState({
             premiumOption: 'sixMonths'
         })
+    }
+
+    rewardAdOnPress = () => {
+        rewardAd(this.alrett)
+    }
+
+    alrett() {
+        Alert.alert('heehhhh')
     }
 
     render() {
@@ -1583,7 +1592,10 @@ class PurchaseScreen extends React.Component {
                     </View>
                 </View>
                 <View style={styles.adsContainer}>
-                    <TouchableOpacity style={styles.adContainer}>
+                    <TouchableOpacity
+                        style={styles.adContainer}
+                        onPress={this.rewardAdOnPress}
+                    >
                         <ImageBackground
                             source={JOKER_ADS}
                             style={styles.adView}
@@ -2042,11 +2054,14 @@ class PurchaseScreen extends React.Component {
         )
     }
 }
+
 const mapStateToProps = state => ({
     userJokers: state.client.userJokers,
     clientInformation: state.client.clientInformation,
     gameContentMap: state.gameContent.gameContentMap,
     choosenExam: state.gameContent.choosenExam
 })
+
 const mapDispatchToProps = dispatch => ({})
+
 export default connect(mapStateToProps, mapDispatchToProps)(PurchaseScreen)
