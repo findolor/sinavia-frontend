@@ -25,12 +25,12 @@ import settingsLogo from '../../../assets/settings.png'
 import searchlogo from '../../../assets/search.png'
 import favori_dolu from '../../../assets/favori.png'
 import { flashMessages } from '../../../services/flashMessageBuilder'
-
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
 import LinearGradient from 'react-native-linear-gradient'
+import { interstitialAd } from '../../../services/admobService'
 
 class Profile extends React.Component {
     constructor(props) {
@@ -40,6 +40,10 @@ class Profile extends React.Component {
             searchText: '',
             isModalVisible: false
         }
+    }
+
+    componentDidMount() {
+        interstitialAd()
     }
 
     backButtonOnPress = () => {

@@ -10,8 +10,7 @@ import {
 import {
     SCENE_KEYS,
     navigationPop,
-    navigationPush,
-    navigationReplace
+    navigationPush
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import { userServices } from '../../../sagas/user/'
@@ -20,6 +19,7 @@ import styles from './style'
 import NotchView from '../../../components/notchView'
 import returnLogo from '../../../assets/return.png'
 import NO_RESULTS_USER from '../../../assets/noResultsUser.png'
+import { interstitialAd } from '../../../services/admobService'
 
 class FriendsList extends React.Component {
     constructor(props) {
@@ -35,6 +35,7 @@ class FriendsList extends React.Component {
     }
 
     async componentDidMount() {
+        interstitialAd()
         if (Object.keys(this.props.friendIds).length === 0) return
         let friends
         if (!this.props.isOpponentFriends) {
