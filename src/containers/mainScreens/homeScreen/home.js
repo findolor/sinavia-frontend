@@ -89,6 +89,7 @@ const SOLO_IMAGE = require('../../../assets/mainScreens/tek.png')
 const UNSOLVED_QUESTIONS_MODE = require('../../../assets/mainScreens/unsolvedQuestionsModeImg.png')
 const SOLO_PREMIUM = require('../../../assets/soloPremium.png')
 const UNSOLVED_PREMIUM = require('../../../assets/premiumBack.png')
+import { BannerAd } from '../../../services/admobService'
 
 class Home extends React.Component {
     constructor(props) {
@@ -518,7 +519,14 @@ class Home extends React.Component {
                     key={index}
                 >
                     <Animatable.View
-                        style={styles.card}
+                        style={[
+                            styles.card,
+                            {
+                                borderWidth: hp(0.4),
+                                borderRadius: hp(2.5),
+                                borderColor: '#FF9900'
+                            }
+                        ]}
                         animation="fadeIn"
                         duration={800}
                         delay={index * 25 + 75}
@@ -528,6 +536,20 @@ class Home extends React.Component {
                     </Animatable.View>
                 </TouchableOpacity>
             )
+            if (!this.props.clientInformation.isPremium) {
+                if (index % 3 === 2 && index !== 0)
+                    subjectList.push(
+                        <Animatable.View
+                            style={styles.card}
+                            animation="fadeIn"
+                            duration={800}
+                            delay={index * 25 + 75}
+                            useNativeDriver={true}
+                        >
+                            <BannerAd />
+                        </Animatable.View>
+                    )
+            }
         })
 
         return subjectList
