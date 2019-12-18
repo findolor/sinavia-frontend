@@ -50,6 +50,10 @@ class Profile extends React.Component {
         navigationPop()
     }
 
+    goalsOnPress = () => {
+        navigationPush(SCENE_KEYS.mainScreens.goals)
+    }
+
     settingsOnPress = () => {
         navigationPush(SCENE_KEYS.mainScreens.settings)
     }
@@ -285,11 +289,11 @@ class Profile extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.second2Box}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={this.goalsOnPress}>
                             <View style={styles.badgesBox}>
                                 <View style={styles.boxTextContainer}>
                                     <Text style={styles.boxText}>
-                                        Kazanımlar
+                                        Haftalık Hedefler
                                     </Text>
                                 </View>
                                 <View style={styles.boxLogoContainer}>

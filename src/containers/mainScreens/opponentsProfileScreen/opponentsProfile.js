@@ -466,10 +466,6 @@ class OpponentsProfile extends React.Component {
                     </ImageBackground>
                 </View>
                 <View style={styles.scrollViewContainer}>
-                    <ScrollView
-                        style={styles.boxesScrollView}
-                        showsVerticalScrollIndicator={false}
-                    >
                         <View style={styles.friendsBoxes}>
                             <TouchableOpacity
                                 style={styles.opponentsFriendsBox}
@@ -936,8 +932,6 @@ class OpponentsProfile extends React.Component {
                                 </Text>
                             </View>
                         </View>
-                        <View style={styles.badgesBox} />
-                    </ScrollView>
                 </View>
             </View>
         )

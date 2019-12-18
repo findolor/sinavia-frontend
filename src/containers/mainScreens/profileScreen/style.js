@@ -124,7 +124,8 @@ export default StyleSheet.create({
         fontFamily: 'Averta-ExtraBoldItalic',
         fontSize: hp(3),
         color: '#2E313C',
-        marginBottom: hp(1)
+        marginBottom: hp(1),
+        textAlign: 'center'
     },
     boxLogo: {
         height: hp(7),
