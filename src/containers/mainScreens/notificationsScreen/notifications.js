@@ -31,6 +31,7 @@ window.localStorage = AsyncStorage
 global.Buffer = Buffer
 import * as Colyseus from 'colyseus.js'
 import { GAME_ENGINE_ENDPOINT, SCENE_KEYS } from '../../../config'
+import { BannerAd } from '../../../services/admobService'
 
 const generalNotificationsList = [
     {
@@ -227,14 +228,41 @@ class Notifications extends React.Component {
         switch (item.notificationType) {
             case 'friendshipAccepted':
                 return (
-                    <TouchableOpacity
-                        onPress={() =>
-                            this.friendshipAcceptedOnPress(
-                                item.notificationData.userId
-                            )
-                        }
-                    >
-                        <View style={styles.userRow}>
+                    <View>
+                        <TouchableOpacity
+                            onPress={() =>
+                                this.friendshipAcceptedOnPress(
+                                    item.notificationData.userId
+                                )
+                            }
+                        >
+                            <View style={styles.userRow}>
+                                <View style={styles.userPicContainerInRow}>
+                                    <Image
+                                        source={{
+                                            uri:
+                                                item.notificationData
+                                                    .profilePicture
+                                        }}
+                                        style={styles.userPic}
+                                    />
+                                </View>
+                                <View style={styles.textsinRowWithPic}>
+                                    <Text style={styles.notificationRowsText}>
+                                        {item.notificationData.message}
+                                    </Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                        {!this.props.clientInformation.isPremium &&
+                            index % 3 === 2 &&
+                            index !== 0 && <BannerAd />}
+                    </View>
+                )
+            case 'gameRequest':
+                return (
+                    <View>
+                        <View style={[styles.userRow, { height: hp(12) }]}>
                             <View style={styles.userPicContainerInRow}>
                                 <Image
                                     source={{
@@ -244,188 +272,204 @@ class Notifications extends React.Component {
                                     style={styles.userPic}
                                 />
                             </View>
-                            <View style={styles.textsinRowWithPic}>
-                                <Text style={styles.notificationRowsText}>
-                                    {item.notificationData.message}
+                            <View
+                                style={[
+                                    styles.gameContentsContainer,
+                                    { height: hp(12) }
+                                ]}
+                            >
+                                <Text style={styles.gameContentText}>
+                                    {item.notificationData.examName}
+                                </Text>
+                                <Text style={styles.gameContentText}>
+                                    {item.notificationData.courseName}
+                                </Text>
+                                <Text style={styles.gameContentText}>
+                                    {item.notificationData.subjectName}
                                 </Text>
                             </View>
-                        </View>
-                    </TouchableOpacity>
-                )
-            case 'gameRequest':
-                return (
-                    <View style={[styles.userRow, { height: hp(12) }]}>
-                        <View style={styles.userPicContainerInRow}>
-                            <Image
-                                source={{
-                                    uri: item.notificationData.profilePicture
-                                }}
-                                style={styles.userPic}
-                            />
-                        </View>
-                        <View
-                            style={[
-                                styles.gameContentsContainer,
-                                { height: hp(12) }
-                            ]}
-                        >
-                            <Text style={styles.gameContentText}>
-                                {item.notificationData.examName}
-                            </Text>
-                            <Text style={styles.gameContentText}>
-                                {item.notificationData.courseName}
-                            </Text>
-                            <Text style={styles.gameContentText}>
-                                {item.notificationData.subjectName}
-                            </Text>
-                        </View>
-                        <View
-                            style={[
-                                styles.gameRequestContainer,
-                                { height: hp(12) }
-                            ]}
-                        >
-                            <Text style={styles.gameRequestText}>
-                                {item.notificationData.message}
-                            </Text>
-                            <View style={styles.gameRequestButtonsContainer}>
-                                <TouchableOpacity
-                                    onPress={() => {
-                                        apiServices
-                                            .checkOnline()
-                                            .then(() => {
-                                                this.setState({
-                                                    refreshFlatlist: !this.state
-                                                        .refreshFlatlist
-                                                })
-                                                this.acceptGameRequestOnPress(
-                                                    item,
-                                                    index
-                                                )
-                                            })
-                                            .catch(error => {})
-                                    }}
+                            <View
+                                style={[
+                                    styles.gameRequestContainer,
+                                    { height: hp(12) }
+                                ]}
+                            >
+                                <Text style={styles.gameRequestText}>
+                                    {item.notificationData.message}
+                                </Text>
+                                <View
+                                    style={styles.gameRequestButtonsContainer}
                                 >
-                                    <View style={styles.acceptButton}>
-                                        <Text
-                                            style={
-                                                styles.gameRequestsButtonText
-                                            }
-                                        >
-                                            Kabul Et
-                                        </Text>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    onPress={() => {
-                                        apiServices
-                                            .checkOnline()
-                                            .then(() => {
-                                                this.setState({
-                                                    refreshFlatlist: !this.state
-                                                        .refreshFlatlist
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            apiServices
+                                                .checkOnline()
+                                                .then(() => {
+                                                    this.setState({
+                                                        refreshFlatlist: !this
+                                                            .state
+                                                            .refreshFlatlist
+                                                    })
+                                                    this.acceptGameRequestOnPress(
+                                                        item,
+                                                        index
+                                                    )
                                                 })
-                                                this.rejectGameRequestOnPress(
-                                                    item,
-                                                    index
-                                                )
-                                            })
-                                            .catch(error => {})
-                                    }}
-                                >
-                                    <View style={styles.rejectButton}>
-                                        <Text
-                                            style={
-                                                styles.gameRequestsButtonText
-                                            }
-                                        >
-                                            Reddet
-                                        </Text>
-                                    </View>
-                                </TouchableOpacity>
+                                                .catch(error => {})
+                                        }}
+                                    >
+                                        <View style={styles.acceptButton}>
+                                            <Text
+                                                style={
+                                                    styles.gameRequestsButtonText
+                                                }
+                                            >
+                                                Kabul Et
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            apiServices
+                                                .checkOnline()
+                                                .then(() => {
+                                                    this.setState({
+                                                        refreshFlatlist: !this
+                                                            .state
+                                                            .refreshFlatlist
+                                                    })
+                                                    this.rejectGameRequestOnPress(
+                                                        item,
+                                                        index
+                                                    )
+                                                })
+                                                .catch(error => {})
+                                        }}
+                                    >
+                                        <View style={styles.rejectButton}>
+                                            <Text
+                                                style={
+                                                    styles.gameRequestsButtonText
+                                                }
+                                            >
+                                                Reddet
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
+                        {!this.props.clientInformation.isPremium &&
+                            index % 3 === 2 &&
+                            index !== 0 && <BannerAd />}
                     </View>
                 )
             case 'friendMatchResult':
                 return (
-                    <TouchableOpacity
-                        onPress={() =>
-                            this.friendMatchResultsOnPress(item, index)
-                        }
-                    >
-                        <View style={styles.userRow}>
-                            <View style={styles.userPicContainerInRow}>
-                                <Image
-                                    source={{
-                                        uri:
-                                            item.notificationData
-                                                .friendProfilePicture
-                                    }}
-                                    style={styles.userPic}
-                                />
+                    <View>
+                        <TouchableOpacity
+                            onPress={() =>
+                                this.friendMatchResultsOnPress(item, index)
+                            }
+                        >
+                            <View style={styles.userRow}>
+                                <View style={styles.userPicContainerInRow}>
+                                    <Image
+                                        source={{
+                                            uri:
+                                                item.notificationData
+                                                    .friendProfilePicture
+                                        }}
+                                        style={styles.userPic}
+                                    />
+                                </View>
+                                <View style={styles.textsinRowWithPic}>
+                                    <Text style={styles.notificationRowsText}>
+                                        {item.notificationData.message}
+                                    </Text>
+                                </View>
                             </View>
-                            <View style={styles.textsinRowWithPic}>
-                                <Text style={styles.notificationRowsText}>
-                                    {item.notificationData.message}
-                                </Text>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
+                        </TouchableOpacity>
+                        {!this.props.clientInformation.isPremium &&
+                            index % 3 === 2 &&
+                            index !== 0 && <BannerAd />}
+                    </View>
                 )
             case 'nationalPlace':
                 return (
-                    <View style={styles.userRow}>
-                        <Text style={styles.notificationRowsText}>
-                            Geçen {item.timePeriod} Türkiye sıralaman{' '}
-                            <Text style={{ color: '#FF9900' }}>
-                                {item.order}
+                    <View>
+                        <View style={styles.userRow}>
+                            <Text style={styles.notificationRowsText}>
+                                Geçen {item.timePeriod} Türkiye sıralaman{' '}
+                                <Text style={{ color: '#FF9900' }}>
+                                    {item.order}
+                                </Text>
+                                . Başarılı bir hafta dileriz.
                             </Text>
-                            . Başarılı bir hafta dileriz.
-                        </Text>
+                        </View>
+                        {!this.props.clientInformation.isPremium &&
+                            index % 3 === 2 &&
+                            index !== 0 && <BannerAd />}
                     </View>
                 )
             case 'earnedScore':
                 return (
-                    <View style={styles.userRow}>
-                        <Text style={styles.notificationRowsText}>
-                            Önceki {item.timePeriod}, {item.examName}-
-                            {item.courseName} kategorisinde
-                            <Text style={{ color: '#FF9900' }}>
-                                {' '}
-                                {item.sinaviaScore} Sınavia Puanı{' '}
+                    <View>
+                        <View style={styles.userRow}>
+                            <Text style={styles.notificationRowsText}>
+                                Önceki {item.timePeriod}, {item.examName}-
+                                {item.courseName} kategorisinde
+                                <Text style={{ color: '#FF9900' }}>
+                                    {' '}
+                                    {item.sinaviaScore} Sınavia Puanı{' '}
+                                </Text>
+                                topladın.
                             </Text>
-                            topladın.
-                        </Text>
+                        </View>
+                        {!this.props.clientInformation.isPremium &&
+                            index % 3 === 2 &&
+                            index !== 0 && <BannerAd />}
                     </View>
                 )
             case 'successPercentage':
                 return (
-                    <View style={styles.userRow}>
-                        <Text style={styles.notificationRowsText}>
-                            {item.examName}-{item.courseName} dersinin{' '}
-                            <Text style={{ color: '#00D9EF' }}>
-                                {item.subjectName}
-                            </Text>{' '}
-                            konusundaki başarı oranın{' '}
-                            <Text style={{ color: '#FF9900' }}>
-                                {item.successPercentage}%
+                    <View>
+                        <View style={styles.userRow}>
+                            <Text style={styles.notificationRowsText}>
+                                {item.examName}-{item.courseName} dersinin{' '}
+                                <Text style={{ color: '#00D9EF' }}>
+                                    {item.subjectName}
+                                </Text>{' '}
+                                konusundaki başarı oranın{' '}
+                                <Text style={{ color: '#FF9900' }}>
+                                    {item.successPercentage}%
+                                </Text>
+                                . Biraz daha çalışmalısın.
                             </Text>
-                            . Biraz daha çalışmalısın.
-                        </Text>
+                        </View>
+                        {!this.props.clientInformation.isPremium &&
+                            index % 3 === 2 &&
+                            index !== 0 && <BannerAd />}
                     </View>
                 )
             case 'statistics':
                 return (
-                    <TouchableOpacity>
-                        <View style={styles.userRow}>
-                            <Text style={styles.notificationRowsText}>
-                                Geçen {item.timePeriod} istatistiklerini görmek
-                                için{' '}
-                                <Text style={{ color: '#00D9EF' }}>TIKLA!</Text>{' '}
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
+                    <View>
+                        <TouchableOpacity>
+                            <View style={styles.userRow}>
+                                <Text style={styles.notificationRowsText}>
+                                    Geçen {item.timePeriod} istatistiklerini
+                                    görmek için{' '}
+                                    <Text style={{ color: '#00D9EF' }}>
+                                        TIKLA!
+                                    </Text>{' '}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                        {!this.props.clientInformation.isPremium &&
+                            index % 3 === 2 &&
+                            index !== 0 && <BannerAd />}
+                    </View>
                 )
             default:
                 break
@@ -672,81 +716,92 @@ class Notifications extends React.Component {
                             ListEmptyComponent={this.renderEmptyFriendRequests}
                             renderItem={({ item, index }) => {
                                 return (
-                                    <View style={styles.userRow}>
-                                        <View
-                                            style={styles.userPicContainerInRow}
-                                        >
-                                            <TouchableOpacity
-                                                onPress={() =>
-                                                    this.friendshipAcceptedOnPress(
-                                                        item.id
-                                                    )
+                                    <View>
+                                        <View style={styles.userRow}>
+                                            <View
+                                                style={
+                                                    styles.userPicContainerInRow
                                                 }
                                             >
-                                                <Image
-                                                    source={{
-                                                        uri: item.profilePicture
+                                                <TouchableOpacity
+                                                    onPress={() =>
+                                                        this.friendshipAcceptedOnPress(
+                                                            item.id
+                                                        )
+                                                    }
+                                                >
+                                                    <Image
+                                                        source={{
+                                                            uri:
+                                                                item.profilePicture
+                                                        }}
+                                                        style={styles.userPic}
+                                                    />
+                                                </TouchableOpacity>
+                                            </View>
+                                            <View style={styles.nameContainer}>
+                                                <TouchableOpacity
+                                                    onPress={() =>
+                                                        this.friendshipAcceptedOnPress(
+                                                            item.id
+                                                        )
+                                                    }
+                                                >
+                                                    <Text
+                                                        style={styles.nameText}
+                                                    >
+                                                        {item.name +
+                                                            ' ' +
+                                                            item.lastname}
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                            <View
+                                                style={
+                                                    styles.friendshipButtonsContainer
+                                                }
+                                            >
+                                                <TouchableOpacity
+                                                    onPress={() => {
+                                                        this.setState({
+                                                            refreshFlatlist: !this
+                                                                .state
+                                                                .refreshFlatlist
+                                                        })
+                                                        this.acceptFriendRequestOnPress(
+                                                            item.id,
+                                                            index
+                                                        )
                                                     }}
-                                                    style={styles.userPic}
-                                                />
-                                            </TouchableOpacity>
+                                                >
+                                                    <Image
+                                                        source={ACCEPT_BUTTON}
+                                                        style={
+                                                            styles.friendshipButtons
+                                                        }
+                                                    />
+                                                </TouchableOpacity>
+                                                <TouchableOpacity
+                                                    onPress={() => {
+                                                        this.rejectFriendRequestOnPress(
+                                                            item.id,
+                                                            index
+                                                        )
+                                                    }}
+                                                >
+                                                    <Image
+                                                        source={REJECT_BUTTON}
+                                                        style={
+                                                            styles.friendshipButtons
+                                                        }
+                                                    />
+                                                </TouchableOpacity>
+                                            </View>
                                         </View>
-                                        <View style={styles.nameContainer}>
-                                            <TouchableOpacity
-                                                onPress={() =>
-                                                    this.friendshipAcceptedOnPress(
-                                                        item.id
-                                                    )
-                                                }
-                                            >
-                                                <Text style={styles.nameText}>
-                                                    {item.name +
-                                                        ' ' +
-                                                        item.lastname}
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                        <View
-                                            style={
-                                                styles.friendshipButtonsContainer
-                                            }
-                                        >
-                                            <TouchableOpacity
-                                                onPress={() => {
-                                                    this.setState({
-                                                        refreshFlatlist: !this
-                                                            .state
-                                                            .refreshFlatlist
-                                                    })
-                                                    this.acceptFriendRequestOnPress(
-                                                        item.id,
-                                                        index
-                                                    )
-                                                }}
-                                            >
-                                                <Image
-                                                    source={ACCEPT_BUTTON}
-                                                    style={
-                                                        styles.friendshipButtons
-                                                    }
-                                                />
-                                            </TouchableOpacity>
-                                            <TouchableOpacity
-                                                onPress={() => {
-                                                    this.rejectFriendRequestOnPress(
-                                                        item.id,
-                                                        index
-                                                    )
-                                                }}
-                                            >
-                                                <Image
-                                                    source={REJECT_BUTTON}
-                                                    style={
-                                                        styles.friendshipButtons
-                                                    }
-                                                />
-                                            </TouchableOpacity>
-                                        </View>
+                                        {!this.props.clientInformation
+                                            .isPremium &&
+                                            index % 3 === 2 &&
+                                            index !== 0 && <BannerAd />}
                                     </View>
                                 )
                             }}
