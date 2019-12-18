@@ -36,6 +36,7 @@ import {
 import { friendActions } from '../../../redux/friends/actions'
 import { opponentActions } from '../../../redux/opponents/actions'
 import AuthButton from '../../../components/authScreen/authButton'
+import { flashMessages } from '../../../services/flashMessageBuilder'
 
 class OpponentsProfile extends React.Component {
     constructor(props) {
@@ -166,6 +167,21 @@ class OpponentsProfile extends React.Component {
 
     profileSearchOnPress = () => {
         if (this.state.searchText === '') return
+        if (this.state.searchText.length < 3) {
+            flashMessages.generalErrorWithProps(
+                'Hata!',
+                'Lütfen en az 3 karakter giriniz.',
+                {
+                    backgroundColor: '#FFFFFF',
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    borderColor: '#00D9EF',
+                    borderWidth: hp(0.25),
+                    height: hp(10)
+                }
+            )
+            return
+        }
         navigationPop(true, {
             searchedKeyword: this.state.searchText,
             popScreen: SCENE_KEYS.mainScreens.profileSearch

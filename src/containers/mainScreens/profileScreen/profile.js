@@ -3,8 +3,6 @@ import {
     Image,
     ImageBackground,
     Modal,
-    ScrollView,
-    StatusBar,
     Text,
     TextInput,
     TouchableOpacity,
@@ -13,22 +11,20 @@ import {
 import {
     SCENE_KEYS,
     navigationPop,
-    navigationPush,
-    navigationReset,
-    navigationReplace
+    navigationPush
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import styles from './style'
 import premiumStyles from '../purchaseScreen/style'
 import NotchView from '../../../components/notchView'
 import statisticsLogo from '../../../assets/pie_chart.png'
-import friendsLogo from '../../../assets/friends.png'
 import trophyLogo from '../../../assets/trophy.png'
 import favoriteLogo from '../../../assets/favorite.png'
 import returnLogo from '../../../assets/return.png'
 import settingsLogo from '../../../assets/settings.png'
 import searchlogo from '../../../assets/search.png'
 import favori_dolu from '../../../assets/favori.png'
+import { flashMessages } from '../../../services/flashMessageBuilder'
 
 import {
     heightPercentageToDP as hp,
@@ -56,6 +52,21 @@ class Profile extends React.Component {
 
     profileSearchOnPress = () => {
         if (this.state.searchText === '') return
+        if (this.state.searchText.length < 3) {
+            flashMessages.generalErrorWithProps(
+                'Hata!',
+                'Lütfen en az 3 karakter giriniz.',
+                {
+                    backgroundColor: '#FFFFFF',
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    borderColor: '#00D9EF',
+                    borderWidth: hp(0.25),
+                    height: hp(10)
+                }
+            )
+            return
+        }
         navigationPush(SCENE_KEYS.mainScreens.profileSearch, {
             searchedKeyword: this.state.searchText
         })
