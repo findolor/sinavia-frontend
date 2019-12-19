@@ -30,6 +30,8 @@ import {
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
 import LinearGradient from 'react-native-linear-gradient'
+import { appActions } from '../../../redux/app/actions'
+import { interstitialAd } from '../../../services/admobService'
 
 class Profile extends React.Component {
     constructor(props) {
@@ -89,6 +91,12 @@ class Profile extends React.Component {
     }
 
     statisticsLogoOnPress = () => {
+        this.props.increaseFeaturePressCount()
+        if (
+            this.props.featurePressCount % 3 === 0 &&
+            !this.props.clientInformation.isPremium
+        )
+            interstitialAd()
         navigationPush(SCENE_KEYS.mainScreens.statistics)
     }
 
@@ -334,9 +342,13 @@ class Profile extends React.Component {
 
 const mapStateToProps = state => ({
     clientInformation: state.client.clientInformation,
-    friendIds: state.friends.friendIds
+    friendIds: state.friends.friendIds,
+    featurePressCount: state.app.featurePressCount
 })
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+    increaseFeaturePressCount: () =>
+        dispatch(appActions.increaseFeaturePressCount())
+})
 
-export default connect(mapStateToProps, null)(Profile)
+export default connect(mapStateToProps, mapDispatchToProps)(Profile)

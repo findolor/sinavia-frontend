@@ -54,6 +54,11 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 connectionErrorMessage: action.payload
             }
+        case appTypes.INCREASE_FEATURE_PRESS_COUNT:
+            state.featurePressCount++
+            return {
+                ...state
+            }
         default:
             return state
     }

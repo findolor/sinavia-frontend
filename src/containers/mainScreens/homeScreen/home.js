@@ -512,7 +512,7 @@ class Home extends React.Component {
             carouselActiveSlide
         ].subjectEntities.forEach((subject, index) => {
             if (!this.props.clientInformation.isPremium) {
-                if (index % 4 === 2 && index !== 0)
+                if (index % 4 === 3 && index !== 0)
                     subjectList.push(
                         <View key={index}>
                             <TouchableOpacity

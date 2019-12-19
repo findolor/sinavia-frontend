@@ -345,7 +345,7 @@ class FriendGame extends React.Component {
                 this.setState({isQuitGameModalVisible: true, visibleView: 'opponentLeaveAfterAnswer'})
                 setTimeout(() => {
                     that.shutdownGame()
-                    if(!this.props.clientInformation.isPremium) interstitialAd()
+                    if(!that.props.clientInformation.isPremium) interstitialAd()
                     navigationReplace(SCENE_KEYS.gameScreens.friendGameStats, {
                         playerProps: message.playerProps,
                         room: that.props.room,

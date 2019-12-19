@@ -370,7 +370,7 @@ class GroupGame extends React.Component {
                 })
                 setTimeout(function() {
                     that.shutdownGame()
-                    if (!this.props.clientInformation.isPremium)
+                    if (!that.props.clientInformation.isPremium)
                         interstitialAd()
                     navigationReplace(SCENE_KEYS.gameScreens.groupGameStats, {
                         playerProps: message.playerProps,
@@ -400,7 +400,6 @@ class GroupGame extends React.Component {
                     this.onlyClientMatchQuit()
                     break
                 }
-                console.log(this.state.questionList)
                 // Do a shutdown routine
                 this.shutdownGame()
                 this.props.room.leave()

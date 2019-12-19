@@ -330,7 +330,7 @@ class RankedGame extends React.Component {
                         this.shutdownGame(),
                         this.props.client.close(),
                     setTimeout(function(){
-                            that.props.room.leave(),
+                            that.props.room.leave()
                             navigationReset('main')
                     }, 3000)
                     break
@@ -339,7 +339,7 @@ class RankedGame extends React.Component {
                 this.setState({isQuitGameModalVisible: true, visibleView: 'opponentLeaveAfterAnswer'})
                 setTimeout(function() {
                     that.shutdownGame()
-                    if(!this.props.clientInformation.isPremium) interstitialAd()
+                    if(!that.props.clientInformation.isPremium) interstitialAd()
                     navigationReplace(SCENE_KEYS.gameScreens.gameStats, {
                         playerProps: message.playerProps,
                         room: that.props.room,
