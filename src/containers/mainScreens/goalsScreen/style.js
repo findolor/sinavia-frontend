@@ -24,6 +24,24 @@ export default StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
+    noResultsView: {
+        flex: 90,
+        width: wp(88),
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingBottom: hp(10)
+    },
+    noResultsText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(3),
+        color: '#2E313C',
+        textAlign: 'center',
+        marginTop: hp(5)
+    },
+    noResultImg: {
+        resizeMode: 'contain',
+        height: hp(20)
+    },
     returnLogo: {
         height: hp(3.5),
         width: hp(3.5)
@@ -182,39 +200,53 @@ export default StyleSheet.create({
         borderWidth: hp(0.4),
         borderColor: '#00D9EF',
         borderRadius: hp(1.5),
-        marginTop: hp(2.25),
         alignItems: 'center'
     },
     courseAndSubjectName: {
-        height: hp(7),
+        height: hp(6),
         width: wp(85),
         flexDirection: 'row',
-        justifyContent: 'flex-start',
+        justifyContent: 'space-between',
         alignItems: 'flex-end'
     },
     courseText: {
         fontFamily: 'Averta-Semibold',
         fontSize: hp(3),
         color: '#2E313C',
-        marginBottom: hp(1.75)
+        marginBottom: hp(1.3)
     },
     subjectText: {
         fontFamily: 'Averta-RegularItalic',
         fontSize: hp(2),
         color: '#858585',
-        marginBottom: hp(2)
+        marginBottom: hp(1.6)
     },
     progressBarView: {
-        height: hp(2),
+        height: hp(3),
         width: wp(85),
-        borderRadius: hp(1.5),
+        borderRadius: hp(5),
         backgroundColor: '#E5E5E5'
     },
     instantProgressView: {
         position: 'absolute',
-        height: hp(2),
-        borderRadius: hp(1.5),
-        backgroundColor: '#FF9900'
+        height: hp(3),
+        borderRadius: hp(5),
+        backgroundColor: '#FF9900',
+        justifyContent: 'center',
+        alignItems: 'flex-end'
+    },
+    solvedQuestionCircle: {
+        height: hp(5.3),
+        width: hp(5.3),
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: hp(100),
+        borderWidth: hp(0.25)
+    },
+    solvedQuestionsText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(2),
+        color: '#FFFFFF'
     },
     questionGoalView: {
         height: hp(6.5),
@@ -227,5 +259,34 @@ export default StyleSheet.create({
         fontSize: hp(2.75),
         marginTop: hp(0.75),
         color: '#2E313C'
+    },
+    modalContainer: {
+        flex: 1,
+        alignItems: 'center'
+    },
+    quitView: {
+        backgroundColor: '#ffffff',
+        height: hp(20),
+        width: wp(87.5),
+        marginTop: hp(35),
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#00D9EF',
+        borderWidth: wp(0.75),
+        borderRadius: 10
+    },
+    areYouSureText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: wp(4.5),
+        color: '#5C5C5C',
+        textAlign: 'center'
+    },
+    yesOrNoButtonsContainer: {
+        height: hp(9),
+        width: wp(87.5),
+        marginTop: hp(2),
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start'
     }
 })

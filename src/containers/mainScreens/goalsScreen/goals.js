@@ -3,7 +3,7 @@ import {
     Image, Text,
     TouchableOpacity,
     View,
-    FlatList
+    FlatList, Modal, ScrollView,
 } from 'react-native';
 import styles from './style'
 import NotchView from '../../../components/notchView'
@@ -16,64 +16,14 @@ import {
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
 
 import returnLogo from '../../../assets/return.png'
+import GARBAGE from '../../../assets/mainScreens/garbage.png'
+import NO_RESULTS_GOAL from '../../../assets/noResultsGoal.png'
 
 import { connect } from 'react-redux';
+import AuthButton from '../../../components/authScreen/authButton';
 
 const goals = [
-    {
-        course: 'Turkce',
-        subject: 'Paragraf',
-        questionGoal: 150,
-        solvedQuestion: 100
-    },
-    {
-        course: 'Turkce',
-        subject: 'Paragraf',
-        questionGoal: 150,
-        solvedQuestion: 100
-    },
-    {
-        course: 'Turkce',
-        subject: 'Paragraf',
-        questionGoal: 150,
-        solvedQuestion: 100
-    },
-    {
-        course: 'Turkce',
-        subject: 'Paragraf',
-        questionGoal: 150,
-        solvedQuestion: 100
-    },
-    {
-        course: 'Turkce',
-        subject: 'Paragraf',
-        questionGoal: 150,
-        solvedQuestion: 100
-    },
-    {
-        course: 'Turkce',
-        subject: 'Paragraf',
-        questionGoal: 150,
-        solvedQuestion: 100
-    },
-    {
-        course: 'Turkce',
-        subject: 'Paragraf',
-        questionGoal: 150,
-        solvedQuestion: 100
-    },
-    {
-        course: 'Turkce',
-        subject: 'Paragraf',
-        questionGoal: 150,
-        solvedQuestion: 100
-    },
-    {
-        course: 'Turkce',
-        subject: 'Paragraf',
-        questionGoal: 150,
-        solvedQuestion: 100
-    }
+
 ]
 
 class Goals extends React.Component {
@@ -84,7 +34,8 @@ class Goals extends React.Component {
             courseList: [],
             subjectList: [],
             goals: goals,
-            choosenQuestionAmount: 100
+            choosenQuestionAmount: 100,
+            isModalVisible: false
         }
     }
 
@@ -121,9 +72,63 @@ class Goals extends React.Component {
         this.setState({ choosenQuestionAmount: questionNumber })
     }
 
+    removeGoalModal() {
+        return (
+            <View
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>
+                            Haftalık hedefini kaldırmak istediğine emin misin?
+                        </Text>
+                    </View>
+                    <View style={styles.yesOrNoButtonsContainer}>
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#00D9EF"
+                            buttonText="Evet"
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
+                        />
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#00D9EF"
+                            buttonText="Hayır"
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
+                            onPress={() =>
+                                this.setState({ isModalVisible: false })
+                            }
+                        />
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
+    removeGoalOnPress = () => {
+        this.setState({
+            isModalVisible: true
+        })
+    }
+
     render() {
         return (
             <View style={styles.container}>
+                <Modal
+                    visible={this.state.isModalVisible}
+                    transparent={true}
+                    animationType={'fade'}
+                >
+                    {this.removeGoalModal()}
+                </Modal>
                 <NotchView />
                 <View style={styles.header}>
                     <TouchableOpacity onPress={this.returnButtonOnPress}>
@@ -145,24 +150,44 @@ class Goals extends React.Component {
                         </View>
                     }
                 </View>
-                    {this.state.visibleView === 'goalsList' &&
+                    {this.state.visibleView === 'goalsList' && Object.keys(this.state.goals).length !== 0 &&
                         <View style={styles.scrollViewContainer}>
                             <FlatList
                                 data={this.state.goals}
                                 showsVerticalScrollIndicator={false}
                                 renderItem={({ item }) => {
                                     return (
-                                        <View style={styles.goalView}>
-                                            <View style={styles.courseAndSubjectName}>
-                                                <Text style={styles.courseText}>{item.course}</Text>
-                                                <Text style={styles.subjectText}>    {item.subject}</Text>
-                                            </View>
-                                            <View style={styles.progressBarView}>
-                                                <View style={[styles.instantProgressView, {width: wp(item.solvedQuestion/item.questionGoal*85)}]}/>
-                                            </View>
-                                            <View style={styles.questionGoalView}>
-                                                <Text style={styles.questionGoalText}>0</Text>
-                                                <Text style={styles.questionGoalText}>{item.questionGoal}</Text>
+                                        <View style={{height: hp(16.5), width: wp(90), marginTop: hp(1.5)}}>
+                                            <View style={[styles.goalView, {borderColor: item.solvedQuestion >= item.questionGoal ? '#21C95A' : '#00D9EF'}]}>
+                                                <View style={styles.courseAndSubjectName}>
+                                                    <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-end'}}>
+                                                        <Text style={styles.courseText}>{item.course}</Text>
+                                                        <Text style={styles.subjectText}>    {item.subject}</Text>
+                                                    </View>
+                                                    <TouchableOpacity onPress={this.removeGoalOnPress}>
+                                                        <Image source={GARBAGE} style={{height: hp(3), width: hp(3), marginBottom: hp(1.7)}}/>
+                                                    </TouchableOpacity>
+                                                </View>
+                                                <View style={styles.progressBarView}>
+                                                    {item.solvedQuestion >= item.questionGoal &&
+                                                        <View style={[styles.instantProgressView, {width: wp(85), backgroundColor: '#21C95A'}]}>
+                                                            <View style={[styles.solvedQuestionCircle, {backgroundColor: '#21C95A', borderColor: '#1BAB4C'}]}>
+                                                                <Text style={styles.solvedQuestionsText}>{item.solvedQuestion}</Text>
+                                                            </View>
+                                                        </View>
+                                                    }
+                                                    {item.solvedQuestion < item.questionGoal && item.solvedQuestion > 0 &&
+                                                        <View style={[styles.instantProgressView, {width: wp(item.solvedQuestion/item.questionGoal*85)}]}>
+                                                            <View style={[styles.solvedQuestionCircle, {backgroundColor: '#FF9900', borderColor: '#E08700'}]}>
+                                                                <Text style={styles.solvedQuestionsText}>{item.solvedQuestion}</Text>
+                                                            </View>
+                                                        </View>
+                                                    }
+                                                </View>
+                                                <View style={styles.questionGoalView}>
+                                                    <Text style={styles.questionGoalText}>0</Text>
+                                                    <Text style={styles.questionGoalText}>{item.questionGoal}</Text>
+                                                </View>
                                             </View>
                                         </View>
                                     )
@@ -172,6 +197,12 @@ class Goals extends React.Component {
                             />
                         </View>
                     }
+                {this.state.visibleView === 'goalsList' && Object.keys(this.state.goals).length === 0 &&
+                <View style={styles.noResultsView}>
+                    <Image source={NO_RESULTS_GOAL} style={styles.noResultImg}/>
+                    <Text style={styles.noResultsText}>Bu hafta henüz bir hedef belirlemedin, her Pazartesi buraya gelip düzenleyebilirsin</Text>
+                </View>
+                }
                     {this.state.visibleView === 'addNewGoal' &&
                         <View style={styles.scrollViewContainer}>
                             <View style={styles.goalsInfoView}>
