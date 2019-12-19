@@ -29,6 +29,7 @@ import SECOND_CHANCE from '../../../assets/jokers/secondChance.png'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import AuthButton from '../../../components/authScreen/authButton'
 import * as Animatable from 'react-native-animatable'
+import { interstitialAd } from '../../../services/admobService'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
@@ -338,6 +339,7 @@ class RankedGame extends React.Component {
                 this.setState({isQuitGameModalVisible: true, visibleView: 'opponentLeaveAfterAnswer'})
                 setTimeout(function() {
                     that.shutdownGame()
+                    if(!this.props.clientInformation.isPremium) interstitialAd()
                     navigationReplace(SCENE_KEYS.gameScreens.gameStats, {
                         playerProps: message.playerProps,
                         room: that.props.room,
@@ -380,6 +382,7 @@ class RankedGame extends React.Component {
                 // Do a shutdown routine
                 this.shutdownGame()
                 this.props.room.leave()
+                if(!this.props.clientInformation.isPremium) interstitialAd()
                 navigationReplace(SCENE_KEYS.gameScreens.gameStats, {
                     playerProps: message.playerProps,
                     room: this.props.room,
@@ -469,6 +472,7 @@ class RankedGame extends React.Component {
                 break
             case 'match-finished':
                 this.shutdownGame()
+                if(!this.props.clientInformation.isPremium) interstitialAd()
                 navigationReplace(SCENE_KEYS.gameScreens.gameStats, {
                     playerProps: this.state.playerProps,
                     room: this.props.room,
@@ -1384,7 +1388,8 @@ class RankedGame extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    userJokers: state.client.userJokers
+    userJokers: state.client.userJokers,
+    clientInformation: state.client.clientInformation
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -511,45 +511,99 @@ class Home extends React.Component {
         this.props.examList[examIndex].courseEntities[
             carouselActiveSlide
         ].subjectEntities.forEach((subject, index) => {
-            subjectList.push(
-                <TouchableOpacity
-                    onPress={() => {
-                        this.onPressCard(subject.name)
-                    }}
-                    key={index}
-                >
-                    <Animatable.View
-                        style={[
-                            styles.card,
-                            {
-                                borderWidth: hp(0.4),
-                                borderRadius: hp(2.5),
-                                borderColor: '#FF9900'
-                            }
-                        ]}
-                        animation="fadeIn"
-                        duration={800}
-                        delay={index * 25 + 75}
-                        useNativeDriver={true}
-                    >
-                        <Text style={styles.cardText}>{subject.name}</Text>
-                    </Animatable.View>
-                </TouchableOpacity>
-            )
             if (!this.props.clientInformation.isPremium) {
-                if (index % 3 === 2 && index !== 0)
+                if (index % 4 === 2 && index !== 0)
                     subjectList.push(
+                        <View key={index}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.onPressCard(subject.name)
+                                }}
+                            >
+                                <Animatable.View
+                                    style={[
+                                        styles.card,
+                                        {
+                                            borderWidth: hp(0.4),
+                                            borderRadius: hp(2.5),
+                                            borderColor: '#FF9900'
+                                        }
+                                    ]}
+                                    animation="fadeIn"
+                                    duration={800}
+                                    delay={index * 25 + 75}
+                                    useNativeDriver={true}
+                                >
+                                    <Text style={styles.cardText}>
+                                        {subject.name}
+                                    </Text>
+                                </Animatable.View>
+                            </TouchableOpacity>
+                            <Animatable.View
+                                style={styles.card}
+                                animation="fadeIn"
+                                duration={800}
+                                delay={index * 25 + 75}
+                                useNativeDriver={true}
+                            >
+                                <BannerAd />
+                            </Animatable.View>
+                        </View>
+                    )
+                else
+                    subjectList.push(
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.onPressCard(subject.name)
+                            }}
+                            key={index}
+                        >
+                            <Animatable.View
+                                style={[
+                                    styles.card,
+                                    {
+                                        borderWidth: hp(0.4),
+                                        borderRadius: hp(2.5),
+                                        borderColor: '#FF9900'
+                                    }
+                                ]}
+                                animation="fadeIn"
+                                duration={800}
+                                delay={index * 25 + 75}
+                                useNativeDriver={true}
+                            >
+                                <Text style={styles.cardText}>
+                                    {subject.name}
+                                </Text>
+                            </Animatable.View>
+                        </TouchableOpacity>
+                    )
+            } else
+                subjectList.push(
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.onPressCard(subject.name)
+                        }}
+                        key={index}
+                    >
                         <Animatable.View
-                            style={styles.card}
+                            style={[
+                                styles.card,
+                                {
+                                    borderWidth: hp(0.4),
+                                    borderRadius: hp(2.5),
+                                    borderColor: '#FF9900'
+                                }
+                            ]}
                             animation="fadeIn"
                             duration={800}
                             delay={index * 25 + 75}
                             useNativeDriver={true}
                         >
-                            <BannerAd />
+                            <Text style={styles.cardText}>{subject.name}</Text>
                         </Animatable.View>
-                    )
-            }
+                    </TouchableOpacity>
+                )
         })
 
         return subjectList

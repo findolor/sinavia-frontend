@@ -30,7 +30,6 @@ import {
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
 import LinearGradient from 'react-native-linear-gradient'
-import { interstitialAd } from '../../../services/admobService'
 
 class Profile extends React.Component {
     constructor(props) {
@@ -40,10 +39,6 @@ class Profile extends React.Component {
             searchText: '',
             isModalVisible: false
         }
-    }
-
-    componentDidMount() {
-        interstitialAd()
     }
 
     backButtonOnPress = () => {

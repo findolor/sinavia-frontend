@@ -30,6 +30,7 @@ import {
 } from 'react-native-responsive-screen'
 import AuthButton from '../../../components/authScreen/authButton'
 import * as Animatable from 'react-native-animatable'
+import { interstitialAd } from '../../../services/admobService'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
@@ -391,6 +392,7 @@ class SoloFriendGameScreen extends React.Component {
                 })
 
                 this.shutdownGame()
+                if (!this.props.clientInformation.isPremium) interstitialAd()
                 navigationReplace(
                     SCENE_KEYS.gameScreens.soloFriendGameStatsScreen,
                     {
@@ -433,6 +435,7 @@ class SoloFriendGameScreen extends React.Component {
                 })
 
                 this.shutdownGame()
+                if (!this.props.clientInformation.isPremium) interstitialAd()
                 navigationReplace(
                     SCENE_KEYS.gameScreens.soloFriendGameStatsScreen,
                     {
@@ -683,6 +686,7 @@ class SoloFriendGameScreen extends React.Component {
     backButtonOnPress = () => {
         this.props.room.leave()
         this.props.client.close()
+        if (!this.props.clientInformation.isPremium) interstitialAd()
         navigationReset('main')
     }
 

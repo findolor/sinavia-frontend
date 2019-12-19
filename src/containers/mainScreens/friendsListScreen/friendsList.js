@@ -19,7 +19,7 @@ import styles from './style'
 import NotchView from '../../../components/notchView'
 import returnLogo from '../../../assets/return.png'
 import NO_RESULTS_USER from '../../../assets/noResultsUser.png'
-import { interstitialAd } from '../../../services/admobService'
+import { BannerAd } from '../../../services/admobService'
 
 class FriendsList extends React.Component {
     constructor(props) {
@@ -35,7 +35,6 @@ class FriendsList extends React.Component {
     }
 
     async componentDidMount() {
-        interstitialAd()
         if (Object.keys(this.props.friendIds).length === 0) return
         let friends
         if (!this.props.isOpponentFriends) {
@@ -158,38 +157,51 @@ class FriendsList extends React.Component {
                             showsVerticalScrollIndicator={false}
                             renderItem={({ item, index }) => {
                                 return (
-                                    <TouchableOpacity
-                                        onPress={() =>
-                                            this.friendOnPress(index)
-                                        }
-                                    >
-                                        <View style={styles.userRow}>
-                                            <View
-                                                style={
-                                                    styles.userPicContainerInRow
-                                                }
-                                            >
-                                                <Image
-                                                    source={{
-                                                        uri: item.profilePicture
-                                                    }}
-                                                    style={styles.userPic}
-                                                />
-                                            </View>
-                                            <View style={styles.nameContainer}>
-                                                <Text style={styles.nameText}>
-                                                    {item.name +
-                                                        ' ' +
-                                                        item.lastname}
-                                                </Text>
-                                                <Text
-                                                    style={styles.userNameText}
+                                    <View>
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                this.friendOnPress(index)
+                                            }
+                                        >
+                                            <View style={styles.userRow}>
+                                                <View
+                                                    style={
+                                                        styles.userPicContainerInRow
+                                                    }
                                                 >
-                                                    @{item.username}
-                                                </Text>
+                                                    <Image
+                                                        source={{
+                                                            uri:
+                                                                item.profilePicture
+                                                        }}
+                                                        style={styles.userPic}
+                                                    />
+                                                </View>
+                                                <View
+                                                    style={styles.nameContainer}
+                                                >
+                                                    <Text
+                                                        style={styles.nameText}
+                                                    >
+                                                        {item.name +
+                                                            ' ' +
+                                                            item.lastname}
+                                                    </Text>
+                                                    <Text
+                                                        style={
+                                                            styles.userNameText
+                                                        }
+                                                    >
+                                                        @{item.username}
+                                                    </Text>
+                                                </View>
                                             </View>
-                                        </View>
-                                    </TouchableOpacity>
+                                        </TouchableOpacity>
+                                        {!this.props.clientInformation
+                                            .isPremium &&
+                                            index % 3 === 2 &&
+                                            index !== 0 && <BannerAd />}
+                                    </View>
                                 )
                             }}
                             keyExtractor={(item, index) => index.toString()}
@@ -215,7 +227,8 @@ class FriendsList extends React.Component {
 const mapStateToProps = state => ({
     clientToken: state.client.clientToken,
     clientDBId: state.client.clientDBId,
-    friendIds: state.friends.friendIds
+    friendIds: state.friends.friendIds,
+    clientInformation: state.client.clientInformation
 })
 
 const mapDispatchToProps = dispatch => ({
