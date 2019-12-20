@@ -1234,7 +1234,13 @@ class Home extends React.Component {
             <View style={styles.modal}>
                 <TouchableOpacity
                     onPress={this.closeModalButtonOnPress}
-                    style={{ height: hp(120), width: wp(100) }}
+                    style={{
+                        height:
+                            this.props.clientInformation.isPremium === false
+                                ? hp(92.5)
+                                : hp(120),
+                        width: wp(100)
+                    }}
                 />
                 <View style={styles.backAndCloseButtonsContainer}>
                     <TouchableOpacity
@@ -1357,6 +1363,7 @@ class Home extends React.Component {
                         onPress={this.friendGameModeOnPress}
                     />
                 )}
+                {!this.props.clientInformation.isPremium && <BannerAd />}
             </View>
         )
     }

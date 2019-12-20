@@ -197,10 +197,6 @@ class FriendsList extends React.Component {
                                                 </View>
                                             </View>
                                         </TouchableOpacity>
-                                        {!this.props.clientInformation
-                                            .isPremium &&
-                                            index % 3 === 2 &&
-                                            index !== 0 && <BannerAd />}
                                     </View>
                                 )
                             }}
@@ -219,6 +215,7 @@ class FriendsList extends React.Component {
                         </Text>
                     </View>
                 )}
+                {!this.props.clientInformation.isPremium && <BannerAd />}
             </View>
         )
     }
