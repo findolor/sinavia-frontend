@@ -12,6 +12,7 @@ import {
 } from './homeScreen/groupRoomScreens/index'
 import OpponentsProfile from './opponentsProfileScreen/opponentsProfile'
 import Statistics from './statisticsScreen/statistics'
+import Goals from './goalsScreen/goals'
 
 export {
     Profile,
@@ -25,5 +26,6 @@ export {
     JoinGroupRoom,
     OpponentsProfile,
     Notifications,
-    Statistics
+    Statistics,
+    Goals
 }
