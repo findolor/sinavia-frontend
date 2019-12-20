@@ -160,6 +160,7 @@ class Leaderboard extends React.Component {
             topTenProfilePictures: [],
             remainingProfilePictures: [],
             remainingUsersFlatList: [],
+            allUserIds: [],
             clientRanking: 0
         })
     }
@@ -558,6 +559,11 @@ class Leaderboard extends React.Component {
                                         this.userOnPress(
                                             this.state.allUserIds[0]
                                         )
+                                    }
+                                    disabled={
+                                        this.state.allUserIds[0] !== undefined
+                                            ? false
+                                            : true
                                     }
                                 >
                                     <Animatable.View
