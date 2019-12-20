@@ -33,6 +33,8 @@ import LinearGradient from 'react-native-linear-gradient'
 import { appActions } from '../../../redux/app/actions'
 import { interstitialAd } from '../../../services/admobService'
 
+const FEAUTRE_PRESS_COUNT_FOR_AD = 4
+
 class Profile extends React.Component {
     constructor(props) {
         super(props)
@@ -48,6 +50,12 @@ class Profile extends React.Component {
     }
 
     goalsOnPress = () => {
+        this.props.increaseFeaturePressCount()
+        if (
+            this.props.featurePressCount % FEAUTRE_PRESS_COUNT_FOR_AD === 0 &&
+            !this.props.clientInformation.isPremium
+        )
+            interstitialAd()
         navigationPush(SCENE_KEYS.mainScreens.goals)
     }
 
@@ -88,6 +96,12 @@ class Profile extends React.Component {
     }
 
     friendsLogoOnPress = () => {
+        this.props.increaseFeaturePressCount()
+        if (
+            this.props.featurePressCount % FEAUTRE_PRESS_COUNT_FOR_AD === 0 &&
+            !this.props.clientInformation.isPremium
+        )
+            interstitialAd()
         navigationPush(SCENE_KEYS.mainScreens.friendsList, {
             friendsList: [],
             isOpponentFriends: false
@@ -97,7 +111,7 @@ class Profile extends React.Component {
     statisticsLogoOnPress = () => {
         this.props.increaseFeaturePressCount()
         if (
-            this.props.featurePressCount % 3 === 0 &&
+            this.props.featurePressCount % FEAUTRE_PRESS_COUNT_FOR_AD === 0 &&
             !this.props.clientInformation.isPremium
         )
             interstitialAd()
