@@ -509,7 +509,7 @@ class Favorites extends React.Component {
                 {Object.keys(this.state.scrollViewList).length === 0 && (
                     <View style={styles.noResultsView}>
                         <Image source={NO_RESULTS_FAV} style={styles.noResultImg}/>
-                        <Text style={styles.noResultsText}>Henüz bir soruyu favorilemedin</Text>
+                        <Text style={styles.noResultsText}>Henüz herhangi bir soru favorilemedin</Text>
                     </View>
                 )}
             </View>
