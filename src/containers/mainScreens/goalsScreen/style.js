@@ -28,8 +28,7 @@ export default StyleSheet.create({
         flex: 90,
         width: wp(88),
         justifyContent: 'center',
-        alignItems: 'center',
-        paddingBottom: hp(10)
+        alignItems: 'center'
     },
     noResultsText: {
         fontFamily: 'Averta-Semibold',

@@ -3,7 +3,7 @@ import {
     Image, Text,
     TouchableOpacity,
     View,
-    FlatList, Modal, ScrollView,
+    FlatList, Modal
 } from 'react-native';
 import styles from './style'
 import NotchView from '../../../components/notchView'
@@ -22,38 +22,87 @@ import NO_RESULTS_GOAL from '../../../assets/noResultsGoal.png'
 import { connect } from 'react-redux';
 import AuthButton from '../../../components/authScreen/authButton';
 
-const goals = [
-
-]
-
 class Goals extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             visibleView: 'goalsList',
             courseList: [],
-            subjectList: [],
-            goals: goals,
+            subjectList: ['Lütfen bir konu seçiniz'],
+            goalList: [],
             choosenQuestionAmount: 100,
-            isModalVisible: false
+            isModalVisible: false,
+            choosenExamId: null,
+            choosenCourseId: null,
+            choosenSubjectId: null,
+            removeGoalIndex: null
         }
     }
 
     componentDidMount() {
-        this.courseListMaker()
+        this.setChoosenExamId().then(() => {
+            this.courseListMaker()
+        })
+    }
+
+    // We set the choosen exam id based on users choosen exam
+    setChoosenExamId = async () => {
+        new Promise.resolve().then(() => {
+            let index = this.props.gameContentMap.exams.findIndex(
+                x => x.name === this.props.choosenExam
+            )
+            let examId = this.props.gameContentMap.exams[index].id
+            this.setState(
+                {
+                    choosenExamId: examId
+                },
+                () => {
+                    return
+                }
+            )
+        })
     }
 
     courseListMaker = () => {
-        const courseList = ['Genel']
-        let index = this.props.gameContentMap.exams.findIndex(
-            x => x.name === this.props.choosenExam
-        )
-        let examId = this.props.gameContentMap.exams[index].id
+        const courseList = []
         this.props.gameContentMap.courses.forEach(course => {
-            if (course.examId === examId) courseList.push(course.name)
+            if (course.examId === this.state.choosenExamId) courseList.push(course.name)
         })
 
         this.setState({ courseList: courseList })
+    }
+
+    // Course name selector for dropdown
+    pickerSelectCourse = (idx, value) => {
+        this.selectCourseDropdown(idx)
+    }
+
+    // this index is the course id in gameContentMap
+    selectCourseDropdown = index => {
+        const courseName = this.state.courseList[parseInt(index, 10)]
+        index = this.props.gameContentMap.courses.findIndex(
+            x => x.name === courseName && x.examId === this.state.choosenExamId
+        )
+        const courseId = this.props.gameContentMap.courses[index].id
+
+        const subjectList = []
+        this.props.gameContentMap.subjects.forEach(subject => {
+            if (subject.courseId === courseId) subjectList.push(subject.name)
+        })
+        this.setState(
+            {
+                subjectList: subjectList,
+                choosenCourseId: courseId
+            })
+    }
+
+    selectSubjectDropdown = (idx, value) => {
+        const subjectName = this.state.subjectList[parseInt(idx, 10)]
+        const index = this.props.gameContentMap.subjects.findIndex(
+            x => x.name === subjectName && x.courseId === this.state.choosenCourseId
+        )
+        const subjectId = this.props.gameContentMap.subjects[index].id
+        this.setState({ choosenSubjectId: subjectId })
     }
 
     returnButtonOnPress = () => {
@@ -95,6 +144,7 @@ class Goals extends React.Component {
                             buttonText="Evet"
                             fontSize={hp(3)}
                             borderRadius={hp(1.5)}
+                            onPress={this.removeGoal}
                         />
                         <AuthButton
                             height={hp(7)}
@@ -113,10 +163,35 @@ class Goals extends React.Component {
         )
     }
 
-    removeGoalOnPress = () => {
+    removeGoalOnPress = (index) => {
         this.setState({
-            isModalVisible: true
+            isModalVisible: true,
+            removeGoalIndex: index
         })
+    }
+
+    saveGoal = () => {
+        if(this.state.choosenSubjectId === null || this.state.choosenCourseId === null) return
+        const goalIndex = this.state.goalList.findIndex(x => x.subjectId === this.state.choosenSubjectId)
+        if(goalIndex !== -1) return
+
+        const goalList = this.state.goalList
+
+        goalList.push({
+            courseId: this.state.choosenCourseId,
+            subjectId: this.state.choosenSubjectId,
+            solvedQuestion: 0,
+            questionGoal: this.state.choosenQuestionAmount
+        })
+
+        this.setState({ goalList: goalList, visibleView: 'goalsList' })
+    }
+
+    removeGoal = () => {
+        const goalList = this.state.goalList
+
+        goalList.splice(this.state.removeGoalIndex, 1)
+        this.setState({ goalList: goalList, isModalVisible: false })
     }
 
     render() {
@@ -131,14 +206,16 @@ class Goals extends React.Component {
                 </Modal>
                 <NotchView />
                 <View style={styles.header}>
-                    <TouchableOpacity onPress={this.returnButtonOnPress}>
-                        <View style={styles.returnLogoContainer}>
-                            <Image
+                    <View style={styles.returnLogoContainer}>
+                    {this.state.visibleView !== 'addNewGoal' &&
+                        <TouchableOpacity onPress={this.returnButtonOnPress}>
+                        <Image
                                 source={returnLogo}
                                 style={styles.returnLogo}
                             />
-                        </View>
                     </TouchableOpacity>
+                    }
+                    </View>
                     <View style={styles.headerTextWrapper}>
                         <Text style={styles.headerText}>Haftalık Hedefler</Text>
                     </View>
@@ -150,21 +227,21 @@ class Goals extends React.Component {
                         </View>
                     }
                 </View>
-                    {this.state.visibleView === 'goalsList' && Object.keys(this.state.goals).length !== 0 &&
+                    {this.state.visibleView === 'goalsList' && Object.keys(this.state.goalList).length !== 0 &&
                         <View style={styles.scrollViewContainer}>
                             <FlatList
-                                data={this.state.goals}
+                                data={this.state.goalList}
                                 showsVerticalScrollIndicator={false}
-                                renderItem={({ item }) => {
+                                renderItem={({ item, index }) => {
                                     return (
                                         <View style={{height: hp(16.5), width: wp(90), marginTop: hp(1.5)}}>
                                             <View style={[styles.goalView, {borderColor: item.solvedQuestion >= item.questionGoal ? '#21C95A' : '#00D9EF'}]}>
                                                 <View style={styles.courseAndSubjectName}>
                                                     <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-end'}}>
-                                                        <Text style={styles.courseText}>{item.course}</Text>
-                                                        <Text style={styles.subjectText}>    {item.subject}</Text>
+                                                        <Text style={styles.courseText}>{this.props.gameContentMap.courses[item.courseId - 1].name}</Text>
+                                                        <Text style={styles.subjectText}>    {this.props.gameContentMap.subjects[item.subjectId - 1].name}</Text>
                                                     </View>
-                                                    <TouchableOpacity onPress={this.removeGoalOnPress}>
+                                                    <TouchableOpacity onPress={() => this.removeGoalOnPress(index)}>
                                                         <Image source={GARBAGE} style={{height: hp(3), width: hp(3), marginBottom: hp(1.7)}}/>
                                                     </TouchableOpacity>
                                                 </View>
@@ -197,7 +274,7 @@ class Goals extends React.Component {
                             />
                         </View>
                     }
-                {this.state.visibleView === 'goalsList' && Object.keys(this.state.goals).length === 0 &&
+                {this.state.visibleView === 'goalsList' && Object.keys(this.state.goalList).length === 0 &&
                 <View style={styles.noResultsView}>
                     <Image source={NO_RESULTS_GOAL} style={styles.noResultImg}/>
                     <Text style={styles.noResultsText}>Bu hafta henüz bir hedef belirlemedin, her Pazartesi buraya gelip düzenleyebilirsin</Text>
@@ -222,6 +299,9 @@ class Goals extends React.Component {
                                         }
                                         options={this.state.courseList}
                                         defaultValue={'Lütfen bir ders seçiniz'}
+                                        onSelect={(idx, value) =>
+                                            this.pickerSelectCourse(idx, value)
+                                        }
                                     />
                                 </View>
                                 <View style={styles.dropdownView}>
@@ -235,8 +315,14 @@ class Goals extends React.Component {
                                         dropdownTextStyle={
                                             styles.pickerDropdownText
                                         }
-                                        options={this.state.courseList}
-                                        defaultValue={'Lütfen bir ders seçiniz'}
+                                        options={this.state.subjectList}
+                                        defaultValue={'Lütfen bir konu seçiniz'}
+                                        onSelect={(idx, value) =>
+                                            this.selectSubjectDropdown(
+                                                idx,
+                                                value
+                                            )
+                                        }
                                     />
                                 </View>
                             </View>
@@ -414,7 +500,7 @@ class Goals extends React.Component {
                                 </View>
                             </View>
                             <View style={styles.buttonsView}>
-                                <TouchableOpacity style={styles.button}>
+                                <TouchableOpacity style={styles.button} onPress={this.saveGoal}>
                                     <Text style={styles.buttonText}>Onayla</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={this.cancelButtonOnPress} style={[styles.button, {backgroundColor: '#BB2E0F', marginTop: hp(2)}]}>
@@ -433,6 +519,6 @@ const mapStateToProps = state => ({
     gameContentMap: state.gameContent.gameContentMap
 })
 
+const mapDispatchToProps = dispatch => ({})
 
-
-export default connect(mapStateToProps)(Goals)
+export default connect(mapStateToProps, null)(Goals)
