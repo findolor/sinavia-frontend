@@ -678,6 +678,7 @@ class Home extends React.Component {
     gameModesView() {
         return (
             <View style={styles.modal}>
+                {!this.props.clientInformation.isPremium && <BannerAd />}
                 <TouchableOpacity
                     onPress={this.closeModalButtonOnPress}
                     style={{
@@ -1101,7 +1102,10 @@ class Home extends React.Component {
                 <TouchableOpacity
                     onPress={this.closeModalButtonOnPress}
                     style={{
-                        height: hp(120),
+                        height:
+                            this.props.clientInformation.isPremium === false
+                                ? hp(92.5)
+                                : hp(120),
                         width: wp(100)
                     }}
                 />
@@ -1136,6 +1140,7 @@ class Home extends React.Component {
                         />
                     </View>
                 </View>
+                {!this.props.clientInformation.isPremium && <BannerAd />}
             </View>
         )
     }
@@ -1412,7 +1417,13 @@ class Home extends React.Component {
             <View style={styles.modal}>
                 <TouchableOpacity
                     onPress={this.closeModalButtonOnPress}
-                    style={{ height: hp(120), width: wp(100) }}
+                    style={{
+                        height:
+                            this.props.clientInformation.isPremium === false
+                                ? hp(92.5)
+                                : hp(120),
+                        width: wp(100)
+                    }}
                 />
                 <View style={styles.backAndCloseButtonsContainer}>
                     <TouchableOpacity onPress={this.joinRoomBackButtonOnPress}>
@@ -1462,6 +1473,7 @@ class Home extends React.Component {
                     borderRadius={hp(1.5)}
                     onPress={this.joinGroupRoomOnPress}
                 />
+                {!this.props.clientInformation.isPremium && <BannerAd />}
             </View>
         )
     }

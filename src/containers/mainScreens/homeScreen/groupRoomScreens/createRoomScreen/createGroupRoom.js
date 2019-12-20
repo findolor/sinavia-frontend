@@ -34,6 +34,7 @@ const PEOPLE_COUNTER_IMG = require('../../../../../assets/mainScreens/peopleCoun
 
 // Game engine endpoint url
 import { GAME_ENGINE_ENDPOINT } from '../../../../../config'
+import { BannerAd } from '../../../../../services/admobService'
 
 class CreateGroupRoom extends React.Component {
     constructor(props) {
@@ -216,6 +217,7 @@ class CreateGroupRoom extends React.Component {
             <View style={styles.container}>
                 {this.state.isQuitGameModalVisible === false && (
                     <View style={styles.modal}>
+                        <BannerAd />
                         <TouchableOpacity
                             onPress={this.closeGroupGameOnPress}
                             style={{ height: hp(120), width: wp(100) }}
