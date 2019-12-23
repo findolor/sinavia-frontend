@@ -32,7 +32,7 @@ export const interstitialAd = () => {
     })
 }
 
-export const rewardAd = callbackFunction => {
+export const rewardAd = (callbackFunction, params) => {
     const advert = firebase
         .admob()
         .rewarded('ca-app-pub-3940256099942544/1712485313')
@@ -51,6 +51,6 @@ export const rewardAd = callbackFunction => {
             'The user watched the entire video and will now be rewarded!',
             event
         )
-        callbackFunction()
+        callbackFunction(params.jokerNumber)
     })
 }
