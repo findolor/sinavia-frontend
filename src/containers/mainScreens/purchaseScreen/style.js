@@ -608,7 +608,7 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Semibold',
         fontSize: hp(1.4),
         textAlign: 'center',
-        color: 'white'
+        color: '#FF9900'
     },
     unselectedPremiumOptionHeaderText: {
         fontFamily: 'Averta-Semibold',

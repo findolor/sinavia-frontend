@@ -570,7 +570,7 @@ class PurchaseScreen extends React.Component {
                                                         this.state
                                                             .premiumOption ===
                                                         'oneMonth'
-                                                            ? '#00D9EF'
+                                                            ? 'white'
                                                             : 'rgba(0, 0, 0, 0)'
                                                 }
                                             ]}
@@ -594,7 +594,7 @@ class PurchaseScreen extends React.Component {
                                                         this.state
                                                             .premiumOption ===
                                                         'oneMonth'
-                                                            ? '#00D9EF'
+                                                            ? 'white'
                                                             : 'rgba(0, 0, 0, 0)'
                                                 }
                                             ]}
@@ -669,7 +669,7 @@ class PurchaseScreen extends React.Component {
                                                         this.state
                                                             .premiumOption ===
                                                         'threeMonths'
-                                                            ? '#00D9EF'
+                                                            ? 'white'
                                                             : 'rgba(0, 0, 0, 0)'
                                                 }
                                             ]}
@@ -693,7 +693,7 @@ class PurchaseScreen extends React.Component {
                                                         this.state
                                                             .premiumOption ===
                                                         'threeMonths'
-                                                            ? '#00D9EF'
+                                                            ? 'white'
                                                             : 'rgba(0, 0, 0, 0)'
                                                 }
                                             ]}
@@ -768,7 +768,7 @@ class PurchaseScreen extends React.Component {
                                                         this.state
                                                             .premiumOption ===
                                                         'sixMonths'
-                                                            ? '#00D9EF'
+                                                            ? 'white'
                                                             : 'rgba(0, 0, 0, 0)'
                                                 }
                                             ]}
@@ -792,7 +792,7 @@ class PurchaseScreen extends React.Component {
                                                         this.state
                                                             .premiumOption ===
                                                         'sixMonths'
-                                                            ? '#00D9EF'
+                                                            ? 'white'
                                                             : 'rgba(0, 0, 0, 0)'
                                                 }
                                             ]}

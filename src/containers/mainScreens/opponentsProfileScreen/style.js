@@ -25,7 +25,8 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     scrollViewContainer: {
-        flex: 58
+        flex: 58,
+        justifyContent: 'space-evenly'
     },
     searchBar: {
         height: hp(5),
@@ -105,7 +106,7 @@ export default StyleSheet.create({
         width: wp(90)
     },
     friendsBoxes: {
-        height: hp(12),
+        height: hp(10),
         width: wp(90),
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -133,7 +134,6 @@ export default StyleSheet.create({
         borderWidth: hp(0.3),
         borderRadius: hp(1),
         borderColor: '#00D9EF',
-        marginTop: hp(2.5),
         overflow: 'hidden'
     },
     totalGameStatsBox: {
@@ -149,7 +149,6 @@ export default StyleSheet.create({
         borderWidth: hp(0.3),
         borderRadius: hp(1),
         borderColor: '#00D9EF',
-        marginTop: hp(2.5),
         alignItems: 'center'
     },
     badgesBox: {
