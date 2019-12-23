@@ -12,15 +12,13 @@ import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
-
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
-
 import returnLogo from '../../../assets/return.png'
 import GARBAGE from '../../../assets/mainScreens/garbage.png'
 import NO_RESULTS_GOAL from '../../../assets/noResultsGoal.png'
-
 import { connect } from 'react-redux';
 import AuthButton from '../../../components/authScreen/authButton';
+import { userGoalsServices } from '../../../sagas/userGoal'
 
 class Goals extends React.Component {
     constructor(props) {
@@ -40,8 +38,15 @@ class Goals extends React.Component {
     }
 
     componentDidMount() {
-        this.setChoosenExamId().then(() => {
-            this.courseListMaker()
+        userGoalsServices.getUserGoals(
+            this.props.clientToken,
+            this.props.clientId
+        ).then(data => {
+            this.setState({ goalList: data }, () => this.setChoosenExamId().then(() => {
+                this.courseListMaker()
+            }))
+        }).catch(error => {
+            console.log(error)
         })
     }
 
@@ -177,21 +182,33 @@ class Goals extends React.Component {
 
         const goalList = this.state.goalList
 
-        goalList.push({
-            courseId: this.state.choosenCourseId,
-            subjectId: this.state.choosenSubjectId,
-            solvedQuestion: 0,
-            questionGoal: this.state.choosenQuestionAmount
+        userGoalsServices.postUserGoal(
+            this.props.clientToken,
+            this.props.clientId,
+            this.state.choosenQuestionAmount,
+            this.state.choosenSubjectId,
+            this.state.choosenCourseId
+        ).then(data => {
+            goalList.push(data)
+            this.setState({ goalList: goalList, visibleView: 'goalsList' })
+        }).catch(error => {
+            console.log(error)
         })
-
-        this.setState({ goalList: goalList, visibleView: 'goalsList' })
     }
 
     removeGoal = () => {
         const goalList = this.state.goalList
 
-        goalList.splice(this.state.removeGoalIndex, 1)
-        this.setState({ goalList: goalList, isModalVisible: false })
+        userGoalsServices.deleteUserGoal(
+            this.props.clientToken,
+            this.props.clientId,
+            this.state.goalList[this.state.removeGoalIndex].subjectId
+        ).then(data => {
+            goalList.splice(this.state.removeGoalIndex, 1)
+            this.setState({ goalList: goalList, isModalVisible: false })
+        }).catch(error => {
+            console.log(error)
+        })
     }
 
     render() {
@@ -235,7 +252,7 @@ class Goals extends React.Component {
                                 renderItem={({ item, index }) => {
                                     return (
                                         <View style={{height: hp(16.5), width: wp(90), marginTop: hp(1.5)}}>
-                                            <View style={[styles.goalView, {borderColor: item.solvedQuestion >= item.questionGoal ? '#21C95A' : '#00D9EF'}]}>
+                                            <View style={[styles.goalView, {borderColor: item.questionSolved >= item.goalAmount ? '#21C95A' : '#00D9EF'}]}>
                                                 <View style={styles.courseAndSubjectName}>
                                                     <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-end'}}>
                                                         <Text style={styles.courseText}>{this.props.gameContentMap.courses[item.courseId - 1].name}</Text>
@@ -246,24 +263,24 @@ class Goals extends React.Component {
                                                     </TouchableOpacity>
                                                 </View>
                                                 <View style={styles.progressBarView}>
-                                                    {item.solvedQuestion >= item.questionGoal &&
+                                                    {item.questionSolved >= item.goalAmount &&
                                                         <View style={[styles.instantProgressView, {width: wp(85), backgroundColor: '#21C95A'}]}>
                                                             <View style={[styles.solvedQuestionCircle, {backgroundColor: '#21C95A', borderColor: '#1BAB4C'}]}>
-                                                                <Text style={styles.solvedQuestionsText}>{item.solvedQuestion}</Text>
+                                                                <Text style={styles.solvedQuestionsText}>{item.questionSolved}</Text>
                                                             </View>
                                                         </View>
                                                     }
-                                                    {item.solvedQuestion < item.questionGoal && item.solvedQuestion > 0 &&
-                                                        <View style={[styles.instantProgressView, {width: wp(item.solvedQuestion/item.questionGoal*85)}]}>
+                                                    {item.questionSolved < item.goalAmount && item.questionSolved > 0 &&
+                                                        <View style={[styles.instantProgressView, {width: wp(item.questionSolved/item.goalAmount*85)}]}>
                                                             <View style={[styles.solvedQuestionCircle, {backgroundColor: '#FF9900', borderColor: '#E08700'}]}>
-                                                                <Text style={styles.solvedQuestionsText}>{item.solvedQuestion}</Text>
+                                                                <Text style={styles.solvedQuestionsText}>{item.questionSolved}</Text>
                                                             </View>
                                                         </View>
                                                     }
                                                 </View>
                                                 <View style={styles.questionGoalView}>
                                                     <Text style={styles.questionGoalText}>0</Text>
-                                                    <Text style={styles.questionGoalText}>{item.questionGoal}</Text>
+                                                    <Text style={styles.questionGoalText}>{item.goalAmount}</Text>
                                                 </View>
                                             </View>
                                         </View>
@@ -516,7 +533,9 @@ class Goals extends React.Component {
 
 const mapStateToProps = state => ({
     choosenExam: state.gameContent.choosenExam,
-    gameContentMap: state.gameContent.gameContentMap
+    gameContentMap: state.gameContent.gameContentMap,
+    clientToken: state.client.clientToken,
+    clientId: state.client.clientDBId
 })
 
 const mapDispatchToProps = dispatch => ({})
