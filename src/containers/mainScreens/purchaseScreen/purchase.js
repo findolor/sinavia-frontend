@@ -38,9 +38,9 @@ import SEE_OPPONENT_JOKER_IMAGE from '../../../assets/jokers/seeOpponent.png'
 import REMOVE_OPTIONS_JOKER_IMAGE from '../../../assets/jokers/removeOptions.png'
 import SECOND_CHANGE_JOKER_IMAGE from '../../../assets/jokers/secondChance.png'
 
-import FIRST_JOKER_AD_BUTTON from '../../../assets/firstJokerAddButton.png'
-import SECOND_JOKER_AD_BUTTON from '../../../assets/secondJokerAddButton.png'
-import THIRD_JOKER_AD_BUTTON from '../../../assets/thirdJokerAddButton.png'
+import FIRST_JOKER_AD_BUTTON from '../../../assets/firstJokerAdButton.png'
+import SECOND_JOKER_AD_BUTTON from '../../../assets/secondJokerAdButton.png'
+import THIRD_JOKER_AD_BUTTON from '../../../assets/thirdJokerAdButton.png'
 
 import FIRST_JOKER_AD_BUTTON_2 from '../../../assets/firstJokerAdButton2.png'
 import SECOND_JOKER_AD_BUTTON_2 from '../../../assets/secondJokerAdButton2.png'
