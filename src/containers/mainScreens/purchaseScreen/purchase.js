@@ -4,7 +4,7 @@ import {
     ImageBackground,
     Linking,
     Modal,
-    ScrollView,
+    Alert,
     Text,
     TouchableOpacity,
     View
@@ -37,6 +37,8 @@ import PREMIUM_SINGLE_MODE from '../../../assets/premiumSingleMode.png'
 import SEE_OPPONENT_JOKER_IMAGE from '../../../assets/jokers/seeOpponent.png'
 import REMOVE_OPTIONS_JOKER_IMAGE from '../../../assets/jokers/removeOptions.png'
 import SECOND_CHANGE_JOKER_IMAGE from '../../../assets/jokers/secondChance.png'
+import { rewardAd } from '../../../services/admobService'
+import { clientActions } from '../../../redux/client/actions'
 
 const instagram_page = 'https://www.instagram.com/sinavia.app/'
 const twitter_page = 'https://twitter.com/sinavia'
@@ -198,6 +200,32 @@ class PurchaseScreen extends React.Component {
     sixMonthsOnPress = () => {
         this.setState({
             premiumOption: 'sixMonths'
+        })
+    }
+
+    rewardAdOnPress = () => {
+        rewardAd(this.refreshJokersOnRewardAll)
+    }
+
+    refreshJokersOnRewardAll = () => {
+        const firstJoker = this.state.firstJoker
+        const secondJoker = this.state.secondJoker
+        const thirdJoker = this.state.thirdJoker
+
+        firstJoker.amount += 2
+        secondJoker.amount += 2
+        thirdJoker.amount += 2
+
+        this.props.rewardAllUserJokers(
+            this.props.clientToken,
+            this.props.clientDBId
+        )
+        // This is used for updating the user jokers on rewarding
+        // It doesn't refresh if we don't change screens
+        this.setState({
+            firstJoker: firstJoker,
+            secondJoker: secondJoker,
+            thirdJoker: thirdJoker
         })
     }
 
@@ -1583,7 +1611,10 @@ class PurchaseScreen extends React.Component {
                     </View>
                 </View>
                 <View style={styles.adsContainer}>
-                    <TouchableOpacity style={styles.adContainer}>
+                    <TouchableOpacity
+                        style={styles.adContainer}
+                        onPress={this.rewardAdOnPress}
+                    >
                         <ImageBackground
                             source={JOKER_ADS}
                             style={styles.adView}
@@ -2042,11 +2073,19 @@ class PurchaseScreen extends React.Component {
         )
     }
 }
+
 const mapStateToProps = state => ({
     userJokers: state.client.userJokers,
     clientInformation: state.client.clientInformation,
     gameContentMap: state.gameContent.gameContentMap,
-    choosenExam: state.gameContent.choosenExam
+    choosenExam: state.gameContent.choosenExam,
+    clientToken: state.client.clientToken,
+    clientDBId: state.client.clientDBId
 })
-const mapDispatchToProps = dispatch => ({})
+
+const mapDispatchToProps = dispatch => ({
+    rewardAllUserJokers: (clientToken, clientId) =>
+        dispatch(clientActions.rewardAllUserJokers(clientToken, clientId))
+})
+
 export default connect(mapStateToProps, mapDispatchToProps)(PurchaseScreen)

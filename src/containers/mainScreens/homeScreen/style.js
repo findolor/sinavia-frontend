@@ -35,9 +35,6 @@ export default StyleSheet.create({
     card: {
         height: hp(9),
         width: wp(87),
-        borderWidth: hp(0.4),
-        borderRadius: hp(2.5),
-        borderColor: '#FF9900',
         marginBottom: hp(1.4),
         justifyContent: 'center',
         alignItems: 'center'

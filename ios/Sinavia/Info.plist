@@ -42,7 +42,9 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
+	<key>GADApplicationIdentifier</key>
+  	<string>ca-app-pub-1451210312091686~3554473107</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>$(PRODUCT_NAME) wants to save photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>

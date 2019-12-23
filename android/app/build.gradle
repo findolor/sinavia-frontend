@@ -134,6 +134,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         versionCode 9
         versionName "1.0"
+        multiDexEnabled true 
     }
     signingConfigs {
         release {
@@ -208,6 +209,7 @@ dependencies {
     implementation "com.google.firebase:firebase-messaging:20.0.0"
     implementation "com.google.firebase:firebase-auth:17.0.0"
     implementation "com.google.firebase:firebase-storage:17.0.0"
+    implementation "com.google.firebase:firebase-ads:17.2.1"
 
     if (enableHermes) {
       def hermesPath = "../../node_modules/hermesvm/android/";

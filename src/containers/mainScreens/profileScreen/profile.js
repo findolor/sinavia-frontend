@@ -25,12 +25,15 @@ import settingsLogo from '../../../assets/settings.png'
 import searchlogo from '../../../assets/search.png'
 import favori_dolu from '../../../assets/favori.png'
 import { flashMessages } from '../../../services/flashMessageBuilder'
-
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
 import LinearGradient from 'react-native-linear-gradient'
+import { appActions } from '../../../redux/app/actions'
+import { interstitialAd } from '../../../services/admobService'
+
+const FEAUTRE_PRESS_COUNT_FOR_AD = 4
 
 class Profile extends React.Component {
     constructor(props) {
@@ -47,6 +50,12 @@ class Profile extends React.Component {
     }
 
     goalsOnPress = () => {
+        this.props.increaseFeaturePressCount()
+        if (
+            this.props.featurePressCount % FEAUTRE_PRESS_COUNT_FOR_AD === 0 &&
+            !this.props.clientInformation.isPremium
+        )
+            interstitialAd()
         navigationPush(SCENE_KEYS.mainScreens.goals)
     }
 
@@ -87,6 +96,12 @@ class Profile extends React.Component {
     }
 
     friendsLogoOnPress = () => {
+        this.props.increaseFeaturePressCount()
+        if (
+            this.props.featurePressCount % FEAUTRE_PRESS_COUNT_FOR_AD === 0 &&
+            !this.props.clientInformation.isPremium
+        )
+            interstitialAd()
         navigationPush(SCENE_KEYS.mainScreens.friendsList, {
             friendsList: [],
             isOpponentFriends: false
@@ -94,6 +109,12 @@ class Profile extends React.Component {
     }
 
     statisticsLogoOnPress = () => {
+        this.props.increaseFeaturePressCount()
+        if (
+            this.props.featurePressCount % FEAUTRE_PRESS_COUNT_FOR_AD === 0 &&
+            !this.props.clientInformation.isPremium
+        )
+            interstitialAd()
         navigationPush(SCENE_KEYS.mainScreens.statistics)
     }
 
@@ -339,9 +360,13 @@ class Profile extends React.Component {
 
 const mapStateToProps = state => ({
     clientInformation: state.client.clientInformation,
-    friendIds: state.friends.friendIds
+    friendIds: state.friends.friendIds,
+    featurePressCount: state.app.featurePressCount
 })
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+    increaseFeaturePressCount: () =>
+        dispatch(appActions.increaseFeaturePressCount())
+})
 
-export default connect(mapStateToProps, null)(Profile)
+export default connect(mapStateToProps, mapDispatchToProps)(Profile)

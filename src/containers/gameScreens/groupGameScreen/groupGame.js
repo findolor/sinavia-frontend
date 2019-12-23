@@ -36,6 +36,7 @@ import {
 } from 'react-native-responsive-screen'
 import AuthButton from '../../../components/authScreen/authButton'
 import * as Animatable from 'react-native-animatable'
+import { interstitialAd } from '../../../services/admobService'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
@@ -369,6 +370,8 @@ class GroupGame extends React.Component {
                 })
                 setTimeout(function() {
                     that.shutdownGame()
+                    if (!that.props.clientInformation.isPremium)
+                        interstitialAd()
                     navigationReplace(SCENE_KEYS.gameScreens.groupGameStats, {
                         playerProps: message.playerProps,
                         room: that.props.room,
@@ -397,10 +400,10 @@ class GroupGame extends React.Component {
                     this.onlyClientMatchQuit()
                     break
                 }
-                console.log(this.state.questionList)
                 // Do a shutdown routine
                 this.shutdownGame()
                 this.props.room.leave()
+                if (!this.props.clientInformation.isPremium) interstitialAd()
                 navigationReplace(SCENE_KEYS.gameScreens.groupGameStats, {
                     playerProps: message.playerProps,
                     room: this.props.room,
@@ -466,6 +469,7 @@ class GroupGame extends React.Component {
                 break
             case 'match-finished':
                 this.shutdownGame()
+                if (!this.props.clientInformation.isPremium) interstitialAd()
                 navigationReplace(SCENE_KEYS.gameScreens.groupGameStats, {
                     playerProps: this.state.playerProps,
                     room: this.props.room,
