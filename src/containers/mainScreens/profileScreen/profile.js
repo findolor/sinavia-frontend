@@ -18,7 +18,7 @@ import styles from './style'
 import premiumStyles from '../purchaseScreen/style'
 import NotchView from '../../../components/notchView'
 import statisticsLogo from '../../../assets/pie_chart.png'
-import trophyLogo from '../../../assets/trophy.png'
+import goals from '../../../assets/goals.png'
 import favoriteLogo from '../../../assets/favorite.png'
 import returnLogo from '../../../assets/return.png'
 import settingsLogo from '../../../assets/settings.png'
@@ -309,7 +309,7 @@ class Profile extends React.Component {
                                 </View>
                                 <View style={styles.boxLogoContainer}>
                                     <Image
-                                        source={trophyLogo}
+                                        source={goals}
                                         style={styles.boxLogo}
                                     />
                                 </View>

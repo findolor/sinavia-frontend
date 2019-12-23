@@ -38,6 +38,16 @@ import SEE_OPPONENT_JOKER_IMAGE from '../../../assets/jokers/seeOpponent.png'
 import REMOVE_OPTIONS_JOKER_IMAGE from '../../../assets/jokers/removeOptions.png'
 import SECOND_CHANGE_JOKER_IMAGE from '../../../assets/jokers/secondChance.png'
 
+import FIRST_JOKER_AD_BUTTON from '../../../assets/firstJokerAddButton.png'
+import SECOND_JOKER_AD_BUTTON from '../../../assets/secondJokerAddButton.png'
+import THIRD_JOKER_AD_BUTTON from '../../../assets/thirdJokerAddButton.png'
+
+import FIRST_JOKER_AD_BUTTON_2 from '../../../assets/firstJokerAdButton2.png'
+import SECOND_JOKER_AD_BUTTON_2 from '../../../assets/secondJokerAdButton2.png'
+import THIRD_JOKER_AD_BUTTON_2 from '../../../assets/thirdJokerAdButton2.png'
+
+
+
 const instagram_page = 'https://www.instagram.com/sinavia.app/'
 const twitter_page = 'https://twitter.com/sinavia'
 const facebook_page = 'https://www.facebook.com/sinaviaapp'
@@ -1582,193 +1592,202 @@ class PurchaseScreen extends React.Component {
                         </Swiper>
                     </View>
                 </View>
-                <View style={styles.adsContainer}>
-                    <TouchableOpacity style={styles.adContainer}>
-                        <ImageBackground
-                            source={JOKER_ADS}
-                            style={styles.adView}
-                        >
-                            <Text style={styles.adText}>JOKER</Text>
-                        </ImageBackground>
-                        <View style={styles.playButtonContainer}>
-                            <Image
-                                source={PLAY_BUTTON}
-                                style={styles.playButtonImg}
-                            />
+                {
+                    this.props.clientInformation.isPremium === false &&
+                        <View style={{flex: 47.5, width: wp(93)}}>
+                            <View style={styles.adsContainer}>
+                                <TouchableOpacity>
+                                    <Image source={FIRST_JOKER_AD_BUTTON_2} style={styles.adButton2}/>
+                                </TouchableOpacity>
+                                <TouchableOpacity>
+                                    <Image source={SECOND_JOKER_AD_BUTTON_2} style={styles.adButton2}/>
+                                </TouchableOpacity>
+                                <TouchableOpacity>
+                                    <Image source={THIRD_JOKER_AD_BUTTON_2} style={styles.adButton2}/>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styles.premiumContainer}>
+                                <LinearGradient
+                                    colors={['white', '#F3CE97']}
+                                    style={styles.premiumUpperView}
+                                >
+                                    <View style={styles.premiumSwiperContainer}>
+                                        <Swiper
+                                            autoplay={true}
+                                            loop={true}
+                                            loadMinimal={false}
+                                            showsPagination={false}
+                                            scrollEnabled={false}
+                                            autoplayTimeout={5}
+                                        >
+                                            <View style={styles.premiumSwiperView}>
+                                                <View style={styles.premiumSwiperImgView}>
+                                                    <Image
+                                                        source={PREMIUM_ADS}
+                                                        style={styles.premiumImg}
+                                                    />
+                                                </View>
+                                                <View
+                                                    style={styles.premiumSwiperHeaderView}
+                                                >
+                                                    <Text style={styles.premiumHeaderText}>
+                                                        Reklam Yok!
+                                                    </Text>
+                                                </View>
+                                                <View style={styles.premiumSwiperInfoView}>
+                                                    <Text style={styles.premiumInfoText}>
+                                                        Reklamsız oyun oynamanın keyfini sen
+                                                        de çıkar
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                            <View style={styles.premiumSwiperView}>
+                                                <View style={styles.premiumSwiperImgView}>
+                                                    <Image
+                                                        source={PREMIUM_FAV}
+                                                        style={styles.premiumImg}
+                                                    />
+                                                </View>
+                                                <View
+                                                    style={styles.premiumSwiperHeaderView}
+                                                >
+                                                    <Text style={styles.premiumHeaderText}>
+                                                        Soru favorile!
+                                                    </Text>
+                                                </View>
+                                                <View style={styles.premiumSwiperInfoView}>
+                                                    <Text style={styles.premiumInfoText}>
+                                                        Hoşuna giden ya da sonra tekrar
+                                                        bakmak istediğin soruları favorile
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                            <View style={styles.premiumSwiperView}>
+                                                <View style={styles.premiumSwiperImgView}>
+                                                    <Image
+                                                        source={PREMIUM_MAP}
+                                                        style={styles.premiumImg}
+                                                    />
+                                                </View>
+                                                <View
+                                                    style={styles.premiumSwiperHeaderView}
+                                                >
+                                                    <Text style={styles.premiumHeaderText}>
+                                                        Türkiye geneli deneme sınavları!
+                                                    </Text>
+                                                </View>
+                                                <View style={styles.premiumSwiperInfoView}>
+                                                    <Text style={styles.premiumInfoText}>
+                                                        Ülke çapındaki deneme sınavlarına
+                                                        ücretsiz katıl, tüm öğrenciler
+                                                        arasındaki sıralamanı gör
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                            <View style={styles.premiumSwiperView}>
+                                                <View style={styles.premiumSwiperImgView}>
+                                                    <Image
+                                                        source={PREMIUM_SINGLE_MODE}
+                                                        style={styles.premiumImg}
+                                                    />
+                                                </View>
+                                                <View
+                                                    style={styles.premiumSwiperHeaderView}
+                                                >
+                                                    <Text style={styles.premiumHeaderText}>
+                                                        Tek başına!
+                                                    </Text>
+                                                </View>
+                                                <View style={styles.premiumSwiperInfoView}>
+                                                    <Text style={styles.premiumInfoText}>
+                                                        "Tek rakibim kendim" diyenler için
+                                                        tek başına soru çözebilme imkanı
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                            <View style={styles.premiumSwiperView}>
+                                                <View style={styles.premiumSwiperImgView}>
+                                                    <Image
+                                                        source={PREMIUM_BACK}
+                                                        style={styles.premiumImg}
+                                                    />
+                                                </View>
+                                                <View
+                                                    style={styles.premiumSwiperHeaderView}
+                                                >
+                                                    <Text style={styles.premiumHeaderText}>
+                                                        Çözülmedik soru kalmasın!
+                                                    </Text>
+                                                </View>
+                                                <View style={styles.premiumSwiperInfoView}>
+                                                    <Text style={styles.premiumInfoText}>
+                                                        Boş bıraktığın veya yanlış yaptığın
+                                                        soruları tekrar tekrar çözme fırsatı
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                            <View style={styles.premiumSwiperView}>
+                                                <View style={styles.premiumSwiperImgView}>
+                                                    <Image
+                                                        source={PREMIUM_JOKER}
+                                                        style={styles.premiumImg}
+                                                    />
+                                                </View>
+                                                <View
+                                                    style={styles.premiumSwiperHeaderView}
+                                                >
+                                                    <Text style={styles.premiumHeaderText}>
+                                                        Günlük joker!
+                                                    </Text>
+                                                </View>
+                                                <View style={styles.premiumSwiperInfoView}>
+                                                    <Text style={styles.premiumInfoText}>
+                                                        Her gün sana verilen jokerler ile
+                                                        soruların cevabına 1 adım daha
+                                                        yaklaş, rakiplerinin önüne geç
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                        </Swiper>
+                                    </View>
+                                    <View style={styles.premiumButtonView}>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                this.onPressPremiumView()
+                                            }}
+                                            style={styles.premiumButton}
+                                        >
+                                            <Text style={styles.premiumButtonText}>
+                                                ELİT ÖĞRENCİ PAKETİ'Nİ ŞİMDİ AL
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </LinearGradient>
+                                <TouchableOpacity style={styles.premiumBottomView}>
+                                    <Text style={styles.inviteText}>
+                                        Arkadaşını davet et
+                                    </Text>
+                                    <Text style={styles.earnPremiumWithInviteText}>
+                                        1 Haftalık Elit Öğrenci Paketi Kazan!
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                        <View style={styles.watchTextContainer}>
-                            <Text style={styles.watchText}>
-                                İZLE {'&'} KAZAN
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.premiumContainer}>
-                    <LinearGradient
-                        colors={['white', '#F3CE97']}
-                        style={styles.premiumUpperView}
-                    >
-                        <View style={styles.premiumSwiperContainer}>
-                            <Swiper
-                                autoplay={true}
-                                loop={true}
-                                loadMinimal={false}
-                                showsPagination={false}
-                                scrollEnabled={false}
-                                autoplayTimeout={5}
-                            >
-                                <View style={styles.premiumSwiperView}>
-                                    <View style={styles.premiumSwiperImgView}>
-                                        <Image
-                                            source={PREMIUM_ADS}
-                                            style={styles.premiumImg}
-                                        />
-                                    </View>
-                                    <View
-                                        style={styles.premiumSwiperHeaderView}
-                                    >
-                                        <Text style={styles.premiumHeaderText}>
-                                            Reklam Yok!
-                                        </Text>
-                                    </View>
-                                    <View style={styles.premiumSwiperInfoView}>
-                                        <Text style={styles.premiumInfoText}>
-                                            Reklamsız oyun oynamanın keyfini sen
-                                            de çıkar
-                                        </Text>
-                                    </View>
-                                </View>
-                                <View style={styles.premiumSwiperView}>
-                                    <View style={styles.premiumSwiperImgView}>
-                                        <Image
-                                            source={PREMIUM_FAV}
-                                            style={styles.premiumImg}
-                                        />
-                                    </View>
-                                    <View
-                                        style={styles.premiumSwiperHeaderView}
-                                    >
-                                        <Text style={styles.premiumHeaderText}>
-                                            Soru favorile!
-                                        </Text>
-                                    </View>
-                                    <View style={styles.premiumSwiperInfoView}>
-                                        <Text style={styles.premiumInfoText}>
-                                            Hoşuna giden ya da sonra tekrar
-                                            bakmak istediğin soruları favorile
-                                        </Text>
-                                    </View>
-                                </View>
-                                <View style={styles.premiumSwiperView}>
-                                    <View style={styles.premiumSwiperImgView}>
-                                        <Image
-                                            source={PREMIUM_MAP}
-                                            style={styles.premiumImg}
-                                        />
-                                    </View>
-                                    <View
-                                        style={styles.premiumSwiperHeaderView}
-                                    >
-                                        <Text style={styles.premiumHeaderText}>
-                                            Türkiye geneli deneme sınavları!
-                                        </Text>
-                                    </View>
-                                    <View style={styles.premiumSwiperInfoView}>
-                                        <Text style={styles.premiumInfoText}>
-                                            Ülke çapındaki deneme sınavlarına
-                                            ücretsiz katıl, tüm öğrenciler
-                                            arasındaki sıralamanı gör
-                                        </Text>
-                                    </View>
-                                </View>
-                                <View style={styles.premiumSwiperView}>
-                                    <View style={styles.premiumSwiperImgView}>
-                                        <Image
-                                            source={PREMIUM_SINGLE_MODE}
-                                            style={styles.premiumImg}
-                                        />
-                                    </View>
-                                    <View
-                                        style={styles.premiumSwiperHeaderView}
-                                    >
-                                        <Text style={styles.premiumHeaderText}>
-                                            Tek başına!
-                                        </Text>
-                                    </View>
-                                    <View style={styles.premiumSwiperInfoView}>
-                                        <Text style={styles.premiumInfoText}>
-                                            "Tek rakibim kendim" diyenler için
-                                            tek başına soru çözebilme imkanı
-                                        </Text>
-                                    </View>
-                                </View>
-                                <View style={styles.premiumSwiperView}>
-                                    <View style={styles.premiumSwiperImgView}>
-                                        <Image
-                                            source={PREMIUM_BACK}
-                                            style={styles.premiumImg}
-                                        />
-                                    </View>
-                                    <View
-                                        style={styles.premiumSwiperHeaderView}
-                                    >
-                                        <Text style={styles.premiumHeaderText}>
-                                            Çözülmedik soru kalmasın!
-                                        </Text>
-                                    </View>
-                                    <View style={styles.premiumSwiperInfoView}>
-                                        <Text style={styles.premiumInfoText}>
-                                            Boş bıraktığın veya yanlış yaptığın
-                                            soruları tekrar tekrar çözme fırsatı
-                                        </Text>
-                                    </View>
-                                </View>
-                                <View style={styles.premiumSwiperView}>
-                                    <View style={styles.premiumSwiperImgView}>
-                                        <Image
-                                            source={PREMIUM_JOKER}
-                                            style={styles.premiumImg}
-                                        />
-                                    </View>
-                                    <View
-                                        style={styles.premiumSwiperHeaderView}
-                                    >
-                                        <Text style={styles.premiumHeaderText}>
-                                            Günlük joker!
-                                        </Text>
-                                    </View>
-                                    <View style={styles.premiumSwiperInfoView}>
-                                        <Text style={styles.premiumInfoText}>
-                                            Her gün sana verilen jokerler ile
-                                            soruların cevabına 1 adım daha
-                                            yaklaş, rakiplerinin önüne geç
-                                        </Text>
-                                    </View>
-                                </View>
-                            </Swiper>
-                        </View>
-                        <View style={styles.premiumButtonView}>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    this.onPressPremiumView()
-                                }}
-                                style={styles.premiumButton}
-                            >
-                                <Text style={styles.premiumButtonText}>
-                                    ELİT ÖĞRENCİ PAKETİ'Nİ ŞİMDİ AL
-                                </Text>
+                }
+                {
+                    this.props.clientInformation.isPremium &&
+                        <View style={styles.premiumUserAddButtonsContainer}>
+                            <TouchableOpacity>
+                                <Image source={FIRST_JOKER_AD_BUTTON} style={styles.premiumUserJokerButtonStyle}/>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <Image source={SECOND_JOKER_AD_BUTTON} style={styles.premiumUserJokerButtonStyle}/>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <Image source={THIRD_JOKER_AD_BUTTON} style={styles.premiumUserJokerButtonStyle}/>
                             </TouchableOpacity>
                         </View>
-                    </LinearGradient>
-                    <TouchableOpacity style={styles.premiumBottomView}>
-                        <Text style={styles.inviteText}>
-                            Arkadaşını davet et
-                        </Text>
-                        <Text style={styles.earnPremiumWithInviteText}>
-                            1 Haftalık Elit Öğrenci Paketi Kazan!
-                        </Text>
-                    </TouchableOpacity>
-                </View>
+                }
                 <View style={styles.socialMediaContainer}>
                     <View style={styles.socialMediaView}>
                         <View style={styles.socialMediaLogosView}>

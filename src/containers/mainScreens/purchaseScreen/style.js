@@ -11,13 +11,13 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     premiumContainer: {
-        flex: 33.5,
-        width: wp(100),
-        justifyContent: 'flex-end',
+        flex: 36.5,
+        width: wp(93),
+        justifyContent: 'flex-start',
         alignItems: 'center'
     },
     socialMediaContainer: {
-        flex: 9.5,
+        flex: 8,
         width: wp(100),
         justifyContent: 'flex-end',
         alignItems: 'center'
@@ -42,9 +42,14 @@ export default StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
     },
+    premiumUserAddButtonsContainer: {
+        flex: 47.5,
+        width: wp(93),
+        justifyContent: 'space-evenly'
+    },
     premiumUpperView: {
         zIndex: 1,
-        height: hp(24.5),
+        height: hp(25.5),
         width: wp(93),
         borderTopLeftRadius: hp(1.8),
         borderTopRightRadius: hp(1.8),
@@ -261,9 +266,8 @@ export default StyleSheet.create({
         marginBottom: hp(0.25)
     },
     premiumSwiperContainer: {
-        height: hp(17.5),
+        height: hp(18.5),
         width: wp(93),
-        marginTop: hp(1),
         borderTopWidth: hp(0.4),
         borderLeftWidth: hp(0.4),
         borderRightWidth: hp(0.4),
@@ -301,7 +305,7 @@ export default StyleSheet.create({
         color: 'white'
     },
     premiumSwiperView: {
-        height: hp(17.5),
+        height: hp(18.5),
         width: wp(93),
         justifyContent: 'center',
         alignItems: 'center'
@@ -337,7 +341,7 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     premiumSwiperInfoView: {
-        height: hp(5.5),
+        height: hp(6.5),
         width: wp(70),
         justifyContent: 'center',
         alignItems: 'center'
@@ -652,5 +656,15 @@ export default StyleSheet.create({
     socialMediaLogo: {
         resizeMode: 'contain',
         height: hp(3)
+    },
+    premiumUserJokerButtonStyle: {
+        height: hp(13),
+        width: wp(93),
+        borderRadius: hp(2)
+    },
+    adButton2: {
+        height: hp(9),
+        width: wp(30),
+        borderRadius: hp(2)
     }
 })
