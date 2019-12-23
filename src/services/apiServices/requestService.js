@@ -43,7 +43,11 @@ import {
     searchUsers,
     updateUser
 } from './user'
-import { getUserJokers, rewardAllUserJokers } from './userJoker'
+import {
+    getUserJokers,
+    rewardAllUserJokers,
+    rewardUserJoker
+} from './userJoker'
 import { getUserScore } from './userScore'
 import { checkOnline } from './api'
 import { getUserGoals, postUserGoal, deleteUserGoal } from './userGoal'
@@ -114,7 +118,8 @@ export const apiServicesTree = {
     },
     userJokerApi: {
         getUserJokers: 'getUserJokers',
-        rewardAllUserJokers: 'rewardAllUserJokers'
+        rewardAllUserJokers: 'rewardAllUserJokers',
+        rewardUserJoker: 'rewardUserJoker'
     },
     userScoreApi: {
         getUserScore: 'getUserScore'
@@ -283,6 +288,9 @@ export const putRequest = async (functionName, params) => {
         case 'rewardAllUserJokers':
             headers.Authorization = 'Bearer ' + params.clientToken
             return rewardAllUserJokers(headers, params)
+        case 'rewardUserJoker':
+            headers.Authorization = 'Bearer ' + params.clientToken
+            return rewardUserJoker(headers, params)
     }
 }
 

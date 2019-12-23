@@ -1,10 +1,8 @@
 import React from 'react'
 import {
     Image,
-    ImageBackground,
     Linking,
     Modal,
-    Alert,
     Text,
     TouchableOpacity,
     View
@@ -19,9 +17,6 @@ import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
-
-import PLAY_BUTTON from '../../../assets/play_Button.png'
-import JOKER_ADS from '../../../assets/joker_ads.png'
 
 import INSTAGRAM_LOGO from '../../../assets/instagram_logo.png'
 import TWITTER_LOGO from '../../../assets/twitter_logo.png'
@@ -211,29 +206,53 @@ class PurchaseScreen extends React.Component {
         })
     }
 
-    rewardAdOnPress = () => {
-        rewardAd(this.refreshJokersOnRewardAll)
+    firstJokerRewardOnPress = () => {
+        rewardAd(this.refreshJokerOnReward, {
+            jokerNumber: 1
+        })
     }
 
-    refreshJokersOnRewardAll = () => {
+    secondJokerRewardOnPress = () => {
+        rewardAd(this.refreshJokerOnReward, {
+            jokerNumber: 2
+        })
+    }
+
+    thirdJokerRewardOnPress = () => {
+        rewardAd(this.refreshJokerOnReward, {
+            jokerNumber: 3
+        })
+    }
+
+    refreshJokerOnReward = jokerNumber => {
         const firstJoker = this.state.firstJoker
         const secondJoker = this.state.secondJoker
         const thirdJoker = this.state.thirdJoker
 
-        firstJoker.amount += 2
-        secondJoker.amount += 2
-        thirdJoker.amount += 2
+        switch (jokerNumber) {
+            case 1:
+                firstJoker.amount += 2
+                break
+            case 2:
+                secondJoker.amount += 2
+                break
+            case 3:
+                thirdJoker.amount += 2
+                break
+        }
 
-        this.props.rewardAllUserJokers(
+        this.props.rewardUserJoker(
             this.props.clientToken,
-            this.props.clientDBId
+            this.props.clientDBId,
+            jokerNumber
         )
         // This is used for updating the user jokers on rewarding
         // It doesn't refresh if we don't change screens
         this.setState({
             firstJoker: firstJoker,
             secondJoker: secondJoker,
-            thirdJoker: thirdJoker
+            thirdJoker: thirdJoker,
+            isRewardPressed: false
         })
     }
 
@@ -1621,19 +1640,25 @@ class PurchaseScreen extends React.Component {
                 {this.props.clientInformation.isPremium === false && (
                     <View style={{ flex: 47.5, width: wp(93) }}>
                         <View style={styles.adsContainer}>
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={this.firstJokerRewardOnPress}
+                            >
                                 <Image
                                     source={FIRST_JOKER_AD_BUTTON_2}
                                     style={styles.adButton2}
                                 />
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={this.secondJokerRewardOnPress}
+                            >
                                 <Image
                                     source={SECOND_JOKER_AD_BUTTON_2}
                                     style={styles.adButton2}
                                 />
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={this.thirdJokerRewardOnPress}
+                            >
                                 <Image
                                     source={THIRD_JOKER_AD_BUTTON_2}
                                     style={styles.adButton2}
@@ -1924,19 +1949,25 @@ class PurchaseScreen extends React.Component {
                 )}
                 {this.props.clientInformation.isPremium && (
                     <View style={styles.premiumUserAddButtonsContainer}>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={this.firstJokerRewardOnPress}
+                        >
                             <Image
                                 source={FIRST_JOKER_AD_BUTTON}
                                 style={styles.premiumUserJokerButtonStyle}
                             />
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={this.secondJokerRewardOnPress}
+                        >
                             <Image
                                 source={SECOND_JOKER_AD_BUTTON}
                                 style={styles.premiumUserJokerButtonStyle}
                             />
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={this.thirdJokerRewardOnPress}
+                        >
                             <Image
                                 source={THIRD_JOKER_AD_BUTTON}
                                 style={styles.premiumUserJokerButtonStyle}
@@ -2228,8 +2259,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    rewardAllUserJokers: (clientToken, clientId) =>
-        dispatch(clientActions.rewardAllUserJokers(clientToken, clientId))
+    rewardUserJoker: (clientToken, clientId, jokerId) =>
+        dispatch(clientActions.rewardUserJoker(clientToken, clientId, jokerId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PurchaseScreen)

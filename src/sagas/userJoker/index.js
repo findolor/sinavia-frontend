@@ -1,5 +1,7 @@
 import { rewardAllUserJokerSaga } from './rewardAllUserJoker'
+import { rewardUserJokerSaga } from './rewardUserJoker'
 
 export const userJokerSagas = {
-    rewardAllUserJoker: rewardAllUserJokerSaga
+    rewardAllUserJoker: rewardAllUserJokerSaga,
+    rewardUserJoker: rewardUserJokerSaga
 }
