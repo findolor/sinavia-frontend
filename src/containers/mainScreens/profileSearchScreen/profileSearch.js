@@ -2,18 +2,13 @@ import React from 'react'
 import { FlatList, View, Text, TouchableOpacity, Image } from 'react-native'
 import styles from './style'
 import NotchView from '../../../components/notchView'
-import {
-    navigationPop,
-    navigationPush,
-    SCENE_KEYS
-} from '../../../services/navigationService'
+import { navigationPop } from '../../../services/navigationService'
 import { connect } from 'react-redux'
-
 import { userServices } from '../../../sagas/user/'
 import { opponentActions } from '../../../redux/opponents/actions'
-
 import returnLogo from '../../../assets/return.png'
 import NO_RESULTS_USER from '../../../assets/noResultsUser.png'
+import { BannerAd } from '../../../services/admobService'
 
 class ProfileSearch extends React.Component {
     constructor(props) {
@@ -92,23 +87,31 @@ class ProfileSearch extends React.Component {
                             showsVerticalScrollIndicator={false}
                             renderItem={({ item, index }) => {
                                 return (
-                                    <TouchableOpacity
-                                        onPress={() => this.userOnPress(index)}
-                                    >
-                                        <View style={styles.userRow}>
-                                            <View
-                                                style={
-                                                    styles.userPicContainerInRow
-                                                }
-                                            >
-                                                <Image
-                                                    source={{
-                                                        uri: item.profilePicture
-                                                    }}
-                                                    style={styles.userPic}
-                                                />
-                                            </View>
-                                            <View style={styles.namesContainer}>
+                                    <View>
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                this.userOnPress(index)
+                                            }
+                                        >
+                                            <View style={styles.userRow}>
+                                                <View
+                                                    style={
+                                                        styles.userPicContainerInRow
+                                                    }
+                                                >
+                                                    <Image
+                                                        source={{
+                                                            uri:
+                                                                item.profilePicture
+                                                        }}
+                                                        style={styles.userPic}
+                                                    />
+                                                </View>
+                                                <View
+                                                    style={
+                                                        styles.namesContainer
+                                                    }
+                                                >
                                                     <Text
                                                         style={styles.nameText}
                                                     >
@@ -123,9 +126,14 @@ class ProfileSearch extends React.Component {
                                                     >
                                                         @{item.username}
                                                     </Text>
+                                                </View>
                                             </View>
-                                        </View>
-                                    </TouchableOpacity>
+                                        </TouchableOpacity>
+                                        {!this.props.clientInformation
+                                            .isPremium &&
+                                            index % 3 === 2 &&
+                                            index !== 0 && <BannerAd />}
+                                    </View>
                                 )
                             }}
                             keyExtractor={(item, index) => index.toString()}
@@ -134,8 +142,13 @@ class ProfileSearch extends React.Component {
                 )}
                 {Object.keys(this.state.returnedSearchList).length === 0 && (
                     <View style={styles.noResultsView}>
-                        <Image source={NO_RESULTS_USER} style={styles.noResultImg}/>
-                        <Text style={styles.noResultsText}>Bu isimle bir kullanıcı bulamadık</Text>
+                        <Image
+                            source={NO_RESULTS_USER}
+                            style={styles.noResultImg}
+                        />
+                        <Text style={styles.noResultsText}>
+                            Bu isimle bir kullanıcı bulamadık
+                        </Text>
                     </View>
                 )}
             </View>
@@ -145,7 +158,8 @@ class ProfileSearch extends React.Component {
 
 const mapStateToProps = state => ({
     clientToken: state.client.clientToken,
-    clientDBId: state.client.clientDBId
+    clientDBId: state.client.clientDBId,
+    clientInformation: state.client.clientInformation
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -165,7 +179,4 @@ const mapDispatchToProps = dispatch => ({
         )
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ProfileSearch)
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileSearch)

@@ -43,9 +43,10 @@ import {
     searchUsers,
     updateUser
 } from './user'
-import { getUserJokers } from './userJoker'
+import { getUserJokers, rewardAllUserJokers } from './userJoker'
 import { getUserScore } from './userScore'
 import { checkOnline } from './api'
+import { getUserGoals, postUserGoal, deleteUserGoal } from './userGoal'
 
 export const apiServicesTree = {
     api: {
@@ -112,10 +113,16 @@ export const apiServicesTree = {
         updateUser: 'updateUser'
     },
     userJokerApi: {
-        getUserJokers: 'getUserJokers'
+        getUserJokers: 'getUserJokers',
+        rewardAllUserJokers: 'rewardAllUserJokers'
     },
     userScoreApi: {
         getUserScore: 'getUserScore'
+    },
+    userGoalApi: {
+        getUserGoals: 'getUserGoals',
+        postUserGoal: 'postUserGoal',
+        deleteUserGoal: 'deleteUserGoal'
     }
 }
 
@@ -212,6 +219,10 @@ export const getRequest = async (functionName, params) => {
         case 'checkOngoingMatch':
             headers.Authorization = 'Bearer ' + params.clientToken
             return checkOngoingMatch(headers, params)
+        // USER GOAL
+        case 'getUserGoals':
+            headers.Authorization = 'Bearer ' + params.clientToken
+            return getUserGoals(headers, params)
     }
 }
 
@@ -239,6 +250,10 @@ export const postRequest = async (functionName, params) => {
             return postUser(params)
         case 'forgotPassword':
             return forgotPassword(params)
+        // USER GOALS
+        case 'postUserGoal':
+            headers.Authorization = 'Bearer ' + params.clientToken
+            return postUserGoal(headers, params)
     }
 }
 
@@ -264,6 +279,10 @@ export const putRequest = async (functionName, params) => {
         case 'updateUser':
             headers.Authorization = 'Bearer ' + params.clientToken
             return updateUser(headers, params)
+        // USER JOKER
+        case 'rewardAllUserJokers':
+            headers.Authorization = 'Bearer ' + params.clientToken
+            return rewardAllUserJokers(headers, params)
     }
 }
 
@@ -284,5 +303,9 @@ export const deleteRequest = async (functionName, params) => {
         case 'rejectOngoingMatch':
             headers.Authorization = 'Bearer ' + params.clientToken
             return rejectOngoingMatch(headers, params)
+        // USER GOALS
+        case 'deleteUserGoal':
+            headers.Authorization = 'Bearer ' + params.clientToken
+            return deleteUserGoal(headers, params)
     }
 }

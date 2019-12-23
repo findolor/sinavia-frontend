@@ -31,6 +31,7 @@ window.localStorage = AsyncStorage
 global.Buffer = Buffer
 import * as Colyseus from 'colyseus.js'
 import { GAME_ENGINE_ENDPOINT, SCENE_KEYS } from '../../../config'
+import { BannerAd } from '../../../services/admobService'
 
 const generalNotificationsList = [
     {
@@ -401,31 +402,43 @@ class Notifications extends React.Component {
                 )
             case 'successPercentage':
                 return (
-                    <View style={styles.userRow}>
-                        <Text style={styles.notificationRowsText}>
-                            {item.examName}-{item.courseName} dersinin{' '}
-                            <Text style={{ color: '#00D9EF' }}>
-                                {item.subjectName}
-                            </Text>{' '}
-                            konusundaki başarı oranın{' '}
-                            <Text style={{ color: '#FF9900' }}>
-                                {item.successPercentage}%
+                    <View>
+                        <View style={styles.userRow}>
+                            <Text style={styles.notificationRowsText}>
+                                {item.examName}-{item.courseName} dersinin{' '}
+                                <Text style={{ color: '#00D9EF' }}>
+                                    {item.subjectName}
+                                </Text>{' '}
+                                konusundaki başarı oranın{' '}
+                                <Text style={{ color: '#FF9900' }}>
+                                    {item.successPercentage}%
+                                </Text>
+                                . Biraz daha çalışmalısın.
                             </Text>
-                            . Biraz daha çalışmalısın.
-                        </Text>
+                        </View>
+                        {!this.props.clientInformation.isPremium &&
+                            index % 4 === 3 &&
+                            index !== 0 && <BannerAd />}
                     </View>
                 )
             case 'statistics':
                 return (
-                    <TouchableOpacity>
-                        <View style={styles.userRow}>
-                            <Text style={styles.notificationRowsText}>
-                                Geçen {item.timePeriod} istatistiklerini görmek
-                                için{' '}
-                                <Text style={{ color: '#00D9EF' }}>TIKLA!</Text>{' '}
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
+                    <View>
+                        <TouchableOpacity>
+                            <View style={styles.userRow}>
+                                <Text style={styles.notificationRowsText}>
+                                    Geçen {item.timePeriod} istatistiklerini
+                                    görmek için{' '}
+                                    <Text style={{ color: '#00D9EF' }}>
+                                        TIKLA!
+                                    </Text>{' '}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                        {!this.props.clientInformation.isPremium &&
+                            index % 4 === 3 &&
+                            index !== 0 && <BannerAd />}
+                    </View>
                 )
             default:
                 break
@@ -754,6 +767,7 @@ class Notifications extends React.Component {
                         />
                     </View>
                 )}
+                {!this.props.clientInformation.isPremium && <BannerAd />}
             </View>
         )
     }
