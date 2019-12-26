@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* SinaviaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SinaviaTests.m */; };
 		011DF84842B7407FB0A02353 /* Averta-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = BA095F8ABB6942DEB3AF685C /* Averta-Thin.otf */; };
@@ -27,6 +28,7 @@
 		8234A81F9D7E458BA9CC600B /* Averta-ExtrathinItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4A931156D29643CA8BB1A16C /* Averta-ExtrathinItalic.otf */; };
 		95CB3382C216494EA94682F7 /* Averta-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5972F7AA2FE0420E9D6F681C /* Averta-Black.otf */; };
 		981889EA3B4B40A1B0A17761 /* Averta-RegularItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3CEEF7C287524C95BC284325 /* Averta-RegularItalic.otf */; };
+		9A17AF2E23B4BB4F00C0A08F /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A17AF2D23B4BB4F00C0A08F /* StoreKit.framework */; };
 		9A7DF232230C799300890161 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7DF231230C799300890161 /* File.swift */; };
 		9AA9F99C237BE6E100C1BC9D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9AA9F99B237BE6E100C1BC9D /* GoogleService-Info.plist */; };
 		9EDA85F01EFC6497ACD82F89 /* libPods-Sinavia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6803A60CA2105D929503EBF /* libPods-Sinavia.a */; };
@@ -87,6 +89,7 @@
 		77FB107A7AAB407C866137E5 /* Averta-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-Bold.otf"; path = "../src/assets/fonts/Averta-Bold.otf"; sourceTree = "<group>"; };
 		7D01560C726C2ACCB3734B8F /* Pods-Sinavia-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sinavia-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Sinavia-tvOSTests/Pods-Sinavia-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		83FB10C90C0545E49953A162 /* Averta-Extrathin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Averta-Extrathin.otf"; path = "../src/assets/fonts/Averta-Extrathin.otf"; sourceTree = "<group>"; };
+		9A17AF2D23B4BB4F00C0A08F /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		9A7DF230230C799200890161 /* Sinavia-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Sinavia-Bridging-Header.h"; sourceTree = "<group>"; };
 		9A7DF231230C799300890161 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		9A8A6C0C237AAA4700641E31 /* Sinavia.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Sinavia.entitlements; path = Sinavia/Sinavia.entitlements; sourceTree = "<group>"; };
@@ -120,6 +123,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9EDA85F01EFC6497ACD82F89 /* libPods-Sinavia.a in Frameworks */,
+				9A17AF2E23B4BB4F00C0A08F /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,6 +181,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9A17AF2D23B4BB4F00C0A08F /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				A6803A60CA2105D929503EBF /* libPods-Sinavia.a */,
