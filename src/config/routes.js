@@ -100,6 +100,10 @@ const RouterComp = () => {
                         key={SCENE_KEYS.mainScreens.goals}
                         component={mainScreens.goals}
                     />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.jokerReward}
+                        component={mainScreens.jokerReward}
+                    />
                 </Scene>
                 <Scene key="game" hideNavBar={true}>
                     <Scene
