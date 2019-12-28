@@ -25,7 +25,7 @@ import SECOND_JOKER_WHEEL from '../../../assets/secondJokerWheel.png'
 import THIRD_JOKER_WHEEL from '../../../assets/thirdJokerWheel.png'
 import WHEEL_PICKER from '../../../assets/wheelPicker.png'
 import BACKGROUND from '../../../assets/gameScreens/gameStatsBackground.jpg'
-import { navigationPop, navigationReplace, SCENE_KEYS } from '../../../services/navigationService'
+import { navigationReset, navigationReplace, SCENE_KEYS } from '../../../services/navigationService'
 import SEE_OPPONENT_JOKER_IMAGE from '../../../assets/jokers/seeOpponent.png'
 import REMOVE_OPTIONS_JOKER_IMAGE from '../../../assets/jokers/removeOptions.png'
 import SECOND_CHANGE_JOKER_IMAGE from '../../../assets/jokers/secondChance.png'
@@ -102,7 +102,7 @@ class JokerReward extends React.Component {
             rouletteState: state
         })
         setTimeout(() => {
-            navigationReplace(
+            navigationReset(
                 SCENE_KEYS.mainScreens
                     .main
             )
