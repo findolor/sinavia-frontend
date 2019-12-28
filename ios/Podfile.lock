@@ -200,6 +200,8 @@ PODS:
     - Fabric
     - Firebase/Core
     - React
+  - RNIap (4.3.3):
+    - React
   - RNImageCropPicker (0.25.3):
     - QBImagePickerController
     - React-Core
@@ -249,6 +251,7 @@ DEPENDENCIES:
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFirebase (from `../node_modules/react-native-firebase/ios`)
+  - RNIap (from `../node_modules/react-native-iap`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNShare (from `../node_modules/react-native-share`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -339,6 +342,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-device-info"
   RNFirebase:
     :path: "../node_modules/react-native-firebase/ios"
+  RNIap:
+    :path: "../node_modules/react-native-iap"
   RNImageCropPicker:
     :path: "../node_modules/react-native-image-crop-picker"
   RNShare:
@@ -398,6 +403,7 @@ SPEC CHECKSUMS:
   rn-fetch-blob: 651b8d076b43d0d7aa294a3d9ec16c00aab8bef9
   RNDeviceInfo: 9e88577c51bd42f65275e53bb0de0a0f728ed6b8
   RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6
+  RNIap: bb758bdb0adbc499fe0298c753e4b8674b0ac14a
   RNImageCropPicker: bfb3ea9c8622f290532e2fe63f369e0d5a52f597
   RNShare: 8b171d4b43c1d886917fdd303bf7a4b87167b05c
   RNSVG: 78e0a8cc8e84c0406b0d6903312884e99f363fa2
