@@ -241,7 +241,6 @@ class PurchaseScreen extends React.Component {
     }
 
     render() {
-        const { option, rouletteState } = this.state
         return (
             <View style={styles.container}>
                 <View style={{ alignItems: 'center' }}>
