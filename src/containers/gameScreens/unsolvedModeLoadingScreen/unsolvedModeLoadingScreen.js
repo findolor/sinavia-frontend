@@ -1,5 +1,12 @@
 import React from 'react'
-import { BackHandler, Image, ImageBackground, Text, View } from 'react-native'
+import {
+    BackHandler,
+    Image,
+    ImageBackground,
+    Text,
+    View,
+    Alert
+} from 'react-native'
 import styles from './style'
 // Colyseus imports
 import { Buffer } from 'buffer'
@@ -56,6 +63,13 @@ class UnsolvedModeLoadingScreen extends React.Component {
                     }
                 )
             }, 5000)
+
+            this.room.onMessage.add(message => {
+                if (message.action === 'no-questions') {
+                    Alert.alert('Tekrar çözebileceğin soru yok')
+                    this.connectionErrorRoutine()
+                }
+            })
 
             this.room.onError.add(error => {
                 this.connectionErrorRoutine()

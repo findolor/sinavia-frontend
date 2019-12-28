@@ -1,5 +1,10 @@
 PODS:
   - boost-for-react-native (1.63.0)
+  - BugsnagReactNative (2.23.3):
+    - BugsnagReactNative/Core (= 2.23.3)
+    - React
+  - BugsnagReactNative/Core (2.23.3):
+    - React
   - BVLinearGradient (2.5.6):
     - React
   - Crashlytics (3.14.0):
@@ -208,6 +213,7 @@ PODS:
   - yoga (0.60.3.React)
 
 DEPENDENCIES:
+  - BugsnagReactNative (from `../node_modules/bugsnag-react-native`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Firebase/AdMob (~> 6.3.0)
@@ -271,6 +277,8 @@ SPEC REPOS:
     - RSKImageCropper
 
 EXTERNAL SOURCES:
+  BugsnagReactNative:
+    :path: "../node_modules/bugsnag-react-native"
   BVLinearGradient:
     :path: "../node_modules/react-native-linear-gradient"
   DoubleConversion:
@@ -342,6 +350,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+  BugsnagReactNative: 34f9500e304c2667ce7a3e76037d91e41eca2ffe
   BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2

@@ -5,13 +5,14 @@ import {
     Modal,
     Text,
     TouchableOpacity,
-    View
+    View,
+    Platform
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Swiper from 'react-native-swiper'
 import { connect } from 'react-redux'
 import moment from 'moment'
-
+import RNIap from 'react-native-iap'
 import styles from './style'
 import {
     heightPercentageToDP as hp,
@@ -53,6 +54,11 @@ const instagram_page = 'https://www.instagram.com/sinavia.app/'
 const twitter_page = 'https://twitter.com/sinavia'
 const facebook_page = 'https://www.facebook.com/sinaviaapp'
 
+const itemSkus = Platform.select({
+    ios: ['10_jokers_each'],
+    android: []
+})
+
 class PurchaseScreen extends React.Component {
     constructor(props) {
         super(props)
@@ -82,11 +88,13 @@ class PurchaseScreen extends React.Component {
             remainingPremiumMonths: null,
             remainingExamDays: null,
             remainingExamWeeks: null,
-            remainingExamMonths: null
+            remainingExamMonths: null,
+            // Available products for in-app purchase
+            availableProducts: null
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.props.userJokers.forEach(userJoker => {
             switch (userJoker.jokerId) {
                 case 1:
@@ -105,6 +113,17 @@ class PurchaseScreen extends React.Component {
         })
         this.calculateDateUntilPremiumEnd()
         this.calculateRemainingExamTime()
+        await this.getProducts()
+    }
+
+    getProducts = async () => {
+        try {
+            const products = await RNIap.getProducts(itemSkus)
+            this.setState({ availableProducts: products })
+            console.log(products)
+        } catch (err) {
+            console.warn(err)
+        }
     }
 
     calculateDateUntilPremiumEnd = () => {
