@@ -49,7 +49,8 @@ const scene_keys = {
         opponentsProfile: 'opponentsProfile',
         notifications: 'notifications',
         statistics: 'statistics',
-        goals: 'goals'
+        goals: 'goals',
+        jokerReward: 'jokerReward'
     },
     splashScreen: 'splash',
     tutorialScreen: 'tutorial'

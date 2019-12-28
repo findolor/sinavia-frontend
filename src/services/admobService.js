@@ -32,7 +32,8 @@ export const interstitialAd = () => {
     })
 }
 
-export const rewardAd = (callbackFunction, params) => {
+export const rewardAd = (callbackFunction, callbackFunctionSecond, params) => {
+    let isAdWatched = false
     const advert = firebase
         .admob()
         .rewarded('ca-app-pub-3940256099942544/1712485313')
@@ -51,6 +52,11 @@ export const rewardAd = (callbackFunction, params) => {
             'The user watched the entire video and will now be rewarded!',
             event
         )
+        isAdWatched = true
         callbackFunction(params.jokerNumber)
+    })
+
+    advert.on('onAdClosed', event => {
+        if (!isAdWatched) callbackFunctionSecond()
     })
 }

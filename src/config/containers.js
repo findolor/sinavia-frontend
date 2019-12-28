@@ -19,7 +19,8 @@ import {
     OpponentsProfile,
     Notifications,
     Statistics,
-    Goals
+    Goals,
+    JokerReward
 } from '../containers/mainScreens'
 
 import {
@@ -68,7 +69,8 @@ export const mainScreens = {
     opponentsProfile: OpponentsProfile,
     notifications: Notifications,
     statistics: Statistics,
-    goals: Goals
+    goals: Goals,
+    jokerReward: JokerReward
 }
 
 export const gameScreens = {
