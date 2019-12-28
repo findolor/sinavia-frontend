@@ -8,7 +8,8 @@ export const rewardUserJoker = async (headers, params) => {
         let response = await axios.put(
             API_ENDPOINT + APP_VERSION + '/userJokers/reward/' + params.userId,
             {
-                jokerId: params.jokerId
+                jokerId: params.jokerId,
+                jokerAmount: params.jokerAmount
             },
             {
                 headers: headers
@@ -29,7 +30,8 @@ export const rewardUserJoker = async (headers, params) => {
                     '/userJokers/reward/' +
                     params.userId,
                 {
-                    jokerId: params.jokerId
+                    jokerId: params.jokerId,
+                    jokerAmount: params.jokerAmount
                 },
                 {
                     headers: headers

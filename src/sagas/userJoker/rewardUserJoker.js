@@ -11,7 +11,8 @@ export function* rewardUserJokerSaga(action) {
             {
                 userId: action.clientId,
                 clientToken: action.clientToken,
-                jokerId: action.jokerId
+                jokerId: action.jokerId,
+                jokerAmount: action.jokerAmount
             }
         )
     } catch (err) {

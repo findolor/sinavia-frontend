@@ -133,12 +133,13 @@ const rewardAllUserJokers = (clientToken, clientId) => {
     }
 }
 
-const rewardUserJoker = (clientToken, clientId, jokerId) => {
+const rewardUserJoker = (clientToken, clientId, jokerId, jokerAmount) => {
     return {
         type: clientTypes.REWARD_USER_JOKER,
         clientToken: clientToken,
         clientId: clientId,
-        jokerId: jokerId
+        jokerId: jokerId,
+        jokerAmount: jokerAmount
     }
 }
 
