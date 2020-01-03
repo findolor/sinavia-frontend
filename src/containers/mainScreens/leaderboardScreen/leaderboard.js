@@ -231,16 +231,24 @@ class Leaderboard extends React.Component {
             )
             return
         }
+        // Getting the actual course id
+        const courseName = this.state.courseList[index]
+        index = this.props.gameContentMap.courses.findIndex(
+            x => x.name === courseName && x.examId === this.state.choosenExamId
+        )
+        const courseId = this.props.gameContentMap.courses[index].id
+
         const subjectList = ['Hepsi']
         this.props.gameContentMap.subjects.forEach(subject => {
-            if (subject.courseId === index) subjectList.push(subject.name)
+            if (subject.courseId === courseId) subjectList.push(subject.name)
         })
         this.setState(
             {
                 subjectList: subjectList,
                 subjectListDefaultValue: 'Hepsi',
                 isSubjectDropdownVisible: true,
-                choosenCourseId: index
+                choosenCourseId: courseId,
+                choosenSubjectId: null
             },
             () =>
                 this.fetchLeaderboard().then(data => {
@@ -275,7 +283,16 @@ class Leaderboard extends React.Component {
             )
             return
         } else {
-            this.setState({ choosenSubjectId: index }, () =>
+            // Getting the actual subject id
+            const subjectName = this.state.subjectList[index]
+            index = this.props.gameContentMap.subjects.findIndex(
+                x =>
+                    x.name === subjectName &&
+                    x.courseId === this.state.choosenCourseId
+            )
+            const subjectId = this.props.gameContentMap.subjects[index].id
+
+            this.setState({ choosenSubjectId: subjectId }, () =>
                 this.fetchLeaderboard().then(data => {
                     let userList = []
 
