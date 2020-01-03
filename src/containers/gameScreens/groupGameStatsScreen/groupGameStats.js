@@ -6,7 +6,8 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Dimensions, Modal
+    Dimensions,
+    Modal
 } from 'react-native'
 import styles from './style'
 import { connect } from 'react-redux'
@@ -25,8 +26,11 @@ import UNANSWERED_IMG from '../../../assets/gameScreens/unanswered.png'
 import selectedFav from '../../../assets/favori.png'
 import unselectedFav from '../../../assets/favori_bos.png'
 import premiumStyles from '../../mainScreens/purchaseScreen/style'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import LinearGradient from "react-native-linear-gradient"
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
+import LinearGradient from 'react-native-linear-gradient'
 
 const GAME_OVER_LOGO = require('../../../assets/gameScreens/gameover.png')
 
@@ -175,8 +179,10 @@ class GroupGameStatsScreen extends React.Component {
                 )
             }
 
+            const tempList = []
+
             for (i = 0; i < Object.keys(this.props.questionList).length; i++) {
-                this.state.allQuestionsList.push(
+                tempList.push(
                     <View style={styles.scrollQuestionContainer} key={i}>
                         <View style={styles.questionContainer}>
                             <Image
@@ -190,9 +196,10 @@ class GroupGameStatsScreen extends React.Component {
 
             playerList.sort((a, b) => parseFloat(b.net) - parseFloat(a.net))
 
-            this.setState({ flatListData: playerList })
-
-            resolve(true)
+            this.setState(
+                { flatListData: playerList, allQuestionsList: tempList },
+                () => resolve(true)
+            )
         })
     }
 
@@ -302,12 +309,14 @@ class GroupGameStatsScreen extends React.Component {
     }
 
     favouriteOnPress = () => {
-        if(this.props.clientInformation.isPremium){
+        if (this.props.clientInformation.isPremium) {
             if (this.state.isFaved) {
                 this.props.unfavouriteQuestion(
                     this.props.clientToken,
                     this.props.clientDBId,
-                    this.props.fullQuestionList[this.state.questionPosition - 1],
+                    this.props.fullQuestionList[
+                        this.state.questionPosition - 1
+                    ],
                     this.props.favouriteQuestions
                 )
                 this.setState({ favouriteIcon: unselectedFav, isFaved: false })
@@ -315,15 +324,16 @@ class GroupGameStatsScreen extends React.Component {
                 this.props.favouriteQuestion(
                     this.props.clientToken,
                     this.props.clientDBId,
-                    this.props.fullQuestionList[this.state.questionPosition - 1],
+                    this.props.fullQuestionList[
+                        this.state.questionPosition - 1
+                    ],
                     this.props.favouriteQuestions
                 )
                 this.setState({ favouriteIcon: selectedFav, isFaved: true })
             }
-        }
-        else{
+        } else {
             this.setState({
-                isModalVisible: true,
+                isModalVisible: true
             })
         }
     }
@@ -337,22 +347,69 @@ class GroupGameStatsScreen extends React.Component {
     premiumForFavoritesPage() {
         return (
             <View style={premiumStyles.premiumModal}>
-                <TouchableOpacity onPress={this.closeModalButtonOnPress} style={ {height: hp(120), width: wp(100)}}/>
-                <View style={[premiumStyles.premiumModalView, { height: hp(33)}]}>
-                    <LinearGradient colors={['white', '#FFE6BB', '#FFA800']} style={[premiumStyles.linearGradientPremiumModalView, { height: hp(33)}]}>
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{ height: hp(120), width: wp(100) }}
+                />
+                <View
+                    style={[premiumStyles.premiumModalView, { height: hp(33) }]}
+                >
+                    <LinearGradient
+                        colors={['white', '#FFE6BB', '#FFA800']}
+                        style={[
+                            premiumStyles.linearGradientPremiumModalView,
+                            { height: hp(33) }
+                        ]}
+                    >
                         <View style={premiumStyles.premiumModalHeaderView}>
-                            <Text style={premiumStyles.premiumModalHeaderText}>ELİT ÖĞRENCİ PAKETİ</Text>
+                            <Text style={premiumStyles.premiumModalHeaderText}>
+                                ELİT ÖĞRENCİ PAKETİ
+                            </Text>
                         </View>
                         <View style={premiumStyles.premiumModalSwiperContainer}>
                             <View style={premiumStyles.premiumModalSwiperView}>
-                                <View style={premiumStyles.premiumModalSwiperImgView}>
-                                    <Image source={selectedFav} style={premiumStyles.premiumModalImg}/>
+                                <View
+                                    style={
+                                        premiumStyles.premiumModalSwiperImgView
+                                    }
+                                >
+                                    <Image
+                                        source={selectedFav}
+                                        style={premiumStyles.premiumModalImg}
+                                    />
                                 </View>
-                                <View style={[premiumStyles.premiumModalSwiperHeaderView, { height: hp(5.5)}]}>
-                                    <Text style={premiumStyles.premiumModalHeaderText}>Soru Favorileme!</Text>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperHeaderView,
+                                        { height: hp(5.5) }
+                                    ]}
+                                >
+                                    <Text
+                                        style={
+                                            premiumStyles.premiumModalHeaderText
+                                        }
+                                    >
+                                        Soru Favorileme!
+                                    </Text>
                                 </View>
-                                <View style={[premiumStyles.premiumModalSwiperInfoView, {justifyContent: 'flex-start', height: hp(9.5)}]}>
-                                    <Text style={[premiumStyles.premiumModalInfoText, {marginTop: hp(1.5)}]}>Soru Favorileme şimdi Elit Öğrenci Paketi'nde</Text>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperInfoView,
+                                        {
+                                            justifyContent: 'flex-start',
+                                            height: hp(9.5)
+                                        }
+                                    ]}
+                                >
+                                    <Text
+                                        style={[
+                                            premiumStyles.premiumModalInfoText,
+                                            { marginTop: hp(1.5) }
+                                        ]}
+                                    >
+                                        Soru Favorileme şimdi Elit Öğrenci
+                                        Paketi'nde
+                                    </Text>
                                 </View>
                             </View>
                         </View>
