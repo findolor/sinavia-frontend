@@ -126,8 +126,10 @@ class SoloModeGameStats extends React.Component {
                 )
             }
 
+            const tempList = []
+
             for (i = 0; i < Object.keys(this.props.questionList).length; i++) {
-                this.state.allQuestionsList.push(
+                tempList.push(
                     <View style={styles.scrollQuestionContainer} key={i}>
                         <View style={styles.questionContainer}>
                             <Image
@@ -139,18 +141,22 @@ class SoloModeGameStats extends React.Component {
                 )
             }
 
-            this.setState({
-                correctAnswerNumber: playerCorrect,
-                incorrectAnswerNumber: playerIncorrect,
-                unansweredAnswerNumber: playerUnanswered,
-                clientProfilePicture: playerProfilePicture,
-                clientUsername: playerUsername,
-                examId: this.props.playerProps.examId
-            })
+            this.setState(
+                {
+                    correctAnswerNumber: playerCorrect,
+                    incorrectAnswerNumber: playerIncorrect,
+                    unansweredAnswerNumber: playerUnanswered,
+                    clientProfilePicture: playerProfilePicture,
+                    clientUsername: playerUsername,
+                    examId: this.props.playerProps.examId,
+                    allQuestionsList: tempList
+                },
+                () => {
+                    this.checkFavouriteStatus()
 
-            this.checkFavouriteStatus()
-
-            resolve(true)
+                    resolve(true)
+                }
+            )
         })
     }
 

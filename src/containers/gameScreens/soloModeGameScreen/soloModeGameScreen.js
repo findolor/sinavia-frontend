@@ -373,7 +373,8 @@ class SoloModeGameScreen extends React.Component {
                     playerUsername: this.props.clientInformation.username,
                     playerProfilePicture: this.props.clientInformation
                         .profilePicture,
-                    fullQuestionList: this.state.fullQuestionList
+                    fullQuestionList: this.state.fullQuestionList,
+                    isMatchFinished: true
                 })
                 return
         }

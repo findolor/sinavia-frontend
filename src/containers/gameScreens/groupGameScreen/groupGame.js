@@ -476,7 +476,7 @@ class GroupGame extends React.Component {
                     client: this.props.client,
                     questionList: this.state.questionList,
                     fullQuestionList: this.state.fullQuestionList,
-                    isMatchFinished: false
+                    isMatchFinished: true
                 })
                 break
             case 'player-props':
