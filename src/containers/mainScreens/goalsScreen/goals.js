@@ -270,12 +270,19 @@ class Goals extends React.Component {
                                                             </View>
                                                         </View>
                                                     }
-                                                    {item.questionSolved < item.goalAmount && item.questionSolved > 0 &&
+                                                    {item.questionSolved < item.goalAmount && item.questionSolved > 0 && item.questionSolved/item.goalAmount*85 <= 8 &&
                                                         <View style={[styles.instantProgressView, {width: wp(item.questionSolved/item.goalAmount*85)}]}>
-                                                            <View style={[styles.solvedQuestionCircle, {backgroundColor: '#FF9900', borderColor: '#E08700'}]}>
+                                                            <View style={[styles.solvedQuestionCircle, {backgroundColor: '#FF9900', borderColor: '#E08700', position: 'absolute', left: wp(0)}]}>
                                                                 <Text style={styles.solvedQuestionsText}>{item.questionSolved}</Text>
                                                             </View>
                                                         </View>
+                                                    }
+                                                    {item.questionSolved < item.goalAmount && item.questionSolved > 0 && item.questionSolved/item.goalAmount*85 > 8 &&
+                                                    <View style={[styles.instantProgressView, {width: wp(item.questionSolved/item.goalAmount*85)}]}>
+                                                        <View style={[styles.solvedQuestionCircle, {backgroundColor: '#FF9900', borderColor: '#E08700'}]}>
+                                                            <Text style={styles.solvedQuestionsText}>{item.questionSolved}</Text>
+                                                        </View>
+                                                    </View>
                                                     }
                                                 </View>
                                                 <View style={styles.questionGoalView}>
