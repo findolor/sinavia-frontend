@@ -41,7 +41,8 @@ import {
     forgotPassword,
     postUser,
     searchUsers,
-    updateUser
+    updateUser,
+    checkUser
 } from './user'
 import {
     getUserJokers,
@@ -114,7 +115,8 @@ export const apiServicesTree = {
         getOpponentFullInformation: 'getOpponentFullInformation',
         postUser: 'postUser',
         searchUsers: 'searchUsers',
-        updateUser: 'updateUser'
+        updateUser: 'updateUser',
+        checkUser: 'checkUser'
     },
     userJokerApi: {
         getUserJokers: 'getUserJokers',
@@ -212,6 +214,8 @@ export const getRequest = async (functionName, params) => {
         case 'searchUsers':
             headers.Authorization = 'Bearer ' + params.clientToken
             return searchUsers(headers, params)
+        case 'checkUser':
+            return checkUser(params)
         // USER JOKER
         case 'getUserJokers':
             headers.Authorization = 'Bearer ' + params.clientToken

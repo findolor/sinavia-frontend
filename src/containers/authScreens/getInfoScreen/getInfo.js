@@ -337,7 +337,8 @@ class GetInfo extends React.Component {
             birthDate: this.state.birthDate,
             city: this.state.city,
             email: this.props.email,
-            password: this.props.password
+            password: this.props.password,
+            signInMethod: this.props.signInMethod
         })
     }
 
