@@ -1,6 +1,9 @@
 import React from 'react'
 import { Image, View, Text } from 'react-native'
-import { navigationPush } from '../../../services/navigationService'
+import {
+    navigationPush,
+    navigationReplace
+} from '../../../services/navigationService'
 import { SCENE_KEYS } from '../../../config/index'
 import {
     widthPercentageToDP as wp,
@@ -10,12 +13,96 @@ import { AuthButton } from '../../../components/authScreen'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import { fcmService } from '../../../services/fcmService'
-
+import {
+    GoogleSignin,
+    statusCodes
+} from '@react-native-community/google-signin'
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
+import { apiServicesTree, makeGetRequest } from '../../../services/apiServices'
+import { flashMessages } from '../../../services/flashMessageBuilder'
+import { connect } from 'react-redux'
+import { clientActions } from '../../../redux/client/actions'
+import { deviceStorage } from '../../../services/deviceStorage'
 
-export default class Opening extends React.Component {
+class Opening extends React.Component {
     async componentDidMount() {
         await fcmService.checkPermissions()
+    }
+
+    signInWithGoogle = async () => {
+        try {
+            await GoogleSignin.hasPlayServices()
+            const userInfo = await GoogleSignin.signIn()
+
+            // Getting the user from our db
+            makeGetRequest(apiServicesTree.userApi.checkUser, {
+                email: userInfo.user.email
+            }).then(async response => {
+                // If the user doesn't exist we create one
+                if (response === null) {
+                    navigationReplace(SCENE_KEYS.authScreens.getInfo, {
+                        email: userInfo.user.email,
+                        password: 'null',
+                        signInMethod: 'google'
+                    })
+                } else {
+                    if (response.signInMethod === 'normal') {
+                        flashMessages.generalErrorWithProps(
+                            'Giriş hatası',
+                            "Lütfen 'Giriş Yap' ile giriş yapınız.",
+                            {
+                                backgroundColor: '#FFFFFF',
+                                borderBottomLeftRadius: 10,
+                                borderBottomRightRadius: 10,
+                                borderColor: '#00D9EF',
+                                borderWidth: hp(0.25),
+                                height: hp(10)
+                            }
+                        )
+                        //await GoogleSignin.revokeAccess()
+                        await GoogleSignin.signOut()
+                        return
+                    }
+                    if (response.signInMethod === 'facebook') {
+                        flashMessages.generalErrorWithProps(
+                            'Giriş hatası',
+                            "Lütfen 'Facebook' ile giriş yapınız.",
+                            {
+                                backgroundColor: '#FFFFFF',
+                                borderBottomLeftRadius: 10,
+                                borderBottomRightRadius: 10,
+                                borderColor: '#00D9EF',
+                                borderWidth: hp(0.25),
+                                height: hp(10)
+                            }
+                        )
+                        //await GoogleSignin.revokeAccess()
+                        await GoogleSignin.signOut()
+                        return
+                    }
+                    // Saving the sign-in method
+                    await deviceStorage.saveItemToStorage(
+                        'signInMethod',
+                        'google'
+                    )
+                    this.props.loginUser({
+                        email: userInfo.user.email,
+                        password: 'null'
+                    })
+                }
+            })
+        } catch (error) {
+            console.log(error)
+            if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+                // user cancelled the login flow
+            } else if (error.code === statusCodes.IN_PROGRESS) {
+                // operation (e.g. sign in) is in progress already
+            } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+                // play services not available or outdated
+            } else {
+                // some other error happened
+            }
+        }
     }
 
     render() {
@@ -79,6 +166,7 @@ export default class Opening extends React.Component {
                         fontSize={hp(3)}
                         buttonText="Google ile Bağlan"
                         borderRadius={hp(1.5)}
+                        onPress={this.signInWithGoogle}
                     />
                 </View>
                 <View style={styles.spaceView} />
@@ -86,3 +174,12 @@ export default class Opening extends React.Component {
         )
     }
 }
+
+const mapStateToProps = state => ({})
+
+const mapDispatchToProps = dispatch => ({
+    loginUser: userCredentials =>
+        dispatch(clientActions.loginUser(userCredentials))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Opening)

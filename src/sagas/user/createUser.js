@@ -11,6 +11,7 @@ import {
     makePutRequest
 } from '../../services/apiServices'
 import { fcmService } from '../../services/fcmService'
+import firebase from 'react-native-firebase'
 
 export function* createUser(action) {
     yield put({
@@ -20,8 +21,21 @@ export function* createUser(action) {
     try {
         // We get the unique device id
         const deviceId = yield call(DeviceInfo.getUniqueId)
-
         action.payload.deviceId = deviceId
+
+        // Saving the choosen method for sign-in
+        deviceStorage.saveItemToStorage(
+            'signInMethod',
+            action.payload.signInMethod
+        )
+        if (action.payload.signInMethod !== 'normal') {
+            firebase
+                .auth()
+                .signInAnonymously()
+                .catch(error => {
+                    console.log(error)
+                })
+        }
 
         // We send the client information to our server
         let res

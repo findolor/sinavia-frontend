@@ -35,7 +35,8 @@ export default StyleSheet.create({
     buttonsContainer: {
         flex: 22,
         width: wp(89),
-        marginLeft: wp(5.5)
+        marginLeft: wp(5.5),
+        justifyContent: 'center'
     },
     returnLogo: {
         height: hp(3.5),
@@ -166,7 +167,7 @@ export default StyleSheet.create({
         borderRadius: hp(100),
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: "rgba(0,0,0,0.5)"
+        backgroundColor: 'rgba(0,0,0,0.5)'
     },
     textInputStyle: {
         fontFamily: 'Averta-Regular',
@@ -188,7 +189,7 @@ export default StyleSheet.create({
         height: hp(30),
         width: wp(90),
         borderRadius: hp(3),
-        backgroundColor: "rgba(0,0,0,0.5)",
+        backgroundColor: 'rgba(0,0,0,0.5)',
         alignItems: 'center'
     },
     modal: {
