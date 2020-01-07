@@ -56,7 +56,7 @@ const facebook_page = 'https://www.facebook.com/sinaviaapp'
 
 const itemSkus = Platform.select({
     ios: ['10_jokers_each'],
-    android: []
+    android: ['10_jokers_each']
 })
 
 class PurchaseScreen extends React.Component {
@@ -113,7 +113,42 @@ class PurchaseScreen extends React.Component {
         })
         this.calculateDateUntilPremiumEnd()
         this.calculateRemainingExamTime()
+        await this.inAppInitConnection()
         await this.getProducts()
+
+        this.purchaseUpdateSubscription = RNIap.purchaseUpdatedListener(
+            purchase => {
+                console.log('purchaseUpdatedListener', purchase)
+                /* this.setState({
+                receipt: purchase.transactionReceipt
+            }) */
+            }
+        )
+
+        this.purchaseErrorSubscription = RNIap.purchaseErrorListener(error => {
+            console.log('purchaseErrorListener', error)
+            //Alert.alert('purchase error', JSON.stringify(error))
+        })
+    }
+
+    componentWillUnmount() {
+        if (this.purchaseUpdateSubscription) {
+            this.purchaseUpdateSubscription.remove()
+            this.purchaseUpdateSubscription = null
+        }
+        if (this.purchaseErrorSubscription) {
+            this.purchaseErrorSubscription.remove()
+            this.purchaseErrorSubscription = null
+        }
+    }
+
+    inAppInitConnection = async () => {
+        try {
+            const result = await RNIap.initConnection()
+            console.log('result', result)
+        } catch (err) {
+            console.warn(err.code, err.message)
+        }
     }
 
     getProducts = async () => {
@@ -123,6 +158,14 @@ class PurchaseScreen extends React.Component {
             console.log(products)
         } catch (err) {
             console.warn(err)
+        }
+    }
+
+    requestPurchase = async () => {
+        try {
+            RNIap.requestPurchase('10_jokers_each')
+        } catch (err) {
+            console.warn(err.code, err.message)
         }
     }
 
@@ -1061,6 +1104,7 @@ class PurchaseScreen extends React.Component {
                                                 style={
                                                     styles.purchaseJokerButton
                                                 }
+                                                onPress={this.requestPurchase}
                                             >
                                                 <Text
                                                     style={
