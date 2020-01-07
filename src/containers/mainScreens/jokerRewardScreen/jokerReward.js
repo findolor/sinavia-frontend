@@ -120,7 +120,8 @@ class JokerReward extends React.Component {
                 <View style={styles.textView}>
                     {rouletteState === 'start' && (
                         <View>
-                            <Text style={styles.text}>GELİYOOOOOOOR!</Text>
+                            <Text style={styles.text}>JOKER ÇARKIN DÖNÜYOR</Text>
+                            <Text style={styles.text}>BOL ŞANS!</Text>
                         </View>
                     )}
                     {rouletteState === 'stop' && option === null && (
@@ -146,7 +147,13 @@ class JokerReward extends React.Component {
                             </Text>
                             <Text style={[styles.text, { color: '#00A14C' }]}>
                                 {' '}
-                                RAKİBİ GÖR JOKERİ
+                                {
+                                    this.props.jokerNumber === 1
+                                        ? <Text style={[styles.text, { color: '#00A14C' }]}>RAKİBİ GÖR</Text>
+                                        : this.props.jokerNumber === 2
+                                        ? <Text style={[styles.text, { color: '#00A14C' }]}>ŞIK ELE</Text>
+                                        : <Text style={[styles.text, { color: '#00A14C' }]}>ÇİFTE ŞANS</Text>
+                                } JOKERİ
                             </Text>
                             <Text style={[styles.text, { color: '#00A14C' }]}>
                                 {' '}
