@@ -6,8 +6,7 @@ import {
     TouchableOpacity,
     Modal,
     BackHandler,
-    Vibration,
-    StyleSheet
+    Vibration
 } from 'react-native'
 import styles, { countdownProps } from './style'
 import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas'
