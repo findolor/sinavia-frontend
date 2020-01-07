@@ -529,11 +529,18 @@ class GroupGame extends React.Component {
                         }
                     })
 
+                    let net
+
+                    if (playerProps.matchInformation.examId !== 1)
+                        net = correct - incorrect / 4
+                    else net = correct - incorrect / 3
+
                     playerList.push({
                         username: username,
                         correct: correct,
                         incorrect: incorrect,
-                        unanswered: unanswered
+                        unanswered: unanswered,
+                        net: net
                     })
                     correct = 0
                     incorrect = 0
@@ -541,6 +548,7 @@ class GroupGame extends React.Component {
                 }
             }
         })
+        playerList.sort((a, b) => parseFloat(b.net) - parseFloat(a.net))
         this.setState({ groupLeaderboard: playerList })
     }
 
