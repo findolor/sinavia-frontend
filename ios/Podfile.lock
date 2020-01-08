@@ -228,6 +228,8 @@ PODS:
     - RSKImageCropper
   - RNShare (2.0.0):
     - React
+  - RNSketchCanvas (0.8.0):
+    - React
   - RNSVG (9.8.5):
     - React
   - RSKImageCropper (2.2.3)
@@ -275,6 +277,7 @@ DEPENDENCIES:
   - RNIap (from `../node_modules/react-native-iap`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNShare (from `../node_modules/react-native-share`)
+  - "RNSketchCanvas (from `../node_modules/@terrylinla/react-native-sketch-canvas`)"
   - RNSVG (from `../node_modules/react-native-svg`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -375,6 +378,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-crop-picker"
   RNShare:
     :path: "../node_modules/react-native-share"
+  RNSketchCanvas:
+    :path: "../node_modules/@terrylinla/react-native-sketch-canvas"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   yoga:
@@ -437,6 +442,7 @@ SPEC CHECKSUMS:
   RNIap: bb758bdb0adbc499fe0298c753e4b8674b0ac14a
   RNImageCropPicker: bfb3ea9c8622f290532e2fe63f369e0d5a52f597
   RNShare: 8b171d4b43c1d886917fdd303bf7a4b87167b05c
+  RNSketchCanvas: 6939b18677cd1794151cc3d8eb5a0a2158a4a05b
   RNSVG: 78e0a8cc8e84c0406b0d6903312884e99f363fa2
   RSKImageCropper: a446db0e8444a036b34f3c43db01b2373baa4b2a
   yoga: 843fe25849b56131275bf3e5da2c468e96f68aff
