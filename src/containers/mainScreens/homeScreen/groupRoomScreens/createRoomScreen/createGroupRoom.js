@@ -217,7 +217,9 @@ class CreateGroupRoom extends React.Component {
             <View style={styles.container}>
                 {this.state.isQuitGameModalVisible === false && (
                     <View style={styles.modal}>
-                        <BannerAd />
+                        {!this.props.clientInformation.isPremium && (
+                            <BannerAd />
+                        )}
                         <TouchableOpacity
                             onPress={this.closeGroupGameOnPress}
                             style={{ height: hp(120), width: wp(100) }}
