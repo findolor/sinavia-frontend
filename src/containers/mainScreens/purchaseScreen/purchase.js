@@ -118,10 +118,23 @@ class PurchaseScreen extends React.Component {
 
         this.purchaseUpdateSubscription = RNIap.purchaseUpdatedListener(
             purchase => {
+                const receipt = purchase.transactionReceipt
+                if (receipt) {
+                    // Send the receipt to our servers
+                }
+
                 console.log('purchaseUpdatedListener', purchase)
                 /* this.setState({
                 receipt: purchase.transactionReceipt
             }) */
+                try {
+                    // If consumable (can be purchased again)
+                    RNIap.finishTransaction(purchase, true)
+                    // If not consumable
+                    //RNIap.finishTransaction(purchase, false)
+                } catch (error) {
+                    console.log(error)
+                }
             }
         )
 
