@@ -18,6 +18,7 @@ import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
+import { purhcaseReceiptServices } from '../../../sagas/purchaseReceipt/'
 
 import INSTAGRAM_LOGO from '../../../assets/instagram_logo.png'
 import TWITTER_LOGO from '../../../assets/twitter_logo.png'
@@ -34,7 +35,6 @@ import SEE_OPPONENT_JOKER_IMAGE from '../../../assets/jokers/seeOpponent.png'
 import REMOVE_OPTIONS_JOKER_IMAGE from '../../../assets/jokers/removeOptions.png'
 import SECOND_CHANGE_JOKER_IMAGE from '../../../assets/jokers/secondChance.png'
 import { rewardAd } from '../../../services/admobService'
-import { clientActions } from '../../../redux/client/actions'
 
 import FIRST_JOKER_AD_BUTTON from '../../../assets/firstJokerAdButton.png'
 import SECOND_JOKER_AD_BUTTON from '../../../assets/secondJokerAdButton.png'
@@ -118,22 +118,30 @@ class PurchaseScreen extends React.Component {
 
         this.purchaseUpdateSubscription = RNIap.purchaseUpdatedListener(
             purchase => {
+                console.log('purchaseUpdatedListener', purchase)
                 const receipt = purchase.transactionReceipt
                 if (receipt) {
-                    // Send the receipt to our servers
-                }
-
-                console.log('purchaseUpdatedListener', purchase)
-                /* this.setState({
-                receipt: purchase.transactionReceipt
-            }) */
-                try {
-                    // If consumable (can be purchased again)
-                    RNIap.finishTransaction(purchase, true)
-                    // If not consumable
-                    //RNIap.finishTransaction(purchase, false)
-                } catch (error) {
-                    console.log(error)
+                    purhcaseReceiptServices
+                        .sendReceipt(
+                            this.props.clientToken,
+                            this.props.clientDBId,
+                            receipt
+                        )
+                        .then(data => {
+                            if (data) {
+                                try {
+                                    // If consumable (can be purchased again)
+                                    RNIap.finishTransaction(purchase, true)
+                                    // If not consumable
+                                    //RNIap.finishTransaction(purchase, false)
+                                } catch (error) {
+                                    console.log(error)
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error)
+                        })
                 }
             }
         )
@@ -197,6 +205,8 @@ class PurchaseScreen extends React.Component {
         const remainingPremiumMonths = endDate.diff(dateToday, 'months')
         let remainingPremiumWeeks = 0
         let remainingPremiumDays = endDate.diff(dateToday, 'days')
+        // This is used because we still have today
+        remainingPremiumDays++
         let daysToSubtract = 0
 
         if (remainingPremiumMonths !== 0) {
@@ -2615,6 +2625,8 @@ class PurchaseScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
+    clientToken: state.client.clientToken,
+    clientDBId: state.client.clientDBId,
     userJokers: state.client.userJokers,
     clientInformation: state.client.clientInformation,
     gameContentMap: state.gameContent.gameContentMap,
