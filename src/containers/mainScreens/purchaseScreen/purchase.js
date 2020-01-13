@@ -64,6 +64,7 @@ class PurchaseScreen extends React.Component {
         super(props)
         this.state = {
             isPremiumModalVisible: false,
+            isPromotionCodeModalVisible: false,
             premiumOption: 'threeMonths',
             firstJoker: {
                 joker: {
@@ -197,6 +198,18 @@ class PurchaseScreen extends React.Component {
             remainingExamDays: remainingExamDays,
             remainingExamWeeks: remainingExamWeeks,
             remainingExamMonths: remainingExamMonths
+        })
+    }
+
+    onPressPromotionCodeView() {
+        this.setState({
+            isPromotionCodeModalVisible: true
+        })
+    }
+
+    closesPromotionCodeView() {
+        this.setState({
+            isPromotionCodeModalVisible: false
         })
     }
 
@@ -949,6 +962,53 @@ class PurchaseScreen extends React.Component {
                                                 HAYIR, TEŞEKKÜRLER
                                             </Text>
                                         </TouchableOpacity>
+                                    </View>
+                                </LinearGradient>
+                            </View>
+                        </View>
+                    </Modal>
+                    <Modal
+                        visible={this.state.isPromotionCodeModalVisible}
+                        transparent={true}
+                        animationType={'fade'}
+                    >
+                        <View style={styles.premiumModal}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.closesPromotionCodeView()
+                                }}
+                                style={{ height: hp(120), width: wp(100) }}
+                            />
+                            <View style={styles.premiumModalView}>
+                                <LinearGradient
+                                    colors={['white', '#FFE6BB', '#FFA800']}
+                                    style={
+                                        styles.linearGradientPremiumModalView
+                                    }
+                                >
+                                    <View style={styles.inviteFriendView}>
+                                        <View style={styles.inviteFriendInfoView}>
+                                            <Text style={styles.promotionCodeInfoText}>1 - Sınavia'ya üye olmayan bir arkadaşına aşağıdaki kodu gönder</Text>
+                                            <Text style={styles.promotionCodeInfoText}>2 - Arkadaşın uygulamaya kayıtlanırken bu kodu kullansın</Text>
+                                            <Text style={styles.promotionCodeInfoText}>3 - 1 haftalık ELİT ÖĞRENCİ PAKETİ kazan!</Text>
+                                        </View>
+                                        <View style={styles.inviteFriendBox}>
+                                        </View>
+                                        <View style={styles.inviteFriendKeyAmountsView}>
+                                            <Text>3 adet hakkın kaldı</Text>
+                                        </View>
+                                    </View>
+                                    <View style={styles.separator}/>
+                                    <View style={styles.usePromotionView}>
+                                        <View style={styles.usePromotionInfoView}>
+                                            <Text style={[styles.promotionCodeInfoText, {marginBottom: hp(1.5)}]}>1 - Çekilişlerden aldığın kodu burada kullan</Text>
+                                            <Text style={[styles.promotionCodeInfoText, {marginBottom: hp(1.5)}]}>2 - 1 haftalık ELİT ÖĞRENCİ PAKETİ kazan!</Text>
+                                        </View>
+                                        <View style={styles.usePromotionBox}>
+                                        </View>
+                                        <View style={styles.usePromotionButton}>
+                                            <Text style={styles.purchasePremiumButtonText}>Onayla</Text>
+                                        </View>
                                     </View>
                                 </LinearGradient>
                             </View>
@@ -2208,6 +2268,9 @@ class PurchaseScreen extends React.Component {
                                     </View>
                                 </LinearGradient>
                                 <TouchableOpacity
+                                    onPress={() => {
+                                        this.onPressPromotionCodeView()
+                                    }}
                                     style={styles.premiumBottomView}
                                 >
                                     <Text style={styles.inviteText}>
