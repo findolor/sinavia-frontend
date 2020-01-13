@@ -8,7 +8,7 @@ import {
     Keyboard,
     Alert,
     TouchableWithoutFeedback,
-    KeyboardAvoidingView
+    KeyboardAvoidingView, Modal
 } from 'react-native'
 import {
     navigationPop,
@@ -57,7 +57,8 @@ class Register extends React.Component {
             secondPassword: '',
             birthDate: '',
             passwordBorderColor: '#989696',
-            secondPasswordBorderColor: '#989696'
+            secondPasswordBorderColor: '#989696',
+            isLicenceModalVisible: false
         }
     }
 
@@ -269,6 +270,25 @@ class Register extends React.Component {
         navigationPop()
     }
 
+    onPressLicenceView() {
+        this.setState({
+            isLicenceModalVisible: true
+        })
+    }
+
+    closeLicenceView() {
+        this.setState({
+            isLicenceModalVisible: false
+        })
+    }
+
+    acceptLicenceOnPress() {
+        this.setState({
+            switchValue: true,
+            isLicenceModalVisible: false
+        })
+    }
+
     render() {
         return (
             <TouchableWithoutFeedback
@@ -280,6 +300,23 @@ class Register extends React.Component {
                     style={[styles.container]}
                     behavior={'position'}
                 >
+                    <Modal
+                        visible={this.state.isLicenceModalVisible}
+                        transparent={true}
+                        animationType={'fade'}
+                    >
+                        <TouchableOpacity onPress={() => {
+                            this.closeLicenceView()
+                        }} style={styles.shadowView}>
+                            <View style={styles.licenceView}>
+                            </View>
+                            <TouchableOpacity onPress={() => {
+                                this.acceptLicenceOnPress()
+                            }} style={styles.acceptLicenceButton}>
+                                <Text style={styles.acceptLicenceText}>Onaylıyorum</Text>
+                            </TouchableOpacity>
+                        </TouchableOpacity>
+                    </Modal>
                     <NotchView color={'#fcfcfc'} />
                     <View style={styles.backButtonContainer}>
                         <TouchableOpacity onPress={this.backButtonOnPress}>
@@ -433,12 +470,15 @@ class Register extends React.Component {
                         <View style={styles.licenseTextContainer}>
                             <Text style={styles.toggleText}>
                                 <Text
+                                    onPress={() => {
+                                        this.onPressLicenceView()
+                                    }}
                                     style={{
                                         textDecorationLine: 'underline',
                                         fontFamily: 'Averta-Semibold'
                                     }}
                                 >
-                                    Kullanıcı sözleşmesi
+                                    Kullanıcı Sözleşmesi
                                 </Text>
                                 'ni okudum ve kabul ediyorum.
                             </Text>
