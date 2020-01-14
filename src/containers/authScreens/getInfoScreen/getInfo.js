@@ -365,9 +365,9 @@ class GetInfo extends React.Component {
                         <Image
                             source={SINAVIA_LOGO}
                             style={{
-                                height: hp(32),
+                                height: hp(25),
                                 resizeMode: 'contain',
-                                marginLeft: wp(6)
+                                marginLeft: wp(4)
                             }}
                         />
                     </View>
@@ -433,6 +433,12 @@ class GetInfo extends React.Component {
                                 </Text>
                             </View>
                         </TouchableOpacity>
+                        <AuthTextInput
+                            placeholder="Arkadaş daveti kodu (zorunlu değil)"
+                            placeholderTextColor="#8A8888"
+                            maxLength={7}
+                            borderColor={'#989696'}
+                        />
                     </View>
                     <View style={styles.authButtonView}>
                         <AuthButton
