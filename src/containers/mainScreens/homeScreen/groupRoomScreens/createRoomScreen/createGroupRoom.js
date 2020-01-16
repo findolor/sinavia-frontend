@@ -169,11 +169,11 @@ class CreateGroupRoom extends React.Component {
         })
     }
 
-    randomCodeGenerator() {
+    randomCodeGenerator(lenght) {
         var result = ''
-        var characters = 'ABCDEF0123456789'
+        var characters = 'ABCDEFGHIJKLMNOPQRSTVUXWYZ0123456789'
         var charactersLength = characters.length
-        for (var i = 0; i < 6; i++) {
+        for (var i = 0; i < lenght; i++) {
             result += characters.charAt(
                 Math.floor(Math.random() * charactersLength)
             )

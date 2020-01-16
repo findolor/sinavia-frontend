@@ -1174,11 +1174,11 @@ class Home extends React.Component {
         })
     }
 
-    randomCodeGenerator() {
+    randomCodeGenerator(length) {
         var result = ''
-        var characters = 'ABCDEF0123456789'
+        var characters = 'ABCDEFGHIJKLMNOPQRSTVUXWYZ0123456789'
         var charactersLength = characters.length
-        for (var i = 0; i < 6; i++) {
+        for (var i = 0; i < length; i++) {
             result += characters.charAt(
                 Math.floor(Math.random() * charactersLength)
             )
@@ -1202,7 +1202,7 @@ class Home extends React.Component {
         apiServices
             .checkOnline()
             .then(() => {
-                const randomNumber = this.randomCodeGenerator()
+                const randomNumber = this.randomCodeGenerator(6)
                 const Ids = this.calculateContentIds()
                 navigationReset('game', { isHardReset: true })
                 navigationReplace(SCENE_KEYS.gameScreens.friendMatchingScreen, {
