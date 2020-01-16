@@ -166,7 +166,8 @@ export default StyleSheet.create({
         height: hp(5.5),
         width: wp(40),
         justifyContent: 'flex-end',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: hp(1)
     },
     yourPremiumCounterView: {
         height: hp(5.5),
@@ -755,7 +756,5 @@ export default StyleSheet.create({
         height: hp(4),
         width: hp(4)
     },
-    usePromotionBoxPlaceholder: {
-
-    }
+    usePromotionBoxPlaceholder: {}
 })

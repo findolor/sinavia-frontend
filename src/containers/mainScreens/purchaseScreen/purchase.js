@@ -99,7 +99,7 @@ class PurchaseScreen extends React.Component {
             // Available products for in-app purchase
             availableProducts: null,
             friendCode: 'PAROLA',
-            usePromotionCode: '',
+            usePromotionCode: ''
         }
     }
 
@@ -209,25 +209,25 @@ class PurchaseScreen extends React.Component {
         })
     }
 
-    onPressPromotionCodeView() {
+    onPressPromotionCodeView = () => {
         this.setState({
             isPromotionCodeModalVisible: true
         })
     }
 
-    closesPromotionCodeView() {
+    closesPromotionCodeView = () => {
         this.setState({
             isPromotionCodeModalVisible: false
         })
     }
 
-    onPressPremiumView() {
+    onPressPremiumView = () => {
         this.setState({
             isPremiumModalVisible: true
         })
     }
 
-    closePremiumView() {
+    closePremiumView = () => {
         this.setState({
             isPremiumModalVisible: false,
             premiumOption: 'threeMonths'
@@ -303,9 +303,7 @@ class PurchaseScreen extends React.Component {
                         >
                             <View style={styles.premiumModal}>
                                 <TouchableOpacity
-                                    onPress={() => {
-                                        this.closePremiumView()
-                                    }}
+                                    onPress={this.closePremiumView}
                                     style={{ height: hp(120), width: wp(100) }}
                                 />
                                 <View style={styles.premiumModalView}>
@@ -315,7 +313,11 @@ class PurchaseScreen extends React.Component {
                                             styles.linearGradientPremiumModalView
                                         }
                                     >
-                                        <View style={styles.premiumModalHeaderView}>
+                                        <View
+                                            style={
+                                                styles.premiumModalHeaderView
+                                            }
+                                        >
                                             <Text
                                                 style={
                                                     styles.premiumModalHeaderText
@@ -382,8 +384,9 @@ class PurchaseScreen extends React.Component {
                                                                 }
                                                             ]}
                                                         >
-                                                            Reklamsız oyun oynamanın
-                                                            keyfini sen de çıkar
+                                                            Reklamsız oyun
+                                                            oynamanın keyfini
+                                                            sen de çıkar
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -432,9 +435,10 @@ class PurchaseScreen extends React.Component {
                                                                 }
                                                             ]}
                                                         >
-                                                            Hoşuna giden ya da sonra
-                                                            tekrar bakmak istediğin
-                                                            soruları favorile
+                                                            Hoşuna giden ya da
+                                                            sonra tekrar bakmak
+                                                            istediğin soruları
+                                                            favorile
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -465,8 +469,8 @@ class PurchaseScreen extends React.Component {
                                                                 styles.premiumModalHeaderText
                                                             }
                                                         >
-                                                            Türkiye geneli deneme
-                                                            sınavları!
+                                                            Türkiye geneli
+                                                            deneme sınavları!
                                                         </Text>
                                                     </View>
                                                     <View
@@ -484,11 +488,12 @@ class PurchaseScreen extends React.Component {
                                                                 }
                                                             ]}
                                                         >
-                                                            Ülke çapındaki deneme
-                                                            sınavlarına ücretsiz
-                                                            katıl, tüm öğrenciler
-                                                            arasındaki sıralamanı
-                                                            gör
+                                                            Ülke çapındaki
+                                                            deneme sınavlarına
+                                                            ücretsiz katıl, tüm
+                                                            öğrenciler
+                                                            arasındaki
+                                                            sıralamanı gör
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -540,8 +545,9 @@ class PurchaseScreen extends React.Component {
                                                             ]}
                                                         >
                                                             "Tek rakibim kendim"
-                                                            diyenler için tek başına
-                                                            soru çözebilme imkanı
+                                                            diyenler için tek
+                                                            başına soru
+                                                            çözebilme imkanı
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -556,7 +562,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Image
-                                                            source={PREMIUM_BACK}
+                                                            source={
+                                                                PREMIUM_BACK
+                                                            }
                                                             style={
                                                                 styles.premiumModalImg
                                                             }
@@ -592,9 +600,9 @@ class PurchaseScreen extends React.Component {
                                                             ]}
                                                         >
                                                             Boş bıraktığın veya
-                                                            yanlış yaptığın soruları
-                                                            tekrar tekrar çözme
-                                                            fırsatı
+                                                            yanlış yaptığın
+                                                            soruları tekrar
+                                                            tekrar çözme fırsatı
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -609,7 +617,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Image
-                                                            source={PREMIUM_JOKER}
+                                                            source={
+                                                                PREMIUM_JOKER
+                                                            }
                                                             style={
                                                                 styles.premiumModalImg
                                                             }
@@ -755,7 +765,9 @@ class PurchaseScreen extends React.Component {
                                                 </View>
                                             </TouchableOpacity>
                                             <TouchableOpacity
-                                                onPress={this.threeMonthsOnPress}
+                                                onPress={
+                                                    this.threeMonthsOnPress
+                                                }
                                                 style={styles.premiumOptionView}
                                             >
                                                 <View
@@ -956,10 +968,14 @@ class PurchaseScreen extends React.Component {
                                             </TouchableOpacity>
                                         </View>
                                         <View
-                                            style={styles.buttonsInPremiumModalView}
+                                            style={
+                                                styles.buttonsInPremiumModalView
+                                            }
                                         >
                                             <TouchableOpacity
-                                                style={styles.purchasePremiumButton}
+                                                style={
+                                                    styles.purchasePremiumButton
+                                                }
                                             >
                                                 <Text
                                                     style={
@@ -994,9 +1010,7 @@ class PurchaseScreen extends React.Component {
                         >
                             <View style={styles.premiumModal}>
                                 <TouchableOpacity
-                                    onPress={() => {
-                                        this.closesPromotionCodeView()
-                                    }}
+                                    onPress={this.closesPromotionCodeView}
                                     style={{ height: hp(120), width: wp(100) }}
                                 />
                                 <View style={styles.premiumModalView}>
@@ -1007,37 +1021,122 @@ class PurchaseScreen extends React.Component {
                                         }
                                     >
                                         <View style={styles.inviteFriendView}>
-                                            <View style={styles.inviteFriendInfoView}>
-                                                <Text style={styles.promotionCodeInfoText}>1 - Sınavia'ya üye olmayan bir arkadaşına aşağıdaki kodu gönder</Text>
-                                                <Text style={styles.promotionCodeInfoText}>2 - Arkadaşın uygulamaya kayıtlanırken bu kodu kullansın</Text>
-                                                <Text style={styles.promotionCodeInfoText}>3 - 1 haftalık ELİT ÖĞRENCİ PAKETİ kazan!</Text>
+                                            <View
+                                                style={
+                                                    styles.inviteFriendInfoView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.promotionCodeInfoText
+                                                    }
+                                                >
+                                                    1 - Sınavia'ya üye olmayan
+                                                    bir arkadaşına aşağıdaki
+                                                    kodu gönder
+                                                </Text>
+                                                <Text
+                                                    style={
+                                                        styles.promotionCodeInfoText
+                                                    }
+                                                >
+                                                    2 - Arkadaşın uygulamaya
+                                                    kayıtlanırken bu kodu
+                                                    kullansın
+                                                </Text>
+                                                <Text
+                                                    style={
+                                                        styles.promotionCodeInfoText
+                                                    }
+                                                >
+                                                    3 - 1 haftalık ELİT ÖĞRENCİ
+                                                    PAKETİ kazan!
+                                                </Text>
                                             </View>
-                                            <View style={styles.inviteFriendBox}>
-                                                <View style={{height: hp(10), width: wp(20), right: wp(4), position: 'absolute', justifyContent: 'center', alignItems: 'flex-end'}}>
+                                            <View
+                                                style={styles.inviteFriendBox}
+                                            >
+                                                <View
+                                                    style={{
+                                                        height: hp(10),
+                                                        width: wp(20),
+                                                        right: wp(4),
+                                                        position: 'absolute',
+                                                        justifyContent:
+                                                            'center',
+                                                        alignItems: 'flex-end'
+                                                    }}
+                                                >
                                                     <TouchableOpacity
-                                                        onPress={this.writeToClipboard}
+                                                        onPress={
+                                                            this
+                                                                .writeToClipboard
+                                                        }
                                                     >
                                                         <Image
                                                             source={COPY_IMAGE}
-                                                            style={styles.copyImage}
+                                                            style={
+                                                                styles.copyImage
+                                                            }
                                                         />
                                                     </TouchableOpacity>
                                                 </View>
-                                                <Text style={styles.promotionCode} selectable={true}>{this.state.friendCode}</Text>
+                                                <Text
+                                                    style={styles.promotionCode}
+                                                    selectable={true}
+                                                >
+                                                    {this.state.friendCode}
+                                                </Text>
                                             </View>
-                                            <View style={styles.inviteFriendKeyAmountsView}>
-                                                <Text style={styles.inviteFriendKeyAmounts}>3 adet hakkın kaldı</Text>
+                                            <View
+                                                style={
+                                                    styles.inviteFriendKeyAmountsView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.inviteFriendKeyAmounts
+                                                    }
+                                                >
+                                                    3 adet hakkın kaldı
+                                                </Text>
                                             </View>
                                         </View>
-                                        <View style={styles.separator}/>
+                                        <View style={styles.separator} />
                                         <View style={styles.usePromotionView}>
-                                            <View style={styles.usePromotionInfoView}>
-                                                <Text style={[styles.promotionCodeInfoText, {marginBottom: hp(1.5)}]}>1 - Çekilişlerden aldığın kodu burada kullan</Text>
-                                                <Text style={[styles.promotionCodeInfoText, {marginBottom: hp(1.5)}]}>2 - 1 haftalık ELİT ÖĞRENCİ PAKETİ kazan!</Text>
+                                            <View
+                                                style={
+                                                    styles.usePromotionInfoView
+                                                }
+                                            >
+                                                <Text
+                                                    style={[
+                                                        styles.promotionCodeInfoText,
+                                                        { marginBottom: hp(1) }
+                                                    ]}
+                                                >
+                                                    1 - Çekilişlerden aldığın
+                                                    kodu burada kullan
+                                                </Text>
+                                                <Text
+                                                    style={[
+                                                        styles.promotionCodeInfoText,
+                                                        {
+                                                            marginBottom: hp(1)
+                                                        }
+                                                    ]}
+                                                >
+                                                    2 - 1 haftalık ELİT ÖĞRENCİ
+                                                    PAKETİ kazan!
+                                                </Text>
                                             </View>
-                                            <View style={styles.usePromotionBox}>
+                                            <View
+                                                style={styles.usePromotionBox}
+                                            >
                                                 <TextInput
-                                                    style={styles.usePromotionBoxText}
+                                                    style={
+                                                        styles.usePromotionBoxText
+                                                    }
                                                     maxLength={7}
                                                     autoCapitalize="characters"
                                                     onChangeText={text =>
@@ -1052,8 +1151,18 @@ class PurchaseScreen extends React.Component {
                                                     placeholderTextColor="#818181"
                                                 />
                                             </View>
-                                            <TouchableOpacity style={styles.usePromotionButton}>
-                                                <Text style={styles.purchasePremiumButtonText}>Onayla</Text>
+                                            <TouchableOpacity
+                                                style={
+                                                    styles.usePromotionButton
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.purchasePremiumButtonText
+                                                    }
+                                                >
+                                                    Onayla
+                                                </Text>
                                             </TouchableOpacity>
                                         </View>
                                     </LinearGradient>
@@ -1082,7 +1191,8 @@ class PurchaseScreen extends React.Component {
                                             style={{
                                                 height: hp(1.5),
                                                 width: hp(1.5),
-                                                backgroundColor: 'rgba(0,0,0,.2)',
+                                                backgroundColor:
+                                                    'rgba(0,0,0,.2)',
                                                 borderRadius: hp(100),
                                                 marginLeft: wp(1),
                                                 marginRight: wp(1)
@@ -1091,12 +1201,18 @@ class PurchaseScreen extends React.Component {
                                     }
                                 >
                                     <View style={styles.swiperView}>
-                                        <TouchableOpacity style={styles.bundleView}>
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
                                             <View
-                                                style={styles.totalJokerAmountView}
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
                                             >
                                                 <Text
-                                                    style={styles.jokerAmountsText}
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
                                                 >
                                                     30 Joker
                                                 </Text>
@@ -1105,7 +1221,8 @@ class PurchaseScreen extends React.Component {
                                                 <View style={styles.jokerView}>
                                                     <Image
                                                         source={
-                                                            this.state.firstJoker
+                                                            this.state
+                                                                .firstJoker
                                                                 .joker.imageLink
                                                         }
                                                         style={styles.jokerImg}
@@ -1121,7 +1238,8 @@ class PurchaseScreen extends React.Component {
                                                 <View style={styles.jokerView}>
                                                     <Image
                                                         source={
-                                                            this.state.secondJoker
+                                                            this.state
+                                                                .secondJoker
                                                                 .joker.imageLink
                                                         }
                                                         style={styles.jokerImg}
@@ -1137,7 +1255,8 @@ class PurchaseScreen extends React.Component {
                                                 <View style={styles.jokerView}>
                                                     <Image
                                                         source={
-                                                            this.state.thirdJoker
+                                                            this.state
+                                                                .thirdJoker
                                                                 .joker.imageLink
                                                         }
                                                         style={styles.jokerImg}
@@ -1151,9 +1270,13 @@ class PurchaseScreen extends React.Component {
                                                     </Text>
                                                 </View>
                                             </View>
-                                            <View style={styles.jokerPricesView}>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
                                                 <Text
-                                                    style={styles.normalPriceText}
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
                                                 >
                                                     9 ₺ yerine
                                                 </Text>
@@ -1179,12 +1302,18 @@ class PurchaseScreen extends React.Component {
                                             </View>
                                         </TouchableOpacity>
                                         <View style={styles.bundleDivider} />
-                                        <TouchableOpacity style={styles.bundleView}>
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
                                             <View
-                                                style={styles.totalJokerAmountView}
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
                                             >
                                                 <Text
-                                                    style={styles.jokerAmountsText}
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
                                                 >
                                                     90 Joker
                                                 </Text>
@@ -1193,7 +1322,8 @@ class PurchaseScreen extends React.Component {
                                                 <View style={styles.jokerView}>
                                                     <Image
                                                         source={
-                                                            this.state.firstJoker
+                                                            this.state
+                                                                .firstJoker
                                                                 .joker.imageLink
                                                         }
                                                         style={styles.jokerImg}
@@ -1209,7 +1339,8 @@ class PurchaseScreen extends React.Component {
                                                 <View style={styles.jokerView}>
                                                     <Image
                                                         source={
-                                                            this.state.secondJoker
+                                                            this.state
+                                                                .secondJoker
                                                                 .joker.imageLink
                                                         }
                                                         style={styles.jokerImg}
@@ -1225,7 +1356,8 @@ class PurchaseScreen extends React.Component {
                                                 <View style={styles.jokerView}>
                                                     <Image
                                                         source={
-                                                            this.state.thirdJoker
+                                                            this.state
+                                                                .thirdJoker
                                                                 .joker.imageLink
                                                         }
                                                         style={styles.jokerImg}
@@ -1239,9 +1371,13 @@ class PurchaseScreen extends React.Component {
                                                     </Text>
                                                 </View>
                                             </View>
-                                            <View style={styles.jokerPricesView}>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
                                                 <Text
-                                                    style={styles.normalPriceText}
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
                                                 >
                                                     27 ₺ yerine
                                                 </Text>
@@ -1267,12 +1403,18 @@ class PurchaseScreen extends React.Component {
                                             </View>
                                         </TouchableOpacity>
                                         <View style={styles.bundleDivider} />
-                                        <TouchableOpacity style={styles.bundleView}>
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
                                             <View
-                                                style={styles.totalJokerAmountView}
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
                                             >
                                                 <Text
-                                                    style={styles.jokerAmountsText}
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
                                                 >
                                                     180 Joker
                                                 </Text>
@@ -1281,7 +1423,8 @@ class PurchaseScreen extends React.Component {
                                                 <View style={styles.jokerView}>
                                                     <Image
                                                         source={
-                                                            this.state.firstJoker
+                                                            this.state
+                                                                .firstJoker
                                                                 .joker.imageLink
                                                         }
                                                         style={styles.jokerImg}
@@ -1297,7 +1440,8 @@ class PurchaseScreen extends React.Component {
                                                 <View style={styles.jokerView}>
                                                     <Image
                                                         source={
-                                                            this.state.secondJoker
+                                                            this.state
+                                                                .secondJoker
                                                                 .joker.imageLink
                                                         }
                                                         style={styles.jokerImg}
@@ -1313,7 +1457,8 @@ class PurchaseScreen extends React.Component {
                                                 <View style={styles.jokerView}>
                                                     <Image
                                                         source={
-                                                            this.state.thirdJoker
+                                                            this.state
+                                                                .thirdJoker
                                                                 .joker.imageLink
                                                         }
                                                         style={styles.jokerImg}
@@ -1327,9 +1472,13 @@ class PurchaseScreen extends React.Component {
                                                     </Text>
                                                 </View>
                                             </View>
-                                            <View style={styles.jokerPricesView}>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
                                                 <Text
-                                                    style={styles.normalPriceText}
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
                                                 >
                                                     54 ₺ yerine
                                                 </Text>
@@ -1356,24 +1505,30 @@ class PurchaseScreen extends React.Component {
                                         </TouchableOpacity>
                                     </View>
                                     <View style={styles.swiperView}>
-                                        <TouchableOpacity style={styles.bundleView}>
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
                                             <View
-                                                style={styles.totalJokerAmountView}
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
                                             >
                                                 <Text
-                                                    style={styles.jokerAmountsText}
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
                                                 >
                                                     {
-                                                        this.state.firstJoker.joker
-                                                            .name
+                                                        this.state.firstJoker
+                                                            .joker.name
                                                     }
                                                 </Text>
                                             </View>
                                             <View style={styles.jokersView}>
                                                 <Image
                                                     source={
-                                                        this.state.firstJoker.joker
-                                                            .imageLink
+                                                        this.state.firstJoker
+                                                            .joker.imageLink
                                                     }
                                                     style={[
                                                         styles.jokerImg,
@@ -1397,9 +1552,13 @@ class PurchaseScreen extends React.Component {
                                                     x30
                                                 </Text>
                                             </View>
-                                            <View style={styles.jokerPricesView}>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
                                                 <Text
-                                                    style={styles.normalPriceText}
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
                                                 >
                                                     12 ₺ yerine
                                                 </Text>
@@ -1425,24 +1584,30 @@ class PurchaseScreen extends React.Component {
                                             </View>
                                         </TouchableOpacity>
                                         <View style={styles.bundleDivider} />
-                                        <TouchableOpacity style={styles.bundleView}>
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
                                             <View
-                                                style={styles.totalJokerAmountView}
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
                                             >
                                                 <Text
-                                                    style={styles.jokerAmountsText}
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
                                                 >
                                                     {
-                                                        this.state.secondJoker.joker
-                                                            .name
+                                                        this.state.secondJoker
+                                                            .joker.name
                                                     }
                                                 </Text>
                                             </View>
                                             <View style={styles.jokersView}>
                                                 <Image
                                                     source={
-                                                        this.state.secondJoker.joker
-                                                            .imageLink
+                                                        this.state.secondJoker
+                                                            .joker.imageLink
                                                     }
                                                     style={[
                                                         styles.jokerImg,
@@ -1466,9 +1631,13 @@ class PurchaseScreen extends React.Component {
                                                     x30
                                                 </Text>
                                             </View>
-                                            <View style={styles.jokerPricesView}>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
                                                 <Text
-                                                    style={styles.normalPriceText}
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
                                                 >
                                                     8 ₺ yerine
                                                 </Text>
@@ -1494,24 +1663,30 @@ class PurchaseScreen extends React.Component {
                                             </View>
                                         </TouchableOpacity>
                                         <View style={styles.bundleDivider} />
-                                        <TouchableOpacity style={styles.bundleView}>
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
                                             <View
-                                                style={styles.totalJokerAmountView}
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
                                             >
                                                 <Text
-                                                    style={styles.jokerAmountsText}
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
                                                 >
                                                     {
-                                                        this.state.thirdJoker.joker
-                                                            .name
+                                                        this.state.thirdJoker
+                                                            .joker.name
                                                     }
                                                 </Text>
                                             </View>
                                             <View style={styles.jokersView}>
                                                 <Image
                                                     source={
-                                                        this.state.thirdJoker.joker
-                                                            .imageLink
+                                                        this.state.thirdJoker
+                                                            .joker.imageLink
                                                     }
                                                     style={[
                                                         styles.jokerImg,
@@ -1535,9 +1710,13 @@ class PurchaseScreen extends React.Component {
                                                     x30
                                                 </Text>
                                             </View>
-                                            <View style={styles.jokerPricesView}>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
                                                 <Text
-                                                    style={styles.normalPriceText}
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
                                                 >
                                                     10 ₺ yerine
                                                 </Text>
@@ -1564,24 +1743,30 @@ class PurchaseScreen extends React.Component {
                                         </TouchableOpacity>
                                     </View>
                                     <View style={styles.swiperView}>
-                                        <TouchableOpacity style={styles.bundleView}>
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
                                             <View
-                                                style={styles.totalJokerAmountView}
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
                                             >
                                                 <Text
-                                                    style={styles.jokerAmountsText}
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
                                                 >
                                                     {
-                                                        this.state.firstJoker.joker
-                                                            .name
+                                                        this.state.firstJoker
+                                                            .joker.name
                                                     }
                                                 </Text>
                                             </View>
                                             <View style={styles.jokersView}>
                                                 <Image
                                                     source={
-                                                        this.state.firstJoker.joker
-                                                            .imageLink
+                                                        this.state.firstJoker
+                                                            .joker.imageLink
                                                     }
                                                     style={[
                                                         styles.jokerImg,
@@ -1605,9 +1790,13 @@ class PurchaseScreen extends React.Component {
                                                     x90
                                                 </Text>
                                             </View>
-                                            <View style={styles.jokerPricesView}>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
                                                 <Text
-                                                    style={styles.normalPriceText}
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
                                                 >
                                                     36 ₺ yerine
                                                 </Text>
@@ -1633,24 +1822,30 @@ class PurchaseScreen extends React.Component {
                                             </View>
                                         </TouchableOpacity>
                                         <View style={styles.bundleDivider} />
-                                        <TouchableOpacity style={styles.bundleView}>
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
                                             <View
-                                                style={styles.totalJokerAmountView}
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
                                             >
                                                 <Text
-                                                    style={styles.jokerAmountsText}
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
                                                 >
                                                     {
-                                                        this.state.secondJoker.joker
-                                                            .name
+                                                        this.state.secondJoker
+                                                            .joker.name
                                                     }
                                                 </Text>
                                             </View>
                                             <View style={styles.jokersView}>
                                                 <Image
                                                     source={
-                                                        this.state.secondJoker.joker
-                                                            .imageLink
+                                                        this.state.secondJoker
+                                                            .joker.imageLink
                                                     }
                                                     style={[
                                                         styles.jokerImg,
@@ -1674,9 +1869,13 @@ class PurchaseScreen extends React.Component {
                                                     x90
                                                 </Text>
                                             </View>
-                                            <View style={styles.jokerPricesView}>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
                                                 <Text
-                                                    style={styles.normalPriceText}
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
                                                 >
                                                     24 ₺ yerine
                                                 </Text>
@@ -1702,24 +1901,30 @@ class PurchaseScreen extends React.Component {
                                             </View>
                                         </TouchableOpacity>
                                         <View style={styles.bundleDivider} />
-                                        <TouchableOpacity style={styles.bundleView}>
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
                                             <View
-                                                style={styles.totalJokerAmountView}
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
                                             >
                                                 <Text
-                                                    style={styles.jokerAmountsText}
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
                                                 >
                                                     {
-                                                        this.state.thirdJoker.joker
-                                                            .name
+                                                        this.state.thirdJoker
+                                                            .joker.name
                                                     }
                                                 </Text>
                                             </View>
                                             <View style={styles.jokersView}>
                                                 <Image
                                                     source={
-                                                        this.state.thirdJoker.joker
-                                                            .imageLink
+                                                        this.state.thirdJoker
+                                                            .joker.imageLink
                                                     }
                                                     style={[
                                                         styles.jokerImg,
@@ -1743,9 +1948,13 @@ class PurchaseScreen extends React.Component {
                                                     x90
                                                 </Text>
                                             </View>
-                                            <View style={styles.jokerPricesView}>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
                                                 <Text
-                                                    style={styles.normalPriceText}
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
                                                 >
                                                     30 ₺ yerine
                                                 </Text>
@@ -1772,24 +1981,30 @@ class PurchaseScreen extends React.Component {
                                         </TouchableOpacity>
                                     </View>
                                     <View style={styles.swiperView}>
-                                        <TouchableOpacity style={styles.bundleView}>
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
                                             <View
-                                                style={styles.totalJokerAmountView}
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
                                             >
                                                 <Text
-                                                    style={styles.jokerAmountsText}
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
                                                 >
                                                     {
-                                                        this.state.firstJoker.joker
-                                                            .name
+                                                        this.state.firstJoker
+                                                            .joker.name
                                                     }
                                                 </Text>
                                             </View>
                                             <View style={styles.jokersView}>
                                                 <Image
                                                     source={
-                                                        this.state.firstJoker.joker
-                                                            .imageLink
+                                                        this.state.firstJoker
+                                                            .joker.imageLink
                                                     }
                                                     style={[
                                                         styles.jokerImg,
@@ -1813,9 +2028,13 @@ class PurchaseScreen extends React.Component {
                                                     x180
                                                 </Text>
                                             </View>
-                                            <View style={styles.jokerPricesView}>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
                                                 <Text
-                                                    style={styles.normalPriceText}
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
                                                 >
                                                     72 ₺ yerine
                                                 </Text>
@@ -1841,24 +2060,30 @@ class PurchaseScreen extends React.Component {
                                             </View>
                                         </TouchableOpacity>
                                         <View style={styles.bundleDivider} />
-                                        <TouchableOpacity style={styles.bundleView}>
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
                                             <View
-                                                style={styles.totalJokerAmountView}
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
                                             >
                                                 <Text
-                                                    style={styles.jokerAmountsText}
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
                                                 >
                                                     {
-                                                        this.state.secondJoker.joker
-                                                            .name
+                                                        this.state.secondJoker
+                                                            .joker.name
                                                     }
                                                 </Text>
                                             </View>
                                             <View style={styles.jokersView}>
                                                 <Image
                                                     source={
-                                                        this.state.secondJoker.joker
-                                                            .imageLink
+                                                        this.state.secondJoker
+                                                            .joker.imageLink
                                                     }
                                                     style={[
                                                         styles.jokerImg,
@@ -1882,9 +2107,13 @@ class PurchaseScreen extends React.Component {
                                                     x180
                                                 </Text>
                                             </View>
-                                            <View style={styles.jokerPricesView}>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
                                                 <Text
-                                                    style={styles.normalPriceText}
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
                                                 >
                                                     48 ₺ yerine
                                                 </Text>
@@ -1910,24 +2139,30 @@ class PurchaseScreen extends React.Component {
                                             </View>
                                         </TouchableOpacity>
                                         <View style={styles.bundleDivider} />
-                                        <TouchableOpacity style={styles.bundleView}>
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
                                             <View
-                                                style={styles.totalJokerAmountView}
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
                                             >
                                                 <Text
-                                                    style={styles.jokerAmountsText}
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
                                                 >
                                                     {
-                                                        this.state.thirdJoker.joker
-                                                            .name
+                                                        this.state.thirdJoker
+                                                            .joker.name
                                                     }
                                                 </Text>
                                             </View>
                                             <View style={styles.jokersView}>
                                                 <Image
                                                     source={
-                                                        this.state.thirdJoker.joker
-                                                            .imageLink
+                                                        this.state.thirdJoker
+                                                            .joker.imageLink
                                                     }
                                                     style={[
                                                         styles.jokerImg,
@@ -1951,9 +2186,13 @@ class PurchaseScreen extends React.Component {
                                                     x180
                                                 </Text>
                                             </View>
-                                            <View style={styles.jokerPricesView}>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
                                                 <Text
-                                                    style={styles.normalPriceText}
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
                                                 >
                                                     60 ₺ yerine
                                                 </Text>
@@ -2015,7 +2254,11 @@ class PurchaseScreen extends React.Component {
                                         colors={['white', '#F3CE97']}
                                         style={styles.premiumUpperView}
                                     >
-                                        <View style={styles.premiumSwiperContainer}>
+                                        <View
+                                            style={
+                                                styles.premiumSwiperContainer
+                                            }
+                                        >
                                             <Swiper
                                                 autoplay={true}
                                                 loop={true}
@@ -2025,7 +2268,9 @@ class PurchaseScreen extends React.Component {
                                                 autoplayTimeout={5}
                                             >
                                                 <View
-                                                    style={styles.premiumSwiperView}
+                                                    style={
+                                                        styles.premiumSwiperView
+                                                    }
                                                 >
                                                     <View
                                                         style={
@@ -2062,13 +2307,16 @@ class PurchaseScreen extends React.Component {
                                                                 styles.premiumInfoText
                                                             }
                                                         >
-                                                            Reklamsız oyun oynamanın
-                                                            keyfini sen de çıkar
+                                                            Reklamsız oyun
+                                                            oynamanın keyfini
+                                                            sen de çıkar
                                                         </Text>
                                                     </View>
                                                 </View>
                                                 <View
-                                                    style={styles.premiumSwiperView}
+                                                    style={
+                                                        styles.premiumSwiperView
+                                                    }
                                                 >
                                                     <View
                                                         style={
@@ -2105,14 +2353,17 @@ class PurchaseScreen extends React.Component {
                                                                 styles.premiumInfoText
                                                             }
                                                         >
-                                                            Hoşuna giden ya da sonra
-                                                            tekrar bakmak istediğin
-                                                            soruları favorile
+                                                            Hoşuna giden ya da
+                                                            sonra tekrar bakmak
+                                                            istediğin soruları
+                                                            favorile
                                                         </Text>
                                                     </View>
                                                 </View>
                                                 <View
-                                                    style={styles.premiumSwiperView}
+                                                    style={
+                                                        styles.premiumSwiperView
+                                                    }
                                                 >
                                                     <View
                                                         style={
@@ -2136,8 +2387,8 @@ class PurchaseScreen extends React.Component {
                                                                 styles.premiumHeaderText
                                                             }
                                                         >
-                                                            Türkiye geneli deneme
-                                                            sınavları!
+                                                            Türkiye geneli
+                                                            deneme sınavları!
                                                         </Text>
                                                     </View>
                                                     <View
@@ -2150,16 +2401,19 @@ class PurchaseScreen extends React.Component {
                                                                 styles.premiumInfoText
                                                             }
                                                         >
-                                                            Ülke çapındaki deneme
-                                                            sınavlarına ücretsiz
-                                                            katıl, tüm öğrenciler
-                                                            arasındaki sıralamanı
-                                                            gör
+                                                            Ülke çapındaki
+                                                            deneme sınavlarına
+                                                            ücretsiz katıl, tüm
+                                                            öğrenciler
+                                                            arasındaki
+                                                            sıralamanı gör
                                                         </Text>
                                                     </View>
                                                 </View>
                                                 <View
-                                                    style={styles.premiumSwiperView}
+                                                    style={
+                                                        styles.premiumSwiperView
+                                                    }
                                                 >
                                                     <View
                                                         style={
@@ -2199,13 +2453,16 @@ class PurchaseScreen extends React.Component {
                                                             }
                                                         >
                                                             "Tek rakibim kendim"
-                                                            diyenler için tek başına
-                                                            soru çözebilme imkanı
+                                                            diyenler için tek
+                                                            başına soru
+                                                            çözebilme imkanı
                                                         </Text>
                                                     </View>
                                                 </View>
                                                 <View
-                                                    style={styles.premiumSwiperView}
+                                                    style={
+                                                        styles.premiumSwiperView
+                                                    }
                                                 >
                                                     <View
                                                         style={
@@ -2213,7 +2470,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Image
-                                                            source={PREMIUM_BACK}
+                                                            source={
+                                                                PREMIUM_BACK
+                                                            }
                                                             style={
                                                                 styles.premiumImg
                                                             }
@@ -2244,14 +2503,16 @@ class PurchaseScreen extends React.Component {
                                                             }
                                                         >
                                                             Boş bıraktığın veya
-                                                            yanlış yaptığın soruları
-                                                            tekrar tekrar çözme
-                                                            fırsatı
+                                                            yanlış yaptığın
+                                                            soruları tekrar
+                                                            tekrar çözme fırsatı
                                                         </Text>
                                                     </View>
                                                 </View>
                                                 <View
-                                                    style={styles.premiumSwiperView}
+                                                    style={
+                                                        styles.premiumSwiperView
+                                                    }
                                                 >
                                                     <View
                                                         style={
@@ -2259,7 +2520,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Image
-                                                            source={PREMIUM_JOKER}
+                                                            source={
+                                                                PREMIUM_JOKER
+                                                            }
                                                             style={
                                                                 styles.premiumImg
                                                             }
@@ -2289,10 +2552,11 @@ class PurchaseScreen extends React.Component {
                                                             }
                                                         >
                                                             Her gün sana verilen
-                                                            jokerler ile soruların
-                                                            cevabına 1 adım daha
-                                                            yaklaş, rakiplerinin
-                                                            önüne geç
+                                                            jokerler ile
+                                                            soruların cevabına 1
+                                                            adım daha yaklaş,
+                                                            rakiplerinin önüne
+                                                            geç
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -2300,32 +2564,36 @@ class PurchaseScreen extends React.Component {
                                         </View>
                                         <View style={styles.premiumButtonView}>
                                             <TouchableOpacity
-                                                onPress={() => {
-                                                    this.onPressPremiumView()
-                                                }}
+                                                onPress={
+                                                    this.onPressPremiumView
+                                                }
                                                 style={styles.premiumButton}
                                             >
                                                 <Text
-                                                    style={styles.premiumButtonText}
+                                                    style={
+                                                        styles.premiumButtonText
+                                                    }
                                                 >
-                                                    ELİT ÖĞRENCİ PAKETİ'Nİ ŞİMDİ AL
+                                                    ELİT ÖĞRENCİ PAKETİ'Nİ ŞİMDİ
+                                                    AL
                                                 </Text>
                                             </TouchableOpacity>
                                         </View>
                                     </LinearGradient>
                                     <TouchableOpacity
-                                        onPress={() => {
-                                            this.onPressPromotionCodeView()
-                                        }}
+                                        onPress={this.onPressPromotionCodeView}
                                         style={styles.premiumBottomView}
                                     >
                                         <Text style={styles.inviteText}>
                                             Arkadaşını davet et
                                         </Text>
                                         <Text
-                                            style={styles.earnPremiumWithInviteText}
+                                            style={
+                                                styles.earnPremiumWithInviteText
+                                            }
                                         >
-                                            1 Haftalık Elit Öğrenci Paketi Kazan!
+                                            1 Haftalık Elit Öğrenci Paketi
+                                            Kazan!
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
@@ -2338,7 +2606,9 @@ class PurchaseScreen extends React.Component {
                                 >
                                     <Image
                                         source={FIRST_JOKER_AD_BUTTON}
-                                        style={styles.premiumUserJokerButtonStyle}
+                                        style={
+                                            styles.premiumUserJokerButtonStyle
+                                        }
                                     />
                                 </TouchableOpacity>
                                 <TouchableOpacity
@@ -2346,7 +2616,9 @@ class PurchaseScreen extends React.Component {
                                 >
                                     <Image
                                         source={SECOND_JOKER_AD_BUTTON}
-                                        style={styles.premiumUserJokerButtonStyle}
+                                        style={
+                                            styles.premiumUserJokerButtonStyle
+                                        }
                                     />
                                 </TouchableOpacity>
                                 <TouchableOpacity
@@ -2354,7 +2626,9 @@ class PurchaseScreen extends React.Component {
                                 >
                                     <Image
                                         source={THIRD_JOKER_AD_BUTTON}
-                                        style={styles.premiumUserJokerButtonStyle}
+                                        style={
+                                            styles.premiumUserJokerButtonStyle
+                                        }
                                     />
                                 </TouchableOpacity>
                             </View>
@@ -2411,9 +2685,12 @@ class PurchaseScreen extends React.Component {
                         <View style={styles.yourPremiumAndJokersContainer}>
                             <View style={styles.yourPremiumContainer}>
                                 <Swiper
-                                    loop={false}
-                                    paginationStyle={{ bottom: hp(0.7) }}
-                                    activeDot={
+                                    loop={true}
+                                    //paginationStyle={{ bottom: hp(0.7) }}
+                                    autoplay={true}
+                                    autoplayTimeout={3}
+                                    showsPagination={false}
+                                    /* activeDot={
                                         <View
                                             style={{
                                                 height: hp(1),
@@ -2430,24 +2707,35 @@ class PurchaseScreen extends React.Component {
                                             style={{
                                                 height: hp(1),
                                                 width: hp(1),
-                                                backgroundColor: 'rgba(0,0,0,.2)',
+                                                backgroundColor:
+                                                    'rgba(0,0,0,.2)',
                                                 borderRadius: hp(100),
                                                 marginLeft: wp(1),
                                                 marginRight: wp(1)
                                             }}
                                         />
-                                    }
+                                    } */
                                 >
                                     <View>
-                                        <View style={styles.yourPremiumTextView}>
-                                            <Text style={styles.yourPremiumText}>
+                                        <View
+                                            style={styles.yourPremiumTextView}
+                                        >
+                                            <Text
+                                                style={styles.yourPremiumText}
+                                            >
                                                 {this.props.choosenExam}
                                             </Text>
-                                            <Text style={styles.yourPremiumText}>
+                                            <Text
+                                                style={styles.yourPremiumText}
+                                            >
                                                 Kalan Süre
                                             </Text>
                                         </View>
-                                        <View style={styles.yourPremiumCounterView}>
+                                        <View
+                                            style={
+                                                styles.yourPremiumCounterView
+                                            }
+                                        >
                                             <Text
                                                 style={
                                                     styles.yourPremiumCounterText
@@ -2458,7 +2746,10 @@ class PurchaseScreen extends React.Component {
                                                         styles.yourPremiumCounterNumbersText
                                                     }
                                                 >
-                                                    {this.state.remainingExamMonths}
+                                                    {
+                                                        this.state
+                                                            .remainingExamMonths
+                                                    }
                                                 </Text>{' '}
                                                 Ay
                                                 <Text
@@ -2467,7 +2758,10 @@ class PurchaseScreen extends React.Component {
                                                     }
                                                 >
                                                     {' '}
-                                                    {this.state.remainingExamWeeks}
+                                                    {
+                                                        this.state
+                                                            .remainingExamWeeks
+                                                    }
                                                 </Text>{' '}
                                                 Hafta
                                                 <Text
@@ -2476,22 +2770,35 @@ class PurchaseScreen extends React.Component {
                                                     }
                                                 >
                                                     {' '}
-                                                    {this.state.remainingExamDays}
+                                                    {
+                                                        this.state
+                                                            .remainingExamDays
+                                                    }
                                                 </Text>{' '}
                                                 Gün
                                             </Text>
                                         </View>
                                     </View>
                                     <View>
-                                        <View style={styles.yourPremiumTextView}>
-                                            <Text style={styles.yourPremiumText}>
+                                        <View
+                                            style={styles.yourPremiumTextView}
+                                        >
+                                            <Text
+                                                style={styles.yourPremiumText}
+                                            >
                                                 Elit Öğrenci Paketi
                                             </Text>
-                                            <Text style={styles.yourPremiumText}>
+                                            <Text
+                                                style={styles.yourPremiumText}
+                                            >
                                                 Kalan Süre
                                             </Text>
                                         </View>
-                                        <View style={styles.yourPremiumCounterView}>
+                                        <View
+                                            style={
+                                                styles.yourPremiumCounterView
+                                            }
+                                        >
                                             <Text
                                                 style={
                                                     styles.yourPremiumCounterText
@@ -2558,9 +2865,14 @@ class PurchaseScreen extends React.Component {
                                                 ]}
                                             >
                                                 <Text
-                                                    style={styles.jokerCounterText}
+                                                    style={
+                                                        styles.jokerCounterText
+                                                    }
                                                 >
-                                                    {this.state.firstJoker.amount}
+                                                    {
+                                                        this.state.firstJoker
+                                                            .amount
+                                                    }
                                                 </Text>
                                             </View>
                                             <Image
@@ -2598,9 +2910,14 @@ class PurchaseScreen extends React.Component {
                                                 ]}
                                             >
                                                 <Text
-                                                    style={styles.jokerCounterText}
+                                                    style={
+                                                        styles.jokerCounterText
+                                                    }
                                                 >
-                                                    {this.state.secondJoker.amount}
+                                                    {
+                                                        this.state.secondJoker
+                                                            .amount
+                                                    }
                                                 </Text>
                                             </View>
                                             <Image
@@ -2638,9 +2955,14 @@ class PurchaseScreen extends React.Component {
                                                 ]}
                                             >
                                                 <Text
-                                                    style={styles.jokerCounterText}
+                                                    style={
+                                                        styles.jokerCounterText
+                                                    }
                                                 >
-                                                    {this.state.thirdJoker.amount}
+                                                    {
+                                                        this.state.thirdJoker
+                                                            .amount
+                                                    }
                                                 </Text>
                                             </View>
                                             <Image
