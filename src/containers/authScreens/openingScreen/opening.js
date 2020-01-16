@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, View, Text } from 'react-native'
+import { Image, View, Text, Modal, TouchableOpacity } from 'react-native'
 import {
     navigationPush,
     navigationReplace
@@ -25,6 +25,12 @@ import { clientActions } from '../../../redux/client/actions'
 import { deviceStorage } from '../../../services/deviceStorage'
 
 class Opening extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            isLicenceModalVisible: false
+        }
+    }
     async componentDidMount() {
         await fcmService.checkPermissions()
     }
@@ -105,15 +111,39 @@ class Opening extends React.Component {
         }
     }
 
+    onPressLicenceView = () => {
+        this.setState({
+            isLicenceModalVisible: true
+        })
+    }
+
+    closeLicenceView = () => {
+        this.setState({
+            isLicenceModalVisible: false
+        })
+    }
+
     render() {
         return (
             <View style={styles.container}>
+                <Modal
+                    visible={this.state.isLicenceModalVisible}
+                    transparent={true}
+                    animationType={'fade'}
+                >
+                    <TouchableOpacity
+                        onPress={this.closeLicenceView}
+                        style={styles.shadowView}
+                    >
+                        <View style={styles.licenceView}></View>
+                    </TouchableOpacity>
+                </Modal>
                 <NotchView color={'#fcfcfc'} />
                 <View style={styles.imageContainer}>
                     <Image
                         source={SINAVIA_LOGO}
                         style={{
-                            height: hp(35),
+                            height: hp(33),
                             resizeMode: 'contain',
                             marginTop: hp(3),
                             marginLeft: wp(6)
@@ -169,7 +199,21 @@ class Opening extends React.Component {
                         onPress={this.signInWithGoogle}
                     />
                 </View>
-                <View style={styles.spaceView} />
+                <View style={styles.spaceView}>
+                    <Text style={styles.oauthInfoText}>
+                        Facebbok veya Google ile Bağlan seçeneklerini kullanarak{' '}
+                        <Text
+                            onPress={this.onPressLicenceView}
+                            style={{
+                                textDecorationLine: 'underline',
+                                fontFamily: 'Averta-Semibold'
+                            }}
+                        >
+                            Kullanıcı Sözleşmesi
+                        </Text>
+                        'ni kabul etmiş sayılırsın.
+                    </Text>
+                </View>
             </View>
         )
     }
