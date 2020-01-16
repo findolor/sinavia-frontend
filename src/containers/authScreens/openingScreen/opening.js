@@ -111,13 +111,13 @@ class Opening extends React.Component {
         }
     }
 
-    onPressLicenceView() {
+    onPressLicenceView = () => {
         this.setState({
             isLicenceModalVisible: true
         })
     }
 
-    closeLicenceView() {
+    closeLicenceView = () => {
         this.setState({
             isLicenceModalVisible: false
         })
@@ -131,11 +131,11 @@ class Opening extends React.Component {
                     transparent={true}
                     animationType={'fade'}
                 >
-                    <TouchableOpacity onPress={() => {
-                        this.closeLicenceView()
-                    }} style={styles.shadowView}>
-                        <View style={styles.licenceView}>
-                        </View>
+                    <TouchableOpacity
+                        onPress={this.closeLicenceView}
+                        style={styles.shadowView}
+                    >
+                        <View style={styles.licenceView}></View>
                     </TouchableOpacity>
                 </Modal>
                 <NotchView color={'#fcfcfc'} />
@@ -200,11 +200,10 @@ class Opening extends React.Component {
                     />
                 </View>
                 <View style={styles.spaceView}>
-                    <Text style={styles.oauthInfoText}>Facebbok veya Google ile Bağlan seçeneklerini kullanarak {' '}
+                    <Text style={styles.oauthInfoText}>
+                        Facebbok veya Google ile Bağlan seçeneklerini kullanarak{' '}
                         <Text
-                            onPress={() => {
-                                this.onPressLicenceView()
-                            }}
+                            onPress={this.onPressLicenceView}
                             style={{
                                 textDecorationLine: 'underline',
                                 fontFamily: 'Averta-Semibold'
