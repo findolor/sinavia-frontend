@@ -1443,10 +1443,7 @@ class Home extends React.Component {
                             <TextInput
                                 style={styles.joinGameCodeTextInput}
                                 maxLength={6}
-                                placeholder="Oda Kodu  "
-                                placeholderStyle={
-                                    styles.joinGameCodeTextInputPlaceholder
-                                }
+                                placeholder="Oda Kodu"
                                 placeholderTextColor="#A8A8A8"
                                 autoCapitalize="characters"
                                 onChangeText={text =>

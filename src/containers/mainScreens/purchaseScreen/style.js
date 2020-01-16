@@ -683,7 +683,7 @@ export default StyleSheet.create({
         height: hp(11),
         width: wp(70),
         borderWidth: hp(0.5),
-        borderColor: 'grey',
+        borderColor: 'black',
         borderRadius: hp(2),
         justifyContent: 'center',
         alignItems: 'center'
@@ -715,10 +715,9 @@ export default StyleSheet.create({
         height: hp(11),
         width: wp(70),
         borderWidth: hp(0.5),
-        borderColor: 'grey',
+        borderColor: 'black',
         borderRadius: hp(2),
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: 'center'
     },
     usePromotionButton: {
         height: hp(8),
@@ -737,24 +736,24 @@ export default StyleSheet.create({
     },
     inviteFriendKeyAmounts: {
         fontFamily: 'Averta-Semibold',
-        fontSize: hp(2),
-        color: '#818181'
+        fontSize: hp(2.5),
+        color: 'black'
     },
     promotionCode: {
         fontFamily: 'Averta-Semibold',
         fontSize: hp(4),
-        color: '#818181',
+        color: 'black',
         letterSpacing: wp(2)
     },
     usePromotionBoxText: {
         fontFamily: 'Averta-Semibold',
         fontSize: hp(4),
-        color: '#818181',
-        textAlign: 'center'
+        color: 'black',
+        textAlign: 'center',
+        letterSpacing: wp(2)
     },
     copyImage: {
         height: hp(4),
         width: hp(4)
     },
-    usePromotionBoxPlaceholder: {}
 })

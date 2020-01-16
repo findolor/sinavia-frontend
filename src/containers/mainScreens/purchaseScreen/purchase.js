@@ -1049,8 +1049,9 @@ class PurchaseScreen extends React.Component {
                                                         styles.promotionCodeInfoText
                                                     }
                                                 >
-                                                    3 - 1 haftalık ELİT ÖĞRENCİ
-                                                    PAKETİ kazan!
+                                                    3 - 1 haftalık <Text onPress={
+                                                    this.onPressPremiumView} style={{fontFamily: 'Averta-ExtraBold', textDecorationLine: 'underline'}}>ELİT ÖĞRENCİ
+                                                    PAKETİ</Text> kazan!
                                                 </Text>
                                             </View>
                                             <View
@@ -1126,8 +1127,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     ]}
                                                 >
-                                                    2 - 1 haftalık ELİT ÖĞRENCİ
-                                                    PAKETİ kazan!
+                                                    2 - 1 haftalık <Text onPress={
+                                                    this.onPressPremiumView} style={{fontFamily: 'Averta-ExtraBold', textDecorationLine: 'underline'}}>ELİT ÖĞRENCİ
+                                                    PAKETİ</Text> kazan!
                                                 </Text>
                                             </View>
                                             <View
@@ -1137,17 +1139,14 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.usePromotionBoxText
                                                     }
-                                                    maxLength={7}
+                                                    maxLength={6}
                                                     autoCapitalize="characters"
                                                     onChangeText={text =>
                                                         this.setState({
                                                             usePromotionCode: text
                                                         })
                                                     }
-                                                    placeholder="Kodu Gir "
-                                                    placeholderStyle={
-                                                        styles.usePromotionBoxPlaceholder
-                                                    }
+                                                    placeholder="Kodu Gir"
                                                     placeholderTextColor="#818181"
                                                 />
                                             </View>
@@ -2585,14 +2584,14 @@ class PurchaseScreen extends React.Component {
                                         style={styles.premiumBottomView}
                                     >
                                         <Text style={styles.inviteText}>
-                                            Arkadaşını davet et
+                                            Arkadaşını davet et veya çekiliş kodunu gir
                                         </Text>
                                         <Text
                                             style={
                                                 styles.earnPremiumWithInviteText
                                             }
                                         >
-                                            1 Haftalık Elit Öğrenci Paketi
+                                            ELİT ÖĞRENCİ PAKETİ
                                             Kazan!
                                         </Text>
                                     </TouchableOpacity>
@@ -2634,53 +2633,102 @@ class PurchaseScreen extends React.Component {
                             </View>
                         )}
                         <View style={styles.socialMediaContainer}>
-                            <View style={styles.socialMediaView}>
-                                <View style={styles.socialMediaLogosView}>
-                                    <TouchableOpacity
-                                        onPress={() =>
-                                            Linking.openURL(instagram_page)
-                                        }
-                                        style={styles.socialMediaLogoCircle}
-                                    >
-                                        <Image
-                                            source={INSTAGRAM_LOGO}
-                                            style={styles.socialMediaLogo}
-                                        />
+                            {this.props.clientInformation.isPremium && (
+                                <View style={{width: wp(93), flexDirection: 'row', justifyContent: 'space-between'}}>
+                                    <View style={[styles.socialMediaView, {width: wp(40), justifyContent: 'space-evenly'}]}>
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                Linking.openURL(instagram_page)
+                                            }
+                                            style={styles.socialMediaLogoCircle}
+                                        >
+                                            <Image
+                                                source={INSTAGRAM_LOGO}
+                                                style={styles.socialMediaLogo}
+                                            />
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                Linking.openURL(twitter_page)
+                                            }
+                                            style={styles.socialMediaLogoCircle}
+                                        >
+                                            <Image
+                                                source={TWITTER_LOGO}
+                                                style={styles.socialMediaLogo}
+                                            />
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                Linking.openURL(facebook_page)
+                                            }
+                                            style={styles.socialMediaLogoCircle}
+                                        >
+                                            <Image
+                                                source={FACEBOOK_LOGO}
+                                                style={styles.socialMediaLogo}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                    <TouchableOpacity onPress={this.onPressPromotionCodeView} style={[styles.socialMediaView, {width: wp(51), flexDirection: 'column', justifyContent: 'center'}]}>
+                                        <Text style={[styles.socialMediaInfoText, { fontFamily: 'Averta-Bold', fontSize: hp(1.7) }]}>
+                                            Arkadaş daveti veya çekiliş ile
+                                        </Text>
+                                        <Text style={[styles.socialMediaInfoText, { fontFamily: 'Averta-Bold', fontSize: hp(1.7) }]}>
+                                            ELİT ÖĞRENCİ PAKETİ SÜRENİ UZATMAK İÇİN, TIKLA!
+                                        </Text>
                                     </TouchableOpacity>
                                 </View>
-                                <View style={styles.socialMediaLogosView}>
-                                    <TouchableOpacity
-                                        onPress={() =>
-                                            Linking.openURL(twitter_page)
-                                        }
-                                        style={styles.socialMediaLogoCircle}
-                                    >
-                                        <Image
-                                            source={TWITTER_LOGO}
-                                            style={styles.socialMediaLogo}
-                                        />
-                                    </TouchableOpacity>
+                            )}
+                            {this.props.clientInformation.isPremium === false && (
+                                <View style={styles.socialMediaView}>
+                                    <View style={styles.socialMediaLogosView}>
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                Linking.openURL(instagram_page)
+                                            }
+                                            style={styles.socialMediaLogoCircle}
+                                        >
+                                            <Image
+                                                source={INSTAGRAM_LOGO}
+                                                style={styles.socialMediaLogo}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View style={styles.socialMediaLogosView}>
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                Linking.openURL(twitter_page)
+                                            }
+                                            style={styles.socialMediaLogoCircle}
+                                        >
+                                            <Image
+                                                source={TWITTER_LOGO}
+                                                style={styles.socialMediaLogo}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View style={styles.socialMediaLogosView}>
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                Linking.openURL(facebook_page)
+                                            }
+                                            style={styles.socialMediaLogoCircle}
+                                        >
+                                            <Image
+                                                source={FACEBOOK_LOGO}
+                                                style={styles.socialMediaLogo}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View style={styles.socialMediaInfoView}>
+                                        <Text style={styles.socialMediaInfoText}>
+                                            Sosyal medya hesaplarımızı takip ederek
+                                            ödülleri ve en güncel haberleri kaçırma!
+                                        </Text>
+                                    </View>
                                 </View>
-                                <View style={styles.socialMediaLogosView}>
-                                    <TouchableOpacity
-                                        onPress={() =>
-                                            Linking.openURL(facebook_page)
-                                        }
-                                        style={styles.socialMediaLogoCircle}
-                                    >
-                                        <Image
-                                            source={FACEBOOK_LOGO}
-                                            style={styles.socialMediaLogo}
-                                        />
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={styles.socialMediaInfoView}>
-                                    <Text style={styles.socialMediaInfoText}>
-                                        Sosyal medya hesaplarımızı takip ederek
-                                        ödülleri ve en güncel haberleri kaçırma!
-                                    </Text>
-                                </View>
-                            </View>
+                            )}
                         </View>
                         <View style={styles.yourPremiumAndJokersContainer}>
                             <View style={styles.yourPremiumContainer}>
@@ -2779,7 +2827,10 @@ class PurchaseScreen extends React.Component {
                                             </Text>
                                         </View>
                                     </View>
-                                    <View>
+                                    <TouchableOpacity
+                                        onPress={
+                                        this.onPressPremiumView}
+                                    >
                                         <View
                                             style={styles.yourPremiumTextView}
                                         >
@@ -2841,7 +2892,7 @@ class PurchaseScreen extends React.Component {
                                                 Gün
                                             </Text>
                                         </View>
-                                    </View>
+                                    </TouchableOpacity>
                                 </Swiper>
                             </View>
                             <View style={styles.yourJokersContainer}>
