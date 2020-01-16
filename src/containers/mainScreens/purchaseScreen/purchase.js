@@ -38,7 +38,7 @@ import SEE_OPPONENT_JOKER_IMAGE from '../../../assets/jokers/seeOpponent.png'
 import REMOVE_OPTIONS_JOKER_IMAGE from '../../../assets/jokers/removeOptions.png'
 import SECOND_CHANGE_JOKER_IMAGE from '../../../assets/jokers/secondChance.png'
 import { rewardAd } from '../../../services/admobService'
-import { clientActions } from '../../../redux/client/actions'
+import { inviteCodeServices } from '../../../sagas/inviteCode'
 
 import FIRST_JOKER_AD_BUTTON from '../../../assets/firstJokerAdButton.png'
 import SECOND_JOKER_AD_BUTTON from '../../../assets/secondJokerAdButton.png'
@@ -99,7 +99,8 @@ class PurchaseScreen extends React.Component {
             // Available products for in-app purchase
             availableProducts: null,
             friendCode: 'PAROLA',
-            usePromotionCode: ''
+            usePromotionCode: '',
+            remaningInviteCodes: 0
         }
     }
 
@@ -120,6 +121,25 @@ class PurchaseScreen extends React.Component {
                     break
             }
         })
+
+        inviteCodeServices
+            .getInviteCode(this.props.clientToken, this.props.clientDBId)
+            .then(data => {
+                if (data.remainingCodes !== 0)
+                    this.setState({
+                        remaningInviteCodes: data.remainingCodes,
+                        friendCode: data.code
+                    })
+                else
+                    this.setState({
+                        remaningInviteCodes: data.remainingCodes,
+                        friendCode: 'BITTI'
+                    })
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
         this.calculateDateUntilPremiumEnd()
         this.calculateRemainingExamTime()
         await this.getProducts()
@@ -1049,9 +1069,22 @@ class PurchaseScreen extends React.Component {
                                                         styles.promotionCodeInfoText
                                                     }
                                                 >
-                                                    3 - 1 haftalık <Text onPress={
-                                                    this.onPressPremiumView} style={{fontFamily: 'Averta-ExtraBold', textDecorationLine: 'underline'}}>ELİT ÖĞRENCİ
-                                                    PAKETİ</Text> kazan!
+                                                    3 - 1 haftalık{' '}
+                                                    <Text
+                                                        onPress={
+                                                            this
+                                                                .onPressPremiumView
+                                                        }
+                                                        style={{
+                                                            fontFamily:
+                                                                'Averta-ExtraBold',
+                                                            textDecorationLine:
+                                                                'underline'
+                                                        }}
+                                                    >
+                                                        ELİT ÖĞRENCİ PAKETİ
+                                                    </Text>{' '}
+                                                    kazan!
                                                 </Text>
                                             </View>
                                             <View
@@ -1099,7 +1132,11 @@ class PurchaseScreen extends React.Component {
                                                         styles.inviteFriendKeyAmounts
                                                     }
                                                 >
-                                                    3 adet hakkın kaldı
+                                                    {
+                                                        this.state
+                                                            .remaningInviteCodes
+                                                    }{' '}
+                                                    adet hakkın kaldı
                                                 </Text>
                                             </View>
                                         </View>
@@ -1127,9 +1164,22 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     ]}
                                                 >
-                                                    2 - 1 haftalık <Text onPress={
-                                                    this.onPressPremiumView} style={{fontFamily: 'Averta-ExtraBold', textDecorationLine: 'underline'}}>ELİT ÖĞRENCİ
-                                                    PAKETİ</Text> kazan!
+                                                    2 - 1 haftalık{' '}
+                                                    <Text
+                                                        onPress={
+                                                            this
+                                                                .onPressPremiumView
+                                                        }
+                                                        style={{
+                                                            fontFamily:
+                                                                'Averta-ExtraBold',
+                                                            textDecorationLine:
+                                                                'underline'
+                                                        }}
+                                                    >
+                                                        ELİT ÖĞRENCİ PAKETİ
+                                                    </Text>{' '}
+                                                    kazan!
                                                 </Text>
                                             </View>
                                             <View
@@ -2584,15 +2634,15 @@ class PurchaseScreen extends React.Component {
                                         style={styles.premiumBottomView}
                                     >
                                         <Text style={styles.inviteText}>
-                                            Arkadaşını davet et veya çekiliş kodunu gir
+                                            Arkadaşını davet et veya çekiliş
+                                            kodunu gir
                                         </Text>
                                         <Text
                                             style={
                                                 styles.earnPremiumWithInviteText
                                             }
                                         >
-                                            ELİT ÖĞRENCİ PAKETİ
-                                            Kazan!
+                                            ELİT ÖĞRENCİ PAKETİ Kazan!
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
@@ -2634,8 +2684,22 @@ class PurchaseScreen extends React.Component {
                         )}
                         <View style={styles.socialMediaContainer}>
                             {this.props.clientInformation.isPremium && (
-                                <View style={{width: wp(93), flexDirection: 'row', justifyContent: 'space-between'}}>
-                                    <View style={[styles.socialMediaView, {width: wp(40), justifyContent: 'space-evenly'}]}>
+                                <View
+                                    style={{
+                                        width: wp(93),
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between'
+                                    }}
+                                >
+                                    <View
+                                        style={[
+                                            styles.socialMediaView,
+                                            {
+                                                width: wp(40),
+                                                justifyContent: 'space-evenly'
+                                            }
+                                        ]}
+                                    >
                                         <TouchableOpacity
                                             onPress={() =>
                                                 Linking.openURL(instagram_page)
@@ -2670,17 +2734,45 @@ class PurchaseScreen extends React.Component {
                                             />
                                         </TouchableOpacity>
                                     </View>
-                                    <TouchableOpacity onPress={this.onPressPromotionCodeView} style={[styles.socialMediaView, {width: wp(51), flexDirection: 'column', justifyContent: 'center'}]}>
-                                        <Text style={[styles.socialMediaInfoText, { fontFamily: 'Averta-Bold', fontSize: hp(1.7) }]}>
+                                    <TouchableOpacity
+                                        onPress={this.onPressPromotionCodeView}
+                                        style={[
+                                            styles.socialMediaView,
+                                            {
+                                                width: wp(51),
+                                                flexDirection: 'column',
+                                                justifyContent: 'center'
+                                            }
+                                        ]}
+                                    >
+                                        <Text
+                                            style={[
+                                                styles.socialMediaInfoText,
+                                                {
+                                                    fontFamily: 'Averta-Bold',
+                                                    fontSize: hp(1.7)
+                                                }
+                                            ]}
+                                        >
                                             Arkadaş daveti veya çekiliş ile
                                         </Text>
-                                        <Text style={[styles.socialMediaInfoText, { fontFamily: 'Averta-Bold', fontSize: hp(1.7) }]}>
-                                            ELİT ÖĞRENCİ PAKETİ SÜRENİ UZATMAK İÇİN, TIKLA!
+                                        <Text
+                                            style={[
+                                                styles.socialMediaInfoText,
+                                                {
+                                                    fontFamily: 'Averta-Bold',
+                                                    fontSize: hp(1.7)
+                                                }
+                                            ]}
+                                        >
+                                            ELİT ÖĞRENCİ PAKETİ SÜRENİ UZATMAK
+                                            İÇİN, TIKLA!
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
                             )}
-                            {this.props.clientInformation.isPremium === false && (
+                            {this.props.clientInformation.isPremium ===
+                                false && (
                                 <View style={styles.socialMediaView}>
                                     <View style={styles.socialMediaLogosView}>
                                         <TouchableOpacity
@@ -2722,9 +2814,12 @@ class PurchaseScreen extends React.Component {
                                         </TouchableOpacity>
                                     </View>
                                     <View style={styles.socialMediaInfoView}>
-                                        <Text style={styles.socialMediaInfoText}>
-                                            Sosyal medya hesaplarımızı takip ederek
-                                            ödülleri ve en güncel haberleri kaçırma!
+                                        <Text
+                                            style={styles.socialMediaInfoText}
+                                        >
+                                            Sosyal medya hesaplarımızı takip
+                                            ederek ödülleri ve en güncel
+                                            haberleri kaçırma!
                                         </Text>
                                     </View>
                                 </View>
@@ -2734,35 +2829,9 @@ class PurchaseScreen extends React.Component {
                             <View style={styles.yourPremiumContainer}>
                                 <Swiper
                                     loop={true}
-                                    //paginationStyle={{ bottom: hp(0.7) }}
                                     autoplay={true}
                                     autoplayTimeout={3}
                                     showsPagination={false}
-                                    /* activeDot={
-                                        <View
-                                            style={{
-                                                height: hp(1),
-                                                width: hp(1),
-                                                backgroundColor: '#000000',
-                                                borderRadius: hp(100),
-                                                marginLeft: wp(1),
-                                                marginRight: wp(1)
-                                            }}
-                                        />
-                                    }
-                                    dot={
-                                        <View
-                                            style={{
-                                                height: hp(1),
-                                                width: hp(1),
-                                                backgroundColor:
-                                                    'rgba(0,0,0,.2)',
-                                                borderRadius: hp(100),
-                                                marginLeft: wp(1),
-                                                marginRight: wp(1)
-                                            }}
-                                        />
-                                    } */
                                 >
                                     <View>
                                         <View
@@ -2828,8 +2897,7 @@ class PurchaseScreen extends React.Component {
                                         </View>
                                     </View>
                                     <TouchableOpacity
-                                        onPress={
-                                        this.onPressPremiumView}
+                                        onPress={this.onPressPremiumView}
                                     >
                                         <View
                                             style={styles.yourPremiumTextView}
@@ -3044,7 +3112,9 @@ const mapStateToProps = state => ({
     userJokers: state.client.userJokers,
     clientInformation: state.client.clientInformation,
     gameContentMap: state.gameContent.gameContentMap,
-    choosenExam: state.gameContent.choosenExam
+    choosenExam: state.gameContent.choosenExam,
+    clientDBId: state.client.clientDBId,
+    clientToken: state.client.clientToken
 })
 
 const mapDispatchToProps = dispatch => ({})
