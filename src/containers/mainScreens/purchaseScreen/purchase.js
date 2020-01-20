@@ -133,7 +133,7 @@ class PurchaseScreen extends React.Component {
                 else
                     this.setState({
                         remaningInviteCodes: data.remainingCodes,
-                        friendCode: 'BITTI'
+                        friendCode: 'BİTTİ'
                     })
             })
             .catch(error => {
@@ -1090,31 +1090,39 @@ class PurchaseScreen extends React.Component {
                                             <View
                                                 style={styles.inviteFriendBox}
                                             >
-                                                <View
-                                                    style={{
-                                                        height: hp(10),
-                                                        width: wp(20),
-                                                        right: wp(4),
-                                                        position: 'absolute',
-                                                        justifyContent:
-                                                            'center',
-                                                        alignItems: 'flex-end'
-                                                    }}
-                                                >
-                                                    <TouchableOpacity
-                                                        onPress={
-                                                            this
-                                                                .writeToClipboard
-                                                        }
+                                                {this.state
+                                                    .remaningInviteCodes !==
+                                                    0 && (
+                                                    <View
+                                                        style={{
+                                                            height: hp(10),
+                                                            width: wp(20),
+                                                            right: wp(4),
+                                                            position:
+                                                                'absolute',
+                                                            justifyContent:
+                                                                'center',
+                                                            alignItems:
+                                                                'flex-end'
+                                                        }}
                                                     >
-                                                        <Image
-                                                            source={COPY_IMAGE}
-                                                            style={
-                                                                styles.copyImage
+                                                        <TouchableOpacity
+                                                            onPress={
+                                                                this
+                                                                    .writeToClipboard
                                                             }
-                                                        />
-                                                    </TouchableOpacity>
-                                                </View>
+                                                        >
+                                                            <Image
+                                                                source={
+                                                                    COPY_IMAGE
+                                                                }
+                                                                style={
+                                                                    styles.copyImage
+                                                                }
+                                                            />
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                )}
                                                 <Text
                                                     style={styles.promotionCode}
                                                     selectable={true}
