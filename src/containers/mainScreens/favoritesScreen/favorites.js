@@ -291,9 +291,9 @@ class Favorites extends React.Component {
             )
             .then(response => {
                 //let base64Str
-                if (response.info().status == 200)
-                    // the conversion is done in native code
-                    //base64Str = response.base64()
+                //if (response.info().status == 200)
+                // the conversion is done in native code
+                //base64Str = response.base64()
 
                 let shareOptions = {}
 
