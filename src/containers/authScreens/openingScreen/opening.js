@@ -23,6 +23,11 @@ import { flashMessages } from '../../../services/flashMessageBuilder'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
 import { deviceStorage } from '../../../services/deviceStorage'
+import appleAuth, {
+    AppleAuthRequestOperation,
+    AppleAuthRequestScope,
+    AppleAuthCredentialState
+} from '@invertase/react-native-apple-authentication'
 
 class Opening extends React.Component {
     constructor(props) {
@@ -111,6 +116,28 @@ class Opening extends React.Component {
         }
     }
 
+    signInWithApple = async () => {
+        console.log(appleAuth.isSupported)
+        // performs login request
+        const appleAuthRequestResponse = await appleAuth.performRequest({
+            requestedOperation: AppleAuthRequestOperation.LOGIN,
+            requestedScopes: [
+                AppleAuthRequestScope.EMAIL,
+                AppleAuthRequestScope.FULL_NAME
+            ]
+        })
+
+        // get current authentication state for user
+        const credentialState = await appleAuth.getCredentialStateForUser(
+            appleAuthRequestResponse.user
+        )
+        console.log(credentialState)
+        // use credentialState response to ensure the user is authenticated
+        if (credentialState === AppleAuthCredentialState.AUTHORIZED) {
+            // user is authenticated
+        }
+    }
+
     onPressLicenceView = () => {
         this.setState({
             isLicenceModalVisible: true
@@ -188,6 +215,7 @@ class Opening extends React.Component {
                         fontSize={hp(3)}
                         buttonText="Apple ile Bağlan"
                         borderRadius={hp(1.5)}
+                        onPress={this.signInWithApple}
                     />
                     <AuthButton
                         height={hp(7)}
