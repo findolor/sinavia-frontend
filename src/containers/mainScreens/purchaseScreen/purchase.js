@@ -1198,7 +1198,6 @@ class PurchaseScreen extends React.Component {
                                                         styles.usePromotionBoxText
                                                     }
                                                     maxLength={6}
-                                                    autoCapitalize="characters"
                                                     onChangeText={text =>
                                                         this.setState({
                                                             usePromotionCode: text
