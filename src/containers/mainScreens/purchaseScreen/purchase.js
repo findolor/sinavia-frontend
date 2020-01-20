@@ -6,7 +6,11 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Platform
+    Platform,
+    TextInput,
+    TouchableWithoutFeedback,
+    KeyboardAvoidingView,
+    Keyboard
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Swiper from 'react-native-swiper'
@@ -34,7 +38,7 @@ import SEE_OPPONENT_JOKER_IMAGE from '../../../assets/jokers/seeOpponent.png'
 import REMOVE_OPTIONS_JOKER_IMAGE from '../../../assets/jokers/removeOptions.png'
 import SECOND_CHANGE_JOKER_IMAGE from '../../../assets/jokers/secondChance.png'
 import { rewardAd } from '../../../services/admobService'
-import { clientActions } from '../../../redux/client/actions'
+import { inviteCodeServices } from '../../../sagas/inviteCode'
 
 import FIRST_JOKER_AD_BUTTON from '../../../assets/firstJokerAdButton.png'
 import SECOND_JOKER_AD_BUTTON from '../../../assets/secondJokerAdButton.png'
@@ -43,6 +47,8 @@ import THIRD_JOKER_AD_BUTTON from '../../../assets/thirdJokerAdButton.png'
 import FIRST_JOKER_AD_BUTTON_2 from '../../../assets/firstJokerAdButton2.png'
 import SECOND_JOKER_AD_BUTTON_2 from '../../../assets/secondJokerAdButton2.png'
 import THIRD_JOKER_AD_BUTTON_2 from '../../../assets/thirdJokerAdButton2.png'
+
+import COPY_IMAGE from '../../../assets/mainScreens/copy.png'
 
 import {
     navigationPush,
@@ -64,6 +70,7 @@ class PurchaseScreen extends React.Component {
         super(props)
         this.state = {
             isPremiumModalVisible: false,
+            isPromotionCodeModalVisible: false,
             premiumOption: 'threeMonths',
             firstJoker: {
                 joker: {
@@ -90,7 +97,10 @@ class PurchaseScreen extends React.Component {
             remainingExamWeeks: null,
             remainingExamMonths: null,
             // Available products for in-app purchase
-            availableProducts: null
+            availableProducts: null,
+            friendCode: 'PAROLA',
+            usePromotionCode: '',
+            remaningInviteCodes: 0
         }
     }
 
@@ -111,6 +121,25 @@ class PurchaseScreen extends React.Component {
                     break
             }
         })
+
+        inviteCodeServices
+            .getInviteCode(this.props.clientToken, this.props.clientDBId)
+            .then(data => {
+                if (data.remainingCodes !== 0)
+                    this.setState({
+                        remaningInviteCodes: data.remainingCodes,
+                        friendCode: data.code
+                    })
+                else
+                    this.setState({
+                        remaningInviteCodes: data.remainingCodes,
+                        friendCode: 'BİTTİ'
+                    })
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
         this.calculateDateUntilPremiumEnd()
         this.calculateRemainingExamTime()
         await this.getProducts()
@@ -200,13 +229,25 @@ class PurchaseScreen extends React.Component {
         })
     }
 
-    onPressPremiumView() {
+    onPressPromotionCodeView = () => {
+        this.setState({
+            isPromotionCodeModalVisible: true
+        })
+    }
+
+    closesPromotionCodeView = () => {
+        this.setState({
+            isPromotionCodeModalVisible: false
+        })
+    }
+
+    onPressPremiumView = () => {
         this.setState({
             isPremiumModalVisible: true
         })
     }
 
-    closePremiumView() {
+    closePremiumView = () => {
         this.setState({
             isPremiumModalVisible: false,
             premiumOption: 'threeMonths'
@@ -259,2300 +300,2817 @@ class PurchaseScreen extends React.Component {
         navigationReset('main')
     }
 
+    writeToClipboard = async () => {
+        await Clipboard.setString(this.state.friendCode)
+    }
+
     render() {
         return (
-            <View style={styles.container}>
-                <View style={{ alignItems: 'center' }}>
-                    <Modal
-                        visible={this.state.isPremiumModalVisible}
-                        transparent={true}
-                        animationType={'fade'}
-                    >
-                        <View style={styles.premiumModal}>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    this.closePremiumView()
-                                }}
-                                style={{ height: hp(120), width: wp(100) }}
-                            />
-                            <View style={styles.premiumModalView}>
-                                <LinearGradient
-                                    colors={['white', '#FFE6BB', '#FFA800']}
-                                    style={
-                                        styles.linearGradientPremiumModalView
-                                    }
-                                >
-                                    <View style={styles.premiumModalHeaderView}>
-                                        <Text
-                                            style={
-                                                styles.premiumModalHeaderText
-                                            }
-                                        >
-                                            ELİT ÖĞRENCİ PAKETİ
-                                        </Text>
-                                    </View>
-                                    <View
+            <TouchableWithoutFeedback
+                onPress={() => {
+                    Keyboard.dismiss()
+                }}
+            >
+                <KeyboardAvoidingView
+                    style={styles.container}
+                    behavior={'position'}
+                >
+                    <View style={{ alignItems: 'center' }}>
+                        <Modal
+                            visible={this.state.isPremiumModalVisible}
+                            transparent={true}
+                            animationType={'fade'}
+                        >
+                            <View style={styles.premiumModal}>
+                                <TouchableOpacity
+                                    onPress={this.closePremiumView}
+                                    style={{ height: hp(120), width: wp(100) }}
+                                />
+                                <View style={styles.premiumModalView}>
+                                    <LinearGradient
+                                        colors={['white', '#FFE6BB', '#FFA800']}
                                         style={
-                                            styles.premiumModalSwiperContainer
+                                            styles.linearGradientPremiumModalView
                                         }
                                     >
-                                        <Swiper
-                                            autoplay={true}
-                                            loop={true}
-                                            loadMinimal={false}
-                                            showsPagination={false}
-                                            scrollEnabled={false}
-                                            autoplayTimeout={5}
+                                        <View
+                                            style={
+                                                styles.premiumModalHeaderView
+                                            }
+                                        >
+                                            <Text
+                                                style={
+                                                    styles.premiumModalHeaderText
+                                                }
+                                            >
+                                                ELİT ÖĞRENCİ PAKETİ
+                                            </Text>
+                                        </View>
+                                        <View
+                                            style={
+                                                styles.premiumModalSwiperContainer
+                                            }
+                                        >
+                                            <Swiper
+                                                autoplay={true}
+                                                loop={true}
+                                                loadMinimal={false}
+                                                showsPagination={false}
+                                                scrollEnabled={false}
+                                                autoplayTimeout={5}
+                                            >
+                                                <View
+                                                    style={
+                                                        styles.premiumModalSwiperView
+                                                    }
+                                                >
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperImgView
+                                                        }
+                                                    >
+                                                        <Image
+                                                            source={PREMIUM_ADS}
+                                                            style={
+                                                                styles.premiumModalImg
+                                                            }
+                                                        />
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperHeaderView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumModalHeaderText
+                                                            }
+                                                        >
+                                                            Reklam Yok!
+                                                        </Text>
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperInfoView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={[
+                                                                styles.premiumModalInfoText,
+                                                                {
+                                                                    marginBottom: hp(
+                                                                        0.5
+                                                                    )
+                                                                }
+                                                            ]}
+                                                        >
+                                                            Reklamsız oyun
+                                                            oynamanın keyfini
+                                                            sen de çıkar
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                                <View
+                                                    style={
+                                                        styles.premiumModalSwiperView
+                                                    }
+                                                >
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperImgView
+                                                        }
+                                                    >
+                                                        <Image
+                                                            source={PREMIUM_FAV}
+                                                            style={
+                                                                styles.premiumModalImg
+                                                            }
+                                                        />
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperHeaderView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumModalHeaderText
+                                                            }
+                                                        >
+                                                            Soru favorile!
+                                                        </Text>
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperInfoView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={[
+                                                                styles.premiumModalInfoText,
+                                                                {
+                                                                    marginBottom: hp(
+                                                                        0.5
+                                                                    )
+                                                                }
+                                                            ]}
+                                                        >
+                                                            Hoşuna giden ya da
+                                                            sonra tekrar bakmak
+                                                            istediğin soruları
+                                                            favorile
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                                <View
+                                                    style={
+                                                        styles.premiumModalSwiperView
+                                                    }
+                                                >
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperImgView
+                                                        }
+                                                    >
+                                                        <Image
+                                                            source={PREMIUM_MAP}
+                                                            style={
+                                                                styles.premiumModalImg
+                                                            }
+                                                        />
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperHeaderView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumModalHeaderText
+                                                            }
+                                                        >
+                                                            Türkiye geneli
+                                                            deneme sınavları!
+                                                        </Text>
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperInfoView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={[
+                                                                styles.premiumModalInfoText,
+                                                                {
+                                                                    marginBottom: hp(
+                                                                        0.5
+                                                                    )
+                                                                }
+                                                            ]}
+                                                        >
+                                                            Ülke çapındaki
+                                                            deneme sınavlarına
+                                                            ücretsiz katıl, tüm
+                                                            öğrenciler
+                                                            arasındaki
+                                                            sıralamanı gör
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                                <View
+                                                    style={
+                                                        styles.premiumModalSwiperView
+                                                    }
+                                                >
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperImgView
+                                                        }
+                                                    >
+                                                        <Image
+                                                            source={
+                                                                PREMIUM_SINGLE_MODE
+                                                            }
+                                                            style={
+                                                                styles.premiumModalImg
+                                                            }
+                                                        />
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperHeaderView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumModalHeaderText
+                                                            }
+                                                        >
+                                                            Tek başına!
+                                                        </Text>
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperInfoView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={[
+                                                                styles.premiumModalInfoText,
+                                                                {
+                                                                    marginBottom: hp(
+                                                                        0.5
+                                                                    )
+                                                                }
+                                                            ]}
+                                                        >
+                                                            "Tek rakibim kendim"
+                                                            diyenler için tek
+                                                            başına soru
+                                                            çözebilme imkanı
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                                <View
+                                                    style={
+                                                        styles.premiumModalSwiperView
+                                                    }
+                                                >
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperImgView
+                                                        }
+                                                    >
+                                                        <Image
+                                                            source={
+                                                                PREMIUM_BACK
+                                                            }
+                                                            style={
+                                                                styles.premiumModalImg
+                                                            }
+                                                        />
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperHeaderView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumModalHeaderText
+                                                            }
+                                                        >
+                                                            Çözülmedik soru
+                                                            kalmasın!
+                                                        </Text>
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperInfoView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={[
+                                                                styles.premiumModalInfoText,
+                                                                {
+                                                                    marginBottom: hp(
+                                                                        0.5
+                                                                    )
+                                                                }
+                                                            ]}
+                                                        >
+                                                            Boş bıraktığın veya
+                                                            yanlış yaptığın
+                                                            soruları tekrar
+                                                            tekrar çözme fırsatı
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                                <View
+                                                    style={
+                                                        styles.premiumModalSwiperView
+                                                    }
+                                                >
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperImgView
+                                                        }
+                                                    >
+                                                        <Image
+                                                            source={
+                                                                PREMIUM_JOKER
+                                                            }
+                                                            style={
+                                                                styles.premiumModalImg
+                                                            }
+                                                        />
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperHeaderView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumModalHeaderText
+                                                            }
+                                                        >
+                                                            Günlük joker!
+                                                        </Text>
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperInfoView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={[
+                                                                styles.premiumModalInfoText,
+                                                                {
+                                                                    marginBottom: hp(
+                                                                        0.5
+                                                                    )
+                                                                }
+                                                            ]}
+                                                        >
+                                                            Her gün verilen
+                                                            jokerlerle soruların
+                                                            cevabına 1 adım daha
+                                                            yaklaş, rakiplerinin
+                                                            önüne geç
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                            </Swiper>
+                                        </View>
+                                        <View style={styles.premiumOptionsView}>
+                                            <TouchableOpacity
+                                                onPress={this.oneMonthOnPress}
+                                                style={styles.premiumOptionView}
+                                            >
+                                                <View
+                                                    style={[
+                                                        styles.premiumOptionUpperView,
+                                                        {
+                                                            backgroundColor:
+                                                                this.state
+                                                                    .premiumOption ===
+                                                                'oneMonth'
+                                                                    ? 'white'
+                                                                    : 'rgba(0, 0, 0, 0)'
+                                                        }
+                                                    ]}
+                                                >
+                                                    <Text
+                                                        style={
+                                                            this.state
+                                                                .premiumOption ===
+                                                            'oneMonth'
+                                                                ? styles.selectedPremiumOptionHeaderText
+                                                                : styles.unselectedPremiumOptionHeaderText
+                                                        }
+                                                    >
+                                                        BAŞLANGIÇ
+                                                    </Text>
+                                                </View>
+                                                <View
+                                                    style={[
+                                                        styles.premiumOptionBottomView,
+                                                        {
+                                                            borderColor:
+                                                                this.state
+                                                                    .premiumOption ===
+                                                                'oneMonth'
+                                                                    ? 'white'
+                                                                    : 'rgba(0, 0, 0, 0)'
+                                                        }
+                                                    ]}
+                                                >
+                                                    <View
+                                                        style={
+                                                            styles.premiumOptionMonthsView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                this.state
+                                                                    .premiumOption ===
+                                                                'oneMonth'
+                                                                    ? styles.selectedMonthNumberText
+                                                                    : styles.unselectedMonthNumberText
+                                                            }
+                                                        >
+                                                            1
+                                                        </Text>
+                                                        <Text
+                                                            style={
+                                                                this.state
+                                                                    .premiumOption ===
+                                                                'oneMonth'
+                                                                    ? styles.selectedMonthText
+                                                                    : styles.unselectedMonthText
+                                                            }
+                                                        >
+                                                            ay
+                                                        </Text>
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumOptionPriceAmountView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                this.state
+                                                                    .premiumOption ===
+                                                                'oneMonth'
+                                                                    ? styles.selectedPricePerMonthText
+                                                                    : styles.unselectedPricePerMonthText
+                                                            }
+                                                        >
+                                                            5,99 TL/ay
+                                                        </Text>
+                                                        <Text
+                                                            style={
+                                                                this.state
+                                                                    .premiumOption ===
+                                                                'oneMonth'
+                                                                    ? styles.selectedPriceAmountText
+                                                                    : styles.unselectedPriceAmountText
+                                                            }
+                                                        >
+                                                            5,99 TL
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={
+                                                    this.threeMonthsOnPress
+                                                }
+                                                style={styles.premiumOptionView}
+                                            >
+                                                <View
+                                                    style={[
+                                                        styles.premiumOptionUpperView,
+                                                        {
+                                                            backgroundColor:
+                                                                this.state
+                                                                    .premiumOption ===
+                                                                'threeMonths'
+                                                                    ? 'white'
+                                                                    : 'rgba(0, 0, 0, 0)'
+                                                        }
+                                                    ]}
+                                                >
+                                                    <Text
+                                                        style={
+                                                            this.state
+                                                                .premiumOption ===
+                                                            'threeMonths'
+                                                                ? styles.selectedPremiumOptionHeaderText
+                                                                : styles.unselectedPremiumOptionHeaderText
+                                                        }
+                                                    >
+                                                        EN POPÜLER
+                                                    </Text>
+                                                </View>
+                                                <View
+                                                    style={[
+                                                        styles.premiumOptionBottomView,
+                                                        {
+                                                            borderColor:
+                                                                this.state
+                                                                    .premiumOption ===
+                                                                'threeMonths'
+                                                                    ? 'white'
+                                                                    : 'rgba(0, 0, 0, 0)'
+                                                        }
+                                                    ]}
+                                                >
+                                                    <View
+                                                        style={
+                                                            styles.premiumOptionMonthsView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                this.state
+                                                                    .premiumOption ===
+                                                                'threeMonths'
+                                                                    ? styles.selectedMonthNumberText
+                                                                    : styles.unselectedMonthNumberText
+                                                            }
+                                                        >
+                                                            3
+                                                        </Text>
+                                                        <Text
+                                                            style={
+                                                                this.state
+                                                                    .premiumOption ===
+                                                                'threeMonths'
+                                                                    ? styles.selectedMonthText
+                                                                    : styles.unselectedMonthText
+                                                            }
+                                                        >
+                                                            ay
+                                                        </Text>
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumOptionPriceAmountView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                this.state
+                                                                    .premiumOption ===
+                                                                'threeMonths'
+                                                                    ? styles.selectedPricePerMonthText
+                                                                    : styles.unselectedPricePerMonthText
+                                                            }
+                                                        >
+                                                            4,99 TL/ay
+                                                        </Text>
+                                                        <Text
+                                                            style={
+                                                                this.state
+                                                                    .premiumOption ===
+                                                                'threeMonths'
+                                                                    ? styles.selectedPriceAmountText
+                                                                    : styles.unselectedPriceAmountText
+                                                            }
+                                                        >
+                                                            14,99 TL
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={this.sixMonthsOnPress}
+                                                style={styles.premiumOptionView}
+                                            >
+                                                <View
+                                                    style={[
+                                                        styles.premiumOptionUpperView,
+                                                        {
+                                                            backgroundColor:
+                                                                this.state
+                                                                    .premiumOption ===
+                                                                'sixMonths'
+                                                                    ? 'white'
+                                                                    : 'rgba(0, 0, 0, 0)'
+                                                        }
+                                                    ]}
+                                                >
+                                                    <Text
+                                                        style={
+                                                            this.state
+                                                                .premiumOption ===
+                                                            'sixMonths'
+                                                                ? styles.selectedPremiumOptionHeaderText
+                                                                : styles.unselectedPremiumOptionHeaderText
+                                                        }
+                                                    >
+                                                        EN AVANTAJLI
+                                                    </Text>
+                                                </View>
+                                                <View
+                                                    style={[
+                                                        styles.premiumOptionBottomView,
+                                                        {
+                                                            borderColor:
+                                                                this.state
+                                                                    .premiumOption ===
+                                                                'sixMonths'
+                                                                    ? 'white'
+                                                                    : 'rgba(0, 0, 0, 0)'
+                                                        }
+                                                    ]}
+                                                >
+                                                    <View
+                                                        style={
+                                                            styles.premiumOptionMonthsView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                this.state
+                                                                    .premiumOption ===
+                                                                'sixMonths'
+                                                                    ? styles.selectedMonthNumberText
+                                                                    : styles.unselectedMonthNumberText
+                                                            }
+                                                        >
+                                                            6
+                                                        </Text>
+                                                        <Text
+                                                            style={
+                                                                this.state
+                                                                    .premiumOption ===
+                                                                'sixMonths'
+                                                                    ? styles.selectedMonthText
+                                                                    : styles.unselectedMonthText
+                                                            }
+                                                        >
+                                                            ay
+                                                        </Text>
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumOptionPriceAmountView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                this.state
+                                                                    .premiumOption ===
+                                                                'sixMonths'
+                                                                    ? styles.selectedPricePerMonthText
+                                                                    : styles.unselectedPricePerMonthText
+                                                            }
+                                                        >
+                                                            2,99 TL/ay
+                                                        </Text>
+                                                        <Text
+                                                            style={
+                                                                this.state
+                                                                    .premiumOption ===
+                                                                'sixMonths'
+                                                                    ? styles.selectedPriceAmountText
+                                                                    : styles.unselectedPriceAmountText
+                                                            }
+                                                        >
+                                                            17,99 TL
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                            </TouchableOpacity>
+                                        </View>
+                                        <View
+                                            style={
+                                                styles.buttonsInPremiumModalView
+                                            }
+                                        >
+                                            <TouchableOpacity
+                                                style={
+                                                    styles.purchasePremiumButton
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.purchasePremiumButtonText
+                                                    }
+                                                >
+                                                    HEMEN SATIN AL
+                                                </Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    this.closePremiumView()
+                                                }}
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.purchasePremiumCancelText
+                                                    }
+                                                >
+                                                    HAYIR, TEŞEKKÜRLER
+                                                </Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </LinearGradient>
+                                </View>
+                            </View>
+                        </Modal>
+                        <Modal
+                            visible={this.state.isPromotionCodeModalVisible}
+                            transparent={true}
+                            animationType={'fade'}
+                        >
+                            <View style={styles.premiumModal}>
+                                <TouchableOpacity
+                                    onPress={this.closesPromotionCodeView}
+                                    style={{ height: hp(120), width: wp(100) }}
+                                />
+                                <View style={styles.premiumModalView}>
+                                    <LinearGradient
+                                        colors={['white', '#FFE6BB', '#FFA800']}
+                                        style={
+                                            styles.linearGradientPremiumModalView
+                                        }
+                                    >
+                                        <View style={styles.inviteFriendView}>
+                                            <View
+                                                style={
+                                                    styles.inviteFriendInfoView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.promotionCodeInfoText
+                                                    }
+                                                >
+                                                    1 - Sınavia'ya üye olmayan
+                                                    bir arkadaşına aşağıdaki
+                                                    kodu gönder
+                                                </Text>
+                                                <Text
+                                                    style={
+                                                        styles.promotionCodeInfoText
+                                                    }
+                                                >
+                                                    2 - Arkadaşın uygulamaya
+                                                    kayıtlanırken bu kodu
+                                                    kullansın
+                                                </Text>
+                                                <Text
+                                                    style={
+                                                        styles.promotionCodeInfoText
+                                                    }
+                                                >
+                                                    3 - 1 haftalık{' '}
+                                                    <Text
+                                                        onPress={
+                                                            this
+                                                                .onPressPremiumView
+                                                        }
+                                                        style={{
+                                                            fontFamily:
+                                                                'Averta-ExtraBold',
+                                                            textDecorationLine:
+                                                                'underline'
+                                                        }}
+                                                    >
+                                                        ELİT ÖĞRENCİ PAKETİ
+                                                    </Text>{' '}
+                                                    kazan!
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={styles.inviteFriendBox}
+                                            >
+                                                {this.state
+                                                    .remaningInviteCodes !==
+                                                    0 && (
+                                                    <View
+                                                        style={{
+                                                            height: hp(10),
+                                                            width: wp(20),
+                                                            right: wp(4),
+                                                            position:
+                                                                'absolute',
+                                                            justifyContent:
+                                                                'center',
+                                                            alignItems:
+                                                                'flex-end'
+                                                        }}
+                                                    >
+                                                        <TouchableOpacity
+                                                            onPress={
+                                                                this
+                                                                    .writeToClipboard
+                                                            }
+                                                        >
+                                                            <Image
+                                                                source={
+                                                                    COPY_IMAGE
+                                                                }
+                                                                style={
+                                                                    styles.copyImage
+                                                                }
+                                                            />
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                )}
+                                                <Text
+                                                    style={styles.promotionCode}
+                                                    selectable={true}
+                                                >
+                                                    {this.state.friendCode}
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={
+                                                    styles.inviteFriendKeyAmountsView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.inviteFriendKeyAmounts
+                                                    }
+                                                >
+                                                    {
+                                                        this.state
+                                                            .remaningInviteCodes
+                                                    }{' '}
+                                                    adet hakkın kaldı
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View style={styles.separator} />
+                                        <View style={styles.usePromotionView}>
+                                            <View
+                                                style={
+                                                    styles.usePromotionInfoView
+                                                }
+                                            >
+                                                <Text
+                                                    style={[
+                                                        styles.promotionCodeInfoText,
+                                                        { marginBottom: hp(1) }
+                                                    ]}
+                                                >
+                                                    1 - Çekilişlerden aldığın
+                                                    kodu burada kullan
+                                                </Text>
+                                                <Text
+                                                    style={[
+                                                        styles.promotionCodeInfoText,
+                                                        {
+                                                            marginBottom: hp(1)
+                                                        }
+                                                    ]}
+                                                >
+                                                    2 - 1 haftalık{' '}
+                                                    <Text
+                                                        onPress={
+                                                            this
+                                                                .onPressPremiumView
+                                                        }
+                                                        style={{
+                                                            fontFamily:
+                                                                'Averta-ExtraBold',
+                                                            textDecorationLine:
+                                                                'underline'
+                                                        }}
+                                                    >
+                                                        ELİT ÖĞRENCİ PAKETİ
+                                                    </Text>{' '}
+                                                    kazan!
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={styles.usePromotionBox}
+                                            >
+                                                <TextInput
+                                                    style={
+                                                        styles.usePromotionBoxText
+                                                    }
+                                                    maxLength={6}
+                                                    onChangeText={text =>
+                                                        this.setState({
+                                                            usePromotionCode: text
+                                                        })
+                                                    }
+                                                    placeholder="Kodu Gir"
+                                                    placeholderTextColor="#818181"
+                                                />
+                                            </View>
+                                            <TouchableOpacity
+                                                style={
+                                                    styles.usePromotionButton
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.purchasePremiumButtonText
+                                                    }
+                                                >
+                                                    Onayla
+                                                </Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </LinearGradient>
+                                </View>
+                            </View>
+                        </Modal>
+                        <View style={styles.bundlesContainer}>
+                            <View style={styles.bundlesView}>
+                                <Swiper
+                                    loop={false}
+                                    paginationStyle={{ bottom: hp(0.25) }}
+                                    activeDot={
+                                        <View
+                                            style={{
+                                                height: hp(1.5),
+                                                width: hp(1.5),
+                                                backgroundColor: '#00D9EF',
+                                                borderRadius: hp(100),
+                                                marginLeft: wp(1),
+                                                marginRight: wp(1)
+                                            }}
+                                        />
+                                    }
+                                    dot={
+                                        <View
+                                            style={{
+                                                height: hp(1.5),
+                                                width: hp(1.5),
+                                                backgroundColor:
+                                                    'rgba(0,0,0,.2)',
+                                                borderRadius: hp(100),
+                                                marginLeft: wp(1),
+                                                marginRight: wp(1)
+                                            }}
+                                        />
+                                    }
+                                >
+                                    <View style={styles.swiperView}>
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
                                         >
                                             <View
                                                 style={
-                                                    styles.premiumModalSwiperView
+                                                    styles.totalJokerAmountView
                                                 }
                                             >
-                                                <View
+                                                <Text
                                                     style={
-                                                        styles.premiumModalSwiperImgView
+                                                        styles.jokerAmountsText
                                                     }
                                                 >
-                                                    <Image
-                                                        source={PREMIUM_ADS}
-                                                        style={
-                                                            styles.premiumModalImg
-                                                        }
-                                                    />
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumModalSwiperHeaderView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={
-                                                            styles.premiumModalHeaderText
-                                                        }
-                                                    >
-                                                        Reklam Yok!
-                                                    </Text>
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumModalSwiperInfoView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={[
-                                                            styles.premiumModalInfoText,
-                                                            {
-                                                                marginBottom: hp(
-                                                                    0.5
-                                                                )
-                                                            }
-                                                        ]}
-                                                    >
-                                                        Reklamsız oyun oynamanın
-                                                        keyfini sen de çıkar
-                                                    </Text>
-                                                </View>
+                                                    30 Joker
+                                                </Text>
                                             </View>
-                                            <View
-                                                style={
-                                                    styles.premiumModalSwiperView
-                                                }
-                                            >
-                                                <View
-                                                    style={
-                                                        styles.premiumModalSwiperImgView
-                                                    }
-                                                >
-                                                    <Image
-                                                        source={PREMIUM_FAV}
-                                                        style={
-                                                            styles.premiumModalImg
-                                                        }
-                                                    />
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumModalSwiperHeaderView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={
-                                                            styles.premiumModalHeaderText
-                                                        }
-                                                    >
-                                                        Soru favorile!
-                                                    </Text>
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumModalSwiperInfoView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={[
-                                                            styles.premiumModalInfoText,
-                                                            {
-                                                                marginBottom: hp(
-                                                                    0.5
-                                                                )
-                                                            }
-                                                        ]}
-                                                    >
-                                                        Hoşuna giden ya da sonra
-                                                        tekrar bakmak istediğin
-                                                        soruları favorile
-                                                    </Text>
-                                                </View>
-                                            </View>
-                                            <View
-                                                style={
-                                                    styles.premiumModalSwiperView
-                                                }
-                                            >
-                                                <View
-                                                    style={
-                                                        styles.premiumModalSwiperImgView
-                                                    }
-                                                >
-                                                    <Image
-                                                        source={PREMIUM_MAP}
-                                                        style={
-                                                            styles.premiumModalImg
-                                                        }
-                                                    />
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumModalSwiperHeaderView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={
-                                                            styles.premiumModalHeaderText
-                                                        }
-                                                    >
-                                                        Türkiye geneli deneme
-                                                        sınavları!
-                                                    </Text>
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumModalSwiperInfoView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={[
-                                                            styles.premiumModalInfoText,
-                                                            {
-                                                                marginBottom: hp(
-                                                                    0.5
-                                                                )
-                                                            }
-                                                        ]}
-                                                    >
-                                                        Ülke çapındaki deneme
-                                                        sınavlarına ücretsiz
-                                                        katıl, tüm öğrenciler
-                                                        arasındaki sıralamanı
-                                                        gör
-                                                    </Text>
-                                                </View>
-                                            </View>
-                                            <View
-                                                style={
-                                                    styles.premiumModalSwiperView
-                                                }
-                                            >
-                                                <View
-                                                    style={
-                                                        styles.premiumModalSwiperImgView
-                                                    }
-                                                >
+                                            <View style={styles.jokersView}>
+                                                <View style={styles.jokerView}>
                                                     <Image
                                                         source={
-                                                            PREMIUM_SINGLE_MODE
+                                                            this.state
+                                                                .firstJoker
+                                                                .joker.imageLink
                                                         }
-                                                        style={
-                                                            styles.premiumModalImg
-                                                        }
+                                                        style={styles.jokerImg}
                                                     />
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumModalSwiperHeaderView
-                                                    }
-                                                >
                                                     <Text
                                                         style={
-                                                            styles.premiumModalHeaderText
+                                                            styles.jokerAmountText
                                                         }
                                                     >
-                                                        Tek başına!
+                                                        x10
                                                     </Text>
                                                 </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumModalSwiperInfoView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={[
-                                                            styles.premiumModalInfoText,
-                                                            {
-                                                                marginBottom: hp(
-                                                                    0.5
-                                                                )
-                                                            }
-                                                        ]}
-                                                    >
-                                                        "Tek rakibim kendim"
-                                                        diyenler için tek başına
-                                                        soru çözebilme imkanı
-                                                    </Text>
-                                                </View>
-                                            </View>
-                                            <View
-                                                style={
-                                                    styles.premiumModalSwiperView
-                                                }
-                                            >
-                                                <View
-                                                    style={
-                                                        styles.premiumModalSwiperImgView
-                                                    }
-                                                >
+                                                <View style={styles.jokerView}>
                                                     <Image
-                                                        source={PREMIUM_BACK}
-                                                        style={
-                                                            styles.premiumModalImg
+                                                        source={
+                                                            this.state
+                                                                .secondJoker
+                                                                .joker.imageLink
                                                         }
+                                                        style={styles.jokerImg}
                                                     />
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumModalSwiperHeaderView
-                                                    }
-                                                >
                                                     <Text
                                                         style={
-                                                            styles.premiumModalHeaderText
+                                                            styles.jokerAmountText
                                                         }
                                                     >
-                                                        Çözülmedik soru
-                                                        kalmasın!
+                                                        x10
                                                     </Text>
                                                 </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumModalSwiperInfoView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={[
-                                                            styles.premiumModalInfoText,
-                                                            {
-                                                                marginBottom: hp(
-                                                                    0.5
-                                                                )
-                                                            }
-                                                        ]}
-                                                    >
-                                                        Boş bıraktığın veya
-                                                        yanlış yaptığın soruları
-                                                        tekrar tekrar çözme
-                                                        fırsatı
-                                                    </Text>
-                                                </View>
-                                            </View>
-                                            <View
-                                                style={
-                                                    styles.premiumModalSwiperView
-                                                }
-                                            >
-                                                <View
-                                                    style={
-                                                        styles.premiumModalSwiperImgView
-                                                    }
-                                                >
+                                                <View style={styles.jokerView}>
                                                     <Image
-                                                        source={PREMIUM_JOKER}
-                                                        style={
-                                                            styles.premiumModalImg
+                                                        source={
+                                                            this.state
+                                                                .thirdJoker
+                                                                .joker.imageLink
                                                         }
+                                                        style={styles.jokerImg}
                                                     />
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumModalSwiperHeaderView
-                                                    }
-                                                >
                                                     <Text
                                                         style={
-                                                            styles.premiumModalHeaderText
+                                                            styles.jokerAmountText
                                                         }
                                                     >
-                                                        Günlük joker!
-                                                    </Text>
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumModalSwiperInfoView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={[
-                                                            styles.premiumModalInfoText,
-                                                            {
-                                                                marginBottom: hp(
-                                                                    0.5
-                                                                )
-                                                            }
-                                                        ]}
-                                                    >
-                                                        Her gün verilen
-                                                        jokerlerle soruların
-                                                        cevabına 1 adım daha
-                                                        yaklaş, rakiplerinin
-                                                        önüne geç
+                                                        x10
                                                     </Text>
                                                 </View>
                                             </View>
-                                        </Swiper>
-                                    </View>
-                                    <View style={styles.premiumOptionsView}>
-                                        <TouchableOpacity
-                                            onPress={this.oneMonthOnPress}
-                                            style={styles.premiumOptionView}
-                                        >
                                             <View
-                                                style={[
-                                                    styles.premiumOptionUpperView,
-                                                    {
-                                                        backgroundColor:
-                                                            this.state
-                                                                .premiumOption ===
-                                                            'oneMonth'
-                                                                ? 'white'
-                                                                : 'rgba(0, 0, 0, 0)'
-                                                    }
-                                                ]}
+                                                style={styles.jokerPricesView}
                                             >
                                                 <Text
                                                     style={
-                                                        this.state
-                                                            .premiumOption ===
-                                                        'oneMonth'
-                                                            ? styles.selectedPremiumOptionHeaderText
-                                                            : styles.unselectedPremiumOptionHeaderText
+                                                        styles.normalPriceText
                                                     }
                                                 >
-                                                    BAŞLANGIÇ
+                                                    9 ₺ yerine
                                                 </Text>
                                             </View>
                                             <View
-                                                style={[
-                                                    styles.premiumOptionBottomView,
-                                                    {
-                                                        borderColor:
-                                                            this.state
-                                                                .premiumOption ===
-                                                            'oneMonth'
-                                                                ? 'white'
-                                                                : 'rgba(0, 0, 0, 0)'
-                                                    }
-                                                ]}
-                                            >
-                                                <View
-                                                    style={
-                                                        styles.premiumOptionMonthsView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={
-                                                            this.state
-                                                                .premiumOption ===
-                                                            'oneMonth'
-                                                                ? styles.selectedMonthNumberText
-                                                                : styles.unselectedMonthNumberText
-                                                        }
-                                                    >
-                                                        1
-                                                    </Text>
-                                                    <Text
-                                                        style={
-                                                            this.state
-                                                                .premiumOption ===
-                                                            'oneMonth'
-                                                                ? styles.selectedMonthText
-                                                                : styles.unselectedMonthText
-                                                        }
-                                                    >
-                                                        ay
-                                                    </Text>
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumOptionPriceAmountView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={
-                                                            this.state
-                                                                .premiumOption ===
-                                                            'oneMonth'
-                                                                ? styles.selectedPricePerMonthText
-                                                                : styles.unselectedPricePerMonthText
-                                                        }
-                                                    >
-                                                        5,99 TL/ay
-                                                    </Text>
-                                                    <Text
-                                                        style={
-                                                            this.state
-                                                                .premiumOption ===
-                                                            'oneMonth'
-                                                                ? styles.selectedPriceAmountText
-                                                                : styles.unselectedPriceAmountText
-                                                        }
-                                                    >
-                                                        5,99 TL
-                                                    </Text>
-                                                </View>
-                                            </View>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            onPress={this.threeMonthsOnPress}
-                                            style={styles.premiumOptionView}
-                                        >
-                                            <View
-                                                style={[
-                                                    styles.premiumOptionUpperView,
-                                                    {
-                                                        backgroundColor:
-                                                            this.state
-                                                                .premiumOption ===
-                                                            'threeMonths'
-                                                                ? 'white'
-                                                                : 'rgba(0, 0, 0, 0)'
-                                                    }
-                                                ]}
-                                            >
-                                                <Text
-                                                    style={
-                                                        this.state
-                                                            .premiumOption ===
-                                                        'threeMonths'
-                                                            ? styles.selectedPremiumOptionHeaderText
-                                                            : styles.unselectedPremiumOptionHeaderText
-                                                    }
-                                                >
-                                                    EN POPÜLER
-                                                </Text>
-                                            </View>
-                                            <View
-                                                style={[
-                                                    styles.premiumOptionBottomView,
-                                                    {
-                                                        borderColor:
-                                                            this.state
-                                                                .premiumOption ===
-                                                            'threeMonths'
-                                                                ? 'white'
-                                                                : 'rgba(0, 0, 0, 0)'
-                                                    }
-                                                ]}
-                                            >
-                                                <View
-                                                    style={
-                                                        styles.premiumOptionMonthsView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={
-                                                            this.state
-                                                                .premiumOption ===
-                                                            'threeMonths'
-                                                                ? styles.selectedMonthNumberText
-                                                                : styles.unselectedMonthNumberText
-                                                        }
-                                                    >
-                                                        3
-                                                    </Text>
-                                                    <Text
-                                                        style={
-                                                            this.state
-                                                                .premiumOption ===
-                                                            'threeMonths'
-                                                                ? styles.selectedMonthText
-                                                                : styles.unselectedMonthText
-                                                        }
-                                                    >
-                                                        ay
-                                                    </Text>
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumOptionPriceAmountView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={
-                                                            this.state
-                                                                .premiumOption ===
-                                                            'threeMonths'
-                                                                ? styles.selectedPricePerMonthText
-                                                                : styles.unselectedPricePerMonthText
-                                                        }
-                                                    >
-                                                        4,99 TL/ay
-                                                    </Text>
-                                                    <Text
-                                                        style={
-                                                            this.state
-                                                                .premiumOption ===
-                                                            'threeMonths'
-                                                                ? styles.selectedPriceAmountText
-                                                                : styles.unselectedPriceAmountText
-                                                        }
-                                                    >
-                                                        14,99 TL
-                                                    </Text>
-                                                </View>
-                                            </View>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            onPress={this.sixMonthsOnPress}
-                                            style={styles.premiumOptionView}
-                                        >
-                                            <View
-                                                style={[
-                                                    styles.premiumOptionUpperView,
-                                                    {
-                                                        backgroundColor:
-                                                            this.state
-                                                                .premiumOption ===
-                                                            'sixMonths'
-                                                                ? 'white'
-                                                                : 'rgba(0, 0, 0, 0)'
-                                                    }
-                                                ]}
-                                            >
-                                                <Text
-                                                    style={
-                                                        this.state
-                                                            .premiumOption ===
-                                                        'sixMonths'
-                                                            ? styles.selectedPremiumOptionHeaderText
-                                                            : styles.unselectedPremiumOptionHeaderText
-                                                    }
-                                                >
-                                                    EN AVANTAJLI
-                                                </Text>
-                                            </View>
-                                            <View
-                                                style={[
-                                                    styles.premiumOptionBottomView,
-                                                    {
-                                                        borderColor:
-                                                            this.state
-                                                                .premiumOption ===
-                                                            'sixMonths'
-                                                                ? 'white'
-                                                                : 'rgba(0, 0, 0, 0)'
-                                                    }
-                                                ]}
-                                            >
-                                                <View
-                                                    style={
-                                                        styles.premiumOptionMonthsView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={
-                                                            this.state
-                                                                .premiumOption ===
-                                                            'sixMonths'
-                                                                ? styles.selectedMonthNumberText
-                                                                : styles.unselectedMonthNumberText
-                                                        }
-                                                    >
-                                                        6
-                                                    </Text>
-                                                    <Text
-                                                        style={
-                                                            this.state
-                                                                .premiumOption ===
-                                                            'sixMonths'
-                                                                ? styles.selectedMonthText
-                                                                : styles.unselectedMonthText
-                                                        }
-                                                    >
-                                                        ay
-                                                    </Text>
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumOptionPriceAmountView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={
-                                                            this.state
-                                                                .premiumOption ===
-                                                            'sixMonths'
-                                                                ? styles.selectedPricePerMonthText
-                                                                : styles.unselectedPricePerMonthText
-                                                        }
-                                                    >
-                                                        2,99 TL/ay
-                                                    </Text>
-                                                    <Text
-                                                        style={
-                                                            this.state
-                                                                .premiumOption ===
-                                                            'sixMonths'
-                                                                ? styles.selectedPriceAmountText
-                                                                : styles.unselectedPriceAmountText
-                                                        }
-                                                    >
-                                                        17,99 TL
-                                                    </Text>
-                                                </View>
-                                            </View>
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View
-                                        style={styles.buttonsInPremiumModalView}
-                                    >
-                                        <TouchableOpacity
-                                            style={styles.purchasePremiumButton}
-                                        >
-                                            <Text
                                                 style={
-                                                    styles.purchasePremiumButtonText
+                                                    styles.purchaseJokerButtonView
                                                 }
                                             >
-                                                HEMEN SATIN AL
-                                            </Text>
+                                                <TouchableOpacity
+                                                    style={
+                                                        styles.purchaseJokerButton
+                                                    }
+                                                >
+                                                    <Text
+                                                        style={
+                                                            styles.discountPriceText
+                                                        }
+                                                    >
+                                                        6 ₺
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            </View>
                                         </TouchableOpacity>
+                                        <View style={styles.bundleDivider} />
                                         <TouchableOpacity
-                                            onPress={() => {
-                                                this.closePremiumView()
-                                            }}
+                                            style={styles.bundleView}
                                         >
-                                            <Text
+                                            <View
                                                 style={
-                                                    styles.purchasePremiumCancelText
+                                                    styles.totalJokerAmountView
                                                 }
                                             >
-                                                HAYIR, TEŞEKKÜRLER
-                                            </Text>
+                                                <Text
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
+                                                >
+                                                    90 Joker
+                                                </Text>
+                                            </View>
+                                            <View style={styles.jokersView}>
+                                                <View style={styles.jokerView}>
+                                                    <Image
+                                                        source={
+                                                            this.state
+                                                                .firstJoker
+                                                                .joker.imageLink
+                                                        }
+                                                        style={styles.jokerImg}
+                                                    />
+                                                    <Text
+                                                        style={
+                                                            styles.jokerAmountText
+                                                        }
+                                                    >
+                                                        x30
+                                                    </Text>
+                                                </View>
+                                                <View style={styles.jokerView}>
+                                                    <Image
+                                                        source={
+                                                            this.state
+                                                                .secondJoker
+                                                                .joker.imageLink
+                                                        }
+                                                        style={styles.jokerImg}
+                                                    />
+                                                    <Text
+                                                        style={
+                                                            styles.jokerAmountText
+                                                        }
+                                                    >
+                                                        x30
+                                                    </Text>
+                                                </View>
+                                                <View style={styles.jokerView}>
+                                                    <Image
+                                                        source={
+                                                            this.state
+                                                                .thirdJoker
+                                                                .joker.imageLink
+                                                        }
+                                                        style={styles.jokerImg}
+                                                    />
+                                                    <Text
+                                                        style={
+                                                            styles.jokerAmountText
+                                                        }
+                                                    >
+                                                        x30
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
+                                                >
+                                                    27 ₺ yerine
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={
+                                                    styles.purchaseJokerButtonView
+                                                }
+                                            >
+                                                <TouchableOpacity
+                                                    style={
+                                                        styles.purchaseJokerButton
+                                                    }
+                                                >
+                                                    <Text
+                                                        style={
+                                                            styles.discountPriceText
+                                                        }
+                                                    >
+                                                        15 ₺
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <View style={styles.bundleDivider} />
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
+                                            <View
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
+                                                >
+                                                    180 Joker
+                                                </Text>
+                                            </View>
+                                            <View style={styles.jokersView}>
+                                                <View style={styles.jokerView}>
+                                                    <Image
+                                                        source={
+                                                            this.state
+                                                                .firstJoker
+                                                                .joker.imageLink
+                                                        }
+                                                        style={styles.jokerImg}
+                                                    />
+                                                    <Text
+                                                        style={
+                                                            styles.jokerAmountText
+                                                        }
+                                                    >
+                                                        x60
+                                                    </Text>
+                                                </View>
+                                                <View style={styles.jokerView}>
+                                                    <Image
+                                                        source={
+                                                            this.state
+                                                                .secondJoker
+                                                                .joker.imageLink
+                                                        }
+                                                        style={styles.jokerImg}
+                                                    />
+                                                    <Text
+                                                        style={
+                                                            styles.jokerAmountText
+                                                        }
+                                                    >
+                                                        x60
+                                                    </Text>
+                                                </View>
+                                                <View style={styles.jokerView}>
+                                                    <Image
+                                                        source={
+                                                            this.state
+                                                                .thirdJoker
+                                                                .joker.imageLink
+                                                        }
+                                                        style={styles.jokerImg}
+                                                    />
+                                                    <Text
+                                                        style={
+                                                            styles.jokerAmountText
+                                                        }
+                                                    >
+                                                        x60
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
+                                                >
+                                                    54 ₺ yerine
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={
+                                                    styles.purchaseJokerButtonView
+                                                }
+                                            >
+                                                <TouchableOpacity
+                                                    style={
+                                                        styles.purchaseJokerButton
+                                                    }
+                                                >
+                                                    <Text
+                                                        style={
+                                                            styles.discountPriceText
+                                                        }
+                                                    >
+                                                        25 ₺
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            </View>
                                         </TouchableOpacity>
                                     </View>
-                                </LinearGradient>
+                                    <View style={styles.swiperView}>
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
+                                            <View
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
+                                                >
+                                                    {
+                                                        this.state.firstJoker
+                                                            .joker.name
+                                                    }
+                                                </Text>
+                                            </View>
+                                            <View style={styles.jokersView}>
+                                                <Image
+                                                    source={
+                                                        this.state.firstJoker
+                                                            .joker.imageLink
+                                                    }
+                                                    style={[
+                                                        styles.jokerImg,
+                                                        {
+                                                            height: hp(4),
+                                                            width: hp(4)
+                                                        }
+                                                    ]}
+                                                />
+                                                <Text
+                                                    style={[
+                                                        styles.jokerAmountText,
+                                                        {
+                                                            fontFamily:
+                                                                'Averta-Semibold',
+                                                            fontSize: hp(3.75),
+                                                            color: '#FF9900'
+                                                        }
+                                                    ]}
+                                                >
+                                                    x30
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
+                                                >
+                                                    12 ₺ yerine
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={
+                                                    styles.purchaseJokerButtonView
+                                                }
+                                            >
+                                                <TouchableOpacity
+                                                    style={
+                                                        styles.purchaseJokerButton
+                                                    }
+                                                >
+                                                    <Text
+                                                        style={
+                                                            styles.discountPriceText
+                                                        }
+                                                    >
+                                                        8 ₺
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <View style={styles.bundleDivider} />
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
+                                            <View
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
+                                                >
+                                                    {
+                                                        this.state.secondJoker
+                                                            .joker.name
+                                                    }
+                                                </Text>
+                                            </View>
+                                            <View style={styles.jokersView}>
+                                                <Image
+                                                    source={
+                                                        this.state.secondJoker
+                                                            .joker.imageLink
+                                                    }
+                                                    style={[
+                                                        styles.jokerImg,
+                                                        {
+                                                            height: hp(4),
+                                                            width: hp(4)
+                                                        }
+                                                    ]}
+                                                />
+                                                <Text
+                                                    style={[
+                                                        styles.jokerAmountText,
+                                                        {
+                                                            fontFamily:
+                                                                'Averta-Semibold',
+                                                            fontSize: hp(3.75),
+                                                            color: '#FF9900'
+                                                        }
+                                                    ]}
+                                                >
+                                                    x30
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
+                                                >
+                                                    8 ₺ yerine
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={
+                                                    styles.purchaseJokerButtonView
+                                                }
+                                            >
+                                                <TouchableOpacity
+                                                    style={
+                                                        styles.purchaseJokerButton
+                                                    }
+                                                >
+                                                    <Text
+                                                        style={
+                                                            styles.discountPriceText
+                                                        }
+                                                    >
+                                                        5 ₺
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <View style={styles.bundleDivider} />
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
+                                            <View
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
+                                                >
+                                                    {
+                                                        this.state.thirdJoker
+                                                            .joker.name
+                                                    }
+                                                </Text>
+                                            </View>
+                                            <View style={styles.jokersView}>
+                                                <Image
+                                                    source={
+                                                        this.state.thirdJoker
+                                                            .joker.imageLink
+                                                    }
+                                                    style={[
+                                                        styles.jokerImg,
+                                                        {
+                                                            height: hp(4),
+                                                            width: hp(4)
+                                                        }
+                                                    ]}
+                                                />
+                                                <Text
+                                                    style={[
+                                                        styles.jokerAmountText,
+                                                        {
+                                                            fontFamily:
+                                                                'Averta-Semibold',
+                                                            fontSize: hp(3.75),
+                                                            color: '#FF9900'
+                                                        }
+                                                    ]}
+                                                >
+                                                    x30
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
+                                                >
+                                                    10 ₺ yerine
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={
+                                                    styles.purchaseJokerButtonView
+                                                }
+                                            >
+                                                <TouchableOpacity
+                                                    style={
+                                                        styles.purchaseJokerButton
+                                                    }
+                                                >
+                                                    <Text
+                                                        style={
+                                                            styles.discountPriceText
+                                                        }
+                                                    >
+                                                        7 ₺
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View style={styles.swiperView}>
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
+                                            <View
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
+                                                >
+                                                    {
+                                                        this.state.firstJoker
+                                                            .joker.name
+                                                    }
+                                                </Text>
+                                            </View>
+                                            <View style={styles.jokersView}>
+                                                <Image
+                                                    source={
+                                                        this.state.firstJoker
+                                                            .joker.imageLink
+                                                    }
+                                                    style={[
+                                                        styles.jokerImg,
+                                                        {
+                                                            height: hp(4),
+                                                            width: hp(4)
+                                                        }
+                                                    ]}
+                                                />
+                                                <Text
+                                                    style={[
+                                                        styles.jokerAmountText,
+                                                        {
+                                                            fontFamily:
+                                                                'Averta-Semibold',
+                                                            fontSize: hp(3.75),
+                                                            color: '#FF9900'
+                                                        }
+                                                    ]}
+                                                >
+                                                    x90
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
+                                                >
+                                                    36 ₺ yerine
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={
+                                                    styles.purchaseJokerButtonView
+                                                }
+                                            >
+                                                <TouchableOpacity
+                                                    style={
+                                                        styles.purchaseJokerButton
+                                                    }
+                                                >
+                                                    <Text
+                                                        style={
+                                                            styles.discountPriceText
+                                                        }
+                                                    >
+                                                        21 ₺
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <View style={styles.bundleDivider} />
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
+                                            <View
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
+                                                >
+                                                    {
+                                                        this.state.secondJoker
+                                                            .joker.name
+                                                    }
+                                                </Text>
+                                            </View>
+                                            <View style={styles.jokersView}>
+                                                <Image
+                                                    source={
+                                                        this.state.secondJoker
+                                                            .joker.imageLink
+                                                    }
+                                                    style={[
+                                                        styles.jokerImg,
+                                                        {
+                                                            height: hp(4),
+                                                            width: hp(4)
+                                                        }
+                                                    ]}
+                                                />
+                                                <Text
+                                                    style={[
+                                                        styles.jokerAmountText,
+                                                        {
+                                                            fontFamily:
+                                                                'Averta-Semibold',
+                                                            fontSize: hp(3.75),
+                                                            color: '#FF9900'
+                                                        }
+                                                    ]}
+                                                >
+                                                    x90
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
+                                                >
+                                                    24 ₺ yerine
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={
+                                                    styles.purchaseJokerButtonView
+                                                }
+                                            >
+                                                <TouchableOpacity
+                                                    style={
+                                                        styles.purchaseJokerButton
+                                                    }
+                                                >
+                                                    <Text
+                                                        style={
+                                                            styles.discountPriceText
+                                                        }
+                                                    >
+                                                        14 ₺
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <View style={styles.bundleDivider} />
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
+                                            <View
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
+                                                >
+                                                    {
+                                                        this.state.thirdJoker
+                                                            .joker.name
+                                                    }
+                                                </Text>
+                                            </View>
+                                            <View style={styles.jokersView}>
+                                                <Image
+                                                    source={
+                                                        this.state.thirdJoker
+                                                            .joker.imageLink
+                                                    }
+                                                    style={[
+                                                        styles.jokerImg,
+                                                        {
+                                                            height: hp(4),
+                                                            width: hp(4)
+                                                        }
+                                                    ]}
+                                                />
+                                                <Text
+                                                    style={[
+                                                        styles.jokerAmountText,
+                                                        {
+                                                            fontFamily:
+                                                                'Averta-Semibold',
+                                                            fontSize: hp(3.75),
+                                                            color: '#FF9900'
+                                                        }
+                                                    ]}
+                                                >
+                                                    x90
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
+                                                >
+                                                    30 ₺ yerine
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={
+                                                    styles.purchaseJokerButtonView
+                                                }
+                                            >
+                                                <TouchableOpacity
+                                                    style={
+                                                        styles.purchaseJokerButton
+                                                    }
+                                                >
+                                                    <Text
+                                                        style={
+                                                            styles.discountPriceText
+                                                        }
+                                                    >
+                                                        18 ₺
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View style={styles.swiperView}>
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
+                                            <View
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
+                                                >
+                                                    {
+                                                        this.state.firstJoker
+                                                            .joker.name
+                                                    }
+                                                </Text>
+                                            </View>
+                                            <View style={styles.jokersView}>
+                                                <Image
+                                                    source={
+                                                        this.state.firstJoker
+                                                            .joker.imageLink
+                                                    }
+                                                    style={[
+                                                        styles.jokerImg,
+                                                        {
+                                                            height: hp(4),
+                                                            width: hp(4)
+                                                        }
+                                                    ]}
+                                                />
+                                                <Text
+                                                    style={[
+                                                        styles.jokerAmountText,
+                                                        {
+                                                            fontFamily:
+                                                                'Averta-Semibold',
+                                                            fontSize: hp(3.75),
+                                                            color: '#FF9900'
+                                                        }
+                                                    ]}
+                                                >
+                                                    x180
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
+                                                >
+                                                    72 ₺ yerine
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={
+                                                    styles.purchaseJokerButtonView
+                                                }
+                                            >
+                                                <TouchableOpacity
+                                                    style={
+                                                        styles.purchaseJokerButton
+                                                    }
+                                                >
+                                                    <Text
+                                                        style={
+                                                            styles.discountPriceText
+                                                        }
+                                                    >
+                                                        36 ₺
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <View style={styles.bundleDivider} />
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
+                                            <View
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
+                                                >
+                                                    {
+                                                        this.state.secondJoker
+                                                            .joker.name
+                                                    }
+                                                </Text>
+                                            </View>
+                                            <View style={styles.jokersView}>
+                                                <Image
+                                                    source={
+                                                        this.state.secondJoker
+                                                            .joker.imageLink
+                                                    }
+                                                    style={[
+                                                        styles.jokerImg,
+                                                        {
+                                                            height: hp(4),
+                                                            width: hp(4)
+                                                        }
+                                                    ]}
+                                                />
+                                                <Text
+                                                    style={[
+                                                        styles.jokerAmountText,
+                                                        {
+                                                            fontFamily:
+                                                                'Averta-Semibold',
+                                                            fontSize: hp(3.75),
+                                                            color: '#FF9900'
+                                                        }
+                                                    ]}
+                                                >
+                                                    x180
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
+                                                >
+                                                    48 ₺ yerine
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={
+                                                    styles.purchaseJokerButtonView
+                                                }
+                                            >
+                                                <TouchableOpacity
+                                                    style={
+                                                        styles.purchaseJokerButton
+                                                    }
+                                                >
+                                                    <Text
+                                                        style={
+                                                            styles.discountPriceText
+                                                        }
+                                                    >
+                                                        27 ₺
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <View style={styles.bundleDivider} />
+                                        <TouchableOpacity
+                                            style={styles.bundleView}
+                                        >
+                                            <View
+                                                style={
+                                                    styles.totalJokerAmountView
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.jokerAmountsText
+                                                    }
+                                                >
+                                                    {
+                                                        this.state.thirdJoker
+                                                            .joker.name
+                                                    }
+                                                </Text>
+                                            </View>
+                                            <View style={styles.jokersView}>
+                                                <Image
+                                                    source={
+                                                        this.state.thirdJoker
+                                                            .joker.imageLink
+                                                    }
+                                                    style={[
+                                                        styles.jokerImg,
+                                                        {
+                                                            height: hp(4),
+                                                            width: hp(4)
+                                                        }
+                                                    ]}
+                                                />
+                                                <Text
+                                                    style={[
+                                                        styles.jokerAmountText,
+                                                        {
+                                                            fontFamily:
+                                                                'Averta-Semibold',
+                                                            fontSize: hp(3.75),
+                                                            color: '#FF9900'
+                                                        }
+                                                    ]}
+                                                >
+                                                    x180
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={styles.jokerPricesView}
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.normalPriceText
+                                                    }
+                                                >
+                                                    60 ₺ yerine
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={
+                                                    styles.purchaseJokerButtonView
+                                                }
+                                            >
+                                                <TouchableOpacity
+                                                    style={
+                                                        styles.purchaseJokerButton
+                                                    }
+                                                >
+                                                    <Text
+                                                        style={
+                                                            styles.discountPriceText
+                                                        }
+                                                    >
+                                                        30 ₺
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
+                                </Swiper>
                             </View>
                         </View>
-                    </Modal>
-                    <View style={styles.bundlesContainer}>
-                        <View style={styles.bundlesView}>
-                            <Swiper
-                                loop={false}
-                                paginationStyle={{ bottom: hp(0.25) }}
-                                activeDot={
-                                    <View
-                                        style={{
-                                            height: hp(1.5),
-                                            width: hp(1.5),
-                                            backgroundColor: '#00D9EF',
-                                            borderRadius: hp(100),
-                                            marginLeft: wp(1),
-                                            marginRight: wp(1)
-                                        }}
-                                    />
-                                }
-                                dot={
-                                    <View
-                                        style={{
-                                            height: hp(1.5),
-                                            width: hp(1.5),
-                                            backgroundColor: 'rgba(0,0,0,.2)',
-                                            borderRadius: hp(100),
-                                            marginLeft: wp(1),
-                                            marginRight: wp(1)
-                                        }}
-                                    />
-                                }
-                            >
-                                <View style={styles.swiperView}>
-                                    <TouchableOpacity style={styles.bundleView}>
-                                        <View
-                                            style={styles.totalJokerAmountView}
-                                        >
-                                            <Text
-                                                style={styles.jokerAmountsText}
-                                            >
-                                                30 Joker
-                                            </Text>
-                                        </View>
-                                        <View style={styles.jokersView}>
-                                            <View style={styles.jokerView}>
-                                                <Image
-                                                    source={
-                                                        this.state.firstJoker
-                                                            .joker.imageLink
-                                                    }
-                                                    style={styles.jokerImg}
-                                                />
-                                                <Text
-                                                    style={
-                                                        styles.jokerAmountText
-                                                    }
-                                                >
-                                                    x10
-                                                </Text>
-                                            </View>
-                                            <View style={styles.jokerView}>
-                                                <Image
-                                                    source={
-                                                        this.state.secondJoker
-                                                            .joker.imageLink
-                                                    }
-                                                    style={styles.jokerImg}
-                                                />
-                                                <Text
-                                                    style={
-                                                        styles.jokerAmountText
-                                                    }
-                                                >
-                                                    x10
-                                                </Text>
-                                            </View>
-                                            <View style={styles.jokerView}>
-                                                <Image
-                                                    source={
-                                                        this.state.thirdJoker
-                                                            .joker.imageLink
-                                                    }
-                                                    style={styles.jokerImg}
-                                                />
-                                                <Text
-                                                    style={
-                                                        styles.jokerAmountText
-                                                    }
-                                                >
-                                                    x10
-                                                </Text>
-                                            </View>
-                                        </View>
-                                        <View style={styles.jokerPricesView}>
-                                            <Text
-                                                style={styles.normalPriceText}
-                                            >
-                                                9 ₺ yerine
-                                            </Text>
-                                        </View>
-                                        <View
-                                            style={
-                                                styles.purchaseJokerButtonView
-                                            }
-                                        >
-                                            <TouchableOpacity
-                                                style={
-                                                    styles.purchaseJokerButton
-                                                }
-                                            >
-                                                <Text
-                                                    style={
-                                                        styles.discountPriceText
-                                                    }
-                                                >
-                                                    6 ₺
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </View>
+                        {this.props.clientInformation.isPremium === false && (
+                            <View style={{ flex: 47.5, width: wp(93) }}>
+                                <View style={styles.adsContainer}>
+                                    <TouchableOpacity
+                                        onPress={this.firstJokerRewardOnPress}
+                                    >
+                                        <Image
+                                            source={FIRST_JOKER_AD_BUTTON_2}
+                                            style={styles.adButton2}
+                                        />
                                     </TouchableOpacity>
-                                    <View style={styles.bundleDivider} />
-                                    <TouchableOpacity style={styles.bundleView}>
-                                        <View
-                                            style={styles.totalJokerAmountView}
-                                        >
-                                            <Text
-                                                style={styles.jokerAmountsText}
-                                            >
-                                                90 Joker
-                                            </Text>
-                                        </View>
-                                        <View style={styles.jokersView}>
-                                            <View style={styles.jokerView}>
-                                                <Image
-                                                    source={
-                                                        this.state.firstJoker
-                                                            .joker.imageLink
-                                                    }
-                                                    style={styles.jokerImg}
-                                                />
-                                                <Text
-                                                    style={
-                                                        styles.jokerAmountText
-                                                    }
-                                                >
-                                                    x30
-                                                </Text>
-                                            </View>
-                                            <View style={styles.jokerView}>
-                                                <Image
-                                                    source={
-                                                        this.state.secondJoker
-                                                            .joker.imageLink
-                                                    }
-                                                    style={styles.jokerImg}
-                                                />
-                                                <Text
-                                                    style={
-                                                        styles.jokerAmountText
-                                                    }
-                                                >
-                                                    x30
-                                                </Text>
-                                            </View>
-                                            <View style={styles.jokerView}>
-                                                <Image
-                                                    source={
-                                                        this.state.thirdJoker
-                                                            .joker.imageLink
-                                                    }
-                                                    style={styles.jokerImg}
-                                                />
-                                                <Text
-                                                    style={
-                                                        styles.jokerAmountText
-                                                    }
-                                                >
-                                                    x30
-                                                </Text>
-                                            </View>
-                                        </View>
-                                        <View style={styles.jokerPricesView}>
-                                            <Text
-                                                style={styles.normalPriceText}
-                                            >
-                                                27 ₺ yerine
-                                            </Text>
-                                        </View>
-                                        <View
-                                            style={
-                                                styles.purchaseJokerButtonView
-                                            }
-                                        >
-                                            <TouchableOpacity
-                                                style={
-                                                    styles.purchaseJokerButton
-                                                }
-                                            >
-                                                <Text
-                                                    style={
-                                                        styles.discountPriceText
-                                                    }
-                                                >
-                                                    15 ₺
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </View>
+                                    <TouchableOpacity
+                                        onPress={this.secondJokerRewardOnPress}
+                                    >
+                                        <Image
+                                            source={SECOND_JOKER_AD_BUTTON_2}
+                                            style={styles.adButton2}
+                                        />
                                     </TouchableOpacity>
-                                    <View style={styles.bundleDivider} />
-                                    <TouchableOpacity style={styles.bundleView}>
-                                        <View
-                                            style={styles.totalJokerAmountView}
-                                        >
-                                            <Text
-                                                style={styles.jokerAmountsText}
-                                            >
-                                                180 Joker
-                                            </Text>
-                                        </View>
-                                        <View style={styles.jokersView}>
-                                            <View style={styles.jokerView}>
-                                                <Image
-                                                    source={
-                                                        this.state.firstJoker
-                                                            .joker.imageLink
-                                                    }
-                                                    style={styles.jokerImg}
-                                                />
-                                                <Text
-                                                    style={
-                                                        styles.jokerAmountText
-                                                    }
-                                                >
-                                                    x60
-                                                </Text>
-                                            </View>
-                                            <View style={styles.jokerView}>
-                                                <Image
-                                                    source={
-                                                        this.state.secondJoker
-                                                            .joker.imageLink
-                                                    }
-                                                    style={styles.jokerImg}
-                                                />
-                                                <Text
-                                                    style={
-                                                        styles.jokerAmountText
-                                                    }
-                                                >
-                                                    x60
-                                                </Text>
-                                            </View>
-                                            <View style={styles.jokerView}>
-                                                <Image
-                                                    source={
-                                                        this.state.thirdJoker
-                                                            .joker.imageLink
-                                                    }
-                                                    style={styles.jokerImg}
-                                                />
-                                                <Text
-                                                    style={
-                                                        styles.jokerAmountText
-                                                    }
-                                                >
-                                                    x60
-                                                </Text>
-                                            </View>
-                                        </View>
-                                        <View style={styles.jokerPricesView}>
-                                            <Text
-                                                style={styles.normalPriceText}
-                                            >
-                                                54 ₺ yerine
-                                            </Text>
-                                        </View>
-                                        <View
-                                            style={
-                                                styles.purchaseJokerButtonView
-                                            }
-                                        >
-                                            <TouchableOpacity
-                                                style={
-                                                    styles.purchaseJokerButton
-                                                }
-                                            >
-                                                <Text
-                                                    style={
-                                                        styles.discountPriceText
-                                                    }
-                                                >
-                                                    25 ₺
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </View>
+                                    <TouchableOpacity
+                                        onPress={this.thirdJokerRewardOnPress}
+                                    >
+                                        <Image
+                                            source={THIRD_JOKER_AD_BUTTON_2}
+                                            style={styles.adButton2}
+                                        />
                                     </TouchableOpacity>
                                 </View>
-                                <View style={styles.swiperView}>
-                                    <TouchableOpacity style={styles.bundleView}>
-                                        <View
-                                            style={styles.totalJokerAmountView}
-                                        >
-                                            <Text
-                                                style={styles.jokerAmountsText}
-                                            >
-                                                {
-                                                    this.state.firstJoker.joker
-                                                        .name
-                                                }
-                                            </Text>
-                                        </View>
-                                        <View style={styles.jokersView}>
-                                            <Image
-                                                source={
-                                                    this.state.firstJoker.joker
-                                                        .imageLink
-                                                }
-                                                style={[
-                                                    styles.jokerImg,
-                                                    {
-                                                        height: hp(4),
-                                                        width: hp(4)
-                                                    }
-                                                ]}
-                                            />
-                                            <Text
-                                                style={[
-                                                    styles.jokerAmountText,
-                                                    {
-                                                        fontFamily:
-                                                            'Averta-Semibold',
-                                                        fontSize: hp(3.75),
-                                                        color: '#FF9900'
-                                                    }
-                                                ]}
-                                            >
-                                                x30
-                                            </Text>
-                                        </View>
-                                        <View style={styles.jokerPricesView}>
-                                            <Text
-                                                style={styles.normalPriceText}
-                                            >
-                                                12 ₺ yerine
-                                            </Text>
-                                        </View>
+                                <View style={styles.premiumContainer}>
+                                    <LinearGradient
+                                        colors={['white', '#F3CE97']}
+                                        style={styles.premiumUpperView}
+                                    >
                                         <View
                                             style={
-                                                styles.purchaseJokerButtonView
+                                                styles.premiumSwiperContainer
                                             }
                                         >
+                                            <Swiper
+                                                autoplay={true}
+                                                loop={true}
+                                                loadMinimal={false}
+                                                showsPagination={false}
+                                                scrollEnabled={false}
+                                                autoplayTimeout={5}
+                                            >
+                                                <View
+                                                    style={
+                                                        styles.premiumSwiperView
+                                                    }
+                                                >
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperImgView
+                                                        }
+                                                    >
+                                                        <Image
+                                                            source={PREMIUM_ADS}
+                                                            style={
+                                                                styles.premiumImg
+                                                            }
+                                                        />
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperHeaderView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumHeaderText
+                                                            }
+                                                        >
+                                                            Reklam Yok!
+                                                        </Text>
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperInfoView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumInfoText
+                                                            }
+                                                        >
+                                                            Reklamsız oyun
+                                                            oynamanın keyfini
+                                                            sen de çıkar
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                                <View
+                                                    style={
+                                                        styles.premiumSwiperView
+                                                    }
+                                                >
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperImgView
+                                                        }
+                                                    >
+                                                        <Image
+                                                            source={PREMIUM_FAV}
+                                                            style={
+                                                                styles.premiumImg
+                                                            }
+                                                        />
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperHeaderView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumHeaderText
+                                                            }
+                                                        >
+                                                            Soru favorile!
+                                                        </Text>
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperInfoView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumInfoText
+                                                            }
+                                                        >
+                                                            Hoşuna giden ya da
+                                                            sonra tekrar bakmak
+                                                            istediğin soruları
+                                                            favorile
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                                <View
+                                                    style={
+                                                        styles.premiumSwiperView
+                                                    }
+                                                >
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperImgView
+                                                        }
+                                                    >
+                                                        <Image
+                                                            source={PREMIUM_MAP}
+                                                            style={
+                                                                styles.premiumImg
+                                                            }
+                                                        />
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperHeaderView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumHeaderText
+                                                            }
+                                                        >
+                                                            Türkiye geneli
+                                                            deneme sınavları!
+                                                        </Text>
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperInfoView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumInfoText
+                                                            }
+                                                        >
+                                                            Ülke çapındaki
+                                                            deneme sınavlarına
+                                                            ücretsiz katıl, tüm
+                                                            öğrenciler
+                                                            arasındaki
+                                                            sıralamanı gör
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                                <View
+                                                    style={
+                                                        styles.premiumSwiperView
+                                                    }
+                                                >
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperImgView
+                                                        }
+                                                    >
+                                                        <Image
+                                                            source={
+                                                                PREMIUM_SINGLE_MODE
+                                                            }
+                                                            style={
+                                                                styles.premiumImg
+                                                            }
+                                                        />
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperHeaderView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumHeaderText
+                                                            }
+                                                        >
+                                                            Tek başına!
+                                                        </Text>
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperInfoView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumInfoText
+                                                            }
+                                                        >
+                                                            "Tek rakibim kendim"
+                                                            diyenler için tek
+                                                            başına soru
+                                                            çözebilme imkanı
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                                <View
+                                                    style={
+                                                        styles.premiumSwiperView
+                                                    }
+                                                >
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperImgView
+                                                        }
+                                                    >
+                                                        <Image
+                                                            source={
+                                                                PREMIUM_BACK
+                                                            }
+                                                            style={
+                                                                styles.premiumImg
+                                                            }
+                                                        />
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperHeaderView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumHeaderText
+                                                            }
+                                                        >
+                                                            Çözülmedik soru
+                                                            kalmasın!
+                                                        </Text>
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperInfoView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumInfoText
+                                                            }
+                                                        >
+                                                            Boş bıraktığın veya
+                                                            yanlış yaptığın
+                                                            soruları tekrar
+                                                            tekrar çözme fırsatı
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                                <View
+                                                    style={
+                                                        styles.premiumSwiperView
+                                                    }
+                                                >
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperImgView
+                                                        }
+                                                    >
+                                                        <Image
+                                                            source={
+                                                                PREMIUM_JOKER
+                                                            }
+                                                            style={
+                                                                styles.premiumImg
+                                                            }
+                                                        />
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperHeaderView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumHeaderText
+                                                            }
+                                                        >
+                                                            Günlük joker!
+                                                        </Text>
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperInfoView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumInfoText
+                                                            }
+                                                        >
+                                                            Her gün sana verilen
+                                                            jokerler ile
+                                                            soruların cevabına 1
+                                                            adım daha yaklaş,
+                                                            rakiplerinin önüne
+                                                            geç
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                            </Swiper>
+                                        </View>
+                                        <View style={styles.premiumButtonView}>
                                             <TouchableOpacity
-                                                style={
-                                                    styles.purchaseJokerButton
+                                                onPress={
+                                                    this.onPressPremiumView
                                                 }
+                                                style={styles.premiumButton}
                                             >
                                                 <Text
                                                     style={
-                                                        styles.discountPriceText
+                                                        styles.premiumButtonText
                                                     }
                                                 >
-                                                    8 ₺
+                                                    ELİT ÖĞRENCİ PAKETİ'Nİ ŞİMDİ
+                                                    AL
                                                 </Text>
                                             </TouchableOpacity>
                                         </View>
-                                    </TouchableOpacity>
-                                    <View style={styles.bundleDivider} />
-                                    <TouchableOpacity style={styles.bundleView}>
-                                        <View
-                                            style={styles.totalJokerAmountView}
-                                        >
-                                            <Text
-                                                style={styles.jokerAmountsText}
-                                            >
-                                                {
-                                                    this.state.secondJoker.joker
-                                                        .name
-                                                }
-                                            </Text>
-                                        </View>
-                                        <View style={styles.jokersView}>
-                                            <Image
-                                                source={
-                                                    this.state.secondJoker.joker
-                                                        .imageLink
-                                                }
-                                                style={[
-                                                    styles.jokerImg,
-                                                    {
-                                                        height: hp(4),
-                                                        width: hp(4)
-                                                    }
-                                                ]}
-                                            />
-                                            <Text
-                                                style={[
-                                                    styles.jokerAmountText,
-                                                    {
-                                                        fontFamily:
-                                                            'Averta-Semibold',
-                                                        fontSize: hp(3.75),
-                                                        color: '#FF9900'
-                                                    }
-                                                ]}
-                                            >
-                                                x30
-                                            </Text>
-                                        </View>
-                                        <View style={styles.jokerPricesView}>
-                                            <Text
-                                                style={styles.normalPriceText}
-                                            >
-                                                8 ₺ yerine
-                                            </Text>
-                                        </View>
-                                        <View
+                                    </LinearGradient>
+                                    <TouchableOpacity
+                                        onPress={this.onPressPromotionCodeView}
+                                        style={styles.premiumBottomView}
+                                    >
+                                        <Text style={styles.inviteText}>
+                                            Arkadaşını davet et veya çekiliş
+                                            kodunu gir
+                                        </Text>
+                                        <Text
                                             style={
-                                                styles.purchaseJokerButtonView
+                                                styles.earnPremiumWithInviteText
                                             }
                                         >
-                                            <TouchableOpacity
-                                                style={
-                                                    styles.purchaseJokerButton
-                                                }
-                                            >
-                                                <Text
-                                                    style={
-                                                        styles.discountPriceText
-                                                    }
-                                                >
-                                                    5 ₺
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </TouchableOpacity>
-                                    <View style={styles.bundleDivider} />
-                                    <TouchableOpacity style={styles.bundleView}>
-                                        <View
-                                            style={styles.totalJokerAmountView}
-                                        >
-                                            <Text
-                                                style={styles.jokerAmountsText}
-                                            >
-                                                {
-                                                    this.state.thirdJoker.joker
-                                                        .name
-                                                }
-                                            </Text>
-                                        </View>
-                                        <View style={styles.jokersView}>
-                                            <Image
-                                                source={
-                                                    this.state.thirdJoker.joker
-                                                        .imageLink
-                                                }
-                                                style={[
-                                                    styles.jokerImg,
-                                                    {
-                                                        height: hp(4),
-                                                        width: hp(4)
-                                                    }
-                                                ]}
-                                            />
-                                            <Text
-                                                style={[
-                                                    styles.jokerAmountText,
-                                                    {
-                                                        fontFamily:
-                                                            'Averta-Semibold',
-                                                        fontSize: hp(3.75),
-                                                        color: '#FF9900'
-                                                    }
-                                                ]}
-                                            >
-                                                x30
-                                            </Text>
-                                        </View>
-                                        <View style={styles.jokerPricesView}>
-                                            <Text
-                                                style={styles.normalPriceText}
-                                            >
-                                                10 ₺ yerine
-                                            </Text>
-                                        </View>
-                                        <View
-                                            style={
-                                                styles.purchaseJokerButtonView
-                                            }
-                                        >
-                                            <TouchableOpacity
-                                                style={
-                                                    styles.purchaseJokerButton
-                                                }
-                                            >
-                                                <Text
-                                                    style={
-                                                        styles.discountPriceText
-                                                    }
-                                                >
-                                                    7 ₺
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={styles.swiperView}>
-                                    <TouchableOpacity style={styles.bundleView}>
-                                        <View
-                                            style={styles.totalJokerAmountView}
-                                        >
-                                            <Text
-                                                style={styles.jokerAmountsText}
-                                            >
-                                                {
-                                                    this.state.firstJoker.joker
-                                                        .name
-                                                }
-                                            </Text>
-                                        </View>
-                                        <View style={styles.jokersView}>
-                                            <Image
-                                                source={
-                                                    this.state.firstJoker.joker
-                                                        .imageLink
-                                                }
-                                                style={[
-                                                    styles.jokerImg,
-                                                    {
-                                                        height: hp(4),
-                                                        width: hp(4)
-                                                    }
-                                                ]}
-                                            />
-                                            <Text
-                                                style={[
-                                                    styles.jokerAmountText,
-                                                    {
-                                                        fontFamily:
-                                                            'Averta-Semibold',
-                                                        fontSize: hp(3.75),
-                                                        color: '#FF9900'
-                                                    }
-                                                ]}
-                                            >
-                                                x90
-                                            </Text>
-                                        </View>
-                                        <View style={styles.jokerPricesView}>
-                                            <Text
-                                                style={styles.normalPriceText}
-                                            >
-                                                36 ₺ yerine
-                                            </Text>
-                                        </View>
-                                        <View
-                                            style={
-                                                styles.purchaseJokerButtonView
-                                            }
-                                        >
-                                            <TouchableOpacity
-                                                style={
-                                                    styles.purchaseJokerButton
-                                                }
-                                            >
-                                                <Text
-                                                    style={
-                                                        styles.discountPriceText
-                                                    }
-                                                >
-                                                    21 ₺
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </TouchableOpacity>
-                                    <View style={styles.bundleDivider} />
-                                    <TouchableOpacity style={styles.bundleView}>
-                                        <View
-                                            style={styles.totalJokerAmountView}
-                                        >
-                                            <Text
-                                                style={styles.jokerAmountsText}
-                                            >
-                                                {
-                                                    this.state.secondJoker.joker
-                                                        .name
-                                                }
-                                            </Text>
-                                        </View>
-                                        <View style={styles.jokersView}>
-                                            <Image
-                                                source={
-                                                    this.state.secondJoker.joker
-                                                        .imageLink
-                                                }
-                                                style={[
-                                                    styles.jokerImg,
-                                                    {
-                                                        height: hp(4),
-                                                        width: hp(4)
-                                                    }
-                                                ]}
-                                            />
-                                            <Text
-                                                style={[
-                                                    styles.jokerAmountText,
-                                                    {
-                                                        fontFamily:
-                                                            'Averta-Semibold',
-                                                        fontSize: hp(3.75),
-                                                        color: '#FF9900'
-                                                    }
-                                                ]}
-                                            >
-                                                x90
-                                            </Text>
-                                        </View>
-                                        <View style={styles.jokerPricesView}>
-                                            <Text
-                                                style={styles.normalPriceText}
-                                            >
-                                                24 ₺ yerine
-                                            </Text>
-                                        </View>
-                                        <View
-                                            style={
-                                                styles.purchaseJokerButtonView
-                                            }
-                                        >
-                                            <TouchableOpacity
-                                                style={
-                                                    styles.purchaseJokerButton
-                                                }
-                                            >
-                                                <Text
-                                                    style={
-                                                        styles.discountPriceText
-                                                    }
-                                                >
-                                                    14 ₺
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </TouchableOpacity>
-                                    <View style={styles.bundleDivider} />
-                                    <TouchableOpacity style={styles.bundleView}>
-                                        <View
-                                            style={styles.totalJokerAmountView}
-                                        >
-                                            <Text
-                                                style={styles.jokerAmountsText}
-                                            >
-                                                {
-                                                    this.state.thirdJoker.joker
-                                                        .name
-                                                }
-                                            </Text>
-                                        </View>
-                                        <View style={styles.jokersView}>
-                                            <Image
-                                                source={
-                                                    this.state.thirdJoker.joker
-                                                        .imageLink
-                                                }
-                                                style={[
-                                                    styles.jokerImg,
-                                                    {
-                                                        height: hp(4),
-                                                        width: hp(4)
-                                                    }
-                                                ]}
-                                            />
-                                            <Text
-                                                style={[
-                                                    styles.jokerAmountText,
-                                                    {
-                                                        fontFamily:
-                                                            'Averta-Semibold',
-                                                        fontSize: hp(3.75),
-                                                        color: '#FF9900'
-                                                    }
-                                                ]}
-                                            >
-                                                x90
-                                            </Text>
-                                        </View>
-                                        <View style={styles.jokerPricesView}>
-                                            <Text
-                                                style={styles.normalPriceText}
-                                            >
-                                                30 ₺ yerine
-                                            </Text>
-                                        </View>
-                                        <View
-                                            style={
-                                                styles.purchaseJokerButtonView
-                                            }
-                                        >
-                                            <TouchableOpacity
-                                                style={
-                                                    styles.purchaseJokerButton
-                                                }
-                                            >
-                                                <Text
-                                                    style={
-                                                        styles.discountPriceText
-                                                    }
-                                                >
-                                                    18 ₺
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </View>
+                                            ELİT ÖĞRENCİ PAKETİ Kazan!
+                                        </Text>
                                     </TouchableOpacity>
                                 </View>
-                                <View style={styles.swiperView}>
-                                    <TouchableOpacity style={styles.bundleView}>
-                                        <View
-                                            style={styles.totalJokerAmountView}
-                                        >
-                                            <Text
-                                                style={styles.jokerAmountsText}
-                                            >
-                                                {
-                                                    this.state.firstJoker.joker
-                                                        .name
-                                                }
-                                            </Text>
-                                        </View>
-                                        <View style={styles.jokersView}>
-                                            <Image
-                                                source={
-                                                    this.state.firstJoker.joker
-                                                        .imageLink
-                                                }
-                                                style={[
-                                                    styles.jokerImg,
-                                                    {
-                                                        height: hp(4),
-                                                        width: hp(4)
-                                                    }
-                                                ]}
-                                            />
-                                            <Text
-                                                style={[
-                                                    styles.jokerAmountText,
-                                                    {
-                                                        fontFamily:
-                                                            'Averta-Semibold',
-                                                        fontSize: hp(3.75),
-                                                        color: '#FF9900'
-                                                    }
-                                                ]}
-                                            >
-                                                x180
-                                            </Text>
-                                        </View>
-                                        <View style={styles.jokerPricesView}>
-                                            <Text
-                                                style={styles.normalPriceText}
-                                            >
-                                                72 ₺ yerine
-                                            </Text>
-                                        </View>
-                                        <View
-                                            style={
-                                                styles.purchaseJokerButtonView
-                                            }
-                                        >
-                                            <TouchableOpacity
-                                                style={
-                                                    styles.purchaseJokerButton
-                                                }
-                                            >
-                                                <Text
-                                                    style={
-                                                        styles.discountPriceText
-                                                    }
-                                                >
-                                                    36 ₺
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </TouchableOpacity>
-                                    <View style={styles.bundleDivider} />
-                                    <TouchableOpacity style={styles.bundleView}>
-                                        <View
-                                            style={styles.totalJokerAmountView}
-                                        >
-                                            <Text
-                                                style={styles.jokerAmountsText}
-                                            >
-                                                {
-                                                    this.state.secondJoker.joker
-                                                        .name
-                                                }
-                                            </Text>
-                                        </View>
-                                        <View style={styles.jokersView}>
-                                            <Image
-                                                source={
-                                                    this.state.secondJoker.joker
-                                                        .imageLink
-                                                }
-                                                style={[
-                                                    styles.jokerImg,
-                                                    {
-                                                        height: hp(4),
-                                                        width: hp(4)
-                                                    }
-                                                ]}
-                                            />
-                                            <Text
-                                                style={[
-                                                    styles.jokerAmountText,
-                                                    {
-                                                        fontFamily:
-                                                            'Averta-Semibold',
-                                                        fontSize: hp(3.75),
-                                                        color: '#FF9900'
-                                                    }
-                                                ]}
-                                            >
-                                                x180
-                                            </Text>
-                                        </View>
-                                        <View style={styles.jokerPricesView}>
-                                            <Text
-                                                style={styles.normalPriceText}
-                                            >
-                                                48 ₺ yerine
-                                            </Text>
-                                        </View>
-                                        <View
-                                            style={
-                                                styles.purchaseJokerButtonView
-                                            }
-                                        >
-                                            <TouchableOpacity
-                                                style={
-                                                    styles.purchaseJokerButton
-                                                }
-                                            >
-                                                <Text
-                                                    style={
-                                                        styles.discountPriceText
-                                                    }
-                                                >
-                                                    27 ₺
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </TouchableOpacity>
-                                    <View style={styles.bundleDivider} />
-                                    <TouchableOpacity style={styles.bundleView}>
-                                        <View
-                                            style={styles.totalJokerAmountView}
-                                        >
-                                            <Text
-                                                style={styles.jokerAmountsText}
-                                            >
-                                                {
-                                                    this.state.thirdJoker.joker
-                                                        .name
-                                                }
-                                            </Text>
-                                        </View>
-                                        <View style={styles.jokersView}>
-                                            <Image
-                                                source={
-                                                    this.state.thirdJoker.joker
-                                                        .imageLink
-                                                }
-                                                style={[
-                                                    styles.jokerImg,
-                                                    {
-                                                        height: hp(4),
-                                                        width: hp(4)
-                                                    }
-                                                ]}
-                                            />
-                                            <Text
-                                                style={[
-                                                    styles.jokerAmountText,
-                                                    {
-                                                        fontFamily:
-                                                            'Averta-Semibold',
-                                                        fontSize: hp(3.75),
-                                                        color: '#FF9900'
-                                                    }
-                                                ]}
-                                            >
-                                                x180
-                                            </Text>
-                                        </View>
-                                        <View style={styles.jokerPricesView}>
-                                            <Text
-                                                style={styles.normalPriceText}
-                                            >
-                                                60 ₺ yerine
-                                            </Text>
-                                        </View>
-                                        <View
-                                            style={
-                                                styles.purchaseJokerButtonView
-                                            }
-                                        >
-                                            <TouchableOpacity
-                                                style={
-                                                    styles.purchaseJokerButton
-                                                }
-                                            >
-                                                <Text
-                                                    style={
-                                                        styles.discountPriceText
-                                                    }
-                                                >
-                                                    30 ₺
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
-                            </Swiper>
-                        </View>
-                    </View>
-                    {this.props.clientInformation.isPremium === false && (
-                        <View style={{ flex: 47.5, width: wp(93) }}>
-                            <View style={styles.adsContainer}>
+                            </View>
+                        )}
+                        {this.props.clientInformation.isPremium && (
+                            <View style={styles.premiumUserAddButtonsContainer}>
                                 <TouchableOpacity
                                     onPress={this.firstJokerRewardOnPress}
                                 >
                                     <Image
-                                        source={FIRST_JOKER_AD_BUTTON_2}
-                                        style={styles.adButton2}
+                                        source={FIRST_JOKER_AD_BUTTON}
+                                        style={
+                                            styles.premiumUserJokerButtonStyle
+                                        }
                                     />
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={this.secondJokerRewardOnPress}
                                 >
                                     <Image
-                                        source={SECOND_JOKER_AD_BUTTON_2}
-                                        style={styles.adButton2}
+                                        source={SECOND_JOKER_AD_BUTTON}
+                                        style={
+                                            styles.premiumUserJokerButtonStyle
+                                        }
                                     />
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={this.thirdJokerRewardOnPress}
                                 >
                                     <Image
-                                        source={THIRD_JOKER_AD_BUTTON_2}
-                                        style={styles.adButton2}
+                                        source={THIRD_JOKER_AD_BUTTON}
+                                        style={
+                                            styles.premiumUserJokerButtonStyle
+                                        }
                                     />
                                 </TouchableOpacity>
                             </View>
-                            <View style={styles.premiumContainer}>
-                                <LinearGradient
-                                    colors={['white', '#F3CE97']}
-                                    style={styles.premiumUpperView}
+                        )}
+                        <View style={styles.socialMediaContainer}>
+                            {this.props.clientInformation.isPremium && (
+                                <View
+                                    style={{
+                                        width: wp(93),
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between'
+                                    }}
                                 >
-                                    <View style={styles.premiumSwiperContainer}>
-                                        <Swiper
-                                            autoplay={true}
-                                            loop={true}
-                                            loadMinimal={false}
-                                            showsPagination={false}
-                                            scrollEnabled={false}
-                                            autoplayTimeout={5}
-                                        >
-                                            <View
-                                                style={styles.premiumSwiperView}
-                                            >
-                                                <View
-                                                    style={
-                                                        styles.premiumSwiperImgView
-                                                    }
-                                                >
-                                                    <Image
-                                                        source={PREMIUM_ADS}
-                                                        style={
-                                                            styles.premiumImg
-                                                        }
-                                                    />
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumSwiperHeaderView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={
-                                                            styles.premiumHeaderText
-                                                        }
-                                                    >
-                                                        Reklam Yok!
-                                                    </Text>
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumSwiperInfoView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={
-                                                            styles.premiumInfoText
-                                                        }
-                                                    >
-                                                        Reklamsız oyun oynamanın
-                                                        keyfini sen de çıkar
-                                                    </Text>
-                                                </View>
-                                            </View>
-                                            <View
-                                                style={styles.premiumSwiperView}
-                                            >
-                                                <View
-                                                    style={
-                                                        styles.premiumSwiperImgView
-                                                    }
-                                                >
-                                                    <Image
-                                                        source={PREMIUM_FAV}
-                                                        style={
-                                                            styles.premiumImg
-                                                        }
-                                                    />
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumSwiperHeaderView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={
-                                                            styles.premiumHeaderText
-                                                        }
-                                                    >
-                                                        Soru favorile!
-                                                    </Text>
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumSwiperInfoView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={
-                                                            styles.premiumInfoText
-                                                        }
-                                                    >
-                                                        Hoşuna giden ya da sonra
-                                                        tekrar bakmak istediğin
-                                                        soruları favorile
-                                                    </Text>
-                                                </View>
-                                            </View>
-                                            <View
-                                                style={styles.premiumSwiperView}
-                                            >
-                                                <View
-                                                    style={
-                                                        styles.premiumSwiperImgView
-                                                    }
-                                                >
-                                                    <Image
-                                                        source={PREMIUM_MAP}
-                                                        style={
-                                                            styles.premiumImg
-                                                        }
-                                                    />
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumSwiperHeaderView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={
-                                                            styles.premiumHeaderText
-                                                        }
-                                                    >
-                                                        Türkiye geneli deneme
-                                                        sınavları!
-                                                    </Text>
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumSwiperInfoView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={
-                                                            styles.premiumInfoText
-                                                        }
-                                                    >
-                                                        Ülke çapındaki deneme
-                                                        sınavlarına ücretsiz
-                                                        katıl, tüm öğrenciler
-                                                        arasındaki sıralamanı
-                                                        gör
-                                                    </Text>
-                                                </View>
-                                            </View>
-                                            <View
-                                                style={styles.premiumSwiperView}
-                                            >
-                                                <View
-                                                    style={
-                                                        styles.premiumSwiperImgView
-                                                    }
-                                                >
-                                                    <Image
-                                                        source={
-                                                            PREMIUM_SINGLE_MODE
-                                                        }
-                                                        style={
-                                                            styles.premiumImg
-                                                        }
-                                                    />
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumSwiperHeaderView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={
-                                                            styles.premiumHeaderText
-                                                        }
-                                                    >
-                                                        Tek başına!
-                                                    </Text>
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumSwiperInfoView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={
-                                                            styles.premiumInfoText
-                                                        }
-                                                    >
-                                                        "Tek rakibim kendim"
-                                                        diyenler için tek başına
-                                                        soru çözebilme imkanı
-                                                    </Text>
-                                                </View>
-                                            </View>
-                                            <View
-                                                style={styles.premiumSwiperView}
-                                            >
-                                                <View
-                                                    style={
-                                                        styles.premiumSwiperImgView
-                                                    }
-                                                >
-                                                    <Image
-                                                        source={PREMIUM_BACK}
-                                                        style={
-                                                            styles.premiumImg
-                                                        }
-                                                    />
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumSwiperHeaderView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={
-                                                            styles.premiumHeaderText
-                                                        }
-                                                    >
-                                                        Çözülmedik soru
-                                                        kalmasın!
-                                                    </Text>
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumSwiperInfoView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={
-                                                            styles.premiumInfoText
-                                                        }
-                                                    >
-                                                        Boş bıraktığın veya
-                                                        yanlış yaptığın soruları
-                                                        tekrar tekrar çözme
-                                                        fırsatı
-                                                    </Text>
-                                                </View>
-                                            </View>
-                                            <View
-                                                style={styles.premiumSwiperView}
-                                            >
-                                                <View
-                                                    style={
-                                                        styles.premiumSwiperImgView
-                                                    }
-                                                >
-                                                    <Image
-                                                        source={PREMIUM_JOKER}
-                                                        style={
-                                                            styles.premiumImg
-                                                        }
-                                                    />
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumSwiperHeaderView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={
-                                                            styles.premiumHeaderText
-                                                        }
-                                                    >
-                                                        Günlük joker!
-                                                    </Text>
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumSwiperInfoView
-                                                    }
-                                                >
-                                                    <Text
-                                                        style={
-                                                            styles.premiumInfoText
-                                                        }
-                                                    >
-                                                        Her gün sana verilen
-                                                        jokerler ile soruların
-                                                        cevabına 1 adım daha
-                                                        yaklaş, rakiplerinin
-                                                        önüne geç
-                                                    </Text>
-                                                </View>
-                                            </View>
-                                        </Swiper>
-                                    </View>
-                                    <View style={styles.premiumButtonView}>
+                                    <View
+                                        style={[
+                                            styles.socialMediaView,
+                                            {
+                                                width: wp(40),
+                                                justifyContent: 'space-evenly'
+                                            }
+                                        ]}
+                                    >
                                         <TouchableOpacity
-                                            onPress={() => {
-                                                this.onPressPremiumView()
-                                            }}
-                                            style={styles.premiumButton}
+                                            onPress={() =>
+                                                Linking.openURL(instagram_page)
+                                            }
+                                            style={styles.socialMediaLogoCircle}
                                         >
-                                            <Text
-                                                style={styles.premiumButtonText}
-                                            >
-                                                ELİT ÖĞRENCİ PAKETİ'Nİ ŞİMDİ AL
-                                            </Text>
+                                            <Image
+                                                source={INSTAGRAM_LOGO}
+                                                style={styles.socialMediaLogo}
+                                            />
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                Linking.openURL(twitter_page)
+                                            }
+                                            style={styles.socialMediaLogoCircle}
+                                        >
+                                            <Image
+                                                source={TWITTER_LOGO}
+                                                style={styles.socialMediaLogo}
+                                            />
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                Linking.openURL(facebook_page)
+                                            }
+                                            style={styles.socialMediaLogoCircle}
+                                        >
+                                            <Image
+                                                source={FACEBOOK_LOGO}
+                                                style={styles.socialMediaLogo}
+                                            />
                                         </TouchableOpacity>
                                     </View>
-                                </LinearGradient>
-                                <TouchableOpacity
-                                    style={styles.premiumBottomView}
-                                >
-                                    <Text style={styles.inviteText}>
-                                        Arkadaşını davet et
-                                    </Text>
-                                    <Text
-                                        style={styles.earnPremiumWithInviteText}
+                                    <TouchableOpacity
+                                        onPress={this.onPressPromotionCodeView}
+                                        style={[
+                                            styles.socialMediaView,
+                                            {
+                                                width: wp(51),
+                                                flexDirection: 'column',
+                                                justifyContent: 'center'
+                                            }
+                                        ]}
                                     >
-                                        1 Haftalık Elit Öğrenci Paketi Kazan!
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
+                                        <Text
+                                            style={[
+                                                styles.socialMediaInfoText,
+                                                {
+                                                    fontFamily: 'Averta-Bold',
+                                                    fontSize: hp(1.7)
+                                                }
+                                            ]}
+                                        >
+                                            Arkadaş daveti veya çekiliş ile
+                                        </Text>
+                                        <Text
+                                            style={[
+                                                styles.socialMediaInfoText,
+                                                {
+                                                    fontFamily: 'Averta-Bold',
+                                                    fontSize: hp(1.7)
+                                                }
+                                            ]}
+                                        >
+                                            ELİT ÖĞRENCİ PAKETİ SÜRENİ UZATMAK
+                                            İÇİN, TIKLA!
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            )}
+                            {this.props.clientInformation.isPremium ===
+                                false && (
+                                <View style={styles.socialMediaView}>
+                                    <View style={styles.socialMediaLogosView}>
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                Linking.openURL(instagram_page)
+                                            }
+                                            style={styles.socialMediaLogoCircle}
+                                        >
+                                            <Image
+                                                source={INSTAGRAM_LOGO}
+                                                style={styles.socialMediaLogo}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View style={styles.socialMediaLogosView}>
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                Linking.openURL(twitter_page)
+                                            }
+                                            style={styles.socialMediaLogoCircle}
+                                        >
+                                            <Image
+                                                source={TWITTER_LOGO}
+                                                style={styles.socialMediaLogo}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View style={styles.socialMediaLogosView}>
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                Linking.openURL(facebook_page)
+                                            }
+                                            style={styles.socialMediaLogoCircle}
+                                        >
+                                            <Image
+                                                source={FACEBOOK_LOGO}
+                                                style={styles.socialMediaLogo}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View style={styles.socialMediaInfoView}>
+                                        <Text
+                                            style={styles.socialMediaInfoText}
+                                        >
+                                            Sosyal medya hesaplarımızı takip
+                                            ederek ödülleri ve en güncel
+                                            haberleri kaçırma!
+                                        </Text>
+                                    </View>
+                                </View>
+                            )}
                         </View>
-                    )}
-                    {this.props.clientInformation.isPremium && (
-                        <View style={styles.premiumUserAddButtonsContainer}>
-                            <TouchableOpacity
-                                onPress={this.firstJokerRewardOnPress}
-                            >
-                                <Image
-                                    source={FIRST_JOKER_AD_BUTTON}
-                                    style={styles.premiumUserJokerButtonStyle}
-                                />
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={this.secondJokerRewardOnPress}
-                            >
-                                <Image
-                                    source={SECOND_JOKER_AD_BUTTON}
-                                    style={styles.premiumUserJokerButtonStyle}
-                                />
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={this.thirdJokerRewardOnPress}
-                            >
-                                <Image
-                                    source={THIRD_JOKER_AD_BUTTON}
-                                    style={styles.premiumUserJokerButtonStyle}
-                                />
-                            </TouchableOpacity>
-                        </View>
-                    )}
-                    <View style={styles.socialMediaContainer}>
-                        <View style={styles.socialMediaView}>
-                            <View style={styles.socialMediaLogosView}>
-                                <TouchableOpacity
-                                    onPress={() =>
-                                        Linking.openURL(instagram_page)
-                                    }
-                                    style={styles.socialMediaLogoCircle}
+                        <View style={styles.yourPremiumAndJokersContainer}>
+                            <View style={styles.yourPremiumContainer}>
+                                <Swiper
+                                    loop={true}
+                                    autoplay={true}
+                                    autoplayTimeout={3}
+                                    showsPagination={false}
                                 >
-                                    <Image
-                                        source={INSTAGRAM_LOGO}
-                                        style={styles.socialMediaLogo}
-                                    />
-                                </TouchableOpacity>
+                                    <View>
+                                        <View
+                                            style={styles.yourPremiumTextView}
+                                        >
+                                            <Text
+                                                style={styles.yourPremiumText}
+                                            >
+                                                {this.props.choosenExam}
+                                            </Text>
+                                            <Text
+                                                style={styles.yourPremiumText}
+                                            >
+                                                Kalan Süre
+                                            </Text>
+                                        </View>
+                                        <View
+                                            style={
+                                                styles.yourPremiumCounterView
+                                            }
+                                        >
+                                            <Text
+                                                style={
+                                                    styles.yourPremiumCounterText
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.yourPremiumCounterNumbersText
+                                                    }
+                                                >
+                                                    {
+                                                        this.state
+                                                            .remainingExamMonths
+                                                    }
+                                                </Text>{' '}
+                                                Ay
+                                                <Text
+                                                    style={
+                                                        styles.yourPremiumCounterNumbersText
+                                                    }
+                                                >
+                                                    {' '}
+                                                    {
+                                                        this.state
+                                                            .remainingExamWeeks
+                                                    }
+                                                </Text>{' '}
+                                                Hafta
+                                                <Text
+                                                    style={
+                                                        styles.yourPremiumCounterNumbersText
+                                                    }
+                                                >
+                                                    {' '}
+                                                    {
+                                                        this.state
+                                                            .remainingExamDays
+                                                    }
+                                                </Text>{' '}
+                                                Gün
+                                            </Text>
+                                        </View>
+                                    </View>
+                                    <TouchableOpacity
+                                        onPress={this.onPressPremiumView}
+                                    >
+                                        <View
+                                            style={styles.yourPremiumTextView}
+                                        >
+                                            <Text
+                                                style={styles.yourPremiumText}
+                                            >
+                                                Elit Öğrenci Paketi
+                                            </Text>
+                                            <Text
+                                                style={styles.yourPremiumText}
+                                            >
+                                                Kalan Süre
+                                            </Text>
+                                        </View>
+                                        <View
+                                            style={
+                                                styles.yourPremiumCounterView
+                                            }
+                                        >
+                                            <Text
+                                                style={
+                                                    styles.yourPremiumCounterText
+                                                }
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.yourPremiumCounterNumbersText
+                                                    }
+                                                >
+                                                    {
+                                                        this.state
+                                                            .remainingPremiumMonths
+                                                    }
+                                                </Text>{' '}
+                                                Ay
+                                                <Text
+                                                    style={
+                                                        styles.yourPremiumCounterNumbersText
+                                                    }
+                                                >
+                                                    {' '}
+                                                    {
+                                                        this.state
+                                                            .remainingPremiumWeeks
+                                                    }
+                                                </Text>{' '}
+                                                Hafta
+                                                <Text
+                                                    style={
+                                                        styles.yourPremiumCounterNumbersText
+                                                    }
+                                                >
+                                                    {' '}
+                                                    {
+                                                        this.state
+                                                            .remainingPremiumDays
+                                                    }
+                                                </Text>{' '}
+                                                Gün
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </Swiper>
                             </View>
-                            <View style={styles.socialMediaLogosView}>
-                                <TouchableOpacity
-                                    onPress={() =>
-                                        Linking.openURL(twitter_page)
-                                    }
-                                    style={styles.socialMediaLogoCircle}
-                                >
-                                    <Image
-                                        source={TWITTER_LOGO}
-                                        style={styles.socialMediaLogo}
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                            <View style={styles.socialMediaLogosView}>
-                                <TouchableOpacity
-                                    onPress={() =>
-                                        Linking.openURL(facebook_page)
-                                    }
-                                    style={styles.socialMediaLogoCircle}
-                                >
-                                    <Image
-                                        source={FACEBOOK_LOGO}
-                                        style={styles.socialMediaLogo}
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                            <View style={styles.socialMediaInfoView}>
-                                <Text style={styles.socialMediaInfoText}>
-                                    Sosyal medya hesaplarımızı takip ederek
-                                    ödülleri ve en güncel haberleri kaçırma!
-                                </Text>
+                            <View style={styles.yourJokersContainer}>
+                                <View style={styles.jokerContainer}>
+                                    <View style={styles.jokerImageContainer}>
+                                        <View style={styles.jokerImageView}>
+                                            <View
+                                                style={[
+                                                    styles.jokerCounterView,
+                                                    {
+                                                        width:
+                                                            (
+                                                                '' +
+                                                                this.state
+                                                                    .firstJoker
+                                                                    .amount
+                                                            ).length < 3
+                                                                ? hp(4)
+                                                                : hp(5.5)
+                                                    }
+                                                ]}
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.jokerCounterText
+                                                    }
+                                                >
+                                                    {
+                                                        this.state.firstJoker
+                                                            .amount
+                                                    }
+                                                </Text>
+                                            </View>
+                                            <Image
+                                                source={
+                                                    this.state.firstJoker.joker
+                                                        .imageLink
+                                                }
+                                                style={styles.jokerImg}
+                                            />
+                                        </View>
+                                    </View>
+                                    <View style={styles.jokerNameContainer}>
+                                        <Text style={styles.jokerNameText}>
+                                            {this.state.firstJoker.joker.name}
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={styles.jokerContainer}>
+                                    <View style={styles.jokerImageContainer}>
+                                        <View style={styles.jokerImageView}>
+                                            <View
+                                                style={[
+                                                    styles.jokerCounterView,
+                                                    {
+                                                        width:
+                                                            (
+                                                                '' +
+                                                                this.state
+                                                                    .secondJoker
+                                                                    .amount
+                                                            ).length < 3
+                                                                ? hp(4)
+                                                                : hp(5.5)
+                                                    }
+                                                ]}
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.jokerCounterText
+                                                    }
+                                                >
+                                                    {
+                                                        this.state.secondJoker
+                                                            .amount
+                                                    }
+                                                </Text>
+                                            </View>
+                                            <Image
+                                                source={
+                                                    this.state.secondJoker.joker
+                                                        .imageLink
+                                                }
+                                                style={styles.jokerImg}
+                                            />
+                                        </View>
+                                    </View>
+                                    <View style={styles.jokerNameContainer}>
+                                        <Text style={styles.jokerNameText}>
+                                            {this.state.secondJoker.joker.name}
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={styles.jokerContainer}>
+                                    <View style={styles.jokerImageContainer}>
+                                        <View style={styles.jokerImageView}>
+                                            <View
+                                                style={[
+                                                    styles.jokerCounterView,
+                                                    {
+                                                        width:
+                                                            (
+                                                                '' +
+                                                                this.state
+                                                                    .thirdJoker
+                                                                    .amount
+                                                            ).length < 3
+                                                                ? hp(4)
+                                                                : hp(5.5)
+                                                    }
+                                                ]}
+                                            >
+                                                <Text
+                                                    style={
+                                                        styles.jokerCounterText
+                                                    }
+                                                >
+                                                    {
+                                                        this.state.thirdJoker
+                                                            .amount
+                                                    }
+                                                </Text>
+                                            </View>
+                                            <Image
+                                                source={
+                                                    this.state.thirdJoker.joker
+                                                        .imageLink
+                                                }
+                                                style={styles.jokerImg}
+                                            />
+                                        </View>
+                                    </View>
+                                    <View style={styles.jokerNameContainer}>
+                                        <Text style={styles.jokerNameText}>
+                                            {this.state.thirdJoker.joker.name}
+                                        </Text>
+                                    </View>
+                                </View>
                             </View>
                         </View>
                     </View>
-                    <View style={styles.yourPremiumAndJokersContainer}>
-                        <View style={styles.yourPremiumContainer}>
-                            <Swiper
-                                loop={false}
-                                paginationStyle={{ bottom: hp(0.7) }}
-                                activeDot={
-                                    <View
-                                        style={{
-                                            height: hp(1),
-                                            width: hp(1),
-                                            backgroundColor: '#000000',
-                                            borderRadius: hp(100),
-                                            marginLeft: wp(1),
-                                            marginRight: wp(1)
-                                        }}
-                                    />
-                                }
-                                dot={
-                                    <View
-                                        style={{
-                                            height: hp(1),
-                                            width: hp(1),
-                                            backgroundColor: 'rgba(0,0,0,.2)',
-                                            borderRadius: hp(100),
-                                            marginLeft: wp(1),
-                                            marginRight: wp(1)
-                                        }}
-                                    />
-                                }
-                            >
-                                <View>
-                                    <View style={styles.yourPremiumTextView}>
-                                        <Text style={styles.yourPremiumText}>
-                                            {this.props.choosenExam}
-                                        </Text>
-                                        <Text style={styles.yourPremiumText}>
-                                            Kalan Süre
-                                        </Text>
-                                    </View>
-                                    <View style={styles.yourPremiumCounterView}>
-                                        <Text
-                                            style={
-                                                styles.yourPremiumCounterText
-                                            }
-                                        >
-                                            <Text
-                                                style={
-                                                    styles.yourPremiumCounterNumbersText
-                                                }
-                                            >
-                                                {this.state.remainingExamMonths}
-                                            </Text>{' '}
-                                            Ay
-                                            <Text
-                                                style={
-                                                    styles.yourPremiumCounterNumbersText
-                                                }
-                                            >
-                                                {' '}
-                                                {this.state.remainingExamWeeks}
-                                            </Text>{' '}
-                                            Hafta
-                                            <Text
-                                                style={
-                                                    styles.yourPremiumCounterNumbersText
-                                                }
-                                            >
-                                                {' '}
-                                                {this.state.remainingExamDays}
-                                            </Text>{' '}
-                                            Gün
-                                        </Text>
-                                    </View>
-                                </View>
-                                <View>
-                                    <View style={styles.yourPremiumTextView}>
-                                        <Text style={styles.yourPremiumText}>
-                                            Elit Öğrenci Paketi
-                                        </Text>
-                                        <Text style={styles.yourPremiumText}>
-                                            Kalan Süre
-                                        </Text>
-                                    </View>
-                                    <View style={styles.yourPremiumCounterView}>
-                                        <Text
-                                            style={
-                                                styles.yourPremiumCounterText
-                                            }
-                                        >
-                                            <Text
-                                                style={
-                                                    styles.yourPremiumCounterNumbersText
-                                                }
-                                            >
-                                                {
-                                                    this.state
-                                                        .remainingPremiumMonths
-                                                }
-                                            </Text>{' '}
-                                            Ay
-                                            <Text
-                                                style={
-                                                    styles.yourPremiumCounterNumbersText
-                                                }
-                                            >
-                                                {' '}
-                                                {
-                                                    this.state
-                                                        .remainingPremiumWeeks
-                                                }
-                                            </Text>{' '}
-                                            Hafta
-                                            <Text
-                                                style={
-                                                    styles.yourPremiumCounterNumbersText
-                                                }
-                                            >
-                                                {' '}
-                                                {
-                                                    this.state
-                                                        .remainingPremiumDays
-                                                }
-                                            </Text>{' '}
-                                            Gün
-                                        </Text>
-                                    </View>
-                                </View>
-                            </Swiper>
-                        </View>
-                        <View style={styles.yourJokersContainer}>
-                            <View style={styles.jokerContainer}>
-                                <View style={styles.jokerImageContainer}>
-                                    <View style={styles.jokerImageView}>
-                                        <View
-                                            style={[
-                                                styles.jokerCounterView,
-                                                {
-                                                    width:
-                                                        (
-                                                            '' +
-                                                            this.state
-                                                                .firstJoker
-                                                                .amount
-                                                        ).length < 3
-                                                            ? hp(4)
-                                                            : hp(5.5)
-                                                }
-                                            ]}
-                                        >
-                                            <Text
-                                                style={styles.jokerCounterText}
-                                            >
-                                                {this.state.firstJoker.amount}
-                                            </Text>
-                                        </View>
-                                        <Image
-                                            source={
-                                                this.state.firstJoker.joker
-                                                    .imageLink
-                                            }
-                                            style={styles.jokerImg}
-                                        />
-                                    </View>
-                                </View>
-                                <View style={styles.jokerNameContainer}>
-                                    <Text style={styles.jokerNameText}>
-                                        {this.state.firstJoker.joker.name}
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style={styles.jokerContainer}>
-                                <View style={styles.jokerImageContainer}>
-                                    <View style={styles.jokerImageView}>
-                                        <View
-                                            style={[
-                                                styles.jokerCounterView,
-                                                {
-                                                    width:
-                                                        (
-                                                            '' +
-                                                            this.state
-                                                                .secondJoker
-                                                                .amount
-                                                        ).length < 3
-                                                            ? hp(4)
-                                                            : hp(5.5)
-                                                }
-                                            ]}
-                                        >
-                                            <Text
-                                                style={styles.jokerCounterText}
-                                            >
-                                                {this.state.secondJoker.amount}
-                                            </Text>
-                                        </View>
-                                        <Image
-                                            source={
-                                                this.state.secondJoker.joker
-                                                    .imageLink
-                                            }
-                                            style={styles.jokerImg}
-                                        />
-                                    </View>
-                                </View>
-                                <View style={styles.jokerNameContainer}>
-                                    <Text style={styles.jokerNameText}>
-                                        {this.state.secondJoker.joker.name}
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style={styles.jokerContainer}>
-                                <View style={styles.jokerImageContainer}>
-                                    <View style={styles.jokerImageView}>
-                                        <View
-                                            style={[
-                                                styles.jokerCounterView,
-                                                {
-                                                    width:
-                                                        (
-                                                            '' +
-                                                            this.state
-                                                                .thirdJoker
-                                                                .amount
-                                                        ).length < 3
-                                                            ? hp(4)
-                                                            : hp(5.5)
-                                                }
-                                            ]}
-                                        >
-                                            <Text
-                                                style={styles.jokerCounterText}
-                                            >
-                                                {this.state.thirdJoker.amount}
-                                            </Text>
-                                        </View>
-                                        <Image
-                                            source={
-                                                this.state.thirdJoker.joker
-                                                    .imageLink
-                                            }
-                                            style={styles.jokerImg}
-                                        />
-                                    </View>
-                                </View>
-                                <View style={styles.jokerNameContainer}>
-                                    <Text style={styles.jokerNameText}>
-                                        {this.state.thirdJoker.joker.name}
-                                    </Text>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                </View>
-            </View>
+                </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
         )
     }
 }
@@ -2561,7 +3119,9 @@ const mapStateToProps = state => ({
     userJokers: state.client.userJokers,
     clientInformation: state.client.clientInformation,
     gameContentMap: state.gameContent.gameContentMap,
-    choosenExam: state.gameContent.choosenExam
+    choosenExam: state.gameContent.choosenExam,
+    clientDBId: state.client.clientDBId,
+    clientToken: state.client.clientToken
 })
 
 const mapDispatchToProps = dispatch => ({})

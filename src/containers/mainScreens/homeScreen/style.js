@@ -239,9 +239,7 @@ export default StyleSheet.create({
         borderWidth: wp(0.5),
         borderRadius: 10,
         borderColor: '#707070',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: 'center'
     },
     gameCodeText: {
         fontFamily: 'Averta-Semibold',
@@ -279,9 +277,10 @@ export default StyleSheet.create({
     },
     joinGameCodeTextInput: {
         fontFamily: 'Averta-Regular',
-        fontSize: wp(5),
+        fontSize: hp(4),
         textAlign: 'center',
-        color: 'black'
+        color: 'black',
+        letterSpacing: wp(2)
     },
     usersContainer: {
         height: hp(22),
