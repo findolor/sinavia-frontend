@@ -184,15 +184,15 @@ class Opening extends React.Component {
                     <AuthButton
                         height={hp(7)}
                         width={wp(85)}
-                        color="#4267B2"
+                        color="black"
                         fontSize={hp(3)}
-                        buttonText="Facebook ile Bağlan"
+                        buttonText="Apple ile Bağlan"
                         borderRadius={hp(1.5)}
                     />
                     <AuthButton
                         height={hp(7)}
                         width={wp(85)}
-                        color="#0F9D58"
+                        color="#d44638"
                         fontSize={hp(3)}
                         buttonText="Google ile Bağlan"
                         borderRadius={hp(1.5)}
@@ -201,7 +201,7 @@ class Opening extends React.Component {
                 </View>
                 <View style={styles.spaceView}>
                     <Text style={styles.oauthInfoText}>
-                        Facebbok veya Google ile Bağlan seçeneklerini kullanarak{' '}
+                        Apple veya Google ile Bağlan seçeneklerini kullanarak{' '}
                         <Text
                             onPress={this.onPressLicenceView}
                             style={{
