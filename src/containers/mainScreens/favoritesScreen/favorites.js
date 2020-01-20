@@ -290,18 +290,19 @@ class Favorites extends React.Component {
                     .questionLink
             )
             .then(response => {
-                let base64Str
+                //let base64Str
                 if (response.info().status == 200)
                     // the conversion is done in native code
-                    base64Str = response.base64()
+                    //base64Str = response.base64()
 
-                let shareOptions = { message: 'pls help' }
+                let shareOptions = {}
 
                 if (Platform.OS === 'ios') {
                     shareOptions.url = `file://${response.path()}`
                     delete shareOptions.message
                 } else {
-                    shareOptions.url = `data:image/png;base64,${base64Str}`
+                    //shareOptions.url = `data:image/jpg;base64,${base64Str}`
+                    shareOptions.url = `file://${response.path()}`
                 }
 
                 Share.open(shareOptions)
@@ -508,8 +509,13 @@ class Favorites extends React.Component {
                 )}
                 {Object.keys(this.state.scrollViewList).length === 0 && (
                     <View style={styles.noResultsView}>
-                        <Image source={NO_RESULTS_FAV} style={styles.noResultImg}/>
-                        <Text style={styles.noResultsText}>Henüz herhangi bir soru favorilemedin</Text>
+                        <Image
+                            source={NO_RESULTS_FAV}
+                            style={styles.noResultImg}
+                        />
+                        <Text style={styles.noResultsText}>
+                            Henüz herhangi bir soru favorilemedin
+                        </Text>
                     </View>
                 )}
             </View>
