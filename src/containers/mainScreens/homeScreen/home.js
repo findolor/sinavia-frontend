@@ -686,11 +686,17 @@ class Home extends React.Component {
                         width: wp(100)
                     }}
                 />
-                <View style={styles.onlyCloseButtonContainer}>
-                    <TouchableOpacity onPress={this.closeModalButtonOnPress}>
-                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
-                    </TouchableOpacity>
-                </View>
+                <AuthButton
+                    marginTop={hp(5)}
+                    height={hp(7)}
+                    width={wp(87.5)}
+                    color="#00D9EF"
+                    buttonText="Video İzle"
+                    fontSize={hp(3)}
+                    borderRadius={hp(1.5)}
+                    position={'absolute'}
+                    onPress={this.goToVideo}
+                />
                 <View style={styles.modalView}>
                     <Text style={styles.modalSubjectText}>
                         {this.state.subject}
@@ -1980,6 +1986,11 @@ class Home extends React.Component {
                 }
             })
             .catch(error => {})
+    }
+
+    goToVideo = () => {
+        this.setState({isModalVisible: false})
+        navigationPush(SCENE_KEYS.mainScreens.video)
     }
 
     // Gets the exam/content/subject ids based on selected subject

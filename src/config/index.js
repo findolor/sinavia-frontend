@@ -50,7 +50,8 @@ const scene_keys = {
         notifications: 'notifications',
         statistics: 'statistics',
         goals: 'goals',
-        jokerReward: 'jokerReward'
+        jokerReward: 'jokerReward',
+        video: 'video'
     },
     splashScreen: 'splash',
     tutorialScreen: 'tutorial'
