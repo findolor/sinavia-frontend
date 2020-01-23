@@ -3,6 +3,12 @@ import { put, call } from 'redux-saga/effects'
 import { appTypes } from '../../redux/app/actions'
 
 export function* getNotificationsSaga(action) {
+    // This is for the activity indicator
+    yield put({
+        type: appTypes.SAVE_NOTIFICATIONS,
+        payload: null
+    })
+
     let notifications
     try {
         notifications = yield call(
@@ -23,7 +29,7 @@ export function* getNotificationsSaga(action) {
     ) {
         yield put({
             type: appTypes.SAVE_NOTIFICATIONS,
-            payload: null
+            payload: []
         })
         return
     }
