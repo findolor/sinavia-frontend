@@ -10,7 +10,8 @@ import {
     TextInput,
     TouchableWithoutFeedback,
     KeyboardAvoidingView,
-    Keyboard
+    Keyboard,
+    ActivityIndicator
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Swiper from 'react-native-swiper'
@@ -37,7 +38,8 @@ import PREMIUM_SINGLE_MODE from '../../../assets/premiumSingleMode.png'
 import SEE_OPPONENT_JOKER_IMAGE from '../../../assets/jokers/seeOpponent.png'
 import REMOVE_OPTIONS_JOKER_IMAGE from '../../../assets/jokers/removeOptions.png'
 import SECOND_CHANGE_JOKER_IMAGE from '../../../assets/jokers/secondChance.png'
-import { rewardAd } from '../../../services/admobService'
+//import { rewardAd } from '../../../services/admobService'
+import firebase from 'react-native-firebase'
 import { inviteCodeServices } from '../../../sagas/inviteCode'
 
 import FIRST_JOKER_AD_BUTTON from '../../../assets/firstJokerAdButton.png'
@@ -100,7 +102,8 @@ class PurchaseScreen extends React.Component {
             availableProducts: null,
             friendCode: 'PAROLA',
             usePromotionCode: '',
-            remaningInviteCodes: 0
+            remaningInviteCodes: 0,
+            isActivityIndicatorOn: false
         }
     }
 
@@ -272,22 +275,39 @@ class PurchaseScreen extends React.Component {
         })
     }
 
-    firstJokerRewardOnPress = () => {
-        rewardAd(this.refreshJokerOnReward, this.resetToMain, {
-            jokerNumber: 1
+    rewardAd = jokerNumber => {
+        let isAdWatched = false
+        const advert = firebase
+            .admob()
+            .rewarded('ca-app-pub-3940256099942544/1712485313')
+
+        const AdRequest = firebase.admob.AdRequest
+        const request = new AdRequest()
+        advert.loadAd(request.build())
+
+        advert.on('onAdLoaded', () => {
+            this.setState({ isActivityIndicatorOn: false }, () => {
+                advert.show()
+            })
+        })
+
+        advert.on('onRewarded', event => {
+            isAdWatched = true
+            this.refreshJokerOnReward(jokerNumber)
+        })
+
+        advert.on('onAdFailedToLoad', event => {
+            this.setState({ isActivityIndicatorOn: false })
+        })
+
+        advert.on('onAdClosed', event => {
+            if (!isAdWatched) navigationReset('main')
         })
     }
 
-    secondJokerRewardOnPress = () => {
-        rewardAd(this.refreshJokerOnReward, this.resetToMain, {
-            jokerNumber: 2
-        })
-    }
-
-    thirdJokerRewardOnPress = () => {
-        rewardAd(this.refreshJokerOnReward, this.resetToMain, {
-            jokerNumber: 3
-        })
+    jokerRewardOnPress = jokerNumber => {
+        this.setState({ isActivityIndicatorOn: true })
+        this.rewardAd(jokerNumber)
     }
 
     refreshJokerOnReward = jokerNumber => {
@@ -305,6 +325,13 @@ class PurchaseScreen extends React.Component {
     }
 
     render() {
+        if (this.state.isActivityIndicatorOn) {
+            return (
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+                    <ActivityIndicator />
+                </View>
+            )
+        }
         return (
             <TouchableWithoutFeedback
                 onPress={() => {
@@ -1071,10 +1098,15 @@ class PurchaseScreen extends React.Component {
                                                 >
                                                     3 - 1 haftalık{' '}
                                                     <Text
-                                                        onPress={
-                                                            this
-                                                                .onPressPremiumView
-                                                        }
+                                                        onPress={() => {
+                                                            this.setState(
+                                                                {
+                                                                    isPromotionCodeModalVisible: false
+                                                                },
+                                                                () =>
+                                                                    this.onPressPremiumView()
+                                                            )
+                                                        }}
                                                         style={{
                                                             fontFamily:
                                                                 'Averta-ExtraBold',
@@ -1174,10 +1206,15 @@ class PurchaseScreen extends React.Component {
                                                 >
                                                     2 - 1 haftalık{' '}
                                                     <Text
-                                                        onPress={
-                                                            this
-                                                                .onPressPremiumView
-                                                        }
+                                                        onPress={() => {
+                                                            this.setState(
+                                                                {
+                                                                    isPromotionCodeModalVisible: false
+                                                                },
+                                                                () =>
+                                                                    this.onPressPremiumView()
+                                                            )
+                                                        }}
                                                         style={{
                                                             fontFamily:
                                                                 'Averta-ExtraBold',
@@ -2281,7 +2318,9 @@ class PurchaseScreen extends React.Component {
                             <View style={{ flex: 47.5, width: wp(93) }}>
                                 <View style={styles.adsContainer}>
                                     <TouchableOpacity
-                                        onPress={this.firstJokerRewardOnPress}
+                                        onPress={() =>
+                                            this.jokerRewardOnPress(1)
+                                        }
                                     >
                                         <Image
                                             source={FIRST_JOKER_AD_BUTTON_2}
@@ -2289,7 +2328,9 @@ class PurchaseScreen extends React.Component {
                                         />
                                     </TouchableOpacity>
                                     <TouchableOpacity
-                                        onPress={this.secondJokerRewardOnPress}
+                                        onPress={() =>
+                                            this.jokerRewardOnPress(2)
+                                        }
                                     >
                                         <Image
                                             source={SECOND_JOKER_AD_BUTTON_2}
@@ -2297,7 +2338,9 @@ class PurchaseScreen extends React.Component {
                                         />
                                     </TouchableOpacity>
                                     <TouchableOpacity
-                                        onPress={this.thirdJokerRewardOnPress}
+                                        onPress={() =>
+                                            this.jokerRewardOnPress(3)
+                                        }
                                     >
                                         <Image
                                             source={THIRD_JOKER_AD_BUTTON_2}
@@ -2658,7 +2701,7 @@ class PurchaseScreen extends React.Component {
                         {this.props.clientInformation.isPremium && (
                             <View style={styles.premiumUserAddButtonsContainer}>
                                 <TouchableOpacity
-                                    onPress={this.firstJokerRewardOnPress}
+                                    onPress={() => this.jokerRewardOnPress(1)}
                                 >
                                     <Image
                                         source={FIRST_JOKER_AD_BUTTON}
@@ -2668,7 +2711,7 @@ class PurchaseScreen extends React.Component {
                                     />
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    onPress={this.secondJokerRewardOnPress}
+                                    onPress={() => this.jokerRewardOnPress(2)}
                                 >
                                     <Image
                                         source={SECOND_JOKER_AD_BUTTON}
@@ -2678,7 +2721,7 @@ class PurchaseScreen extends React.Component {
                                     />
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    onPress={this.thirdJokerRewardOnPress}
+                                    onPress={() => this.jokerRewardOnPress(3)}
                                 >
                                     <Image
                                         source={THIRD_JOKER_AD_BUTTON}
@@ -2903,9 +2946,7 @@ class PurchaseScreen extends React.Component {
                                             </Text>
                                         </View>
                                     </View>
-                                    <TouchableOpacity
-                                        onPress={this.onPressPremiumView}
-                                    >
+                                    <View>
                                         <View
                                             style={styles.yourPremiumTextView}
                                         >
@@ -2967,7 +3008,7 @@ class PurchaseScreen extends React.Component {
                                                 Gün
                                             </Text>
                                         </View>
-                                    </TouchableOpacity>
+                                    </View>
                                 </Swiper>
                             </View>
                             <View style={styles.yourJokersContainer}>
