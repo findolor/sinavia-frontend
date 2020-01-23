@@ -351,6 +351,7 @@ class Home extends React.Component {
                 })
                 room.leave()
                 client.close()
+                // If 2500 is not enough we can change it
             }, 2500)
 
             // If room onJoin doesn't trigger we don't do anything
