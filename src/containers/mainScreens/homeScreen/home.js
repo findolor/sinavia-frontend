@@ -8,7 +8,6 @@ import {
     TouchableOpacity,
     View,
     AsyncStorage,
-    Alert,
     FlatList,
     AppState,
     Animated
@@ -330,11 +329,12 @@ class Home extends React.Component {
         let room
         const client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
         client.onOpen.add(() => {
-            // TODO PUT A MODAL HERE FOR WAITING
-            this.setState({
+            // On iOS devices modal stays open even after we disable it
+            // This is why I commented the setState down below and never open it
+            /* this.setState({
                 isModalVisible: true,
                 visibleView: 'WAITING_TO_JOIN_FRIEND_ROOM'
-            })
+            }) */
 
             room = client.join('friendRoom', {
                 databaseId: this.props.clientDBId,
@@ -351,13 +351,13 @@ class Home extends React.Component {
                 })
                 room.leave()
                 client.close()
-            }, 5000)
+                // If 2500 is not enough we can change it
+            }, 2500)
 
             // If room onJoin doesn't trigger we don't do anything
             room.onJoin.add(() => {
                 // We clear the timeout as we don't need it anymore
                 clearTimeout(timeout)
-                this.setState({ visibleView: '' })
                 // Getting the opponent information and navigatiing
                 userServices
                     .getUser(this.props.clientToken, params.opponentId)
