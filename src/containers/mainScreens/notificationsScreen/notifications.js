@@ -1,5 +1,12 @@
 import React from 'react'
-import { FlatList, View, Text, TouchableOpacity, Image } from 'react-native'
+import {
+    FlatList,
+    View,
+    Text,
+    TouchableOpacity,
+    Image,
+    ActivityIndicator
+} from 'react-native'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import returnLogo from '../../../assets/return.png'
@@ -571,23 +578,37 @@ class Notifications extends React.Component {
     }
 
     renderEmptyFriendRequests = () => {
-        return (
-            <View style={styles.emptyFlatListContainer}>
-                <Text style={styles.emptyFlatListText}>
-                    Henüz arkadaşlık isteğin yok!
-                </Text>
-            </View>
-        )
+        if (this.props.friendRequests === null)
+            return (
+                <View style={styles.emptyFlatListContainer}>
+                    <ActivityIndicator />
+                </View>
+            )
+        else
+            return (
+                <View style={styles.emptyFlatListContainer}>
+                    <Text style={styles.emptyFlatListText}>
+                        Henüz arkadaşlık isteğin yok!
+                    </Text>
+                </View>
+            )
     }
 
     renderEmptyNotifications = () => {
-        return (
-            <View style={styles.emptyFlatListContainer}>
-                <Text style={styles.emptyFlatListText}>
-                    Henüz bir bildirimin yok!
-                </Text>
-            </View>
-        )
+        if (this.props.userNotificationList === null)
+            return (
+                <View style={styles.emptyFlatListContainer}>
+                    <ActivityIndicator />
+                </View>
+            )
+        else
+            return (
+                <View style={styles.emptyFlatListContainer}>
+                    <Text style={styles.emptyFlatListText}>
+                        Henüz bir bildirimin yok!
+                    </Text>
+                </View>
+            )
     }
 
     render() {

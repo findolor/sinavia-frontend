@@ -3,7 +3,7 @@ import {
     Image, Text,
     TouchableOpacity,
     View,
-    FlatList, Modal
+    FlatList, Modal, ActivityIndicator
 } from 'react-native';
 import styles from './style'
 import NotchView from '../../../components/notchView'
@@ -24,6 +24,7 @@ class Goals extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            isFetching: true,
             visibleView: 'goalsList',
             courseList: [],
             subjectList: ['Lütfen bir konu seçiniz'],
@@ -42,7 +43,7 @@ class Goals extends React.Component {
             this.props.clientToken,
             this.props.clientId
         ).then(data => {
-            this.setState({ goalList: data }, () => this.setChoosenExamId().then(() => {
+            this.setState({ goalList: data, isFetching: false }, () => this.setChoosenExamId().then(() => {
                 this.courseListMaker()
             }))
         }).catch(error => {
@@ -236,7 +237,7 @@ class Goals extends React.Component {
                     <View style={styles.headerTextWrapper}>
                         <Text style={styles.headerText}>Haftalık Hedefler</Text>
                     </View>
-                    {this.state.visibleView === 'goalsList' &&
+                    {this.state.visibleView === 'goalsList' && this.state.isFetching === false &&
                         <View style={styles.addLogoContainer}>
                             <TouchableOpacity onPress={this.addButtonOnPress} style={styles.addLogo}>
                                 <Text style={styles.addLogoText}>+ Ekle</Text>
@@ -298,11 +299,14 @@ class Goals extends React.Component {
                             />
                         </View>
                     }
-                {this.state.visibleView === 'goalsList' && Object.keys(this.state.goalList).length === 0 &&
+                {this.state.visibleView === 'goalsList' && Object.keys(this.state.goalList).length === 0 && this.state.isFetching === false &&
                 <View style={styles.noResultsView}>
                     <Image source={NO_RESULTS_GOAL} style={styles.noResultImg}/>
                     <Text style={styles.noResultsText}>Bu hafta henüz bir hedef belirlemedin, her Pazartesi buraya gelip düzenleyebilirsin</Text>
                 </View>
+                }
+                {this.state.visibleView === 'goalsList' && Object.keys(this.state.goalList).length === 0 && this.state.isFetching === true &&
+                <ActivityIndicator style={styles.noResultsView}/>
                 }
                     {this.state.visibleView === 'addNewGoal' &&
                         <View style={styles.scrollViewContainer}>
