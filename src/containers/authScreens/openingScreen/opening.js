@@ -74,10 +74,10 @@ class Opening extends React.Component {
                         await GoogleSignin.signOut()
                         return
                     }
-                    if (response.signInMethod === 'facebook') {
+                    if (response.signInMethod === 'apple') {
                         flashMessages.generalErrorWithProps(
                             'Giriş hatası',
-                            "Lütfen 'Facebook' ile giriş yapınız.",
+                            "Lütfen 'Apple' ile giriş yapınız.",
                             {
                                 backgroundColor: '#FFFFFF',
                                 borderBottomLeftRadius: 10,
