@@ -351,7 +351,7 @@ class Home extends React.Component {
                 })
                 room.leave()
                 client.close()
-            }, 2000)
+            }, 2500)
 
             // If room onJoin doesn't trigger we don't do anything
             room.onJoin.add(() => {
