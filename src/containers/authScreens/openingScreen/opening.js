@@ -1,5 +1,12 @@
 import React from 'react'
-import { Image, View, Text, Modal, TouchableOpacity } from 'react-native'
+import {
+    Image,
+    View,
+    Text,
+    Modal,
+    TouchableOpacity,
+    Platform
+} from 'react-native'
 import {
     navigationPush,
     navigationReplace
@@ -208,15 +215,17 @@ class Opening extends React.Component {
                     <View style={styles.separatorLine} />
                 </View>
                 <View style={styles.buttonContainer}>
-                    <AuthButton
-                        height={hp(7)}
-                        width={wp(85)}
-                        color="black"
-                        fontSize={hp(3)}
-                        buttonText="Apple ile Bağlan"
-                        borderRadius={hp(1.5)}
-                        onPress={this.signInWithApple}
-                    />
+                    {Platform.OS === 'ios' && (
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(85)}
+                            color="black"
+                            fontSize={hp(3)}
+                            buttonText="Apple ile Bağlan"
+                            borderRadius={hp(1.5)}
+                            onPress={this.signInWithApple}
+                        />
+                    )}
                     <AuthButton
                         height={hp(7)}
                         width={wp(85)}
@@ -229,7 +238,9 @@ class Opening extends React.Component {
                 </View>
                 <View style={styles.spaceView}>
                     <Text style={styles.oauthInfoText}>
-                        Apple veya Google ile Bağlan seçeneklerini kullanarak{' '}
+                        {Platform.OS === 'ios'
+                            ? 'Apple veya Google ile Bağlan seçeneklerini kullanarak '
+                            : 'Google ile bağlan seçeneğini kullanarak '}
                         <Text
                             onPress={this.onPressLicenceView}
                             style={{
