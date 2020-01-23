@@ -1108,6 +1108,7 @@ class PurchaseScreen extends React.Component {
                                                             )
                                                         }}
                                                         style={{
+                                                            color: 'black',
                                                             fontFamily:
                                                                 'Averta-ExtraBold',
                                                             textDecorationLine:
@@ -1216,6 +1217,7 @@ class PurchaseScreen extends React.Component {
                                                             )
                                                         }}
                                                         style={{
+                                                            color: 'black',
                                                             fontFamily:
                                                                 'Averta-ExtraBold',
                                                             textDecorationLine:
