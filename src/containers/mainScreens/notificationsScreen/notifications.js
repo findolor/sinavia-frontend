@@ -1,5 +1,12 @@
 import React from 'react'
-import { FlatList, View, Text, TouchableOpacity, Image } from 'react-native'
+import {
+    FlatList,
+    View,
+    Text,
+    TouchableOpacity,
+    Image,
+    ActivityIndicator
+} from 'react-native'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import returnLogo from '../../../assets/return.png'
@@ -31,6 +38,7 @@ window.localStorage = AsyncStorage
 global.Buffer = Buffer
 import * as Colyseus from 'colyseus.js'
 import { GAME_ENGINE_ENDPOINT, SCENE_KEYS } from '../../../config'
+import { BannerAd } from '../../../services/admobService'
 
 const generalNotificationsList = [
     {
@@ -401,31 +409,43 @@ class Notifications extends React.Component {
                 )
             case 'successPercentage':
                 return (
-                    <View style={styles.userRow}>
-                        <Text style={styles.notificationRowsText}>
-                            {item.examName}-{item.courseName} dersinin{' '}
-                            <Text style={{ color: '#00D9EF' }}>
-                                {item.subjectName}
-                            </Text>{' '}
-                            konusundaki başarı oranın{' '}
-                            <Text style={{ color: '#FF9900' }}>
-                                {item.successPercentage}%
+                    <View>
+                        <View style={styles.userRow}>
+                            <Text style={styles.notificationRowsText}>
+                                {item.examName}-{item.courseName} dersinin{' '}
+                                <Text style={{ color: '#00D9EF' }}>
+                                    {item.subjectName}
+                                </Text>{' '}
+                                konusundaki başarı oranın{' '}
+                                <Text style={{ color: '#FF9900' }}>
+                                    {item.successPercentage}%
+                                </Text>
+                                . Biraz daha çalışmalısın.
                             </Text>
-                            . Biraz daha çalışmalısın.
-                        </Text>
+                        </View>
+                        {!this.props.clientInformation.isPremium &&
+                            index % 4 === 3 &&
+                            index !== 0 && <BannerAd />}
                     </View>
                 )
             case 'statistics':
                 return (
-                    <TouchableOpacity>
-                        <View style={styles.userRow}>
-                            <Text style={styles.notificationRowsText}>
-                                Geçen {item.timePeriod} istatistiklerini görmek
-                                için{' '}
-                                <Text style={{ color: '#00D9EF' }}>TIKLA!</Text>{' '}
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
+                    <View>
+                        <TouchableOpacity>
+                            <View style={styles.userRow}>
+                                <Text style={styles.notificationRowsText}>
+                                    Geçen {item.timePeriod} istatistiklerini
+                                    görmek için{' '}
+                                    <Text style={{ color: '#00D9EF' }}>
+                                        TIKLA!
+                                    </Text>{' '}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                        {!this.props.clientInformation.isPremium &&
+                            index % 4 === 3 &&
+                            index !== 0 && <BannerAd />}
+                    </View>
                 )
             default:
                 break
@@ -433,14 +453,18 @@ class Notifications extends React.Component {
     }
 
     friendshipAcceptedOnPress = userId => {
-        getUserService(this.props.clientToken, userId).then(userInformation => {
-            this.props.getOpponentFullInformation(
-                userInformation,
-                this.props.clientDBId,
-                this.props.clientToken,
-                false
-            )
-        })
+        getUserService(this.props.clientToken, userId)
+            .then(userInformation => {
+                this.props.getOpponentFullInformation(
+                    userInformation,
+                    this.props.clientDBId,
+                    this.props.clientToken,
+                    false
+                )
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     acceptGameRequestOnPress = (notification, notificationIndex) => {
@@ -557,23 +581,37 @@ class Notifications extends React.Component {
     }
 
     renderEmptyFriendRequests = () => {
-        return (
-            <View style={styles.emptyFlatListContainer}>
-                <Text style={styles.emptyFlatListText}>
-                    Henüz arkadaşlık isteğin yok!
-                </Text>
-            </View>
-        )
+        if (this.props.friendRequests === null)
+            return (
+                <View style={styles.emptyFlatListContainer}>
+                    <ActivityIndicator />
+                </View>
+            )
+        else
+            return (
+                <View style={styles.emptyFlatListContainer}>
+                    <Text style={styles.emptyFlatListText}>
+                        Henüz arkadaşlık isteğin yok!
+                    </Text>
+                </View>
+            )
     }
 
     renderEmptyNotifications = () => {
-        return (
-            <View style={styles.emptyFlatListContainer}>
-                <Text style={styles.emptyFlatListText}>
-                    Henüz bir bildirimin yok!
-                </Text>
-            </View>
-        )
+        if (this.props.userNotificationList === null)
+            return (
+                <View style={styles.emptyFlatListContainer}>
+                    <ActivityIndicator />
+                </View>
+            )
+        else
+            return (
+                <View style={styles.emptyFlatListContainer}>
+                    <Text style={styles.emptyFlatListText}>
+                        Henüz bir bildirimin yok!
+                    </Text>
+                </View>
+            )
     }
 
     render() {
@@ -753,6 +791,7 @@ class Notifications extends React.Component {
                         />
                     </View>
                 )}
+                {!this.props.clientInformation.isPremium && <BannerAd />}
             </View>
         )
     }

@@ -186,8 +186,10 @@ class GroupGameStatsScreen extends React.Component {
                 )
             }
 
+            const tempList = []
+
             for (i = 0; i < Object.keys(this.props.questionList).length; i++) {
-                this.state.allQuestionsList.push(
+                tempList.push(
                     <View style={styles.scrollQuestionContainer} key={i}>
                         <View style={styles.questionContainer}>
                             <Image
@@ -201,9 +203,10 @@ class GroupGameStatsScreen extends React.Component {
 
             playerList.sort((a, b) => parseFloat(b.net) - parseFloat(a.net))
 
-            this.setState({ flatListData: playerList })
-
-            resolve(true)
+            this.setState(
+                { flatListData: playerList, allQuestionsList: tempList },
+                () => resolve(true)
+            )
         })
     }
 

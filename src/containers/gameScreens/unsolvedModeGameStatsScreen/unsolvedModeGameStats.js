@@ -8,11 +8,7 @@ import {
     Dimensions,
     ImageBackground
 } from 'react-native'
-import {
-    navigationReset,
-    navigationReplace,
-    SCENE_KEYS
-} from '../../../services/navigationService'
+import { navigationReset } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
 
@@ -53,9 +49,7 @@ class UnsolvedModeGameStats extends React.Component {
             // Fav icon
             favouriteIcon: unselectedFav,
             // ExamId of the match
-            examId: null,
-            // Replay button disable var
-            isReplayDisabled: false
+            examId: null
         }
     }
 
@@ -65,28 +59,6 @@ class UnsolvedModeGameStats extends React.Component {
             this.chooseMessageAction(message)
         })
         this.props.room.onError(err => console.log(err))
-    }
-
-    chooseMessageAction = message => {
-        switch (message.action) {
-            case 'replay':
-                this.props.room.removeAllListeners()
-
-                navigationReplace(
-                    SCENE_KEYS.gameScreens.unsolvedModeGameScreen,
-                    {
-                        room: this.props.room,
-                        client: this.props.client,
-                        playerUsername: this.props.playerUsername,
-                        playerProfilePicture: this.props.playerProfilePicture,
-                        opponentUsername: this.props.opponentUsername,
-                        opponentId: this.props.opponentId,
-                        opponentProfilePicture: this.props
-                            .opponentProfilePicture
-                    }
-                )
-                return
-        }
     }
 
     loadScreen() {
@@ -131,8 +103,10 @@ class UnsolvedModeGameStats extends React.Component {
                 )
             }
 
+            const tempList = []
+
             for (i = 0; i < Object.keys(this.props.questionList).length; i++) {
-                this.state.allQuestionsList.push(
+                tempList.push(
                     <View style={styles.scrollQuestionContainer} key={i}>
                         <View style={styles.questionContainer}>
                             <Image
@@ -144,18 +118,22 @@ class UnsolvedModeGameStats extends React.Component {
                 )
             }
 
-            this.setState({
-                correctAnswerNumber: playerCorrect,
-                incorrectAnswerNumber: playerIncorrect,
-                unansweredAnswerNumber: playerUnanswered,
-                clientProfilePicture: playerProfilePicture,
-                clientUsername: playerUsername,
-                examId: this.props.playerProps.examId
-            })
+            this.setState(
+                {
+                    correctAnswerNumber: playerCorrect,
+                    incorrectAnswerNumber: playerIncorrect,
+                    unansweredAnswerNumber: playerUnanswered,
+                    clientProfilePicture: playerProfilePicture,
+                    clientUsername: playerUsername,
+                    examId: this.props.playerProps.examId,
+                    allQuestionsList: tempList
+                },
+                () => {
+                    this.checkFavouriteStatus()
 
-            this.checkFavouriteStatus()
-
-            resolve(true)
+                    resolve(true)
+                }
+            )
         })
     }
 
@@ -212,13 +190,6 @@ class UnsolvedModeGameStats extends React.Component {
                 2 // Screen number which is 2
             )
         })
-    }
-
-    replayButtonOnPress = () => {
-        this.props.room.send({
-            action: 'replay'
-        }),
-            this.setState({ isReplayDisabled: true })
     }
 
     answerSwitcher(buttonNumber) {
@@ -333,15 +304,6 @@ class UnsolvedModeGameStats extends React.Component {
                         </View>
                     </View>
                     <View style={styles.buttonsContainer}>
-                        <TouchableOpacity
-                            onPress={this.replayButtonOnPress}
-                            disabled={this.state.isReplayDisabled}
-                        >
-                            <View style={styles.replayButton}>
-                                <Text style={styles.buttonText}>Yeniden</Text>
-                                <Text style={styles.buttonText}>Oyna</Text>
-                            </View>
-                        </TouchableOpacity>
                         <TouchableOpacity
                             onPress={this.mainScreenButtonOnPress}
                         >

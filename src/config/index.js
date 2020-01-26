@@ -3,7 +3,8 @@ import {
     ENV_API_ENDPOINT_LOCAL,
     ENV_GAME_ENGINE_ENDPOINT,
     ENV_GAME_ENGINE_ENDPOINT_LOCAL,
-    ENV_APP_VERSION
+    ENV_APP_VERSION,
+    ENV_BUGSNAG_API_KEY
 } from 'react-native-dotenv'
 
 const scene_keys = {
@@ -47,7 +48,9 @@ const scene_keys = {
         joinGroupRoom: 'joinGroupRoom',
         opponentsProfile: 'opponentsProfile',
         notifications: 'notifications',
-        statistics: 'statistics'
+        statistics: 'statistics',
+        goals: 'goals',
+        jokerReward: 'jokerReward'
     },
     splashScreen: 'splash',
     tutorialScreen: 'tutorial'
@@ -57,6 +60,12 @@ const API_ENDPOINT = ENV_API_ENDPOINT_LOCAL
 const GAME_ENGINE_ENDPOINT = ENV_GAME_ENGINE_ENDPOINT_LOCAL
 const APP_VERSION = ENV_APP_VERSION
 const SCENE_KEYS = scene_keys
+const BUGSNAG_API_KEY = ENV_BUGSNAG_API_KEY
 //console.log(API_ENDPOINT, GAME_ENGINE_ENDPOINT)
-console.log(GAME_ENGINE_ENDPOINT)
-export { API_ENDPOINT, SCENE_KEYS, GAME_ENGINE_ENDPOINT, APP_VERSION }
+export {
+    API_ENDPOINT,
+    SCENE_KEYS,
+    GAME_ENGINE_ENDPOINT,
+    APP_VERSION,
+    BUGSNAG_API_KEY
+}

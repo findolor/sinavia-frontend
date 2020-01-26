@@ -18,7 +18,9 @@ import {
     JoinGroupRoom,
     OpponentsProfile,
     Notifications,
-    Statistics
+    Statistics,
+    Goals,
+    JokerReward
 } from '../containers/mainScreens'
 
 import {
@@ -66,7 +68,9 @@ export const mainScreens = {
     joinGroupRoom: JoinGroupRoom,
     opponentsProfile: OpponentsProfile,
     notifications: Notifications,
-    statistics: Statistics
+    statistics: Statistics,
+    goals: Goals,
+    jokerReward: JokerReward
 }
 
 export const gameScreens = {

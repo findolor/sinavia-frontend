@@ -3,24 +3,21 @@ import {
     Image,
     ImageBackground,
     FlatList,
-    Modal,
     ScrollView,
-    StatusBar,
     Text,
     TouchableOpacity,
-    View
+    View,
+    ActivityIndicator
 } from 'react-native'
 import { connect } from 'react-redux'
 import { leaderboardServices } from '../../../sagas/leaderboard/'
 import { getUserService } from '../../../sagas/user/fetchUser'
 import { opponentActions } from '../../../redux/opponents/actions'
 import DropDown from '../../../components/mainScreen/dropdown/dropdown'
-import {
-    heightPercentageToDP as hp,
-    widthPercentageToDP as wp
-} from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import styles from './style'
 import * as Animatable from 'react-native-animatable'
+import { navigationPush, SCENE_KEYS } from '../../../services/navigationService'
 
 import FIRST_TITLE from '../../../assets/firstTitle.png'
 import SECOND_TITLE from '../../../assets/secondTitle.png'
@@ -31,6 +28,7 @@ class Leaderboard extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            isFetching: true,
             rankingMode: 'global',
             globalButtonBackgroundColor: '#FF6D00',
             globalButtonTextColor: '#FFFFFF',
@@ -151,7 +149,8 @@ class Leaderboard extends React.Component {
             remainingProfilePictures: remainingProfilePictures,
             remainingUsersFlatList: remainingUsersFlatList,
             clientRanking: clientIndex + 1,
-            allUserIds: userIds
+            allUserIds: userIds,
+            isFetching: false
         })
     }
 
@@ -164,6 +163,7 @@ class Leaderboard extends React.Component {
             topTenProfilePictures: [],
             remainingProfilePictures: [],
             remainingUsersFlatList: [],
+            allUserIds: [],
             clientRanking: 0
         })
     }
@@ -234,16 +234,24 @@ class Leaderboard extends React.Component {
             )
             return
         }
+        // Getting the actual course id
+        const courseName = this.state.courseList[index]
+        index = this.props.gameContentMap.courses.findIndex(
+            x => x.name === courseName && x.examId === this.state.choosenExamId
+        )
+        const courseId = this.props.gameContentMap.courses[index].id
+
         const subjectList = ['Hepsi']
         this.props.gameContentMap.subjects.forEach(subject => {
-            if (subject.courseId === index) subjectList.push(subject.name)
+            if (subject.courseId === courseId) subjectList.push(subject.name)
         })
         this.setState(
             {
                 subjectList: subjectList,
                 subjectListDefaultValue: 'Hepsi',
                 isSubjectDropdownVisible: true,
-                choosenCourseId: index
+                choosenCourseId: courseId,
+                choosenSubjectId: null
             },
             () =>
                 this.fetchLeaderboard().then(data => {
@@ -278,7 +286,16 @@ class Leaderboard extends React.Component {
             )
             return
         } else {
-            this.setState({ choosenSubjectId: index }, () =>
+            // Getting the actual subject id
+            const subjectName = this.state.subjectList[index]
+            index = this.props.gameContentMap.subjects.findIndex(
+                x =>
+                    x.name === subjectName &&
+                    x.courseId === this.state.choosenCourseId
+            )
+            const subjectId = this.props.gameContentMap.subjects[index].id
+
+            this.setState({ choosenSubjectId: subjectId }, () =>
                 this.fetchLeaderboard().then(data => {
                     let userList = []
 
@@ -431,20 +448,32 @@ class Leaderboard extends React.Component {
     }
 
     userOnPress = userId => {
-        getUserService(this.props.clientToken, userId).then(userInformation => {
-            this.props.getOpponentFullInformation(
-                userInformation,
-                this.props.clientDBId,
-                this.props.clientToken,
-                false
+        if (userId === this.props.clientDBId)
+            navigationPush(SCENE_KEYS.mainScreens.profile)
+        else
+            getUserService(this.props.clientToken, userId).then(
+                userInformation => {
+                    this.props.getOpponentFullInformation(
+                        userInformation,
+                        this.props.clientDBId,
+                        this.props.clientToken,
+                        false
+                    )
+                }
             )
-        })
     }
 
     // TODO CHANGE THE TOP THEN TO FLAT LIST
     // COMMENT OUT THE CODE HERE AND ADD THE NEW ONE
     // WILL USE THE OLD CODE FOR HELP LATER
     render() {
+        if (this.state.isFetching) {
+            return (
+                <View style={[styles.container, { justifyContent: 'center' }]}>
+                    <ActivityIndicator />
+                </View>
+            )
+        }
         return (
             <View style={styles.container}>
                 <View style={styles.scrollViewContainer}>
@@ -557,6 +586,11 @@ class Leaderboard extends React.Component {
                                         this.userOnPress(
                                             this.state.allUserIds[0]
                                         )
+                                    }
+                                    disabled={
+                                        this.state.allUserIds[0] !== undefined
+                                            ? false
+                                            : true
                                     }
                                 >
                                     <Animatable.View

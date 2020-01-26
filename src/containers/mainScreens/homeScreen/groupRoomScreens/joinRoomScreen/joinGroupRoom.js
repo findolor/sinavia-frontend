@@ -13,6 +13,7 @@ import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
+import { BannerAd } from '../../../../../services/admobService'
 // Image imports
 const LEADER_LOGO = require('../../../../../assets/mainScreens/groupLeaderSword.png')
 const COPY_IMAGE = require('../../../../../assets/mainScreens/copy.png')
@@ -177,6 +178,9 @@ class JoinGroupRoom extends React.Component {
             <View style={styles.container}>
                 {this.state.isQuitGameModalVisible === false && (
                     <View style={styles.modal}>
+                        {!this.props.clientInformation.isPremium && (
+                            <BannerAd />
+                        )}
                         <TouchableOpacity
                             onPress={this.closeGroupGameOnPress}
                             style={{ height: hp(120), width: wp(100) }}

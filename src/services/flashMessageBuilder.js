@@ -25,6 +25,19 @@ export const flashMessages = {
             backgroundColor: 'white',
             duration: 5000
         }),
+    generalErrorWithProps: (message, description, props = {}) =>
+        showMessage({
+            message: message,
+            description: description,
+            titleStyle: {
+                fontFamily: 'Averta-SemiboldItalic',
+                color: '#FF9900'
+            },
+            textStyle: { fontFamily: 'Averta-Regular', color: '#00D9EF' },
+            backgroundColor: 'white',
+            duration: 5000,
+            ...props
+        }),
     networkError: () =>
         showMessage({
             message: 'Bağlantı hatası',

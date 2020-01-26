@@ -58,6 +58,16 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 clientInformation: clientInformation
             }
+        case clientTypes.SAVE_ONE_JOKER:
+            userJokers = state.userJokers
+            index = userJokers.findIndex(
+                x => x.jokerId === action.joker.jokerId
+            )
+            userJokers[index] = action.joker
+            return {
+                ...state,
+                userJokers: userJokers
+            }
         default:
             return state
     }

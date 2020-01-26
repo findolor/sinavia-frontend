@@ -11,6 +11,7 @@ import {
     Vibration
 } from 'react-native'
 import styles, { countdownProps } from './style'
+import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas'
 import CountDown from 'react-native-countdown-component'
 import { showMessage } from 'react-native-flash-message'
 import NotchView from '../../../components/notchView'
@@ -36,6 +37,7 @@ import {
 } from 'react-native-responsive-screen'
 import AuthButton from '../../../components/authScreen/authButton'
 import * as Animatable from 'react-native-animatable'
+import { interstitialAd } from '../../../services/admobService'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
@@ -118,7 +120,9 @@ class GroupGame extends React.Component {
             thirdJokerNameSecondWord: '',
             thirdJokerAmount: '',
             // Full question list for favouriting
-            fullQuestionList: []
+            fullQuestionList: [],
+            // Server ping variable
+            isServerPinged: false
         }
     }
 
@@ -243,6 +247,8 @@ class GroupGame extends React.Component {
         clearTimeout(this.startTimeout)
         clearTimeout(this.updateTimeout)
         clearTimeout(this.finishedTimeout)
+        clearInterval(this.checkPingInterval)
+        clearInterval(this.pingInterval)
 
         // Clear room listeners
         this.props.room.removeAllListeners()
@@ -329,6 +335,8 @@ class GroupGame extends React.Component {
                 })
                 setTimeout(function() {
                     that.shutdownGame()
+                    if (!that.props.clientInformation.isPremium)
+                        interstitialAd()
                     navigationReplace(SCENE_KEYS.gameScreens.groupGameStats, {
                         playerProps: message.playerProps,
                         room: that.props.room,
@@ -357,10 +365,10 @@ class GroupGame extends React.Component {
                     this.onlyClientMatchQuit()
                     break
                 }
-                console.log(this.state.questionList)
                 // Do a shutdown routine
                 this.shutdownGame()
                 this.props.room.leave()
+                if (!this.props.clientInformation.isPremium) interstitialAd()
                 navigationReplace(SCENE_KEYS.gameScreens.groupGameStats, {
                     playerProps: message.playerProps,
                     room: this.props.room,
@@ -369,6 +377,9 @@ class GroupGame extends React.Component {
                     fullQuestionList: message.fullQuestionList,
                     isMatchFinished: false
                 })
+                break
+            case 'ping':
+                this.setState({ isServerPinged: true })
                 break
         }
     }
@@ -412,7 +423,8 @@ class GroupGame extends React.Component {
             case 'show-results':
                 // 8 second countdown time for the results
                 this.setState({
-                    countDownTime: 5
+                    countDownTime: 5,
+                    isQuestionModalVisible: false
                 })
                 this.updateTimeout = setTimeout(() => {
                     // We wait 2.5 seconds for the reveal
@@ -421,13 +433,14 @@ class GroupGame extends React.Component {
                 break
             case 'match-finished':
                 this.shutdownGame()
+                if (!this.props.clientInformation.isPremium) interstitialAd()
                 navigationReplace(SCENE_KEYS.gameScreens.groupGameStats, {
                     playerProps: this.state.playerProps,
                     room: this.props.room,
                     client: this.props.client,
                     questionList: this.state.questionList,
                     fullQuestionList: this.state.fullQuestionList,
-                    isMatchFinished: false
+                    isMatchFinished: true
                 })
                 break
             case 'player-props':
@@ -479,11 +492,18 @@ class GroupGame extends React.Component {
                         }
                     })
 
+                    let net
+
+                    if (playerProps.matchInformation.examId !== 1)
+                        net = correct - incorrect / 4
+                    else net = correct - incorrect / 3
+
                     playerList.push({
                         username: username,
                         correct: correct,
                         incorrect: incorrect,
-                        unanswered: unanswered
+                        unanswered: unanswered,
+                        net: net
                     })
                     correct = 0
                     incorrect = 0
@@ -491,6 +511,7 @@ class GroupGame extends React.Component {
                 }
             }
         })
+        playerList.sort((a, b) => parseFloat(b.net) - parseFloat(a.net))
         this.setState({ groupLeaderboard: playerList })
     }
 
@@ -854,9 +875,11 @@ class GroupGame extends React.Component {
                     backgroundColor: '#000000DE'
                 }}
             >
-                <View style={styles.quitModalContainer}>
+                <View style={styles.modalContainer}>
                     <View style={styles.quitView}>
-                        <Text style={styles.areYouSureText}>Sunucu hatası</Text>
+                        <Text style={styles.areYouSureText}>
+                            Bağlantı hatası
+                        </Text>
                         <Text style={styles.areYouSureText}>
                             Sonuç sayfasına yönlendirileceksin
                         </Text>
@@ -1155,26 +1178,55 @@ class GroupGame extends React.Component {
                         transparent={true}
                         animationType={'fade'}
                     >
-                        <View style={styles.modalContainer}>
-                            <View style={styles.questionImageModalContainer}>
-                                <Image
-                                    source={{
-                                        uri: this.state.questionList[
-                                            this.state.questionNumber
-                                        ]
-                                    }}
-                                    style={styles.questionModalStyle}
-                                />
-                            </View>
-                            <View style={styles.closeModalContainer}>
-                                <TouchableOpacity
-                                    onPress={this.questionModalCloseOnPress}
-                                >
+                        <View style={styles.questionModalContainer}>
+                            <View style={{ backgroundColor: 'transparent', flex: 1, width: wp(100), justifyContent: 'center'}}>
+                                <View style={{ position: 'absolute', height: hp(78), width: wp(100), justifyContent: 'center'}}>
                                     <Image
-                                        source={ZOOM_OUT_BUTTON}
-                                        style={styles.closeModal}
+                                        source={{
+                                            uri: this.state.questionList[
+                                                this.state.questionNumber
+                                                ]
+                                        }}
+                                        style={styles.questionModalStyle}
                                     />
-                                </TouchableOpacity>
+                                </View>
+                                <RNSketchCanvas
+                                    ref={ref => this.canvas1 = ref}
+                                    containerStyle={{ backgroundColor: 'transparent', flex: 1 }}
+                                    canvasStyle={{ backgroundColor: 'transparent', flex: 1 }}
+                                    onStrokeEnd={data => {
+                                    }}
+                                    closeComponent={<View style={[styles.functionButton, {marginLeft: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2.25), textAlign: 'center' }}>Kapat</Text></View>}
+                                    onClosePressed={this.questionModalCloseOnPress}
+                                    undoComponent={<View style={[styles.functionButton, {marginRight: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2.25), textAlign: 'center' }}>Geri al</Text></View>}
+                                    onUndoPressed={(id) => {
+                                        this.canvas1.deletePath(id)
+                                    }}
+                                    clearComponent={<View style={[styles.functionButton, {marginRight: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2.25), textAlign: 'center' }}>Temizle</Text></View>}
+                                    onClearPressed={() => {
+                                        this.canvas1.clear()
+                                    }}
+                                    eraseComponent={<View style={[styles.functionButton, {marginLeft: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2.25), textAlign: 'center' }}>Silgi</Text></View>}
+                                    strokeComponent={color => (
+                                        <View style={[{ backgroundColor: color, borderWidth: hp(1)  }, styles.strokeColorButton]} />
+                                    )}
+                                    strokeSelectedComponent={(color, index, changed) => {
+                                        return (
+                                            <View style={[{ backgroundColor: color}, styles.strokeSelectedColorButton]} />
+                                        )
+                                    }}
+                                    strokeWidthComponent={(w) => {
+                                        return (<View style={styles.strokeWidthButton}>
+                                                <View style={{
+                                                    backgroundColor: 'white',
+                                                    width: Math.sqrt(w / 3) * 10, height: Math.sqrt(w / 3) * 10, borderRadius: Math.sqrt(w / 3) * 10 / 2
+                                                }} />
+                                            </View>
+                                        )
+                                    }}
+                                    defaultStrokeIndex={0}
+                                    defaultStrokeWidth={5}
+                                />
                             </View>
                         </View>
                     </Modal>

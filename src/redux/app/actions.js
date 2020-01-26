@@ -10,7 +10,8 @@ export const appTypes = {
     SAVE_ENERGY_AMOUNT: 'save_energy_amount', */
     LOCK_UNLOCK_BUTTON: 'lock_unlock_button',
     SAVE_NOTIFICATION_OPEN: 'save_notification_open',
-    SET_CONNECTION_ERROR_MESSAGE: 'set_connection_error_message'
+    SET_CONNECTION_ERROR_MESSAGE: 'set_connection_error_message',
+    INCREASE_FEATURE_PRESS_COUNT: 'increase_feature_press_count'
 }
 
 const setNetworkConnectionInfo = isNetworkConnected => {
@@ -71,6 +72,12 @@ const setConnectionErrorMessage = message => {
     }
 }
 
+const increaseFeaturePressCount = () => {
+    return {
+        type: appTypes.INCREASE_FEATURE_PRESS_COUNT
+    }
+}
+
 export const appActions = {
     setNetworkConnectionInfo: setNetworkConnectionInfo,
     getLeaderboard: getLeaderboard,
@@ -79,5 +86,6 @@ export const appActions = {
     //removeOneEnergy: removeOneEnergy,
     lockUnlockButton: lockUnlockButton,
     saveNotificationOpen: saveNotificationOpen,
-    setConnectionErrorMessage: setConnectionErrorMessage
+    setConnectionErrorMessage: setConnectionErrorMessage,
+    increaseFeaturePressCount: increaseFeaturePressCount
 }

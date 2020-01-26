@@ -44,11 +44,31 @@ function getNotificationOpened() {
 
 export function* authenticateUser(action) {
     try {
-        try {
-            yield call(firebaseSignIn)
-        } catch (error) {
-            console.log(error)
-            return
+        const signInMethod = yield call(
+            deviceStorage.getItemFromStorage,
+            'signInMethod'
+        )
+        switch (signInMethod) {
+            case 'normal':
+                try {
+                    yield call(firebaseSignIn)
+                } catch (error) {
+                    console.log(error)
+                    return
+                }
+                break
+            case 'google':
+                const isSignedIn = yield call(GoogleSignin.isSignedIn)
+                // This is for photo upload to storage
+                // We need to be loged in somehow
+                firebase
+                    .auth()
+                    .signInAnonymously()
+                    .catch(error => {
+                        console.log(error)
+                    })
+                if (!isSignedIn) return
+                break
         }
 
         // We get the unique device id

@@ -11,13 +11,13 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     premiumContainer: {
-        flex: 33.5,
-        width: wp(100),
-        justifyContent: 'flex-end',
+        flex: 36.5,
+        width: wp(93),
+        justifyContent: 'flex-start',
         alignItems: 'center'
     },
     socialMediaContainer: {
-        flex: 9.5,
+        flex: 8,
         width: wp(100),
         justifyContent: 'flex-end',
         alignItems: 'center'
@@ -42,9 +42,14 @@ export default StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
     },
+    premiumUserAddButtonsContainer: {
+        flex: 47.5,
+        width: wp(93),
+        justifyContent: 'space-evenly'
+    },
     premiumUpperView: {
         zIndex: 1,
-        height: hp(24.5),
+        height: hp(25.5),
         width: wp(93),
         borderTopLeftRadius: hp(1.8),
         borderTopRightRadius: hp(1.8),
@@ -161,7 +166,8 @@ export default StyleSheet.create({
         height: hp(5.5),
         width: wp(40),
         justifyContent: 'flex-end',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: hp(1)
     },
     yourPremiumCounterView: {
         height: hp(5.5),
@@ -261,9 +267,8 @@ export default StyleSheet.create({
         marginBottom: hp(0.25)
     },
     premiumSwiperContainer: {
-        height: hp(17.5),
+        height: hp(18.5),
         width: wp(93),
-        marginTop: hp(1),
         borderTopWidth: hp(0.4),
         borderLeftWidth: hp(0.4),
         borderRightWidth: hp(0.4),
@@ -301,7 +306,7 @@ export default StyleSheet.create({
         color: 'white'
     },
     premiumSwiperView: {
-        height: hp(17.5),
+        height: hp(18.5),
         width: wp(93),
         justifyContent: 'center',
         alignItems: 'center'
@@ -337,7 +342,7 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     premiumSwiperInfoView: {
-        height: hp(5.5),
+        height: hp(6.5),
         width: wp(70),
         justifyContent: 'center',
         alignItems: 'center'
@@ -604,7 +609,7 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Semibold',
         fontSize: hp(1.4),
         textAlign: 'center',
-        color: 'white'
+        color: '#FF9900'
     },
     unselectedPremiumOptionHeaderText: {
         fontFamily: 'Averta-Semibold',
@@ -652,5 +657,103 @@ export default StyleSheet.create({
     socialMediaLogo: {
         resizeMode: 'contain',
         height: hp(3)
-    }
+    },
+    premiumUserJokerButtonStyle: {
+        height: hp(13),
+        width: wp(93),
+        borderRadius: hp(2)
+    },
+    adButton2: {
+        height: hp(9),
+        width: wp(30),
+        borderRadius: hp(2)
+    },
+    inviteFriendView: {
+        height: hp(35.6),
+        width: wp(93),
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    inviteFriendInfoView: {
+        height: hp(19),
+        width: wp(70),
+        justifyContent: 'flex-end'
+    },
+    inviteFriendBox: {
+        height: hp(11),
+        width: wp(70),
+        borderWidth: hp(0.5),
+        borderColor: 'black',
+        borderRadius: hp(2),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    inviteFriendKeyAmountsView: {
+        height: hp(6),
+        width: wp(70),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    separator: {
+        height: hp(0.3),
+        width: wp(85),
+        marginLeft: wp(4),
+        backgroundColor: 'grey'
+    },
+    usePromotionView: {
+        height: hp(35.6),
+        width: wp(93),
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    usePromotionInfoView: {
+        height: hp(12),
+        width: wp(70),
+        justifyContent: 'flex-end'
+    },
+    usePromotionBox: {
+        height: hp(11),
+        width: wp(70),
+        borderWidth: hp(0.5),
+        borderColor: 'black',
+        borderRadius: hp(2),
+        justifyContent: 'center'
+    },
+    usePromotionButton: {
+        height: hp(8),
+        width: wp(70),
+        backgroundColor: '#00D9EF',
+        borderRadius: hp(2),
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: hp(1.5)
+    },
+    promotionCodeInfoText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(2),
+        color: '#818181',
+        marginBottom: hp(1)
+    },
+    inviteFriendKeyAmounts: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(2.5),
+        color: 'black'
+    },
+    promotionCode: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(4),
+        color: 'black',
+        letterSpacing: wp(2)
+    },
+    usePromotionBoxText: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(4),
+        color: 'black',
+        textAlign: 'center',
+        letterSpacing: wp(2)
+    },
+    copyImage: {
+        height: hp(4),
+        width: hp(4)
+    },
 })

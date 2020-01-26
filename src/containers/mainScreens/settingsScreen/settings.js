@@ -37,6 +37,7 @@ import {
 // Picture imports
 import returnLogo from '../../../assets/return.png'
 import CHANGE_PHOTO from '../../../assets/changePhoto.png'
+import { GoogleSignin } from '@react-native-community/google-signin'
 
 const citiesList = [
     { cityName: 'Adana' },
@@ -172,17 +173,33 @@ class Settings extends React.Component {
         navigationPush(SCENE_KEYS.mainScreens.changePassword)
     }
 
-    logoutButtonOnPress = () => {
-        firebase
-            .auth()
-            .signOut()
-            .then(() => {
-                deviceStorage.clearDeviceStorage()
-                navigationReset('auth')
-            })
-            .catch(error => {
-                console.log(error)
-            })
+    logoutButtonOnPress = async () => {
+        switch (this.props.clientInformation.signInMethod) {
+            case 'normal':
+                firebase
+                    .auth()
+                    .signOut()
+                    .then(() => {
+                        deviceStorage.clearDeviceStorage()
+                        navigationReset('auth')
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+                break
+            case 'google':
+                try {
+                    //await GoogleSignin.revokeAccess()
+                    await GoogleSignin.signOut()
+                    // This is because we log in as anonymous for photo upload
+                    firebase.auth().signOut()
+                    deviceStorage.clearDeviceStorage()
+                    navigationReset('auth')
+                } catch (error) {
+                    console.log(error)
+                }
+                break
+        }
     }
 
     showHideDatePicker = () => {
@@ -219,7 +236,7 @@ class Settings extends React.Component {
     }
 
     nameOnChange = text => {
-        const validCharacters = /[^a-zA-Z\sğüşıöç]/g
+        const validCharacters = /[^a-zA-Z\sğüşıöçĞÜŞİÖÇ]/g
         if (
             validCharacters.test(text) ||
             text.substr(-2) === '  ' ||
@@ -237,7 +254,7 @@ class Settings extends React.Component {
     }
 
     lastnameOnChange = text => {
-        const validCharacters = /[^a-zA-Zğüşıöç]/g
+        const validCharacters = /[^a-zA-ZğüşıöçĞÜŞİÖÇ]/g
         if (validCharacters.test(text)) {
             this.setState({ lastnameBorderColor: '#B72A2A' })
         } else if (
@@ -252,7 +269,7 @@ class Settings extends React.Component {
     }
 
     usernameOnChange = text => {
-        const validCharacters = /[^a-zA-Z0-9ğüşıöç]/g
+        const validCharacters = /[^a-zA-Z0-9ğüşıöçĞÜŞİÖÇ]/g
         if (validCharacters.test(text)) {
             this.setState({ usernameBorderColor: '#B72A2A' })
         } else if (
@@ -302,165 +319,172 @@ class Settings extends React.Component {
     }
 
     saveButtonOnPress = async () => {
-        if (!this.props.isNetworkConnected) {
-            showMessage({
-                message: 'Lütfen internet bağlantınızı kontrol ediniz',
-                type: 'danger',
-                duration: 2000,
-                titleStyle: styles.networkErrorStyle,
-                icon: 'auto'
-            })
-            return
-        }
-        if (this.state.usernameBorderColor === '#B72A2A') {
-            flashMessages.authInfosOrSettingsError(
-                'Kullanıcı adı hatası',
-                'Kullanıcı adı sadece harf veya rakamlardan oluşabilir',
-                {
-                    backgroundColor: '#FFFFFF',
-                    borderBottomLeftRadius: 10,
-                    borderBottomRightRadius: 10,
-                    borderColor: '#00D9EF',
-                    borderWidth: hp(0.25),
-                    height: hp(10)
-                }
+        try {
+            if (!this.props.isNetworkConnected) {
+                showMessage({
+                    message: 'Lütfen internet bağlantınızı kontrol ediniz',
+                    type: 'danger',
+                    duration: 2000,
+                    titleStyle: styles.networkErrorStyle,
+                    icon: 'auto'
+                })
+                return
+            }
+            if (this.state.usernameBorderColor === '#B72A2A') {
+                flashMessages.authInfosOrSettingsError(
+                    'Kullanıcı adı hatası',
+                    'Kullanıcı adı sadece harf veya rakamlardan oluşabilir',
+                    {
+                        backgroundColor: '#FFFFFF',
+                        borderBottomLeftRadius: 10,
+                        borderBottomRightRadius: 10,
+                        borderColor: '#00D9EF',
+                        borderWidth: hp(0.25),
+                        height: hp(10)
+                    }
+                )
+                return
+            }
+            if (this.state.nameBorderColor === '#B72A2A') {
+                flashMessages.authInfosOrSettingsError(
+                    'Ad hatası',
+                    'Ad sadece harflerden oluşmalıdır',
+                    {
+                        backgroundColor: '#FFFFFF',
+                        borderBottomLeftRadius: 10,
+                        borderBottomRightRadius: 10,
+                        borderColor: '#00D9EF',
+                        borderWidth: hp(0.25),
+                        height: hp(10)
+                    }
+                )
+                return
+            }
+            if (this.state.lastnameBorderColor === '#B72A2A') {
+                flashMessages.authInfosOrSettingsError(
+                    'Soyad hatası',
+                    'Soyad sadece harflerden oluşmalıdır',
+                    {
+                        backgroundColor: '#FFFFFF',
+                        borderBottomLeftRadius: 10,
+                        borderBottomRightRadius: 10,
+                        borderColor: '#00D9EF',
+                        borderWidth: hp(0.25),
+                        height: hp(10)
+                    }
+                )
+                return
+            }
+            if (this.state.nameBorderColor === 'red') {
+                flashMessages.authInfosOrSettingsError(
+                    'Ad hatası',
+                    'Ad sadece harflerden oluşmalıdır',
+                    {
+                        backgroundColor: '#FFFFFF',
+                        borderBottomLeftRadius: 10,
+                        borderBottomRightRadius: 10,
+                        borderColor: '#00D9EF',
+                        borderWidth: hp(0.25),
+                        height: hp(10)
+                    }
+                )
+                return
+            }
+            if (this.state.lastnameBorderColor === 'red') {
+                flashMessages.authInfosOrSettingsError(
+                    'Soyad hatası',
+                    'Soyad sadece harflerden oluşmalıdır',
+                    {
+                        backgroundColor: '#FFFFFF',
+                        borderBottomLeftRadius: 10,
+                        borderBottomRightRadius: 10,
+                        borderColor: '#00D9EF',
+                        borderWidth: hp(0.25),
+                        height: hp(10)
+                    }
+                )
+                return
+            }
+            const firebaseStorage = firebase.storage()
+
+            let shouldUpdate = false
+            let isProfilePictureChanged = false
+            let isCoverPictureChanged = false
+
+            // This is for shallow copying
+            // If we don't do object.assing, as we change the values in clientInformation it changes the original object
+            let clientInformation = Object.assign(
+                {},
+                this.props.clientInformation
             )
-            return
+
+            if (this.checkCity()) {
+                clientInformation.city = this.state.city
+                shouldUpdate = true
+            }
+
+            if (this.checkUsername()) {
+                clientInformation.username = this.state.username
+                shouldUpdate = true
+            }
+
+            if (this.checkName()) {
+                clientInformation.name = this.state.name
+                shouldUpdate = true
+            }
+
+            if (this.checkLastname()) {
+                clientInformation.lastname = this.state.lastname
+                shouldUpdate = true
+            }
+
+            if (this.checkBirthDate()) {
+                clientInformation.birthDate = this.state.birthDate
+                shouldUpdate = true
+            }
+
+            if (this.checkCoverPicture()) {
+                clientInformation.coverPicture = this.state.coverPicture
+                shouldUpdate = true
+                isCoverPictureChanged = true
+            }
+
+            if (this.checkProfilePicture()) {
+                clientInformation.profilePicture = this.state.profilePicture
+                shouldUpdate = true
+                isProfilePictureChanged = true
+            }
+
+            if (shouldUpdate) this.props.lockUnlockButton()
+
+            let response
+
+            if (isProfilePictureChanged) {
+                response = await firebaseStorage
+                    .ref(`profilePictures/${this.props.clientDBId}.jpg`)
+                    .putFile(this.state.profilePicture.path)
+
+                clientInformation.profilePicture = response.downloadURL
+            }
+
+            if (isCoverPictureChanged) {
+                response = await firebaseStorage
+                    .ref(`coverPictures/${this.props.clientDBId}.jpg`)
+                    .putFile(this.state.coverPicture.path)
+
+                clientInformation.coverPicture = response.downloadURL
+            }
+
+            if (shouldUpdate)
+                this.props.updateUser(
+                    this.props.clientToken,
+                    this.props.clientDBId,
+                    clientInformation,
+                    false
+                )
+        } catch (error) {
+            console.log(error)
         }
-        if (this.state.nameBorderColor === '#B72A2A') {
-            flashMessages.authInfosOrSettingsError(
-                'Ad hatası',
-                'Ad sadece harflerden oluşmalıdır',
-                {
-                    backgroundColor: '#FFFFFF',
-                    borderBottomLeftRadius: 10,
-                    borderBottomRightRadius: 10,
-                    borderColor: '#00D9EF',
-                    borderWidth: hp(0.25),
-                    height: hp(10)
-                }
-            )
-            return
-        }
-        if (this.state.lastnameBorderColor === '#B72A2A') {
-            flashMessages.authInfosOrSettingsError(
-                'Soyad hatası',
-                'Soyad sadece harflerden oluşmalıdır',
-                {
-                    backgroundColor: '#FFFFFF',
-                    borderBottomLeftRadius: 10,
-                    borderBottomRightRadius: 10,
-                    borderColor: '#00D9EF',
-                    borderWidth: hp(0.25),
-                    height: hp(10)
-                }
-            )
-            return
-        }
-        if (this.state.nameBorderColor === 'red') {
-            flashMessages.authInfosOrSettingsError(
-                'Ad hatası',
-                'Ad sadece harflerden oluşmalıdır',
-                {
-                    backgroundColor: '#FFFFFF',
-                    borderBottomLeftRadius: 10,
-                    borderBottomRightRadius: 10,
-                    borderColor: '#00D9EF',
-                    borderWidth: hp(0.25),
-                    height: hp(10)
-                }
-            )
-            return
-        }
-        if (this.state.lastnameBorderColor === 'red') {
-            flashMessages.authInfosOrSettingsError(
-                'Soyad hatası',
-                'Soyad sadece harflerden oluşmalıdır',
-                {
-                    backgroundColor: '#FFFFFF',
-                    borderBottomLeftRadius: 10,
-                    borderBottomRightRadius: 10,
-                    borderColor: '#00D9EF',
-                    borderWidth: hp(0.25),
-                    height: hp(10)
-                }
-            )
-            return
-        }
-        const firebaseStorage = firebase.storage()
-
-        let shouldUpdate = false
-        let isProfilePictureChanged = false
-        let isCoverPictureChanged = false
-
-        // This is for shallow copying
-        // If we don't do object.assing, as we change the values in clientInformation it changes the original object
-        let clientInformation = Object.assign({}, this.props.clientInformation)
-
-        if (this.checkCity()) {
-            clientInformation.city = this.state.city
-            shouldUpdate = true
-        }
-
-        if (this.checkUsername()) {
-            clientInformation.username = this.state.username
-            shouldUpdate = true
-        }
-
-        if (this.checkName()) {
-            clientInformation.name = this.state.name
-            shouldUpdate = true
-        }
-
-        if (this.checkLastname()) {
-            clientInformation.lastname = this.state.lastname
-            shouldUpdate = true
-        }
-
-        if (this.checkBirthDate()) {
-            clientInformation.birthDate = this.state.birthDate
-            shouldUpdate = true
-        }
-
-        if (this.checkCoverPicture()) {
-            clientInformation.coverPicture = this.state.coverPicture
-            shouldUpdate = true
-            isCoverPictureChanged = true
-        }
-
-        if (this.checkProfilePicture()) {
-            clientInformation.profilePicture = this.state.profilePicture
-            shouldUpdate = true
-            isProfilePictureChanged = true
-        }
-
-        if (shouldUpdate) this.props.lockUnlockButton()
-
-        let response
-
-        if (isProfilePictureChanged) {
-            response = await firebaseStorage
-                .ref(`profilePictures/${this.props.clientDBId}.jpg`)
-                .putFile(this.state.profilePicture.path)
-
-            clientInformation.profilePicture = response.downloadURL
-        }
-
-        if (isCoverPictureChanged) {
-            response = await firebaseStorage
-                .ref(`coverPictures/${this.props.clientDBId}.jpg`)
-                .putFile(this.state.coverPicture.path)
-
-            clientInformation.coverPicture = response.downloadURL
-        }
-
-        if (shouldUpdate)
-            this.props.updateUser(
-                this.props.clientToken,
-                this.props.clientDBId,
-                clientInformation,
-                false
-            )
     }
 
     pickProfileImage(cropit, circular = false, mediaType) {
@@ -776,13 +800,18 @@ class Settings extends React.Component {
                         </View>
                     </View>
                     <View style={styles.buttonsContainer}>
-                        <TouchableOpacity onPress={this.changePasswordOnPress}>
-                            <View style={styles.changePasswordButton}>
-                                <Text style={styles.changePasswordText}>
-                                    Şifre değiştir
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
+                        {this.props.clientInformation.signInMethod ===
+                            'normal' && (
+                            <TouchableOpacity
+                                onPress={this.changePasswordOnPress}
+                            >
+                                <View style={styles.changePasswordButton}>
+                                    <Text style={styles.changePasswordText}>
+                                        Şifre değiştir
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+                        )}
                         <TouchableOpacity onPress={this.logoutButtonOnPress}>
                             <View style={styles.logoutButton}>
                                 <Text style={styles.logoutText}>Çıkış yap</Text>

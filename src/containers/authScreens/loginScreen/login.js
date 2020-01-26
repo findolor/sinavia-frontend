@@ -6,7 +6,6 @@ import {
     TextInput,
     TouchableOpacity,
     Keyboard,
-    Alert,
     TouchableWithoutFeedback,
     KeyboardAvoidingView
 } from 'react-native'
@@ -30,6 +29,7 @@ import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
 import OPENED_EYE from '../../../assets/openedEye.png'
 import CLOSED_EYE from '../../../assets/closedEye.png'
 import BACK_BUTTON from '../../../assets/return.png'
+import { deviceStorage } from '../../../services/deviceStorage'
 
 class Login extends React.Component {
     constructor(props) {
@@ -55,7 +55,7 @@ class Login extends React.Component {
         this.setState({ email: text })
     }
 
-    loginOnPress = () => {
+    loginOnPress = async () => {
         if (!this.props.isNetworkConnected) {
             showMessage({
                 message: 'Lütfen internet bağlantınızı kontrol ediniz',
@@ -67,6 +67,8 @@ class Login extends React.Component {
             return
         }
 
+        // Saving the used method for correct logic in login
+        await deviceStorage.saveItemToStorage('signInMethod', 'normal')
         this.props.loginUser({
             email: this.state.email.replace(/ /g, ''),
             password: this.state.password.replace(/ /g, '')

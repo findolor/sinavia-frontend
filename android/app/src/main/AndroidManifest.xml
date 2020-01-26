@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+    <uses-permission android:name="com.android.vending.BILLING" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.camera.front" android:required="false" />
 
@@ -38,6 +39,10 @@
         </intent-filter>
       </service>
       <service android:name="io.invertase.firebase.messaging.RNFirebaseBackgroundMessagingService" />
+      <meta-data
+        android:name="com.google.android.gms.ads.APPLICATION_ID"
+        android:value="ca-app-pub-1451210312091686~9113446181"/>
+      <uses-library android:name="org.apache.http.legacy" android:required="false"/>  <!-- Add this line to avoid crashes on Android 9 until AdMob SDK update -->
     </application>
 
 </manifest>

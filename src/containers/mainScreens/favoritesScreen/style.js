@@ -213,27 +213,28 @@ export default StyleSheet.create({
     },
     backButtonContainer: {
         height: hp(11),
-        width: wp(25),
+        width: wp(17.5),
         justifyContent: 'center',
-        alignItems: 'flex-start',
+        alignItems: 'flex-end'
     },
     questionNumberContainer: {
         height: hp(11),
-        width: wp(40),
+        width: wp(75),
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     shareButtonView: {
         height: hp(11),
-        width: wp(25),
+        width: wp(17.5),
         justifyContent: 'center',
-        alignItems: 'flex-end'
+        alignItems: 'flex-start'
     },
     questionNumberText: {
         fontFamily: 'Averta-Semibold',
         letterSpacing: wp(0.1),
         fontSize: hp(5),
-        color: 'white'
+        color: 'white',
+        textAlign: 'center'
     },
     backButtonImg: {
         height: hp(4),

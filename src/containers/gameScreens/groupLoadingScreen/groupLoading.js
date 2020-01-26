@@ -6,10 +6,10 @@ import styles from './style'
 import BACKGROUND from '../../../assets/gameScreens/gameStatsBackground.jpg'
 import LOGO from '../../../assets/sinavia_logo_cut.png'
 import GROUP_PEOPLE from '../../../assets/groupPeople.png'
-import { SCENE_KEYS } from '../../../config'
 import {
     navigationReplace,
-    navigationReset
+    navigationReset,
+    SCENE_KEYS
 } from '../../../services/navigationService'
 
 export default class GroupLoading extends React.Component {

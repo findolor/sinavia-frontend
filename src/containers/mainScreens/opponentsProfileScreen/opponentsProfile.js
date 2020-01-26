@@ -24,6 +24,10 @@ import searchlogo from '../../../assets/search.png'
 import ADD_FRIEND from '../../../assets/mainScreens/addFriend.png'
 import ADD_FRIEND_REQUESTED from '../../../assets/mainScreens/addFriendRequested.png'
 import ALREADY_FRIEND from '../../../assets/mainScreens/alreadyFriend.png'
+import REPORT_ICON from '../.././../assets/mainScreens/reportIcon.png'
+import CLOSE_ICON_BLACK from '../../../assets/mainScreens/CLOSE_BLACK.png'
+import CHECK_ICON from '../../../assets/mainScreens/checkIcon.png'
+import REPORT_APPLIED from '../../../assets/mainScreens/reportApplied.png'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
@@ -32,6 +36,7 @@ import {
 import { friendActions } from '../../../redux/friends/actions'
 import { opponentActions } from '../../../redux/opponents/actions'
 import AuthButton from '../../../components/authScreen/authButton'
+import { flashMessages } from '../../../services/flashMessageBuilder'
 
 class OpponentsProfile extends React.Component {
     constructor(props) {
@@ -59,7 +64,11 @@ class OpponentsProfile extends React.Component {
             friendshipStatus: 'addFriend',
             isFriendRequestSent: null,
             isModalVisible: false,
-            visibleView: ''
+            visibleView: '',
+            reportViewVisible: 'profile',
+            reportName: false,
+            reportUsername: false,
+            reportPic: false
         }
     }
 
@@ -158,6 +167,21 @@ class OpponentsProfile extends React.Component {
 
     profileSearchOnPress = () => {
         if (this.state.searchText === '') return
+        if (this.state.searchText.length < 3) {
+            flashMessages.generalErrorWithProps(
+                'Hata!',
+                'Lütfen en az 3 karakter giriniz.',
+                {
+                    backgroundColor: '#FFFFFF',
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    borderColor: '#00D9EF',
+                    borderWidth: hp(0.25),
+                    height: hp(10)
+                }
+            )
+            return
+        }
         navigationPop(true, {
             searchedKeyword: this.state.searchText,
             popScreen: SCENE_KEYS.mainScreens.profileSearch
@@ -167,7 +191,8 @@ class OpponentsProfile extends React.Component {
     opponentFriendsOnPress = () => {
         navigationPush(SCENE_KEYS.mainScreens.friendsList, {
             opponentFriendIds: this.props.friendsList,
-            isOpponentFriends: true
+            isOpponentFriends: true,
+            friendsList: []
         })
     }
 
@@ -369,6 +394,49 @@ class OpponentsProfile extends React.Component {
         )
     }
 
+    reportIconOnPress = () => {
+        this.setState({ reportViewVisible: 'beforeReport' })
+    }
+
+    closeReportIconOnPress = () => {
+        this.setState({
+            reportViewVisible: 'profile',
+            reportName: false,
+            reportUsername: false,
+            reportPic: false
+        })
+    }
+
+    reportNameOnPress = () => {
+        this.setState({ reportName: !this.state.reportName })
+    }
+
+    reportUsernameOnPress = () => {
+        this.setState({ reportUsername: !this.state.reportUsername })
+    }
+
+    reportPicOnPress = () => {
+        this.setState({ reportPic: !this.state.reportPic })
+    }
+
+    reportButtonOnPress = () => {
+        if (
+            this.state.reportName === true ||
+            this.state.reportUsername === true ||
+            this.state.reportPic === true
+        ) {
+            this.setState({ reportViewVisible: 'afterReport' })
+            setTimeout(() => {
+                this.setState({
+                    reportViewVisible: 'profile',
+                    reportName: false,
+                    reportUsername: false,
+                    reportPic: false
+                })
+            }, 2500)
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -416,59 +484,203 @@ class OpponentsProfile extends React.Component {
                     )}
                 </View>
                 <View style={styles.profileContainer}>
-                    <ImageBackground
-                        source={{
-                            uri: this.props.opponentInformation.coverPicture
-                        }}
-                        style={styles.coverPhoto}
-                        imageStyle={{ borderRadius: hp(3) }}
-                    >
-                        <View style={styles.profileContainerShadowView}>
-                            <View style={styles.profilePicView}>
+                    {this.state.reportViewVisible === 'beforeReport' && (
+                        <View style={styles.reportView}>
+                            <TouchableOpacity
+                                style={[styles.reportIconView, { zIndex: 1 }]}
+                                onPress={this.closeReportIconOnPress}
+                            >
                                 <Image
-                                    source={{
-                                        uri: this.props.opponentInformation
-                                            .profilePicture
-                                    }}
-                                    style={styles.profilePic}
-                                />
-                            </View>
-                            <View style={styles.profileInfoView}>
-                                <Text
+                                    source={CLOSE_ICON_BLACK}
                                     style={[
-                                        styles.nameSurnameText,
+                                        styles.reportIcon,
                                         {
-                                            fontSize:
-                                                this.props.opponentInformation
-                                                    .name.length +
-                                                    this.props
-                                                        .opponentInformation
-                                                        .lastname.length >
-                                                21
-                                                    ? hp(2.25)
-                                                    : hp(3.5)
+                                            height: hp(3),
+                                            width: hp(3),
+                                            marginBottom: hp(0.75)
                                         }
                                     ]}
-                                >
-                                    {this.props.opponentInformation.name}{' '}
-                                    {this.props.opponentInformation.lastname}
-                                </Text>
-                                <Text style={styles.usernameText}>
-                                    @{this.props.opponentInformation.username}
-                                </Text>
-                                <Text style={styles.sinaviaScoreText}>
-                                    Sınavia Puanı:{' '}
-                                    {this.props.opponentInformation.totalPoints}
+                                />
+                            </TouchableOpacity>
+                            <View style={styles.reportViewHeader}>
+                                <Text style={styles.reportHeaderText}>
+                                    Şikayet etmek istediğin konuyu seç
                                 </Text>
                             </View>
+                            <View style={styles.reportOptionsView}>
+                                <View style={styles.reportOptionView}>
+                                    <TouchableOpacity
+                                        onPress={this.reportNameOnPress}
+                                        style={styles.checkBox}
+                                    >
+                                        {this.state.reportName === true && (
+                                            <View>
+                                                <Image
+                                                    source={CHECK_ICON}
+                                                    style={styles.checkIcon}
+                                                />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={this.reportNameOnPress}
+                                    >
+                                        <Text style={styles.reportOptionText}>
+                                            Uygunsuz ad/soyad
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={styles.reportOptionView}>
+                                    <TouchableOpacity
+                                        onPress={this.reportUsernameOnPress}
+                                        style={styles.checkBox}
+                                    >
+                                        {this.state.reportUsername === true && (
+                                            <View>
+                                                <Image
+                                                    source={CHECK_ICON}
+                                                    style={styles.checkIcon}
+                                                />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={this.reportUsernameOnPress}
+                                    >
+                                        <Text style={styles.reportOptionText}>
+                                            Uygunsuz kullanıcı adı
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={styles.reportOptionView}>
+                                    <TouchableOpacity
+                                        onPress={this.reportPicOnPress}
+                                        style={styles.checkBox}
+                                    >
+                                        {this.state.reportPic === true && (
+                                            <View>
+                                                <Image
+                                                    source={CHECK_ICON}
+                                                    style={styles.checkIcon}
+                                                />
+                                            </View>
+                                        )}
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={this.reportPicOnPress}
+                                    >
+                                        <Text style={styles.reportOptionText}>
+                                            Uygunsuz profil/kapak fotoğrafı
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                            <View style={styles.reportButtonView}>
+                                <TouchableOpacity
+                                    onPress={this.reportButtonOnPress}
+                                    style={styles.reportButton}
+                                >
+                                    <Text style={styles.reportButtonText}>
+                                        GÖNDER
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                    </ImageBackground>
+                    )}
+                    {this.state.reportViewVisible === 'afterReport' && (
+                        <View
+                            style={[
+                                styles.reportView,
+                                {
+                                    justifyContent: 'center',
+                                    alignItems: 'center'
+                                }
+                            ]}
+                        >
+                            <Image
+                                source={REPORT_APPLIED}
+                                style={{
+                                    height: hp(8.5),
+                                    width: hp(8.5),
+                                    marginBottom: hp(2)
+                                }}
+                            />
+                            <Text style={styles.afterReportText}>
+                                Geri bildirimde bulunduğun için teşekkürler!
+                            </Text>
+                        </View>
+                    )}
+                    {this.state.reportViewVisible === 'profile' && (
+                        <ImageBackground
+                            source={{
+                                uri: this.props.opponentInformation.coverPicture
+                            }}
+                            style={styles.coverPhoto}
+                            imageStyle={{ borderRadius: hp(3) }}
+                        >
+                            <View style={styles.profileContainerShadowView}>
+                                <TouchableOpacity
+                                    onPress={this.reportIconOnPress}
+                                    style={styles.reportIconView}
+                                >
+                                    <Image
+                                        source={REPORT_ICON}
+                                        style={styles.reportIcon}
+                                    />
+                                </TouchableOpacity>
+                                <View style={styles.profilePicView}>
+                                    <Image
+                                        source={{
+                                            uri: this.props.opponentInformation
+                                                .profilePicture
+                                        }}
+                                        style={styles.profilePic}
+                                    />
+                                </View>
+                                <View style={styles.profileInfoView}>
+                                    <Text
+                                        style={[
+                                            styles.nameSurnameText,
+                                            {
+                                                fontSize:
+                                                    this.props
+                                                        .opponentInformation
+                                                        .name.length +
+                                                        this.props
+                                                            .opponentInformation
+                                                            .lastname.length >
+                                                    21
+                                                        ? hp(2.25)
+                                                        : hp(3.5)
+                                            }
+                                        ]}
+                                    >
+                                        {this.props.opponentInformation.name}{' '}
+                                        {
+                                            this.props.opponentInformation
+                                                .lastname
+                                        }
+                                    </Text>
+                                    <Text style={styles.usernameText}>
+                                        @
+                                        {
+                                            this.props.opponentInformation
+                                                .username
+                                        }
+                                    </Text>
+                                    <Text style={styles.sinaviaScoreText}>
+                                        Sınavia Puanı:{' '}
+                                        {
+                                            this.props.opponentInformation
+                                                .totalPoints
+                                        }
+                                    </Text>
+                                </View>
+                            </View>
+                        </ImageBackground>
+                    )}
                 </View>
                 <View style={styles.scrollViewContainer}>
-                    <ScrollView
-                        style={styles.boxesScrollView}
-                        showsVerticalScrollIndicator={false}
-                    >
                         <View style={styles.friendsBoxes}>
                             <TouchableOpacity
                                 style={styles.opponentsFriendsBox}
@@ -935,8 +1147,6 @@ class OpponentsProfile extends React.Component {
                                 </Text>
                             </View>
                         </View>
-                        <View style={styles.badgesBox} />
-                    </ScrollView>
                 </View>
             </View>
         )

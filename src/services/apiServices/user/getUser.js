@@ -27,6 +27,6 @@ export const getUser = async (headers, params) => {
                 }
             )
             return response.data.data
-        } else return err.response
+        } else throw err
     }
 }

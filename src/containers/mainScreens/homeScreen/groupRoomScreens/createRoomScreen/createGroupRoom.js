@@ -34,6 +34,7 @@ const PEOPLE_COUNTER_IMG = require('../../../../../assets/mainScreens/peopleCoun
 
 // Game engine endpoint url
 import { GAME_ENGINE_ENDPOINT } from '../../../../../config'
+import { BannerAd } from '../../../../../services/admobService'
 
 class CreateGroupRoom extends React.Component {
     constructor(props) {
@@ -58,7 +59,7 @@ class CreateGroupRoom extends React.Component {
     componentDidMount() {
         this.setState(
             {
-                groupCode: this.randomCodeGenerator()
+                groupCode: this.randomCodeGenerator(6)
             },
             () => {
                 this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
@@ -187,11 +188,11 @@ class CreateGroupRoom extends React.Component {
             })
     }
 
-    randomCodeGenerator() {
+    randomCodeGenerator(lenght) {
         var result = ''
-        var characters = 'ABCDEF0123456789'
+        var characters = 'ABCDEFGHIJKLMNOPQRSTVUXWYZ0123456789'
         var charactersLength = characters.length
-        for (var i = 0; i < 6; i++) {
+        for (var i = 0; i < lenght; i++) {
             result += characters.charAt(
                 Math.floor(Math.random() * charactersLength)
             )
@@ -234,6 +235,9 @@ class CreateGroupRoom extends React.Component {
             <View style={styles.container}>
                 {this.state.isQuitGameModalVisible === false && (
                     <View style={styles.modal}>
+                        {!this.props.clientInformation.isPremium && (
+                            <BannerAd />
+                        )}
                         <TouchableOpacity
                             onPress={this.closeGroupGameOnPress}
                             style={{ height: hp(120), width: wp(100) }}

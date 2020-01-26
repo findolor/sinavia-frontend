@@ -5,6 +5,7 @@ import { getUsers } from './getUsers'
 import { postUser } from './postUser'
 import { searchUsers } from './searchUsers'
 import { updateUser } from './updateUser'
+import { checkUser } from './checkUser'
 
 export {
     forgotPassword,
@@ -13,5 +14,6 @@ export {
     getOpponentFullInformation,
     postUser,
     searchUsers,
-    updateUser
+    updateUser,
+    checkUser
 }

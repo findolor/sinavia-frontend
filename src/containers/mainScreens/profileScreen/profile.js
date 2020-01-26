@@ -3,8 +3,6 @@ import {
     Image,
     ImageBackground,
     Modal,
-    ScrollView,
-    StatusBar,
     Text,
     TextInput,
     TouchableOpacity,
@@ -13,28 +11,29 @@ import {
 import {
     SCENE_KEYS,
     navigationPop,
-    navigationPush,
-    navigationReset,
-    navigationReplace
+    navigationPush
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import styles from './style'
 import premiumStyles from '../purchaseScreen/style'
 import NotchView from '../../../components/notchView'
 import statisticsLogo from '../../../assets/pie_chart.png'
-import friendsLogo from '../../../assets/friends.png'
-import trophyLogo from '../../../assets/trophy.png'
+import goals from '../../../assets/goals.png'
 import favoriteLogo from '../../../assets/favorite.png'
 import returnLogo from '../../../assets/return.png'
 import settingsLogo from '../../../assets/settings.png'
 import searchlogo from '../../../assets/search.png'
 import favori_dolu from '../../../assets/favori.png'
-
+import { flashMessages } from '../../../services/flashMessageBuilder'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
 import LinearGradient from 'react-native-linear-gradient'
+import { appActions } from '../../../redux/app/actions'
+import { interstitialAd } from '../../../services/admobService'
+
+const FEAUTRE_PRESS_COUNT_FOR_AD = 4
 
 class Profile extends React.Component {
     constructor(props) {
@@ -50,12 +49,37 @@ class Profile extends React.Component {
         navigationPop()
     }
 
+    goalsOnPress = () => {
+        this.props.increaseFeaturePressCount()
+        if (
+            this.props.featurePressCount % FEAUTRE_PRESS_COUNT_FOR_AD === 0 &&
+            !this.props.clientInformation.isPremium
+        )
+            interstitialAd()
+        navigationPush(SCENE_KEYS.mainScreens.goals)
+    }
+
     settingsOnPress = () => {
         navigationPush(SCENE_KEYS.mainScreens.settings)
     }
 
     profileSearchOnPress = () => {
         if (this.state.searchText === '') return
+        if (this.state.searchText.length < 3) {
+            flashMessages.generalErrorWithProps(
+                'Hata!',
+                'Lütfen en az 3 karakter giriniz.',
+                {
+                    backgroundColor: '#FFFFFF',
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    borderColor: '#00D9EF',
+                    borderWidth: hp(0.25),
+                    height: hp(10)
+                }
+            )
+            return
+        }
         navigationPush(SCENE_KEYS.mainScreens.profileSearch, {
             searchedKeyword: this.state.searchText
         })
@@ -72,6 +96,12 @@ class Profile extends React.Component {
     }
 
     friendsLogoOnPress = () => {
+        this.props.increaseFeaturePressCount()
+        if (
+            this.props.featurePressCount % FEAUTRE_PRESS_COUNT_FOR_AD === 0 &&
+            !this.props.clientInformation.isPremium
+        )
+            interstitialAd()
         navigationPush(SCENE_KEYS.mainScreens.friendsList, {
             friendsList: [],
             isOpponentFriends: false
@@ -79,6 +109,12 @@ class Profile extends React.Component {
     }
 
     statisticsLogoOnPress = () => {
+        this.props.increaseFeaturePressCount()
+        if (
+            this.props.featurePressCount % FEAUTRE_PRESS_COUNT_FOR_AD === 0 &&
+            !this.props.clientInformation.isPremium
+        )
+            interstitialAd()
         navigationPush(SCENE_KEYS.mainScreens.statistics)
     }
 
@@ -285,16 +321,16 @@ class Profile extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.second2Box}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={this.goalsOnPress}>
                             <View style={styles.badgesBox}>
                                 <View style={styles.boxTextContainer}>
                                     <Text style={styles.boxText}>
-                                        Kazanımlar
+                                        Haftalık Hedefler
                                     </Text>
                                 </View>
                                 <View style={styles.boxLogoContainer}>
                                     <Image
-                                        source={trophyLogo}
+                                        source={goals}
                                         style={styles.boxLogo}
                                     />
                                 </View>
@@ -324,9 +360,13 @@ class Profile extends React.Component {
 
 const mapStateToProps = state => ({
     clientInformation: state.client.clientInformation,
-    friendIds: state.friends.friendIds
+    friendIds: state.friends.friendIds,
+    featurePressCount: state.app.featurePressCount
 })
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+    increaseFeaturePressCount: () =>
+        dispatch(appActions.increaseFeaturePressCount())
+})
 
-export default connect(mapStateToProps, null)(Profile)
+export default connect(mapStateToProps, mapDispatchToProps)(Profile)

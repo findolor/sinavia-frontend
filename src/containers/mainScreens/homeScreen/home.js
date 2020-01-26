@@ -8,7 +8,6 @@ import {
     TouchableOpacity,
     View,
     AsyncStorage,
-    Alert,
     FlatList,
     AppState,
     Animated
@@ -89,6 +88,7 @@ const SOLO_IMAGE = require('../../../assets/mainScreens/tek.png')
 const UNSOLVED_QUESTIONS_MODE = require('../../../assets/mainScreens/unsolvedQuestionsModeImg.png')
 const SOLO_PREMIUM = require('../../../assets/soloPremium.png')
 const UNSOLVED_PREMIUM = require('../../../assets/premiumBack.png')
+import { BannerAd } from '../../../services/admobService'
 
 class Home extends React.Component {
     constructor(props) {
@@ -490,24 +490,99 @@ class Home extends React.Component {
         this.props.examList[examIndex].courseEntities[
             carouselActiveSlide
         ].subjectEntities.forEach((subject, index) => {
-            subjectList.push(
-                <TouchableOpacity
-                    onPress={() => {
-                        this.onPressCard(subject.name)
-                    }}
-                    key={index}
-                >
-                    <Animatable.View
-                        style={styles.card}
-                        animation="fadeIn"
-                        duration={800}
-                        delay={index * 25 + 75}
-                        useNativeDriver={true}
+            if (!this.props.clientInformation.isPremium) {
+                if (index % 4 === 3 && index !== 0)
+                    subjectList.push(
+                        <View key={index}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.onPressCard(subject.name)
+                                }}
+                            >
+                                <Animatable.View
+                                    style={[
+                                        styles.card,
+                                        {
+                                            borderWidth: hp(0.4),
+                                            borderRadius: hp(2.5),
+                                            borderColor: '#FF9900'
+                                        }
+                                    ]}
+                                    animation="fadeIn"
+                                    duration={800}
+                                    delay={index * 25 + 75}
+                                    useNativeDriver={true}
+                                >
+                                    <Text style={styles.cardText}>
+                                        {subject.name}
+                                    </Text>
+                                </Animatable.View>
+                            </TouchableOpacity>
+                            <Animatable.View
+                                style={styles.card}
+                                animation="fadeIn"
+                                duration={800}
+                                delay={index * 25 + 75}
+                                useNativeDriver={true}
+                            >
+                                <BannerAd />
+                            </Animatable.View>
+                        </View>
+                    )
+                else
+                    subjectList.push(
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.onPressCard(subject.name)
+                            }}
+                            key={index}
+                        >
+                            <Animatable.View
+                                style={[
+                                    styles.card,
+                                    {
+                                        borderWidth: hp(0.4),
+                                        borderRadius: hp(2.5),
+                                        borderColor: '#FF9900'
+                                    }
+                                ]}
+                                animation="fadeIn"
+                                duration={800}
+                                delay={index * 25 + 75}
+                                useNativeDriver={true}
+                            >
+                                <Text style={styles.cardText}>
+                                    {subject.name}
+                                </Text>
+                            </Animatable.View>
+                        </TouchableOpacity>
+                    )
+            } else
+                subjectList.push(
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.onPressCard(subject.name)
+                        }}
+                        key={index}
                     >
-                        <Text style={styles.cardText}>{subject.name}</Text>
-                    </Animatable.View>
-                </TouchableOpacity>
-            )
+                        <Animatable.View
+                            style={[
+                                styles.card,
+                                {
+                                    borderWidth: hp(0.4),
+                                    borderRadius: hp(2.5),
+                                    borderColor: '#FF9900'
+                                }
+                            ]}
+                            animation="fadeIn"
+                            duration={800}
+                            delay={index * 25 + 75}
+                            useNativeDriver={true}
+                        >
+                            <Text style={styles.cardText}>{subject.name}</Text>
+                        </Animatable.View>
+                    </TouchableOpacity>
+                )
         })
 
         return subjectList
@@ -582,6 +657,7 @@ class Home extends React.Component {
     gameModesView() {
         return (
             <View style={styles.modal}>
+                {!this.props.clientInformation.isPremium && <BannerAd />}
                 <TouchableOpacity
                     onPress={this.closeModalButtonOnPress}
                     style={{
@@ -1005,7 +1081,10 @@ class Home extends React.Component {
                 <TouchableOpacity
                     onPress={this.closeModalButtonOnPress}
                     style={{
-                        height: hp(120),
+                        height:
+                            this.props.clientInformation.isPremium === false
+                                ? hp(92.5)
+                                : hp(120),
                         width: wp(100)
                     }}
                 />
@@ -1040,6 +1119,7 @@ class Home extends React.Component {
                         />
                     </View>
                 </View>
+                {!this.props.clientInformation.isPremium && <BannerAd />}
             </View>
         )
     }
@@ -1073,11 +1153,11 @@ class Home extends React.Component {
         })
     }
 
-    randomCodeGenerator() {
+    randomCodeGenerator(length) {
         var result = ''
-        var characters = 'ABCDEF0123456789'
+        var characters = 'ABCDEFGHIJKLMNOPQRSTVUXWYZ0123456789'
         var charactersLength = characters.length
-        for (var i = 0; i < 6; i++) {
+        for (var i = 0; i < length; i++) {
             result += characters.charAt(
                 Math.floor(Math.random() * charactersLength)
             )
@@ -1101,7 +1181,7 @@ class Home extends React.Component {
         apiServices
             .checkOnline()
             .then(() => {
-                const randomNumber = this.randomCodeGenerator()
+                const randomNumber = this.randomCodeGenerator(6)
                 const Ids = this.calculateContentIds()
                 navigationReset('game', { isHardReset: true })
                 navigationReplace(SCENE_KEYS.gameScreens.friendMatchingScreen, {
@@ -1132,7 +1212,13 @@ class Home extends React.Component {
             <View style={styles.modal}>
                 <TouchableOpacity
                     onPress={this.closeModalButtonOnPress}
-                    style={{ height: hp(120), width: wp(100) }}
+                    style={{
+                        height:
+                            this.props.clientInformation.isPremium === false
+                                ? hp(92.5)
+                                : hp(120),
+                        width: wp(100)
+                    }}
                 />
                 <View style={styles.backAndCloseButtonsContainer}>
                     <TouchableOpacity
@@ -1255,6 +1341,7 @@ class Home extends React.Component {
                         onPress={this.friendGameModeOnPress}
                     />
                 )}
+                {!this.props.clientInformation.isPremium && <BannerAd />}
             </View>
         )
     }
@@ -1316,7 +1403,13 @@ class Home extends React.Component {
             <View style={styles.modal}>
                 <TouchableOpacity
                     onPress={this.closeModalButtonOnPress}
-                    style={{ height: hp(120), width: wp(100) }}
+                    style={{
+                        height:
+                            this.props.clientInformation.isPremium === false
+                                ? hp(92.5)
+                                : hp(120),
+                        width: wp(100)
+                    }}
                 />
                 <View style={styles.backAndCloseButtonsContainer}>
                     <TouchableOpacity onPress={this.joinRoomBackButtonOnPress}>
@@ -1329,10 +1422,7 @@ class Home extends React.Component {
                             <TextInput
                                 style={styles.joinGameCodeTextInput}
                                 maxLength={6}
-                                placeholder="Oda Kodu  "
-                                placeholderStyle={
-                                    styles.joinGameCodeTextInputPlaceholder
-                                }
+                                placeholder="Oda Kodu"
                                 placeholderTextColor="#A8A8A8"
                                 autoCapitalize="characters"
                                 onChangeText={text =>
@@ -1366,6 +1456,7 @@ class Home extends React.Component {
                     borderRadius={hp(1.5)}
                     onPress={this.joinGroupRoomOnPress}
                 />
+                {!this.props.clientInformation.isPremium && <BannerAd />}
             </View>
         )
     }

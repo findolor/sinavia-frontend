@@ -145,6 +145,7 @@ class LoadingScreen extends React.Component {
     }
 
     backButtonOnPress = () => {
+        clearTimeout(this.botTimeout)
         this.room.leave()
         navigationReset('main')
     }

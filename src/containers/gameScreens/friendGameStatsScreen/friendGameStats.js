@@ -270,8 +270,10 @@ class FriendGameStatsScreen extends React.Component {
                 )
             }
 
+            const tempList = []
+
             for (i = 0; i < Object.keys(this.props.questionList).length; i++) {
-                this.state.allQuestionsList.push(
+                tempList.push(
                     <View style={styles.scrollQuestionContainer} key={i}>
                         <View style={styles.questionContainer}>
                             <Image
@@ -297,12 +299,14 @@ class FriendGameStatsScreen extends React.Component {
                     opponentUsername: opponentUsername,
                     playerFriendMatchWinCount: playerFriendMatchWinCount,
                     opponentFriendMatchWinCount: opponentFriendMatchWinCount,
-                    friendMatchesCount: friendMatchesCount
+                    friendMatchesCount: friendMatchesCount,
+                    allQuestionsList: tempList
                 },
-                () => this.checkFavouriteStatus()
+                () => {
+                    this.checkFavouriteStatus()
+                    resolve(true)
+                }
             )
-
-            resolve(true)
         })
     }
 

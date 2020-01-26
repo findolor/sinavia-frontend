@@ -5,13 +5,13 @@ import {
     Text,
     TouchableOpacity,
     View,
-    TextInput
+    TextInput,
+    ActivityIndicator
 } from 'react-native'
 import {
     SCENE_KEYS,
     navigationPop,
-    navigationPush,
-    navigationReplace
+    navigationPush
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import { userServices } from '../../../sagas/user/'
@@ -19,12 +19,14 @@ import { opponentActions } from '../../../redux/opponents/actions'
 import styles from './style'
 import NotchView from '../../../components/notchView'
 import returnLogo from '../../../assets/return.png'
-import NO_RESULTS_USER from '../../../assets/noResultsUser.png';
+import NO_RESULTS_USER from '../../../assets/noResultsUser.png'
+import { BannerAd } from '../../../services/admobService'
 
 class FriendsList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            isFetching: true,
             // Flatlist data
             friendsList: this.props.friendsList,
             // Original friendsList
@@ -35,7 +37,10 @@ class FriendsList extends React.Component {
     }
 
     async componentDidMount() {
-        if (Object.keys(this.props.friendIds).length === 0) return
+        if (Object.keys(this.props.friendIds).length === 0) {
+            this.setState({ isFetching: false })
+            return
+        }
         let friends
         if (!this.props.isOpponentFriends) {
             friends = await userServices.getUsers(
@@ -51,7 +56,8 @@ class FriendsList extends React.Component {
         this.setState({
             friendsList: friends,
             originalList: friends,
-            refreshFlatlist: !this.state.refreshFlatlist
+            refreshFlatlist: !this.state.refreshFlatlist,
+            isFetching: false
         })
     }
 
@@ -148,53 +154,87 @@ class FriendsList extends React.Component {
                     </View>
                 </View>
                 <View style={styles.spaceView} />
-                {Object.keys(this.state.friendsList).length !== 0 && (
-                    <View style={styles.flatListView}>
-                        <FlatList
-                            data={this.state.friendsList}
-                            vertical={true}
-                            extraData={this.state.refreshFlatlist}
-                            showsVerticalScrollIndicator={false}
-                            renderItem={({ item, index }) => {
-                                return (
-                                    <TouchableOpacity
-                                        onPress={() => this.friendOnPress(index)}
-                                    >
-                                        <View style={styles.userRow}>
-                                            <View
-                                                style={styles.userPicContainerInRow}
+                {this.state.isFetching === true && (
+                    <ActivityIndicator
+                        style={styles.noResultsView}
+                    ></ActivityIndicator>
+                )}
+                {Object.keys(this.state.friendsList).length !== 0 &&
+                    this.state.isFetching === false && (
+                        <View style={styles.flatListView}>
+                            <FlatList
+                                data={this.state.friendsList}
+                                vertical={true}
+                                extraData={this.state.refreshFlatlist}
+                                showsVerticalScrollIndicator={false}
+                                renderItem={({ item, index }) => {
+                                    return (
+                                        <View>
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    this.friendOnPress(index)
+                                                }
                                             >
-                                                <Image
-                                                    source={{
-                                                        uri: item.profilePicture
-                                                    }}
-                                                    style={styles.userPic}
-                                                />
-                                            </View>
-                                            <View style={styles.nameContainer}>
-                                                <Text style={styles.nameText}>
-                                                    {item.name +
-                                                    ' ' +
-                                                    item.lastname}
-                                                </Text>
-                                                <Text style={styles.userNameText}>
-                                                    @{item.username}
-                                                </Text>
-                                            </View>
+                                                <View style={styles.userRow}>
+                                                    <View
+                                                        style={
+                                                            styles.userPicContainerInRow
+                                                        }
+                                                    >
+                                                        <Image
+                                                            source={{
+                                                                uri:
+                                                                    item.profilePicture
+                                                            }}
+                                                            style={
+                                                                styles.userPic
+                                                            }
+                                                        />
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.nameContainer
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.nameText
+                                                            }
+                                                        >
+                                                            {item.name +
+                                                                ' ' +
+                                                                item.lastname}
+                                                        </Text>
+                                                        <Text
+                                                            style={
+                                                                styles.userNameText
+                                                            }
+                                                        >
+                                                            @{item.username}
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                            </TouchableOpacity>
                                         </View>
-                                    </TouchableOpacity>
-                                )
-                            }}
-                            keyExtractor={(item, index) => index.toString()}
-                        />
-                    </View>
-                )}
-                {Object.keys(this.state.friendsList).length === 0 && (
-                    <View style={styles.noResultsView}>
-                        <Image source={NO_RESULTS_USER} style={styles.noResultImg}/>
-                        <Text style={styles.noResultsText}>Henüz bir arkadaşın yok</Text>
-                    </View>
-                )}
+                                    )
+                                }}
+                                keyExtractor={(item, index) => index.toString()}
+                            />
+                        </View>
+                    )}
+                {Object.keys(this.state.friendsList).length === 0 &&
+                    this.state.isFetching === false && (
+                        <View style={styles.noResultsView}>
+                            <Image
+                                source={NO_RESULTS_USER}
+                                style={styles.noResultImg}
+                            />
+                            <Text style={styles.noResultsText}>
+                                Henüz bir arkadaşın yok
+                            </Text>
+                        </View>
+                    )}
+                {!this.props.clientInformation.isPremium && <BannerAd />}
             </View>
         )
     }
@@ -203,7 +243,8 @@ class FriendsList extends React.Component {
 const mapStateToProps = state => ({
     clientToken: state.client.clientToken,
     clientDBId: state.client.clientDBId,
-    friendIds: state.friends.friendIds
+    friendIds: state.friends.friendIds,
+    clientInformation: state.client.clientInformation
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -225,7 +266,4 @@ const mapDispatchToProps = dispatch => ({
         )
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(FriendsList)
+export default connect(mapStateToProps, mapDispatchToProps)(FriendsList)

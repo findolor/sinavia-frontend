@@ -9,6 +9,7 @@ import { friendTypes } from '../redux/friends/actions'
 import { friendshipSagas } from './friendship'
 import { appTypes } from '../redux/app/actions'
 import { notificationSagas } from './notification'
+import { userJokerSagas } from './userJoker'
 
 export default function* root() {
     yield all([
@@ -62,6 +63,14 @@ export default function* root() {
             appTypes.GET_NOTIFICATIONS,
             notificationSagas.getNotification
         ),
-        takeLatest(clientTypes.CREATE_USER, userSagas.createUser)
+        takeLatest(clientTypes.CREATE_USER, userSagas.createUser),
+        takeLatest(
+            clientTypes.REWARD_ALL_USER_JOKERS,
+            userJokerSagas.rewardAllUserJoker
+        ),
+        takeLatest(
+            clientTypes.REWARD_USER_JOKER,
+            userJokerSagas.rewardUserJoker
+        )
     ])
 }

@@ -77,6 +77,12 @@ class SoloModeLoadingScreen extends React.Component {
             })
     }
 
+    connectionErrorRoutine = () => {
+        this.room.leave()
+        clearTimeout(this.timeout)
+        navigationReset('main')
+    }
+
     render() {
         const background = chooseImage(this.props.contentIds.examId, true)
         return (

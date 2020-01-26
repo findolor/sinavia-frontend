@@ -18,7 +18,10 @@ export const clientTypes = {
     SUBTRACT_JOKER: 'subtract_joker',
     UPDATE_USER: 'update_user',
     CREATE_USER: 'create_user',
-    UPDATE_TOTAL_POINTS: 'update_total_points'
+    UPDATE_TOTAL_POINTS: 'update_total_points',
+    REWARD_ALL_USER_JOKERS: 'reward_all_user_jokers',
+    REWARD_USER_JOKER: 'reward_user_joker',
+    SAVE_ONE_JOKER: 'save_one_joker'
 }
 
 const userSignUp = userInformation => {
@@ -122,6 +125,31 @@ const updateTotalPoints = totalEarnedPoints => {
     }
 }
 
+const rewardAllUserJokers = (clientToken, clientId) => {
+    return {
+        type: clientTypes.REWARD_ALL_USER_JOKERS,
+        clientToken: clientToken,
+        clientId: clientId
+    }
+}
+
+const rewardUserJoker = (clientToken, clientId, jokerId, jokerAmount) => {
+    return {
+        type: clientTypes.REWARD_USER_JOKER,
+        clientToken: clientToken,
+        clientId: clientId,
+        jokerId: jokerId,
+        jokerAmount: jokerAmount
+    }
+}
+
+const saveOneJoker = userJoker => {
+    return {
+        type: clientTypes.SAVE_ONE_JOKER,
+        joker: userJoker
+    }
+}
+
 export const clientActions = {
     userSignUp: userSignUp,
     fetchUser: fetchUser,
@@ -133,5 +161,8 @@ export const clientActions = {
     subtractJoker: subtractJoker,
     updateUser: updateUser,
     createUser: createUser,
-    updateTotalPoints: updateTotalPoints
+    updateTotalPoints: updateTotalPoints,
+    rewardAllUserJokers: rewardAllUserJokers,
+    rewardUserJoker: rewardUserJoker,
+    saveOneJoker: saveOneJoker
 }

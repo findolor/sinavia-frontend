@@ -3,6 +3,12 @@ import { put, call } from 'redux-saga/effects'
 import { friendTypes } from '../../redux/friends/actions'
 
 export function* getFriendRequestsSaga(action) {
+    // This is for activity indicator
+    yield put({
+        type: friendTypes.SAVE_FRIEND_REQUESTS,
+        payload: null
+    })
+
     let requestIds
     try {
         requestIds = yield call(
@@ -20,7 +26,7 @@ export function* getFriendRequestsSaga(action) {
     if (requestIds === undefined || Object.keys(requestIds).length === 0) {
         yield put({
             type: friendTypes.SAVE_FRIEND_REQUESTS,
-            payload: null
+            payload: []
         })
         return
     }
