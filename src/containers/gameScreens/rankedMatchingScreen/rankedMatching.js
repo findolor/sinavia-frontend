@@ -4,7 +4,8 @@ import styles from './style'
 import NotchView from '../../../components/notchView'
 import {
     SCENE_KEYS,
-    navigationReplace
+    navigationReplace,
+    navigationReset
 } from '../../../services/navigationService'
 import { levelFinder } from '../../../services/userLevelFinder'
 import {
