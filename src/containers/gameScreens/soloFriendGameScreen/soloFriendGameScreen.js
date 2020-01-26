@@ -120,9 +120,7 @@ class SoloFriendGameScreen extends React.Component {
             // Friend matches info
             friendMatches: null,
             isQuitGameModalVisible: false,
-            visibleView: '',
-            // Server ping variable
-            isServerPinged: false
+            visibleView: ''
         }
     }
 
@@ -227,8 +225,6 @@ class SoloFriendGameScreen extends React.Component {
         clearTimeout(this.startTimeout)
         clearTimeout(this.updateTimeout)
         clearTimeout(this.finishedTimeout)
-        clearInterval(this.checkPingInterval)
-        clearInterval(this.pingInterval)
 
         // Clear room listeners
         this.props.room.leave()
@@ -280,9 +276,6 @@ class SoloFriendGameScreen extends React.Component {
                     userStatistics: message.userStatistics,
                     friendMatches: message.friendMatches
                 })
-                break
-            case 'ping':
-                this.setState({ isServerPinged: true })
                 break
         }
     }

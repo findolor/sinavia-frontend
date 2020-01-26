@@ -125,9 +125,7 @@ class FriendGame extends React.Component {
             thirdJokerNameSecondWord: '',
             thirdJokerAmount: '',
             // Friend matches that was played before
-            friendMatches: this.props.friendMatches,
-            // Server ping variable
-            isServerPinged: false
+            friendMatches: this.props.friendMatches
         }
     }
 
@@ -232,8 +230,6 @@ class FriendGame extends React.Component {
         clearTimeout(this.startTimeout)
         clearTimeout(this.updateTimeout)
         clearTimeout(this.finishedTimeout)
-        clearInterval(this.checkPingInterval)
-        clearInterval(this.pingInterval)
 
         // Clear room listeners
         this.props.room.removeAllListeners()
@@ -360,9 +356,6 @@ class FriendGame extends React.Component {
                 break
             case 'save-questions':
                     this.setState({ fullQuestionList: message.fullQuestionList })
-                break
-            case 'ping':
-                this.setState({ isServerPinged: true })
                 break
         }
     }

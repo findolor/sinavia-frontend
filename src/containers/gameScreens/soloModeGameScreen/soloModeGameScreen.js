@@ -109,9 +109,7 @@ class SoloModeGameScreen extends React.Component {
             secondJokerAmount: '',
             thirdJokerNameFirstWord: '',
             thirdJokerNameSecondWord: '',
-            thirdJokerAmount: '',
-            // Server ping variable
-            isServerPinged: false
+            thirdJokerAmount: ''
         }
     }
 
@@ -218,8 +216,6 @@ class SoloModeGameScreen extends React.Component {
         clearTimeout(this.startTimeout)
         clearTimeout(this.updateTimeout)
         clearTimeout(this.finishedTimeout)
-        clearInterval(this.checkPingInterval)
-        clearInterval(this.pingInterval)
 
         // Clear room listeners
         this.props.room.removeAllListeners()
@@ -278,9 +274,6 @@ class SoloModeGameScreen extends React.Component {
                     fullQuestionList: message.fullQuestionList,
                     isMatchFinished: false
                 })
-                break
-            case 'ping':
-                this.setState({ isServerPinged: true })
                 break
         }
     }

@@ -120,9 +120,7 @@ class GroupGame extends React.Component {
             thirdJokerNameSecondWord: '',
             thirdJokerAmount: '',
             // Full question list for favouriting
-            fullQuestionList: [],
-            // Server ping variable
-            isServerPinged: false
+            fullQuestionList: []
         }
     }
 
@@ -247,8 +245,6 @@ class GroupGame extends React.Component {
         clearTimeout(this.startTimeout)
         clearTimeout(this.updateTimeout)
         clearTimeout(this.finishedTimeout)
-        clearInterval(this.checkPingInterval)
-        clearInterval(this.pingInterval)
 
         // Clear room listeners
         this.props.room.removeAllListeners()
@@ -377,9 +373,6 @@ class GroupGame extends React.Component {
                     fullQuestionList: message.fullQuestionList,
                     isMatchFinished: false
                 })
-                break
-            case 'ping':
-                this.setState({ isServerPinged: true })
                 break
         }
     }
