@@ -326,38 +326,13 @@ class Home extends React.Component {
     }
 
     tryJoiningFriendRoom = params => {
-        let room
         const client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
-        client.onOpen.add(() => {
-            // On iOS devices modal stays open even after we disable it
-            // This is why I commented the setState down below and never open it
-            /* this.setState({
-                isModalVisible: true,
-                visibleView: 'WAITING_TO_JOIN_FRIEND_ROOM'
-            }) */
-
-            room = client.join('friendRoom', {
+        client
+            .join('friendRoom', {
                 databaseId: this.props.clientDBId,
-                roomCode: params.roomCode,
-                create: false
+                roomCode: params.roomCode
             })
-
-            // We set a timeout for the time passed since join initiation
-            // TODO THINK ABOUT THE TIMEOUT NUMBER IN HERE
-            const timeout = setTimeout(() => {
-                this.setState({
-                    isModalVisible: true,
-                    visibleView: 'ROOM_IS_NOT_ACTIVE'
-                })
-                room.leave()
-                client.close()
-                // If 2500 is not enough we can change it
-            }, 2500)
-
-            // If room onJoin doesn't trigger we don't do anything
-            room.onJoin.add(() => {
-                // We clear the timeout as we don't need it anymore
-                clearTimeout(timeout)
+            .then(room => {
                 // Getting the opponent information and navigatiing
                 userServices
                     .getUser(this.props.clientToken, params.opponentId)
@@ -378,7 +353,13 @@ class Home extends React.Component {
                         )
                     })
             })
-        })
+            .catch(error => {
+                console.log(error)
+                this.setState({
+                    isModalVisible: true,
+                    visibleView: 'ROOM_IS_NOT_ACTIVE'
+                })
+            })
     }
 
     playFriendGame = async params => {
@@ -400,18 +381,16 @@ class Home extends React.Component {
 
     rejectFriendGame = params => {
         const client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
-        client.onOpen.add(() => {
-            const room = client.join('friendRoom', {
+        client
+            .join('friendRoom', {
                 roomCode: params.roomCode,
                 // Because we are joining a game, we don't want to create a new room
-                create: false,
                 rejectGame: true
             })
-            setTimeout(() => {
+            .then(room => {
                 room.leave()
-                client.close()
-            }, 3000)
-        })
+            })
+            .catch(error => console.log(error))
     }
 
     friendRequestAccepted = params => {
@@ -1208,7 +1187,6 @@ class Home extends React.Component {
                 navigationReplace(SCENE_KEYS.gameScreens.friendMatchingScreen, {
                     roomCode: randomNumber,
                     opponentInformation: this.state.opponentInformation,
-                    isCreateRoom: true,
                     examId: Ids.examId,
                     courseId: Ids.courseId,
                     subjectId: Ids.subjectId,
@@ -1385,26 +1363,27 @@ class Home extends React.Component {
         )
             return
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
-        this.client.onOpen.add(() => {
-            this.tryJoiningRoom()
-        })
+        this.tryJoiningRoom()
     }
 
-    tryJoiningRoom = async () => {
-        this.room = this.client.join('groupRoom', {
-            databaseId: this.props.clientDBId,
-            roomCode: this.state.groupCodeOnChangeText.toString(),
-            // Because we are joining a game, we don't want to create a new room
-            create: false
-        })
-
-        this.room.onJoin.add(() => {
-            this.room.removeAllListeners()
-            this.setState({
-                visibleView: 'JOINED_ROOM',
-                isGroupGameInitiated: true
+    tryJoiningRoom = () => {
+        this.client
+            .join('groupRoom', {
+                databaseId: this.props.clientDBId,
+                roomCode: this.state.groupCodeOnChangeText.toString()
             })
-        })
+            .then(room => {
+                this.room = room
+
+                this.room.removeAllListeners()
+                this.setState({
+                    visibleView: 'JOINED_ROOM',
+                    isGroupGameInitiated: true
+                })
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     joinGameParams = () => {
@@ -1830,26 +1809,6 @@ class Home extends React.Component {
         )
     }
 
-    waitingToJoinFriendRoomView() {
-        return (
-            <View
-                style={{
-                    height: hp(120),
-                    width: wp(100),
-                    backgroundColor: '#000000DE'
-                }}
-            >
-                <View style={styles.modalContainer}>
-                    <View style={styles.gameRequestView}>
-                        <Text style={styles.gameRequestText}>
-                            Odaya giriş yapman bekleniyor...
-                        </Text>
-                    </View>
-                </View>
-            </View>
-        )
-    }
-
     roomIsNotActiveView() {
         return (
             <View
@@ -2097,8 +2056,6 @@ class Home extends React.Component {
                         this.premiumForSoloView()}
                     {this.state.visibleView === 'PREMIUM_MODAL_FOR_UNSOLVED' &&
                         this.premiumForUnsolvedView()}
-                    {this.state.visibleView === 'WAITING_TO_JOIN_FRIEND_ROOM' &&
-                        this.waitingToJoinFriendRoomView()}
                     {this.state.visibleView === 'ROOM_IS_NOT_ACTIVE' &&
                         this.roomIsNotActiveView()}
                     {this.state.visibleView === 'YOUR_FRIEND_STARTED_GAME' &&
