@@ -1051,17 +1051,19 @@ class Statistics extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.dropdownsContainer}>
-                    <DropDown
-                        style={styles.picker}
-                        textStyle={styles.pickerText}
-                        dropdownTextStyle={styles.pickerDropdownText}
-                        dropdownStyle={styles.pickerDropdown}
-                        defaultValue={'Genel'}
-                        options={this.state.courseList}
-                        onSelect={(idx, value) =>
-                            this.pickerSelectCourse(idx, value)
-                        }
-                    />
+                    {this.state.isFetching === false && (
+                        <DropDown
+                            style={styles.picker}
+                            textStyle={styles.pickerText}
+                            dropdownTextStyle={styles.pickerDropdownText}
+                            dropdownStyle={styles.pickerDropdown}
+                            defaultValue={'Genel'}
+                            options={this.state.courseList}
+                            onSelect={(idx, value) =>
+                                this.pickerSelectCourse(idx, value)
+                            }
+                        />
+                    )}
                     {this.state.isSubjectDropdownVisible && (
                         <View style={styles.dropdownContainer}>
                             <DropDown
