@@ -687,7 +687,7 @@ class Home extends React.Component {
                     }}
                 />
                 <AuthButton
-                    marginTop={hp(5)}
+                    marginTop={hp(9)}
                     height={hp(7)}
                     width={wp(87.5)}
                     color="#00D9EF"
@@ -1040,7 +1040,7 @@ class Home extends React.Component {
                     </Animatable.View>
                 </View>
                 <AuthButton
-                    marginTop={hp(83.5)}
+                    marginTop={hp(87)}
                     height={hp(7)}
                     width={wp(87.5)}
                     color="#00D9EF"
@@ -1990,7 +1990,9 @@ class Home extends React.Component {
 
     goToVideo = () => {
         this.setState({isModalVisible: false})
-        navigationPush(SCENE_KEYS.mainScreens.video)
+        navigationPush(SCENE_KEYS.mainScreens.video, {
+            videoUri: 'https://player.vimeo.com/video/8175286/config'
+        })
     }
 
     // Gets the exam/content/subject ids based on selected subject

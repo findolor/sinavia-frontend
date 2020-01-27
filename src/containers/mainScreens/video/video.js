@@ -1,5 +1,5 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, WebView } from 'react-native'
 import VideoPlayer from 'react-native-video-controls'
 import Orientation from 'react-native-orientation'
 import { navigationPop } from '../../../services/navigationService'
@@ -8,10 +8,20 @@ class Video extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            thumbnailUrl: '',
+            videoUrl: '',
+            video: ''
         }
     }
 
     componentDidMount() {
+        fetch(this.props.videoUri)
+            .then(res => res.json())
+            .then(res => this.setState({
+                thumbnailUrl: res.video.thumbs['640'],
+                videoUrl: res.request.files.hls.cdns[res.request.files.hls.default_cdn].url,
+                video: res.video,
+            }));
         // this locks the view to Landscape Mode
         Orientation.lockToLandscape();
     }
@@ -24,10 +34,10 @@ class Video extends React.Component {
     render() {
         return (
                 <VideoPlayer
-                    source={{ uri: 'https://vjs.zencdn.net/v/oceans.mp4' }}
+                    source={{uri: this.state.videoUrl}}
                     toggleResizeModeOnFullscreen={true}
                     fullscreen={true}
-                    resizeMode={'cover'}
+                    seekColor={'#00D9EF'}
                     onBack={this.backButtonOnPress}
                     onEnd={this.backButtonOnPress}
                 />

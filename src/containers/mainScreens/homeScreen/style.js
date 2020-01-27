@@ -83,7 +83,7 @@ export default StyleSheet.create({
         backgroundColor: '#ffffff',
         height: hp(67),
         width: wp(87.5),
-        marginTop: hp(14),
+        marginTop: hp(18),
         borderColor: '#00D9EF',
         borderWidth: wp(0.75),
         borderRadius: hp(1.5),
