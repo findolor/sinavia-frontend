@@ -1,7 +1,7 @@
 import { put, call } from 'redux-saga/effects'
 import { navigationReset } from '../../services/navigationService'
 import { flashMessages } from '../../services/flashMessageBuilder'
-import firebase from 'react-native-firebase'
+import firebase from '@react-native-firebase/app'
 import { Alert } from 'react-native'
 
 function firebaseSignUp() {

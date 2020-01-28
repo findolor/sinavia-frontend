@@ -13,7 +13,7 @@ import {
     makePostRequest,
     makePutRequest
 } from '../../services/apiServices'
-import firebase from 'react-native-firebase'
+import firebase from '@react-native-firebase/app'
 import { flashMessages } from '../../services/flashMessageBuilder'
 
 async function getFromStorage(key) {
@@ -280,6 +280,7 @@ export function* authenticateUser(action) {
 
         deviceStorage.saveItemToStorage('isAppOpenedBefore', true)
     } catch (error) {
+        console.log(error)
         // If we get unauthorized from api
         try {
             // We get the client credentials from device storage

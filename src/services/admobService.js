@@ -1,35 +1,46 @@
 import React from 'react'
-import firebase from 'react-native-firebase'
+import firebase from '@react-native-firebase/app'
+import {
+    BannerAd,
+    BannerAdSize,
+    TestIds,
+    InterstitialAd,
+    AdEventType
+} from '@react-native-firebase/admob'
 
-export const BannerAd = () => {
-    const Banner = firebase.admob.Banner
-    const AdRequest = firebase.admob.AdRequest
-    const request = new AdRequest()
-
+export const BannerAdvertisement = () => {
     return (
-        <Banner
-            unitId={'ca-app-pub-3940256099942544/2934735716'}
-            size={'Banner'}
-            request={request.build()}
+        <BannerAd
+            unitId={BannerAdSize.BANNER}
+            size={TestIds.BANNER}
+            requestOptions={{
+                requestNonPersonalizedAdsOnly: true
+            }}
             onAdLoaded={() => {
                 console.log('Advert loaded')
+            }}
+            onAdFailedToLoad={error => {
+                console.error('Advert failed to load: ', error)
             }}
         />
     )
 }
 
 export const interstitialAd = () => {
-    const advert = firebase
-        .admob()
-        .interstitial('ca-app-pub-3940256099942544/5135589807')
-    const AdRequest = firebase.admob.AdRequest
-    const request = new AdRequest()
-    advert.loadAd(request.build())
+    const interstitial = InterstitialAd.createForAdRequest(
+        TestIds.INTERSTITIAL,
+        {
+            requestNonPersonalizedAdsOnly: true
+        }
+    )
 
-    advert.on('onAdLoaded', () => {
-        console.log('Advert ready to show.')
-        advert.show()
+    interstitial.onAdEvent(type => {
+        if (type === AdEventType.LOADED) {
+            interstitial.show()
+        }
     })
+
+    interstitial.load()
 }
 
 export const rewardAd = (callbackFunction, callbackFunctionSecond, params) => {

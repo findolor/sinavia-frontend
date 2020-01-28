@@ -3,7 +3,7 @@ import { deviceStorage } from '../../services/deviceStorage'
 import { navigationPop, SCENE_KEYS } from '../../services/navigationService'
 import { clientTypes } from '../../redux/client/actions'
 import { appTypes } from '../../redux/app/actions'
-import firebase from 'react-native-firebase'
+import firebase from '@react-native-firebase/app'
 import { apiServicesTree, makePutRequest } from '../../services/apiServices'
 
 export function* updateUserSaga(action) {

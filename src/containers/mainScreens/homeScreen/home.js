@@ -43,7 +43,7 @@ global.Buffer = Buffer
 import * as Colyseus from 'colyseus.js'
 
 // FCM imports
-import firebase from 'react-native-firebase'
+import firebase from '@react-native-firebase/app'
 
 import { friendGameServices } from '../../../sagas/friendGame/'
 import { userScoreServices } from '../../../sagas/userScore'
@@ -88,7 +88,7 @@ const SOLO_IMAGE = require('../../../assets/mainScreens/tek.png')
 const UNSOLVED_QUESTIONS_MODE = require('../../../assets/mainScreens/unsolvedQuestionsModeImg.png')
 const SOLO_PREMIUM = require('../../../assets/soloPremium.png')
 const UNSOLVED_PREMIUM = require('../../../assets/premiumBack.png')
-import { BannerAd } from '../../../services/admobService'
+import { BannerAdvertisement } from '../../../services/admobService'
 
 class Home extends React.Component {
     constructor(props) {
@@ -525,7 +525,7 @@ class Home extends React.Component {
                                 delay={index * 25 + 75}
                                 useNativeDriver={true}
                             >
-                                <BannerAd />
+                                <BannerAdvertisement />
                             </Animatable.View>
                         </View>
                     )
@@ -657,7 +657,7 @@ class Home extends React.Component {
     gameModesView() {
         return (
             <View style={styles.modal}>
-                {!this.props.clientInformation.isPremium && <BannerAd />}
+                {!this.props.clientInformation.isPremium && <BannerAdvertisement />}
                 <TouchableOpacity
                     onPress={this.closeModalButtonOnPress}
                     style={{
@@ -1119,7 +1119,7 @@ class Home extends React.Component {
                         />
                     </View>
                 </View>
-                {!this.props.clientInformation.isPremium && <BannerAd />}
+                {!this.props.clientInformation.isPremium && <BannerAdvertisement />}
             </View>
         )
     }
@@ -1341,7 +1341,7 @@ class Home extends React.Component {
                         onPress={this.friendGameModeOnPress}
                     />
                 )}
-                {!this.props.clientInformation.isPremium && <BannerAd />}
+                {!this.props.clientInformation.isPremium && <BannerAdvertisement />}
             </View>
         )
     }
@@ -1456,7 +1456,7 @@ class Home extends React.Component {
                     borderRadius={hp(1.5)}
                     onPress={this.joinGroupRoomOnPress}
                 />
-                {!this.props.clientInformation.isPremium && <BannerAd />}
+                {!this.props.clientInformation.isPremium && <BannerAdvertisement />}
             </View>
         )
     }

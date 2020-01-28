@@ -8,7 +8,7 @@ import { userServices } from '../../../sagas/user/'
 import { opponentActions } from '../../../redux/opponents/actions'
 import returnLogo from '../../../assets/return.png'
 import NO_RESULTS_USER from '../../../assets/noResultsUser.png'
-import { BannerAd } from '../../../services/admobService'
+import { BannerAdvertisement } from '../../../services/admobService'
 
 class ProfileSearch extends React.Component {
     constructor(props) {
@@ -132,7 +132,9 @@ class ProfileSearch extends React.Component {
                                         {!this.props.clientInformation
                                             .isPremium &&
                                             index % 3 === 2 &&
-                                            index !== 0 && <BannerAd />}
+                                            index !== 0 && (
+                                                <BannerAdvertisement />
+                                            )}
                                     </View>
                                 )
                             }}

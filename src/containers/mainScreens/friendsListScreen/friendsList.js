@@ -20,7 +20,7 @@ import styles from './style'
 import NotchView from '../../../components/notchView'
 import returnLogo from '../../../assets/return.png'
 import NO_RESULTS_USER from '../../../assets/noResultsUser.png'
-import { BannerAd } from '../../../services/admobService'
+import { BannerAdvertisement } from '../../../services/admobService'
 
 class FriendsList extends React.Component {
     constructor(props) {
@@ -234,7 +234,9 @@ class FriendsList extends React.Component {
                             </Text>
                         </View>
                     )}
-                {!this.props.clientInformation.isPremium && <BannerAd />}
+                {!this.props.clientInformation.isPremium && (
+                    <BannerAdvertisement />
+                )}
             </View>
         )
     }

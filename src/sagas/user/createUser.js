@@ -11,7 +11,7 @@ import {
     makePutRequest
 } from '../../services/apiServices'
 import { fcmService } from '../../services/fcmService'
-import firebase from 'react-native-firebase'
+import firebase from '@react-native-firebase/app'
 
 export function* createUser(action) {
     yield put({

@@ -39,7 +39,7 @@ import SEE_OPPONENT_JOKER_IMAGE from '../../../assets/jokers/seeOpponent.png'
 import REMOVE_OPTIONS_JOKER_IMAGE from '../../../assets/jokers/removeOptions.png'
 import SECOND_CHANGE_JOKER_IMAGE from '../../../assets/jokers/secondChance.png'
 //import { rewardAd } from '../../../services/admobService'
-import firebase from 'react-native-firebase'
+import firebase from '@react-native-firebase/app'
 import { inviteCodeServices } from '../../../sagas/inviteCode'
 
 import FIRST_JOKER_AD_BUTTON from '../../../assets/firstJokerAdButton.png'

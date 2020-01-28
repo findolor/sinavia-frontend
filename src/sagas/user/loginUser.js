@@ -7,7 +7,7 @@ import { appTypes } from '../../redux/app/actions'
 import { fcmService } from '../../services/fcmService'
 import { gameContentTypes } from '../../redux/gameContent/actions'
 import DeviceInfo from 'react-native-device-info'
-import firebase from 'react-native-firebase'
+import firebase from '@react-native-firebase/app'
 import {
     apiServicesTree,
     makeGetRequest,
@@ -217,6 +217,7 @@ export function* loginUser(action) {
                     type: appTypes.LOCK_UNLOCK_BUTTON
                 })
             } catch (error) {
+                console.log(error)
                 yield put({
                     type: appTypes.LOCK_UNLOCK_BUTTON
                 })
@@ -234,6 +235,7 @@ export function* loginUser(action) {
             }
         }
     } catch (error) {
+        console.log(error)
         yield put({
             type: appTypes.LOCK_UNLOCK_BUTTON
         })

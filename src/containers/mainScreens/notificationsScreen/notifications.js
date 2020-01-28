@@ -38,7 +38,7 @@ window.localStorage = AsyncStorage
 global.Buffer = Buffer
 import * as Colyseus from 'colyseus.js'
 import { GAME_ENGINE_ENDPOINT, SCENE_KEYS } from '../../../config'
-import { BannerAd } from '../../../services/admobService'
+import { BannerAdvertisement } from '../../../services/admobService'
 
 const generalNotificationsList = [
     {
@@ -425,7 +425,7 @@ class Notifications extends React.Component {
                         </View>
                         {!this.props.clientInformation.isPremium &&
                             index % 4 === 3 &&
-                            index !== 0 && <BannerAd />}
+                            index !== 0 && <BannerAdvertisement />}
                     </View>
                 )
             case 'statistics':
@@ -444,7 +444,7 @@ class Notifications extends React.Component {
                         </TouchableOpacity>
                         {!this.props.clientInformation.isPremium &&
                             index % 4 === 3 &&
-                            index !== 0 && <BannerAd />}
+                            index !== 0 && <BannerAdvertisement />}
                     </View>
                 )
             default:
@@ -791,7 +791,9 @@ class Notifications extends React.Component {
                         />
                     </View>
                 )}
-                {!this.props.clientInformation.isPremium && <BannerAd />}
+                {!this.props.clientInformation.isPremium && (
+                    <BannerAdvertisement />
+                )}
             </View>
         )
     }

@@ -1,4 +1,8 @@
-import firebase from 'react-native-firebase'
+import firebase from '@react-native-firebase/app'
+import '@react-native-firebase/admob'
+import '@react-native-firebase/auth'
+import '@react-native-firebase/messaging'
+import '@react-native-firebase/storage'
 
 const getFcmToken = async () => {
     const fcmToken = await firebase.messaging().getToken()
