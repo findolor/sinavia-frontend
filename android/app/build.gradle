@@ -197,19 +197,10 @@ dependencies {
     implementation project(':react-native-share')
     implementation project(':lottie-react-native')
     implementation project(':react-native-svg')
-    implementation project(':react-native-firebase')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation project(':lottie-react-native')
     implementation project(':react-native-linear-gradient')
-
-    // Firebase dependencies
-    implementation "com.google.android.gms:play-services-base:16.1.0"
-    implementation "com.google.firebase:firebase-core:17.0.1"
-    implementation "com.google.firebase:firebase-messaging:20.0.0"
-    implementation "com.google.firebase:firebase-auth:17.0.0"
-    implementation "com.google.firebase:firebase-storage:17.0.0"
-    implementation "com.google.firebase:firebase-ads:17.2.1"
 
     if (enableHermes) {
       def hermesPath = "../../node_modules/hermesvm/android/";
