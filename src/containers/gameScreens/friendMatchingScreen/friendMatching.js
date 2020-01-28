@@ -56,14 +56,13 @@ class FriendMatchingScreen extends React.Component {
             return
         }
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
-        this.client.onOpen.add(() => {
-            this.room = this.client.join('friendRoom', {
+        this.client
+            .create('friendRoom', {
                 examId: this.props.examId,
                 courseId: this.props.courseId,
                 subjectId: this.props.subjectId,
                 databaseId: this.props.clientDBId,
                 roomCode: this.props.roomCode,
-                create: this.props.isCreateRoom,
                 userId: this.props.clientDBId,
                 friendId: this.props.invitedFriendId,
                 userUsername: this.props.clientInformation.username,
@@ -80,11 +79,14 @@ class FriendMatchingScreen extends React.Component {
                         .name
                 )
             })
-
-            this.room.onJoin.add(() => {
+            .then(room => {
+                this.room = room
                 this.roomMessage()
             })
-        })
+            .catch(error => {
+                console.log(error)
+                this.backButtonOnPress()
+            })
     }
 
     // If we dont convert the spaces we get an error from the wss uri
@@ -100,11 +102,10 @@ class FriendMatchingScreen extends React.Component {
         // Client information
         let playerUsername
         let playerProfilePicture
-        this.room.onMessage.add(message => {
+        this.room.onMessage(message => {
             if (message.action === 'game-reject') {
                 Alert.alert('Arkadaşın oyunu reddetti!')
                 this.room.removeAllListeners()
-                this.client.close()
                 navigationReset('main')
                 return
             }
@@ -141,7 +142,7 @@ class FriendMatchingScreen extends React.Component {
             const playerIds = Object.keys(message)
 
             playerIds.forEach(element => {
-                if (this.client.id !== element) {
+                if (this.room.sessionId !== element) {
                     this.setState({ isFriendJoined: true })
                     opponentUsername = message[element].username
                     opponentId = element
@@ -169,13 +170,13 @@ class FriendMatchingScreen extends React.Component {
             }, 3000)
         })
 
-        this.room.onError.add(error => {
-            console.log(error)
+        this.room.onLeave(code => {
+            console.log(code)
             this.backButtonOnPress()
         })
 
-        this.room.onLeave.add(res => {
-            if (res.code === 1001) return
+        this.room.onError(error => {
+            console.log(error)
             this.backButtonOnPress()
         })
     }
@@ -203,7 +204,6 @@ class FriendMatchingScreen extends React.Component {
     backButtonOnPress = () => {
         this.setState({ isCoundownActive: false }, () => {
             this.room.leave()
-            this.client.close()
             clearTimeout(this.timeout)
             navigationReset('main')
         })

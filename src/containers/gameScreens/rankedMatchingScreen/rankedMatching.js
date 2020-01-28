@@ -39,19 +39,17 @@ class RankedMatchingScreen extends React.Component {
             })
         }, 5000)
 
-        this.props.room.onError.add(error => {
-            this.connectionErrorRoutine()
+        this.props.room.onError(error => {
+            console.log(error)
+            clearTimeout(this.timeout)
+            navigationReset('main')
         })
 
-        this.props.room.onLeave.add(res => {
-            this.connectionErrorRoutine()
+        this.props.room.onLeave(code => {
+            console.log(code)
+            clearTimeout(this.timeout)
+            navigationReset('main')
         })
-    }
-
-    connectionErrorRoutine = () => {
-        this.props.room.leave()
-        clearTimeout(this.timeout)
-        navigationReset('main')
     }
 
     render() {

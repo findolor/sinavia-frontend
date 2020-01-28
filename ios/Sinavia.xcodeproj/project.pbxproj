@@ -753,6 +753,7 @@
 				DEVELOPMENT_TEAM = G3CN9DY25B;
 				INFOPLIST_FILE = Sinavia/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -780,7 +781,8 @@
 				DEVELOPMENT_TEAM = G3CN9DY25B;
 				INFOPLIST_FILE = Sinavia/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = YES;
+				MARKETING_VERSION = 1;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
