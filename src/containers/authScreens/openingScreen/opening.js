@@ -5,7 +5,8 @@ import {
     Text,
     Modal,
     TouchableOpacity,
-    Platform
+    Platform,
+    Alert
 } from 'react-native'
 import {
     navigationPush,
@@ -145,7 +146,7 @@ class Opening extends React.Component {
         }
     }
 
-    signInWithApple = async () => {
+    signInWithApple = () => {
         if (!appleAuth.isSupported) {
             flashMessages.generalErrorWithProps(
                 'Hata!',
@@ -161,61 +162,47 @@ class Opening extends React.Component {
             )
             return
         }
-        try {
-            // performs login request
-            const appleAuthRequestResponse = await appleAuth.performRequest({
-                requestedOperation: AppleAuthRequestOperation.LOGIN,
-                requestedScopes: [
-                    AppleAuthRequestScope.EMAIL,
-                    AppleAuthRequestScope.FULL_NAME
-                ]
-            })
-            const { identityToken, nonce } = appleAuthRequestResponse
+        Alert.alert(
+            'Apple ile giriş',
+            'Lütfen çıkan ekranda e-postamı paylaş seçeneğini seçiniz.',
+            [
+                {
+                    text: 'Tamam',
+                    onPress: async () => {
+                        try {
+                            // performs login request
+                            const appleAuthRequestResponse = await appleAuth.performRequest(
+                                {
+                                    requestedOperation:
+                                        AppleAuthRequestOperation.LOGIN,
+                                    requestedScopes: [
+                                        AppleAuthRequestScope.EMAIL,
+                                        AppleAuthRequestScope.FULL_NAME
+                                    ]
+                                }
+                            )
+                            console.log(appleAuthRequestResponse)
+                            // get current authentication state for user
+                            const credentialState = await appleAuth.getCredentialStateForUser(
+                                appleAuthRequestResponse.user
+                            )
 
-            // get current authentication state for user
-            const credentialState = await appleAuth.getCredentialStateForUser(
-                appleAuthRequestResponse.user
-            )
-
-            // use credentialState response to ensure the user is authenticated
-            if (credentialState === AppleAuthCredentialState.AUTHORIZED) {
-                // can be null in some scenarios
-                if (identityToken) {
-                    // 3). create a Firebase `AppleAuthProvider` credential
-                    const appleCredential = firebase.auth.AppleAuthProvider.credential(
-                        identityToken,
-                        nonce
-                    )
-
-                    // 4). use the created `AppleAuthProvider` credential to start a Firebase auth request,
-                    //     in this example `signInWithCredential` is used, but you could also call `linkWithCredential`
-                    //     to link the account to an existing user
-                    const userCredential = await firebase
-                        .auth()
-                        .signInWithCredential(appleCredential)
-
-                    // user is now signed in, any Firebase `onAuthStateChanged` listeners you have will trigger
-                    console.log(userCredential)
-                } else {
-                    flashMessages.generalErrorWithProps(
-                        'Hata!',
-                        'Giriş yaparken bir hata oluştu. Tekrar deneyiniz.',
-                        {
-                            backgroundColor: '#FFFFFF',
-                            borderBottomLeftRadius: 10,
-                            borderBottomRightRadius: 10,
-                            borderColor: '#00D9EF',
-                            borderWidth: hp(0.25),
-                            height: hp(10)
+                            // use credentialState response to ensure the user is authenticated
+                            if (
+                                credentialState ===
+                                AppleAuthCredentialState.AUTHORIZED
+                            ) {
+                                if (appleAuthRequestResponse.email !== null) {
+                                } else {
+                                }
+                            }
+                        } catch (error) {
+                            console.log(error)
                         }
-                    )
-                    await this.logoutFromApple()
-                    return
+                    }
                 }
-            }
-        } catch (error) {
-            console.log(error)
-        }
+            ]
+        )
     }
 
     onPressLicenceView = () => {
