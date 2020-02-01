@@ -14,7 +14,8 @@ import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
 import {
     SCENE_KEYS,
-    navigationReset
+    navigationReset,
+    navigationPush
 } from '../../../services/navigationService'
 
 import background from '../../../assets/gameScreens/gameStatsBackground.jpg'
@@ -33,6 +34,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient'
 
 const GAME_OVER_LOGO = require('../../../assets/gameScreens/gameover.png')
+import VIDEO_LOGO from '../../../assets/mainScreens/blueVideoLogo.png'
 
 const REPLAY_NORMAL_BORDER = '#00D9EF'
 const REPLAY_ACTIVE_BORDER = 'green'
@@ -419,6 +421,12 @@ class GroupGameStatsScreen extends React.Component {
         )
     }
 
+    goToVideo = () => {
+        navigationPush(SCENE_KEYS.mainScreens.video, {
+            videoUri: 'https://player.vimeo.com/video/8175286/config'
+        })
+    }
+
     render() {
         return (
             <ScrollView
@@ -577,6 +585,10 @@ class GroupGameStatsScreen extends React.Component {
                             {this.state.questionPosition}/
                             {Object.keys(this.state.allQuestionsList).length}
                         </Text>
+                        <TouchableOpacity onPress={this.goToVideo} style={styles.videoButton}>
+                            <Image source={VIDEO_LOGO} style={styles.videoLogo}/>
+                            <Text style={styles.videoButtonText}>Çözümü izle</Text>
+                        </TouchableOpacity>
                     </View>
                     <ScrollView
                         horizontal={true}

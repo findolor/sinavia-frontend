@@ -182,6 +182,10 @@ const RouterComp = () => {
                         key={SCENE_KEYS.gameScreens.unsolvedModeLoadingScreen}
                         component={gameScreens.unsolvedModeLoadingScreen}
                     />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.video}
+                        component={mainScreens.video}
+                    />
                 </Scene>
             </Scene>
         </Router>

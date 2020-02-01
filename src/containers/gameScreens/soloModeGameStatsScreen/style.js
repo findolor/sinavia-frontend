@@ -199,7 +199,7 @@ export default StyleSheet.create({
     questionContainer: {
         backgroundColor: '#fff',
         height: hp(58),
-        width: wp(90),
+        width: wp(80),
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
@@ -211,12 +211,6 @@ export default StyleSheet.create({
         width: wp(90),
         flex: 1
     },
-    questionNumberContainer: {
-        height: hp(5),
-        width: wp(100),
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
     questionNumberText: {
         fontFamily: 'Averta-Semibold',
         color: '#FFFFFF',
@@ -227,8 +221,7 @@ export default StyleSheet.create({
         height: hp(13),
         width: wp(66),
         flexDirection: 'row',
-        justifyContent: 'center',
-        marginTop: hp(1)
+        justifyContent: 'center'
     },
     answerContainer: {
         height: hp(13),
@@ -303,5 +296,30 @@ export default StyleSheet.create({
         fontFamily: 'Averta-SemiboldItalic',
         fontSize: hp(4.5),
         color: '#FF9900'
+    },
+    questionNumberContainer: {
+        height: hp(7),
+        width: wp(80),
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignItems: 'center'
+    },
+    videoButton: {
+        height: hp(5),
+        width: wp(35),
+        backgroundColor: '#FFFFFF',
+        borderRadius: hp(3),
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignItems: 'center'
+    },
+    videoLogo: {
+        height: hp(4),
+        width: hp(4)
+    },
+    videoButtonText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(2),
+        color: '#00D9EF'
     }
 })

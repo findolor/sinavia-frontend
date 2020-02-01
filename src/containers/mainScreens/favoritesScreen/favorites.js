@@ -11,7 +11,7 @@ import {
     PermissionsAndroid,
     Platform
 } from 'react-native'
-import { navigationPop } from '../../../services/navigationService'
+import { navigationPop, navigationPush, navigationReplace, SCENE_KEYS } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import styles from './style'
 import NotchView from '../../../components/notchView'
@@ -22,6 +22,7 @@ import unselectedFav from '../../../assets/favori_bos.png'
 import backButton from '../../../assets/backButton.png'
 import returnLogo from '../../../assets/return.png'
 import shareLogo from '../../../assets/share.png'
+import VIDEO_LOGO from '../../../assets/mainScreens/whiteVideoLogo.png'
 
 import { clientActions } from '../../../redux/client/actions'
 import NO_RESULTS_FAV from '../../../assets/noResultsFav.png'
@@ -355,6 +356,13 @@ class Favorites extends React.Component {
         }
     }
 
+    goToVideo = () => {
+        this.setState({isModalVisible: false})
+        navigationPush(SCENE_KEYS.mainScreens.video, {
+            videoUri: 'https://player.vimeo.com/video/8175286/config'
+        })
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -493,6 +501,17 @@ class Favorites extends React.Component {
                                 {this.state.isFaved === true
                                     ? 'Favoriden çıkar'
                                     : 'Favoriye ekle'}
+                            </Text>
+                        </View>
+                        <View style={styles.favIconContainer}>
+                            <TouchableOpacity onPress={this.goToVideo}>
+                                <Image
+                                    source={VIDEO_LOGO}
+                                    style={styles.favIcon}
+                                />
+                            </TouchableOpacity>
+                            <Text style={styles.answerText}>
+                                Çözümü izle
                             </Text>
                         </View>
                     </View>

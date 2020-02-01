@@ -8,7 +8,7 @@ import {
     Dimensions,
     Modal
 } from 'react-native'
-import { navigationReset } from '../../../services/navigationService'
+import { navigationReset, navigationPush, SCENE_KEYS } from '../../../services/navigationService'
 import styles from './style'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
@@ -25,6 +25,7 @@ import unselectedFav from '../../../assets/favori_bos.png'
 import YOU_WIN_LOGO from '../../../assets/gameScreens/win.png'
 import YOU_LOSE_LOGO from '../../../assets/gameScreens/lose.png'
 import DRAW_LOGO from '../../../assets/gameScreens/draw.png'
+import VIDEO_LOGO from '../../../assets/mainScreens/blueVideoLogo.png'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
@@ -430,6 +431,12 @@ class SoloFriendGameStatsScreen extends React.Component {
                 </View>
             </View>
         )
+    }
+
+    goToVideo = () => {
+        navigationPush(SCENE_KEYS.mainScreens.video, {
+            videoUri: 'https://player.vimeo.com/video/8175286/config'
+        })
     }
 
     render() {
@@ -840,6 +847,10 @@ class SoloFriendGameStatsScreen extends React.Component {
                                         .length
                                 }
                             </Text>
+                            <TouchableOpacity onPress={this.goToVideo} style={styles.videoButton}>
+                                <Image source={VIDEO_LOGO} style={styles.videoLogo}/>
+                                <Text style={styles.videoButtonText}>Çözümü izle</Text>
+                            </TouchableOpacity>
                         </View>
                         <ScrollView
                             horizontal={true}

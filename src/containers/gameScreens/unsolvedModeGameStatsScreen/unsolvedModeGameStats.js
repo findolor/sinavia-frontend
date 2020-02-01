@@ -8,7 +8,7 @@ import {
     Dimensions,
     ImageBackground
 } from 'react-native'
-import { navigationReset } from '../../../services/navigationService'
+import { navigationReset, navigationPush, SCENE_KEYS } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
 
@@ -22,6 +22,7 @@ import unanswered from '../../../assets/gameScreens/unanswered.png'
 import selectedFav from '../../../assets/favori.png'
 import unselectedFav from '../../../assets/favori_bos.png'
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
+import VIDEO_LOGO from '../../../assets/mainScreens/blueVideoLogo.png'
 import { chooseImage } from '../../../services/courseAssetChooser'
 
 class UnsolvedModeGameStats extends React.Component {
@@ -232,6 +233,12 @@ class UnsolvedModeGameStats extends React.Component {
         }
     }
 
+    goToVideo = () => {
+        navigationPush(SCENE_KEYS.mainScreens.video, {
+            videoUri: 'https://player.vimeo.com/video/8175286/config'
+        })
+    }
+
     render() {
         const background = chooseImage(this.state.examId, true)
         return (
@@ -344,6 +351,10 @@ class UnsolvedModeGameStats extends React.Component {
                             {this.state.questionPosition}/
                             {Object.keys(this.state.allQuestionsList).length}
                         </Text>
+                        <TouchableOpacity onPress={this.goToVideo} style={styles.videoButton}>
+                            <Image source={VIDEO_LOGO} style={styles.videoLogo}/>
+                            <Text style={styles.videoButtonText}>Çözümü izle</Text>
+                        </TouchableOpacity>
                     </View>
                     <ScrollView
                         horizontal={true}
