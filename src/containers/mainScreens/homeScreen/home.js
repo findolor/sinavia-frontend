@@ -1033,17 +1033,13 @@ class Home extends React.Component {
                 <View style={styles.modalButtonsContainer}>
                     <AuthButton
                         height={hp(7)}
-                        width={wp(42)}
+                        width={wp(87.5)}
                         color="#3EBB29"
                         buttonText="Başlat"
                         fontSize={hp(3)}
                         borderRadius={hp(1.5)}
                         onPress={this.playButtonOnPress}
                     />
-                    <TouchableOpacity onPress={this.goToVideo} style={styles.videoButton}>
-                        <Image source={WHITE_VIDEO_LOGO} style={styles.videoButtonLogo}/>
-                        <Text style={styles.videoButtonText}>Konu Anlatımı İzle</Text>
-                    </TouchableOpacity>
                 </View>
             </View>
         )
@@ -2062,7 +2058,7 @@ class Home extends React.Component {
             .catch(error => {})
     }
 
-    goToVideo = () => {
+    /*goToVideo = () => {
         if (this.props.clientInformation.isPremium) {
             this.setState({isModalVisible: false})
             navigationPush(SCENE_KEYS.mainScreens.video, {
@@ -2078,7 +2074,7 @@ class Home extends React.Component {
                 visibleView: 'PREMIUM_MODAL_FOR_VIDEO'
             })
         }
-    }
+    }*/
 
     // Gets the exam/content/subject ids based on selected subject
     calculateContentIds = () => {
