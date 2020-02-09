@@ -210,7 +210,7 @@ export default StyleSheet.create({
     questionContainer: {
         backgroundColor: '#fff',
         height: hp(58),
-        width: wp(80),
+        width: wp(90),
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
@@ -340,19 +340,23 @@ export default StyleSheet.create({
     },
     questionNumberContainer: {
         height: hp(7),
-        width: wp(80),
+        width: wp(90),
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
+        justifyContent: 'space-between',
         alignItems: 'center'
     },
     videoButton: {
         height: hp(5),
-        width: wp(35),
+        width: wp(34),
         backgroundColor: '#FFFFFF',
         borderRadius: hp(3),
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         alignItems: 'center'
+    },
+    solvingLogo: {
+        height: hp(3.5),
+        width: hp(2.8)
     },
     videoLogo: {
         height: hp(4),

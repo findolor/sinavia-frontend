@@ -23,7 +23,9 @@ import selectedFav from '../../../assets/favori.png'
 import unselectedFav from '../../../assets/favori_bos.png'
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
 import VIDEO_LOGO from '../../../assets/mainScreens/blueVideoLogo.png'
+import SOLVING_LOGO from '../../../assets/mainScreens/blueSolvingLogo.png'
 import { chooseImage } from '../../../services/courseAssetChooser'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 
 class UnsolvedModeGameStats extends React.Component {
     constructor(props) {
@@ -50,7 +52,10 @@ class UnsolvedModeGameStats extends React.Component {
             // Fav icon
             favouriteIcon: unselectedFav,
             // ExamId of the match
-            examId: null
+            examId: null,
+            //these states will be updated for every questions
+            solvingImg: 1,
+            solvingVideo: 1
         }
     }
 
@@ -347,14 +352,49 @@ class UnsolvedModeGameStats extends React.Component {
                 </View>
                 <View style={styles.secondScreenView}>
                     <View style={styles.questionNumberContainer}>
-                        <Text style={styles.questionNumberText}>
-                            {this.state.questionPosition}/
-                            {Object.keys(this.state.allQuestionsList).length}
-                        </Text>
-                        <TouchableOpacity onPress={this.goToVideo} style={styles.videoButton}>
-                            <Image source={VIDEO_LOGO} style={styles.videoLogo}/>
-                            <Text style={styles.videoButtonText}>Çözümü izle</Text>
-                        </TouchableOpacity>
+                        {this.state.solvingImg !== null
+                            ? <View style={{
+                                position: 'absolute',
+                                height: hp(7),
+                                width: wp(34),
+                                justifyContent: 'center',
+                                marginLeft: wp(0)
+                            }}>
+                                <TouchableOpacity style={styles.videoButton}>
+                                    <Image source={SOLVING_LOGO} style={styles.solvingLogo}/>
+                                    <Text style={styles.videoButtonText}>Çözüme bak</Text>
+                                </TouchableOpacity>
+                            </View>
+                            : <View/>
+                        }
+                        <View style={{
+                            position: 'absolute',
+                            height: hp(7),
+                            width: wp(22),
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginLeft: wp(34)
+                        }}>
+                            <Text style={styles.questionNumberText}>
+                                {this.state.questionPosition}/
+                                {Object.keys(this.state.allQuestionsList).length}
+                            </Text>
+                        </View>
+                        {this.state.solvingVideo !== null
+                            ? <View style={{
+                                position: 'absolute',
+                                height: hp(7),
+                                width: wp(34),
+                                justifyContent: 'center',
+                                marginLeft: wp(56)
+                            }}>
+                                <TouchableOpacity onPress={this.goToVideo} style={styles.videoButton}>
+                                    <Image source={VIDEO_LOGO} style={styles.videoLogo}/>
+                                    <Text style={styles.videoButtonText}>Çözümü izle</Text>
+                                </TouchableOpacity>
+                            </View>
+                            : <View/>
+                        }
                     </View>
                     <ScrollView
                         horizontal={true}

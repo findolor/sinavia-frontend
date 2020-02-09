@@ -23,6 +23,9 @@ import backButton from '../../../assets/backButton.png'
 import returnLogo from '../../../assets/return.png'
 import shareLogo from '../../../assets/share.png'
 import VIDEO_LOGO from '../../../assets/mainScreens/whiteVideoLogo.png'
+import SOLVING_LOGO from '../../../assets/mainScreens/whiteSolvingLogo.png'
+import QUESTION_MARK from '../../../assets/mainScreens/questionMarkLogo.png'
+import SOLVING_IMG from '../../../assets/solving.jpg'
 
 import { clientActions } from '../../../redux/client/actions'
 import NO_RESULTS_FAV from '../../../assets/noResultsFav.png'
@@ -41,7 +44,8 @@ class Favorites extends React.Component {
             correctAnswer: '',
             // Favoruite variables
             favouriteIcon: unselectedFav,
-            isFaved: false
+            isFaved: false,
+            solving: false
         }
     }
 
@@ -333,7 +337,8 @@ class Favorites extends React.Component {
                     Object.keys(this.state.data).length /*Image count*/
                 ),
                 correctAnswer: this.state.data[this.state.galleryPosition - 1]
-                    .question.correctAnswer
+                    .question.correctAnswer,
+                solving: false
             },
             this.checkFavouriteStatus()
         )
@@ -356,6 +361,10 @@ class Favorites extends React.Component {
         }
     }
 
+    showSolving = () => {
+        this.setState({solving: !this.state.solving})
+    }
+
     goToVideo = () => {
         this.setState({isModalVisible: false})
         navigationPush(SCENE_KEYS.mainScreens.video, {
@@ -366,7 +375,7 @@ class Favorites extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <NotchView />
+                <NotchView/>
                 <View style={styles.header}>
                     <TouchableOpacity onPress={this.returnButtonOnPress}>
                         <View style={styles.returnLogoContainer}>
@@ -387,7 +396,7 @@ class Favorites extends React.Component {
                         await this.loadScreen()
                     }}
                 >
-                    <NotchView color={'#00D9EF'} />
+                    <NotchView color={'#00D9EF'}/>
                     <View style={styles.modalHeader}>
                         <View style={styles.backButtonContainer}>
                             <TouchableOpacity
@@ -428,7 +437,8 @@ class Favorites extends React.Component {
                             initialScrollIndex={this.state.startQuestionIndex}
                             showsHorizontalScrollIndicator={false}
                             onScroll={this.galleryOnScroll}
-                            onScrollToIndexFailed={() => {}}
+                            onScrollToIndexFailed={() => {
+                            }}
                             renderItem={({ item, index }) => {
                                 return (
                                     <View style={styles.galleryView}>
@@ -445,24 +455,33 @@ class Favorites extends React.Component {
                                                 {
                                                     this.props.gameContentMap
                                                         .subjects[
-                                                        item.question
-                                                            .subjectId - 1
-                                                    ].name
+                                                    item.question
+                                                        .subjectId - 1
+                                                        ].name
                                                 }
                                             </Text>
                                         </View>
-                                        <View
-                                            style={styles.questionInModalView}
-                                        >
-                                            <Image
-                                                source={{
-                                                    uri:
+                                        {this.state.solving === false
+                                            ? <View
+                                                style={styles.questionInModalView}
+                                            >
+                                                <Image
+                                                    source={{
+                                                        uri:
                                                         item.question
                                                             .questionLink
-                                                }}
-                                                style={styles.questionInModal}
-                                            />
-                                        </View>
+                                                    }}
+                                                    style={styles.questionInModal}
+                                                />
+                                            </View>
+                                            : <View
+                                                style={styles.questionInModalView}
+                                            >
+                                                <Image
+                                                    source={SOLVING_IMG}
+                                                    style={styles.questionInModal}
+                                                />
+                                            </View>}
                                     </View>
                                 )
                             }}
@@ -490,7 +509,7 @@ class Favorites extends React.Component {
                             </View>
                             <Text style={styles.answerText}>Doğru cevap</Text>
                         </View>
-                        <View style={styles.favIconContainer}>
+                        <View style={styles.answerContainer}>
                             <TouchableOpacity onPress={this.favouriteOnPress}>
                                 <Image
                                     source={this.state.favouriteIcon}
@@ -503,7 +522,30 @@ class Favorites extends React.Component {
                                     : 'Favoriye ekle'}
                             </Text>
                         </View>
-                        <View style={styles.favIconContainer}>
+                        {this.state.solving === false
+                            ? <View style={styles.answerContainer}>
+                                <TouchableOpacity onPress={this.showSolving}>
+                                    <Image
+                                        source={SOLVING_LOGO}
+                                        style={styles.favIcon}
+                                    />
+                                </TouchableOpacity>
+                                <Text style={styles.answerText}>
+                                    Çözüme bak
+                                </Text>
+                            </View>
+                            : <View style={styles.answerContainer}>
+                                <TouchableOpacity onPress={this.showSolving}>
+                                    <Image
+                                        source={QUESTION_MARK}
+                                        style={styles.favIcon}
+                                    />
+                                </TouchableOpacity>
+                                <Text style={styles.answerText}>
+                                    Soruya Dön
+                                </Text>
+                            </View>}
+                        <View style={styles.answerContainer}>
                             <TouchableOpacity onPress={this.goToVideo}>
                                 <Image
                                     source={VIDEO_LOGO}

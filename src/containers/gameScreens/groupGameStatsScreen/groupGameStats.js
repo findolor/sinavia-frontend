@@ -35,6 +35,7 @@ import LinearGradient from 'react-native-linear-gradient'
 
 const GAME_OVER_LOGO = require('../../../assets/gameScreens/gameover.png')
 import VIDEO_LOGO from '../../../assets/mainScreens/blueVideoLogo.png'
+import SOLVING_LOGO from '../../../assets/mainScreens/blueSolvingLogo.png'
 
 const REPLAY_NORMAL_BORDER = '#00D9EF'
 const REPLAY_ACTIVE_BORDER = 'green'
@@ -63,7 +64,10 @@ class GroupGameStatsScreen extends React.Component {
             isFaved: false,
             // Fav icon
             favouriteIcon: unselectedFav,
-            isModalVisible: false
+            isModalVisible: false,
+            //these states will be updated for every questions
+            solvingImg: 1,
+            solvingVideo: 1
         }
     }
 
@@ -436,7 +440,7 @@ class GroupGameStatsScreen extends React.Component {
                 scrollEventThrottle={8}
             >
                 <View style={styles.container}>
-                    <Image source={background} style={styles.background} />
+                    <Image source={background} style={styles.background}/>
                     <View style={styles.resultTextContainer}>
                         <Image
                             source={GAME_OVER_LOGO}
@@ -581,14 +585,49 @@ class GroupGameStatsScreen extends React.Component {
                         {this.premiumForFavoritesPage()}
                     </Modal>
                     <View style={styles.questionNumberContainer}>
-                        <Text style={styles.questionNumberText}>
-                            {this.state.questionPosition}/
-                            {Object.keys(this.state.allQuestionsList).length}
-                        </Text>
-                        <TouchableOpacity onPress={this.goToVideo} style={styles.videoButton}>
-                            <Image source={VIDEO_LOGO} style={styles.videoLogo}/>
-                            <Text style={styles.videoButtonText}>Çözümü izle</Text>
-                        </TouchableOpacity>
+                        {this.state.solvingImg !== null
+                            ? <View style={{
+                                position: 'absolute',
+                                height: hp(7),
+                                width: wp(34),
+                                justifyContent: 'center',
+                                marginLeft: wp(0)
+                            }}>
+                                <TouchableOpacity style={styles.videoButton}>
+                                    <Image source={SOLVING_LOGO} style={styles.solvingLogo}/>
+                                    <Text style={styles.videoButtonText}>Çözüme bak</Text>
+                                </TouchableOpacity>
+                            </View>
+                            : <View/>
+                        }
+                        <View style={{
+                            position: 'absolute',
+                            height: hp(7),
+                            width: wp(22),
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginLeft: wp(34)
+                        }}>
+                            <Text style={styles.questionNumberText}>
+                                {this.state.questionPosition}/
+                                {Object.keys(this.state.allQuestionsList).length}
+                            </Text>
+                        </View>
+                        {this.state.solvingVideo !== null
+                            ? <View style={{
+                                position: 'absolute',
+                                height: hp(7),
+                                width: wp(34),
+                                justifyContent: 'center',
+                                marginLeft: wp(56)
+                            }}>
+                                <TouchableOpacity onPress={this.goToVideo} style={styles.videoButton}>
+                                    <Image source={VIDEO_LOGO} style={styles.videoLogo}/>
+                                    <Text style={styles.videoButtonText}>Çözümü izle</Text>
+                                </TouchableOpacity>
+                            </View>
+                            : <View/>
+                        }
                     </View>
                     <ScrollView
                         horizontal={true}
@@ -616,9 +655,9 @@ class GroupGameStatsScreen extends React.Component {
                                     {this.answerSwitcher(
                                         this.props.playerProps[
                                             this.props.client.id
-                                        ].answers[
-                                            this.state.questionPosition - 1
-                                        ].correctAnswer
+                                            ].answers[
+                                        this.state.questionPosition - 1
+                                            ].correctAnswer
                                     )}
                                 </Text>
                             </View>
@@ -650,9 +689,9 @@ class GroupGameStatsScreen extends React.Component {
                                     {this.answerSwitcher(
                                         this.props.playerProps[
                                             this.props.client.id
-                                        ].answers[
-                                            this.state.questionPosition - 1
-                                        ].answer
+                                            ].answers[
+                                        this.state.questionPosition - 1
+                                            ].answer
                                     )}
                                 </Text>
                             </View>
