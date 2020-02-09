@@ -5,7 +5,8 @@ import { getUsers } from './getUsers'
 import { postUser } from './postUser'
 import { searchUsers } from './searchUsers'
 import { updateUser } from './updateUser'
-import { checkUser } from './checkUser'
+import { checkUserWithEmail } from './checkUserWithEmail'
+import { checkUserWithIdentityToken } from './checkUserWithIdentityToken'
 
 export {
     forgotPassword,
@@ -15,5 +16,6 @@ export {
     postUser,
     searchUsers,
     updateUser,
-    checkUser
+    checkUserWithEmail,
+    checkUserWithIdentityToken
 }

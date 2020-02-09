@@ -49,6 +49,7 @@ class UnsolvedModeLoadingScreen extends React.Component {
                 this.room = room
 
                 this.timeout = setTimeout(() => {
+                    this.room.removeAllListeners()
                     navigationReplace(
                         SCENE_KEYS.gameScreens.unsolvedModeGameScreen,
                         {
@@ -64,7 +65,7 @@ class UnsolvedModeLoadingScreen extends React.Component {
                     )
                 }, 5000)
 
-                this.room.onMessage.add(message => {
+                this.room.onMessage(message => {
                     if (message.action === 'no-questions') {
                         Alert.alert('Tekrar çözebileceğin soru yok')
                         this.connectionErrorRoutine()

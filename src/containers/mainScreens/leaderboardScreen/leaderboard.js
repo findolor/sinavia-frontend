@@ -74,6 +74,10 @@ class Leaderboard extends React.Component {
                         user = JSON.parse(user)
                         userList.push(user)
                     })
+                else {
+                    this.makeLeaderboardLists(userList)
+                    return
+                }
 
                 const hourDifference = Math.floor(
                     Math.abs(new Date() - new Date(data.updatedAt)) / 36e5

@@ -54,6 +54,14 @@ export function* loginUser(action) {
                     })
                 if (!isSignedIn) return
                 break
+            case 'apple':
+                firebase
+                    .auth()
+                    .signInAnonymously()
+                    .catch(error => {
+                        console.log(error)
+                    })
+                break
         }
 
         if (firebaseResponse !== null && !firebaseResponse.user.emailVerified) {
@@ -72,7 +80,8 @@ export function* loginUser(action) {
                     apiServicesTree.tokenApi.getToken,
                     {
                         deviceId: deviceId,
-                        userInformation: action.payload
+                        userInformation: action.payload,
+                        signInMethod: signInMethod
                     }
                 )
                 // Saving the api token to redux state
@@ -244,7 +253,7 @@ export function* loginUser(action) {
         if (error.code === 'auth/user-not-found') {
             let checkResponse = yield call(
                 makeGetRequest,
-                apiServicesTree.userApi.checkUser,
+                apiServicesTree.userApi.checkUserWithEmail,
                 {
                     email: this.email
                 }
