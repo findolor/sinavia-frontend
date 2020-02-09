@@ -8,7 +8,8 @@ export const getToken = async params => {
             params.userInformation,
             {
                 params: {
-                    deviceId: params.deviceId
+                    deviceId: params.deviceId,
+                    signInMethod: params.signInMethod
                 }
             }
         )
