@@ -166,6 +166,7 @@ class PurchaseScreen extends React.Component {
     inAppInitConnection = async () => {
         try {
             const result = await RNIap.initConnection()
+            await RNIap.consumeAllItemsAndroid()
             console.log('result', result)
         } catch (err) {
             console.warn(err.code, err.message)
