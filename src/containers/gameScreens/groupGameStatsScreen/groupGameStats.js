@@ -32,6 +32,7 @@ import {
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
 import LinearGradient from 'react-native-linear-gradient'
+import ImageModal from 'react-native-image-modal'
 
 const GAME_OVER_LOGO = require('../../../assets/gameScreens/gameover.png')
 import VIDEO_LOGO from '../../../assets/mainScreens/blueVideoLogo.png'
@@ -67,7 +68,8 @@ class GroupGameStatsScreen extends React.Component {
             isModalVisible: false,
             //these states will be updated for every questions
             solvingImg: 1,
-            solvingVideo: 1
+            solvingVideo: 1,
+            solving: false
         }
     }
 
@@ -188,16 +190,7 @@ class GroupGameStatsScreen extends React.Component {
             const tempList = []
 
             for (i = 0; i < Object.keys(this.props.questionList).length; i++) {
-                tempList.push(
-                    <View style={styles.scrollQuestionContainer} key={i}>
-                        <View style={styles.questionContainer}>
-                            <Image
-                                source={{ uri: this.props.questionList[i] }}
-                                style={styles.questionStyle}
-                            />
-                        </View>
-                    </View>
-                )
+                tempList.push(this.props.questionList[i])
             }
 
             playerList.sort((a, b) => parseFloat(b.net) - parseFloat(a.net))
@@ -240,7 +233,8 @@ class GroupGameStatsScreen extends React.Component {
                     0
                 ),
                 Object.keys(this.props.questionList).length /*Image count*/
-            )
+            ),
+            solving: false
         })
         this.checkFavouriteStatus()
     }
@@ -425,6 +419,10 @@ class GroupGameStatsScreen extends React.Component {
         )
     }
 
+    showSolving = () => {
+        this.setState({solving: !this.state.solving})
+    }
+
     goToVideo = () => {
         navigationPush(SCENE_KEYS.mainScreens.video, {
             videoUri: 'https://player.vimeo.com/video/8175286/config'
@@ -593,10 +591,15 @@ class GroupGameStatsScreen extends React.Component {
                                 justifyContent: 'center',
                                 marginLeft: wp(0)
                             }}>
-                                <TouchableOpacity style={styles.videoButton}>
-                                    <Image source={SOLVING_LOGO} style={styles.solvingLogo}/>
-                                    <Text style={styles.videoButtonText}>Çözüme bak</Text>
-                                </TouchableOpacity>
+                                {this.state.solving === false
+                                    ? <TouchableOpacity onPress={this.showSolving} style={styles.videoButton}>
+                                        <Image source={SOLVING_LOGO} style={styles.solvingLogo}/>
+                                        <Text style={styles.videoButtonText}>Çözüme bak</Text>
+                                    </TouchableOpacity>
+                                    : <TouchableOpacity onPress={this.showSolving} style={styles.videoButton}>
+                                        <Image source={SOLVING_LOGO} style={styles.solvingLogo}/>
+                                        <Text style={styles.videoButtonText}>Soruya Dön</Text>
+                                    </TouchableOpacity>}
                             </View>
                             : <View/>
                         }
@@ -629,15 +632,38 @@ class GroupGameStatsScreen extends React.Component {
                             : <View/>
                         }
                     </View>
-                    <ScrollView
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        pagingEnabled={true}
-                        onScroll={this.handleScrollHorizontal}
-                        scrollEventThrottle={8}
-                    >
-                        {this.state.allQuestionsList}
-                    </ScrollView>
+                    <FlatList ref={ref => {
+                        this.flatListRef = ref
+                    }}
+                              horizontal={true}
+                              pagingEnabled={true}
+                              data={this.state.allQuestionsList}
+                              onScroll={this.handleScrollHorizontal}
+                              showsHorizontalScrollIndicator={false}
+                              extraData={this.state.solving}
+                              renderItem={({ item, index }) => {
+                                  return (
+                                      <View style={styles.scrollQuestionContainer}>
+                                          {this.state.solving === false
+                                              ?
+                                              <View style={styles.questionContainer}><ImageModal
+                                                  resizeMode="contain"
+                                                  imageBackgroundColor="#ffffff"
+                                                  overlayBackgroundColor="#000000DE"
+                                                  style={styles.questionStyle}
+                                                  source={{ uri: item }}
+                                              /></View>
+                                              : <View style={styles.questionContainer}><ImageModal
+                                                  resizeMode="contain"
+                                                  imageBackgroundColor="#ffffff"
+                                                  overlayBackgroundColor="#000000DE"
+                                                  style={styles.questionStyle}
+                                                  source={{ uri: 'https://lh3.googleusercontent.com/proxy/iCYubhYEtP4-Nu-EIczOrR1PLiZWX3kTj38SF_E-vI98xFkagqsOXEiVWAzSrczThFbbv3m_Jf1_eAfyZzDoSpe6vj_uIzA2BrrwOkzEE6exLzQkcdDNTwlz-uSM' }}
+                                              /></View>}
+                                      </View>
+                                  )
+                              }}
+                              keyExtractor={(item, index) => index.toString()}></FlatList>
                     <View style={styles.favAndAnswerContainer}>
                         <View style={styles.answerContainer}>
                             <View

@@ -9,7 +9,8 @@ import {
     View,
     Dimensions,
     PermissionsAndroid,
-    Platform
+    Platform,
+    Easing
 } from 'react-native'
 import { navigationPop, navigationPush, navigationReplace, SCENE_KEYS } from '../../../services/navigationService'
 import { connect } from 'react-redux'
@@ -30,12 +31,17 @@ import SOLVING_IMG from '../../../assets/solving.jpg'
 import { clientActions } from '../../../redux/client/actions'
 import NO_RESULTS_FAV from '../../../assets/noResultsFav.png'
 
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import ImageModal from 'react-native-image-modal'
+import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas'
+
 class Favorites extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             data: [],
             isModalVisible: false,
+            isZoomModalVisible: false,
             galleryPosition: 1,
             favIconSelected: false,
             // ScrollView item list
@@ -177,7 +183,7 @@ class Favorites extends React.Component {
                 scrollViewList.push(itemList)
             })
 
-            this.setState({ scrollViewList: scrollViewList })
+            this.setState({ scrollViewList: scrollViewList, solving: false })
             return true
         })
     }
@@ -372,6 +378,10 @@ class Favorites extends React.Component {
         })
     }
 
+    zoomOnPress = () => {
+        this.setState({ isZoomModalVisible: true })
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -397,6 +407,18 @@ class Favorites extends React.Component {
                     }}
                 >
                     <NotchView color={'#00D9EF'}/>
+                    <Modal visible={this.state.isZoomModalVisible} >
+                        <View style={styles.zoomModalContainer}>
+                            <View style={{ flex: 1, width: wp(100), justifyContent: 'center', alignItems: 'center'}}>
+                                <View style={{height: hp(80), width: wp(100), justifyContent:'center', alignItems: 'center'}}>
+                                    <Image
+                                        source={{uri: 'https://lh3.googleusercontent.com/proxy/iCYubhYEtP4-Nu-EIczOrR1PLiZWX3kTj38SF_E-vI98xFkagqsOXEiVWAzSrczThFbbv3m_Jf1_eAfyZzDoSpe6vj_uIzA2BrrwOkzEE6exLzQkcdDNTwlz-uSM'}}
+                                        style={styles.questionModalStyle}
+                                    />
+                                </View>
+                            </View>
+                        </View>
+                    </Modal>
                     <View style={styles.modalHeader}>
                         <View style={styles.backButtonContainer}>
                             <TouchableOpacity
@@ -465,21 +487,27 @@ class Favorites extends React.Component {
                                             ? <View
                                                 style={styles.questionInModalView}
                                             >
-                                                <Image
+                                                <ImageModal
+                                                    resizeMode="contain"
+                                                    imageBackgroundColor="#ffffff"
+                                                    overlayBackgroundColor="#000000DE"
+                                                    style={styles.questionInModal}
                                                     source={{
                                                         uri:
                                                         item.question
                                                             .questionLink
                                                     }}
-                                                    style={styles.questionInModal}
                                                 />
                                             </View>
                                             : <View
                                                 style={styles.questionInModalView}
                                             >
-                                                <Image
-                                                    source={SOLVING_IMG}
+                                                <ImageModal
+                                                    resizeMode="contain"
+                                                    imageBackgroundColor="#ffffff"
+                                                    overlayBackgroundColor="#000000DE"
                                                     style={styles.questionInModal}
+                                                    source={{uri: 'https://lh3.googleusercontent.com/proxy/iCYubhYEtP4-Nu-EIczOrR1PLiZWX3kTj38SF_E-vI98xFkagqsOXEiVWAzSrczThFbbv3m_Jf1_eAfyZzDoSpe6vj_uIzA2BrrwOkzEE6exLzQkcdDNTwlz-uSM'}}
                                                 />
                                             </View>}
                                     </View>

@@ -239,5 +239,14 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Semibold',
         fontSize: hp(3),
         color: 'white'
-    }
+    },
+    zoomModalContainer: {
+        backgroundColor: '#000000d0',
+        flex: 1
+    },
+    questionModalStyle: {
+        resizeMode: 'contain',
+        flex: 1,
+        width: wp(100)
+    },
 })

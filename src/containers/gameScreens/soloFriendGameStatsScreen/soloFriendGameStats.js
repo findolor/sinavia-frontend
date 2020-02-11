@@ -6,7 +6,7 @@ import {
     TouchableOpacity,
     View,
     Dimensions,
-    Modal
+    Modal, FlatList
 } from 'react-native'
 import { navigationReset, navigationPush, SCENE_KEYS } from '../../../services/navigationService'
 import styles from './style'
@@ -33,6 +33,9 @@ import {
 } from 'react-native-responsive-screen'
 import premiumStyles from '../../mainScreens/purchaseScreen/style'
 import LinearGradient from 'react-native-linear-gradient'
+import ImageModal from 'react-native-image-modal'
+
+
 
 class SoloFriendGameStatsScreen extends React.Component {
     constructor(props) {
@@ -84,7 +87,8 @@ class SoloFriendGameStatsScreen extends React.Component {
             isModalVisible: false,
             //these states will be updated for every questions
             solvingImg: 1,
-            solvingVideo: 1
+            solvingVideo: 1,
+            solving: false
         }
     }
 
@@ -201,16 +205,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                     this.props.isFromNotification
                 )
                     question = JSON.parse(question)
-                this.state.allQuestionsList.push(
-                    <View style={styles.scrollQuestionContainer} key={index}>
-                        <View style={styles.questionContainer}>
-                            <Image
-                                source={{ uri: question.questionLink }}
-                                style={styles.questionStyle}
-                            />
-                        </View>
-                    </View>
-                )
+                this.state.allQuestionsList.push(question.questionLink)
             })
 
             let clientAnswers = []
@@ -286,7 +281,8 @@ class SoloFriendGameStatsScreen extends React.Component {
                     0
                 ),
                 Object.keys(this.props.questionList).length /*Image count*/
-            )
+            ),
+            solving: false
         })
         this.checkFavouriteStatus()
     }
@@ -437,6 +433,10 @@ class SoloFriendGameStatsScreen extends React.Component {
         )
     }
 
+    showSolving = () => {
+        this.setState({solving: !this.state.solving})
+    }
+
     goToVideo = () => {
         navigationPush(SCENE_KEYS.mainScreens.video, {
             videoUri: 'https://player.vimeo.com/video/8175286/config'
@@ -452,7 +452,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                 scrollEventThrottle={8}
             >
                 <View style={styles.container}>
-                    <Image source={background} style={styles.background} />
+                    <Image source={background} style={styles.background}/>
                     <View style={styles.resultTextContainer}>
                         <Image
                             source={this.state.matchResultLogo}
@@ -625,151 +625,151 @@ class SoloFriendGameStatsScreen extends React.Component {
                                         </View>
                                     )}
                                     {this.state.playerFriendMatchWinCount > 0 &&
-                                        this.state.opponentFriendMatchWinCount >
-                                            0 && (
+                                    this.state.opponentFriendMatchWinCount >
+                                    0 && (
+                                        <View
+                                            style={
+                                                styles.versusGameChartContainer
+                                            }
+                                        >
                                             <View
-                                                style={
-                                                    styles.versusGameChartContainer
-                                                }
-                                            >
-                                                <View
-                                                    style={[
-                                                        styles.yourWinsView,
-                                                        {
-                                                            width: wp(
-                                                                (this.state
+                                                style={[
+                                                    styles.yourWinsView,
+                                                    {
+                                                        width: wp(
+                                                            (this.state
                                                                     .playerFriendMatchWinCount /
-                                                                    (this.state
-                                                                        .playerFriendMatchWinCount +
-                                                                        this
-                                                                            .state
-                                                                            .opponentFriendMatchWinCount)) *
-                                                                    82
-                                                            )
-                                                        }
-                                                    ]}
-                                                />
-                                                <View
-                                                    style={[
-                                                        styles.opponentsWinsView,
-                                                        {
-                                                            width: wp(
                                                                 (this.state
-                                                                    .opponentFriendMatchWinCount /
-                                                                    (this.state
                                                                         .playerFriendMatchWinCount +
-                                                                        this
-                                                                            .state
-                                                                            .opponentFriendMatchWinCount)) *
-                                                                    82
-                                                            )
-                                                        }
-                                                    ]}
-                                                />
-                                                <Text
-                                                    style={
-                                                        styles.yourWinsCounter
+                                                                    this
+                                                                        .state
+                                                                        .opponentFriendMatchWinCount)) *
+                                                            82
+                                                        )
                                                     }
-                                                >
+                                                ]}
+                                            />
+                                            <View
+                                                style={[
+                                                    styles.opponentsWinsView,
                                                     {
-                                                        this.state
-                                                            .playerFriendMatchWinCount
+                                                        width: wp(
+                                                            (this.state
+                                                                    .opponentFriendMatchWinCount /
+                                                                (this.state
+                                                                        .playerFriendMatchWinCount +
+                                                                    this
+                                                                        .state
+                                                                        .opponentFriendMatchWinCount)) *
+                                                            82
+                                                        )
                                                     }
-                                                </Text>
-                                                <Text
-                                                    style={
-                                                        styles.opponentWinsCounter
-                                                    }
-                                                >
-                                                    {
-                                                        this.state
-                                                            .opponentFriendMatchWinCount
-                                                    }
-                                                </Text>
-                                            </View>
-                                        )}
+                                                ]}
+                                            />
+                                            <Text
+                                                style={
+                                                    styles.yourWinsCounter
+                                                }
+                                            >
+                                                {
+                                                    this.state
+                                                        .playerFriendMatchWinCount
+                                                }
+                                            </Text>
+                                            <Text
+                                                style={
+                                                    styles.opponentWinsCounter
+                                                }
+                                            >
+                                                {
+                                                    this.state
+                                                        .opponentFriendMatchWinCount
+                                                }
+                                            </Text>
+                                        </View>
+                                    )}
                                     {this.state.playerFriendMatchWinCount > 0 &&
-                                        this.state
-                                            .opponentFriendMatchWinCount ===
-                                            0 && (
+                                    this.state
+                                        .opponentFriendMatchWinCount ===
+                                    0 && (
+                                        <View
+                                            style={
+                                                styles.versusGameChartContainer
+                                            }
+                                        >
                                             <View
+                                                style={[
+                                                    styles.yourWinsView,
+                                                    {
+                                                        width: wp(82),
+                                                        borderTopRightRadius: hp(1),
+                                                        borderBottomRightRadius: hp(1)
+                                                    }
+                                                ]}
+                                            />
+                                            <Text
                                                 style={
-                                                    styles.versusGameChartContainer
+                                                    styles.yourWinsCounter
                                                 }
                                             >
-                                                <View
-                                                    style={[
-                                                        styles.yourWinsView,
-                                                        {
-                                                            width: wp(82),
-                                                            borderTopRightRadius: hp(1),
-                                                            borderBottomRightRadius: hp(1)
-                                                        }
-                                                    ]}
-                                                />
-                                                <Text
-                                                    style={
-                                                        styles.yourWinsCounter
-                                                    }
-                                                >
-                                                    {
-                                                        this.state
-                                                            .playerFriendMatchWinCount
-                                                    }
-                                                </Text>
-                                                <Text
-                                                    style={
-                                                        styles.opponentWinsCounter
-                                                    }
-                                                >
-                                                    {
-                                                        this.state
-                                                            .opponentFriendMatchWinCount
-                                                    }
-                                                </Text>
-                                            </View>
-                                        )}
+                                                {
+                                                    this.state
+                                                        .playerFriendMatchWinCount
+                                                }
+                                            </Text>
+                                            <Text
+                                                style={
+                                                    styles.opponentWinsCounter
+                                                }
+                                            >
+                                                {
+                                                    this.state
+                                                        .opponentFriendMatchWinCount
+                                                }
+                                            </Text>
+                                        </View>
+                                    )}
                                     {this.state.playerFriendMatchWinCount ===
-                                        0 &&
-                                        this.state.opponentFriendMatchWinCount >
-                                            0 && (
+                                    0 &&
+                                    this.state.opponentFriendMatchWinCount >
+                                    0 && (
+                                        <View
+                                            style={
+                                                styles.versusGameChartContainer
+                                            }
+                                        >
                                             <View
+                                                style={[
+                                                    styles.opponentsWinsView,
+                                                    {
+                                                        width: wp(82),
+                                                        borderTopLeftRadius: hp(1),
+                                                        borderBottomLeftRadius: hp(1)
+                                                    }
+                                                ]}
+                                            />
+                                            <Text
                                                 style={
-                                                    styles.versusGameChartContainer
+                                                    styles.yourWinsCounter
                                                 }
                                             >
-                                                <View
-                                                    style={[
-                                                        styles.opponentsWinsView,
-                                                        {
-                                                            width: wp(82),
-                                                            borderTopLeftRadius: hp(1),
-                                                            borderBottomLeftRadius: hp(1)
-                                                        }
-                                                    ]}
-                                                />
-                                                <Text
-                                                    style={
-                                                        styles.yourWinsCounter
-                                                    }
-                                                >
-                                                    {
-                                                        this.state
-                                                            .playerFriendMatchWinCount
-                                                    }
-                                                </Text>
-                                                <Text
-                                                    style={
-                                                        styles.opponentWinsCounter
-                                                    }
-                                                >
-                                                    {
-                                                        this.state
-                                                            .opponentFriendMatchWinCount
-                                                    }
-                                                </Text>
-                                            </View>
-                                        )}
+                                                {
+                                                    this.state
+                                                        .playerFriendMatchWinCount
+                                                }
+                                            </Text>
+                                            <Text
+                                                style={
+                                                    styles.opponentWinsCounter
+                                                }
+                                            >
+                                                {
+                                                    this.state
+                                                        .opponentFriendMatchWinCount
+                                                }
+                                            </Text>
+                                        </View>
+                                    )}
                                     <View
                                         style={styles.versusGameNamesContainer}
                                     >
@@ -852,10 +852,15 @@ class SoloFriendGameStatsScreen extends React.Component {
                                     justifyContent: 'center',
                                     marginLeft: wp(0)
                                 }}>
-                                    <TouchableOpacity style={styles.videoButton}>
-                                        <Image source={SOLVING_LOGO} style={styles.solvingLogo}/>
-                                        <Text style={styles.videoButtonText}>Çözüme bak</Text>
-                                    </TouchableOpacity>
+                                    {this.state.solving === false
+                                        ? <TouchableOpacity onPress={this.showSolving} style={styles.videoButton}>
+                                            <Image source={SOLVING_LOGO} style={styles.solvingLogo}/>
+                                            <Text style={styles.videoButtonText}>Çözüme bak</Text>
+                                        </TouchableOpacity>
+                                        : <TouchableOpacity onPress={this.showSolving} style={styles.videoButton}>
+                                            <Image source={SOLVING_LOGO} style={styles.solvingLogo}/>
+                                            <Text style={styles.videoButtonText}>Soruya Dön</Text>
+                                        </TouchableOpacity>}
                                 </View>
                                 : <View/>
                             }
@@ -888,15 +893,38 @@ class SoloFriendGameStatsScreen extends React.Component {
                                 : <View/>
                             }
                         </View>
-                        <ScrollView
-                            horizontal={true}
-                            showsHorizontalScrollIndicator={false}
-                            pagingEnabled={true}
-                            onScroll={this.handleScrollHorizontal}
-                            scrollEventThrottle={8}
-                        >
-                            {this.state.allQuestionsList}
-                        </ScrollView>
+                        <FlatList ref={ref => {
+                            this.flatListRef = ref
+                        }}
+                                  horizontal={true}
+                                  pagingEnabled={true}
+                                  data={this.state.allQuestionsList}
+                                  onScroll={this.handleScrollHorizontal}
+                                  showsHorizontalScrollIndicator={false}
+                                  extraData={this.state.solving}
+                                  renderItem={({ item, index }) => {
+                                      return (
+                                          <View style={styles.scrollQuestionContainer}>
+                                              {this.state.solving === false
+                                                  ?
+                                                  <View style={styles.questionContainer}><ImageModal
+                                                      resizeMode="contain"
+                                                      imageBackgroundColor="#ffffff"
+                                                      overlayBackgroundColor="#000000DE"
+                                                      style={styles.questionStyle}
+                                                      source={{ uri: item }}
+                                                  /></View>
+                                                  : <View style={styles.questionContainer}><ImageModal
+                                                      resizeMode="contain"
+                                                      imageBackgroundColor="#ffffff"
+                                                      overlayBackgroundColor="#000000DE"
+                                                      style={styles.questionStyle}
+                                                      source={{ uri: 'https://lh3.googleusercontent.com/proxy/iCYubhYEtP4-Nu-EIczOrR1PLiZWX3kTj38SF_E-vI98xFkagqsOXEiVWAzSrczThFbbv3m_Jf1_eAfyZzDoSpe6vj_uIzA2BrrwOkzEE6exLzQkcdDNTwlz-uSM' }}
+                                                  /></View>}
+                                          </View>
+                                      )
+                                  }}
+                                  keyExtractor={(item, index) => index.toString()}></FlatList>
                         <View style={styles.favAndAnswerContainer}>
                             <View style={styles.answerContainer}>
                                 <View
@@ -913,8 +941,8 @@ class SoloFriendGameStatsScreen extends React.Component {
                                     >
                                         {this.answerSwitcher(
                                             this.state.clientAnswers[
-                                                this.state.questionPosition - 1
-                                            ].correctAnswer
+                                            this.state.questionPosition - 1
+                                                ].correctAnswer
                                         )}
                                     </Text>
                                 </View>
@@ -949,8 +977,8 @@ class SoloFriendGameStatsScreen extends React.Component {
                                     >
                                         {this.answerSwitcher(
                                             this.state.clientAnswers[
-                                                this.state.questionPosition - 1
-                                            ].answer
+                                            this.state.questionPosition - 1
+                                                ].answer
                                         )}
                                     </Text>
                                 </View>

@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     View,
     Dimensions,
-    ImageBackground
+    ImageBackground,
+    FlatList
 } from 'react-native'
 import {
     navigationReset,
@@ -28,7 +29,9 @@ import unselectedFav from '../../../assets/favori_bos.png'
 import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
 import VIDEO_LOGO from '../../../assets/mainScreens/blueVideoLogo.png'
 import SOLVING_LOGO from '../../../assets/mainScreens/blueSolvingLogo.png'
+
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import ImageModal from 'react-native-image-modal'
 
 class SoloModeGameStats extends React.Component {
     constructor(props) {
@@ -60,7 +63,8 @@ class SoloModeGameStats extends React.Component {
             isReplayDisabled: false,
             //these states will be updated for every questions
             solvingImg: 1,
-            solvingVideo: 1
+            solvingVideo: 1,
+            solving: false
         }
     }
 
@@ -135,16 +139,7 @@ class SoloModeGameStats extends React.Component {
             const tempList = []
 
             for (i = 0; i < Object.keys(this.props.questionList).length; i++) {
-                tempList.push(
-                    <View style={styles.scrollQuestionContainer} key={i}>
-                        <View style={styles.questionContainer}>
-                            <Image
-                                source={{ uri: this.props.questionList[i] }}
-                                style={styles.questionStyle}
-                            />
-                        </View>
-                    </View>
-                )
+                tempList.push(this.props.questionList[i])
             }
 
             this.setState(
@@ -197,7 +192,8 @@ class SoloModeGameStats extends React.Component {
                         0
                     ),
                     Object.keys(this.props.questionList).length /*Image count*/
-                )
+                ),
+                solving: false
             },
             this.checkFavouriteStatus()
         )
@@ -271,6 +267,10 @@ class SoloModeGameStats extends React.Component {
         }
     }
 
+    showSolving = () => {
+        this.setState({solving: !this.state.solving})
+    }
+
     goToVideo = () => {
             navigationPush(SCENE_KEYS.mainScreens.video, {
                 videoUri: 'https://player.vimeo.com/video/8175286/config'
@@ -292,10 +292,10 @@ class SoloModeGameStats extends React.Component {
                         source={background}
                         style={styles.background}
                     >
-                        <View style={styles.backgroundImgShadowView} />
+                        <View style={styles.backgroundImgShadowView}/>
                     </ImageBackground>
                     <View style={styles.logoContainer}>
-                        <Image source={SINAVIA_LOGO} style={styles.logoImg} />
+                        <Image source={SINAVIA_LOGO} style={styles.logoImg}/>
                     </View>
                     <View style={styles.resultsContainer}>
                         <View style={styles.courseTextView}>
@@ -403,10 +403,15 @@ class SoloModeGameStats extends React.Component {
                                 justifyContent: 'center',
                                 marginLeft: wp(0)
                             }}>
-                                <TouchableOpacity style={styles.videoButton}>
-                                    <Image source={SOLVING_LOGO} style={styles.solvingLogo}/>
-                                    <Text style={styles.videoButtonText}>Çözüme bak</Text>
-                                </TouchableOpacity>
+                                {this.state.solving === false
+                                    ? <TouchableOpacity onPress={this.showSolving} style={styles.videoButton}>
+                                        <Image source={SOLVING_LOGO} style={styles.solvingLogo}/>
+                                        <Text style={styles.videoButtonText}>Çözüme bak</Text>
+                                    </TouchableOpacity>
+                                    : <TouchableOpacity onPress={this.showSolving} style={styles.videoButton}>
+                                        <Image source={SOLVING_LOGO} style={styles.solvingLogo}/>
+                                        <Text style={styles.videoButtonText}>Soruya Dön</Text>
+                                    </TouchableOpacity>}
                             </View>
                             : <View/>
                         }
@@ -439,15 +444,38 @@ class SoloModeGameStats extends React.Component {
                             : <View/>
                         }
                     </View>
-                    <ScrollView
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        pagingEnabled={true}
-                        onScroll={this.handleScrollHorizontal}
-                        scrollEventThrottle={8}
-                    >
-                        {this.state.allQuestionsList}
-                    </ScrollView>
+                    <FlatList ref={ref => {
+                        this.flatListRef = ref
+                    }}
+                              horizontal={true}
+                              pagingEnabled={true}
+                              data={this.state.allQuestionsList}
+                              onScroll={this.handleScrollHorizontal}
+                              showsHorizontalScrollIndicator={false}
+                              extraData={this.state.solving}
+                              renderItem={({ item, index }) => {
+                                  return (
+                                      <View style={styles.scrollQuestionContainer}>
+                                          {this.state.solving === false
+                                              ?
+                                              <View style={styles.questionContainer}><ImageModal
+                                                  resizeMode="contain"
+                                                  imageBackgroundColor="#ffffff"
+                                                  overlayBackgroundColor="#000000DE"
+                                                  style={styles.questionStyle}
+                                                  source={{ uri: item }}
+                                              /></View>
+                                              : <View style={styles.questionContainer}><ImageModal
+                                                  resizeMode="contain"
+                                                  imageBackgroundColor="#ffffff"
+                                                  overlayBackgroundColor="#000000DE"
+                                                  style={styles.questionStyle}
+                                                  source={{ uri: 'https://lh3.googleusercontent.com/proxy/iCYubhYEtP4-Nu-EIczOrR1PLiZWX3kTj38SF_E-vI98xFkagqsOXEiVWAzSrczThFbbv3m_Jf1_eAfyZzDoSpe6vj_uIzA2BrrwOkzEE6exLzQkcdDNTwlz-uSM' }}
+                                              /></View>}
+                                      </View>
+                                  )
+                              }}
+                              keyExtractor={(item, index) => index.toString()}></FlatList>
                     <View style={styles.favAndAnswerContainer}>
                         <View style={styles.answerContainer}>
                             <View
@@ -464,8 +492,8 @@ class SoloModeGameStats extends React.Component {
                                 >
                                     {this.answerSwitcher(
                                         this.props.playerProps.answers[
-                                            this.state.questionPosition - 1
-                                        ].correctAnswer
+                                        this.state.questionPosition - 1
+                                            ].correctAnswer
                                     )}
                                 </Text>
                             </View>
@@ -496,8 +524,8 @@ class SoloModeGameStats extends React.Component {
                                 >
                                     {this.answerSwitcher(
                                         this.props.playerProps.answers[
-                                            this.state.questionPosition - 1
-                                        ].answer
+                                        this.state.questionPosition - 1
+                                            ].answer
                                     )}
                                 </Text>
                             </View>
