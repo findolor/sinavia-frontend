@@ -33,6 +33,10 @@ import YOU_LOSE_LOGO from '../../../assets/gameScreens/lose.png'
 import DRAW_LOGO from '../../../assets/gameScreens/draw.png'
 import VIDEO_LOGO from '../../../assets/mainScreens/blueVideoLogo.png'
 import SOLVING_LOGO from '../../../assets/mainScreens/blueSolvingLogo.png'
+import QUESTION_MARK from '../../../assets/mainScreens/blueQuestionMarkLogo.png'
+import PREMIUM_VIDEO_LOGO from '../../../assets/premiumVideo.png'
+import PREMIUM_SOLVING_IMG from '../../../assets/premiumSolvingImg.png'
+
 
 import premiumStyles from '../../mainScreens/purchaseScreen/style'
 import {
@@ -100,6 +104,7 @@ class GameStatsScreen extends React.Component {
             // Current match information
             matchInformation: {},
             isModalVisible: false,
+            visibleView: '',
             // Client level variable
             clientTotalPoints: this.props.clientInformation.totalPoints,
             oldPoints: this.props.clientInformation.totalPoints,
@@ -543,6 +548,7 @@ class GameStatsScreen extends React.Component {
             }
         } else {
             this.setState({
+                visibleView: 'PREMIUM_FAV',
                 isModalVisible: true
             })
         }
@@ -629,6 +635,156 @@ class GameStatsScreen extends React.Component {
         )
     }
 
+    premiumForSolvingImgPage() {
+        return (
+            <View style={premiumStyles.premiumModal}>
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{ height: hp(120), width: wp(100) }}
+                />
+                <View
+                    style={[premiumStyles.premiumModalView, { height: hp(33) }]}
+                >
+                    <LinearGradient
+                        colors={['white', '#FFE6BB', '#FFA800']}
+                        style={[
+                            premiumStyles.linearGradientPremiumModalView,
+                            { height: hp(33) }
+                        ]}
+                    >
+                        <View style={premiumStyles.premiumModalHeaderView}>
+                            <Text style={premiumStyles.premiumModalHeaderText}>
+                                ELİT ÖĞRENCİ PAKETİ
+                            </Text>
+                        </View>
+                        <View style={premiumStyles.premiumModalSwiperContainer}>
+                            <View style={premiumStyles.premiumModalSwiperView}>
+                                <View
+                                    style={
+                                        premiumStyles.premiumModalSwiperImgView
+                                    }
+                                >
+                                    <Image
+                                        source={PREMIUM_SOLVING_IMG}
+                                        style={premiumStyles.premiumModalImg}
+                                    />
+                                </View>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperHeaderView,
+                                        { height: hp(5.5) }
+                                    ]}
+                                >
+                                    <Text
+                                        style={
+                                            premiumStyles.premiumModalHeaderText
+                                        }
+                                    >
+                                        Çözümleri Gör!
+                                    </Text>
+                                </View>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperInfoView,
+                                        {
+                                            justifyContent: 'flex-start',
+                                            height: hp(9.5)
+                                        }
+                                    ]}
+                                >
+                                    <Text
+                                        style={[
+                                            premiumStyles.premiumModalInfoText,
+                                            { marginTop: hp(1.5) }
+                                        ]}
+                                    >
+                                        Soruların çözümleri şimdi Elit Öğrenci
+                                        Paketi'nde
+                                    </Text>
+                                </View>
+                            </View>
+                        </View>
+                    </LinearGradient>
+                </View>
+            </View>
+        )
+    }
+
+    premiumForSolvingVideoPage() {
+        return (
+            <View style={premiumStyles.premiumModal}>
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{ height: hp(120), width: wp(100) }}
+                />
+                <View
+                    style={[premiumStyles.premiumModalView, { height: hp(33) }]}
+                >
+                    <LinearGradient
+                        colors={['white', '#FFE6BB', '#FFA800']}
+                        style={[
+                            premiumStyles.linearGradientPremiumModalView,
+                            { height: hp(33) }
+                        ]}
+                    >
+                        <View style={premiumStyles.premiumModalHeaderView}>
+                            <Text style={premiumStyles.premiumModalHeaderText}>
+                                ELİT ÖĞRENCİ PAKETİ
+                            </Text>
+                        </View>
+                        <View style={premiumStyles.premiumModalSwiperContainer}>
+                            <View style={premiumStyles.premiumModalSwiperView}>
+                                <View
+                                    style={
+                                        premiumStyles.premiumModalSwiperImgView
+                                    }
+                                >
+                                    <Image
+                                        source={PREMIUM_VIDEO_LOGO}
+                                        style={premiumStyles.premiumModalImg}
+                                    />
+                                </View>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperHeaderView,
+                                        { height: hp(5.5) }
+                                    ]}
+                                >
+                                    <Text
+                                        style={
+                                            premiumStyles.premiumModalHeaderText
+                                        }
+                                    >
+                                        Çözüm Videolarını İzle!
+                                    </Text>
+                                </View>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperInfoView,
+                                        {
+                                            justifyContent: 'flex-start',
+                                            height: hp(9.5)
+                                        }
+                                    ]}
+                                >
+                                    <Text
+                                        style={[
+                                            premiumStyles.premiumModalInfoText,
+                                            { marginTop: hp(1.5) }
+                                        ]}
+                                    >
+                                        Soru Çözüm Videoları şimdi Elit Öğrenci
+                                        Paketi'nde
+                                    </Text>
+                                </View>
+                            </View>
+                        </View>
+                    </LinearGradient>
+                </View>
+            </View>
+        )
+    }
+
     getProgressStyles() {
         var animated_width = this.progress.interpolate({
             inputRange: [0, 50, 100],
@@ -658,13 +814,29 @@ class GameStatsScreen extends React.Component {
     }
 
     showSolving = () => {
-        this.setState({solving: !this.state.solving})
+        if (this.props.clientInformation.isPremium) {
+            this.setState({ solving: !this.state.solving })
+        }
+        else {
+            this.setState({
+                visibleView: 'PREMIUM_SOLVING_IMG',
+                isModalVisible: true
+            })
+        }
     }
 
     goToVideo = () => {
-        navigationPush(SCENE_KEYS.mainScreens.video, {
-            videoUri: 'https://player.vimeo.com/video/8175286/config'
-        })
+        if (this.props.clientInformation.isPremium) {
+            navigationPush(SCENE_KEYS.mainScreens.video, {
+                videoUri: 'https://player.vimeo.com/video/8175286/config'
+            })
+        }
+        else {
+        this.setState({
+                          visibleView: 'PREMIUM_SOLVING_VIDEO',
+                          isModalVisible: true
+                      })
+        }
     }
 
     render() {
@@ -1010,7 +1182,12 @@ class GameStatsScreen extends React.Component {
                         transparent={true}
                         animationType={'fade'}
                     >
-                        {this.premiumForFavoritesPage()}
+                        {this.state.visibleView === 'PREMIUM_FAV' &&
+                        this.premiumForFavoritesPage()}
+                        {this.state.visibleView === 'PREMIUM_SOLVING_IMG' &&
+                        this.premiumForSolvingImgPage()}
+                        {this.state.visibleView === 'PREMIUM_SOLVING_VIDEO' &&
+                        this.premiumForSolvingVideoPage()}
                     </Modal>
                     <View style={styles.questionNumberContainer}>
                         {this.state.solvingImg !== null
@@ -1027,8 +1204,8 @@ class GameStatsScreen extends React.Component {
                                         <Text style={styles.videoButtonText}>Çözüme bak</Text>
                                     </TouchableOpacity>
                                     : <TouchableOpacity onPress={this.showSolving} style={styles.videoButton}>
-                                        <Image source={SOLVING_LOGO} style={styles.solvingLogo}/>
-                                        <Text style={styles.videoButtonText}>Soruya Dön</Text>
+                                        <Image source={QUESTION_MARK} style={styles.solvingLogo}/>
+                                        <Text style={styles.videoButtonText}>Soruya dön</Text>
                                     </TouchableOpacity>}
                             </View>
                             : <View/>

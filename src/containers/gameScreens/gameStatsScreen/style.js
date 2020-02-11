@@ -386,8 +386,9 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     solvingLogo: {
+        resizeMode: 'contain',
         height: hp(3.5),
-        width: hp(2.8)
+        width: hp(3.5)
     },
     videoLogo: {
         height: hp(4),

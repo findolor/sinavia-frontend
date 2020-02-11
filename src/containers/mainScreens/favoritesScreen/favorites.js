@@ -25,8 +25,7 @@ import returnLogo from '../../../assets/return.png'
 import shareLogo from '../../../assets/share.png'
 import VIDEO_LOGO from '../../../assets/mainScreens/whiteVideoLogo.png'
 import SOLVING_LOGO from '../../../assets/mainScreens/whiteSolvingLogo.png'
-import QUESTION_MARK from '../../../assets/mainScreens/questionMarkLogo.png'
-import SOLVING_IMG from '../../../assets/solving.jpg'
+import QUESTION_MARK from '../../../assets/mainScreens/whiteQuestionMarkLogo.png'
 
 import { clientActions } from '../../../redux/client/actions'
 import NO_RESULTS_FAV from '../../../assets/noResultsFav.png'
@@ -51,6 +50,8 @@ class Favorites extends React.Component {
             // Favoruite variables
             favouriteIcon: unselectedFav,
             isFaved: false,
+            solvingImg: 1,
+            solvingVideo: 1,
             solving: false
         }
     }
@@ -407,12 +408,17 @@ class Favorites extends React.Component {
                     }}
                 >
                     <NotchView color={'#00D9EF'}/>
-                    <Modal visible={this.state.isZoomModalVisible} >
+                    <Modal visible={this.state.isZoomModalVisible}>
                         <View style={styles.zoomModalContainer}>
-                            <View style={{ flex: 1, width: wp(100), justifyContent: 'center', alignItems: 'center'}}>
-                                <View style={{height: hp(80), width: wp(100), justifyContent:'center', alignItems: 'center'}}>
+                            <View style={{ flex: 1, width: wp(100), justifyContent: 'center', alignItems: 'center' }}>
+                                <View style={{
+                                    height: hp(80),
+                                    width: wp(100),
+                                    justifyContent: 'center',
+                                    alignItems: 'center'
+                                }}>
                                     <Image
-                                        source={{uri: 'https://lh3.googleusercontent.com/proxy/iCYubhYEtP4-Nu-EIczOrR1PLiZWX3kTj38SF_E-vI98xFkagqsOXEiVWAzSrczThFbbv3m_Jf1_eAfyZzDoSpe6vj_uIzA2BrrwOkzEE6exLzQkcdDNTwlz-uSM'}}
+                                        source={{ uri: 'https://lh3.googleusercontent.com/proxy/iCYubhYEtP4-Nu-EIczOrR1PLiZWX3kTj38SF_E-vI98xFkagqsOXEiVWAzSrczThFbbv3m_Jf1_eAfyZzDoSpe6vj_uIzA2BrrwOkzEE6exLzQkcdDNTwlz-uSM' }}
                                         style={styles.questionModalStyle}
                                     />
                                 </View>
@@ -507,7 +513,7 @@ class Favorites extends React.Component {
                                                     imageBackgroundColor="#ffffff"
                                                     overlayBackgroundColor="#000000DE"
                                                     style={styles.questionInModal}
-                                                    source={{uri: 'https://lh3.googleusercontent.com/proxy/iCYubhYEtP4-Nu-EIczOrR1PLiZWX3kTj38SF_E-vI98xFkagqsOXEiVWAzSrczThFbbv3m_Jf1_eAfyZzDoSpe6vj_uIzA2BrrwOkzEE6exLzQkcdDNTwlz-uSM'}}
+                                                    source={{ uri: 'https://lh3.googleusercontent.com/proxy/iCYubhYEtP4-Nu-EIczOrR1PLiZWX3kTj38SF_E-vI98xFkagqsOXEiVWAzSrczThFbbv3m_Jf1_eAfyZzDoSpe6vj_uIzA2BrrwOkzEE6exLzQkcdDNTwlz-uSM' }}
                                                 />
                                             </View>}
                                     </View>
@@ -550,40 +556,47 @@ class Favorites extends React.Component {
                                     : 'Favoriye ekle'}
                             </Text>
                         </View>
-                        {this.state.solving === false
-                            ? <View style={styles.answerContainer}>
-                                <TouchableOpacity onPress={this.showSolving}>
-                                    <Image
-                                        source={SOLVING_LOGO}
-                                        style={styles.favIcon}
-                                    />
-                                </TouchableOpacity>
-                                <Text style={styles.answerText}>
-                                    Çözüme bak
-                                </Text>
+                        {this.state.solvingImg !== null
+                        ?   <View>
+                                {this.state.solving === false
+                                    ? <View style={styles.answerContainer}>
+                                        <TouchableOpacity onPress={this.showSolving}>
+                                            <Image
+                                                source={SOLVING_LOGO}
+                                                style={styles.favIcon}
+                                            />
+                                        </TouchableOpacity>
+                                        <Text style={styles.answerText}>
+                                            Çözüme bak
+                                        </Text>
+                                    </View>
+                                    : <View style={styles.answerContainer}>
+                                        <TouchableOpacity onPress={this.showSolving}>
+                                            <Image
+                                                source={QUESTION_MARK}
+                                                style={styles.favIcon}
+                                            />
+                                        </TouchableOpacity>
+                                        <Text style={styles.answerText}>
+                                            Soruya Dön
+                                        </Text>
+                                    </View>}
                             </View>
-                            : <View style={styles.answerContainer}>
-                                <TouchableOpacity onPress={this.showSolving}>
-                                    <Image
-                                        source={QUESTION_MARK}
-                                        style={styles.favIcon}
-                                    />
-                                </TouchableOpacity>
-                                <Text style={styles.answerText}>
-                                    Soruya Dön
-                                </Text>
-                            </View>}
-                        <View style={styles.answerContainer}>
-                            <TouchableOpacity onPress={this.goToVideo}>
-                                <Image
-                                    source={VIDEO_LOGO}
-                                    style={styles.favIcon}
-                                />
-                            </TouchableOpacity>
-                            <Text style={styles.answerText}>
-                                Çözümü izle
-                            </Text>
-                        </View>
+                        :null}
+                        {this.state.solvingVideo !== null
+                            ? <View style={styles.answerContainer}>
+                                    <TouchableOpacity onPress={this.goToVideo}>
+                                        <Image
+                                            source={VIDEO_LOGO}
+                                            style={styles.favIcon}
+                                        />
+                                    </TouchableOpacity>
+                                    <Text style={styles.answerText}>
+                                        Çözümü izle
+                                    </Text>
+                            </View>
+                            : <View/>
+                        }
                     </View>
                 </Modal>
                 {Object.keys(this.state.scrollViewList).length !== 0 && (
