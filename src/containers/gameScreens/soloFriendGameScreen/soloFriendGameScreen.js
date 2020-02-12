@@ -20,8 +20,7 @@ import {
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
 
-import ZOOM_IN_BUTTON from '../../../assets/gameScreens/zoomInButton.png'
-import ZOOM_OUT_BUTTON from '../../../assets/gameScreens/zoomOutButton.png'
+import PEN_IMG from '../../../assets/pen.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
 import REMOVE_OPTIONS from '../../../assets/jokers/removeOptions.png'
 import SECOND_CHANCE from '../../../assets/jokers/secondChance.png'
@@ -32,6 +31,7 @@ import {
 import AuthButton from '../../../components/authScreen/authButton'
 import * as Animatable from 'react-native-animatable'
 import { interstitialAd } from '../../../services/admobService'
+import ImageModal from 'react-native-image-modal'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
@@ -927,13 +927,16 @@ class SoloFriendGameScreen extends React.Component {
                         </View>
                     </Animatable.View>
                     <View style={styles.questionContainer}>
-                        <Image
+                        <ImageModal
+                            resizeMode="contain"
+                            imageBackgroundColor="#ffffff"
+                            overlayBackgroundColor="#000000DE"
+                            style={styles.questionStyle}
                             source={{
                                 uri: this.state.questionList[
                                     this.state.questionNumber
-                                ]
+                                    ]
                             }}
-                            style={styles.questionStyle}
                         />
                     </View>
                     <Modal
@@ -1004,7 +1007,7 @@ class SoloFriendGameScreen extends React.Component {
                         <View style={styles.zoomButtonContainer}>
                             <TouchableOpacity onPress={this.zoomButtonOnPress}>
                                 <Image
-                                    source={ZOOM_IN_BUTTON}
+                                    source={PEN_IMG}
                                     style={styles.zoomButton}
                                 />
                             </TouchableOpacity>

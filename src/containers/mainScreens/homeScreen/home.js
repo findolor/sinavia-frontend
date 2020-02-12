@@ -1034,7 +1034,7 @@ class Home extends React.Component {
                     <AuthButton
                         height={hp(7)}
                         width={wp(87.5)}
-                        color="#3EBB29"
+                        color="#00D9EF"
                         buttonText="Başlat"
                         fontSize={hp(3)}
                         borderRadius={hp(1.5)}

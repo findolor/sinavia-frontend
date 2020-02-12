@@ -595,7 +595,7 @@ class Favorites extends React.Component {
                                         Çözümü izle
                                     </Text>
                             </View>
-                            : <View/>
+                            : null
                         }
                     </View>
                 </Modal>
