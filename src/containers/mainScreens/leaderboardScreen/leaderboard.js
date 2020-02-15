@@ -6,7 +6,8 @@ import {
     ScrollView,
     Text,
     TouchableOpacity,
-    View
+    View,
+    ActivityIndicator
 } from 'react-native'
 import { connect } from 'react-redux'
 import { leaderboardServices } from '../../../sagas/leaderboard/'
@@ -27,6 +28,7 @@ class Leaderboard extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            isFetching: true,
             rankingMode: 'global',
             globalButtonBackgroundColor: '#FF6D00',
             globalButtonTextColor: '#FFFFFF',
@@ -72,6 +74,10 @@ class Leaderboard extends React.Component {
                         user = JSON.parse(user)
                         userList.push(user)
                     })
+                else {
+                    this.makeLeaderboardLists(userList)
+                    return
+                }
 
                 const hourDifference = Math.floor(
                     Math.abs(new Date() - new Date(data.updatedAt)) / 36e5
@@ -147,7 +153,8 @@ class Leaderboard extends React.Component {
             remainingProfilePictures: remainingProfilePictures,
             remainingUsersFlatList: remainingUsersFlatList,
             clientRanking: clientIndex + 1,
-            allUserIds: userIds
+            allUserIds: userIds,
+            isFetching: false
         })
     }
 
@@ -464,6 +471,13 @@ class Leaderboard extends React.Component {
     // COMMENT OUT THE CODE HERE AND ADD THE NEW ONE
     // WILL USE THE OLD CODE FOR HELP LATER
     render() {
+        if (this.state.isFetching) {
+            return (
+                <View style={[styles.container, { justifyContent: 'center' }]}>
+                    <ActivityIndicator />
+                </View>
+            )
+        }
         return (
             <View style={styles.container}>
                 <View style={styles.scrollViewContainer}>

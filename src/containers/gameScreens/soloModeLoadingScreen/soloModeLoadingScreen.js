@@ -1,5 +1,5 @@
 import React from 'react'
-import { BackHandler, Image, ImageBackground, Text, View } from 'react-native'
+import { Image, ImageBackground, Text, View } from 'react-native'
 import styles from './style'
 // Colyseus imports
 import { Buffer } from 'buffer'
@@ -26,43 +26,55 @@ class SoloModeLoadingScreen extends React.Component {
 
     componentDidMount() {
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
-        this.client.onOpen.add(() => {
-            this.joinRoom({
-                examId: this.props.contentIds.examId,
-                courseId: this.props.contentIds.courseId,
-                subjectId: this.props.contentIds.subjectId,
-                databaseId: this.props.clientDBId,
-                choosenQuestionAmount: this.props.choosenQuestionAmount
-            })
+        this.joinRoom({
+            examId: this.props.contentIds.examId,
+            courseId: this.props.contentIds.courseId,
+            subjectId: this.props.contentIds.subjectId,
+            databaseId: this.props.clientDBId,
+            choosenQuestionAmount: this.props.choosenQuestionAmount
         })
     }
 
     // Client sends a ready signal when they join a room successfully
     joinRoom = playerOptions => {
-        this.room = this.client.join('soloModeRoom', playerOptions)
+        this.client
+            .create('soloModeRoom', playerOptions)
+            .then(room => {
+                this.room = room
 
-        this.room.onJoin.add(() => {
-            this.timeout = setTimeout(() => {
-                this.room.removeAllListeners()
-                navigationReplace(SCENE_KEYS.gameScreens.soloModeGameScreen, {
-                    // These are necessary for the game logic
-                    room: this.room,
-                    client: this.client,
-                    // These can be used in both screens
-                    playerUsername: this.props.clientInformation.username,
-                    playerProfilePicture: this.props.clientInformation
-                        .profilePicture
+                this.timeout = setTimeout(() => {
+                    this.room.removeAllListeners()
+                    navigationReplace(
+                        SCENE_KEYS.gameScreens.soloModeGameScreen,
+                        {
+                            // These are necessary for the game logic
+                            room: this.room,
+                            client: this.client,
+                            // These can be used in both screens
+                            playerUsername: this.props.clientInformation
+                                .username,
+                            playerProfilePicture: this.props.clientInformation
+                                .profilePicture
+                        }
+                    )
+                }, 5000)
+
+                this.room.onError(error => {
+                    console.log(error)
+                    clearTimeout(this.timeout)
+                    navigationReset('main')
                 })
-            }, 5000)
 
-            this.room.onError.add(error => {
-                this.connectionErrorRoutine()
+                this.room.onLeave(code => {
+                    console.log(code)
+                    clearTimeout(this.timeout)
+                    navigationReset('main')
+                })
             })
-
-            this.room.onLeave.add(res => {
-                this.connectionErrorRoutine()
+            .catch(error => {
+                console.log(error)
+                navigationReset('main')
             })
-        })
     }
 
     connectionErrorRoutine = () => {

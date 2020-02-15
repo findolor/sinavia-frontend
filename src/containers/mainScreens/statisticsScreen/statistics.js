@@ -1,7 +1,13 @@
 import React from 'react'
 import { ProgressCircle } from 'react-native-svg-charts'
 import Rheostat from 'react-native-rheostat'
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import {
+    Image,
+    Text,
+    TouchableOpacity,
+    View,
+    ActivityIndicator
+} from 'react-native'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
@@ -24,6 +30,7 @@ class Statistics extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            isFetching: true,
             thisWeek: { values: [0, 6] },
             thisMonth: { values: [0, 30] },
             lastSixMonths: { values: [0, 5] },
@@ -962,7 +969,9 @@ class Statistics extends React.Component {
             overallSolved: totalQuestionsSolved,
             overallWin: rankedWinCounter + friendWinCounter,
             overallLose: rankedLoseCounter + friendLoseCounter,
-            overallDraw: rankedDrawCounter + friendDrawCounter
+            overallDraw: rankedDrawCounter + friendDrawCounter,
+            // Stopping the loading indicator
+            isFetching: false
         })
     }
 
@@ -1042,17 +1051,19 @@ class Statistics extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.dropdownsContainer}>
-                    <DropDown
-                        style={styles.picker}
-                        textStyle={styles.pickerText}
-                        dropdownTextStyle={styles.pickerDropdownText}
-                        dropdownStyle={styles.pickerDropdown}
-                        defaultValue={'Genel'}
-                        options={this.state.courseList}
-                        onSelect={(idx, value) =>
-                            this.pickerSelectCourse(idx, value)
-                        }
-                    />
+                    {this.state.isFetching === false && (
+                        <DropDown
+                            style={styles.picker}
+                            textStyle={styles.pickerText}
+                            dropdownTextStyle={styles.pickerDropdownText}
+                            dropdownStyle={styles.pickerDropdown}
+                            defaultValue={'Genel'}
+                            options={this.state.courseList}
+                            onSelect={(idx, value) =>
+                                this.pickerSelectCourse(idx, value)
+                            }
+                        />
+                    )}
                     {this.state.isSubjectDropdownVisible && (
                         <View style={styles.dropdownContainer}>
                             <DropDown
@@ -1071,531 +1082,573 @@ class Statistics extends React.Component {
                         </View>
                     )}
                 </View>
-                <View style={styles.statisticsContainer}>
-                    <View style={styles.timeZoneDropdownsContainer}>
-                        <DropDown
-                            style={styles.picker}
-                            textStyle={styles.pickerText}
-                            dropdownTextStyle={styles.pickerDropdownText}
-                            dropdownStyle={styles.pickerDropdown}
-                            defaultValue={this.state.timezone}
-                            options={timezonesList}
-                            onSelect={(idx, value) =>
-                                this.timezoneSelect(idx, value)
-                            }
-                            animated={true}
-                        />
-                    </View>
-                    <View style={styles.scrollViewContainer}>
-                        <Swiper
-                            loop={false}
-                            paginationStyle={{ bottom: hp(0.5) }}
-                            activeDotColor={'#FF9900'}
-                            removeClippedSubviews={false}
-                            activeDot={
-                                <View
-                                    style={{
-                                        height: hp(1.5),
-                                        width: hp(1.5),
-                                        backgroundColor: '#FF9900',
-                                        borderRadius: hp(100),
-                                        marginLeft: wp(1),
-                                        marginRight: wp(1)
-                                    }}
-                                />
-                            }
-                            dot={
-                                <View
-                                    style={{
-                                        height: hp(1.5),
-                                        width: hp(1.5),
-                                        backgroundColor: 'rgba(0,0,0,.2)',
-                                        borderRadius: hp(100),
-                                        marginLeft: wp(1),
-                                        marginRight: wp(1)
-                                    }}
-                                />
-                            }
-                            onIndexChanged={index => {
-                                this.swiperOnIndexChange(index)
-                            }}
-                        >
-                            <View style={styles.totalGameStatsContainer}>
-                                <View
-                                    style={styles.totalGameStatsInfosContainer}
-                                >
-                                    <Text
-                                        style={
-                                            styles.totalGamesPlayedAndSolvedQuestionsCounter
-                                        }
-                                    >
-                                        {this.state.overallGames}
-                                    </Text>
-                                    <Text
-                                        style={
-                                            styles.totalGamesPlayedAndSolvedQuestionsText
-                                        }
-                                    >
-                                        Bütün Modlar
-                                    </Text>
-                                    <Text
-                                        style={
-                                            styles.totalGamesPlayedAndSolvedQuestionsAmountText
-                                        }
-                                    >
-                                        Oyun Sayısı
-                                    </Text>
-                                    <Text style={styles.wonText}>
-                                        Kazandığı: {this.state.overallWin}
-                                    </Text>
-                                    <Text style={styles.drawText}>
-                                        Beraberlik: {this.state.overallDraw}
-                                    </Text>
-                                    <Text style={styles.lostText}>
-                                        Kaybettiği: {this.state.overallLose}
-                                    </Text>
-                                </View>
-                                <View style={styles.semiCircleContainer}>
-                                    <SemiCircleProgress
-                                        percentage={
-                                            (this.state.overallWin /
-                                                this.state.overallGames) *
-                                            100
-                                        }
-                                        progressColor={'#00D9EF'}
-                                        circleRadius={wp(20)}
-                                        animationSpeed={0.1}
-                                        progressWidth={wp(5)}
-                                    >
-                                        <Text
-                                            style={styles.chartPercentageText}
-                                        >
-                                            {this.state.overallGames === 0
-                                                ? '0'
-                                                : (
-                                                      (this.state.overallWin /
-                                                          this.state
-                                                              .overallGames) *
-                                                      100
-                                                  ).toFixed(0)}
-                                            %
-                                        </Text>
-                                    </SemiCircleProgress>
-                                </View>
-                            </View>
-                            <View style={styles.totalGameStatsContainer}>
-                                <View
-                                    style={styles.totalGameStatsInfosContainer}
-                                >
-                                    <Text
-                                        style={
-                                            styles.totalGamesPlayedAndSolvedQuestionsCounter
-                                        }
-                                    >
-                                        {this.state.totalRankedGames}
-                                    </Text>
-                                    <Text
-                                        style={
-                                            styles.totalGamesPlayedAndSolvedQuestionsText
-                                        }
-                                    >
-                                        Dereceli
-                                    </Text>
-                                    <Text
-                                        style={
-                                            styles.totalGamesPlayedAndSolvedQuestionsAmountText
-                                        }
-                                    >
-                                        Oyun Sayısı
-                                    </Text>
-                                    <Text style={styles.wonText}>
-                                        Kazandığı: {this.state.totalRankedWin}
-                                    </Text>
-                                    <Text style={styles.drawText}>
-                                        Beraberlik: {this.state.totalRankedDraw}
-                                    </Text>
-                                    <Text style={styles.lostText}>
-                                        Kaybettiği: {this.state.totalRankedLose}
-                                    </Text>
-                                </View>
-                                <View style={styles.semiCircleContainer}>
-                                    <SemiCircleProgress
-                                        percentage={
-                                            (this.state.totalRankedWin /
-                                                this.state.totalRankedGames) *
-                                            100
-                                        }
-                                        progressColor={'#00D9EF'}
-                                        circleRadius={wp(20)}
-                                        animationSpeed={0.1}
-                                        progressWidth={wp(5)}
-                                    >
-                                        <Text
-                                            style={styles.chartPercentageText}
-                                        >
-                                            {this.state.totalRankedGames === 0
-                                                ? '0'
-                                                : (
-                                                      (this.state
-                                                          .totalRankedWin /
-                                                          this.state
-                                                              .totalRankedGames) *
-                                                      100
-                                                  ).toFixed(0)}
-                                            %
-                                        </Text>
-                                    </SemiCircleProgress>
-                                </View>
-                            </View>
-                            <View style={styles.totalGameStatsContainer}>
-                                <View
-                                    style={styles.totalGameStatsInfosContainer}
-                                >
-                                    <Text
-                                        style={
-                                            styles.totalGamesPlayedAndSolvedQuestionsCounter
-                                        }
-                                    >
-                                        {this.state.totalFriendGames}
-                                    </Text>
-                                    <Text
-                                        style={
-                                            styles.totalGamesPlayedAndSolvedQuestionsText
-                                        }
-                                    >
-                                        Arkadaşla
-                                    </Text>
-                                    <Text
-                                        style={
-                                            styles.totalGamesPlayedAndSolvedQuestionsAmountText
-                                        }
-                                    >
-                                        Oyun Sayısı
-                                    </Text>
-                                    <Text style={styles.wonText}>
-                                        Kazandığı: {this.state.totalFriendWin}
-                                    </Text>
-                                    <Text style={styles.drawText}>
-                                        Beraberlik: {this.state.totalFriendDraw}
-                                    </Text>
-                                    <Text style={styles.lostText}>
-                                        Kaybettiği: {this.state.totalFriendLose}
-                                    </Text>
-                                </View>
-                                <View style={styles.semiCircleContainer}>
-                                    <SemiCircleProgress
-                                        percentage={
-                                            (this.state.totalFriendWin /
-                                                this.state.totalFriendGames) *
-                                            100
-                                        }
-                                        progressColor={'#00D9EF'}
-                                        circleRadius={wp(20)}
-                                        animationSpeed={0.1}
-                                        progressWidth={wp(5)}
-                                    >
-                                        <Text
-                                            style={styles.chartPercentageText}
-                                        >
-                                            {this.state.totalFriendGames === 0
-                                                ? '0'
-                                                : (
-                                                      (this.state
-                                                          .totalFriendWin /
-                                                          this.state
-                                                              .totalFriendGames) *
-                                                      100
-                                                  ).toFixed(0)}
-                                            %
-                                        </Text>
-                                    </SemiCircleProgress>
-                                </View>
-                            </View>
-                            <View style={styles.totalGameStatsContainer}>
-                                <View
-                                    style={styles.totalGameStatsInfosContainer}
-                                >
-                                    <Text
-                                        style={
-                                            styles.totalGamesPlayedAndSolvedQuestionsCounter
-                                        }
-                                    >
-                                        {this.state.totalGroupGames}
-                                    </Text>
-                                    <Text
-                                        style={
-                                            styles.totalGamesPlayedAndSolvedQuestionsText
-                                        }
-                                    >
-                                        Grupla
-                                    </Text>
-                                    <Text
-                                        style={
-                                            styles.totalGamesPlayedAndSolvedQuestionsAmountText
-                                        }
-                                    >
-                                        Oyun Sayısı
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style={styles.totalGameStatsContainer}>
-                                <View
-                                    style={styles.totalGameStatsInfosContainer}
-                                >
-                                    <Text
-                                        style={
-                                            styles.totalGamesPlayedAndSolvedQuestionsCounter
-                                        }
-                                    >
-                                        {this.state.totalSoloGames}
-                                    </Text>
-                                    <Text
-                                        style={
-                                            styles.totalGamesPlayedAndSolvedQuestionsText
-                                        }
-                                    >
-                                        Solo/TekrarÇöz
-                                    </Text>
-                                    <Text
-                                        style={
-                                            styles.totalGamesPlayedAndSolvedQuestionsAmountText
-                                        }
-                                    >
-                                        Oyun Sayısı
-                                    </Text>
-                                </View>
-                            </View>
-                        </Swiper>
-                    </View>
-                    <View style={styles.percentagesAndCirclesContainer}>
-                        <View style={styles.percentagesContainer}>
-                            <View style={styles.totalQuestionsSolvedContainer}>
-                                <Text
-                                    style={
-                                        styles.totalGamesPlayedAndSolvedQuestionsCounter
-                                    }
-                                >
-                                    {this.questionStatsSwitcher().totalSolved}
-                                </Text>
-                                <Text
-                                    style={
-                                        styles.totalGamesPlayedAndSolvedQuestionsText
-                                    }
-                                >
-                                    Çözülen Soru
-                                </Text>
-                            </View>
-                            <View style={styles.percentageContainer}>
-                                <View style={styles.correctPoint} />
-                                <View style={styles.percentagesTextView}>
-                                    <Text style={styles.optionsText}>
-                                        DOĞRU
-                                    </Text>
-                                    <Text style={styles.percentagesText}>
-                                        {
-                                            this.questionStatsSwitcher()
-                                                .totalCorrect
-                                        }{' '}
-                                        -{' '}
-                                        {this.questionStatsSwitcher().correctPercentage.toFixed(
-                                            2
-                                        )}
-                                        %
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style={styles.percentageContainer}>
-                                <View style={styles.incorrectPoint} />
-                                <View style={styles.percentagesTextView}>
-                                    <Text style={styles.optionsText}>
-                                        YANLIŞ
-                                    </Text>
-                                    <Text style={styles.percentagesText}>
-                                        {
-                                            this.questionStatsSwitcher()
-                                                .totalIncorrect
-                                        }{' '}
-                                        -{' '}
-                                        {this.questionStatsSwitcher().incorrectPercentage.toFixed(
-                                            2
-                                        )}
-                                        %
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style={styles.percentageContainer}>
-                                <View style={styles.unansweredPoint} />
-                                <View style={styles.percentagesTextView}>
-                                    <Text style={styles.optionsText}>BOŞ</Text>
-                                    <Text style={styles.percentagesText}>
-                                        {
-                                            this.questionStatsSwitcher()
-                                                .totalUnanswered
-                                        }{' '}
-                                        -{' '}
-                                        {this.questionStatsSwitcher().unansweredPercentage.toFixed(
-                                            2
-                                        )}
-                                        %
-                                    </Text>
-                                </View>
-                            </View>
-                        </View>
-                        <View style={styles.circlesContainer}>
-                            <ProgressCircle
-                                style={styles.correctCircle}
-                                progress={
-                                    this.questionStatsSwitcher().totalCorrect /
-                                    this.questionStatsSwitcher().totalSolved
+                {this.state.isFetching === false && (
+                    <View style={styles.statisticsContainer}>
+                        <View style={styles.timeZoneDropdownsContainer}>
+                            <DropDown
+                                style={styles.picker}
+                                textStyle={styles.pickerText}
+                                dropdownTextStyle={styles.pickerDropdownText}
+                                dropdownStyle={styles.pickerDropdown}
+                                defaultValue={this.state.timezone}
+                                options={timezonesList}
+                                onSelect={(idx, value) =>
+                                    this.timezoneSelect(idx, value)
                                 }
-                                progressColor={'#6AC259'}
-                                strokeWidth={hp(2.2)}
-                                startAngle={70}
-                            />
-                            <ProgressCircle
-                                style={styles.incorrectCircle}
-                                progress={
-                                    this.questionStatsSwitcher()
-                                        .totalIncorrect /
-                                    this.questionStatsSwitcher().totalSolved
-                                }
-                                progressColor={'#B72A2A'}
-                                strokeWidth={hp(2.2)}
-                                startAngle={135}
-                            />
-                            <ProgressCircle
-                                style={styles.unansweredCircle}
-                                progress={
-                                    this.questionStatsSwitcher()
-                                        .totalUnanswered /
-                                    this.questionStatsSwitcher().totalSolved
-                                }
-                                progressColor={'#00D9EF'}
-                                strokeWidth={hp(2.2)}
-                                startAngle={30}
+                                animated={true}
                             />
                         </View>
-                    </View>
-                    <View style={styles.timezoneChartContainer}>
-                        <View style={styles.timezonesTextView}>
-                            {this.state.timezone === 'Bu hafta' && (
-                                <Text style={styles.timezonesText}>
-                                    {Moment.utc()
-                                        .startOf('week')
-                                        .add(
-                                            this.state.thisWeek.values[0],
-                                            'days'
-                                        )
-                                        .format('dddd')}
-                                    -
-                                    {Moment.utc()
-                                        .startOf('week')
-                                        .add(
-                                            this.state.thisWeek.values[1],
-                                            'days'
-                                        )
-                                        .format('dddd')}
-                                </Text>
-                            )}
-                            {this.state.timezone === 'Bu ay' && (
-                                <Text style={styles.timezonesText}>
-                                    {Moment.utc()
-                                        .startOf('month')
-                                        .add(
-                                            this.state.thisMonth.values[0],
-                                            'days'
-                                        )
-                                        .format('LL')}
-                                    -
-                                    {Moment.utc()
-                                        .startOf('month')
-                                        .add(
-                                            this.state.thisMonth.values[1],
-                                            'days'
-                                        )
-                                        .format('LL')}
-                                </Text>
-                            )}
-                            {this.state.timezone === 'Son 6 ay' && (
-                                <Text style={styles.timezonesTextLastMonths}>
-                                    {Moment.utc()
-                                        .startOf('month')
-                                        .subtract(
-                                            5 -
-                                                this.state.lastSixMonths
-                                                    .values[0],
-                                            'months'
-                                        )
-                                        .format('MMM YYYY')}
-                                    /
-                                    {Moment.utc()
-                                        .startOf('month')
-                                        .subtract(
-                                            5 -
-                                                this.state.lastSixMonths
-                                                    .values[1],
-                                            'months'
-                                        )
-                                        .format('MMM YYYY')}
-                                </Text>
-                            )}
+                        <View style={styles.scrollViewContainer}>
+                            <Swiper
+                                loop={false}
+                                paginationStyle={{ bottom: hp(0.5) }}
+                                activeDotColor={'#FF9900'}
+                                removeClippedSubviews={false}
+                                activeDot={
+                                    <View
+                                        style={{
+                                            height: hp(1.5),
+                                            width: hp(1.5),
+                                            backgroundColor: '#FF9900',
+                                            borderRadius: hp(100),
+                                            marginLeft: wp(1),
+                                            marginRight: wp(1)
+                                        }}
+                                    />
+                                }
+                                dot={
+                                    <View
+                                        style={{
+                                            height: hp(1.5),
+                                            width: hp(1.5),
+                                            backgroundColor: 'rgba(0,0,0,.2)',
+                                            borderRadius: hp(100),
+                                            marginLeft: wp(1),
+                                            marginRight: wp(1)
+                                        }}
+                                    />
+                                }
+                                onIndexChanged={index => {
+                                    this.swiperOnIndexChange(index)
+                                }}
+                            >
+                                <View style={styles.totalGameStatsContainer}>
+                                    <View
+                                        style={
+                                            styles.totalGameStatsInfosContainer
+                                        }
+                                    >
+                                        <Text
+                                            style={
+                                                styles.totalGamesPlayedAndSolvedQuestionsCounter
+                                            }
+                                        >
+                                            {this.state.overallGames}
+                                        </Text>
+                                        <Text
+                                            style={
+                                                styles.totalGamesPlayedAndSolvedQuestionsText
+                                            }
+                                        >
+                                            Bütün Modlar
+                                        </Text>
+                                        <Text
+                                            style={
+                                                styles.totalGamesPlayedAndSolvedQuestionsAmountText
+                                            }
+                                        >
+                                            Oyun Sayısı
+                                        </Text>
+                                        <Text style={styles.wonText}>
+                                            Kazandığı: {this.state.overallWin}
+                                        </Text>
+                                        <Text style={styles.drawText}>
+                                            Beraberlik: {this.state.overallDraw}
+                                        </Text>
+                                        <Text style={styles.lostText}>
+                                            Kaybettiği: {this.state.overallLose}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.semiCircleContainer}>
+                                        <SemiCircleProgress
+                                            percentage={
+                                                (this.state.overallWin /
+                                                    this.state.overallGames) *
+                                                100
+                                            }
+                                            progressColor={'#00D9EF'}
+                                            circleRadius={wp(20)}
+                                            animationSpeed={0.1}
+                                            progressWidth={wp(5)}
+                                        >
+                                            <Text
+                                                style={
+                                                    styles.chartPercentageText
+                                                }
+                                            >
+                                                {this.state.overallGames === 0
+                                                    ? '0'
+                                                    : (
+                                                          (this.state
+                                                              .overallWin /
+                                                              this.state
+                                                                  .overallGames) *
+                                                          100
+                                                      ).toFixed(0)}
+                                                %
+                                            </Text>
+                                        </SemiCircleProgress>
+                                    </View>
+                                </View>
+                                <View style={styles.totalGameStatsContainer}>
+                                    <View
+                                        style={
+                                            styles.totalGameStatsInfosContainer
+                                        }
+                                    >
+                                        <Text
+                                            style={
+                                                styles.totalGamesPlayedAndSolvedQuestionsCounter
+                                            }
+                                        >
+                                            {this.state.totalRankedGames}
+                                        </Text>
+                                        <Text
+                                            style={
+                                                styles.totalGamesPlayedAndSolvedQuestionsText
+                                            }
+                                        >
+                                            Dereceli
+                                        </Text>
+                                        <Text
+                                            style={
+                                                styles.totalGamesPlayedAndSolvedQuestionsAmountText
+                                            }
+                                        >
+                                            Oyun Sayısı
+                                        </Text>
+                                        <Text style={styles.wonText}>
+                                            Kazandığı:{' '}
+                                            {this.state.totalRankedWin}
+                                        </Text>
+                                        <Text style={styles.drawText}>
+                                            Beraberlik:{' '}
+                                            {this.state.totalRankedDraw}
+                                        </Text>
+                                        <Text style={styles.lostText}>
+                                            Kaybettiği:{' '}
+                                            {this.state.totalRankedLose}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.semiCircleContainer}>
+                                        <SemiCircleProgress
+                                            percentage={
+                                                (this.state.totalRankedWin /
+                                                    this.state
+                                                        .totalRankedGames) *
+                                                100
+                                            }
+                                            progressColor={'#00D9EF'}
+                                            circleRadius={wp(20)}
+                                            animationSpeed={0.1}
+                                            progressWidth={wp(5)}
+                                        >
+                                            <Text
+                                                style={
+                                                    styles.chartPercentageText
+                                                }
+                                            >
+                                                {this.state.totalRankedGames ===
+                                                0
+                                                    ? '0'
+                                                    : (
+                                                          (this.state
+                                                              .totalRankedWin /
+                                                              this.state
+                                                                  .totalRankedGames) *
+                                                          100
+                                                      ).toFixed(0)}
+                                                %
+                                            </Text>
+                                        </SemiCircleProgress>
+                                    </View>
+                                </View>
+                                <View style={styles.totalGameStatsContainer}>
+                                    <View
+                                        style={
+                                            styles.totalGameStatsInfosContainer
+                                        }
+                                    >
+                                        <Text
+                                            style={
+                                                styles.totalGamesPlayedAndSolvedQuestionsCounter
+                                            }
+                                        >
+                                            {this.state.totalFriendGames}
+                                        </Text>
+                                        <Text
+                                            style={
+                                                styles.totalGamesPlayedAndSolvedQuestionsText
+                                            }
+                                        >
+                                            Arkadaşla
+                                        </Text>
+                                        <Text
+                                            style={
+                                                styles.totalGamesPlayedAndSolvedQuestionsAmountText
+                                            }
+                                        >
+                                            Oyun Sayısı
+                                        </Text>
+                                        <Text style={styles.wonText}>
+                                            Kazandığı:{' '}
+                                            {this.state.totalFriendWin}
+                                        </Text>
+                                        <Text style={styles.drawText}>
+                                            Beraberlik:{' '}
+                                            {this.state.totalFriendDraw}
+                                        </Text>
+                                        <Text style={styles.lostText}>
+                                            Kaybettiği:{' '}
+                                            {this.state.totalFriendLose}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.semiCircleContainer}>
+                                        <SemiCircleProgress
+                                            percentage={
+                                                (this.state.totalFriendWin /
+                                                    this.state
+                                                        .totalFriendGames) *
+                                                100
+                                            }
+                                            progressColor={'#00D9EF'}
+                                            circleRadius={wp(20)}
+                                            animationSpeed={0.1}
+                                            progressWidth={wp(5)}
+                                        >
+                                            <Text
+                                                style={
+                                                    styles.chartPercentageText
+                                                }
+                                            >
+                                                {this.state.totalFriendGames ===
+                                                0
+                                                    ? '0'
+                                                    : (
+                                                          (this.state
+                                                              .totalFriendWin /
+                                                              this.state
+                                                                  .totalFriendGames) *
+                                                          100
+                                                      ).toFixed(0)}
+                                                %
+                                            </Text>
+                                        </SemiCircleProgress>
+                                    </View>
+                                </View>
+                                <View style={styles.totalGameStatsContainer}>
+                                    <View
+                                        style={
+                                            styles.totalGameStatsInfosContainer
+                                        }
+                                    >
+                                        <Text
+                                            style={
+                                                styles.totalGamesPlayedAndSolvedQuestionsCounter
+                                            }
+                                        >
+                                            {this.state.totalGroupGames}
+                                        </Text>
+                                        <Text
+                                            style={
+                                                styles.totalGamesPlayedAndSolvedQuestionsText
+                                            }
+                                        >
+                                            Grupla
+                                        </Text>
+                                        <Text
+                                            style={
+                                                styles.totalGamesPlayedAndSolvedQuestionsAmountText
+                                            }
+                                        >
+                                            Oyun Sayısı
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={styles.totalGameStatsContainer}>
+                                    <View
+                                        style={
+                                            styles.totalGameStatsInfosContainer
+                                        }
+                                    >
+                                        <Text
+                                            style={
+                                                styles.totalGamesPlayedAndSolvedQuestionsCounter
+                                            }
+                                        >
+                                            {this.state.totalSoloGames}
+                                        </Text>
+                                        <Text
+                                            style={
+                                                styles.totalGamesPlayedAndSolvedQuestionsText
+                                            }
+                                        >
+                                            Solo/TekrarÇöz
+                                        </Text>
+                                        <Text
+                                            style={
+                                                styles.totalGamesPlayedAndSolvedQuestionsAmountText
+                                            }
+                                        >
+                                            Oyun Sayısı
+                                        </Text>
+                                    </View>
+                                </View>
+                            </Swiper>
                         </View>
-                        <View style={styles.barRheostatContainer}>
-                            {this.state.timezone === 'Bu hafta' && (
-                                <Rheostat
-                                    values={[0, 6]}
-                                    min={0}
-                                    max={6}
-                                    theme={{
-                                        rheostat: {
-                                            themeColor: '#00D9EF',
-                                            grey: '#CACACA'
+                        <View style={styles.percentagesAndCirclesContainer}>
+                            <View style={styles.percentagesContainer}>
+                                <View
+                                    style={styles.totalQuestionsSolvedContainer}
+                                >
+                                    <Text
+                                        style={
+                                            styles.totalGamesPlayedAndSolvedQuestionsCounter
                                         }
-                                    }}
-                                    style={{ height: hp(90) }}
-                                    snap={false}
-                                    onValuesUpdated={
-                                        this.weeklyRheostatValueUpdate
-                                    }
-                                />
-                            )}
-                            {this.state.timezone === 'Bu ay' && (
-                                <Rheostat
-                                    values={[0, 30]}
-                                    min={0}
-                                    max={30}
-                                    theme={{
-                                        rheostat: {
-                                            themeColor: '#00D9EF',
-                                            grey: '#CACACA'
+                                    >
+                                        {
+                                            this.questionStatsSwitcher()
+                                                .totalSolved
                                         }
-                                    }}
-                                    snap={false}
-                                    onValuesUpdated={
-                                        this.monthlyRheostatValUpdated
-                                    }
-                                />
-                            )}
-                            {this.state.timezone === 'Son 6 ay' && (
-                                <Rheostat
-                                    values={[0, 5]}
-                                    min={0}
-                                    max={5}
-                                    theme={{
-                                        rheostat: {
-                                            themeColor: '#00D9EF',
-                                            grey: '#CACACA'
+                                    </Text>
+                                    <Text
+                                        style={
+                                            styles.totalGamesPlayedAndSolvedQuestionsText
                                         }
-                                    }}
-                                    snap={true}
-                                    onValuesUpdated={
-                                        this.sixMonthsRheostatValUpdated
+                                    >
+                                        Çözülen Soru
+                                    </Text>
+                                </View>
+                                <View style={styles.percentageContainer}>
+                                    <View style={styles.correctPoint} />
+                                    <View style={styles.percentagesTextView}>
+                                        <Text style={styles.optionsText}>
+                                            DOĞRU
+                                        </Text>
+                                        <Text style={styles.percentagesText}>
+                                            {
+                                                this.questionStatsSwitcher()
+                                                    .totalCorrect
+                                            }{' '}
+                                            -{' '}
+                                            {this.questionStatsSwitcher().correctPercentage.toFixed(
+                                                2
+                                            )}
+                                            %
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={styles.percentageContainer}>
+                                    <View style={styles.incorrectPoint} />
+                                    <View style={styles.percentagesTextView}>
+                                        <Text style={styles.optionsText}>
+                                            YANLIŞ
+                                        </Text>
+                                        <Text style={styles.percentagesText}>
+                                            {
+                                                this.questionStatsSwitcher()
+                                                    .totalIncorrect
+                                            }{' '}
+                                            -{' '}
+                                            {this.questionStatsSwitcher().incorrectPercentage.toFixed(
+                                                2
+                                            )}
+                                            %
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={styles.percentageContainer}>
+                                    <View style={styles.unansweredPoint} />
+                                    <View style={styles.percentagesTextView}>
+                                        <Text style={styles.optionsText}>
+                                            BOŞ
+                                        </Text>
+                                        <Text style={styles.percentagesText}>
+                                            {
+                                                this.questionStatsSwitcher()
+                                                    .totalUnanswered
+                                            }{' '}
+                                            -{' '}
+                                            {this.questionStatsSwitcher().unansweredPercentage.toFixed(
+                                                2
+                                            )}
+                                            %
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={styles.circlesContainer}>
+                                <ProgressCircle
+                                    style={styles.correctCircle}
+                                    progress={
+                                        this.questionStatsSwitcher()
+                                            .totalCorrect /
+                                        this.questionStatsSwitcher().totalSolved
                                     }
+                                    progressColor={'#6AC259'}
+                                    strokeWidth={hp(2.2)}
+                                    startAngle={70}
                                 />
-                            )}
+                                <ProgressCircle
+                                    style={styles.incorrectCircle}
+                                    progress={
+                                        this.questionStatsSwitcher()
+                                            .totalIncorrect /
+                                        this.questionStatsSwitcher().totalSolved
+                                    }
+                                    progressColor={'#B72A2A'}
+                                    strokeWidth={hp(2.2)}
+                                    startAngle={135}
+                                />
+                                <ProgressCircle
+                                    style={styles.unansweredCircle}
+                                    progress={
+                                        this.questionStatsSwitcher()
+                                            .totalUnanswered /
+                                        this.questionStatsSwitcher().totalSolved
+                                    }
+                                    progressColor={'#00D9EF'}
+                                    strokeWidth={hp(2.2)}
+                                    startAngle={30}
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.timezoneChartContainer}>
+                            <View style={styles.timezonesTextView}>
+                                {this.state.timezone === 'Bu hafta' && (
+                                    <Text style={styles.timezonesText}>
+                                        {Moment.utc()
+                                            .startOf('week')
+                                            .add(
+                                                this.state.thisWeek.values[0],
+                                                'days'
+                                            )
+                                            .format('dddd')}
+                                        -
+                                        {Moment.utc()
+                                            .startOf('week')
+                                            .add(
+                                                this.state.thisWeek.values[1],
+                                                'days'
+                                            )
+                                            .format('dddd')}
+                                    </Text>
+                                )}
+                                {this.state.timezone === 'Bu ay' && (
+                                    <Text style={styles.timezonesText}>
+                                        {Moment.utc()
+                                            .startOf('month')
+                                            .add(
+                                                this.state.thisMonth.values[0],
+                                                'days'
+                                            )
+                                            .format('LL')}
+                                        -
+                                        {Moment.utc()
+                                            .startOf('month')
+                                            .add(
+                                                this.state.thisMonth.values[1],
+                                                'days'
+                                            )
+                                            .format('LL')}
+                                    </Text>
+                                )}
+                                {this.state.timezone === 'Son 6 ay' && (
+                                    <Text
+                                        style={styles.timezonesTextLastMonths}
+                                    >
+                                        {Moment.utc()
+                                            .startOf('month')
+                                            .subtract(
+                                                5 -
+                                                    this.state.lastSixMonths
+                                                        .values[0],
+                                                'months'
+                                            )
+                                            .format('MMM YYYY')}
+                                        /
+                                        {Moment.utc()
+                                            .startOf('month')
+                                            .subtract(
+                                                5 -
+                                                    this.state.lastSixMonths
+                                                        .values[1],
+                                                'months'
+                                            )
+                                            .format('MMM YYYY')}
+                                    </Text>
+                                )}
+                            </View>
+                            <View style={styles.barRheostatContainer}>
+                                {this.state.timezone === 'Bu hafta' && (
+                                    <Rheostat
+                                        values={[0, 6]}
+                                        min={0}
+                                        max={6}
+                                        theme={{
+                                            rheostat: {
+                                                themeColor: '#00D9EF',
+                                                grey: '#CACACA'
+                                            }
+                                        }}
+                                        style={{ height: hp(90) }}
+                                        snap={false}
+                                        onValuesUpdated={
+                                            this.weeklyRheostatValueUpdate
+                                        }
+                                    />
+                                )}
+                                {this.state.timezone === 'Bu ay' && (
+                                    <Rheostat
+                                        values={[0, 30]}
+                                        min={0}
+                                        max={30}
+                                        theme={{
+                                            rheostat: {
+                                                themeColor: '#00D9EF',
+                                                grey: '#CACACA'
+                                            }
+                                        }}
+                                        snap={false}
+                                        onValuesUpdated={
+                                            this.monthlyRheostatValUpdated
+                                        }
+                                    />
+                                )}
+                                {this.state.timezone === 'Son 6 ay' && (
+                                    <Rheostat
+                                        values={[0, 5]}
+                                        min={0}
+                                        max={5}
+                                        theme={{
+                                            rheostat: {
+                                                themeColor: '#00D9EF',
+                                                grey: '#CACACA'
+                                            }
+                                        }}
+                                        snap={true}
+                                        onValuesUpdated={
+                                            this.sixMonthsRheostatValUpdated
+                                        }
+                                    />
+                                )}
+                            </View>
                         </View>
                     </View>
-                </View>
+                )}
+                {this.state.isFetching === true && (
+                    <ActivityIndicator style={{ flex: 78 }} />
+                )}
                 <View style={styles.spaceView} />
             </View>
         )

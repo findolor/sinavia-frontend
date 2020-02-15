@@ -15,6 +15,7 @@ import {
 } from '../../services/apiServices'
 import firebase from 'react-native-firebase'
 import { flashMessages } from '../../services/flashMessageBuilder'
+import { GoogleSignin } from '@react-native-community/google-signin'
 
 async function getFromStorage(key) {
     const item = await deviceStorage.getItemFromStorage(key)
@@ -43,11 +44,12 @@ function getNotificationOpened() {
 }
 
 export function* authenticateUser(action) {
+    const signInMethod = yield call(
+        deviceStorage.getItemFromStorage,
+        'signInMethod'
+    )
+
     try {
-        const signInMethod = yield call(
-            deviceStorage.getItemFromStorage,
-            'signInMethod'
-        )
         switch (signInMethod) {
             case 'normal':
                 try {
@@ -68,6 +70,16 @@ export function* authenticateUser(action) {
                         console.log(error)
                     })
                 if (!isSignedIn) return
+                break
+            case 'apple':
+                // This is for photo upload to storage
+                // We need to be loged in somehow
+                firebase
+                    .auth()
+                    .signInAnonymously()
+                    .catch(error => {
+                        console.log(error)
+                    })
                 break
         }
 
@@ -301,17 +313,30 @@ export function* authenticateUser(action) {
                 email: clientCredentials.email,
                 password: clientCredentials.password
             }) */
+
+            /* let tokenObject = {
+                email: clientCredentials.email,
+                password: clientCredentials.password,
+                identityToken: null
+            }
+            if (signInMethod === 'apple') {
+                let idToken = yield call(
+                    deviceStorage.getItemFromStorage,
+                    'appleIdentityToken'
+                )
+                tokenObject.identityToken = idToken
+            } */
+
             let res = yield call(
                 makePostRequest,
                 apiServicesTree.tokenApi.getToken,
                 {
-                    userInformation: {
-                        email: clientCredentials.email,
-                        password: clientCredentials.password
-                    },
-                    deviceId: deviceId
+                    userInformation: clientCredentials,
+                    deviceId: deviceId,
+                    signInMethod: signInMethod
                 }
             )
+            console.log(res)
             // Saving the api token to redux state
             yield put({
                 type: clientTypes.SAVE_API_TOKEN,

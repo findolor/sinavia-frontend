@@ -94,10 +94,10 @@ class FriendGameStatsScreen extends React.Component {
 
     async componentDidMount() {
         await this.loadScreen()
-        this.props.room.onMessage.add(message => {
+        this.props.room.onMessage(message => {
             this.chooseMessageAction(message)
         })
-        this.props.room.onError.add(err => console.log(err))
+        this.props.room.onError(err => console.log(err))
     }
 
     chooseMessageAction = message => {
@@ -168,7 +168,7 @@ class FriendGameStatsScreen extends React.Component {
 
             playerIds.forEach(element => {
                 if (element === 'matchInformation') return
-                if (this.props.client.id !== element) {
+                if (this.props.room.sessionId !== element) {
                     opponentUsername = playerProps[element].username
                     opponentProfilePicture = playerProps[element].profilePicture
                     playerProps[element].answers.forEach(result => {
@@ -417,7 +417,6 @@ class FriendGameStatsScreen extends React.Component {
 
     mainScreenButtonOnPress = () => {
         this.props.room.leave()
-        this.props.client.close()
         navigationReset('main')
     }
 
@@ -955,7 +954,7 @@ class FriendGameStatsScreen extends React.Component {
                                 >
                                     {this.answerSwitcher(
                                         this.props.playerProps[
-                                            this.props.client.id
+                                            this.props.room.sessionId
                                         ].answers[
                                             this.state.questionPosition - 1
                                         ].correctAnswer
@@ -989,7 +988,7 @@ class FriendGameStatsScreen extends React.Component {
                                 >
                                     {this.answerSwitcher(
                                         this.props.playerProps[
-                                            this.props.client.id
+                                            this.props.room.sessionId
                                         ].answers[
                                             this.state.questionPosition - 1
                                         ].answer

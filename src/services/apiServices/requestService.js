@@ -42,7 +42,8 @@ import {
     postUser,
     searchUsers,
     updateUser,
-    checkUser
+    checkUserWithEmail,
+    checkUserWithIdentityToken
 } from './user'
 import {
     getUserJokers,
@@ -53,6 +54,7 @@ import { getUserScore } from './userScore'
 import { checkOnline } from './api'
 import { getUserGoals, postUserGoal, deleteUserGoal } from './userGoal'
 import { sendReceipt } from './purchaseReceipt'
+import { getInviteCode } from './inviteCode'
 
 export const apiServicesTree = {
     api: {
@@ -117,7 +119,8 @@ export const apiServicesTree = {
         postUser: 'postUser',
         searchUsers: 'searchUsers',
         updateUser: 'updateUser',
-        checkUser: 'checkUser'
+        checkUserWithEmail: 'checkUserWithEmail',
+        checkUserWithIdentityToken: 'checkUserWithIdentityToken'
     },
     userJokerApi: {
         getUserJokers: 'getUserJokers',
@@ -134,6 +137,9 @@ export const apiServicesTree = {
     },
     purchaseReceiptApi: {
         sendReceipt: 'sendReceipt'
+    },
+    inviteCodeApi: {
+        getInviteCode: 'getInviteCode'
     }
 }
 
@@ -218,8 +224,10 @@ export const getRequest = async (functionName, params) => {
         case 'searchUsers':
             headers.Authorization = 'Bearer ' + params.clientToken
             return searchUsers(headers, params)
-        case 'checkUser':
-            return checkUser(params)
+        case 'checkUserWithEmail':
+            return checkUserWithEmail(params)
+        case 'checkUserWithIdentityToken':
+            return checkUserWithIdentityToken(params)
         // USER JOKER
         case 'getUserJokers':
             headers.Authorization = 'Bearer ' + params.clientToken
@@ -236,6 +244,10 @@ export const getRequest = async (functionName, params) => {
         case 'getUserGoals':
             headers.Authorization = 'Bearer ' + params.clientToken
             return getUserGoals(headers, params)
+        // INVITE CODE
+        case 'getInviteCode':
+            headers.Authorization = 'Bearer ' + params.clientToken
+            return getInviteCode(headers, params)
     }
 }
 

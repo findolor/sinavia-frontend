@@ -33,52 +33,61 @@ class UnsolvedModeLoadingScreen extends React.Component {
 
     componentDidMount() {
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
-        this.client.onOpen.add(() => {
-            this.joinRoom({
-                examId: this.props.contentIds.examId,
-                courseId: this.props.contentIds.courseId,
-                subjectId: this.props.contentIds.subjectId,
-                databaseId: this.props.clientDBId
-            })
+        this.joinRoom({
+            examId: this.props.contentIds.examId,
+            courseId: this.props.contentIds.courseId,
+            subjectId: this.props.contentIds.subjectId,
+            databaseId: this.props.clientDBId
         })
     }
 
     // Client sends a ready signal when they join a room successfully
     joinRoom = playerOptions => {
-        this.room = this.client.join('unsolvedModeRoom', playerOptions)
+        this.client
+            .create('unsolvedModeRoom', playerOptions)
+            .then(room => {
+                this.room = room
 
-        this.room.onJoin.add(() => {
-            this.timeout = setTimeout(() => {
-                this.room.removeAllListeners()
-                navigationReplace(
-                    SCENE_KEYS.gameScreens.unsolvedModeGameScreen,
-                    {
-                        // These are necessary for the game logic
-                        room: this.room,
-                        client: this.client,
-                        // These can be used in both screens
-                        playerUsername: this.props.clientInformation.username,
-                        playerProfilePicture: this.props.clientInformation
-                            .profilePicture
+                this.timeout = setTimeout(() => {
+                    this.room.removeAllListeners()
+                    navigationReplace(
+                        SCENE_KEYS.gameScreens.unsolvedModeGameScreen,
+                        {
+                            // These are necessary for the game logic
+                            room: this.room,
+                            client: this.client,
+                            // These can be used in both screens
+                            playerUsername: this.props.clientInformation
+                                .username,
+                            playerProfilePicture: this.props.clientInformation
+                                .profilePicture
+                        }
+                    )
+                }, 5000)
+
+                this.room.onMessage(message => {
+                    if (message.action === 'no-questions') {
+                        Alert.alert('Tekrar çözebileceğin soru yok')
+                        this.connectionErrorRoutine()
                     }
-                )
-            }, 5000)
+                })
 
-            this.room.onMessage.add(message => {
-                if (message.action === 'no-questions') {
-                    Alert.alert('Tekrar çözebileceğin soru yok')
-                    this.connectionErrorRoutine()
-                }
-            })
+                this.room.onError(error => {
+                    console.log(error)
+                    clearTimeout(this.timeout)
+                    navigationReset('main')
+                })
 
-            this.room.onError.add(error => {
-                this.connectionErrorRoutine()
+                this.room.onLeave(code => {
+                    console.log(code)
+                    clearTimeout(this.timeout)
+                    navigationReset('main')
+                })
             })
-
-            this.room.onLeave.add(res => {
-                this.connectionErrorRoutine()
+            .catch(error => {
+                console.log(error)
+                navigationReset('main')
             })
-        })
     }
 
     connectionErrorRoutine = () => {

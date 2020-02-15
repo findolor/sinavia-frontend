@@ -29,7 +29,15 @@ export function* loginUser(action) {
     yield put({
         type: appTypes.LOCK_UNLOCK_BUTTON
     })
+    yield put({
+        type: appTypes.IS_LOGGING
+    })
 
+    let tokenRequestUserInfo = {
+        email: action.payload.email,
+        password: action.payload.password,
+        identityToken: action.payload.identityToken
+    }
     this.email = action.payload.email
     this.password = action.payload.password
 
@@ -54,12 +62,23 @@ export function* loginUser(action) {
                     })
                 if (!isSignedIn) return
                 break
+            case 'apple':
+                firebase
+                    .auth()
+                    .signInAnonymously()
+                    .catch(error => {
+                        console.log(error)
+                    })
+                break
         }
 
         if (firebaseResponse !== null && !firebaseResponse.user.emailVerified) {
             flashMessages.generalMessage('Lütfen e-postana gelen linki onayla.')
             yield put({
                 type: appTypes.LOCK_UNLOCK_BUTTON
+            })
+            yield put({
+                type: appTypes.IS_LOGGING
             })
         } else {
             const deviceId = yield call(DeviceInfo.getUniqueId)
@@ -72,7 +91,8 @@ export function* loginUser(action) {
                     apiServicesTree.tokenApi.getToken,
                     {
                         deviceId: deviceId,
-                        userInformation: action.payload
+                        userInformation: tokenRequestUserInfo,
+                        signInMethod: signInMethod
                     }
                 )
                 // Saving the api token to redux state
@@ -82,16 +102,16 @@ export function* loginUser(action) {
                 })
                 // We save the token to storage
                 deviceStorage.saveItemToStorage('clientToken', res.token)
-
+                console.log(tokenRequestUserInfo)
                 // We save our user credentials
                 deviceStorage.saveItemToStorage(
                     'clientCredentials',
-                    action.payload
+                    tokenRequestUserInfo
                 )
                 // Save credential state to redux
                 yield put({
                     type: clientTypes.SAVE_CLIENT_CREDENTIALS,
-                    payload: action.payload
+                    payload: tokenRequestUserInfo
                 })
 
                 // We save user favourite questions
@@ -220,6 +240,9 @@ export function* loginUser(action) {
                 yield put({
                     type: appTypes.LOCK_UNLOCK_BUTTON
                 })
+                yield put({
+                    type: appTypes.IS_LOGGING
+                })
 
                 if (error.message === 'Network Error') {
                     flashMessages.networkError()
@@ -237,6 +260,9 @@ export function* loginUser(action) {
         yield put({
             type: appTypes.LOCK_UNLOCK_BUTTON
         })
+        yield put({
+            type: appTypes.IS_LOGGING
+        })
 
         if (error.code === 'auth/invalid-email')
             flashMessages.emailError('Lütfen e-postanı kontrol et')
@@ -244,7 +270,7 @@ export function* loginUser(action) {
         if (error.code === 'auth/user-not-found') {
             let checkResponse = yield call(
                 makeGetRequest,
-                apiServicesTree.userApi.checkUser,
+                apiServicesTree.userApi.checkUserWithEmail,
                 {
                     email: this.email
                 }

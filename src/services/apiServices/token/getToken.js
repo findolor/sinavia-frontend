@@ -8,13 +8,15 @@ export const getToken = async params => {
             params.userInformation,
             {
                 params: {
-                    deviceId: params.deviceId
+                    deviceId: params.deviceId,
+                    signInMethod: params.signInMethod
                 }
             }
         )
 
         return { token: response.data.data.token, id: response.data.data.id }
     } catch (err) {
+        console.log(err)
         throw err
     }
 }

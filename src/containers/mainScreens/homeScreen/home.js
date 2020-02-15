@@ -8,7 +8,6 @@ import {
     TouchableOpacity,
     View,
     AsyncStorage,
-    Alert,
     FlatList,
     AppState,
     Animated
@@ -327,37 +326,13 @@ class Home extends React.Component {
     }
 
     tryJoiningFriendRoom = params => {
-        let room
         const client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
-        client.onOpen.add(() => {
-            // TODO PUT A MODAL HERE FOR WAITING
-            this.setState({
-                isModalVisible: true,
-                visibleView: 'WAITING_TO_JOIN_FRIEND_ROOM'
-            })
-
-            room = client.join('friendRoom', {
+        client
+            .join('friendRoom', {
                 databaseId: this.props.clientDBId,
-                roomCode: params.roomCode,
-                create: false
+                roomCode: params.roomCode
             })
-
-            // We set a timeout for the time passed since join initiation
-            // TODO THINK ABOUT THE TIMEOUT NUMBER IN HERE
-            const timeout = setTimeout(() => {
-                this.setState({
-                    isModalVisible: true,
-                    visibleView: 'ROOM_IS_NOT_ACTIVE'
-                })
-                room.leave()
-                client.close()
-            }, 5000)
-
-            // If room onJoin doesn't trigger we don't do anything
-            room.onJoin.add(() => {
-                // We clear the timeout as we don't need it anymore
-                clearTimeout(timeout)
-                this.setState({ visibleView: '' })
+            .then(room => {
                 // Getting the opponent information and navigatiing
                 userServices
                     .getUser(this.props.clientToken, params.opponentId)
@@ -378,7 +353,13 @@ class Home extends React.Component {
                         )
                     })
             })
-        })
+            .catch(error => {
+                console.log(error)
+                this.setState({
+                    isModalVisible: true,
+                    visibleView: 'ROOM_IS_NOT_ACTIVE'
+                })
+            })
     }
 
     playFriendGame = async params => {
@@ -400,18 +381,16 @@ class Home extends React.Component {
 
     rejectFriendGame = params => {
         const client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
-        client.onOpen.add(() => {
-            const room = client.join('friendRoom', {
+        client
+            .join('friendRoom', {
                 roomCode: params.roomCode,
                 // Because we are joining a game, we don't want to create a new room
-                create: false,
                 rejectGame: true
             })
-            setTimeout(() => {
+            .then(room => {
                 room.leave()
-                client.close()
-            }, 3000)
-        })
+            })
+            .catch(error => console.log(error))
     }
 
     friendRequestAccepted = params => {
@@ -1174,11 +1153,11 @@ class Home extends React.Component {
         })
     }
 
-    randomCodeGenerator() {
+    randomCodeGenerator(length) {
         var result = ''
-        var characters = 'ABCDEF0123456789'
+        var characters = 'ABCDEFGHIJKLMNOPQRSTVUXWYZ0123456789'
         var charactersLength = characters.length
-        for (var i = 0; i < 6; i++) {
+        for (var i = 0; i < length; i++) {
             result += characters.charAt(
                 Math.floor(Math.random() * charactersLength)
             )
@@ -1202,13 +1181,12 @@ class Home extends React.Component {
         apiServices
             .checkOnline()
             .then(() => {
-                const randomNumber = this.randomCodeGenerator()
+                const randomNumber = this.randomCodeGenerator(6)
                 const Ids = this.calculateContentIds()
                 navigationReset('game', { isHardReset: true })
                 navigationReplace(SCENE_KEYS.gameScreens.friendMatchingScreen, {
                     roomCode: randomNumber,
                     opponentInformation: this.state.opponentInformation,
-                    isCreateRoom: true,
                     examId: Ids.examId,
                     courseId: Ids.courseId,
                     subjectId: Ids.subjectId,
@@ -1385,26 +1363,27 @@ class Home extends React.Component {
         )
             return
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
-        this.client.onOpen.add(() => {
-            this.tryJoiningRoom()
-        })
+        this.tryJoiningRoom()
     }
 
-    tryJoiningRoom = async () => {
-        this.room = this.client.join('groupRoom', {
-            databaseId: this.props.clientDBId,
-            roomCode: this.state.groupCodeOnChangeText.toString(),
-            // Because we are joining a game, we don't want to create a new room
-            create: false
-        })
-
-        this.room.onJoin.add(() => {
-            this.room.removeAllListeners()
-            this.setState({
-                visibleView: 'JOINED_ROOM',
-                isGroupGameInitiated: true
+    tryJoiningRoom = () => {
+        this.client
+            .join('groupRoom', {
+                databaseId: this.props.clientDBId,
+                roomCode: this.state.groupCodeOnChangeText.toString()
             })
-        })
+            .then(room => {
+                this.room = room
+
+                this.room.removeAllListeners()
+                this.setState({
+                    visibleView: 'JOINED_ROOM',
+                    isGroupGameInitiated: true
+                })
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     joinGameParams = () => {
@@ -1443,10 +1422,7 @@ class Home extends React.Component {
                             <TextInput
                                 style={styles.joinGameCodeTextInput}
                                 maxLength={6}
-                                placeholder="Oda Kodu  "
-                                placeholderStyle={
-                                    styles.joinGameCodeTextInputPlaceholder
-                                }
+                                placeholder="Oda Kodu"
                                 placeholderTextColor="#A8A8A8"
                                 autoCapitalize="characters"
                                 onChangeText={text =>
@@ -1833,26 +1809,6 @@ class Home extends React.Component {
         )
     }
 
-    waitingToJoinFriendRoomView() {
-        return (
-            <View
-                style={{
-                    height: hp(120),
-                    width: wp(100),
-                    backgroundColor: '#000000DE'
-                }}
-            >
-                <View style={styles.modalContainer}>
-                    <View style={styles.gameRequestView}>
-                        <Text style={styles.gameRequestText}>
-                            Odaya giriş yapman bekleniyor...
-                        </Text>
-                    </View>
-                </View>
-            </View>
-        )
-    }
-
     roomIsNotActiveView() {
         return (
             <View
@@ -2100,8 +2056,6 @@ class Home extends React.Component {
                         this.premiumForSoloView()}
                     {this.state.visibleView === 'PREMIUM_MODAL_FOR_UNSOLVED' &&
                         this.premiumForUnsolvedView()}
-                    {this.state.visibleView === 'WAITING_TO_JOIN_FRIEND_ROOM' &&
-                        this.waitingToJoinFriendRoomView()}
                     {this.state.visibleView === 'ROOM_IS_NOT_ACTIVE' &&
                         this.roomIsNotActiveView()}
                     {this.state.visibleView === 'YOUR_FRIEND_STARTED_GAME' &&

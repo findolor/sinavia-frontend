@@ -59,13 +59,11 @@ class CreateGroupRoom extends React.Component {
     componentDidMount() {
         this.setState(
             {
-                groupCode: this.randomCodeGenerator()
+                groupCode: this.randomCodeGenerator(6)
             },
             () => {
                 this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
-                this.client.onOpen.add(() => {
-                    this.joinRoom()
-                })
+                this.joinRoom()
             }
         )
     }
@@ -88,92 +86,113 @@ class CreateGroupRoom extends React.Component {
     }
 
     joinRoom = () => {
-        this.room = this.client.join('groupRoom', {
-            // These will be props coming from home screen
-            examId: this.props.calculateContentIds.examId,
-            courseId: this.props.calculateContentIds.courseId,
-            subjectId: this.props.calculateContentIds.subjectId,
-            databaseId: this.props.clientDBId,
-            roomCode: this.state.groupCode,
-            create: true
-        })
+        this.client
+            .create('groupRoom', {
+                // These will be props coming from home screen
+                examId: this.props.calculateContentIds.examId,
+                courseId: this.props.calculateContentIds.courseId,
+                subjectId: this.props.calculateContentIds.subjectId,
+                databaseId: this.props.clientDBId,
+                roomCode: this.state.groupCode
+            })
+            .then(room => {
+                this.room = room
 
-        this.room.onMessage.add(message => {
-            switch (message.action) {
-                case 'player-props':
-                    const playerIds = Object.keys(message.playerProps)
+                this.room.onMessage(message => {
+                    switch (message.action) {
+                        case 'player-props':
+                            const playerIds = Object.keys(message.playerProps)
 
-                    playerList = []
+                            playerList = []
 
-                    playerIds.forEach(element => {
-                        if (message.playerProps[element].readyStatus) {
-                            playerList.push({
-                                username: message.playerProps[element].username,
-                                id: element,
-                                profilePicture:
-                                    message.playerProps[element].profilePicture,
-                                status: 'Hazır',
-                                isLeader: message.playerProps[element].isLeader
+                            playerIds.forEach(element => {
+                                if (message.playerProps[element].readyStatus) {
+                                    playerList.push({
+                                        username:
+                                            message.playerProps[element]
+                                                .username,
+                                        id: element,
+                                        profilePicture:
+                                            message.playerProps[element]
+                                                .profilePicture,
+                                        status: 'Hazır',
+                                        isLeader:
+                                            message.playerProps[element]
+                                                .isLeader
+                                    })
+                                } else {
+                                    playerList.push({
+                                        username:
+                                            message.playerProps[element]
+                                                .username,
+                                        id: element,
+                                        profilePicture:
+                                            message.playerProps[element]
+                                                .profilePicture,
+                                        status: 'Bekleniyor',
+                                        isLeader:
+                                            message.playerProps[element]
+                                                .isLeader
+                                    })
+                                }
+                                message.playerProps[element].isLeader === true
+                                    ? this.setState({ isClientLeader: true })
+                                    : this.setState({ isClientLeader: false })
                             })
-                        } else {
-                            playerList.push({
-                                username: message.playerProps[element].username,
-                                id: element,
-                                profilePicture:
-                                    message.playerProps[element].profilePicture,
-                                status: 'Bekleniyor',
-                                isLeader: message.playerProps[element].isLeader
+
+                            this.setState({ groupRoomPlayerList: playerList })
+                            break
+                        case 'start-match':
+                            this.room.removeAllListeners()
+
+                            navigationReset('game', { isHardReset: true })
+                            navigationReplace(
+                                SCENE_KEYS.gameScreens.groupLoading,
+                                {
+                                    room: this.room,
+                                    client: this.client,
+                                    groupRoomPlayerList: this.state
+                                        .groupRoomPlayerList,
+                                    courseName: this.props.gameContentMap
+                                        .courses[this.state.matchCourseId - 1]
+                                        .name,
+                                    subjectName: this.props.gameContentMap
+                                        .subjects[this.state.matchSubjectId - 1]
+                                        .name,
+                                    choosenQuestionAmount: this.state
+                                        .choosenQuestionAmount
+                                }
+                            )
+                            break
+                        case 'content-ids':
+                            this.setState({
+                                matchCourseId: message.courseId,
+                                matchSubjectId: message.subjectId
                             })
-                        }
-                        message.playerProps[element].isLeader === true
-                            ? this.setState({ isClientLeader: true })
-                            : this.setState({ isClientLeader: false })
-                    })
+                            break
+                    }
+                })
 
-                    this.setState({ groupRoomPlayerList: playerList })
-                    break
-                case 'start-match':
-                    this.room.removeAllListeners()
+                this.room.onLeave(code => {
+                    console.log(code)
+                    this.shutdownRoutine()
+                })
 
-                    navigationReset('game', { isHardReset: true })
-                    navigationReplace(SCENE_KEYS.gameScreens.groupLoading, {
-                        room: this.room,
-                        client: this.client,
-                        groupRoomPlayerList: this.state.groupRoomPlayerList,
-                        courseName: this.props.gameContentMap.courses[
-                            this.state.matchCourseId - 1
-                        ].name,
-                        subjectName: this.props.gameContentMap.subjects[
-                            this.state.matchSubjectId - 1
-                        ].name,
-                        choosenQuestionAmount: this.state.choosenQuestionAmount
-                    })
-                    break
-                case 'content-ids':
-                    this.setState({
-                        matchCourseId: message.courseId,
-                        matchSubjectId: message.subjectId
-                    })
-                    break
-            }
-        })
-
-        this.room.onError.add(error => {
-            console.log(error)
-            this.shutdownRoutine()
-        })
-
-        this.room.onLeave.add(res => {
-            if (res.code === 1001) return
-            this.shutdownRoutine()
-        })
+                this.room.onError(error => {
+                    console.log(error)
+                    this.shutdownRoutine()
+                })
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
-    randomCodeGenerator() {
+    randomCodeGenerator(lenght) {
         var result = ''
-        var characters = 'ABCDEF0123456789'
+        var characters = 'ABCDEFGHIJKLMNOPQRSTVUXWYZ0123456789'
         var charactersLength = characters.length
-        for (var i = 0; i < 6; i++) {
+        for (var i = 0; i < lenght; i++) {
             result += characters.charAt(
                 Math.floor(Math.random() * charactersLength)
             )
@@ -208,7 +227,6 @@ class CreateGroupRoom extends React.Component {
 
     shutdownRoutine = () => {
         this.room.leave()
-        this.client.close()
         navigationReset('main')
     }
 
@@ -217,7 +235,9 @@ class CreateGroupRoom extends React.Component {
             <View style={styles.container}>
                 {this.state.isQuitGameModalVisible === false && (
                     <View style={styles.modal}>
-                        <BannerAd />
+                        {!this.props.clientInformation.isPremium && (
+                            <BannerAd />
+                        )}
                         <TouchableOpacity
                             onPress={this.closeGroupGameOnPress}
                             style={{ height: hp(120), width: wp(100) }}

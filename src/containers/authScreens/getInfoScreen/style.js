@@ -12,13 +12,13 @@ export default StyleSheet.create({
         flexDirection: 'column'
     },
     imageContainer: {
-        flex: 40,
+        flex: 33,
         width: wp(100),
         justifyContent: 'center',
         alignItems: 'center'
     },
     allTextInputsContainer: {
-        flex: 41,
+        flex: 48,
         width: wp(100),
         alignItems: 'center',
         justifyContent: 'space-between'

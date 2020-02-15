@@ -30,6 +30,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import AuthButton from '../../../components/authScreen/authButton'
 import * as Animatable from 'react-native-animatable'
 import { interstitialAd } from '../../../services/admobService'
+import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas'
 
 const NORMAL_BUTTON_COLOR = '#C3C3C3'
 const SELECTED_BUTTON_COLOR = '#00d9ef'
@@ -122,9 +123,7 @@ class RankedGame extends React.Component {
             secondJokerAmount: '',
             thirdJokerNameFirstWord: '',
             thirdJokerNameSecondWord: '',
-            thirdJokerAmount: '',
-            // Server ping variable
-            isServerPinged: false
+            thirdJokerAmount: ''
         }
     }
 
@@ -140,68 +139,33 @@ class RankedGame extends React.Component {
         this.props.room.send({
             action: 'ready'
         })
-
-        // We set ping intervals to check if we are still connected to the server
-        // This is used because with the current colyseus version this is not possible?
-        this.checkPingInterval = this.checkPingInterval()
-        this.pingInterval = this.pingInterval()
-        
-        this.props.room.onStateChange.add(state => {
+        this.props.room.onStateChange(state => {
             // We update the UI after state changes
             this.chooseStateAction(state.rankedState)
         })
         // Joker messages come through here
-        this.props.room.onMessage.add(message => {
+        this.props.room.onMessage(message => {
             this.chooseMessageAction(message)
         })
-        this.props.room.onError.add(err => {
+        this.props.room.onLeave(code => {
+            if(code === 1000) return
             let that = this
+            console.log(code)
             this.setState({isQuitGameModalVisible: true, visibleView: 'serverError'})
-            setTimeout(() => {
-                that.shutdownGame()
+            setTimeout(function(){
                 that.props.room.leave()
                 navigationReset('main')
             }, 3000)
         })
-        this.props.room.onLeave.add(res => {
+        this.props.room.onError(err => {
             let that = this
-            if(res.code === 1001) return
+            console.log(err)
             this.setState({isQuitGameModalVisible: true, visibleView: 'serverError'})
-            setTimeout(() => {
-                that.shutdownGame()
+            setTimeout(function(){
                 that.props.room.leave()
                 navigationReset('main')
             }, 3000)
         })
-    }
-
-    // This timeout checks the ping variable every 20 seconds
-    // If the varible is false that means the connection has dropped
-    checkPingInterval = () => {
-        let that = this
-        return setInterval(() => {
-            if (this.state.isServerPinged)
-                this.setState({ isServerPinged: false })
-            else {
-                this.setState({
-                    isQuitGameModalVisible: true,
-                    visibleView: 'serverError'
-                })
-                setTimeout(() => {
-                    that.shutdownGame()
-                    that.props.room.leave()
-                    navigationReset('main')
-                }, 3000)
-            }
-        }, 15000)
-    }
-
-    // This interval pings the server every 10 seconds
-    pingInterval = () => {
-        let that = this
-        return setInterval(() => {
-            that.props.room.send({ action: 'ping' })
-        }, 10000)
     }
 
     checkJokerAmount = () => {
@@ -262,8 +226,6 @@ class RankedGame extends React.Component {
         clearTimeout(this.startTimeout)
         clearTimeout(this.updateTimeout)
         clearTimeout(this.finishedTimeout)
-        clearInterval(this.checkPingInterval)
-        clearInterval(this.pingInterval)
 
         // Clear room listeners
         this.props.room.removeAllListeners()
@@ -326,9 +288,8 @@ class RankedGame extends React.Component {
                 )
                 {
                     this.setState({isQuitGameModalVisible: true, visibleView: 'opponentLeaveNoAnswer'})
-                    this.props.updateTotalPoints(100),
-                        this.shutdownGame(),
-                        this.props.client.close(),
+                    this.props.updateTotalPoints(100)
+                    this.shutdownGame()
                     setTimeout(function(){
                             that.props.room.leave()
                             navigationReset('main')
@@ -374,7 +335,6 @@ class RankedGame extends React.Component {
                         .length === 0
                 ) {
                     this.shutdownGame()
-                    this.props.client.close()
                     this.props.room.leave()
                     navigationReset('main')
                     break
@@ -397,9 +357,6 @@ class RankedGame extends React.Component {
                     isMatchFinished: false,
                     isWon: false
                 })
-                break
-            case 'ping':
-                this.setState({ isServerPinged: true })
                 break
         }
     }
@@ -441,7 +398,7 @@ class RankedGame extends React.Component {
                 if (
                     this.state.isSeeOpponentAnswerJokerActive &&
                     // We check if the answer is from the opponent, if not we don't proceed
-                    rankedState.playerProps[this.props.client.id].answers[
+                    rankedState.playerProps[this.props.room.sessionId].answers[
                         this.state.questionNumber
                     ] === undefined
                 ) {
@@ -458,7 +415,8 @@ class RankedGame extends React.Component {
             case 'show-results':
                 // 8 second countdown time for the results
                 this.setState({
-                    countDownTime: 5
+                    countDownTime: 5,
+                    isQuestionModalVisible: false
                 })
                 this.highlightOpponentButton(
                     rankedState.playerProps[this.state.opponentId].answers[
@@ -492,7 +450,7 @@ class RankedGame extends React.Component {
 
     updatePlayerResults = () => {
         // Player answers to the question
-        const answers = this.state.playerProps[this.props.client.id].answers
+        const answers = this.state.playerProps[this.props.room.sessionId].answers
         const answersOpponent = this.state.playerProps[this.state.opponentId]
             .answers
 
@@ -840,6 +798,25 @@ class RankedGame extends React.Component {
         })
     }
 
+    serverError() {
+        return (
+            <View
+                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>
+                            Sunucu hatası
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            Ana sayfaya yönlendirileceksin
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     opponentLeaveNoAnswer() {
         return (
             <View
@@ -1044,25 +1021,54 @@ class RankedGame extends React.Component {
                         animationType={'fade'}
                     >
                         <View style={styles.questionModalContainer}>
-                            <View>
-                                <Image
-                                    source={{
-                                        uri: this.state.questionList[
-                                            this.state.questionNumber
-                                        ]
-                                    }}
-                                    style={styles.questionModalStyle}
-                                />
-                            </View>
-                            <View style={styles.closeModalContainer}>
-                                <TouchableOpacity
-                                    onPress={this.questionModalCloseOnPress}
-                                >
+                            <View style={{ backgroundColor: 'transparent', flex: 1, width: wp(100), justifyContent: 'center'}}>
+                                <View style={{ position: 'absolute', height: hp(78), width: wp(100), justifyContent: 'center'}}>
                                     <Image
-                                        source={ZOOM_OUT_BUTTON}
-                                        style={styles.closeModal}
+                                        source={{
+                                            uri: this.state.questionList[
+                                                this.state.questionNumber
+                                                ]
+                                        }}
+                                        style={styles.questionModalStyle}
                                     />
-                                </TouchableOpacity>
+                                </View>
+                                <RNSketchCanvas
+                                    ref={ref => this.canvas1 = ref}
+                                    containerStyle={{ backgroundColor: 'transparent', flex: 1 }}
+                                    canvasStyle={{ backgroundColor: 'transparent', flex: 1 }}
+                                    onStrokeEnd={data => {
+                                    }}
+                                    closeComponent={<View style={[styles.functionButton, {marginLeft: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2.25), textAlign: 'center' }}>Kapat</Text></View>}
+                                    onClosePressed={this.questionModalCloseOnPress}
+                                    undoComponent={<View style={[styles.functionButton, {marginRight: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2.25), textAlign: 'center' }}>Geri al</Text></View>}
+                                    onUndoPressed={(id) => {
+                                        this.canvas1.deletePath(id)
+                                    }}
+                                    clearComponent={<View style={[styles.functionButton, {marginRight: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2.25), textAlign: 'center' }}>Temizle</Text></View>}
+                                    onClearPressed={() => {
+                                        this.canvas1.clear()
+                                    }}
+                                    eraseComponent={<View style={[styles.functionButton, {marginLeft: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2.25), textAlign: 'center' }}>Silgi</Text></View>}
+                                    strokeComponent={color => (
+                                        <View style={[{ backgroundColor: color, borderWidth: hp(1)  }, styles.strokeColorButton]} />
+                                    )}
+                                    strokeSelectedComponent={(color, index, changed) => {
+                                        return (
+                                            <View style={[{ backgroundColor: color}, styles.strokeSelectedColorButton]} />
+                                        )
+                                    }}
+                                    strokeWidthComponent={(w) => {
+                                        return (<View style={styles.strokeWidthButton}>
+                                                <View style={{
+                                                    backgroundColor: 'white',
+                                                    width: Math.sqrt(w / 3) * 10, height: Math.sqrt(w / 3) * 10, borderRadius: Math.sqrt(w / 3) * 10 / 2
+                                                }} />
+                                            </View>
+                                        )
+                                    }}
+                                    defaultStrokeIndex={0}
+                                    defaultStrokeWidth={5}
+                                />
                             </View>
                         </View>
                     </Modal>

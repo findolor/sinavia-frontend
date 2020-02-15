@@ -214,7 +214,7 @@ export default StyleSheet.create({
     },
     questionModalStyle: {
         resizeMode: 'contain',
-        height: hp(100),
+        flex: 1,
         width: wp(100)
     },
     closeModalContainer: {
@@ -312,6 +312,40 @@ export default StyleSheet.create({
         marginLeft: wp(1.5),
         textAlign: 'center',
         color: 'black'
+    },
+    strokeColorButton: {
+        width: hp(6),
+        height: hp(6),
+        borderRadius: hp(100),
+        marginBottom: hp(3),
+        marginLeft: wp(3),
+        borderColor: 'transparent'
+    },
+    strokeSelectedColorButton: {
+        width: hp(6),
+        height: hp(6),
+        borderRadius: hp(100),
+        marginBottom: hp(3),
+        marginLeft: wp(3)
+    },
+    strokeWidthButton: {
+        marginTop: hp(4),
+        marginRight: wp(4),
+        width: wp(8),
+        height: wp(8),
+        borderRadius: hp(100),
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#ff9900'
+    },
+    functionButton: {
+        marginTop: hp(4),
+        height: hp(6),
+        width: wp(17),
+        backgroundColor: '#ff9900',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: hp(1),
     }
 })
 

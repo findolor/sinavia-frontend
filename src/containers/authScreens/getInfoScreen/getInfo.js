@@ -117,8 +117,8 @@ class GetInfo extends React.Component {
         super(props)
         this.state = {
             // Register related stuff
-            cityUI: 'Yaşadığın şehri seç',
-            birthDateUI: 'Doğum tarihi seç',
+            cityUI: 'Yaşadığın şehri seç (zorunlu değil)',
+            birthDateUI: 'Doğum tarihi seç (zorunlu değil)',
             isDateTimePickerVisible: false,
             switchValue: false,
             dateColor: '#2E313C',
@@ -130,13 +130,15 @@ class GetInfo extends React.Component {
             email: '',
             password: '',
             birthDate: null,
+            friendInviteCode: null,
             // Dark mode for date time picker
             isDarkModeEnabled: null,
             isModalVisible: false,
             citiesList: citiesList,
             nameBorderColor: '#989696',
             lastnameBorderColor: '#989696',
-            usernameBorderColor: '#989696'
+            usernameBorderColor: '#989696',
+            inviteCodeBorderColor: '#989696'
         }
     }
 
@@ -253,6 +255,14 @@ class GetInfo extends React.Component {
         this.setState({ lastname: text })
     }
 
+    inviteCodeChange = text => {
+        const validCharacters = /[^a-zA-Z0-9]/g
+        if (validCharacters.test(text)) {
+            this.setState({ inviteCodeBorderColor: 'red' })
+        } else this.setState({ inviteCodeBorderColor: '#989696' })
+        this.setState({ friendInviteCode: text })
+    }
+
     registerOnPress = () => {
         if (!this.props.isNetworkConnected) {
             showMessage({
@@ -309,12 +319,27 @@ class GetInfo extends React.Component {
             )
             return
         }
+        if (this.state.inviteCodeBorderColor === 'red') {
+            flashMessages.authInfosOrSettingsError(
+                'Kod hatası',
+                'Lütfen kodu doğru giriniz',
+                {
+                    backgroundColor: '#FFFFFF',
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    borderColor: '#00D9EF',
+                    borderWidth: hp(0.25),
+                    height: hp(10)
+                }
+            )
+            return
+        }
         if (
             this.state.username === null ||
             this.state.name === null ||
-            this.state.lastname === null ||
-            this.state.birthDate === null ||
-            this.state.city === null
+            this.state.lastname === null
+            //this.state.birthDate === null ||
+            //this.state.city === null
         ) {
             flashMessages.authInfosOrSettingsError(
                 'Boş alan hatası',
@@ -338,7 +363,8 @@ class GetInfo extends React.Component {
             city: this.state.city,
             email: this.props.email,
             password: this.props.password,
-            signInMethod: this.props.signInMethod
+            signInMethod: this.props.signInMethod,
+            friendInviteCode: this.state.friendInviteCode
         })
     }
 
@@ -365,9 +391,9 @@ class GetInfo extends React.Component {
                         <Image
                             source={SINAVIA_LOGO}
                             style={{
-                                height: hp(32),
+                                height: hp(25),
                                 resizeMode: 'contain',
-                                marginLeft: wp(6)
+                                marginLeft: wp(4)
                             }}
                         />
                     </View>
@@ -433,6 +459,13 @@ class GetInfo extends React.Component {
                                 </Text>
                             </View>
                         </TouchableOpacity>
+                        <AuthTextInput
+                            placeholder="Arkadaş daveti kodu (zorunlu değil)"
+                            placeholderTextColor="#8A8888"
+                            maxLength={7}
+                            borderColor={this.state.inviteCodeBorderColor}
+                            onChangeText={this.inviteCodeChange}
+                        />
                     </View>
                     <View style={styles.authButtonView}>
                         <AuthButton

@@ -12,7 +12,7 @@ export default StyleSheet.create({
         backgroundColor: '#fcfcfc'
     },
     imageContainer: {
-        flex: 53,
+        flex: 49,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -23,7 +23,8 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     spaceView: {
-        flex: 2
+        flex: 7,
+        width: wp(85)
     },
     sinaviaText: {
         fontFamily: 'Averta-ExtraBoldItalic',
@@ -35,7 +36,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         marginVertical: hp(0),
-        flex: 3,
+        flex: 2,
         width: wp(85)
     },
     separatorLine: {
@@ -43,5 +44,25 @@ export default StyleSheet.create({
         height: hp(0.1),
         width: wp(85),
         borderColor: '#9B9FA4'
+    },
+    oauthInfoText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(1.7),
+        color: '#7A7878',
+        textAlign: 'center'
+    },
+    shadowView: {
+        flex: 1,
+        backgroundColor: '#000000DE',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    licenceView: {
+        height: hp(60),
+        width: wp(85),
+        borderWidth: hp(0.7),
+        borderColor: '#00D9EF',
+        borderRadius: hp(2),
+        backgroundColor: 'white'
     }
 })
