@@ -32,23 +32,11 @@ class LoadingScreen extends React.Component {
             }
         )
         this.client = new Colyseus.Client(GAME_ENGINE_ENDPOINT)
-        // 0.11.0
-        /* this.joinRoom({
-            create: true,
-            examName: 'LGS',
-            courseName: 'Matematik',
-            subjectName: 'Sayilar',
+        this.joinRoom({
+            examId: this.props.examId,
+            courseId: this.props.courseId,
+            subjectId: this.props.subjectId,
             databaseId: this.props.clientDBId
-        }) */
-        // 0.10.8
-        this.client.onOpen.add(() => {
-            this.joinRoom({
-                create: true,
-                examId: this.props.examId,
-                courseId: this.props.courseId,
-                subjectId: this.props.subjectId,
-                databaseId: this.props.clientDBId
-            })
         })
     }
 
@@ -58,91 +46,107 @@ class LoadingScreen extends React.Component {
 
     // Client sends a ready signal when they join a room successfully
     joinRoom = playerOptions => {
-        this.room = this.client.join('rankedRoom', playerOptions)
+        this.client
+            .joinOrCreate('rankedRoom', playerOptions)
+            .then(room => {
+                this.room = room
 
-        // Initiate the bot game after 10 seconds
-        this.botTimeout = setTimeout(() => {
-            this.room.send({
-                action: 'start-with-bot'
+                // Initiate the bot game after 10 seconds
+                this.botTimeout = setTimeout(() => {
+                    this.room.send({
+                        action: 'start-with-bot'
+                    })
+                }, 20000)
+
+                // Opponent information
+                let opponentUsername
+                let opponentId
+                let opponentProfilePicture
+                let opponentCoverPicture
+                let opponentTotalPoints
+                let opponentCity
+                // Client information
+                let playerUsername
+                let playerProfilePicture
+                let playerCoverPicture
+                let playerTotalPoints
+                let playerCity
+
+                this.room.onMessage(message => {
+                    // Message is playerProps
+                    const playerIds = Object.keys(message)
+
+                    playerIds.forEach(element => {
+                        if (this.room.sessionId !== element) {
+                            opponentUsername = message[element].username
+                            opponentId = element
+                            opponentProfilePicture =
+                                message[element].profilePicture
+                            opponentCoverPicture = message[element].coverPicture
+                            opponentTotalPoints = message[element].totalPoints
+                            opponentCity = message[element].city
+                        } else {
+                            playerUsername = message[element].username
+                            playerProfilePicture =
+                                message[element].profilePicture
+                            playerCoverPicture = message[element].coverPicture
+                            playerTotalPoints = message[element].totalPoints
+                            playerCity = message[element].city
+                        }
+                    })
+                    this.room.removeAllListeners()
+                    clearTimeout(this.botTimeout)
+
+                    navigationReplace(
+                        SCENE_KEYS.gameScreens.rankedMatchingScreen,
+                        {
+                            // These are necessary for the game logic
+                            room: this.room,
+                            client: this.client,
+                            // These can be used in both screens
+                            playerUsername: playerUsername,
+                            playerProfilePicture: playerProfilePicture,
+                            playerCoverPicture: playerCoverPicture,
+                            playerCity: playerCity,
+                            opponentUsername: opponentUsername,
+                            opponentId: opponentId,
+                            opponentProfilePicture: opponentProfilePicture,
+                            opponentCoverPicture: opponentCoverPicture,
+                            opponentCity: opponentCity,
+                            // These are used in the match intro screen
+                            courseName: this.props.gameContentMap.courses[
+                                this.props.courseId - 1
+                            ].name,
+                            subjectName: this.props.gameContentMap.subjects[
+                                this.props.subjectId - 1
+                            ].name,
+                            clientPoints: playerTotalPoints,
+                            opponentPoints: opponentTotalPoints
+                        }
+                    )
+                })
+
+                this.room.onLeave(code => {
+                    console.log(code)
+                    clearTimeout(this.botTimeout)
+                    this.backButtonOnPress()
+                })
+
+                this.room.onError(error => {
+                    console.log(error)
+                    clearTimeout(this.botTimeout)
+                    this.backButtonOnPress()
+                })
             })
-        }, 20000)
-
-        // Opponent information
-        let opponentUsername
-        let opponentId
-        let opponentProfilePicture
-        let opponentCoverPicture
-        let opponentTotalPoints
-        // Client information
-        let playerUsername
-        let playerProfilePicture
-        let playerCoverPicture
-        let playerTotalPoints
-
-        this.room.onMessage.add(message => {
-            // Message is playerProps
-            const playerIds = Object.keys(message)
-
-            playerIds.forEach(element => {
-                if (this.client.id !== element) {
-                    opponentUsername = message[element].username
-                    opponentId = element
-                    opponentProfilePicture = message[element].profilePicture
-                    opponentCoverPicture = message[element].coverPicture
-                    opponentTotalPoints = message[element].totalPoints
-                    opponentCity = message[element].city
-                } else {
-                    playerUsername = message[element].username
-                    playerProfilePicture = message[element].profilePicture
-                    playerCoverPicture = message[element].coverPicture
-                    playerTotalPoints = message[element].totalPoints
-                    playerCity = message[element].city
-                }
+            .catch(error => {
+                console.log(error)
+                navigationReset('main')
             })
-            this.room.removeAllListeners()
-            clearTimeout(this.botTimeout)
-
-            navigationReplace(SCENE_KEYS.gameScreens.rankedMatchingScreen, {
-                // These are necessary for the game logic
-                room: this.room,
-                client: this.client,
-                // These can be used in both screens
-                playerUsername: playerUsername,
-                playerProfilePicture: playerProfilePicture,
-                playerCoverPicture: playerCoverPicture,
-                playerCity: playerCity,
-                opponentUsername: opponentUsername,
-                opponentId: opponentId,
-                opponentProfilePicture: opponentProfilePicture,
-                opponentCoverPicture: opponentCoverPicture,
-                opponentCity: opponentCity,
-                // These are used in the match intro screen
-                courseName: this.props.gameContentMap.courses[
-                    this.props.courseId - 1
-                ].name,
-                subjectName: this.props.gameContentMap.subjects[
-                    this.props.subjectId - 1
-                ].name,
-                clientPoints: playerTotalPoints,
-                opponentPoints: opponentTotalPoints
-            })
-        })
-
-        this.room.onError.add(error => {
-            console.log(error)
-            this.backButtonOnPress()
-        })
-
-        this.room.onLeave.add(res => {
-            if (res.code === 1001) return
-            this.backButtonOnPress()
-        })
     }
 
     backButtonOnPress = () => {
         clearTimeout(this.botTimeout)
         this.room.leave()
-        this.client.close()
         navigationReset('main')
     }
 

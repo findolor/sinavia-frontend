@@ -120,9 +120,7 @@ class GroupGame extends React.Component {
             thirdJokerNameSecondWord: '',
             thirdJokerAmount: '',
             // Full question list for favouriting
-            fullQuestionList: [],
-            // Server ping variable
-            isServerPinged: false
+            fullQuestionList: []
         }
     }
 
@@ -143,74 +141,38 @@ class GroupGame extends React.Component {
         this.props.room.send({
             action: 'ready'
         })
-
-        // We set ping intervals to check if we are still connected to the server
-        // This is used because with the current colyseus version this is not possible?
-        this.checkPingInterval = this.checkPingInterval()
-        this.pingInterval = this.pingInterval()
-
-        this.props.room.onStateChange.add(state => {
+        this.props.room.onStateChange(state => {
             // We update the UI after state changes
             this.chooseStateAction(state.groupState)
         })
         // Joker messages come through here
-        this.props.room.onMessage.add(message => {
+        this.props.room.onMessage(message => {
             this.chooseMessageAction(message)
         })
-        this.props.room.onError.add(err => {
+        this.props.room.onLeave(code => {
             let that = this
+            console.log(code)
             this.setState({
                 isQuitGameModalVisible: true,
                 visibleView: 'serverError'
             })
-            setTimeout(() => {
-                that.shutdownGame()
+            setTimeout(function() {
                 that.props.room.leave()
                 navigationReset('main')
             }, 3000)
         })
-        this.props.room.onLeave.add(res => {
+        this.props.room.onError(err => {
             let that = this
-            if (res.code === 1001) return
+            console.log(err)
             this.setState({
                 isQuitGameModalVisible: true,
                 visibleView: 'serverError'
             })
-            setTimeout(() => {
-                that.shutdownGame()
+            setTimeout(function() {
                 that.props.room.leave()
                 navigationReset('main')
             }, 3000)
         })
-    }
-
-    // This timeout checks the ping variable every 20 seconds
-    // If the varible is false that means the connection has dropped
-    checkPingInterval = () => {
-        let that = this
-        return setInterval(() => {
-            if (this.state.isServerPinged)
-                this.setState({ isServerPinged: false })
-            else {
-                this.setState({
-                    isQuitGameModalVisible: true,
-                    visibleView: 'serverError'
-                })
-                setTimeout(() => {
-                    that.shutdownGame()
-                    that.props.room.leave()
-                    navigationReset('main')
-                }, 3000)
-            }
-        }, 15000)
-    }
-
-    // This interval pings the server every 10 seconds
-    pingInterval = () => {
-        let that = this
-        return setInterval(() => {
-            that.props.room.send({ action: 'ping' })
-        }, 10000)
     }
 
     componentWillUnmount() {
@@ -283,8 +245,6 @@ class GroupGame extends React.Component {
         clearTimeout(this.startTimeout)
         clearTimeout(this.updateTimeout)
         clearTimeout(this.finishedTimeout)
-        clearInterval(this.checkPingInterval)
-        clearInterval(this.pingInterval)
 
         // Clear room listeners
         this.props.room.removeAllListeners()
@@ -414,19 +374,14 @@ class GroupGame extends React.Component {
                     isMatchFinished: false
                 })
                 break
-            case 'ping':
-                this.setState({ isServerPinged: true })
-                break
         }
     }
 
     onlyClientMatchQuit = () => {
         this.shutdownGame()
-        this.props.client.close()
         navigationReset('main')
     }
 
-    // TODO Move these actions to their functions
     chooseStateAction = groupState => {
         // We check the action that happened
         switch (groupState.stateInformation) {
@@ -491,7 +446,8 @@ class GroupGame extends React.Component {
     // TODO add a list here that has all the answers
     updatePlayerResults = () => {
         // Player answers to the question
-        const answers = this.state.playerProps[this.props.client.id].answers
+        const answers = this.state.playerProps[this.props.room.sessionId]
+            .answers
 
         // Switch statement for the user
         this.updateAnswers(answers)

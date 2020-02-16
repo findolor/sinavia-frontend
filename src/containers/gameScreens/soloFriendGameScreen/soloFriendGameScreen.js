@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     Modal,
     BackHandler,
-    Vibration
+    Vibration,
+    Alert
 } from 'react-native'
 import styles, { countdownProps } from './style'
 import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas'
@@ -119,9 +120,7 @@ class SoloFriendGameScreen extends React.Component {
             // Friend matches info
             friendMatches: null,
             isQuitGameModalVisible: false,
-            visibleView: '',
-            // Server ping variable
-            isServerPinged: false
+            visibleView: ''
         }
     }
 
@@ -139,74 +138,39 @@ class SoloFriendGameScreen extends React.Component {
         this.props.room.send({
             action: 'ready-solo'
         })
-
-        // We set ping intervals to check if we are still connected to the server
-        // This is used because with the current colyseus version this is not possible?
-        this.checkPingInterval = this.checkPingInterval()
-        this.pingInterval = this.pingInterval()
-
-        this.props.room.onStateChange.add(state => {
+        this.props.room.onStateChange(state => {
             // We update the UI after state changes
             this.chooseStateAction(state.friendState)
         })
         // Joker messages come through here
-        this.props.room.onMessage.add(message => {
+        this.props.room.onMessage(message => {
             this.chooseMessageAction(message)
         })
-        this.props.room.onError.add(err => {
+        this.props.room.onLeave(code => {
+            if (code === 1000) return
             let that = this
+            console.log(code)
             this.setState({
                 isQuitGameModalVisible: true,
                 visibleView: 'serverError'
             })
-            setTimeout(() => {
-                that.shutdownGame()
+            setTimeout(function() {
                 that.props.room.leave()
                 navigationReset('main')
             }, 3000)
         })
-        this.props.room.onLeave.add(res => {
+        this.props.room.onError(err => {
             let that = this
-            if (res.code === 1001) return
+            console.log(err)
             this.setState({
                 isQuitGameModalVisible: true,
                 visibleView: 'serverError'
             })
-            setTimeout(() => {
-                that.shutdownGame()
+            setTimeout(function() {
                 that.props.room.leave()
                 navigationReset('main')
             }, 3000)
         })
-    }
-
-    // This timeout checks the ping variable every 20 seconds
-    // If the varible is false that means the connection has dropped
-    checkPingInterval = () => {
-        let that = this
-        return setInterval(() => {
-            if (this.state.isServerPinged)
-                this.setState({ isServerPinged: false })
-            else {
-                this.setState({
-                    isQuitGameModalVisible: true,
-                    visibleView: 'serverError'
-                })
-                setTimeout(() => {
-                    that.shutdownGame()
-                    that.props.room.leave()
-                    navigationReset('main')
-                }, 3000)
-            }
-        }, 15000)
-    }
-
-    // This interval pings the server every 10 seconds
-    pingInterval = () => {
-        let that = this
-        return setInterval(() => {
-            that.props.room.send({ action: 'ping' })
-        }, 10000)
     }
 
     componentWillUnmount() {
@@ -261,12 +225,9 @@ class SoloFriendGameScreen extends React.Component {
         clearTimeout(this.startTimeout)
         clearTimeout(this.updateTimeout)
         clearTimeout(this.finishedTimeout)
-        clearInterval(this.checkPingInterval)
-        clearInterval(this.pingInterval)
 
         // Clear room listeners
         this.props.room.leave()
-        this.props.client.close()
         // Clear other game related things
         this.setState({ isCountDownRunning: false })
     }
@@ -315,9 +276,6 @@ class SoloFriendGameScreen extends React.Component {
                     userStatistics: message.userStatistics,
                     friendMatches: message.friendMatches
                 })
-                break
-            case 'ping':
-                this.setState({ isServerPinged: true })
                 break
         }
     }
@@ -457,7 +415,8 @@ class SoloFriendGameScreen extends React.Component {
 
     updatePlayerResults = () => {
         // Player answers to the question
-        const answers = this.state.playerProps[this.props.client.id].answers
+        const answers = this.state.playerProps[this.props.room.sessionId]
+            .answers
 
         // Switch statement for the user
         this.updateAnswers(answers)
@@ -687,7 +646,6 @@ class SoloFriendGameScreen extends React.Component {
 
     backButtonOnPress = () => {
         this.props.room.leave()
-        this.props.client.close()
         if (!this.props.clientInformation.isPremium) interstitialAd()
         navigationReset('main')
     }
@@ -839,6 +797,27 @@ class SoloFriendGameScreen extends React.Component {
         )
     }
 
+    serverError() {
+        return (
+            <View
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>Sunucu hatası</Text>
+                        <Text style={styles.areYouSureText}>
+                            Sonuç sayfasına yönlendirileceksin
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -945,48 +924,173 @@ class SoloFriendGameScreen extends React.Component {
                         animationType={'fade'}
                     >
                         <View style={styles.questionModalContainer}>
-                            <View style={{ backgroundColor: 'transparent', flex: 1, width: wp(100), justifyContent: 'center'}}>
-                                <View style={{ position: 'absolute', height: hp(78), width: wp(100), justifyContent: 'center'}}>
+                            <View
+                                style={{
+                                    backgroundColor: 'transparent',
+                                    flex: 1,
+                                    width: wp(100),
+                                    justifyContent: 'center'
+                                }}
+                            >
+                                <View
+                                    style={{
+                                        position: 'absolute',
+                                        height: hp(78),
+                                        width: wp(100),
+                                        justifyContent: 'center'
+                                    }}
+                                >
                                     <Image
                                         source={{
                                             uri: this.state.questionList[
                                                 this.state.questionNumber
-                                                ]
+                                            ]
                                         }}
                                         style={styles.questionModalStyle}
                                     />
                                 </View>
                                 <RNSketchCanvas
-                                    ref={ref => this.canvas1 = ref}
-                                    containerStyle={{ backgroundColor: 'transparent', flex: 1 }}
-                                    canvasStyle={{ backgroundColor: 'transparent', flex: 1 }}
-                                    onStrokeEnd={data => {
+                                    ref={ref => (this.canvas1 = ref)}
+                                    containerStyle={{
+                                        backgroundColor: 'transparent',
+                                        flex: 1
                                     }}
-                                    closeComponent={<View style={[styles.functionButton, {marginLeft: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2.25), textAlign: 'center' }}>Kapat</Text></View>}
-                                    onClosePressed={this.questionModalCloseOnPress}
-                                    undoComponent={<View style={[styles.functionButton, {marginRight: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2.25), textAlign: 'center' }}>Geri al</Text></View>}
-                                    onUndoPressed={(id) => {
+                                    canvasStyle={{
+                                        backgroundColor: 'transparent',
+                                        flex: 1
+                                    }}
+                                    onStrokeEnd={data => {}}
+                                    closeComponent={
+                                        <View
+                                            style={[
+                                                styles.functionButton,
+                                                { marginLeft: wp(4) }
+                                            ]}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontFamily: 'Averta-Bold',
+                                                    color: 'white',
+                                                    fontSize: hp(2.25),
+                                                    textAlign: 'center'
+                                                }}
+                                            >
+                                                Kapat
+                                            </Text>
+                                        </View>
+                                    }
+                                    onClosePressed={
+                                        this.questionModalCloseOnPress
+                                    }
+                                    undoComponent={
+                                        <View
+                                            style={[
+                                                styles.functionButton,
+                                                { marginRight: wp(4) }
+                                            ]}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontFamily: 'Averta-Bold',
+                                                    color: 'white',
+                                                    fontSize: hp(2.25),
+                                                    textAlign: 'center'
+                                                }}
+                                            >
+                                                Geri al
+                                            </Text>
+                                        </View>
+                                    }
+                                    onUndoPressed={id => {
                                         this.canvas1.deletePath(id)
                                     }}
-                                    clearComponent={<View style={[styles.functionButton, {marginRight: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2.25), textAlign: 'center' }}>Temizle</Text></View>}
+                                    clearComponent={
+                                        <View
+                                            style={[
+                                                styles.functionButton,
+                                                { marginRight: wp(4) }
+                                            ]}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontFamily: 'Averta-Bold',
+                                                    color: 'white',
+                                                    fontSize: hp(2.25),
+                                                    textAlign: 'center'
+                                                }}
+                                            >
+                                                Temizle
+                                            </Text>
+                                        </View>
+                                    }
                                     onClearPressed={() => {
                                         this.canvas1.clear()
                                     }}
-                                    eraseComponent={<View style={[styles.functionButton, {marginLeft: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2.25), textAlign: 'center' }}>Silgi</Text></View>}
+                                    eraseComponent={
+                                        <View
+                                            style={[
+                                                styles.functionButton,
+                                                { marginLeft: wp(4) }
+                                            ]}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontFamily: 'Averta-Bold',
+                                                    color: 'white',
+                                                    fontSize: hp(2.25),
+                                                    textAlign: 'center'
+                                                }}
+                                            >
+                                                Silgi
+                                            </Text>
+                                        </View>
+                                    }
                                     strokeComponent={color => (
-                                        <View style={[{ backgroundColor: color, borderWidth: hp(1)  }, styles.strokeColorButton]} />
+                                        <View
+                                            style={[
+                                                {
+                                                    backgroundColor: color,
+                                                    borderWidth: hp(1)
+                                                },
+                                                styles.strokeColorButton
+                                            ]}
+                                        />
                                     )}
-                                    strokeSelectedComponent={(color, index, changed) => {
+                                    strokeSelectedComponent={(
+                                        color,
+                                        index,
+                                        changed
+                                    ) => {
                                         return (
-                                            <View style={[{ backgroundColor: color}, styles.strokeSelectedColorButton]} />
+                                            <View
+                                                style={[
+                                                    { backgroundColor: color },
+                                                    styles.strokeSelectedColorButton
+                                                ]}
+                                            />
                                         )
                                     }}
-                                    strokeWidthComponent={(w) => {
-                                        return (<View style={styles.strokeWidthButton}>
-                                                <View style={{
-                                                    backgroundColor: 'white',
-                                                    width: Math.sqrt(w / 3) * 10, height: Math.sqrt(w / 3) * 10, borderRadius: Math.sqrt(w / 3) * 10 / 2
-                                                }} />
+                                    strokeWidthComponent={w => {
+                                        return (
+                                            <View
+                                                style={styles.strokeWidthButton}
+                                            >
+                                                <View
+                                                    style={{
+                                                        backgroundColor:
+                                                            'white',
+                                                        width:
+                                                            Math.sqrt(w / 3) *
+                                                            10,
+                                                        height:
+                                                            Math.sqrt(w / 3) *
+                                                            10,
+                                                        borderRadius:
+                                                            (Math.sqrt(w / 3) *
+                                                                10) /
+                                                            2
+                                                    }}
+                                                />
                                             </View>
                                         )
                                     }}

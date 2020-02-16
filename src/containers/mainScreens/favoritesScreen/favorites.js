@@ -12,7 +12,12 @@ import {
     Platform,
     Easing
 } from 'react-native'
-import { navigationPop, navigationPush, navigationReplace, SCENE_KEYS } from '../../../services/navigationService'
+import {
+    navigationPop,
+    navigationPush,
+    navigationReplace,
+    SCENE_KEYS
+} from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import styles from './style'
 import NotchView from '../../../components/notchView'
@@ -30,7 +35,10 @@ import QUESTION_MARK from '../../../assets/mainScreens/whiteQuestionMarkLogo.png
 import { clientActions } from '../../../redux/client/actions'
 import NO_RESULTS_FAV from '../../../assets/noResultsFav.png'
 
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
 import ImageModal from 'react-native-image-modal'
 import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas'
 
@@ -40,7 +48,6 @@ class Favorites extends React.Component {
         this.state = {
             data: [],
             isModalVisible: false,
-            isZoomModalVisible: false,
             galleryPosition: 1,
             favIconSelected: false,
             // ScrollView item list
@@ -50,9 +57,9 @@ class Favorites extends React.Component {
             // Favoruite variables
             favouriteIcon: unselectedFav,
             isFaved: false,
-            solvingImg: 1,
-            solvingVideo: 1,
-            solving: false
+            solvedQuestionImage: null,
+            solvedQuestionVideo: null,
+            isSolvedQuestionVisible: false
         }
     }
 
@@ -184,7 +191,10 @@ class Favorites extends React.Component {
                 scrollViewList.push(itemList)
             })
 
-            this.setState({ scrollViewList: scrollViewList, solving: false })
+            this.setState({
+                scrollViewList: scrollViewList,
+                isSolvedQuestionVisible: false
+            })
             return true
         })
     }
@@ -202,7 +212,10 @@ class Favorites extends React.Component {
                 data: questionList,
                 correctAnswer: questionList[index].question.correctAnswer
             },
-            () => this.checkFavouriteStatus()
+            () => {
+                this.checkFavouriteStatus()
+                this.checkSolvedQuestionImageVideo()
+            }
         )
     }
 
@@ -262,6 +275,15 @@ class Favorites extends React.Component {
         } else {
             this.setState({ favouriteIcon: selectedFav, isFaved: true })
         }
+    }
+
+    checkSolvedQuestionImageVideo = () => {
+        this.setState({
+            solvedQuestionImage: this.state.data[this.state.galleryPosition - 1]
+                .question.solvedQuestionImage,
+            solvedQuestionVideo: this.state.data[this.state.galleryPosition - 1]
+                .question.solvedQuestionVideo
+        })
     }
 
     favouriteOnPress = () => {
@@ -345,9 +367,12 @@ class Favorites extends React.Component {
                 ),
                 correctAnswer: this.state.data[this.state.galleryPosition - 1]
                     .question.correctAnswer,
-                solving: false
+                isSolvedQuestionVisible: false
             },
-            this.checkFavouriteStatus()
+            () => {
+                this.checkFavouriteStatus()
+                this.checkSolvedQuestionImageVideo()
+            }
         )
     }
 
@@ -368,25 +393,23 @@ class Favorites extends React.Component {
         }
     }
 
-    showSolving = () => {
-        this.setState({solving: !this.state.solving})
-    }
-
-    goToVideo = () => {
-        this.setState({isModalVisible: false})
-        navigationPush(SCENE_KEYS.mainScreens.video, {
-            videoUri: 'https://player.vimeo.com/video/8175286/config'
+    showSolvedQuestion = () => {
+        this.setState({
+            isSolvedQuestionVisible: !this.state.isSolvedQuestionVisible
         })
     }
 
-    zoomOnPress = () => {
-        this.setState({ isZoomModalVisible: true })
+    goToVideo = () => {
+        this.setState({ isModalVisible: false, isSolvedQuestionVisible: false })
+        navigationPush(SCENE_KEYS.mainScreens.video, {
+            videoUri: this.state.solvedQuestionVideo
+        })
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <NotchView/>
+                <NotchView />
                 <View style={styles.header}>
                     <TouchableOpacity onPress={this.returnButtonOnPress}>
                         <View style={styles.returnLogoContainer}>
@@ -407,24 +430,7 @@ class Favorites extends React.Component {
                         await this.loadScreen()
                     }}
                 >
-                    <NotchView color={'#00D9EF'}/>
-                    <Modal visible={this.state.isZoomModalVisible}>
-                        <View style={styles.zoomModalContainer}>
-                            <View style={{ flex: 1, width: wp(100), justifyContent: 'center', alignItems: 'center' }}>
-                                <View style={{
-                                    height: hp(80),
-                                    width: wp(100),
-                                    justifyContent: 'center',
-                                    alignItems: 'center'
-                                }}>
-                                    <Image
-                                        source={{ uri: 'https://lh3.googleusercontent.com/proxy/iCYubhYEtP4-Nu-EIczOrR1PLiZWX3kTj38SF_E-vI98xFkagqsOXEiVWAzSrczThFbbv3m_Jf1_eAfyZzDoSpe6vj_uIzA2BrrwOkzEE6exLzQkcdDNTwlz-uSM' }}
-                                        style={styles.questionModalStyle}
-                                    />
-                                </View>
-                            </View>
-                        </View>
-                    </Modal>
+                    <NotchView color={'#00D9EF'} />
                     <View style={styles.modalHeader}>
                         <View style={styles.backButtonContainer}>
                             <TouchableOpacity
@@ -465,8 +471,8 @@ class Favorites extends React.Component {
                             initialScrollIndex={this.state.startQuestionIndex}
                             showsHorizontalScrollIndicator={false}
                             onScroll={this.galleryOnScroll}
-                            onScrollToIndexFailed={() => {
-                            }}
+                            onScrollToIndexFailed={() => {}}
+                            extraData={this.state.isSolvedQuestionVisible}
                             renderItem={({ item, index }) => {
                                 return (
                                     <View style={styles.galleryView}>
@@ -483,39 +489,32 @@ class Favorites extends React.Component {
                                                 {
                                                     this.props.gameContentMap
                                                         .subjects[
-                                                    item.question
-                                                        .subjectId - 1
-                                                        ].name
+                                                        item.question
+                                                            .subjectId - 1
+                                                    ].name
                                                 }
                                             </Text>
                                         </View>
-                                        {this.state.solving === false
-                                            ? <View
-                                                style={styles.questionInModalView}
-                                            >
-                                                <ImageModal
-                                                    resizeMode="contain"
-                                                    imageBackgroundColor="#ffffff"
-                                                    overlayBackgroundColor="#000000DE"
-                                                    style={styles.questionInModal}
-                                                    source={{
-                                                        uri:
-                                                        item.question
-                                                            .questionLink
-                                                    }}
-                                                />
-                                            </View>
-                                            : <View
-                                                style={styles.questionInModalView}
-                                            >
-                                                <ImageModal
-                                                    resizeMode="contain"
-                                                    imageBackgroundColor="#ffffff"
-                                                    overlayBackgroundColor="#000000DE"
-                                                    style={styles.questionInModal}
-                                                    source={{ uri: 'https://lh3.googleusercontent.com/proxy/iCYubhYEtP4-Nu-EIczOrR1PLiZWX3kTj38SF_E-vI98xFkagqsOXEiVWAzSrczThFbbv3m_Jf1_eAfyZzDoSpe6vj_uIzA2BrrwOkzEE6exLzQkcdDNTwlz-uSM' }}
-                                                />
-                                            </View>}
+                                        <View
+                                            style={styles.questionInModalView}
+                                        >
+                                            <ImageModal
+                                                resizeMode="contain"
+                                                imageBackgroundColor="#ffffff"
+                                                overlayBackgroundColor="#000000DE"
+                                                style={styles.questionInModal}
+                                                source={{
+                                                    uri:
+                                                        this.state
+                                                            .isSolvedQuestionVisible ===
+                                                        false
+                                                            ? item.question
+                                                                  .questionLink
+                                                            : this.state
+                                                                  .solvedQuestionImage
+                                                }}
+                                            />
+                                        </View>
                                     </View>
                                 )
                             }}
@@ -556,11 +555,14 @@ class Favorites extends React.Component {
                                     : 'Favoriye ekle'}
                             </Text>
                         </View>
-                        {this.state.solvingImg !== null
-                        ?   <View>
-                                {this.state.solving === false
-                                    ? <View style={styles.answerContainer}>
-                                        <TouchableOpacity onPress={this.showSolving}>
+                        {this.state.solvedQuestionImage !== null ? (
+                            <View>
+                                {this.state.isSolvedQuestionVisible ===
+                                false ? (
+                                    <View style={styles.answerContainer}>
+                                        <TouchableOpacity
+                                            onPress={this.showSolvedQuestion}
+                                        >
                                             <Image
                                                 source={SOLVING_LOGO}
                                                 style={styles.favIcon}
@@ -570,8 +572,11 @@ class Favorites extends React.Component {
                                             Çözüme bak
                                         </Text>
                                     </View>
-                                    : <View style={styles.answerContainer}>
-                                        <TouchableOpacity onPress={this.showSolving}>
+                                ) : (
+                                    <View style={styles.answerContainer}>
+                                        <TouchableOpacity
+                                            onPress={this.showSolvedQuestion}
+                                        >
                                             <Image
                                                 source={QUESTION_MARK}
                                                 style={styles.favIcon}
@@ -580,23 +585,23 @@ class Favorites extends React.Component {
                                         <Text style={styles.answerText}>
                                             Soruya Dön
                                         </Text>
-                                    </View>}
+                                    </View>
+                                )}
                             </View>
-                        :null}
-                        {this.state.solvingVideo !== null
-                            ? <View style={styles.answerContainer}>
-                                    <TouchableOpacity onPress={this.goToVideo}>
-                                        <Image
-                                            source={VIDEO_LOGO}
-                                            style={styles.favIcon}
-                                        />
-                                    </TouchableOpacity>
-                                    <Text style={styles.answerText}>
-                                        Çözümü izle
-                                    </Text>
+                        ) : null}
+                        {this.state.solvedQuestionVideo !== null ? (
+                            <View style={styles.answerContainer}>
+                                <TouchableOpacity onPress={this.goToVideo}>
+                                    <Image
+                                        source={VIDEO_LOGO}
+                                        style={styles.favIcon}
+                                    />
+                                </TouchableOpacity>
+                                <Text style={styles.answerText}>
+                                    Çözümü izle
+                                </Text>
                             </View>
-                            : null
-                        }
+                        ) : null}
                     </View>
                 </Modal>
                 {Object.keys(this.state.scrollViewList).length !== 0 && (

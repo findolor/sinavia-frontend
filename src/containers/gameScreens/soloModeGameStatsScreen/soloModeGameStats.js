@@ -12,7 +12,8 @@ import {
 import {
     navigationReset,
     navigationReplace,
-    SCENE_KEYS, navigationPush
+    SCENE_KEYS,
+    navigationPush
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
@@ -30,7 +31,10 @@ import SINAVIA_LOGO from '../../../assets/sinavia_logo_cut.png'
 import VIDEO_LOGO from '../../../assets/mainScreens/blueVideoLogo.png'
 import SOLVING_LOGO from '../../../assets/mainScreens/blueSolvingLogo.png'
 
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
 import ImageModal from 'react-native-image-modal'
 
 class SoloModeGameStats extends React.Component {
@@ -62,18 +66,18 @@ class SoloModeGameStats extends React.Component {
             // Replay button disable var
             isReplayDisabled: false,
             //these states will be updated for every questions
-            solvingImg: 1,
-            solvingVideo: 1,
-            solving: false
+            solvedQuestionImage: null,
+            solvedQuestionVideo: null,
+            isSolvedQuestionVisible: false
         }
     }
 
     async componentDidMount() {
         await this.loadScreen()
-        this.props.room.onMessage.add(message => {
+        this.props.room.onMessage(message => {
             this.chooseMessageAction(message)
         })
-        this.props.room.onError.add(err => console.log(err))
+        this.props.room.onError(err => console.log(err))
     }
 
     chooseMessageAction = message => {
@@ -154,7 +158,7 @@ class SoloModeGameStats extends React.Component {
                 },
                 () => {
                     this.checkFavouriteStatus()
-
+                    this.checkSolvedQuestionImageVideo()
                     resolve(true)
                 }
             )
@@ -177,6 +181,17 @@ class SoloModeGameStats extends React.Component {
         }
     }
 
+    checkSolvedQuestionImageVideo = () => {
+        this.setState({
+            solvedQuestionImage: this.props.fullQuestionList[
+                this.state.questionPosition - 1
+            ].solvedQuestionImage,
+            solvedQuestionVideo: this.props.fullQuestionList[
+                this.state.questionPosition - 1
+            ].solvedQuestionVideo
+        })
+    }
+
     // Used for getting the index of questions from scroll view
     handleScrollHorizontal = event => {
         this.scrollX = event.nativeEvent.contentOffset.x
@@ -193,9 +208,12 @@ class SoloModeGameStats extends React.Component {
                     ),
                     Object.keys(this.props.questionList).length /*Image count*/
                 ),
-                solving: false
+                isSolvedQuestionVisible: false
             },
-            this.checkFavouriteStatus()
+            () => {
+                this.checkFavouriteStatus()
+                this.checkSolvedQuestionImageVideo()
+            }
         )
     }
 
@@ -243,7 +261,6 @@ class SoloModeGameStats extends React.Component {
 
     mainScreenButtonOnPress = () => {
         this.props.room.leave()
-        this.props.client.close()
         navigationReset('main')
     }
 
@@ -267,16 +284,17 @@ class SoloModeGameStats extends React.Component {
         }
     }
 
-    showSolving = () => {
-        this.setState({solving: !this.state.solving})
+    showSolvedQuestionImage = () => {
+        this.setState({
+            isSolvedQuestionVisible: !this.state.isSolvedQuestionVisible
+        })
     }
 
     goToVideo = () => {
-            navigationPush(SCENE_KEYS.mainScreens.video, {
-                videoUri: 'https://player.vimeo.com/video/8175286/config'
-            })
+        navigationPush(SCENE_KEYS.mainScreens.video, {
+            videoUri: this.state.solvedQuestionVideo
+        })
     }
-
 
     render() {
         const background = chooseImage(this.state.examId, true)
@@ -292,10 +310,10 @@ class SoloModeGameStats extends React.Component {
                         source={background}
                         style={styles.background}
                     >
-                        <View style={styles.backgroundImgShadowView}/>
+                        <View style={styles.backgroundImgShadowView} />
                     </ImageBackground>
                     <View style={styles.logoContainer}>
-                        <Image source={SINAVIA_LOGO} style={styles.logoImg}/>
+                        <Image source={SINAVIA_LOGO} style={styles.logoImg} />
                     </View>
                     <View style={styles.resultsContainer}>
                         <View style={styles.courseTextView}>
@@ -395,87 +413,136 @@ class SoloModeGameStats extends React.Component {
                 </View>
                 <View style={styles.secondScreenView}>
                     <View style={styles.questionNumberContainer}>
-                        {this.state.solvingImg !== null
-                            ? <View style={{
+                        {this.state.solvedQuestionImage !== null ? (
+                            <View
+                                style={{
+                                    position: 'absolute',
+                                    height: hp(7),
+                                    width: wp(34),
+                                    justifyContent: 'center',
+                                    marginLeft: wp(0)
+                                }}
+                            >
+                                {this.state.isSolvedQuestionVisible ===
+                                false ? (
+                                    <TouchableOpacity
+                                        onPress={this.showSolvedQuestionImage}
+                                        style={styles.videoButton}
+                                    >
+                                        <Image
+                                            source={SOLVING_LOGO}
+                                            style={styles.solvingLogo}
+                                        />
+                                        <Text style={styles.videoButtonText}>
+                                            Çözüme bak
+                                        </Text>
+                                    </TouchableOpacity>
+                                ) : (
+                                    <TouchableOpacity
+                                        onPress={this.showSolvedQuestionImage}
+                                        style={styles.videoButton}
+                                    >
+                                        <Image
+                                            source={SOLVING_LOGO}
+                                            style={styles.solvingLogo}
+                                        />
+                                        <Text style={styles.videoButtonText}>
+                                            Soruya Dön
+                                        </Text>
+                                    </TouchableOpacity>
+                                )}
+                            </View>
+                        ) : (
+                            <View />
+                        )}
+                        <View
+                            style={{
                                 position: 'absolute',
                                 height: hp(7),
-                                width: wp(34),
+                                width: wp(22),
                                 justifyContent: 'center',
-                                marginLeft: wp(0)
-                            }}>
-                                {this.state.solving === false
-                                    ? <TouchableOpacity onPress={this.showSolving} style={styles.videoButton}>
-                                        <Image source={SOLVING_LOGO} style={styles.solvingLogo}/>
-                                        <Text style={styles.videoButtonText}>Çözüme bak</Text>
-                                    </TouchableOpacity>
-                                    : <TouchableOpacity onPress={this.showSolving} style={styles.videoButton}>
-                                        <Image source={SOLVING_LOGO} style={styles.solvingLogo}/>
-                                        <Text style={styles.videoButtonText}>Soruya Dön</Text>
-                                    </TouchableOpacity>}
-                            </View>
-                            : <View/>
-                        }
-                        <View style={{
-                            position: 'absolute',
-                            height: hp(7),
-                            width: wp(22),
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            marginLeft: wp(34)
-                        }}>
+                                alignItems: 'center',
+                                marginLeft: wp(34)
+                            }}
+                        >
                             <Text style={styles.questionNumberText}>
                                 {this.state.questionPosition}/
-                                {Object.keys(this.state.allQuestionsList).length}
+                                {
+                                    Object.keys(this.state.allQuestionsList)
+                                        .length
+                                }
                             </Text>
                         </View>
-                        {this.state.solvingVideo !== null
-                            ? <View style={{
-                                position: 'absolute',
-                                height: hp(7),
-                                width: wp(34),
-                                justifyContent: 'center',
-                                marginLeft: wp(56)
-                            }}>
-                                <TouchableOpacity onPress={this.goToVideo} style={styles.videoButton}>
-                                    <Image source={VIDEO_LOGO} style={styles.videoLogo}/>
-                                    <Text style={styles.videoButtonText}>Çözümü izle</Text>
+                        {this.state.solvedQuestionVideo !== null ? (
+                            <View
+                                style={{
+                                    position: 'absolute',
+                                    height: hp(7),
+                                    width: wp(34),
+                                    justifyContent: 'center',
+                                    marginLeft: wp(56)
+                                }}
+                            >
+                                <TouchableOpacity
+                                    onPress={this.goToVideo}
+                                    style={styles.videoButton}
+                                >
+                                    <Image
+                                        source={VIDEO_LOGO}
+                                        style={styles.videoLogo}
+                                    />
+                                    <Text style={styles.videoButtonText}>
+                                        Çözümü izle
+                                    </Text>
                                 </TouchableOpacity>
                             </View>
-                            : <View/>
-                        }
+                        ) : (
+                            <View />
+                        )}
                     </View>
-                    <FlatList ref={ref => {
-                        this.flatListRef = ref
-                    }}
-                              horizontal={true}
-                              pagingEnabled={true}
-                              data={this.state.allQuestionsList}
-                              onScroll={this.handleScrollHorizontal}
-                              showsHorizontalScrollIndicator={false}
-                              extraData={this.state.solving}
-                              renderItem={({ item, index }) => {
-                                  return (
-                                      <View style={styles.scrollQuestionContainer}>
-                                          {this.state.solving === false
-                                              ?
-                                              <View style={styles.questionContainer}><ImageModal
-                                                  resizeMode="contain"
-                                                  imageBackgroundColor="#ffffff"
-                                                  overlayBackgroundColor="#000000DE"
-                                                  style={styles.questionStyle}
-                                                  source={{ uri: item }}
-                                              /></View>
-                                              : <View style={styles.questionContainer}><ImageModal
-                                                  resizeMode="contain"
-                                                  imageBackgroundColor="#ffffff"
-                                                  overlayBackgroundColor="#000000DE"
-                                                  style={styles.questionStyle}
-                                                  source={{ uri: 'https://lh3.googleusercontent.com/proxy/iCYubhYEtP4-Nu-EIczOrR1PLiZWX3kTj38SF_E-vI98xFkagqsOXEiVWAzSrczThFbbv3m_Jf1_eAfyZzDoSpe6vj_uIzA2BrrwOkzEE6exLzQkcdDNTwlz-uSM' }}
-                                              /></View>}
-                                      </View>
-                                  )
-                              }}
-                              keyExtractor={(item, index) => index.toString()}></FlatList>
+                    <FlatList
+                        ref={ref => {
+                            this.flatListRef = ref
+                        }}
+                        horizontal={true}
+                        pagingEnabled={true}
+                        data={this.state.allQuestionsList}
+                        onScroll={this.handleScrollHorizontal}
+                        showsHorizontalScrollIndicator={false}
+                        extraData={this.state.isSolvedQuestionVisible}
+                        renderItem={({ item, index }) => {
+                            return (
+                                <View style={styles.scrollQuestionContainer}>
+                                    {this.state.isSolvedQuestionVisible ===
+                                    false ? (
+                                        <View style={styles.questionContainer}>
+                                            <ImageModal
+                                                resizeMode="contain"
+                                                imageBackgroundColor="#ffffff"
+                                                overlayBackgroundColor="#000000DE"
+                                                style={styles.questionStyle}
+                                                source={{ uri: item }}
+                                            />
+                                        </View>
+                                    ) : (
+                                        <View style={styles.questionContainer}>
+                                            <ImageModal
+                                                resizeMode="contain"
+                                                imageBackgroundColor="#ffffff"
+                                                overlayBackgroundColor="#000000DE"
+                                                style={styles.questionStyle}
+                                                source={{
+                                                    uri: this.state
+                                                        .solvedQuestionImage
+                                                }}
+                                            />
+                                        </View>
+                                    )}
+                                </View>
+                            )
+                        }}
+                        keyExtractor={(item, index) => index.toString()}
+                    ></FlatList>
                     <View style={styles.favAndAnswerContainer}>
                         <View style={styles.answerContainer}>
                             <View
@@ -492,8 +559,8 @@ class SoloModeGameStats extends React.Component {
                                 >
                                     {this.answerSwitcher(
                                         this.props.playerProps.answers[
-                                        this.state.questionPosition - 1
-                                            ].correctAnswer
+                                            this.state.questionPosition - 1
+                                        ].correctAnswer
                                     )}
                                 </Text>
                             </View>
@@ -524,8 +591,8 @@ class SoloModeGameStats extends React.Component {
                                 >
                                     {this.answerSwitcher(
                                         this.props.playerProps.answers[
-                                        this.state.questionPosition - 1
-                                            ].answer
+                                            this.state.questionPosition - 1
+                                        ].answer
                                     )}
                                 </Text>
                             </View>

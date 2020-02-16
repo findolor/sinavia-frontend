@@ -1,5 +1,14 @@
 import React from 'react'
-import { Image, View, Text, Modal, TouchableOpacity } from 'react-native'
+import {
+    Image,
+    View,
+    Text,
+    Modal,
+    TouchableOpacity,
+    Platform,
+    Alert,
+    ActivityIndicator
+} from 'react-native'
 import {
     navigationPush,
     navigationReplace
@@ -23,16 +32,27 @@ import { flashMessages } from '../../../services/flashMessageBuilder'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
 import { deviceStorage } from '../../../services/deviceStorage'
+import appleAuth, {
+    AppleAuthRequestOperation,
+    AppleAuthRequestScope,
+    AppleAuthCredentialState
+} from '@invertase/react-native-apple-authentication'
+import firebase from 'react-native-firebase'
 
 class Opening extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            isLicenceModalVisible: false
+            isLicenceModalVisible: false,
+            isLogging: false
         }
     }
     async componentDidMount() {
         await fcmService.checkPermissions()
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.indicatorTimeout)
     }
 
     signInWithGoogle = async () => {
@@ -41,7 +61,7 @@ class Opening extends React.Component {
             const userInfo = await GoogleSignin.signIn()
 
             // Getting the user from our db
-            makeGetRequest(apiServicesTree.userApi.checkUser, {
+            makeGetRequest(apiServicesTree.userApi.checkUserWithEmail, {
                 email: userInfo.user.email
             }).then(async response => {
                 // If the user doesn't exist we create one
@@ -52,7 +72,7 @@ class Opening extends React.Component {
                         signInMethod: 'google'
                     })
                 } else {
-                    if (response.signInMethod === 'normal') {
+                    if (response === 'normal') {
                         flashMessages.generalErrorWithProps(
                             'Giriş hatası',
                             "Lütfen 'Giriş Yap' ile giriş yapınız.",
@@ -69,10 +89,10 @@ class Opening extends React.Component {
                         await GoogleSignin.signOut()
                         return
                     }
-                    if (response.signInMethod === 'facebook') {
+                    if (response === 'apple') {
                         flashMessages.generalErrorWithProps(
                             'Giriş hatası',
-                            "Lütfen 'Facebook' ile giriş yapınız.",
+                            "Lütfen 'Apple' ile giriş yapınız.",
                             {
                                 backgroundColor: '#FFFFFF',
                                 borderBottomLeftRadius: 10,
@@ -91,6 +111,10 @@ class Opening extends React.Component {
                         'signInMethod',
                         'google'
                     )
+                    this.setState({ isLogging: true })
+                    this.indicatorTimeout = setTimeout(() => {
+                        this.setState({ isLogging: false })
+                    }, 4000)
                     this.props.loginUser({
                         email: userInfo.user.email,
                         password: 'null'
@@ -111,6 +135,229 @@ class Opening extends React.Component {
         }
     }
 
+    logoutFromApple = async () => {
+        try {
+            // performs logout request
+            const appleAuthRequestResponse = await appleAuth.performRequest({
+                requestedOperation: AppleAuthRequestOperation.LOGOUT
+            })
+
+            // get current authentication state for user
+            const credentialState = await appleAuth.getCredentialStateForUser(
+                appleAuthRequestResponse.user
+            )
+
+            // use credentialState response to ensure the user credential's have been revoked
+            if (credentialState === AppleAuthCredentialState.REVOKED) {
+                // user is unauthenticated
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    signInWithApple = () => {
+        if (!appleAuth.isSupported) {
+            flashMessages.generalErrorWithProps(
+                'Hata!',
+                'Lütfen telefonunuzu güncelleyiniz.',
+                {
+                    backgroundColor: '#FFFFFF',
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    borderColor: '#00D9EF',
+                    borderWidth: hp(0.25),
+                    height: hp(10)
+                }
+            )
+            return
+        }
+        Alert.alert(
+            'Apple ile giriş',
+            'Lütfen çıkan ekranda e-postamı paylaş seçeneğini seçiniz.',
+            [
+                {
+                    text: 'Tamam',
+                    onPress: async () => {
+                        try {
+                            // performs login request
+                            const appleAuthRequestResponse = await appleAuth.performRequest(
+                                {
+                                    requestedOperation:
+                                        AppleAuthRequestOperation.LOGIN,
+                                    requestedScopes: [
+                                        AppleAuthRequestScope.EMAIL,
+                                        AppleAuthRequestScope.FULL_NAME
+                                    ]
+                                }
+                            )
+
+                            // get current authentication state for user
+                            const credentialState = await appleAuth.getCredentialStateForUser(
+                                appleAuthRequestResponse.user
+                            )
+
+                            // use credentialState response to ensure the user is authenticated
+                            if (
+                                credentialState ===
+                                AppleAuthCredentialState.AUTHORIZED
+                            ) {
+                                if (appleAuthRequestResponse.email !== null) {
+                                    makeGetRequest(
+                                        apiServicesTree.userApi
+                                            .checkUserWithEmail,
+                                        {
+                                            email:
+                                                appleAuthRequestResponse.email
+                                        }
+                                    ).then(async response => {
+                                        // If the user doesn't exist we create one
+                                        if (response === null) {
+                                            await deviceStorage.saveItemToStorage(
+                                                'appleIdentityToken',
+                                                appleAuthRequestResponse.user
+                                            )
+                                            navigationReplace(
+                                                SCENE_KEYS.authScreens.getInfo,
+                                                {
+                                                    email:
+                                                        appleAuthRequestResponse.email,
+                                                    password: 'null',
+                                                    signInMethod: 'apple'
+                                                }
+                                            )
+                                        } else {
+                                            if (response === 'normal') {
+                                                flashMessages.generalErrorWithProps(
+                                                    'Giriş hatası',
+                                                    "Lütfen 'Giriş Yap' ile giriş yapınız.",
+                                                    {
+                                                        backgroundColor:
+                                                            '#FFFFFF',
+                                                        borderBottomLeftRadius: 10,
+                                                        borderBottomRightRadius: 10,
+                                                        borderColor: '#00D9EF',
+                                                        borderWidth: hp(0.25),
+                                                        height: hp(10)
+                                                    }
+                                                )
+                                                await this.logoutFromApple()
+                                                return
+                                            }
+                                            if (response === 'google') {
+                                                flashMessages.generalErrorWithProps(
+                                                    'Giriş hatası',
+                                                    "Lütfen 'Google' ile giriş yapınız.",
+                                                    {
+                                                        backgroundColor:
+                                                            '#FFFFFF',
+                                                        borderBottomLeftRadius: 10,
+                                                        borderBottomRightRadius: 10,
+                                                        borderColor: '#00D9EF',
+                                                        borderWidth: hp(0.25),
+                                                        height: hp(10)
+                                                    }
+                                                )
+                                                await this.logoutFromApple()
+                                                return
+                                            }
+                                        }
+                                    })
+                                }
+                                // Getting the user from our db
+                                else
+                                    makeGetRequest(
+                                        apiServicesTree.userApi
+                                            .checkUserWithIdentityToken,
+                                        {
+                                            identityToken:
+                                                appleAuthRequestResponse.user
+                                        }
+                                    ).then(async response => {
+                                        // If the user doesn't exist we create one
+                                        if (response === null) {
+                                            await deviceStorage.saveItemToStorage(
+                                                'appleIdentityToken',
+                                                appleAuthRequestResponse.user
+                                            )
+                                            navigationReplace(
+                                                SCENE_KEYS.authScreens.getInfo,
+                                                {
+                                                    email: 'email',
+                                                    password: 'null',
+                                                    signInMethod: 'apple'
+                                                }
+                                            )
+                                        } else {
+                                            if (response === 'normal') {
+                                                flashMessages.generalErrorWithProps(
+                                                    'Giriş hatası',
+                                                    "Lütfen 'Giriş Yap' ile giriş yapınız.",
+                                                    {
+                                                        backgroundColor:
+                                                            '#FFFFFF',
+                                                        borderBottomLeftRadius: 10,
+                                                        borderBottomRightRadius: 10,
+                                                        borderColor: '#00D9EF',
+                                                        borderWidth: hp(0.25),
+                                                        height: hp(10)
+                                                    }
+                                                )
+                                                await this.logoutFromApple()
+                                                return
+                                            }
+                                            if (response === 'google') {
+                                                flashMessages.generalErrorWithProps(
+                                                    'Giriş hatası',
+                                                    "Lütfen 'Google' ile giriş yapınız.",
+                                                    {
+                                                        backgroundColor:
+                                                            '#FFFFFF',
+                                                        borderBottomLeftRadius: 10,
+                                                        borderBottomRightRadius: 10,
+                                                        borderColor: '#00D9EF',
+                                                        borderWidth: hp(0.25),
+                                                        height: hp(10)
+                                                    }
+                                                )
+                                                await this.logoutFromApple()
+                                                return
+                                            }
+                                            // Saving the sign-in method and token
+                                            await deviceStorage.saveItemToStorage(
+                                                'signInMethod',
+                                                'apple'
+                                            )
+                                            await deviceStorage.saveItemToStorage(
+                                                'appleIdentityToken',
+                                                appleAuthRequestResponse.user
+                                            )
+                                            this.setState({ isLogging: true })
+                                            this.indicatorTimeout = setTimeout(
+                                                () => {
+                                                    this.setState({
+                                                        isLogging: false
+                                                    })
+                                                },
+                                                4000
+                                            )
+                                            this.props.loginUser({
+                                                identityToken:
+                                                    appleAuthRequestResponse.user,
+                                                password: 'null'
+                                            })
+                                        }
+                                    })
+                            }
+                        } catch (error) {
+                            console.log(error)
+                        }
+                    }
+                }
+            ]
+        )
+    }
+
     onPressLicenceView = () => {
         this.setState({
             isLicenceModalVisible: true
@@ -124,6 +371,13 @@ class Opening extends React.Component {
     }
 
     render() {
+        if (this.state.isLogging) {
+            return (
+                <View style={[styles.container, { justifyContent: 'center' }]}>
+                    <ActivityIndicator />
+                </View>
+            )
+        }
         return (
             <View style={styles.container}>
                 <Modal
@@ -181,14 +435,17 @@ class Opening extends React.Component {
                     <View style={styles.separatorLine} />
                 </View>
                 <View style={styles.buttonContainer}>
-                    <AuthButton
-                        height={hp(7)}
-                        width={wp(85)}
-                        color="black"
-                        fontSize={hp(3)}
-                        buttonText="Apple ile Bağlan"
-                        borderRadius={hp(1.5)}
-                    />
+                    {Platform.OS === 'ios' && (
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(85)}
+                            color="black"
+                            fontSize={hp(3)}
+                            buttonText="Apple ile Bağlan"
+                            borderRadius={hp(1.5)}
+                            onPress={this.signInWithApple}
+                        />
+                    )}
                     <AuthButton
                         height={hp(7)}
                         width={wp(85)}
@@ -201,7 +458,9 @@ class Opening extends React.Component {
                 </View>
                 <View style={styles.spaceView}>
                     <Text style={styles.oauthInfoText}>
-                        Apple veya Google ile Bağlan seçeneklerini kullanarak{' '}
+                        {Platform.OS === 'ios'
+                            ? 'Apple veya Google ile Bağlan seçeneklerini kullanarak '
+                            : 'Google ile bağlan seçeneğini kullanarak '}
                         <Text
                             onPress={this.onPressLicenceView}
                             style={{

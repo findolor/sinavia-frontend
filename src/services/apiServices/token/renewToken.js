@@ -9,6 +9,14 @@ export const renewToken = async () => {
         const credentials = await deviceStorage.getItemFromStorage(
             'clientCredentials'
         )
+        const signInMethod = await deviceStorage.getItemFromStorage(
+            'signInMethod'
+        )
+        if (signInMethod === 'apple') {
+            credentials.identityToken = await deviceStorage.getItemFromStorage(
+                'appleIdentityToken'
+            )
+        }
         const deviceId = await DeviceInfo.getUniqueId()
 
         const response = await axios.post(
@@ -16,7 +24,8 @@ export const renewToken = async () => {
             credentials,
             {
                 params: {
-                    deviceId: deviceId
+                    deviceId: deviceId,
+                    signInMethod: signInMethod
                 }
             }
         )

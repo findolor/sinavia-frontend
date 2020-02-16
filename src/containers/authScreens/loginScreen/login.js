@@ -7,7 +7,8 @@ import {
     TouchableOpacity,
     Keyboard,
     TouchableWithoutFeedback,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    ActivityIndicator
 } from 'react-native'
 import {
     navigationPop,
@@ -39,8 +40,13 @@ class Login extends React.Component {
             showPasswordEye: false,
             hidePassword: true,
             email: '',
-            password: ''
+            password: '',
+            isLogging: false
         }
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.indicatorTimeout)
     }
 
     forgotPasswordOnPress = () => {
@@ -69,6 +75,10 @@ class Login extends React.Component {
 
         // Saving the used method for correct logic in login
         await deviceStorage.saveItemToStorage('signInMethod', 'normal')
+        this.setState({ isLogging: true })
+        this.indicatorTimeout = setTimeout(() => {
+            this.setState({ isLogging: false })
+        }, 2000)
         this.props.loginUser({
             email: this.state.email.replace(/ /g, ''),
             password: this.state.password.replace(/ /g, '')
@@ -80,6 +90,13 @@ class Login extends React.Component {
     }
 
     render() {
+        if (this.state.isLogging) {
+            return (
+                <View style={[styles.container, { justifyContent: 'center' }]}>
+                    <ActivityIndicator />
+                </View>
+            )
+        }
         return (
             <TouchableWithoutFeedback
                 onPress={() => {

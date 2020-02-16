@@ -7,7 +7,8 @@ import {
     View,
     Dimensions,
     Modal,
-    Animated, FlatList
+    Animated,
+    FlatList
 } from 'react-native'
 import {
     navigationReset,
@@ -36,7 +37,6 @@ import SOLVING_LOGO from '../../../assets/mainScreens/blueSolvingLogo.png'
 import QUESTION_MARK from '../../../assets/mainScreens/blueQuestionMarkLogo.png'
 import PREMIUM_VIDEO_LOGO from '../../../assets/premiumVideo.png'
 import PREMIUM_SOLVING_IMG from '../../../assets/premiumSolvingImg.png'
-
 
 import premiumStyles from '../../mainScreens/purchaseScreen/style'
 import {
@@ -109,9 +109,9 @@ class GameStatsScreen extends React.Component {
             clientTotalPoints: this.props.clientInformation.totalPoints,
             oldPoints: this.props.clientInformation.totalPoints,
             levelUp: false,
-            solvingImg: 1,
-            solvingVideo: 1,
-            solving: false
+            solvedQuestionImage: null,
+            solvedQuestionVideo: null,
+            isSolvedQuestionVisible: true
         }
     }
 
@@ -137,10 +137,17 @@ class GameStatsScreen extends React.Component {
 
     async componentDidMount() {
         await this.loadScreen()
-        this.props.room.onMessage.add(message => {
+        this.props.room.onMessage(message => {
             this.chooseMessageAction(message)
         })
-        this.props.room.onError.add(err => console.log(err))
+        this.props.room.onLeave(code => {
+            console.log(code)
+            //this.mainScreenButtonOnPress()
+        })
+        this.props.room.onError(err => {
+            console.log(err)
+            //this.mainScreenButtonOnPress()
+        })
     }
 
     chooseMessageAction = message => {
@@ -208,7 +215,7 @@ class GameStatsScreen extends React.Component {
                     this.setState({ matchInformation: playerProps[element] })
                     return
                 }
-                if (this.props.client.id !== element) {
+                if (this.props.room.sessionId !== element) {
                     opponentUsername = playerProps[element].username
                     opponentProfilePicture = playerProps[element].profilePicture
                     playerProps[element].answers.forEach(result => {
@@ -335,7 +342,8 @@ class GameStatsScreen extends React.Component {
                 clientUsername: playerUsername,
                 opponentUsername: opponentUsername,
                 correctAnswerPoint: playerCorrect * 20,
-                totalEarnedPoints: totalEarnedPoints
+                totalEarnedPoints: totalEarnedPoints,
+                isSolvedQuestionVisible: false
             })
 
             if (
@@ -400,7 +408,7 @@ class GameStatsScreen extends React.Component {
             }, 3000)
 
             this.checkFavouriteStatus()
-
+            this.checkSolvedQuestionImageVideo()
             resolve(true)
         })
     }
@@ -421,6 +429,17 @@ class GameStatsScreen extends React.Component {
         }
     }
 
+    checkSolvedQuestionImageVideo = () => {
+        this.setState({
+            solvedQuestionImage: this.props.fullQuestionList[
+                this.state.questionPosition - 1
+            ].solvedQuestionImage,
+            solvedQuestionVideo: this.props.fullQuestionList[
+                this.state.questionPosition - 1
+            ].solvedQuestionVideo
+        })
+    }
+
     // Used for getting the index of questions from scroll view
     handleScrollHorizontal = event => {
         this.scrollX = event.nativeEvent.contentOffset.x
@@ -437,9 +456,12 @@ class GameStatsScreen extends React.Component {
                     ),
                     Object.keys(this.props.questionList).length /*Image count*/
                 ),
-                solving: false
+                isSolvedQuestionVisible: false
             },
-            this.checkFavouriteStatus()
+            () => {
+                this.checkFavouriteStatus()
+                this.checkSolvedQuestionImageVideo()
+            }
         )
     }
 
@@ -519,7 +541,6 @@ class GameStatsScreen extends React.Component {
 
     mainScreenButtonOnPress = () => {
         this.props.room.leave()
-        this.props.client.close()
         navigationReset('main')
     }
 
@@ -813,11 +834,12 @@ class GameStatsScreen extends React.Component {
         }
     }
 
-    showSolving = () => {
+    showSolvedQuestion = () => {
         if (this.props.clientInformation.isPremium) {
-            this.setState({ solving: !this.state.solving })
-        }
-        else {
+            this.setState({
+                isSolvedQuestionVisible: !this.state.isSolvedQuestionVisible
+            })
+        } else {
             this.setState({
                 visibleView: 'PREMIUM_SOLVING_IMG',
                 isModalVisible: true
@@ -828,14 +850,13 @@ class GameStatsScreen extends React.Component {
     goToVideo = () => {
         if (this.props.clientInformation.isPremium) {
             navigationPush(SCENE_KEYS.mainScreens.video, {
-                videoUri: 'https://player.vimeo.com/video/8175286/config'
+                videoUri: this.state.solvedQuestionVideo
             })
-        }
-        else {
-        this.setState({
-                          visibleView: 'PREMIUM_SOLVING_VIDEO',
-                          isModalVisible: true
-                      })
+        } else {
+            this.setState({
+                visibleView: 'PREMIUM_SOLVING_VIDEO',
+                isModalVisible: true
+            })
         }
     }
 
@@ -848,7 +869,7 @@ class GameStatsScreen extends React.Component {
                 scrollEventThrottle={8}
             >
                 <View style={styles.container}>
-                    <Image source={background} style={styles.background}/>
+                    <Image source={background} style={styles.background} />
                     <View style={styles.resultTextContainer}>
                         <Image
                             source={this.state.matchResultLogo}
@@ -1028,7 +1049,7 @@ class GameStatsScreen extends React.Component {
                                         </View>
                                     </View>
                                     <View style={styles.separatorContainer}>
-                                        <View style={styles.separatorLine}/>
+                                        <View style={styles.separatorLine} />
                                     </View>
                                     <View style={styles.sinaviaScoreContainer}>
                                         <Text style={styles.sinaviaScoreText}>
@@ -1098,7 +1119,7 @@ class GameStatsScreen extends React.Component {
                                                     this.state
                                                         .clientTotalPoints !== 0
                                                         ? this.state
-                                                            .clientTotalPoints
+                                                              .clientTotalPoints
                                                         : 1000
                                                 ).levelProgressLimit
                                             )}
@@ -1183,94 +1204,144 @@ class GameStatsScreen extends React.Component {
                         animationType={'fade'}
                     >
                         {this.state.visibleView === 'PREMIUM_FAV' &&
-                        this.premiumForFavoritesPage()}
+                            this.premiumForFavoritesPage()}
                         {this.state.visibleView === 'PREMIUM_SOLVING_IMG' &&
-                        this.premiumForSolvingImgPage()}
+                            this.premiumForSolvingImgPage()}
                         {this.state.visibleView === 'PREMIUM_SOLVING_VIDEO' &&
-                        this.premiumForSolvingVideoPage()}
+                            this.premiumForSolvingVideoPage()}
                     </Modal>
                     <View style={styles.questionNumberContainer}>
-                        {this.state.solvingImg !== null
-                            ? <View style={{
+                        {this.state.solvedQuestionImage !== null ? (
+                            <View
+                                style={{
+                                    position: 'absolute',
+                                    height: hp(7),
+                                    width: wp(34),
+                                    justifyContent: 'center',
+                                    marginLeft: wp(0)
+                                }}
+                            >
+                                {this.state.isSolvedQuestionVisible ===
+                                false ? (
+                                    <TouchableOpacity
+                                        onPress={this.showSolvedQuestion}
+                                        style={styles.videoButton}
+                                    >
+                                        <Image
+                                            source={SOLVING_LOGO}
+                                            style={styles.solvingLogo}
+                                        />
+                                        <Text style={styles.videoButtonText}>
+                                            Çözüme bak
+                                        </Text>
+                                    </TouchableOpacity>
+                                ) : (
+                                    <TouchableOpacity
+                                        onPress={this.showSolvedQuestion}
+                                        style={styles.videoButton}
+                                    >
+                                        <Image
+                                            source={QUESTION_MARK}
+                                            style={styles.solvingLogo}
+                                        />
+                                        <Text style={styles.videoButtonText}>
+                                            Soruya dön
+                                        </Text>
+                                    </TouchableOpacity>
+                                )}
+                            </View>
+                        ) : (
+                            <View />
+                        )}
+                        <View
+                            style={{
                                 position: 'absolute',
                                 height: hp(7),
-                                width: wp(34),
+                                width: wp(22),
                                 justifyContent: 'center',
-                                marginLeft: wp(0)
-                            }}>
-                                {this.state.solving === false
-                                    ? <TouchableOpacity onPress={this.showSolving} style={styles.videoButton}>
-                                        <Image source={SOLVING_LOGO} style={styles.solvingLogo}/>
-                                        <Text style={styles.videoButtonText}>Çözüme bak</Text>
-                                    </TouchableOpacity>
-                                    : <TouchableOpacity onPress={this.showSolving} style={styles.videoButton}>
-                                        <Image source={QUESTION_MARK} style={styles.solvingLogo}/>
-                                        <Text style={styles.videoButtonText}>Soruya dön</Text>
-                                    </TouchableOpacity>}
-                            </View>
-                            : <View/>
-                        }
-                        <View style={{
-                            position: 'absolute',
-                            height: hp(7),
-                            width: wp(22),
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            marginLeft: wp(34)
-                        }}>
+                                alignItems: 'center',
+                                marginLeft: wp(34)
+                            }}
+                        >
                             <Text style={styles.questionNumberText}>
                                 {this.state.questionPosition}/
-                                {Object.keys(this.state.allQuestionsList).length}
+                                {
+                                    Object.keys(this.state.allQuestionsList)
+                                        .length
+                                }
                             </Text>
                         </View>
-                        {this.state.solvingVideo !== null
-                            ? <View style={{
-                                position: 'absolute',
-                                height: hp(7),
-                                width: wp(34),
-                                justifyContent: 'center',
-                                marginLeft: wp(56)
-                            }}>
-                                <TouchableOpacity onPress={this.goToVideo} style={styles.videoButton}>
-                                    <Image source={VIDEO_LOGO} style={styles.videoLogo}/>
-                                    <Text style={styles.videoButtonText}>Çözümü izle</Text>
+                        {this.state.solvedQuestionVideo !== null ? (
+                            <View
+                                style={{
+                                    position: 'absolute',
+                                    height: hp(7),
+                                    width: wp(34),
+                                    justifyContent: 'center',
+                                    marginLeft: wp(56)
+                                }}
+                            >
+                                <TouchableOpacity
+                                    onPress={this.goToVideo}
+                                    style={styles.videoButton}
+                                >
+                                    <Image
+                                        source={VIDEO_LOGO}
+                                        style={styles.videoLogo}
+                                    />
+                                    <Text style={styles.videoButtonText}>
+                                        Çözümü izle
+                                    </Text>
                                 </TouchableOpacity>
                             </View>
-                            : <View/>
-                        }
+                        ) : (
+                            <View />
+                        )}
                     </View>
-                    <FlatList ref={ref => {
-                        this.flatListRef = ref
-                    }}
-                              horizontal={true}
-                              pagingEnabled={true}
-                              data={this.state.allQuestionsList}
-                              onScroll={this.handleScrollHorizontal}
-                              showsHorizontalScrollIndicator={false}
-                              extraData={this.state.solving}
-                              renderItem={({ item, index }) => {
-                                  return (
-                                      <View style={styles.scrollQuestionContainer}>
-                                          {this.state.solving === false
-                                              ?
-                                              <View style={styles.questionContainer}><ImageModal
-                                                  resizeMode="contain"
-                                                  imageBackgroundColor="#ffffff"
-                                                  overlayBackgroundColor="#000000DE"
-                                                  style={styles.questionStyle}
-                                                  source={{ uri: item }}
-                                              /></View>
-                                              : <View style={styles.questionContainer}><ImageModal
-                                                  resizeMode="contain"
-                                                  imageBackgroundColor="#ffffff"
-                                                  overlayBackgroundColor="#000000DE"
-                                                  style={styles.questionStyle}
-                                                  source={{ uri: 'https://lh3.googleusercontent.com/proxy/iCYubhYEtP4-Nu-EIczOrR1PLiZWX3kTj38SF_E-vI98xFkagqsOXEiVWAzSrczThFbbv3m_Jf1_eAfyZzDoSpe6vj_uIzA2BrrwOkzEE6exLzQkcdDNTwlz-uSM' }}
-                                              /></View>}
-                                      </View>
-                                  )
-                              }}
-                              keyExtractor={(item, index) => index.toString()}></FlatList>
+                    <FlatList
+                        ref={ref => {
+                            this.flatListRef = ref
+                        }}
+                        horizontal={true}
+                        pagingEnabled={true}
+                        data={this.state.allQuestionsList}
+                        onScroll={this.handleScrollHorizontal}
+                        showsHorizontalScrollIndicator={false}
+                        extraData={this.state.isSolvedQuestionVisible}
+                        renderItem={({ item, index }) => {
+                            console.log(item)
+                            return (
+                                <View style={styles.scrollQuestionContainer}>
+                                    {this.state.isSolvedQuestionVisible ===
+                                    false ? (
+                                        <View style={styles.questionContainer}>
+                                            <ImageModal
+                                                resizeMode="contain"
+                                                imageBackgroundColor="#ffffff"
+                                                overlayBackgroundColor="#000000DE"
+                                                style={styles.questionStyle}
+                                                source={{ uri: item }}
+                                            />
+                                        </View>
+                                    ) : (
+                                        <View style={styles.questionContainer}>
+                                            <ImageModal
+                                                resizeMode="contain"
+                                                imageBackgroundColor="#ffffff"
+                                                overlayBackgroundColor="#000000DE"
+                                                style={styles.questionStyle}
+                                                source={{
+                                                    uri: this.state
+                                                        .solvedQuestionImage
+                                                }}
+                                            />
+                                        </View>
+                                    )}
+                                </View>
+                            )
+                        }}
+                        keyExtractor={(item, index) => index.toString()}
+                    ></FlatList>
                     <View style={styles.favAndAnswerContainer}>
                         <View style={styles.answerContainer}>
                             <View
@@ -1287,10 +1358,10 @@ class GameStatsScreen extends React.Component {
                                 >
                                     {this.answerSwitcher(
                                         this.props.playerProps[
-                                            this.props.client.id
-                                            ].answers[
-                                        this.state.questionPosition - 1
-                                            ].correctAnswer
+                                            this.props.room.sessionId
+                                        ].answers[
+                                            this.state.questionPosition - 1
+                                        ].correctAnswer
                                     )}
                                 </Text>
                             </View>
@@ -1321,10 +1392,10 @@ class GameStatsScreen extends React.Component {
                                 >
                                     {this.answerSwitcher(
                                         this.props.playerProps[
-                                            this.props.client.id
-                                            ].answers[
-                                        this.state.questionPosition - 1
-                                            ].answer
+                                            this.props.room.sessionId
+                                        ].answers[
+                                            this.state.questionPosition - 1
+                                        ].answer
                                     )}
                                 </Text>
                             </View>

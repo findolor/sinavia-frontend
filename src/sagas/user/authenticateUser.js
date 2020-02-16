@@ -43,11 +43,11 @@ function getNotificationOpened() {
 }
 
 export function* authenticateUser(action) {
+    const signInMethod = yield call(
+        deviceStorage.getItemFromStorage,
+        'signInMethod'
+    )
     try {
-        const signInMethod = yield call(
-            deviceStorage.getItemFromStorage,
-            'signInMethod'
-        )
         switch (signInMethod) {
             case 'normal':
                 try {
@@ -68,6 +68,16 @@ export function* authenticateUser(action) {
                         console.log(error)
                     })
                 if (!isSignedIn) return
+                break
+            case 'apple':
+                // This is for photo upload to storage
+                // We need to be loged in somehow
+                firebase
+                    .auth()
+                    .signInAnonymously()
+                    .catch(error => {
+                        console.log(error)
+                    })
                 break
         }
 
@@ -301,15 +311,27 @@ export function* authenticateUser(action) {
                 email: clientCredentials.email,
                 password: clientCredentials.password
             }) */
+
+            let tokenObject = {
+                email: clientCredentials.email,
+                password: clientCredentials.password,
+                identityToken: null
+            }
+            if (signInMethod === 'apple') {
+                let idToken = yield call(
+                    deviceStorage.getItemFromStorage,
+                    'appleIdentityToken'
+                )
+                tokenObject.identityToken = idToken
+            }
+
             let res = yield call(
                 makePostRequest,
                 apiServicesTree.tokenApi.getToken,
                 {
-                    userInformation: {
-                        email: clientCredentials.email,
-                        password: clientCredentials.password
-                    },
-                    deviceId: deviceId
+                    userInformation: tokenObject,
+                    deviceId: deviceId,
+                    signInMethod: signInMethod
                 }
             )
             // Saving the api token to redux state

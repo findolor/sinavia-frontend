@@ -123,9 +123,7 @@ class RankedGame extends React.Component {
             secondJokerAmount: '',
             thirdJokerNameFirstWord: '',
             thirdJokerNameSecondWord: '',
-            thirdJokerAmount: '',
-            // Server ping variable
-            isServerPinged: false
+            thirdJokerAmount: ''
         }
     }
 
@@ -141,68 +139,33 @@ class RankedGame extends React.Component {
         this.props.room.send({
             action: 'ready'
         })
-
-        // We set ping intervals to check if we are still connected to the server
-        // This is used because with the current colyseus version this is not possible?
-        this.checkPingInterval = this.checkPingInterval()
-        this.pingInterval = this.pingInterval()
-
-        this.props.room.onStateChange.add(state => {
+        this.props.room.onStateChange(state => {
             // We update the UI after state changes
             this.chooseStateAction(state.rankedState)
         })
         // Joker messages come through here
-        this.props.room.onMessage.add(message => {
+        this.props.room.onMessage(message => {
             this.chooseMessageAction(message)
         })
-        this.props.room.onError.add(err => {
+        this.props.room.onLeave(code => {
+            if(code === 1000) return
             let that = this
+            console.log(code)
             this.setState({isQuitGameModalVisible: true, visibleView: 'serverError'})
-            setTimeout(() => {
-                that.shutdownGame()
+            setTimeout(function(){
                 that.props.room.leave()
                 navigationReset('main')
             }, 3000)
         })
-        this.props.room.onLeave.add(res => {
+        this.props.room.onError(err => {
             let that = this
-            if(res.code === 1001) return
+            console.log(err)
             this.setState({isQuitGameModalVisible: true, visibleView: 'serverError'})
-            setTimeout(() => {
-                that.shutdownGame()
+            setTimeout(function(){
                 that.props.room.leave()
                 navigationReset('main')
             }, 3000)
         })
-    }
-
-    // This timeout checks the ping variable every 20 seconds
-    // If the varible is false that means the connection has dropped
-    checkPingInterval = () => {
-        let that = this
-        return setInterval(() => {
-            if (this.state.isServerPinged)
-                this.setState({ isServerPinged: false })
-            else {
-                this.setState({
-                    isQuitGameModalVisible: true,
-                    visibleView: 'serverError'
-                })
-                setTimeout(() => {
-                    that.shutdownGame()
-                    that.props.room.leave()
-                    navigationReset('main')
-                }, 3000)
-            }
-        }, 15000)
-    }
-
-    // This interval pings the server every 10 seconds
-    pingInterval = () => {
-        let that = this
-        return setInterval(() => {
-            that.props.room.send({ action: 'ping' })
-        }, 10000)
     }
 
     checkJokerAmount = () => {
@@ -263,8 +226,6 @@ class RankedGame extends React.Component {
         clearTimeout(this.startTimeout)
         clearTimeout(this.updateTimeout)
         clearTimeout(this.finishedTimeout)
-        clearInterval(this.checkPingInterval)
-        clearInterval(this.pingInterval)
 
         // Clear room listeners
         this.props.room.removeAllListeners()
@@ -327,9 +288,8 @@ class RankedGame extends React.Component {
                 )
                 {
                     this.setState({isQuitGameModalVisible: true, visibleView: 'opponentLeaveNoAnswer'})
-                    this.props.updateTotalPoints(100),
-                        this.shutdownGame(),
-                        this.props.client.close(),
+                    this.props.updateTotalPoints(100)
+                    this.shutdownGame()
                     setTimeout(function(){
                             that.props.room.leave()
                             navigationReset('main')
@@ -375,7 +335,6 @@ class RankedGame extends React.Component {
                         .length === 0
                 ) {
                     this.shutdownGame()
-                    this.props.client.close()
                     this.props.room.leave()
                     navigationReset('main')
                     break
@@ -398,9 +357,6 @@ class RankedGame extends React.Component {
                     isMatchFinished: false,
                     isWon: false
                 })
-                break
-            case 'ping':
-                this.setState({ isServerPinged: true })
                 break
         }
     }
@@ -442,7 +398,7 @@ class RankedGame extends React.Component {
                 if (
                     this.state.isSeeOpponentAnswerJokerActive &&
                     // We check if the answer is from the opponent, if not we don't proceed
-                    rankedState.playerProps[this.props.client.id].answers[
+                    rankedState.playerProps[this.props.room.sessionId].answers[
                         this.state.questionNumber
                     ] === undefined
                 ) {
@@ -494,7 +450,7 @@ class RankedGame extends React.Component {
 
     updatePlayerResults = () => {
         // Player answers to the question
-        const answers = this.state.playerProps[this.props.client.id].answers
+        const answers = this.state.playerProps[this.props.room.sessionId].answers
         const answersOpponent = this.state.playerProps[this.state.opponentId]
             .answers
 
@@ -840,6 +796,25 @@ class RankedGame extends React.Component {
             action: 'second-chance-joker',
             jokerId: 3
         })
+    }
+
+    serverError() {
+        return (
+            <View
+                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.quitView}>
+                        <Text style={styles.areYouSureText}>
+                            Sunucu hatası
+                        </Text>
+                        <Text style={styles.areYouSureText}>
+                            Ana sayfaya yönlendirileceksin
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
     }
 
     opponentLeaveNoAnswer() {

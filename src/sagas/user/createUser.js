@@ -19,6 +19,12 @@ export function* createUser(action) {
     })
 
     try {
+        let tokenRequestUserInfo = {
+            email: action.payload.email,
+            password: action.payload.password,
+            identityToken: null
+        }
+
         // We get the unique device id
         const deviceId = yield call(DeviceInfo.getUniqueId)
         action.payload.deviceId = deviceId
@@ -35,6 +41,14 @@ export function* createUser(action) {
                 .catch(error => {
                     console.log(error)
                 })
+        } else delete tokenRequestUserInfo.identityToken
+        if (action.payload.signInMethod === 'apple') {
+            const identityToken = yield call(
+                deviceStorage.getItemFromStorage,
+                'appleIdentityToken'
+            )
+            action.payload.identityToken = identityToken
+            tokenRequestUserInfo.identityToken = identityToken
         }
 
         // We send the client information to our server
@@ -76,10 +90,8 @@ export function* createUser(action) {
             makePostRequest,
             apiServicesTree.tokenApi.getToken,
             {
-                userInformation: {
-                    email: action.payload.email,
-                    password: action.payload.password
-                }
+                userInformation: tokenRequestUserInfo,
+                signInMethod: action.payload.signInMethod
             }
         )
         // Save token to storage
@@ -126,7 +138,7 @@ export function* createUser(action) {
         // We send a request to api to save our fcm token
         yield call(makePutRequest, apiServicesTree.fcmTokenApi.updateFCMToken, {
             userInformation: action.payload,
-            clientToken: res.token
+            clientToken: response.token
         })
 
         // This action will navigate to main screen

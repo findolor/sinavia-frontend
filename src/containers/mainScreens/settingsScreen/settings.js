@@ -38,6 +38,9 @@ import {
 import returnLogo from '../../../assets/return.png'
 import CHANGE_PHOTO from '../../../assets/changePhoto.png'
 import { GoogleSignin } from '@react-native-community/google-signin'
+import appleAuth, {
+    AppleAuthRequestOperation
+} from '@invertase/react-native-apple-authentication'
 
 const citiesList = [
     { cityName: 'Adana' },
@@ -173,6 +176,27 @@ class Settings extends React.Component {
         navigationPush(SCENE_KEYS.mainScreens.changePassword)
     }
 
+    logoutFromApple = async () => {
+        try {
+            // performs logout request
+            const appleAuthRequestResponse = await appleAuth.performRequest({
+                requestedOperation: AppleAuthRequestOperation.LOGOUT
+            })
+
+            // get current authentication state for user
+            const credentialState = await appleAuth.getCredentialStateForUser(
+                appleAuthRequestResponse.user
+            )
+
+            // use credentialState response to ensure the user credential's have been revoked
+            if (credentialState === AppleAuthCredentialState.REVOKED) {
+                // user is unauthenticated
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     logoutButtonOnPress = async () => {
         switch (this.props.clientInformation.signInMethod) {
             case 'normal':
@@ -198,6 +222,12 @@ class Settings extends React.Component {
                 } catch (error) {
                     console.log(error)
                 }
+                break
+            case 'apple':
+                //await this.logoutFromApple()
+                firebase.auth().signOut()
+                deviceStorage.clearDeviceStorage()
+                navigationReset('auth')
                 break
         }
     }
