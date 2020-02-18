@@ -1309,7 +1309,6 @@ class GameStatsScreen extends React.Component {
                         showsHorizontalScrollIndicator={false}
                         extraData={this.state.isSolvedQuestionVisible}
                         renderItem={({ item, index }) => {
-                            console.log(item)
                             return (
                                 <View style={styles.scrollQuestionContainer}>
                                     {this.state.isSolvedQuestionVisible ===

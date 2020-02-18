@@ -509,42 +509,44 @@ class GroupGame extends React.Component {
     }
 
     updateAnswers = answers => {
-        switch (answers[this.state.questionNumber].result) {
-            // If the answer is unanswered
-            case null:
-                this.setState({
-                    playerOneUnanswered: this.state.playerOneUnanswered + 1
-                })
-                this.updateButtons(
-                    answers[this.state.questionNumber].correctAnswer,
-                    true
-                )
-                return
-            // If the answer is correct
-            case true:
-                this.setState({
-                    playerOneCorrect: this.state.playerOneCorrect + 1
-                })
-                this.updateButtons(
-                    answers[this.state.questionNumber].answer,
-                    true
-                )
-                return
-            // If the answer is incorrect
-            case false:
-                this.setState({
-                    playerOneIncorrect: this.state.playerOneIncorrect + 1
-                })
-                this.updateButtons(
-                    answers[this.state.questionNumber].answer,
-                    false
-                )
-                this.updateButtons(
-                    answers[this.state.questionNumber].correctAnswer,
-                    true
-                )
-                return
-        }
+        try {
+            switch (answers[this.state.questionNumber].result) {
+                // If the answer is unanswered
+                case null:
+                    this.setState({
+                        playerOneUnanswered: this.state.playerOneUnanswered + 1
+                    })
+                    this.updateButtons(
+                        answers[this.state.questionNumber].correctAnswer,
+                        true
+                    )
+                    return
+                // If the answer is correct
+                case true:
+                    this.setState({
+                        playerOneCorrect: this.state.playerOneCorrect + 1
+                    })
+                    this.updateButtons(
+                        answers[this.state.questionNumber].answer,
+                        true
+                    )
+                    return
+                // If the answer is incorrect
+                case false:
+                    this.setState({
+                        playerOneIncorrect: this.state.playerOneIncorrect + 1
+                    })
+                    this.updateButtons(
+                        answers[this.state.questionNumber].answer,
+                        false
+                    )
+                    this.updateButtons(
+                        answers[this.state.questionNumber].correctAnswer,
+                        true
+                    )
+                    return
+            }
+        } catch (error) {}
     }
 
     updateButtons = (buttonNumber, isCorrect) => {
@@ -1057,7 +1059,7 @@ class GroupGame extends React.Component {
                                 source={{
                                     uri: this.state.questionList[
                                         this.state.questionNumber
-                                        ]
+                                    ]
                                 }}
                             />
                         </View>
@@ -1175,48 +1177,173 @@ class GroupGame extends React.Component {
                         animationType={'fade'}
                     >
                         <View style={styles.questionModalContainer}>
-                            <View style={{ backgroundColor: 'transparent', flex: 1, width: wp(100), justifyContent: 'center'}}>
-                                <View style={{ position: 'absolute', height: hp(78), width: wp(100), justifyContent: 'center'}}>
+                            <View
+                                style={{
+                                    backgroundColor: 'transparent',
+                                    flex: 1,
+                                    width: wp(100),
+                                    justifyContent: 'center'
+                                }}
+                            >
+                                <View
+                                    style={{
+                                        position: 'absolute',
+                                        height: hp(78),
+                                        width: wp(100),
+                                        justifyContent: 'center'
+                                    }}
+                                >
                                     <Image
                                         source={{
                                             uri: this.state.questionList[
                                                 this.state.questionNumber
-                                                ]
+                                            ]
                                         }}
                                         style={styles.questionModalStyle}
                                     />
                                 </View>
                                 <RNSketchCanvas
-                                    ref={ref => this.canvas1 = ref}
-                                    containerStyle={{ backgroundColor: 'transparent', flex: 1 }}
-                                    canvasStyle={{ backgroundColor: 'transparent', flex: 1 }}
-                                    onStrokeEnd={data => {
+                                    ref={ref => (this.canvas1 = ref)}
+                                    containerStyle={{
+                                        backgroundColor: 'transparent',
+                                        flex: 1
                                     }}
-                                    closeComponent={<View style={[styles.functionButton, {marginLeft: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2.25), textAlign: 'center' }}>Kapat</Text></View>}
-                                    onClosePressed={this.questionModalCloseOnPress}
-                                    undoComponent={<View style={[styles.functionButton, {marginRight: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2.25), textAlign: 'center' }}>Geri al</Text></View>}
-                                    onUndoPressed={(id) => {
+                                    canvasStyle={{
+                                        backgroundColor: 'transparent',
+                                        flex: 1
+                                    }}
+                                    onStrokeEnd={data => {}}
+                                    closeComponent={
+                                        <View
+                                            style={[
+                                                styles.functionButton,
+                                                { marginLeft: wp(4) }
+                                            ]}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontFamily: 'Averta-Bold',
+                                                    color: 'white',
+                                                    fontSize: hp(2.25),
+                                                    textAlign: 'center'
+                                                }}
+                                            >
+                                                Kapat
+                                            </Text>
+                                        </View>
+                                    }
+                                    onClosePressed={
+                                        this.questionModalCloseOnPress
+                                    }
+                                    undoComponent={
+                                        <View
+                                            style={[
+                                                styles.functionButton,
+                                                { marginRight: wp(4) }
+                                            ]}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontFamily: 'Averta-Bold',
+                                                    color: 'white',
+                                                    fontSize: hp(2.25),
+                                                    textAlign: 'center'
+                                                }}
+                                            >
+                                                Geri al
+                                            </Text>
+                                        </View>
+                                    }
+                                    onUndoPressed={id => {
                                         this.canvas1.deletePath(id)
                                     }}
-                                    clearComponent={<View style={[styles.functionButton, {marginRight: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2.25), textAlign: 'center' }}>Temizle</Text></View>}
+                                    clearComponent={
+                                        <View
+                                            style={[
+                                                styles.functionButton,
+                                                { marginRight: wp(4) }
+                                            ]}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontFamily: 'Averta-Bold',
+                                                    color: 'white',
+                                                    fontSize: hp(2.25),
+                                                    textAlign: 'center'
+                                                }}
+                                            >
+                                                Temizle
+                                            </Text>
+                                        </View>
+                                    }
                                     onClearPressed={() => {
                                         this.canvas1.clear()
                                     }}
-                                    eraseComponent={<View style={[styles.functionButton, {marginLeft: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2.25), textAlign: 'center' }}>Silgi</Text></View>}
+                                    eraseComponent={
+                                        <View
+                                            style={[
+                                                styles.functionButton,
+                                                { marginLeft: wp(4) }
+                                            ]}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontFamily: 'Averta-Bold',
+                                                    color: 'white',
+                                                    fontSize: hp(2.25),
+                                                    textAlign: 'center'
+                                                }}
+                                            >
+                                                Silgi
+                                            </Text>
+                                        </View>
+                                    }
                                     strokeComponent={color => (
-                                        <View style={[{ backgroundColor: color, borderWidth: hp(1)  }, styles.strokeColorButton]} />
+                                        <View
+                                            style={[
+                                                {
+                                                    backgroundColor: color,
+                                                    borderWidth: hp(1)
+                                                },
+                                                styles.strokeColorButton
+                                            ]}
+                                        />
                                     )}
-                                    strokeSelectedComponent={(color, index, changed) => {
+                                    strokeSelectedComponent={(
+                                        color,
+                                        index,
+                                        changed
+                                    ) => {
                                         return (
-                                            <View style={[{ backgroundColor: color}, styles.strokeSelectedColorButton]} />
+                                            <View
+                                                style={[
+                                                    { backgroundColor: color },
+                                                    styles.strokeSelectedColorButton
+                                                ]}
+                                            />
                                         )
                                     }}
-                                    strokeWidthComponent={(w) => {
-                                        return (<View style={styles.strokeWidthButton}>
-                                                <View style={{
-                                                    backgroundColor: 'white',
-                                                    width: Math.sqrt(w / 3) * 10, height: Math.sqrt(w / 3) * 10, borderRadius: Math.sqrt(w / 3) * 10 / 2
-                                                }} />
+                                    strokeWidthComponent={w => {
+                                        return (
+                                            <View
+                                                style={styles.strokeWidthButton}
+                                            >
+                                                <View
+                                                    style={{
+                                                        backgroundColor:
+                                                            'white',
+                                                        width:
+                                                            Math.sqrt(w / 3) *
+                                                            10,
+                                                        height:
+                                                            Math.sqrt(w / 3) *
+                                                            10,
+                                                        borderRadius:
+                                                            (Math.sqrt(w / 3) *
+                                                                10) /
+                                                            2
+                                                    }}
+                                                />
                                             </View>
                                         )
                                     }}
