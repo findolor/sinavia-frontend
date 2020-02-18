@@ -31,8 +31,11 @@ class Video extends React.Component {
         Orientation.lockToLandscape()
     }
 
-    backButtonOnPress = () => {
+    componentWillUnmount() {
         Orientation.lockToPortrait()
+    }
+
+    backButtonOnPress = () => {
         navigationPop()
     }
 
