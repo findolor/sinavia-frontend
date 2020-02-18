@@ -43,11 +43,11 @@ function getNotificationOpened() {
 }
 
 export function* authenticateUser(action) {
+    const signInMethod = yield call(
+        deviceStorage.getItemFromStorage,
+        'signInMethod'
+    )
     try {
-        const signInMethod = yield call(
-            deviceStorage.getItemFromStorage,
-            'signInMethod'
-        )
         switch (signInMethod) {
             case 'normal':
                 try {

@@ -88,6 +88,8 @@ const SOLO_IMAGE = require('../../../assets/mainScreens/tek.png')
 const UNSOLVED_QUESTIONS_MODE = require('../../../assets/mainScreens/unsolvedQuestionsModeImg.png')
 const SOLO_PREMIUM = require('../../../assets/soloPremium.png')
 const UNSOLVED_PREMIUM = require('../../../assets/premiumBack.png')
+const WHITE_VIDEO_LOGO = require('../../../assets/mainScreens/whiteVideoLogo.png')
+const VIDEO_PREMIUM = require('../../../assets/premiumVideo.png')
 import { BannerAd } from '../../../services/admobService'
 
 class Home extends React.Component {
@@ -665,11 +667,6 @@ class Home extends React.Component {
                         width: wp(100)
                     }}
                 />
-                <View style={styles.onlyCloseButtonContainer}>
-                    <TouchableOpacity onPress={this.closeModalButtonOnPress}>
-                        <Image source={CLOSE_BUTTON} style={styles.xLogo} />
-                    </TouchableOpacity>
-                </View>
                 <View style={styles.modalView}>
                     <Text style={styles.modalSubjectText}>
                         {this.state.subject}
@@ -1012,17 +1009,17 @@ class Home extends React.Component {
                         </View>
                     </Animatable.View>
                 </View>
-                <AuthButton
-                    marginTop={hp(83.5)}
-                    height={hp(7)}
-                    width={wp(87.5)}
-                    color="#00D9EF"
-                    buttonText="Başlat"
-                    fontSize={hp(3)}
-                    borderRadius={hp(1.5)}
-                    position={'absolute'}
-                    onPress={this.playButtonOnPress}
-                />
+                <View style={styles.modalButtonsContainer}>
+                    <AuthButton
+                        height={hp(7)}
+                        width={wp(87.5)}
+                        color="#00D9EF"
+                        buttonText="Başlat"
+                        fontSize={hp(3)}
+                        borderRadius={hp(1.5)}
+                        onPress={this.playButtonOnPress}
+                    />
+                </View>
             </View>
         )
     }
@@ -1809,6 +1806,110 @@ class Home extends React.Component {
         )
     }
 
+    premiumForVideoView() {
+        return (
+            <View style={premiumStyles.premiumModal}>
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{ height: hp(120), width: wp(100) }}
+                />
+                <View
+                    style={[premiumStyles.premiumModalView, { height: hp(33) }]}
+                >
+                    <LinearGradient
+                        colors={['white', '#FFE6BB', '#FFA800']}
+                        style={[
+                            premiumStyles.linearGradientPremiumModalView,
+                            { height: hp(33) }
+                        ]}
+                    >
+                        <View style={premiumStyles.premiumModalHeaderView}>
+                            <Text style={premiumStyles.premiumModalHeaderText}>
+                                ELİT ÖĞRENCİ PAKETİ
+                            </Text>
+                        </View>
+                        <View style={premiumStyles.premiumModalSwiperContainer}>
+                            <View style={premiumStyles.premiumModalSwiperView}>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperImgView,
+                                        { height: hp(12.5) }
+                                    ]}
+                                >
+                                    <Image
+                                        source={VIDEO_PREMIUM}
+                                        style={[
+                                            premiumStyles.premiumModalImg,
+                                            { marginBottom: hp(2.25) }
+                                        ]}
+                                    />
+                                </View>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperHeaderView,
+                                        { height: hp(4.5) }
+                                    ]}
+                                >
+                                    <Text
+                                        style={[
+                                            premiumStyles.premiumModalHeaderText,
+                                            {
+                                                color: '#2E313C',
+                                                fontSize: hp(2.5)
+                                            }
+                                        ]}
+                                    >
+                                        Alanında uzman öğretmenler tarafından
+                                        hazırlanmış konu anlatımları!
+                                    </Text>
+                                </View>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperInfoView,
+                                        {
+                                            justifyContent: 'center',
+                                            height: hp(8.5)
+                                        }
+                                    ]}
+                                >
+                                    <Text
+                                        style={[
+                                            premiumStyles.premiumModalInfoText,
+                                            { color: '#555861' }
+                                        ]}
+                                    >
+                                        Konu Anlatım Videoları şimdi Elit
+                                        Öğrenci Paketi'nde
+                                    </Text>
+                                </View>
+                            </View>
+                        </View>
+                    </LinearGradient>
+                </View>
+            </View>
+        )
+    }
+
+    waitingToJoinFriendRoomView() {
+        return (
+            <View
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.gameRequestView}>
+                        <Text style={styles.gameRequestText}>
+                            Odaya giriş yapman bekleniyor...
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     roomIsNotActiveView() {
         return (
             <View
@@ -1941,6 +2042,24 @@ class Home extends React.Component {
             .catch(error => {})
     }
 
+    /*goToVideo = () => {
+        if (this.props.clientInformation.isPremium) {
+            this.setState({isModalVisible: false})
+            navigationPush(SCENE_KEYS.mainScreens.video, {
+                videoUri: 'https://player.vimeo.com/video/8175286/config'
+            })
+        } else {
+            this.setState({
+                visibleRankedGameStartPress: false,
+                soloModeButtonBorderColor: EMPTY_MODE_COLOR,
+                rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
+                selectedGameMode: 'ranked',
+                isModalVisible: true,
+                visibleView: 'PREMIUM_MODAL_FOR_VIDEO'
+            })
+        }
+    }*/
+
     // Gets the exam/content/subject ids based on selected subject
     calculateContentIds = () => {
         let examIndex
@@ -2056,6 +2175,10 @@ class Home extends React.Component {
                         this.premiumForSoloView()}
                     {this.state.visibleView === 'PREMIUM_MODAL_FOR_UNSOLVED' &&
                         this.premiumForUnsolvedView()}
+                    {this.state.visibleView === 'PREMIUM_MODAL_FOR_VIDEO' &&
+                        this.premiumForVideoView()}
+                    {this.state.visibleView === 'WAITING_TO_JOIN_FRIEND_ROOM' &&
+                        this.waitingToJoinFriendRoomView()}
                     {this.state.visibleView === 'ROOM_IS_NOT_ACTIVE' &&
                         this.roomIsNotActiveView()}
                     {this.state.visibleView === 'YOUR_FRIEND_STARTED_GAME' &&

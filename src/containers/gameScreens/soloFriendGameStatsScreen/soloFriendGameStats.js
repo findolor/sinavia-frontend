@@ -6,9 +6,14 @@ import {
     TouchableOpacity,
     View,
     Dimensions,
-    Modal
+    Modal,
+    FlatList
 } from 'react-native'
-import { navigationReset } from '../../../services/navigationService'
+import {
+    navigationReset,
+    navigationPush,
+    SCENE_KEYS
+} from '../../../services/navigationService'
 import styles from './style'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
@@ -25,12 +30,17 @@ import unselectedFav from '../../../assets/favori_bos.png'
 import YOU_WIN_LOGO from '../../../assets/gameScreens/win.png'
 import YOU_LOSE_LOGO from '../../../assets/gameScreens/lose.png'
 import DRAW_LOGO from '../../../assets/gameScreens/draw.png'
+import VIDEO_LOGO from '../../../assets/mainScreens/blueVideoLogo.png'
+import SOLVING_LOGO from '../../../assets/mainScreens/blueSolvingLogo.png'
+import PREMIUM_SOLVING_IMG from '../../../assets/premiumSolvingImg.png'
+import PREMIUM_VIDEO_LOGO from '../../../assets/premiumVideo.png'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
 import premiumStyles from '../../mainScreens/purchaseScreen/style'
 import LinearGradient from 'react-native-linear-gradient'
+import ImageModal from 'react-native-image-modal'
 
 class SoloFriendGameStatsScreen extends React.Component {
     constructor(props) {
@@ -79,7 +89,12 @@ class SoloFriendGameStatsScreen extends React.Component {
                     answer: 0
                 }
             ],
-            isModalVisible: false
+            isModalVisible: false,
+            visibleView: false,
+            //these states will be updated for every questions
+            solvedQuestionImage: null,
+            solvedQuestionVideo: null,
+            isSolvedQuestionVisible: false
         }
     }
 
@@ -191,16 +206,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                     this.props.isFromNotification
                 )
                     question = JSON.parse(question)
-                this.state.allQuestionsList.push(
-                    <View style={styles.scrollQuestionContainer} key={index}>
-                        <View style={styles.questionContainer}>
-                            <Image
-                                source={{ uri: question.questionLink }}
-                                style={styles.questionStyle}
-                            />
-                        </View>
-                    </View>
-                )
+                this.state.allQuestionsList.push(question.questionLink)
             })
 
             let clientAnswers = []
@@ -238,7 +244,10 @@ class SoloFriendGameStatsScreen extends React.Component {
                     clientAnswers: clientAnswers,
                     questionList: questionList
                 },
-                () => this.checkFavouriteStatus()
+                () => {
+                    this.checkFavouriteStatus()
+                    this.checkSolvedQuestionImageVideo()
+                }
             )
 
             resolve(true)
@@ -262,6 +271,17 @@ class SoloFriendGameStatsScreen extends React.Component {
         }
     }
 
+    checkSolvedQuestionImageVideo = () => {
+        this.setState({
+            solvedQuestionImage: this.state.questionList[
+                this.state.questionPosition - 1
+            ].solvedQuestionImage,
+            solvedQuestionVideo: this.state.questionList[
+                this.state.questionPosition - 1
+            ].solvedQuestionVideo
+        })
+    }
+
     // Used for getting the index of questions from scroll view
     handleScrollHorizontal = event => {
         this.scrollX = event.nativeEvent.contentOffset.x
@@ -276,9 +296,11 @@ class SoloFriendGameStatsScreen extends React.Component {
                     0
                 ),
                 Object.keys(this.props.questionList).length /*Image count*/
-            )
+            ),
+            isSolvedQuestionVisible: false
         })
         this.checkFavouriteStatus()
+        this.checkSolvedQuestionImageVideo()
     }
 
     // Used for getting the index of screen from scroll view
@@ -341,6 +363,7 @@ class SoloFriendGameStatsScreen extends React.Component {
             }
         } else {
             this.setState({
+                visibleView: 'PREMIUM_FAV',
                 isModalVisible: true
             })
         }
@@ -425,6 +448,182 @@ class SoloFriendGameStatsScreen extends React.Component {
                 </View>
             </View>
         )
+    }
+
+    premiumForSolvingImgPage() {
+        return (
+            <View style={premiumStyles.premiumModal}>
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{ height: hp(120), width: wp(100) }}
+                />
+                <View
+                    style={[premiumStyles.premiumModalView, { height: hp(33) }]}
+                >
+                    <LinearGradient
+                        colors={['white', '#FFE6BB', '#FFA800']}
+                        style={[
+                            premiumStyles.linearGradientPremiumModalView,
+                            { height: hp(33) }
+                        ]}
+                    >
+                        <View style={premiumStyles.premiumModalHeaderView}>
+                            <Text style={premiumStyles.premiumModalHeaderText}>
+                                ELİT ÖĞRENCİ PAKETİ
+                            </Text>
+                        </View>
+                        <View style={premiumStyles.premiumModalSwiperContainer}>
+                            <View style={premiumStyles.premiumModalSwiperView}>
+                                <View
+                                    style={
+                                        premiumStyles.premiumModalSwiperImgView
+                                    }
+                                >
+                                    <Image
+                                        source={PREMIUM_SOLVING_IMG}
+                                        style={premiumStyles.premiumModalImg}
+                                    />
+                                </View>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperHeaderView,
+                                        { height: hp(5.5) }
+                                    ]}
+                                >
+                                    <Text
+                                        style={
+                                            premiumStyles.premiumModalHeaderText
+                                        }
+                                    >
+                                        Çözümleri Gör!
+                                    </Text>
+                                </View>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperInfoView,
+                                        {
+                                            justifyContent: 'flex-start',
+                                            height: hp(9.5)
+                                        }
+                                    ]}
+                                >
+                                    <Text
+                                        style={[
+                                            premiumStyles.premiumModalInfoText,
+                                            { marginTop: hp(1.5) }
+                                        ]}
+                                    >
+                                        Soruların çözümleri şimdi Elit Öğrenci
+                                        Paketi'nde
+                                    </Text>
+                                </View>
+                            </View>
+                        </View>
+                    </LinearGradient>
+                </View>
+            </View>
+        )
+    }
+
+    premiumForSolvingVideoPage() {
+        return (
+            <View style={premiumStyles.premiumModal}>
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{ height: hp(120), width: wp(100) }}
+                />
+                <View
+                    style={[premiumStyles.premiumModalView, { height: hp(33) }]}
+                >
+                    <LinearGradient
+                        colors={['white', '#FFE6BB', '#FFA800']}
+                        style={[
+                            premiumStyles.linearGradientPremiumModalView,
+                            { height: hp(33) }
+                        ]}
+                    >
+                        <View style={premiumStyles.premiumModalHeaderView}>
+                            <Text style={premiumStyles.premiumModalHeaderText}>
+                                ELİT ÖĞRENCİ PAKETİ
+                            </Text>
+                        </View>
+                        <View style={premiumStyles.premiumModalSwiperContainer}>
+                            <View style={premiumStyles.premiumModalSwiperView}>
+                                <View
+                                    style={
+                                        premiumStyles.premiumModalSwiperImgView
+                                    }
+                                >
+                                    <Image
+                                        source={PREMIUM_VIDEO_LOGO}
+                                        style={premiumStyles.premiumModalImg}
+                                    />
+                                </View>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperHeaderView,
+                                        { height: hp(5.5) }
+                                    ]}
+                                >
+                                    <Text
+                                        style={
+                                            premiumStyles.premiumModalHeaderText
+                                        }
+                                    >
+                                        Çözüm Videolarını İzle!
+                                    </Text>
+                                </View>
+                                <View
+                                    style={[
+                                        premiumStyles.premiumModalSwiperInfoView,
+                                        {
+                                            justifyContent: 'flex-start',
+                                            height: hp(9.5)
+                                        }
+                                    ]}
+                                >
+                                    <Text
+                                        style={[
+                                            premiumStyles.premiumModalInfoText,
+                                            { marginTop: hp(1.5) }
+                                        ]}
+                                    >
+                                        Soru Çözüm Videoları şimdi Elit Öğrenci
+                                        Paketi'nde
+                                    </Text>
+                                </View>
+                            </View>
+                        </View>
+                    </LinearGradient>
+                </View>
+            </View>
+        )
+    }
+
+    showSolvedQuestion = () => {
+        if (this.props.clientInformation.isPremium) {
+            this.setState({
+                isSolvedQuestionVisible: !this.state.isSolvedQuestionVisible
+            })
+        } else {
+            this.setState({
+                visibleView: 'PREMIUM_SOLVING_IMG',
+                isModalVisible: true
+            })
+        }
+    }
+
+    goToVideo = () => {
+        if (this.props.clientInformation.isPremium) {
+            navigationPush(SCENE_KEYS.mainScreens.video, {
+                videoUri: this.state.solvedQuestionVideo
+            })
+        } else {
+            this.setState({
+                visibleView: 'PREMIUM_SOLVING_VIDEO',
+                isModalVisible: true
+            })
+        }
     }
 
     render() {
@@ -841,26 +1040,155 @@ class SoloFriendGameStatsScreen extends React.Component {
                             transparent={true}
                             animationType={'fade'}
                         >
-                            {this.premiumForFavoritesPage()}
+                            {this.state.visibleView === 'PREMIUM_FAV' &&
+                                this.premiumForFavoritesPage()}
+                            {this.state.visibleView === 'PREMIUM_SOLVING_IMG' &&
+                                this.premiumForSolvingImgPage()}
+                            {this.state.visibleView ===
+                                'PREMIUM_SOLVING_VIDEO' &&
+                                this.premiumForSolvingVideoPage()}
                         </Modal>
                         <View style={styles.questionNumberContainer}>
-                            <Text style={styles.questionNumberText}>
-                                {this.state.questionPosition}/
-                                {
-                                    Object.keys(this.state.allQuestionsList)
-                                        .length
-                                }
-                            </Text>
+                            {this.state.solvedQuestionImage !== null ? (
+                                <View
+                                    style={{
+                                        position: 'absolute',
+                                        height: hp(7),
+                                        width: wp(34),
+                                        justifyContent: 'center',
+                                        marginLeft: wp(0)
+                                    }}
+                                >
+                                    {this.state.isSolvedQuestionVisible ===
+                                    false ? (
+                                        <TouchableOpacity
+                                            onPress={this.showSolvedQuestion}
+                                            style={styles.videoButton}
+                                        >
+                                            <Image
+                                                source={SOLVING_LOGO}
+                                                style={styles.solvingLogo}
+                                            />
+                                            <Text
+                                                style={styles.videoButtonText}
+                                            >
+                                                Çözüme bak
+                                            </Text>
+                                        </TouchableOpacity>
+                                    ) : (
+                                        <TouchableOpacity
+                                            onPress={this.showSolvedQuestion}
+                                            style={styles.videoButton}
+                                        >
+                                            <Image
+                                                source={SOLVING_LOGO}
+                                                style={styles.solvingLogo}
+                                            />
+                                            <Text
+                                                style={styles.videoButtonText}
+                                            >
+                                                Soruya Dön
+                                            </Text>
+                                        </TouchableOpacity>
+                                    )}
+                                </View>
+                            ) : (
+                                <View />
+                            )}
+                            <View
+                                style={{
+                                    position: 'absolute',
+                                    height: hp(7),
+                                    width: wp(22),
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    marginLeft: wp(34)
+                                }}
+                            >
+                                <Text style={styles.questionNumberText}>
+                                    {this.state.questionPosition}/
+                                    {
+                                        Object.keys(this.state.allQuestionsList)
+                                            .length
+                                    }
+                                </Text>
+                            </View>
+                            {this.state.solvedQuestionVideo !== null ? (
+                                <View
+                                    style={{
+                                        position: 'absolute',
+                                        height: hp(7),
+                                        width: wp(34),
+                                        justifyContent: 'center',
+                                        marginLeft: wp(56)
+                                    }}
+                                >
+                                    <TouchableOpacity
+                                        onPress={this.goToVideo}
+                                        style={styles.videoButton}
+                                    >
+                                        <Image
+                                            source={VIDEO_LOGO}
+                                            style={styles.videoLogo}
+                                        />
+                                        <Text style={styles.videoButtonText}>
+                                            Çözümü izle
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            ) : (
+                                <View />
+                            )}
                         </View>
-                        <ScrollView
+                        <FlatList
+                            ref={ref => {
+                                this.flatListRef = ref
+                            }}
                             horizontal={true}
-                            showsHorizontalScrollIndicator={false}
                             pagingEnabled={true}
+                            data={this.state.allQuestionsList}
                             onScroll={this.handleScrollHorizontal}
-                            scrollEventThrottle={8}
-                        >
-                            {this.state.allQuestionsList}
-                        </ScrollView>
+                            showsHorizontalScrollIndicator={false}
+                            extraData={this.state.isSolvedQuestionVisible}
+                            renderItem={({ item, index }) => {
+                                return (
+                                    <View
+                                        style={styles.scrollQuestionContainer}
+                                    >
+                                        {this.state.isSolvedQuestionVisible ===
+                                        false ? (
+                                            <View
+                                                style={styles.questionContainer}
+                                            >
+                                                <ImageModal
+                                                    resizeMode="contain"
+                                                    imageBackgroundColor="#ffffff"
+                                                    overlayBackgroundColor="#000000DE"
+                                                    style={styles.questionStyle}
+                                                    source={{ uri: item }}
+                                                />
+                                            </View>
+                                        ) : (
+                                            <View
+                                                style={styles.questionContainer}
+                                            >
+                                                <ImageModal
+                                                    resizeMode="contain"
+                                                    imageBackgroundColor="#ffffff"
+                                                    overlayBackgroundColor="#000000DE"
+                                                    style={styles.questionStyle}
+                                                    source={{
+                                                        uri: this.state
+                                                            .solvedQuestionImage
+                                                    }}
+                                                />
+                                            </View>
+                                        )}
+                                    </View>
+                                )
+                            }}
+                            keyExtractor={(item, index) => index.toString()}
+                        ></FlatList>
                         <View style={styles.favAndAnswerContainer}>
                             <View style={styles.answerContainer}>
                                 <View

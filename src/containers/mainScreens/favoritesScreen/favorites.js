@@ -9,9 +9,15 @@ import {
     View,
     Dimensions,
     PermissionsAndroid,
-    Platform
+    Platform,
+    Easing
 } from 'react-native'
-import { navigationPop } from '../../../services/navigationService'
+import {
+    navigationPop,
+    navigationPush,
+    navigationReplace,
+    SCENE_KEYS
+} from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import styles from './style'
 import NotchView from '../../../components/notchView'
@@ -22,9 +28,19 @@ import unselectedFav from '../../../assets/favori_bos.png'
 import backButton from '../../../assets/backButton.png'
 import returnLogo from '../../../assets/return.png'
 import shareLogo from '../../../assets/share.png'
+import VIDEO_LOGO from '../../../assets/mainScreens/whiteVideoLogo.png'
+import SOLVING_LOGO from '../../../assets/mainScreens/whiteSolvingLogo.png'
+import QUESTION_MARK from '../../../assets/mainScreens/whiteQuestionMarkLogo.png'
 
 import { clientActions } from '../../../redux/client/actions'
 import NO_RESULTS_FAV from '../../../assets/noResultsFav.png'
+
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
+import ImageModal from 'react-native-image-modal'
+import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas'
 
 class Favorites extends React.Component {
     constructor(props) {
@@ -40,7 +56,10 @@ class Favorites extends React.Component {
             correctAnswer: '',
             // Favoruite variables
             favouriteIcon: unselectedFav,
-            isFaved: false
+            isFaved: false,
+            solvedQuestionImage: null,
+            solvedQuestionVideo: null,
+            isSolvedQuestionVisible: false
         }
     }
 
@@ -172,7 +191,10 @@ class Favorites extends React.Component {
                 scrollViewList.push(itemList)
             })
 
-            this.setState({ scrollViewList: scrollViewList })
+            this.setState({
+                scrollViewList: scrollViewList,
+                isSolvedQuestionVisible: false
+            })
             return true
         })
     }
@@ -190,7 +212,10 @@ class Favorites extends React.Component {
                 data: questionList,
                 correctAnswer: questionList[index].question.correctAnswer
             },
-            () => this.checkFavouriteStatus()
+            () => {
+                this.checkFavouriteStatus()
+                this.checkSolvedQuestionImageVideo()
+            }
         )
     }
 
@@ -250,6 +275,15 @@ class Favorites extends React.Component {
         } else {
             this.setState({ favouriteIcon: selectedFav, isFaved: true })
         }
+    }
+
+    checkSolvedQuestionImageVideo = () => {
+        this.setState({
+            solvedQuestionImage: this.state.data[this.state.galleryPosition - 1]
+                .question.solvedQuestionImage,
+            solvedQuestionVideo: this.state.data[this.state.galleryPosition - 1]
+                .question.solvedQuestionVideo
+        })
     }
 
     favouriteOnPress = () => {
@@ -332,9 +366,13 @@ class Favorites extends React.Component {
                     Object.keys(this.state.data).length /*Image count*/
                 ),
                 correctAnswer: this.state.data[this.state.galleryPosition - 1]
-                    .question.correctAnswer
+                    .question.correctAnswer,
+                isSolvedQuestionVisible: false
             },
-            this.checkFavouriteStatus()
+            () => {
+                this.checkFavouriteStatus()
+                this.checkSolvedQuestionImageVideo()
+            }
         )
     }
 
@@ -353,6 +391,19 @@ class Favorites extends React.Component {
             case 6:
                 return 'Boş'
         }
+    }
+
+    showSolvedQuestion = () => {
+        this.setState({
+            isSolvedQuestionVisible: !this.state.isSolvedQuestionVisible
+        })
+    }
+
+    goToVideo = () => {
+        this.setState({ isModalVisible: false, isSolvedQuestionVisible: false })
+        navigationPush(SCENE_KEYS.mainScreens.video, {
+            videoUri: this.state.solvedQuestionVideo
+        })
     }
 
     render() {
@@ -421,6 +472,7 @@ class Favorites extends React.Component {
                             showsHorizontalScrollIndicator={false}
                             onScroll={this.galleryOnScroll}
                             onScrollToIndexFailed={() => {}}
+                            extraData={this.state.isSolvedQuestionVisible}
                             renderItem={({ item, index }) => {
                                 return (
                                     <View style={styles.galleryView}>
@@ -446,13 +498,21 @@ class Favorites extends React.Component {
                                         <View
                                             style={styles.questionInModalView}
                                         >
-                                            <Image
+                                            <ImageModal
+                                                resizeMode="contain"
+                                                imageBackgroundColor="#ffffff"
+                                                overlayBackgroundColor="#000000DE"
+                                                style={styles.questionInModal}
                                                 source={{
                                                     uri:
-                                                        item.question
-                                                            .questionLink
+                                                        this.state
+                                                            .isSolvedQuestionVisible ===
+                                                        false
+                                                            ? item.question
+                                                                  .questionLink
+                                                            : this.state
+                                                                  .solvedQuestionImage
                                                 }}
-                                                style={styles.questionInModal}
                                             />
                                         </View>
                                     </View>
@@ -482,7 +542,7 @@ class Favorites extends React.Component {
                             </View>
                             <Text style={styles.answerText}>Doğru cevap</Text>
                         </View>
-                        <View style={styles.favIconContainer}>
+                        <View style={styles.answerContainer}>
                             <TouchableOpacity onPress={this.favouriteOnPress}>
                                 <Image
                                     source={this.state.favouriteIcon}
@@ -495,6 +555,53 @@ class Favorites extends React.Component {
                                     : 'Favoriye ekle'}
                             </Text>
                         </View>
+                        {this.state.solvedQuestionImage !== null ? (
+                            <View>
+                                {this.state.isSolvedQuestionVisible ===
+                                false ? (
+                                    <View style={styles.answerContainer}>
+                                        <TouchableOpacity
+                                            onPress={this.showSolvedQuestion}
+                                        >
+                                            <Image
+                                                source={SOLVING_LOGO}
+                                                style={styles.favIcon}
+                                            />
+                                        </TouchableOpacity>
+                                        <Text style={styles.answerText}>
+                                            Çözüme bak
+                                        </Text>
+                                    </View>
+                                ) : (
+                                    <View style={styles.answerContainer}>
+                                        <TouchableOpacity
+                                            onPress={this.showSolvedQuestion}
+                                        >
+                                            <Image
+                                                source={QUESTION_MARK}
+                                                style={styles.favIcon}
+                                            />
+                                        </TouchableOpacity>
+                                        <Text style={styles.answerText}>
+                                            Soruya Dön
+                                        </Text>
+                                    </View>
+                                )}
+                            </View>
+                        ) : null}
+                        {this.state.solvedQuestionVideo !== null ? (
+                            <View style={styles.answerContainer}>
+                                <TouchableOpacity onPress={this.goToVideo}>
+                                    <Image
+                                        source={VIDEO_LOGO}
+                                        style={styles.favIcon}
+                                    />
+                                </TouchableOpacity>
+                                <Text style={styles.answerText}>
+                                    Çözümü izle
+                                </Text>
+                            </View>
+                        ) : null}
                     </View>
                 </Modal>
                 {Object.keys(this.state.scrollViewList).length !== 0 && (

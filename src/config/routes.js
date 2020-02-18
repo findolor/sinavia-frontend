@@ -104,6 +104,10 @@ const RouterComp = () => {
                         key={SCENE_KEYS.mainScreens.jokerReward}
                         component={mainScreens.jokerReward}
                     />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.video}
+                        component={mainScreens.video}
+                    />
                 </Scene>
                 <Scene key="game" hideNavBar={true}>
                     <Scene
@@ -177,6 +181,10 @@ const RouterComp = () => {
                     <Scene
                         key={SCENE_KEYS.gameScreens.unsolvedModeLoadingScreen}
                         component={gameScreens.unsolvedModeLoadingScreen}
+                    />
+                    <Scene
+                        key={SCENE_KEYS.mainScreens.video}
+                        component={mainScreens.video}
                     />
                 </Scene>
             </Scene>

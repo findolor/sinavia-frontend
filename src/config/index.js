@@ -50,17 +50,19 @@ const scene_keys = {
         notifications: 'notifications',
         statistics: 'statistics',
         goals: 'goals',
-        jokerReward: 'jokerReward'
+        jokerReward: 'jokerReward',
+        video: 'video'
     },
     splashScreen: 'splash',
     tutorialScreen: 'tutorial'
 }
 
-const API_ENDPOINT = ENV_API_ENDPOINT
-const GAME_ENGINE_ENDPOINT = ENV_GAME_ENGINE_ENDPOINT
+const API_ENDPOINT = ENV_API_ENDPOINT_LOCAL
+const GAME_ENGINE_ENDPOINT = ENV_GAME_ENGINE_ENDPOINT_LOCAL
 const APP_VERSION = ENV_APP_VERSION
 const SCENE_KEYS = scene_keys
 const BUGSNAG_API_KEY = ENV_BUGSNAG_API_KEY
+
 console.log(API_ENDPOINT, GAME_ENGINE_ENDPOINT)
 export {
     API_ENDPOINT,
