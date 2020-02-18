@@ -14,6 +14,7 @@ import OpponentsProfile from './opponentsProfileScreen/opponentsProfile'
 import Statistics from './statisticsScreen/statistics'
 import Goals from './goalsScreen/goals'
 import JokerReward from './jokerRewardScreen/jokerReward'
+import Video from './video/video'
 
 export {
     Profile,
@@ -29,5 +30,6 @@ export {
     Notifications,
     Statistics,
     Goals,
-    JokerReward
+    JokerReward,
+    Video
 }

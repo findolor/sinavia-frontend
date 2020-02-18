@@ -513,5 +513,33 @@ export default StyleSheet.create({
         height: hp(6),
         width: hp(6),
         borderRadius: hp(100)
+    },
+    modalButtonsContainer: {
+        position: 'absolute',
+        marginTop: hp(83.5),
+        height: hp(7),
+        width: wp(87.5),
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    videoButton: {
+        height: hp(7),
+        width: wp(42),
+        backgroundColor: '#00D9EF',
+        borderRadius: hp(1.5),
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    videoButtonLogo: {
+        height: hp(4),
+        width: hp(4),
+        marginRight: wp(3)
+    },
+    videoButtonText: {
+        fontFamily: 'Averta-Semibold',
+        color: '#FFFFFF',
+        letterSpacing: wp(0.1),
+        fontSize: hp(2)
     }
 })

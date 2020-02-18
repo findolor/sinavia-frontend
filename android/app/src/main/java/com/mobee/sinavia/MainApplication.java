@@ -7,6 +7,7 @@ import com.facebook.react.PackageList;
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
 import com.facebook.react.bridge.JavaScriptExecutorFactory;
 import com.facebook.react.ReactApplication;
+import com.brentvatne.react.ReactVideoPackage;
 import com.reactlibrary.RNCAppearancePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import cl.json.RNSharePackage;
@@ -23,6 +24,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.airbnb.android.react.lottie.LottiePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
+import com.github.yamill.orientation.OrientationPackage;
 
 import java.util.List;
 
@@ -48,6 +50,7 @@ public class MainApplication extends Application implements ReactApplication {
       packages.add(new LinearGradientPackage());
       packages.add(new RNFirebaseStoragePackage());
       packages.add(new RNFirebaseAdMobPackage());
+      
       return packages;
     }
 

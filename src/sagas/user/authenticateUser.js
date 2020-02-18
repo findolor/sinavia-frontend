@@ -48,7 +48,6 @@ export function* authenticateUser(action) {
         deviceStorage.getItemFromStorage,
         'signInMethod'
     )
-
     try {
         switch (signInMethod) {
             case 'normal':

@@ -36,6 +36,8 @@ import PREMIUM_JOKER from '../../../assets/premiumJoker.png'
 import PREMIUM_BACK from '../../../assets/premiumBack.png'
 import PREMIUM_MAP from '../../../assets/premiumMap.png'
 import PREMIUM_SINGLE_MODE from '../../../assets/premiumSingleMode.png'
+import PREMIUM_VIDEO from '../../../assets/premiumVideo.png'
+import PREMIUM_SOLVING from '../../../assets/premiumSolvingImg.png'
 
 import SEE_OPPONENT_JOKER_IMAGE from '../../../assets/jokers/seeOpponent.png'
 import REMOVE_OPTIONS_JOKER_IMAGE from '../../../assets/jokers/removeOptions.png'
@@ -556,6 +558,108 @@ class PurchaseScreen extends React.Component {
                                                             sonra tekrar bakmak
                                                             istediğin soruları
                                                             favorile
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                                <View
+                                                    style={
+                                                        styles.premiumModalSwiperView
+                                                    }
+                                                >
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperImgView
+                                                        }
+                                                    >
+                                                        <Image
+                                                            source={
+                                                                PREMIUM_VIDEO
+                                                            }
+                                                            style={
+                                                                styles.premiumModalImg
+                                                            }
+                                                        />
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperHeaderView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumModalHeaderText
+                                                            }
+                                                        >
+                                                            Soru çözüm videoları
+                                                        </Text>
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperInfoView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={[
+                                                                styles.premiumModalInfoText,
+                                                                {
+                                                                    marginBottom: hp(
+                                                                        0.5
+                                                                    )
+                                                                }
+                                                            ]}
+                                                        >
+                                                            Yapamadığın soruların çözümlerini izleyerek anlamanı pekiştir
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                                <View
+                                                    style={
+                                                        styles.premiumModalSwiperView
+                                                    }
+                                                >
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperImgView
+                                                        }
+                                                    >
+                                                        <Image
+                                                            source={
+                                                                PREMIUM_SOLVING
+                                                            }
+                                                            style={
+                                                                styles.premiumModalImg
+                                                            }
+                                                        />
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperHeaderView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumModalHeaderText
+                                                            }
+                                                        >
+                                                            Doğru çözümlere bak
+                                                        </Text>
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumModalSwiperInfoView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={[
+                                                                styles.premiumModalInfoText,
+                                                                {
+                                                                    marginBottom: hp(
+                                                                        0.5
+                                                                    )
+                                                                }
+                                                            ]}
+                                                        >
+                                                            Soruların çözüm yöntemlerine bakarak kavrayabilirsin
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -2532,6 +2636,98 @@ class PurchaseScreen extends React.Component {
                                                             sonra tekrar bakmak
                                                             istediğin soruları
                                                             favorile
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                                <View
+                                                    style={
+                                                        styles.premiumSwiperView
+                                                    }
+                                                >
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperImgView
+                                                        }
+                                                    >
+                                                        <Image
+                                                            source={
+                                                                PREMIUM_VIDEO
+                                                            }
+                                                            style={
+                                                                styles.premiumImg
+                                                            }
+                                                        />
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperHeaderView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumHeaderText
+                                                            }
+                                                        >
+                                                            Soru çözüm videoları
+                                                        </Text>
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperInfoView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumInfoText
+                                                            }
+                                                        >
+                                                            Yapamadığın soruların çözümlerini izleyerek anlamanı pekiştir
+                                                        </Text>
+                                                    </View>
+                                                </View>
+                                                <View
+                                                    style={
+                                                        styles.premiumSwiperView
+                                                    }
+                                                >
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperImgView
+                                                        }
+                                                    >
+                                                        <Image
+                                                            source={
+                                                                PREMIUM_SOLVING
+                                                            }
+                                                            style={
+                                                                styles.premiumImg
+                                                            }
+                                                        />
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperHeaderView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumHeaderText
+                                                            }
+                                                        >
+                                                            Doğru çözümlere bak
+                                                        </Text>
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.premiumSwiperInfoView
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.premiumInfoText
+                                                            }
+                                                        >
+                                                            Soruların çözüm yöntemlerine bakarak kavrayabilirsin
                                                         </Text>
                                                     </View>
                                                 </View>

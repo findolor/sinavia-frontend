@@ -175,15 +175,9 @@ export default StyleSheet.create({
     },
     answerContainer: {
         height: hp(15),
-        width: wp(35),
+        width: wp(25),
         alignItems: 'center',
         justifyContent: 'space-evenly'
-    },
-    favIconContainer: {
-        height: hp(15),
-        width: wp(35),
-        justifyContent: 'space-evenly',
-        alignItems: 'center'
     },
     correctAnswer: {
         height: hp(7),
@@ -209,7 +203,8 @@ export default StyleSheet.create({
         color: '#FFFFFF',
         letterSpacing: wp(0.1),
         marginBottom: hp(1.3),
-        fontSize: hp(2)
+        fontSize: hp(2),
+        textAlign: 'center'
     },
     backButtonContainer: {
         height: hp(11),
@@ -244,5 +239,14 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Semibold',
         fontSize: hp(3),
         color: 'white'
-    }
+    },
+    zoomModalContainer: {
+        backgroundColor: '#000000d0',
+        flex: 1
+    },
+    questionModalStyle: {
+        resizeMode: 'contain',
+        flex: 1,
+        width: wp(100)
+    },
 })

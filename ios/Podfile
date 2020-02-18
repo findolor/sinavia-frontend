@@ -51,6 +51,10 @@ target 'Sinavia' do
 
   pod 'react-native-appearance', :path => '../node_modules/react-native-appearance'
 
+  pod 'react-native-video', :path => '../node_modules/react-native-video'
+
+  pod 'react-native-orientation', :path => '../node_modules/react-native-orientation'
+
   target 'SinaviaTests' do
     inherit! :search_paths
     # Pods for testing
