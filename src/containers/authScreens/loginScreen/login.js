@@ -78,7 +78,7 @@ class Login extends React.Component {
         this.setState({ isLogging: true })
         this.indicatorTimeout = setTimeout(() => {
             this.setState({ isLogging: false })
-        }, 2000)
+        }, 4000)
         this.props.loginUser({
             email: this.state.email.replace(/ /g, ''),
             password: this.state.password.replace(/ /g, '')
