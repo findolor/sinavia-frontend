@@ -47,7 +47,7 @@ export default StyleSheet.create({
     },
     oauthInfoText: {
         fontFamily: 'Averta-Regular',
-        fontSize: hp(1.7),
+        fontSize: hp(1.5),
         color: '#7A7878',
         textAlign: 'center'
     },

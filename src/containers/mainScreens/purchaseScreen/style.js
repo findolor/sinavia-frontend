@@ -297,11 +297,12 @@ export default StyleSheet.create({
         backgroundColor: '#FF9900',
         borderWidth: hp(0.35),
         borderColor: '#fcfcfc',
-        borderRadius: hp(4)
+        borderRadius: hp(4),
+        marginTop: hp(1)
     },
     premiumButtonText: {
         fontFamily: 'Averta-Bold',
-        fontSize: hp(2),
+        fontSize: hp(1.8),
         textAlign: 'center',
         color: 'white'
     },
@@ -343,7 +344,7 @@ export default StyleSheet.create({
     },
     premiumSwiperInfoView: {
         height: hp(6.5),
-        width: wp(70),
+        width: wp(80),
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -661,21 +662,23 @@ export default StyleSheet.create({
     premiumUserJokerButtonStyle: {
         height: hp(13),
         width: wp(93),
-        borderRadius: hp(2)
+        borderRadius: hp(2),
+        resizeMode: 'stretch'
     },
     adButton2: {
         height: hp(9),
         width: wp(30),
-        borderRadius: hp(2)
+        borderRadius: hp(2),
+        resizeMode: 'stretch'
     },
     inviteFriendView: {
-        height: hp(35.6),
+        height: hp(52),
         width: wp(93),
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
     inviteFriendInfoView: {
-        height: hp(19),
+        height: hp(35),
         width: wp(70),
         justifyContent: 'flex-end'
     },
@@ -726,13 +729,14 @@ export default StyleSheet.create({
         borderRadius: hp(2),
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: hp(1.5)
+        marginTop: hp(1.5),
+        marginLeft: wp(11.5)
     },
     promotionCodeInfoText: {
         fontFamily: 'Averta-Semibold',
         fontSize: hp(2),
         color: '#818181',
-        marginBottom: hp(1)
+        marginBottom: hp(3)
     },
     inviteFriendKeyAmounts: {
         fontFamily: 'Averta-Semibold',
@@ -755,5 +759,5 @@ export default StyleSheet.create({
     copyImage: {
         height: hp(4),
         width: hp(4)
-    },
+    }
 })

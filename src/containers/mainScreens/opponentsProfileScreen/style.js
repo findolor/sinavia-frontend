@@ -423,7 +423,8 @@ export default StyleSheet.create({
         height: hp(4.5),
         width: wp(90),
         justifyContent: 'flex-end',
-        alignItems: 'center'
+        alignItems: 'flex-start',
+        marginLeft: wp(3)
     },
     reportOptionsView: {
         height: hp(19),
@@ -466,7 +467,7 @@ export default StyleSheet.create({
     },
     reportHeaderText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: hp(2.2),
+        fontSize: hp(2),
         color: '#000000'
     },
     reportButton: {

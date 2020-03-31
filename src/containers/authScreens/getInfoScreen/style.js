@@ -23,7 +23,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between'
     },
-    authButtonView:{
+    authButtonView: {
         flex: 15,
         justifyContent: 'flex-start',
         alignItems: 'center',

@@ -73,12 +73,12 @@ export default StyleSheet.create({
     },
     addLogoText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: hp(2.5),
+        fontSize: hp(2.3),
         color: '#FFFFFF'
     },
     headerText: {
         fontFamily: 'Averta-BoldItalic',
-        fontSize: hp(3.7),
+        fontSize: hp(2.9),
         color: '#00D9EF'
     },
     addNewGoalImg: {
@@ -90,7 +90,7 @@ export default StyleSheet.create({
     },
     goalsInfoView: {
         flex: 19,
-        width: wp(100),
+        width: wp(90),
         justifyContent: 'center',
         alignItems: 'center'
     },

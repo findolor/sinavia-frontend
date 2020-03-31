@@ -914,7 +914,7 @@ class SoloFriendGameScreen extends React.Component {
                             source={{
                                 uri: this.state.questionList[
                                     this.state.questionNumber
-                                    ]
+                                ]
                             }}
                         />
                     </View>
@@ -971,7 +971,7 @@ class SoloFriendGameScreen extends React.Component {
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
-                                                    fontSize: hp(2.25),
+                                                    fontSize: hp(2),
                                                     textAlign: 'center'
                                                 }}
                                             >
@@ -993,7 +993,7 @@ class SoloFriendGameScreen extends React.Component {
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
-                                                    fontSize: hp(2.25),
+                                                    fontSize: hp(2),
                                                     textAlign: 'center'
                                                 }}
                                             >
@@ -1015,7 +1015,7 @@ class SoloFriendGameScreen extends React.Component {
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
-                                                    fontSize: hp(2.25),
+                                                    fontSize: hp(2),
                                                     textAlign: 'center'
                                                 }}
                                             >
@@ -1037,7 +1037,7 @@ class SoloFriendGameScreen extends React.Component {
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
-                                                    fontSize: hp(2.25),
+                                                    fontSize: hp(2),
                                                     textAlign: 'center'
                                                 }}
                                             >

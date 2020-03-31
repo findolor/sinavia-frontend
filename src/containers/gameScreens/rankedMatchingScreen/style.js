@@ -53,6 +53,7 @@ export default StyleSheet.create({
     userPicContainer: {
         height: hp(20),
         width: wp(33),
+        justifyContent: 'center',
         alignItems: 'flex-end',
         marginBottom: hp(3)
     },
@@ -65,6 +66,7 @@ export default StyleSheet.create({
     opponentPicContainer: {
         height: hp(20),
         width: wp(33),
+        justifyContent: 'center',
         alignItems: 'flex-start',
         marginTop: hp(3)
     },
@@ -76,16 +78,15 @@ export default StyleSheet.create({
         marginTop: hp(3)
     },
     playerPic: {
-        height: hp(15),
-        width: hp(15),
-        marginTop: hp(2.7),
+        height: hp(11.5),
+        width: hp(11.5),
         borderWidth: hp(0.5),
         borderColor: '#FF9900',
         borderRadius: 100
     },
     usernameText: {
         fontFamily: 'Averta-BoldItalic',
-        fontSize: hp(3),
+        fontSize: hp(2.5),
         color: '#FFFFFF'
     },
     sinaviaScoreText: {

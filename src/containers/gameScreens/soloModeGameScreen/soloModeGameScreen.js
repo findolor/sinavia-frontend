@@ -894,7 +894,7 @@ class SoloModeGameScreen extends React.Component {
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
-                                                    fontSize: hp(2.25),
+                                                    fontSize: hp(2),
                                                     textAlign: 'center'
                                                 }}
                                             >
@@ -916,7 +916,7 @@ class SoloModeGameScreen extends React.Component {
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
-                                                    fontSize: hp(2.25),
+                                                    fontSize: hp(2),
                                                     textAlign: 'center'
                                                 }}
                                             >
@@ -938,7 +938,7 @@ class SoloModeGameScreen extends React.Component {
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
-                                                    fontSize: hp(2.25),
+                                                    fontSize: hp(2),
                                                     textAlign: 'center'
                                                 }}
                                             >
@@ -960,7 +960,7 @@ class SoloModeGameScreen extends React.Component {
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
-                                                    fontSize: hp(2.25),
+                                                    fontSize: hp(2),
                                                     textAlign: 'center'
                                                 }}
                                             >

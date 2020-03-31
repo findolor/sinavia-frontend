@@ -86,13 +86,7 @@ class Profile extends React.Component {
     }
 
     favoriteLogoOnPress = () => {
-        if (this.props.clientInformation.isPremium) {
-            navigationPush(SCENE_KEYS.mainScreens.favorites)
-        } else {
-            this.setState({
-                isModalVisible: true
-            })
-        }
+        navigationPush(SCENE_KEYS.mainScreens.favorites)
     }
 
     friendsLogoOnPress = () => {

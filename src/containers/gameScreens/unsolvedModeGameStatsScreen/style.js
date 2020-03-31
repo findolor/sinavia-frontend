@@ -127,7 +127,7 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Semibold',
         color: '#2E313C',
         marginTop: hp(1.25),
-        fontSize: hp(2.3)
+        fontSize: hp(1.85)
     },
     dividedAnswer: {
         height: hp(6),
@@ -140,7 +140,7 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Semibold',
         color: '#2E313C',
         marginLeft: wp(2),
-        fontSize: hp(4)
+        fontSize: hp(3.5)
     },
     secondScreenView: {
         height: hp(78),
@@ -295,7 +295,8 @@ export default StyleSheet.create({
     courseText: {
         fontFamily: 'Averta-SemiboldItalic',
         fontSize: hp(4.5),
-        color: '#FF9900'
+        color: '#FF9900',
+        textAlign: 'center'
     },
     questionNumberContainer: {
         height: hp(7),

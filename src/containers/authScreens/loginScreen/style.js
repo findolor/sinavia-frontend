@@ -69,7 +69,7 @@ export default StyleSheet.create({
     },
     eyeImg: {
         height: hp(3),
-        width: hp(9),
+        width: hp(9)
     },
     forgetPasswordText: {
         fontFamily: 'Averta-Bold',

@@ -20,6 +20,8 @@ export default StyleSheet.create({
     },
     headerTextContainer: {
         flex: 14,
+        width: wp(90),
+        marginLeft: wp(5),
         justifyContent: 'flex-end',
         alignItems: 'center'
     },

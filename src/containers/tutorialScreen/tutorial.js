@@ -169,7 +169,8 @@ class Tutorial extends React.Component {
                                     {
                                         resizeMode: 'contain',
                                         height: hp(20),
-                                        marginBottom: hp(4.8)
+                                        marginBottom: hp(4.8),
+                                        width: wp(90)
                                     }
                                 ]}
                             />

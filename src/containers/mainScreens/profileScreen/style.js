@@ -38,12 +38,12 @@ export default StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
     },
-    profileContainerShadowView:{
+    profileContainerShadowView: {
         height: hp(30),
         width: wp(90),
         borderRadius: hp(3),
         alignItems: 'center',
-        backgroundColor: "rgba(0,0,0,0.5)"
+        backgroundColor: 'rgba(0,0,0,0.5)'
     },
     first2Box: {
         height: hp(29),
@@ -109,11 +109,11 @@ export default StyleSheet.create({
     },
     boxTextContainer: {
         height: hp(12),
-        width: wp(42.5),
+        width: wp(39),
         justifyContent: 'flex-end',
         alignItems: 'center'
     },
-    boxLogoContainer:{
+    boxLogoContainer: {
         height: hp(13),
         width: wp(42.5),
         flexDirection: 'row',
@@ -122,7 +122,7 @@ export default StyleSheet.create({
     },
     boxText: {
         fontFamily: 'Averta-ExtraBoldItalic',
-        fontSize: hp(3),
+        fontSize: hp(2.8),
         color: '#2E313C',
         marginBottom: hp(1),
         textAlign: 'center'
