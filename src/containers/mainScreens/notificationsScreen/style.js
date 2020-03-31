@@ -122,7 +122,8 @@ export default StyleSheet.create({
         height: hp(8),
         width: wp(50),
         justifyContent: 'center',
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        marginLeft: wp(2)
     },
     nameText: {
         fontFamily: 'Averta-Semibold',

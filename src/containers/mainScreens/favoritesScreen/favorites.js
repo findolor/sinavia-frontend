@@ -402,7 +402,7 @@ class Favorites extends React.Component {
     goToVideo = () => {
         this.setState({ isModalVisible: false, isSolvedQuestionVisible: false })
         navigationPush(SCENE_KEYS.mainScreens.video, {
-            videoUri: 'https://player.vimeo.com/video/395626987/config'
+            videoUri: this.state.solvedQuestionVideo
         })
     }
 
