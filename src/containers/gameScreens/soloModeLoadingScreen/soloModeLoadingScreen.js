@@ -54,7 +54,8 @@ class SoloModeLoadingScreen extends React.Component {
                             playerUsername: this.props.clientInformation
                                 .username,
                             playerProfilePicture: this.props.clientInformation
-                                .profilePicture
+                                .profilePicture,
+                            contentIds: this.props.contentIds
                         }
                     )
                 }, 5000)

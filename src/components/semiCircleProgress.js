@@ -3,7 +3,6 @@ import { Animated, View, StyleSheet, ViewPropTypes } from 'react-native'
 import PropTypes from 'prop-types'
 
 export default class SemiCircleProgress extends React.PureComponent {
-
     static propTypes = {
         progressShadowColor: PropTypes.string,
         progressColor: PropTypes.string,
@@ -55,16 +54,16 @@ export default class SemiCircleProgress extends React.PureComponent {
             speed,
             useNativeDriver: true,
             duration: 2000
-        }).start();
+        }).start()
     }
 
     getPercentage = () => {
         const { percentage, minValue, maxValue, currentValue } = this.props
-        if (percentage)
-            return Math.max(Math.min(percentage, 100), 0)
+        if (percentage) return Math.max(Math.min(percentage, 100), 0)
 
         if (currentValue && minValue && maxValue) {
-            const newPercent = (currentValue - minValue) / (maxValue - minValue) * 100
+            const newPercent =
+                ((currentValue - minValue) / (maxValue - minValue)) * 100
             return Math.max(Math.min(newPercent, 100), 0)
         }
 
@@ -72,7 +71,13 @@ export default class SemiCircleProgress extends React.PureComponent {
     }
 
     getStyles = () => {
-        const { circleRadius, progressShadowColor, progressColor, progressWidth, interiorCircleColor } = this.props
+        const {
+            circleRadius,
+            progressShadowColor,
+            progressColor,
+            progressWidth,
+            interiorCircleColor
+        } = this.props
         const interiorCircleRadius = circleRadius - progressWidth
 
         return StyleSheet.create({
@@ -114,15 +119,36 @@ export default class SemiCircleProgress extends React.PureComponent {
     }
 
     render() {
-
         const styles = this.getStyles()
 
         return (
-            <View style={[defaultStyles.exteriorCircle, styles.exteriorCircle, this.props.exteriorCircleStyle]}>
-                <View style={[defaultStyles.rotatingCircleWrap, styles.rotatingCircleWrap]}>
-                    <Animated.View style={[defaultStyles.rotatingCircle, styles.rotatingCircle]} />
+            <View
+                style={[
+                    defaultStyles.exteriorCircle,
+                    styles.exteriorCircle,
+                    this.props.exteriorCircleStyle
+                ]}
+            >
+                <View
+                    style={[
+                        defaultStyles.rotatingCircleWrap,
+                        styles.rotatingCircleWrap
+                    ]}
+                >
+                    <Animated.View
+                        style={[
+                            defaultStyles.rotatingCircle,
+                            styles.rotatingCircle
+                        ]}
+                    />
                 </View>
-                <View style={[defaultStyles.interiorCircle, styles.interiorCircle, this.props.interiorCircleStyle]}>
+                <View
+                    style={[
+                        defaultStyles.interiorCircle,
+                        styles.interiorCircle,
+                        this.props.interiorCircleStyle
+                    ]}
+                >
                     {this.props.children}
                 </View>
             </View>
@@ -153,6 +179,6 @@ const defaultStyles = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'center',
         borderBottomLeftRadius: 0,
-        borderBottomRightRadius: 0,
+        borderBottomRightRadius: 0
     }
 })

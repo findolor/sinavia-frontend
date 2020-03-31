@@ -274,7 +274,8 @@ class UnsolvedModeGameScreen extends React.Component {
                         playerUsername: this.props.playerUsername,
                         playerProfilePicture: this.props.playerProfilePicture,
                         fullQuestionList: message.fullQuestionList,
-                        isMatchFinished: false
+                        isMatchFinished: false,
+                        contentIds: this.props.contentIds
                     }
                 )
                 break
@@ -341,7 +342,8 @@ class UnsolvedModeGameScreen extends React.Component {
                         playerProfilePicture: this.props.clientInformation
                             .profilePicture,
                         fullQuestionList: this.state.fullQuestionList,
-                        isMatchFinished: true
+                        isMatchFinished: true,
+                        contentIds: this.props.contentIds
                     }
                 )
                 return
@@ -845,7 +847,7 @@ class UnsolvedModeGameScreen extends React.Component {
                             source={{
                                 uri: this.state.questionList[
                                     this.state.questionNumber
-                                    ]
+                                ]
                             }}
                         />
                     </View>
