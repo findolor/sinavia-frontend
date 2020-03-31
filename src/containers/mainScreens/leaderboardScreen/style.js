@@ -33,7 +33,7 @@ export default StyleSheet.create({
         width: wp(100),
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'flex-end',
+        alignItems: 'flex-end'
     },
     globalTabContainer: {
         height: hp(5.5),
@@ -86,14 +86,14 @@ export default StyleSheet.create({
     },
     lastUpdateText: {
         fontFamily: 'Averta-Regular',
-        fontSize: hp(2.3),
+        fontSize: hp(2),
         color: '#2E313C',
         textAlign: 'center',
         marginRight: wp(3)
     },
     lastUpdateTimeText: {
         fontFamily: 'Averta-SemiboldItalic',
-        fontSize: hp(2.5),
+        fontSize: hp(2.3),
         color: '#2E313C',
         marginRight: wp(3)
     },
@@ -154,7 +154,7 @@ export default StyleSheet.create({
         fontSize: hp(2.5),
         color: '#2E313C'
     },
-    scoreText:{
+    scoreText: {
         fontFamily: 'Averta-Semibold',
         fontSize: hp(2.75),
         color: '#FF6D00'
@@ -188,7 +188,7 @@ export default StyleSheet.create({
     },
     topTenUserContainer: {
         flex: 15.5,
-        width: wp(33),
+        width: wp(33)
     },
     secondAndThirdUsersFromTopTenPic: {
         height: hp(10),
@@ -211,7 +211,7 @@ export default StyleSheet.create({
     },
     topTenUserNameText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: hp(2),
+        fontSize: hp(1.5),
         color: '#2E313C'
     },
     topTenUserScoreText: {
@@ -239,12 +239,12 @@ export default StyleSheet.create({
     slideDownLeftImg: {
         height: hp(1),
         width: hp(2),
-        marginRight: wp(1),
+        marginRight: wp(1)
     },
     slideDownRightImg: {
         height: hp(1),
         width: hp(2),
-        marginLeft: wp(1),
+        marginLeft: wp(1)
     },
     tenToHundredUserRow: {
         height: hp(6),

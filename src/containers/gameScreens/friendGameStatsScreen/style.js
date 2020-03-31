@@ -37,7 +37,7 @@ export default StyleSheet.create({
         marginLeft: wp(6.4),
         borderRadius: hp(4),
         position: 'absolute',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     replayButton: {
         height: hp(7),

@@ -30,7 +30,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row'
     },
-    authButtonView:{
+    authButtonView: {
         flex: 7,
         justifyContent: 'center',
         alignItems: 'center',

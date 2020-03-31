@@ -538,7 +538,11 @@ class PurchaseScreen extends React.Component {
                                                                 }
                                                             ]}
                                                         >
-                                                            Yapamadığın soruların çözümlerini izleyerek anlamanı pekiştir
+                                                            Yapamadığın
+                                                            soruların
+                                                            çözümlerini
+                                                            izleyerek anlamanı
+                                                            pekiştir
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -589,62 +593,9 @@ class PurchaseScreen extends React.Component {
                                                                 }
                                                             ]}
                                                         >
-                                                            Soruların çözüm yöntemlerine bakarak kavrayabilirsin
-                                                        </Text>
-                                                    </View>
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumModalSwiperView
-                                                    }
-                                                >
-                                                    <View
-                                                        style={
-                                                            styles.premiumModalSwiperImgView
-                                                        }
-                                                    >
-                                                        <Image
-                                                            source={PREMIUM_MAP}
-                                                            style={
-                                                                styles.premiumModalImg
-                                                            }
-                                                        />
-                                                    </View>
-                                                    <View
-                                                        style={
-                                                            styles.premiumModalSwiperHeaderView
-                                                        }
-                                                    >
-                                                        <Text
-                                                            style={
-                                                                styles.premiumModalHeaderText
-                                                            }
-                                                        >
-                                                            Türkiye geneli
-                                                            deneme sınavları!
-                                                        </Text>
-                                                    </View>
-                                                    <View
-                                                        style={
-                                                            styles.premiumModalSwiperInfoView
-                                                        }
-                                                    >
-                                                        <Text
-                                                            style={[
-                                                                styles.premiumModalInfoText,
-                                                                {
-                                                                    marginBottom: hp(
-                                                                        0.5
-                                                                    )
-                                                                }
-                                                            ]}
-                                                        >
-                                                            Ülke çapındaki
-                                                            deneme sınavlarına
-                                                            ücretsiz katıl, tüm
-                                                            öğrenciler
-                                                            arasındaki
-                                                            sıralamanı gör
+                                                            Soruların çözüm
+                                                            yöntemlerine bakarak
+                                                            kavrayabilirsin
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -1285,85 +1236,17 @@ class PurchaseScreen extends React.Component {
                                                 </Text>
                                             </View>
                                         </View>
-                                        <View style={styles.separator} />
-                                        <View style={styles.usePromotionView}>
-                                            <View
+                                        <TouchableOpacity
+                                            style={styles.usePromotionButton}
+                                        >
+                                            <Text
                                                 style={
-                                                    styles.usePromotionInfoView
+                                                    styles.purchasePremiumButtonText
                                                 }
                                             >
-                                                <Text
-                                                    style={[
-                                                        styles.promotionCodeInfoText,
-                                                        { marginBottom: hp(1) }
-                                                    ]}
-                                                >
-                                                    1 - Çekilişlerden aldığın
-                                                    kodu burada kullan
-                                                </Text>
-                                                <Text
-                                                    style={[
-                                                        styles.promotionCodeInfoText,
-                                                        {
-                                                            marginBottom: hp(1)
-                                                        }
-                                                    ]}
-                                                >
-                                                    2 - 1 haftalık{' '}
-                                                    <Text
-                                                        onPress={() => {
-                                                            this.setState(
-                                                                {
-                                                                    isPromotionCodeModalVisible: false
-                                                                },
-                                                                () =>
-                                                                    this.onPressPremiumView()
-                                                            )
-                                                        }}
-                                                        style={{
-                                                            color: 'black',
-                                                            fontFamily:
-                                                                'Averta-ExtraBold',
-                                                            textDecorationLine:
-                                                                'underline'
-                                                        }}
-                                                    >
-                                                        ELİT ÖĞRENCİ PAKETİ
-                                                    </Text>{' '}
-                                                    kazan!
-                                                </Text>
-                                            </View>
-                                            <View
-                                                style={styles.usePromotionBox}
-                                            >
-                                                <TextInput
-                                                    style={
-                                                        styles.usePromotionBoxText
-                                                    }
-                                                    maxLength={6}
-                                                    onChangeText={text =>
-                                                        this.setState({
-                                                            usePromotionCode: text
-                                                        })
-                                                    }
-                                                    placeholder="Kodu Gir"
-                                                    placeholderTextColor="#818181"
-                                                />
-                                            </View>
-                                            <TouchableOpacity
-                                                style={
-                                                    styles.usePromotionButton
-                                                }
-                                            >
-                                                <Text
-                                                    style={
-                                                        styles.purchasePremiumButtonText
-                                                    }
-                                                >
-                                                    Onayla
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </View>
+                                                Onayla
+                                            </Text>
+                                        </TouchableOpacity>
                                     </LinearGradient>
                                 </View>
                             </View>
@@ -2607,7 +2490,11 @@ class PurchaseScreen extends React.Component {
                                                                 styles.premiumInfoText
                                                             }
                                                         >
-                                                            Yapamadığın soruların çözümlerini izleyerek anlamanı pekiştir
+                                                            Yapamadığın
+                                                            soruların
+                                                            çözümlerini
+                                                            izleyerek anlamanı
+                                                            pekiştir
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -2653,57 +2540,9 @@ class PurchaseScreen extends React.Component {
                                                                 styles.premiumInfoText
                                                             }
                                                         >
-                                                            Soruların çözüm yöntemlerine bakarak kavrayabilirsin
-                                                        </Text>
-                                                    </View>
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumSwiperView
-                                                    }
-                                                >
-                                                    <View
-                                                        style={
-                                                            styles.premiumSwiperImgView
-                                                        }
-                                                    >
-                                                        <Image
-                                                            source={PREMIUM_MAP}
-                                                            style={
-                                                                styles.premiumImg
-                                                            }
-                                                        />
-                                                    </View>
-                                                    <View
-                                                        style={
-                                                            styles.premiumSwiperHeaderView
-                                                        }
-                                                    >
-                                                        <Text
-                                                            style={
-                                                                styles.premiumHeaderText
-                                                            }
-                                                        >
-                                                            Türkiye geneli
-                                                            deneme sınavları!
-                                                        </Text>
-                                                    </View>
-                                                    <View
-                                                        style={
-                                                            styles.premiumSwiperInfoView
-                                                        }
-                                                    >
-                                                        <Text
-                                                            style={
-                                                                styles.premiumInfoText
-                                                            }
-                                                        >
-                                                            Ülke çapındaki
-                                                            deneme sınavlarına
-                                                            ücretsiz katıl, tüm
-                                                            öğrenciler
-                                                            arasındaki
-                                                            sıralamanı gör
+                                                            Soruların çözüm
+                                                            yöntemlerine bakarak
+                                                            kavrayabilirsin
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -2851,9 +2690,7 @@ class PurchaseScreen extends React.Component {
                                                             Her gün sana verilen
                                                             jokerler ile
                                                             soruların cevabına 1
-                                                            adım daha yaklaş,
-                                                            rakiplerinin önüne
-                                                            geç
+                                                            adım daha yaklaş
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -2882,8 +2719,7 @@ class PurchaseScreen extends React.Component {
                                         style={styles.premiumBottomView}
                                     >
                                         <Text style={styles.inviteText}>
-                                            Arkadaşını davet et veya çekiliş
-                                            kodunu gir
+                                            Arkadaşını davet et,
                                         </Text>
                                         <Text
                                             style={
@@ -2952,33 +2788,60 @@ class PurchaseScreen extends React.Component {
                                             onPress={() =>
                                                 Linking.openURL(instagram_page)
                                             }
-                                            style={styles.socialMediaLogoCircle}
+                                            style={[
+                                                styles.socialMediaLogoCircle,
+                                                {
+                                                    height: hp(4.8),
+                                                    width: hp(4.8)
+                                                }
+                                            ]}
                                         >
                                             <Image
                                                 source={INSTAGRAM_LOGO}
-                                                style={styles.socialMediaLogo}
+                                                style={[
+                                                    styles.socialMediaLogo,
+                                                    { height: hp(2.75) }
+                                                ]}
                                             />
                                         </TouchableOpacity>
                                         <TouchableOpacity
                                             onPress={() =>
                                                 Linking.openURL(twitter_page)
                                             }
-                                            style={styles.socialMediaLogoCircle}
+                                            style={[
+                                                styles.socialMediaLogoCircle,
+                                                {
+                                                    height: hp(4.8),
+                                                    width: hp(4.8)
+                                                }
+                                            ]}
                                         >
                                             <Image
                                                 source={TWITTER_LOGO}
-                                                style={styles.socialMediaLogo}
+                                                style={[
+                                                    styles.socialMediaLogo,
+                                                    { height: hp(2.75) }
+                                                ]}
                                             />
                                         </TouchableOpacity>
                                         <TouchableOpacity
                                             onPress={() =>
                                                 Linking.openURL(facebook_page)
                                             }
-                                            style={styles.socialMediaLogoCircle}
+                                            style={[
+                                                styles.socialMediaLogoCircle,
+                                                {
+                                                    height: hp(4.8),
+                                                    width: hp(4.8)
+                                                }
+                                            ]}
                                         >
                                             <Image
                                                 source={FACEBOOK_LOGO}
-                                                style={styles.socialMediaLogo}
+                                                style={[
+                                                    styles.socialMediaLogo,
+                                                    { height: hp(2.75) }
+                                                ]}
                                             />
                                         </TouchableOpacity>
                                     </View>
@@ -2993,17 +2856,6 @@ class PurchaseScreen extends React.Component {
                                             }
                                         ]}
                                     >
-                                        <Text
-                                            style={[
-                                                styles.socialMediaInfoText,
-                                                {
-                                                    fontFamily: 'Averta-Bold',
-                                                    fontSize: hp(1.7)
-                                                }
-                                            ]}
-                                        >
-                                            Arkadaş daveti veya çekiliş ile
-                                        </Text>
                                         <Text
                                             style={[
                                                 styles.socialMediaInfoText,

@@ -141,7 +141,7 @@ export const KPSS = [
     {
         courseName: 'Maliye',
         illustration: maliye
-    },
+    }
 ]
 
 export const ALES = [

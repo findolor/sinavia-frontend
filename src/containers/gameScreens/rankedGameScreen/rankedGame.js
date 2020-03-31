@@ -1041,17 +1041,17 @@ class RankedGame extends React.Component {
                                     canvasStyle={{ backgroundColor: 'transparent', flex: 1 }}
                                     onStrokeEnd={data => {
                                     }}
-                                    closeComponent={<View style={[styles.functionButton, {marginLeft: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2.25), textAlign: 'center' }}>Kapat</Text></View>}
+                                    closeComponent={<View style={[styles.functionButton, {marginLeft: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2), textAlign: 'center' }}>Kapat</Text></View>}
                                     onClosePressed={this.questionModalCloseOnPress}
-                                    undoComponent={<View style={[styles.functionButton, {marginRight: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2.25), textAlign: 'center' }}>Geri al</Text></View>}
+                                    undoComponent={<View style={[styles.functionButton, {marginRight: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2), textAlign: 'center' }}>Geri al</Text></View>}
                                     onUndoPressed={(id) => {
                                         this.canvas1.deletePath(id)
                                     }}
-                                    clearComponent={<View style={[styles.functionButton, {marginRight: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2.25), textAlign: 'center' }}>Temizle</Text></View>}
+                                    clearComponent={<View style={[styles.functionButton, {marginRight: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2), textAlign: 'center' }}>Temizle</Text></View>}
                                     onClearPressed={() => {
                                         this.canvas1.clear()
                                     }}
-                                    eraseComponent={<View style={[styles.functionButton, {marginLeft: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2.25), textAlign: 'center' }}>Silgi</Text></View>}
+                                    eraseComponent={<View style={[styles.functionButton, {marginLeft: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2), textAlign: 'center' }}>Silgi</Text></View>}
                                     strokeComponent={color => (
                                         <View style={[{ backgroundColor: color, borderWidth: hp(1)  }, styles.strokeColorButton]} />
                                     )}

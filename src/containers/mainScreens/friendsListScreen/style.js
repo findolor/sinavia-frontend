@@ -128,11 +128,13 @@ export default StyleSheet.create({
     nameText: {
         fontFamily: 'Averta-Semibold',
         fontSize: hp(2.4),
-        color: '#5C5C5C'
+        color: '#5C5C5C',
+        paddingLeft: wp(2)
     },
     userNameText: {
         fontFamily: 'Averta-RegularItalic',
         fontSize: hp(2.5),
-        color: '#FF9900'
+        color: '#FF9900',
+        paddingLeft: wp(2)
     }
 })

@@ -1237,12 +1237,22 @@ class Home extends React.Component {
                                 />
                             </View>
                             <View style={styles.nameAndUsernameContainer}>
-                                <Text style={styles.nameAndSurnameText}>
+                                <Text
+                                    style={[
+                                        styles.nameAndSurnameText,
+                                        { fontSize: hp(1.75) }
+                                    ]}
+                                >
                                     {this.props.clientInformation.name +
                                         '  ' +
                                         this.props.clientInformation.lastname}
                                 </Text>
-                                <Text style={styles.userNameText}>
+                                <Text
+                                    style={[
+                                        styles.userNameText,
+                                        { fontSize: hp(1.75) }
+                                    ]}
+                                >
                                     @{this.props.clientInformation.username}
                                 </Text>
                             </View>
@@ -1256,10 +1266,20 @@ class Home extends React.Component {
                                 />
                             </View>
                             <View style={styles.nameAndUsernameContainer}>
-                                <Text style={styles.nameAndSurnameText}>
+                                <Text
+                                    style={[
+                                        styles.nameAndSurnameText,
+                                        { fontSize: hp(1.75) }
+                                    ]}
+                                >
                                     {this.state.opponentName}
                                 </Text>
-                                <Text style={styles.userNameText}>
+                                <Text
+                                    style={[
+                                        styles.userNameText,
+                                        { fontSize: hp(1.75) }
+                                    ]}
+                                >
                                     {this.state.opponentUsername === ''
                                         ? ''
                                         : '@' + this.state.opponentUsername}
@@ -1306,13 +1326,21 @@ class Home extends React.Component {
                                                 />
                                             </View>
                                             <View style={styles.nameContainer}>
-                                                <Text style={styles.nameText}>
+                                                <Text
+                                                    style={[
+                                                        styles.nameText,
+                                                        { paddingLeft: wp(1.5) }
+                                                    ]}
+                                                >
                                                     {item.name +
                                                         ' ' +
                                                         item.lastname}
                                                 </Text>
                                                 <Text
-                                                    style={styles.userNameText}
+                                                    style={[
+                                                        styles.userNameText,
+                                                        { paddingLeft: wp(1.5) }
+                                                    ]}
                                                 >
                                                     @{item.username}
                                                 </Text>

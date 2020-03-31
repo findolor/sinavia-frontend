@@ -216,7 +216,10 @@ export default class ModalDropdown extends Component {
                         >
                             {buttonText}
                         </Text>
-                        <Image source={DROPDOWN_SELECTOR} style={styles.dropdownSelectorImg}/>
+                        <Image
+                            source={DROPDOWN_SELECTOR}
+                            style={styles.dropdownSelectorImg}
+                        />
                     </View>
                 )}
             </TouchableOpacity>
@@ -389,8 +392,7 @@ export default class ModalDropdown extends Component {
         const preservedProps = {
             key,
             accessible,
-            onPress: () =>
-                this._onRowPress(rowData, sectionID, rowID)
+            onPress: () => this._onRowPress(rowData, sectionID, rowID)
         }
         if (TOUCHABLE_ELEMENTS.find(name => name == row.type.displayName)) {
             const props = { ...row.props }
@@ -430,9 +432,7 @@ export default class ModalDropdown extends Component {
                     break
             }
         }
-        return (
-            <TouchableOpacity {...preservedProps}>{row}</TouchableOpacity>
-        )
+        return <TouchableOpacity {...preservedProps}>{row}</TouchableOpacity>
     }
 
     _onRowPress(rowData, sectionID, rowID) {

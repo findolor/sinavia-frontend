@@ -135,14 +135,14 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: hp(13),
-        width: wp(32)
+        width: wp(40)
     },
     seeGroupContainer: {
         flexDirection: 'row',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         alignItems: 'center',
         height: hp(13),
-        width: wp(32)
+        width: wp(40)
     },
     seeGroupCircle: {
         height: hp(10),
@@ -167,7 +167,6 @@ export default StyleSheet.create({
     userProfilePicture: {
         height: hp(6),
         width: hp(6),
-        marginBottom: hp(0.5),
         borderRadius: hp(100),
         borderWidth: hp(0.3),
         borderColor: '#FF9900'
@@ -178,7 +177,7 @@ export default StyleSheet.create({
     },
     answersContainer: {
         height: hp(4),
-        width: wp(24),
+        width: wp(27),
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
@@ -193,7 +192,7 @@ export default StyleSheet.create({
     },
     usernameText: {
         fontFamily: 'Averta-Bold',
-        fontSize: hp(1.75),
+        fontSize: hp(1.65),
         color: '#fff'
     },
     answersText: {
@@ -455,7 +454,7 @@ export default StyleSheet.create({
         backgroundColor: '#ff9900',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: hp(1),
+        borderRadius: hp(1)
     }
 })
 

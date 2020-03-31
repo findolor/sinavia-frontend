@@ -870,7 +870,7 @@ class GroupGame extends React.Component {
                     backgroundColor: '#000000DE'
                 }}
             >
-                <View style={styles.modalContainer}>
+                <View style={styles.quitModalContainer}>
                     <View style={styles.quitView}>
                         <Text style={styles.areYouSureText}>
                             Bağlantı hatası
@@ -1224,7 +1224,7 @@ class GroupGame extends React.Component {
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
-                                                    fontSize: hp(2.25),
+                                                    fontSize: hp(2),
                                                     textAlign: 'center'
                                                 }}
                                             >
@@ -1246,7 +1246,7 @@ class GroupGame extends React.Component {
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
-                                                    fontSize: hp(2.25),
+                                                    fontSize: hp(2),
                                                     textAlign: 'center'
                                                 }}
                                             >
@@ -1268,7 +1268,7 @@ class GroupGame extends React.Component {
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
-                                                    fontSize: hp(2.25),
+                                                    fontSize: hp(2),
                                                     textAlign: 'center'
                                                 }}
                                             >
@@ -1290,7 +1290,7 @@ class GroupGame extends React.Component {
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
-                                                    fontSize: hp(2.25),
+                                                    fontSize: hp(2),
                                                     textAlign: 'center'
                                                 }}
                                             >

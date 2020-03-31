@@ -108,7 +108,8 @@ export default StyleSheet.create({
         height: hp(8),
         width: wp(75.5),
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingLeft: wp(2)
     },
     userPic: {
         height: hp(6.5),
