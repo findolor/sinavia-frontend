@@ -9,7 +9,8 @@ import {
     Alert,
     TouchableWithoutFeedback,
     KeyboardAvoidingView,
-    Modal
+    Modal,
+    ScrollView
 } from 'react-native'
 import {
     navigationPop,
@@ -59,7 +60,8 @@ class Register extends React.Component {
             birthDate: '',
             passwordBorderColor: '#989696',
             secondPasswordBorderColor: '#989696',
-            isLicenceModalVisible: false
+            isLicenceModalVisible: false,
+            isAcceptButtonVisible: false
         }
     }
 
@@ -271,10 +273,8 @@ class Register extends React.Component {
         navigationPop()
     }
 
-    onPressLicenceView() {
-        this.setState({
-            isLicenceModalVisible: true
-        })
+    onPressLicenceView = () => {
+        this.setState({ isLicenceModalVisible: true })
     }
 
     closeLicenceView = () => {
@@ -286,11 +286,30 @@ class Register extends React.Component {
     acceptLicenceOnPress = () => {
         this.setState({
             switchValue: true,
-            isLicenceModalVisible: false
+            isLicenceModalVisible: false,
+            isAcceptButtonVisible: false
+        })
+    }
+
+    showAcceptButton = () => {
+        this.setState({
+            isAcceptButtonVisible: true
         })
     }
 
     render() {
+        const isCloseToBottom = ({
+            layoutMeasurement,
+            contentOffset,
+            contentSize
+        }) => {
+            const paddingToBottom = 20
+            return (
+                layoutMeasurement.height + contentOffset.y >=
+                contentSize.height - paddingToBottom
+            )
+        }
+
         return (
             <TouchableWithoutFeedback
                 onPress={() => {
@@ -309,8 +328,84 @@ class Register extends React.Component {
                         <TouchableOpacity
                             onPress={this.closeLicenceView}
                             style={styles.shadowView}
-                        >
-                            <View style={styles.licenceView}></View>
+                        />
+                        <View style={styles.licenceView}>
+                            <ScrollView
+                                style={styles.licenceScrollView}
+                                onScroll={({ nativeEvent }) => {
+                                    if (isCloseToBottom(nativeEvent)) {
+                                        this.showAcceptButton()
+                                    }
+                                }}
+                            >
+                                <Text>
+                                    AHAHSDH shfkdsjh Ajs;LK AHAHSDH shfkdsjh
+                                    Ajs;LK AHAHSDH shfkdsjh Ajs;LK AHAHSDH
+                                    shfkdsjh Ajs;LK AHAHSDH shfkdsjh Ajs;LK
+                                    AHAHSDH shfkdsjh Ajs;LK AHAHSDH shfkdsjh
+                                    Ajs;LK AHAHSDH shfkdsjh Ajs;LK AHAHSDH
+                                    shfkdsjh Ajs;LK AHAHSDH shfkdsjh Ajs;LK
+                                    AHAHSDH shfkdsjh Ajs;LK AHAHSDH shfkdsjh
+                                    Ajs;LK AHAHSDH shfkdsjh Ajs;LK AHAHSDH
+                                    shfkdsjh Ajs;LK AHAHSDH shfkdsjh Ajs;LK
+                                    AHAHSDH shfkdsjh Ajs;LK AHAHSDH shfkdsjh
+                                    Ajs;LK AHAHSDH shfkdsjh Ajs;LK AHAHSDH
+                                    shfkdsjh Ajs;LK AHAHSDH shfkdsjh Ajs;LK
+                                    AHAHSDH shfkdsjh Ajs;LK AHAHSDH shfkdsjh
+                                    Ajs;LK AHAHSDH shfkdsjh Ajs;LK AHAHSDH
+                                    shfkdsjh Ajs;LK AHAHSDH shfkdsjh Ajs;LK
+                                    AHAHSDH shfkdsjh Ajs;LK AHAHSDH shfkdsjh
+                                    Ajs;LK AHAHSDH shfkdsjh Ajs;LK AHAHSDH
+                                    shfkdsjh Ajs;LK AHAHSDH shfkdsjh Ajs;LK
+                                    AHAHSDH shfkdsjh Ajs;LK AHAHSDH shfkdsjh
+                                    Ajs;LK AHAHSDH shfkdsjh Ajs;LK AHAHSDH
+                                    shfkdsjh Ajs;LK AHAHSDH shfkdsjh Ajs;LK
+                                    AHAHSDH shfkdsjh Ajs;LK AHAHSDH shfkdsjh
+                                    Ajs;LK AHAHSDH shfkdsjh Ajs;LK AHAHSDH
+                                    shfkdsjh Ajs;LK AHAHSDH shfkdsjh Ajs;LK
+                                    AHAHSDH shfkdsjh Ajs;LK AHAHSDH shfkdsjh
+                                    Ajs;LK AHAHSDH shfkdsjh Ajs;LK AHAHSDH
+                                    shfkdsjh Ajs;LK AHAHSDH shfkdsjh Ajs;LK
+                                    AHAHSDH shfkdsjh Ajs;LK AHAHSDH shfkdsjh
+                                    Ajs;LK AHAHSDH shfkdsjh Ajs;LK AHAHSDH
+                                    shfkdsjh Ajs;LK AHAHSDH shfkdsjh Ajs;LK
+                                    AHAHSDH shfkdsjh Ajs;LK AHAHSDH shfkdsjh
+                                    Ajs;LK AHAHSDH shfkdsjh Ajs;LK AHAHSDH
+                                    shfkdsjh Ajs;LK AHAHSDH shfkdsjh Ajs;LK
+                                    AHAHSDH shfkdsjh Ajs;LK AHAHSDH shfkdsjh
+                                    Ajs;LK AHAHSDH shfkdsjh Ajs;LK AHAHSDH
+                                    shfkdsjh Ajs;LK AHAHSDH shfkdsjh Ajs;LK
+                                    AHAHSDH shfkdsjh Ajs;LK AHAHSDH shfkdsjh
+                                    Ajs;LK AHAHSDH shfkdsjh Ajs;LK AHAHSDH
+                                    shfkdsjh Ajs;LK AHAHSDH shfkdsjh Ajs;LK
+                                    AHAHSDH shfkdsjh Ajs;LK AHAHSDH shfkdsjh
+                                    Ajs;LK AHAHSDH shfkdsjh Ajs;LK AHAHSDH
+                                    shfkdsjh Ajs;LK AHAHSDH shfkdsjh Ajs;LK
+                                    AHAHSDH shfkdsjh Ajs;LK AHAHSDH shfkdsjh
+                                    Ajs;LK AHAHSDH shfkdsjh Ajs;LK AHAHSDH
+                                    shfkdsjh Ajs;LK AHAHSDH shfkdsjh Ajs;LK
+                                    AHAHSDH shfkdsjh Ajs;LK AHAHSDH shfkdsjh
+                                    Ajs;LK AHAHSDH shfkdsjh Ajs;LK AHAHSDH
+                                    shfkdsjh Ajs;LK AHAHSDH shfkdsjh Ajs;LK
+                                    AHAHSDH shfkdsjh Ajs;LK AHAHSDH shfkdsjh
+                                    Ajs;LK AHAHSDH shfkdsjh Ajs;LK AHAHSDH
+                                    shfkdsjh Ajs;LK AHAHSDH shfkdsjh Ajs;LK
+                                    AHAHSDH shfkdsjh Ajs;LK AHAHSDH shfkdsjh
+                                    Ajs;LK AHAHSDH shfkdsjh Ajs;LK AHAHSDH
+                                    shfkdsjh Ajs;LK AHAHSDH shfkdsjh Ajs;LK
+                                    AHAHSDH shfkdsjh Ajs;LK AHAHSDH shfkdsjh
+                                    Ajs;LK AHAHSDH shfkdsjh Ajs;LK AHAHSDH
+                                    shfkdsjh Ajs;LK AHAHSDH shfkdsjh Ajs;LK
+                                    AHAHSDH shfkdsjh Ajs;LK AHAHSDH shfkdsjh
+                                    Ajs;LK AHAHSDH shfkdsjh Ajs;LK AHAHSDH
+                                    shfkdsjh Ajs;LK AHAHSDH shfkdsjh Ajs;LK
+                                    AHAHSDH shfkdsjh Ajs;LK AHAHSDH shfkdsjh
+                                    Ajs;LK AHAHSDH shfkdsjh Ajs;LK AHAHSDH
+                                    shfkdsjh Ajs;LK{' '}
+                                </Text>
+                            </ScrollView>
+                        </View>
+                        {this.state.isAcceptButtonVisible === true && (
                             <TouchableOpacity
                                 onPress={() => {
                                     this.acceptLicenceOnPress()
@@ -321,7 +416,7 @@ class Register extends React.Component {
                                     Onaylıyorum
                                 </Text>
                             </TouchableOpacity>
-                        </TouchableOpacity>
+                        )}
                     </Modal>
                     <NotchView color={'#fcfcfc'} />
                     <View style={styles.backButtonContainer}>
