@@ -281,6 +281,7 @@ class Home extends React.Component {
             })
             this.carouselMaker(this.props.choosenExam)
             this.setState({ examList: examNames })
+            return
         })
     }
 
@@ -422,16 +423,6 @@ class Home extends React.Component {
         this.props.saveChoosenExam(value)
 
         this.carouselMaker(value)
-    }
-
-    carouselIndexToCourseName = () => {
-        let index = this.props.examList.findIndex(
-            x => x.name === this.state.defaultExam
-        )
-
-        return this.props.examList[index].courseEntities[
-            this.state.carouselActiveSlide
-        ].name
     }
 
     onPressCard(title) {
@@ -1487,69 +1478,134 @@ class Home extends React.Component {
     }
 
     friendGameRequestModal() {
-        return (
-            <View
-                style={{
-                    height: hp(120),
-                    width: wp(100),
-                    backgroundColor: '#000000DE'
-                }}
-            >
-                <View style={styles.modalContainer}>
-                    <View style={styles.gameRequestView}>
-                        <Text style={styles.gameRequestText}>
+        try {
+            return (
+                <View
+                    style={{
+                        height: hp(120),
+                        width: wp(100),
+                        backgroundColor: '#000000DE'
+                    }}
+                >
+                    <View style={styles.modalContainer}>
+                        <View style={styles.gameRequestView}>
+                            <Text style={styles.gameRequestText}>
+                                <Text
+                                    style={[
+                                        {
+                                            color: '#FF9900',
+                                            fontFamily: 'Averta-SemiboldItalic'
+                                        }
+                                    ]}
+                                >
+                                    {this.state.requestingUserUsername}
+                                </Text>{' '}
+                                kişisi sana
+                            </Text>
                             <Text
                                 style={[
+                                    styles.gameRequestText,
                                     {
-                                        color: '#FF9900',
-                                        fontFamily: 'Averta-SemiboldItalic'
+                                        color: '#00D9EF',
+                                        fontFamily: 'Averta-Bold'
                                     }
                                 ]}
                             >
-                                {this.state.requestingUserUsername}
-                            </Text>{' '}
-                            kişisi sana
-                        </Text>
-                        <Text
-                            style={[
-                                styles.gameRequestText,
-                                { color: '#00D9EF', fontFamily: 'Averta-Bold' }
-                            ]}
-                        >
-                            {
-                                this.props.gameContentMap.exams[
-                                    this.state.requestedGameExamId - 1
-                                ].name
-                            }{' '}
-                            -{' '}
-                            {
-                                this.props.gameContentMap.courses[
-                                    this.state.requestedGameCourseId - 1
-                                ].name
-                            }
-                        </Text>
-                        <Text
-                            style={[
-                                styles.gameRequestText,
-                                { color: '#00D9EF', fontFamily: 'Averta-Bold' }
-                            ]}
-                        >
-                            {
-                                this.props.gameContentMap.subjects[
-                                    this.state.requestedGameSubjectId - 1
-                                ].name
-                            }
-                        </Text>
-                        <Text style={styles.gameRequestText}>
-                            konusunda oyun isteği gönderdi
-                        </Text>
-                    </View>
-                    <View style={styles.yesOrNoButtonsContainer}>
+                                {
+                                    this.props.gameContentMap.exams[
+                                        this.state.requestedGameExamId - 1
+                                    ].name
+                                }{' '}
+                                -{' '}
+                                {
+                                    this.props.gameContentMap.courses[
+                                        this.state.requestedGameCourseId - 1
+                                    ].name
+                                }
+                            </Text>
+                            <Text
+                                style={[
+                                    styles.gameRequestText,
+                                    {
+                                        color: '#00D9EF',
+                                        fontFamily: 'Averta-Bold'
+                                    }
+                                ]}
+                            >
+                                {
+                                    this.props.gameContentMap.subjects[
+                                        this.state.requestedGameSubjectId - 1
+                                    ].name
+                                }
+                            </Text>
+                            <Text style={styles.gameRequestText}>
+                                konusunda oyun isteği gönderdi
+                            </Text>
+                        </View>
+                        <View style={styles.yesOrNoButtonsContainer}>
+                            <AuthButton
+                                height={hp(7)}
+                                width={wp(42)}
+                                color="#B72A2A"
+                                buttonText="Reddet"
+                                fontSize={hp(3)}
+                                borderRadius={hp(1.5)}
+                                onPress={() => {
+                                    apiServices
+                                        .checkOnline()
+                                        .then(() => {
+                                            friendGameServices
+                                                .checkOngoingMatch(
+                                                    this.props.clientToken,
+                                                    this.state
+                                                        .requestedGameOpponentId,
+                                                    this.state
+                                                        .requestedGameRoomCode
+                                                )
+                                                .then(data => {
+                                                    this.setState(
+                                                        {
+                                                            isFriendGameRequestModalVisible: false
+                                                        },
+                                                        () => {
+                                                            if (!data)
+                                                                this.rejectFriendGame(
+                                                                    {
+                                                                        roomCode: this
+                                                                            .state
+                                                                            .requestedGameRoomCode
+                                                                    }
+                                                                )
+                                                        }
+                                                    )
+                                                })
+                                        })
+                                        .catch(error =>
+                                            this.setState({
+                                                isFriendGameRequestModalVisible: false
+                                            })
+                                        )
+                                }}
+                            />
+                            <AuthButton
+                                height={hp(7)}
+                                width={wp(42)}
+                                color="#FF9900"
+                                buttonText="Daha Sonra"
+                                fontSize={hp(3)}
+                                borderRadius={hp(1.5)}
+                                onPress={() =>
+                                    this.setState({
+                                        isFriendGameRequestModalVisible: false
+                                    })
+                                }
+                            />
+                        </View>
                         <AuthButton
                             height={hp(7)}
-                            width={wp(42)}
-                            color="#B72A2A"
-                            buttonText="Reddet"
+                            width={wp(87.5)}
+                            color="#3EBB29"
+                            buttonText="Şimdi Oyna"
                             fontSize={hp(3)}
                             borderRadius={hp(1.5)}
                             onPress={() => {
@@ -1569,14 +1625,40 @@ class Home extends React.Component {
                                                         isFriendGameRequestModalVisible: false
                                                     },
                                                     () => {
+                                                        // If the data is false we can play synchronized game
+                                                        // If it is true other user either pressed play ahead or still waiting
                                                         if (!data)
-                                                            this.rejectFriendGame(
+                                                            this.tryJoiningFriendRoom(
                                                                 {
+                                                                    opponentId: this
+                                                                        .state
+                                                                        .requestedGameOpponentId,
                                                                     roomCode: this
                                                                         .state
-                                                                        .requestedGameRoomCode
+                                                                        .requestedGameRoomCode,
+                                                                    examId: this
+                                                                        .state
+                                                                        .requestedGameExamId,
+                                                                    courseId: this
+                                                                        .state
+                                                                        .requestedGameCourseId,
+                                                                    subjectId: this
+                                                                        .state
+                                                                        .requestedGameSubjectId
                                                                 }
                                                             )
+                                                        else {
+                                                            this.setState({
+                                                                isModalVisible: true,
+                                                                visibleView:
+                                                                    'YOUR_FRIEND_STARTED_GAME'
+                                                            })
+                                                            navigationPush(
+                                                                SCENE_KEYS
+                                                                    .mainScreens
+                                                                    .notifications
+                                                            )
+                                                        }
                                                     }
                                                 )
                                             })
@@ -1588,91 +1670,12 @@ class Home extends React.Component {
                                     )
                             }}
                         />
-                        <AuthButton
-                            height={hp(7)}
-                            width={wp(42)}
-                            color="#FF9900"
-                            buttonText="Daha Sonra"
-                            fontSize={hp(3)}
-                            borderRadius={hp(1.5)}
-                            onPress={() =>
-                                this.setState({
-                                    isFriendGameRequestModalVisible: false
-                                })
-                            }
-                        />
                     </View>
-                    <AuthButton
-                        height={hp(7)}
-                        width={wp(87.5)}
-                        color="#3EBB29"
-                        buttonText="Şimdi Oyna"
-                        fontSize={hp(3)}
-                        borderRadius={hp(1.5)}
-                        onPress={() => {
-                            apiServices
-                                .checkOnline()
-                                .then(() => {
-                                    friendGameServices
-                                        .checkOngoingMatch(
-                                            this.props.clientToken,
-                                            this.state.requestedGameOpponentId,
-                                            this.state.requestedGameRoomCode
-                                        )
-                                        .then(data => {
-                                            this.setState(
-                                                {
-                                                    isFriendGameRequestModalVisible: false
-                                                },
-                                                () => {
-                                                    // If the data is false we can play synchronized game
-                                                    // If it is true other user either pressed play ahead or still waiting
-                                                    if (!data)
-                                                        this.tryJoiningFriendRoom(
-                                                            {
-                                                                opponentId: this
-                                                                    .state
-                                                                    .requestedGameOpponentId,
-                                                                roomCode: this
-                                                                    .state
-                                                                    .requestedGameRoomCode,
-                                                                examId: this
-                                                                    .state
-                                                                    .requestedGameExamId,
-                                                                courseId: this
-                                                                    .state
-                                                                    .requestedGameCourseId,
-                                                                subjectId: this
-                                                                    .state
-                                                                    .requestedGameSubjectId
-                                                            }
-                                                        )
-                                                    else {
-                                                        this.setState({
-                                                            isModalVisible: true,
-                                                            visibleView:
-                                                                'YOUR_FRIEND_STARTED_GAME'
-                                                        })
-                                                        navigationPush(
-                                                            SCENE_KEYS
-                                                                .mainScreens
-                                                                .notifications
-                                                        )
-                                                    }
-                                                }
-                                            )
-                                        })
-                                })
-                                .catch(error =>
-                                    this.setState({
-                                        isFriendGameRequestModalVisible: false
-                                    })
-                                )
-                        }}
-                    />
                 </View>
-            </View>
-        )
+            )
+        } catch (error) {
+            return null
+        }
     }
 
     premiumForSoloView() {
