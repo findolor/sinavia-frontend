@@ -58,11 +58,32 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     licenceView: {
+        position: 'absolute',
+        justifyContent: 'center',
+        alignItems: 'center',
+        left: wp(7.5),
+        top: hp(15),
         height: hp(60),
         width: wp(85),
+        paddingVertical: hp(1.5),
+        paddingTop: hp(2),
+        paddingLeft: hp(2),
+        paddingRight: hp(2),
         borderWidth: hp(0.7),
         borderColor: '#00D9EF',
         borderRadius: hp(2),
-        backgroundColor: 'white'
+        borderRadius: hp(2),
+        backgroundColor: 'white',
+        overflow: 'hidden'
+    },
+    licenceScrollView: {
+        height: hp(20),
+        width: wp(80),
+        overflow: 'hidden'
+    },
+    userAgreementText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(1.5),
+        color: '#000000'
     }
 })

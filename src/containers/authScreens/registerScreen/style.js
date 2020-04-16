@@ -128,7 +128,7 @@ export default StyleSheet.create({
         top: hp(15),
         height: hp(60),
         width: wp(85),
-        paddingVertical: hp(2),
+        paddingVertical: hp(1.5),
         paddingTop: hp(2),
         paddingLeft: hp(2),
         paddingRight: hp(2),
@@ -160,5 +160,10 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Semibold',
         color: 'white',
         fontSize: hp(3)
+    },
+    userAgreementText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(1.5),
+        color: '#000000'
     }
 })
