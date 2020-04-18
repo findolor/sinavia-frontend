@@ -299,7 +299,7 @@ class Settings extends React.Component {
     }
 
     usernameOnChange = text => {
-        const validCharacters = /[^a-zA-Z0-9ğüşıöçĞÜŞİÖÇ]/g
+        const validCharacters = /[^a-z0-9ğüşıöç]/g
         if (validCharacters.test(text)) {
             this.setState({ usernameBorderColor: '#B72A2A' })
         } else if (

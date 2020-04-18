@@ -7,17 +7,10 @@ import {
     TouchableOpacity,
     View,
     Platform,
-    TextInput,
-    TouchableWithoutFeedback,
-    KeyboardAvoidingView,
-    Keyboard,
     ActivityIndicator
 } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
-import Swiper from 'react-native-swiper'
 import { connect } from 'react-redux'
 import moment from 'moment'
-import RNIap from 'react-native-iap'
 import styles from './style'
 import {
     heightPercentageToDP as hp,
@@ -56,9 +49,6 @@ class PurchaseScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            isPremiumModalVisible: false,
-            isPromotionCodeModalVisible: false,
-            premiumOption: 'threeMonths',
             firstJoker: {
                 joker: {
                     imageLink: null,
@@ -77,17 +67,11 @@ class PurchaseScreen extends React.Component {
                     name: null
                 }
             },
-            remainingPremiumDays: null,
-            remainingPremiumWeeks: null,
-            remainingPremiumMonths: null,
             remainingExamDays: null,
             remainingExamWeeks: null,
             remainingExamMonths: null,
             // Available products for in-app purchase
             availableProducts: null,
-            friendCode: 'PAROLA',
-            usePromotionCode: '',
-            remaningInviteCodes: 0,
             isActivityIndicatorOn: false
         }
     }
@@ -110,76 +94,7 @@ class PurchaseScreen extends React.Component {
             }
         })
 
-        inviteCodeServices
-            .getInviteCode(this.props.clientToken, this.props.clientDBId)
-            .then(data => {
-                if (data.remainingCodes !== 0)
-                    this.setState({
-                        remaningInviteCodes: data.remainingCodes,
-                        friendCode: data.code
-                    })
-                else
-                    this.setState({
-                        remaningInviteCodes: data.remainingCodes,
-                        friendCode: 'BİTTİ'
-                    })
-            })
-            .catch(error => {
-                console.log(error)
-            })
-
-        this.calculateDateUntilPremiumEnd()
         this.calculateRemainingExamTime()
-        await this.getProducts()
-    }
-
-    getProducts = async () => {
-        try {
-            const products = await RNIap.getProducts(itemSkus)
-            this.setState({ availableProducts: products })
-            console.log(products)
-        } catch (err) {
-            console.warn(err)
-        }
-    }
-
-    calculateDateUntilPremiumEnd = () => {
-        if (!this.props.clientInformation.isPremium) {
-            this.setState({
-                remainingPremiumDays: 0,
-                remainingPremiumWeeks: 0,
-                remainingPremiumMonths: 0
-            })
-            return
-        }
-
-        const dateToday = moment()
-        const endDate = moment(this.props.clientInformation.premiumEndDate)
-        const remainingPremiumMonths = endDate.diff(dateToday, 'months')
-        let remainingPremiumWeeks = 0
-        let remainingPremiumDays = endDate.diff(dateToday, 'days')
-        let daysToSubtract = 0
-
-        if (remainingPremiumMonths !== 0) {
-            let tempDate = moment()
-            let daysInMonth = tempDate.daysInMonth()
-            for (let i = 1; i < remainingPremiumMonths + 1; i++) {
-                daysToSubtract += daysInMonth
-                tempDate = moment().add(i, 'months')
-                daysInMonth = tempDate.daysInMonth()
-            }
-        }
-        remainingPremiumDays -= daysToSubtract
-        if (remainingPremiumDays >= 7) {
-            remainingPremiumWeeks = Math.floor(remainingPremiumDays / 7)
-            remainingPremiumDays -= remainingPremiumWeeks * 7
-        }
-
-        this.setState({
-            remainingPremiumDays: remainingPremiumDays,
-            remainingPremiumWeeks: remainingPremiumWeeks,
-            remainingPremiumMonths: remainingPremiumMonths
-        })
     }
 
     calculateRemainingExamTime = () => {
@@ -214,49 +129,6 @@ class PurchaseScreen extends React.Component {
             remainingExamDays: remainingExamDays,
             remainingExamWeeks: remainingExamWeeks,
             remainingExamMonths: remainingExamMonths
-        })
-    }
-
-    onPressPromotionCodeView = () => {
-        this.setState({
-            isPromotionCodeModalVisible: true
-        })
-    }
-
-    closesPromotionCodeView = () => {
-        this.setState({
-            isPromotionCodeModalVisible: false
-        })
-    }
-
-    onPressPremiumView = () => {
-        this.setState({
-            isPremiumModalVisible: true
-        })
-    }
-
-    closePremiumView = () => {
-        this.setState({
-            isPremiumModalVisible: false,
-            premiumOption: 'threeMonths'
-        })
-    }
-
-    oneMonthOnPress = () => {
-        this.setState({
-            premiumOption: 'oneMonth'
-        })
-    }
-
-    threeMonthsOnPress = () => {
-        this.setState({
-            premiumOption: 'threeMonths'
-        })
-    }
-
-    sixMonthsOnPress = () => {
-        this.setState({
-            premiumOption: 'sixMonths'
         })
     }
 
@@ -303,10 +175,6 @@ class PurchaseScreen extends React.Component {
 
     resetToMain = () => {
         navigationReset('main')
-    }
-
-    writeToClipboard = async () => {
-        await Clipboard.setString(this.state.friendCode)
     }
 
     render() {

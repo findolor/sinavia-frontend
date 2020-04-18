@@ -225,7 +225,7 @@ class GetInfo extends React.Component {
     }
 
     usernameOnChange = text => {
-        const validCharacters = /[^a-zA-Z0-9ğüşıöçĞÜŞİÖÇ]/g
+        const validCharacters = /[^a-z0-9ğüşıöç]/g
         if (validCharacters.test(text)) {
             this.setState({ usernameBorderColor: 'red' })
         } else this.setState({ usernameBorderColor: '#989696' })
@@ -459,13 +459,6 @@ class GetInfo extends React.Component {
                                 </Text>
                             </View>
                         </TouchableOpacity>
-                        <AuthTextInput
-                            placeholder="Arkadaş daveti kodu (zorunlu değil)"
-                            placeholderTextColor="#8A8888"
-                            maxLength={7}
-                            borderColor={this.state.inviteCodeBorderColor}
-                            onChangeText={this.inviteCodeChange}
-                        />
                     </View>
                     <View style={styles.authButtonView}>
                         <AuthButton
