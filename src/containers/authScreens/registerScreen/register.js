@@ -666,7 +666,12 @@ class Register extends React.Component {
                                     dönüştürülebilir. Şirket ilave servisler
                                     açabilir, bazı servislerini kısmen ya da
                                     tamamen değiştirebilir veya ücretli hale
-                                    dönüştürebilir.
+                                    dönüştürebilir. Şirket uygulama içi satın
+                                    alımlarda (ELİT ÖĞRENCİ PAKETİ ve Joker
+                                    Paketi Satışları) takdiri kendisinde olmak
+                                    suretiyle istediği zaman ücretlendirmede ve
+                                    paket içeriğinde değişiklik yapma hakkını
+                                    saklı tutar.
                                     {'\n\n'}8 - KULLANICININ YÜKÜMLÜLÜKLERİ
                                     {'\n\n'}
                                     Kullanıcı, üyelik prosedürlerini yerine
@@ -777,7 +782,16 @@ class Register extends React.Component {
                                     kişi ve kurumlarla paylaşmasına onay
                                     verdiğini ve bu sebeple şirketten herhangi
                                     bir tazminat talebinde bulunmayacağını
-                                    kabul, beyan ve taahhüt eder.
+                                    kabul, beyan ve taahhüt eder. Kullanıcı,
+                                    şirketin sahip olduğu ücretlendirmeler ve
+                                    oyun içi satın alım paketleriyle alakalı
+                                    değişiklikleri sahip olduğu paketi güncel
+                                    haliyle kabul, beyan ve taahhüt eder.
+                                    Uygulamanın yayından kaldırıldığı veya
+                                    teknik sebepler dolayısıyla askıda olduğu
+                                    zaman dilimlerinde kullanıcı yapılan
+                                    uygulama içi satın alımları ile alakalı hak
+                                    talep edemez.
                                     {'\n\n'}9 - MÜCBİR SEBEPLER{'\n\n'}
                                     Hukuken mücbir sebep sayılan tüm hallerde
                                     şirket, işbu sözleşme ile belirlenen
