@@ -681,11 +681,7 @@ class Opening extends React.Component {
                                 gerektiren bir duruma dönüştürülebilir. Şirket
                                 ilave servisler açabilir, bazı servislerini
                                 kısmen ya da tamamen değiştirebilir veya ücretli
-                                hale dönüştürebilir. Şirket uygulama içi satın
-                                alımlarda (ELİT ÖĞRENCİ PAKETİ ve Joker Paketi
-                                Satışları) takdiri kendisinde olmak suretiyle
-                                istediği zaman ücretlendirmede ve paket
-                                içeriğinde değişiklik yapma hakkını saklı tutar.
+                                hale dönüştürebilir.
                                 {'\n\n'}8 - KULLANICININ YÜKÜMLÜLÜKLERİ{'\n\n'}
                                 Kullanıcı, üyelik prosedürlerini yerine
                                 getirirken, uygulamadan faydalanırken veya
@@ -787,14 +783,7 @@ class Opening extends React.Component {
                                 ve kurumlarla paylaşmasına onay verdiğini ve bu
                                 sebeple şirketten herhangi bir tazminat
                                 talebinde bulunmayacağını kabul, beyan ve
-                                taahhüt eder. Kullanıcı, şirketin sahip olduğu
-                                ücretlendirmeler ve oyun içi satın alım
-                                paketleriyle alakalı değişiklikleri sahip olduğu
-                                paketi güncel haliyle kabul, beyan ve taahhüt
-                                eder. Uygulamanın yayından kaldırıldığı veya
-                                teknik sebepler dolayısıyla askıda olduğu zaman
-                                dilimlerinde kullanıcı yapılan uygulama içi
-                                satın alımları ile alakalı hak talep edemez.
+                                taahhüt eder.
                                 {'\n\n'}9 - MÜCBİR SEBEPLER{'\n\n'}
                                 Hukuken mücbir sebep sayılan tüm hallerde
                                 şirket, işbu sözleşme ile belirlenen
