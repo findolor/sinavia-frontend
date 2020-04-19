@@ -225,12 +225,13 @@ class GetInfo extends React.Component {
     }
 
     usernameOnChange = text => {
-        const validCharacters = /[^a-zA-Z0-9ğüşıöçĞÜŞİÖÇ]/g
-        if (validCharacters.test(text)) {
+        lowercaseText = text.toLowerCase()
+        const validCharacters = /[^a-z0-9ğüşıöç]/g
+        if (validCharacters.test(lowercaseText)) {
             this.setState({ usernameBorderColor: 'red' })
         } else this.setState({ usernameBorderColor: '#989696' })
-        if (text === '') text = null
-        this.setState({ username: text })
+        if (lowercaseText === '') lowercaseText = null
+        this.setState({ username: lowercaseText })
     }
 
     nameOnChange = text => {

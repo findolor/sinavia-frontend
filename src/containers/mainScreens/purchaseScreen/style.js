@@ -90,7 +90,6 @@ export default StyleSheet.create({
         borderWidth: hp(0.25),
         borderColor: '#00D9EF',
         borderRadius: hp(1.8),
-        backgroundColor: '#CCF7FC',
         overflow: 'hidden'
     },
     yourPremiumContainer: {
@@ -759,5 +758,46 @@ export default StyleSheet.create({
     copyImage: {
         height: hp(4),
         width: hp(4)
+    },
+    newPremiumUserJokerButtonStyle: {
+        height: hp(14.25),
+        width: wp(93),
+        borderRadius: hp(2),
+        backgroundColor: '#00D9EF',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    newPremiumUserJokerButton1Style: {
+        height: hp(14.25),
+        width: wp(46.5),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    newPremiumUserJokerButton2Style: {
+        height: hp(14.25),
+        width: wp(0),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    newPremiumUserJokerButton3Style: {
+        height: hp(14.25),
+        width: wp(46.5),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    newPlayAd: {
+        height: hp(7),
+        width: hp(7)
+    },
+    newPlayAdText: {
+        fontFamily: 'Averta-Bold',
+        fontSize: hp(2.5),
+        color: 'white'
+    },
+    newJokerPlayAdImg: {
+        resizeMode: 'contain',
+        height: hp(7.5),
+        width: hp(7.5)
     }
 })

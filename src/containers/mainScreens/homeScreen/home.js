@@ -1446,6 +1446,8 @@ class Home extends React.Component {
                                         groupCodeOnChangeText: text
                                     })
                                 }
+                                returnKeyType="search"
+                                onSubmitEditing={this.joinGroupRoomOnPress}
                             />
                         </View>
                     </View>

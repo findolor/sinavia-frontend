@@ -17,8 +17,8 @@ import selectedTrophyIcon from '../../assets/mainScreens/trophy_Dolu.png'
 import emptyTrophyIcon from '../../assets/mainScreens/trophy.png'
 import selectedHomeIcon from '../../assets/mainScreens/home_dolu.png'
 import emptyHomeIcon from '../../assets/mainScreens/home.png'
-import selectedJokerIcon from '../../assets/mainScreens/joker_dolu.png'
-import emptyJokerIcon from '../../assets/mainScreens/joker.png'
+import selectedPurchaseIcon from '../../assets/mainScreens/joker_dolu.png'
+import emptyPurchaseIcon from '../../assets/mainScreens/joker.png'
 
 class Main extends React.Component {
     constructor(props) {
@@ -161,8 +161,8 @@ class Main extends React.Component {
                         <Image
                             source={
                                 this.state.jokerIconSelected === true
-                                    ? selectedJokerIcon
-                                    : emptyJokerIcon
+                                    ? selectedPurchaseIcon
+                                    : emptyPurchaseIcon
                             }
                             style={{
                                 resizeMode: 'contain',
@@ -184,10 +184,7 @@ const mapStateToProps = state => ({
     clientInformation: state.client.clientInformation
 })
 
-export default connect(
-    mapStateToProps,
-    null
-)(Main)
+export default connect(mapStateToProps, null)(Main)
 
 const styles = StyleSheet.create({
     container: {

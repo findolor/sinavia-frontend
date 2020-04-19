@@ -44,15 +44,9 @@ import SECOND_CHANGE_JOKER_IMAGE from '../../../assets/jokers/secondChance.png'
 import firebase from 'react-native-firebase'
 import { inviteCodeServices } from '../../../sagas/inviteCode'
 
-import FIRST_JOKER_AD_BUTTON from '../../../assets/firstJokerAdButton.png'
-import SECOND_JOKER_AD_BUTTON from '../../../assets/secondJokerAdButton.png'
-import THIRD_JOKER_AD_BUTTON from '../../../assets/thirdJokerAdButton.png'
-
-import FIRST_JOKER_AD_BUTTON_2 from '../../../assets/firstJokerAdButton2.png'
-import SECOND_JOKER_AD_BUTTON_2 from '../../../assets/secondJokerAdButton2.png'
-import THIRD_JOKER_AD_BUTTON_2 from '../../../assets/thirdJokerAdButton2.png'
-
 import COPY_IMAGE from '../../../assets/mainScreens/copy.png'
+
+import NEW_PLAY_AD from '../../../assets/mainScreens/newPlayAd.png'
 
 import {
     navigationPush,
@@ -2310,31 +2304,196 @@ class PurchaseScreen extends React.Component {
                                         onPress={() =>
                                             this.jokerRewardOnPress(1)
                                         }
+                                        style={[
+                                            styles.newPremiumUserJokerButtonStyle,
+                                            { height: hp(9), width: wp(30) }
+                                        ]}
                                     >
-                                        <Image
-                                            source={FIRST_JOKER_AD_BUTTON_2}
-                                            style={styles.adButton2}
-                                        />
+                                        <View
+                                            style={[
+                                                styles.newPremiumUserJokerButton1Style,
+                                                { height: hp(9), width: wp(12) }
+                                            ]}
+                                        >
+                                            <Image
+                                                source={
+                                                    this.state.firstJoker.joker
+                                                        .imageLink
+                                                }
+                                                style={[
+                                                    styles.newJokerPlayAdImg,
+                                                    {
+                                                        height: hp(3),
+                                                        width: hp(3)
+                                                    }
+                                                ]}
+                                            />
+                                        </View>
+                                        <View
+                                            style={[
+                                                styles.newPremiumUserJokerButton2Style,
+                                                { height: hp(9), width: wp(6) }
+                                            ]}
+                                        >
+                                            <Image
+                                                source={NEW_PLAY_AD}
+                                                style={[
+                                                    styles.newPlayAd,
+                                                    {
+                                                        height: hp(3),
+                                                        width: hp(3)
+                                                    }
+                                                ]}
+                                            />
+                                        </View>
+                                        <View
+                                            style={[
+                                                styles.newPremiumUserJokerButton3Style,
+                                                { height: hp(9), width: wp(12) }
+                                            ]}
+                                        >
+                                            <Text
+                                                style={[
+                                                    styles.newPlayAdText,
+                                                    {
+                                                        fontSize: hp(1.5),
+                                                        textAlign: 'center'
+                                                    }
+                                                ]}
+                                            >
+                                                İzle & Kazan
+                                            </Text>
+                                        </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         onPress={() =>
                                             this.jokerRewardOnPress(2)
                                         }
+                                        style={[
+                                            styles.newPremiumUserJokerButtonStyle,
+                                            { height: hp(9), width: wp(30) }
+                                        ]}
                                     >
-                                        <Image
-                                            source={SECOND_JOKER_AD_BUTTON_2}
-                                            style={styles.adButton2}
-                                        />
+                                        <View
+                                            style={[
+                                                styles.newPremiumUserJokerButton1Style,
+                                                { height: hp(9), width: wp(12) }
+                                            ]}
+                                        >
+                                            <Image
+                                                source={
+                                                    this.state.secondJoker.joker
+                                                        .imageLink
+                                                }
+                                                style={[
+                                                    styles.newJokerPlayAdImg,
+                                                    {
+                                                        height: hp(3),
+                                                        width: hp(3)
+                                                    }
+                                                ]}
+                                            />
+                                        </View>
+                                        <View
+                                            style={[
+                                                styles.newPremiumUserJokerButton2Style,
+                                                { height: hp(9), width: wp(6) }
+                                            ]}
+                                        >
+                                            <Image
+                                                source={NEW_PLAY_AD}
+                                                style={[
+                                                    styles.newPlayAd,
+                                                    {
+                                                        height: hp(3),
+                                                        width: hp(3)
+                                                    }
+                                                ]}
+                                            />
+                                        </View>
+                                        <View
+                                            style={[
+                                                styles.newPremiumUserJokerButton3Style,
+                                                { height: hp(9), width: wp(12) }
+                                            ]}
+                                        >
+                                            <Text
+                                                style={[
+                                                    styles.newPlayAdText,
+                                                    {
+                                                        fontSize: hp(1.5),
+                                                        textAlign: 'center'
+                                                    }
+                                                ]}
+                                            >
+                                                İzle & Kazan
+                                            </Text>
+                                        </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         onPress={() =>
                                             this.jokerRewardOnPress(3)
                                         }
+                                        style={[
+                                            styles.newPremiumUserJokerButtonStyle,
+                                            { height: hp(9), width: wp(30) }
+                                        ]}
                                     >
-                                        <Image
-                                            source={THIRD_JOKER_AD_BUTTON_2}
-                                            style={styles.adButton2}
-                                        />
+                                        <View
+                                            style={[
+                                                styles.newPremiumUserJokerButton1Style,
+                                                { height: hp(9), width: wp(12) }
+                                            ]}
+                                        >
+                                            <Image
+                                                source={
+                                                    this.state.thirdJoker.joker
+                                                        .imageLink
+                                                }
+                                                style={[
+                                                    styles.newJokerPlayAdImg,
+                                                    {
+                                                        height: hp(3),
+                                                        width: hp(3)
+                                                    }
+                                                ]}
+                                            />
+                                        </View>
+                                        <View
+                                            style={[
+                                                styles.newPremiumUserJokerButton2Style,
+                                                { height: hp(9), width: wp(6) }
+                                            ]}
+                                        >
+                                            <Image
+                                                source={NEW_PLAY_AD}
+                                                style={[
+                                                    styles.newPlayAd,
+                                                    {
+                                                        height: hp(3),
+                                                        width: hp(3)
+                                                    }
+                                                ]}
+                                            />
+                                        </View>
+                                        <View
+                                            style={[
+                                                styles.newPremiumUserJokerButton3Style,
+                                                { height: hp(9), width: wp(12) }
+                                            ]}
+                                        >
+                                            <Text
+                                                style={[
+                                                    styles.newPlayAdText,
+                                                    {
+                                                        fontSize: hp(1.5),
+                                                        textAlign: 'center'
+                                                    }
+                                                ]}
+                                            >
+                                                İzle & Kazan
+                                            </Text>
+                                        </View>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={styles.premiumContainer}>
@@ -2736,33 +2895,123 @@ class PurchaseScreen extends React.Component {
                             <View style={styles.premiumUserAddButtonsContainer}>
                                 <TouchableOpacity
                                     onPress={() => this.jokerRewardOnPress(1)}
+                                    style={
+                                        styles.newPremiumUserJokerButtonStyle
+                                    }
                                 >
-                                    <Image
-                                        source={FIRST_JOKER_AD_BUTTON}
+                                    <View
                                         style={
-                                            styles.premiumUserJokerButtonStyle
+                                            styles.newPremiumUserJokerButton1Style
                                         }
-                                    />
+                                    >
+                                        <Image
+                                            source={
+                                                this.state.firstJoker.joker
+                                                    .imageLink
+                                            }
+                                            style={styles.newJokerPlayAdImg}
+                                        />
+                                    </View>
+                                    <View
+                                        style={
+                                            styles.newPremiumUserJokerButton2Style
+                                        }
+                                    >
+                                        <Image
+                                            source={NEW_PLAY_AD}
+                                            style={styles.newPlayAd}
+                                        />
+                                    </View>
+                                    <View
+                                        style={
+                                            styles.newPremiumUserJokerButton3Style
+                                        }
+                                    >
+                                        <Text style={styles.newPlayAdText}>
+                                            {'     '}
+                                            İzle & Kazan
+                                        </Text>
+                                    </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => this.jokerRewardOnPress(2)}
+                                    style={
+                                        styles.newPremiumUserJokerButtonStyle
+                                    }
                                 >
-                                    <Image
-                                        source={SECOND_JOKER_AD_BUTTON}
+                                    <View
                                         style={
-                                            styles.premiumUserJokerButtonStyle
+                                            styles.newPremiumUserJokerButton1Style
                                         }
-                                    />
+                                    >
+                                        <Image
+                                            source={
+                                                this.state.secondJoker.joker
+                                                    .imageLink
+                                            }
+                                            style={styles.newJokerPlayAdImg}
+                                        />
+                                    </View>
+                                    <View
+                                        style={
+                                            styles.newPremiumUserJokerButton2Style
+                                        }
+                                    >
+                                        <Image
+                                            source={NEW_PLAY_AD}
+                                            style={styles.newPlayAd}
+                                        />
+                                    </View>
+                                    <View
+                                        style={
+                                            styles.newPremiumUserJokerButton3Style
+                                        }
+                                    >
+                                        <Text style={styles.newPlayAdText}>
+                                            {'     '}
+                                            İzle & Kazan
+                                        </Text>
+                                    </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => this.jokerRewardOnPress(3)}
+                                    style={
+                                        styles.newPremiumUserJokerButtonStyle
+                                    }
                                 >
-                                    <Image
-                                        source={THIRD_JOKER_AD_BUTTON}
+                                    <View
                                         style={
-                                            styles.premiumUserJokerButtonStyle
+                                            styles.newPremiumUserJokerButton1Style
                                         }
-                                    />
+                                    >
+                                        <Image
+                                            source={
+                                                this.state.thirdJoker.joker
+                                                    .imageLink
+                                            }
+                                            style={styles.newJokerPlayAdImg}
+                                        />
+                                    </View>
+                                    <View
+                                        style={
+                                            styles.newPremiumUserJokerButton2Style
+                                        }
+                                    >
+                                        <Image
+                                            source={NEW_PLAY_AD}
+                                            style={styles.newPlayAd}
+                                        />
+                                    </View>
+                                    <View
+                                        style={
+                                            styles.newPremiumUserJokerButton3Style
+                                        }
+                                    >
+                                        <Text style={styles.newPlayAdText}>
+                                            {'     '}
+                                            İzle & Kazan
+                                        </Text>
+                                    </View>
                                 </TouchableOpacity>
                             </View>
                         )}

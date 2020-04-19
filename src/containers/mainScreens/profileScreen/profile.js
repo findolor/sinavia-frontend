@@ -86,7 +86,13 @@ class Profile extends React.Component {
     }
 
     favoriteLogoOnPress = () => {
-        navigationPush(SCENE_KEYS.mainScreens.favorites)
+        if (this.props.clientInformation.isPremium) {
+            navigationPush(SCENE_KEYS.mainScreens.favorites)
+        } else {
+            this.setState({
+                isModalVisible: true
+            })
+        }
     }
 
     friendsLogoOnPress = () => {
@@ -218,6 +224,8 @@ class Profile extends React.Component {
                                     this.setState({ searchText: text })
                                 }
                                 autoCapitalize={'none'}
+                                returnKeyType="search"
+                                onSubmitEditing={this.profileSearchOnPress}
                             />
                         </View>
                         <TouchableOpacity onPress={this.profileSearchOnPress}>

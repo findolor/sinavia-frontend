@@ -486,6 +486,8 @@ class OpponentsProfile extends React.Component {
                                         this.setState({ searchText: text })
                                     }
                                     autoCapitalize={'none'}
+                                    returnKeyType="search"
+                                    onSubmitEditing={this.profileSearchOnPress}
                                 />
                             </View>
                             <TouchableOpacity
