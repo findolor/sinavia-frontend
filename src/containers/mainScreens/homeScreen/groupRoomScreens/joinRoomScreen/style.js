@@ -200,7 +200,7 @@ export default StyleSheet.create({
     },
     gameCodeText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: wp(7),
+        fontSize: wp(6),
         letterSpacing: wp(1),
         color: '#5C5C5C'
     },

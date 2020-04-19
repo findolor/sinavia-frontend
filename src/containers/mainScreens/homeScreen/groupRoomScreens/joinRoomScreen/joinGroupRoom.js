@@ -173,6 +173,17 @@ class JoinGroupRoom extends React.Component {
         navigationReset('main')
     }
 
+    decideButtonColor = () => {
+        if (this.state.isClientLeader) {
+            if (Object.keys(this.state.groupRoomPlayerList).length < 3 === true)
+                return '#c7c9c9'
+            else return '#00D9EF'
+        } else {
+            if (this.state.joinGamePlayerReady) return '#00E312'
+            else return '#FF9900'
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -447,13 +458,7 @@ class JoinGroupRoom extends React.Component {
                             marginLeft={wp(6.25)}
                             height={hp(7)}
                             width={wp(87.5)}
-                            color={
-                                this.state.isClientLeader === true
-                                    ? '#00D9EF'
-                                    : this.state.joinGamePlayerReady === true
-                                    ? '#00E312'
-                                    : '#FF9900'
-                            }
+                            color={this.decideButtonColor()}
                             buttonText={
                                 this.state.isClientLeader === true
                                     ? 'Başlat'
@@ -464,6 +469,11 @@ class JoinGroupRoom extends React.Component {
                             fontSize={hp(3)}
                             borderRadius={hp(1.5)}
                             onPress={this.groupGameReadyOnPress}
+                            disabled={
+                                this.state.isClientLeader === true &&
+                                Object.keys(this.state.groupRoomPlayerList)
+                                    .length < 3
+                            }
                         />
                     </View>
                 )}

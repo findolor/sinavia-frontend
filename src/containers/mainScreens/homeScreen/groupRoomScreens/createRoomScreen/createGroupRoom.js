@@ -449,12 +449,23 @@ class CreateGroupRoom extends React.Component {
                             marginLeft={wp(6.25)}
                             height={hp(7)}
                             width={wp(87.5)}
-                            color="#00D9EF"
+                            color={
+                                Object.keys(this.state.groupRoomPlayerList)
+                                    .length <
+                                    3 ===
+                                true
+                                    ? '#c7c9c9'
+                                    : '#00D9EF'
+                            }
                             buttonText="Başlat"
                             fontSize={hp(3)}
                             borderRadius={hp(1.5)}
                             position={'absolute'}
                             onPress={this.startGroupGameOnPress}
+                            disabled={
+                                Object.keys(this.state.groupRoomPlayerList)
+                                    .length < 3
+                            }
                         />
                     </View>
                 )}
