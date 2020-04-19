@@ -52,12 +52,12 @@ export default StyleSheet.create({
         borderRadius: hp(1.5)
     },
     pickerText: {
-        marginTop: hp(1.3),
-        marginBottom: hp(1),
-        marginLeft: wp(1),
-        marginRight: wp(1),
+        // marginTop: hp(1.3),
+        // marginBottom: hp(1),
+        // marginLeft: wp(1),
+        // marginRight: wp(1),
         fontFamily: 'Averta-Semibold',
-        fontSize: hp(2),
+        fontSize: hp(3),
         color: '#2E313C',
         textAlign: 'center',
         textAlignVertical: 'center'
