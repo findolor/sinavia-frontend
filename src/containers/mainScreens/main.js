@@ -17,11 +17,8 @@ import selectedTrophyIcon from '../../assets/mainScreens/trophy_Dolu.png'
 import emptyTrophyIcon from '../../assets/mainScreens/trophy.png'
 import selectedHomeIcon from '../../assets/mainScreens/home_dolu.png'
 import emptyHomeIcon from '../../assets/mainScreens/home.png'
-import selectedJokerIcon from '../../assets/mainScreens/joker_dolu.png'
-import emptyJokerIcon from '../../assets/mainScreens/joker.png'
-
-import newSelectedPurchaseIcon from '../../assets/mainScreens/newPurchase_dolu.png'
-import newEmptyPurchaseIcon from '../../assets/mainScreens/newPurchase_bos.png'
+import selectedPurchaseIcon from '../../assets/mainScreens/joker_dolu.png'
+import emptyPurchaseIcon from '../../assets/mainScreens/joker.png'
 
 class Main extends React.Component {
     constructor(props) {
@@ -164,8 +161,8 @@ class Main extends React.Component {
                         <Image
                             source={
                                 this.state.jokerIconSelected === true
-                                    ? newSelectedPurchaseIcon
-                                    : newEmptyPurchaseIcon
+                                    ? selectedPurchaseIcon
+                                    : emptyPurchaseIcon
                             }
                             style={{
                                 resizeMode: 'contain',

@@ -225,12 +225,13 @@ class GetInfo extends React.Component {
     }
 
     usernameOnChange = text => {
+        lowercaseText = text.toLowerCase()
         const validCharacters = /[^a-z0-9ğüşıöç]/g
-        if (validCharacters.test(text)) {
+        if (validCharacters.test(lowercaseText)) {
             this.setState({ usernameBorderColor: 'red' })
         } else this.setState({ usernameBorderColor: '#989696' })
-        if (text === '') text = null
-        this.setState({ username: text })
+        if (lowercaseText === '') lowercaseText = null
+        this.setState({ username: lowercaseText })
     }
 
     nameOnChange = text => {
@@ -459,6 +460,13 @@ class GetInfo extends React.Component {
                                 </Text>
                             </View>
                         </TouchableOpacity>
+                        <AuthTextInput
+                            placeholder="Arkadaş daveti kodu (zorunlu değil)"
+                            placeholderTextColor="#8A8888"
+                            maxLength={7}
+                            borderColor={this.state.inviteCodeBorderColor}
+                            onChangeText={this.inviteCodeChange}
+                        />
                     </View>
                     <View style={styles.authButtonView}>
                         <AuthButton

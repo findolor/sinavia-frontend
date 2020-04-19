@@ -750,7 +750,9 @@ class Settings extends React.Component {
                                     autoCapitalize={'none'}
                                     maxLength={16}
                                     onChangeText={text =>
-                                        this.usernameOnChange(text)
+                                        this.usernameOnChange(
+                                            text.toLowerCase()
+                                        )
                                     }
                                 />
                             </View>

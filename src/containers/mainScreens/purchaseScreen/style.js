@@ -90,7 +90,6 @@ export default StyleSheet.create({
         borderWidth: hp(0.25),
         borderColor: '#00D9EF',
         borderRadius: hp(1.8),
-        backgroundColor: '#CCF7FC',
         overflow: 'hidden'
     },
     yourPremiumContainer: {
@@ -760,95 +759,11 @@ export default StyleSheet.create({
         height: hp(4),
         width: hp(4)
     },
-    newJokersContainer: {
-        flex: 17,
-        width: wp(93),
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    newAddButtonsContainer: {
-        flex: 45,
-        width: wp(93),
-        justifyContent: 'space-between'
-    },
-    newSocialMediaContainer: {
-        flex: 14,
-        width: wp(100),
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        alignItems: 'center'
-    },
-    newTimeContainer: {
-        flex: 11,
-        width: wp(93),
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    newJokerContainer: {
-        height: hp(17),
-        width: wp(31),
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    newJokerImageContainer: {
-        height: hp(12),
-        width: wp(31),
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    newJokerImageView: {
-        height: hp(10),
-        width: hp(10),
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth: hp(0.25),
-        borderRadius: hp(100),
-        borderColor: '#FF9900'
-    },
-    newJokerCounterView: {
-        position: 'absolute',
-        height: hp(5),
-        width: hp(5),
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'red',
-        borderWidth: hp(0.35),
-        borderRadius: hp(100),
-        borderColor: '#fcfcfc',
-        bottom: hp(5),
-        right: hp(5.5),
-        zIndex: 1
-    },
-    newJokerCounterText: {
-        fontFamily: 'Averta-Regular',
-        fontSize: hp(2),
-        textAlign: 'center',
-        color: 'white',
-        marginBottom: hp(0.25)
-    },
-    newJokerImg: {
-        resizeMode: 'contain',
-        height: hp(4.5),
-        width: hp(4.5)
-    },
-    newJokerNameContainer: {
-        height: hp(5),
-        width: wp(31),
-        justifyContent: 'flex-start',
-        alignItems: 'center'
-    },
-    newJokerNameText: {
-        fontFamily: 'Averta-Bold',
-        fontSize: hp(2.3),
-        textAlign: 'center',
-        color: 'black'
-    },
     newPremiumUserJokerButtonStyle: {
         height: hp(14.25),
         width: wp(93),
         borderRadius: hp(2),
-        backgroundColor: '#00AEBF',
+        backgroundColor: '#00D9EF',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
@@ -863,8 +778,7 @@ export default StyleSheet.create({
         height: hp(14.25),
         width: wp(0),
         justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'red'
+        alignItems: 'center'
     },
     newPremiumUserJokerButton3Style: {
         height: hp(14.25),
@@ -885,47 +799,5 @@ export default StyleSheet.create({
         resizeMode: 'contain',
         height: hp(7.5),
         width: hp(7.5)
-    },
-    newYourPremiumTextView: {
-        height: hp(4.25),
-        width: wp(93),
-        justifyContent: 'flex-start',
-        alignItems: 'center'
-    },
-    newYourPremiumCounterView: {
-        height: hp(6.75),
-        width: wp(93),
-        justifyContent: 'flex-start',
-        alignItems: 'center'
-    },
-    newYourPremiumText: {
-        fontFamily: 'Averta-Bold',
-        fontSize: hp(2.75),
-        textAlign: 'center',
-        color: 'black'
-    },
-    newYourPremiumCounterText: {
-        fontFamily: 'Averta-Regular',
-        fontSize: hp(3.7),
-        textAlign: 'center',
-        color: '#565656'
-    },
-    newYourPremiumCounterNumbersText: {
-        fontFamily: 'Averta-Bold',
-        fontSize: hp(3.7),
-        textAlign: 'center',
-        color: '#FF9900'
-    },
-    newSocialMediaCircleView: {
-        height: hp(9),
-        width: hp(9),
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: hp(100),
-        backgroundColor: '#FF9F10'
-    },
-    newSocialMediaIcon: {
-        resizeMode: 'contain',
-        height: hp(4.65)
     }
 })
