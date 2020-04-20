@@ -234,6 +234,7 @@ class GameStatsScreen extends React.Component {
                     playerUsername = playerProps[element].username
                     playerProfilePicture = playerProps[element].profilePicture
                     playerProps[element].answers.forEach((result, index) => {
+                        undefinedQuestionIndex = index
                         switch (result.result) {
                             case null:
                                 playerUnanswered++
@@ -244,7 +245,6 @@ class GameStatsScreen extends React.Component {
                             case false:
                                 playerIncorrect++
                         }
-                        undefinedQuestionIndex = index
                     })
                 }
             })
