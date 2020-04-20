@@ -11,7 +11,8 @@ import {
     TouchableWithoutFeedback,
     KeyboardAvoidingView,
     Keyboard,
-    ActivityIndicator
+    ActivityIndicator,
+    Clipboard
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Swiper from 'react-native-swiper'
@@ -1179,11 +1180,12 @@ class PurchaseScreen extends React.Component {
                                                         style={{
                                                             height: hp(10),
                                                             width: wp(20),
-                                                            right: wp(4),
+                                                            right: wp(2),
+                                                            bottom: hp(1),
                                                             position:
                                                                 'absolute',
                                                             justifyContent:
-                                                                'center',
+                                                                'flex-end',
                                                             alignItems:
                                                                 'flex-end'
                                                         }}
@@ -1232,13 +1234,22 @@ class PurchaseScreen extends React.Component {
                                         </View>
                                         <TouchableOpacity
                                             style={styles.usePromotionButton}
+                                            onPress={() => {
+                                                this.setState(
+                                                    {
+                                                        isPromotionCodeModalVisible: false
+                                                    },
+                                                    () =>
+                                                        this.onPressPremiumView()
+                                                )
+                                            }}
                                         >
                                             <Text
                                                 style={
                                                     styles.purchasePremiumButtonText
                                                 }
                                             >
-                                                Onayla
+                                                ELİT ÖĞRENCİ PAKETİ
                                             </Text>
                                         </TouchableOpacity>
                                     </LinearGradient>

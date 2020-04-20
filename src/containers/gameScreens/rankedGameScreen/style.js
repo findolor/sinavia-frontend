@@ -248,7 +248,8 @@ export default StyleSheet.create({
     areYouSureText: {
         fontFamily: 'Averta-Regular',
         fontSize: wp(4.5),
-        color: '#5C5C5C'
+        color: '#5C5C5C',
+        textAlign: 'center'
     },
     yesOrNoButtonsContainer: {
         height: hp(9),
@@ -344,7 +345,7 @@ export default StyleSheet.create({
         backgroundColor: '#ff9900',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: hp(1),
+        borderRadius: hp(1)
     }
 })
 

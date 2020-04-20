@@ -26,7 +26,10 @@ import BACK_BUTTON from '../../../assets/backButton.png'
 import SEE_OPPONENT from '../../../assets/jokers/seeOpponent.png'
 import REMOVE_OPTIONS from '../../../assets/jokers/removeOptions.png'
 import SECOND_CHANCE from '../../../assets/jokers/secondChance.png'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
 import AuthButton from '../../../components/authScreen/authButton'
 import * as Animatable from 'react-native-animatable'
 import { interstitialAd } from '../../../services/admobService'
@@ -133,7 +136,11 @@ class FriendGame extends React.Component {
     componentDidMount() {
         this.backHandler = BackHandler.addEventListener(
             'hardwareBackPress',
-            () => this.setState({isQuitGameModalVisible: true, visibleView: 'quitGameModal'})
+            () =>
+                this.setState({
+                    isQuitGameModalVisible: true,
+                    visibleView: 'quitGameModal'
+                })
         )
         // We check if the user has enough jokers
         this.checkJokerAmount()
@@ -152,8 +159,11 @@ class FriendGame extends React.Component {
         this.props.room.onLeave(code => {
             let that = this
             console.log(code)
-            this.setState({isQuitGameModalVisible: true, visibleView: 'serverError'})
-            setTimeout(function(){
+            this.setState({
+                isQuitGameModalVisible: true,
+                visibleView: 'serverError'
+            })
+            setTimeout(function() {
                 that.props.room.leave()
                 navigationReset('main')
             }, 3000)
@@ -161,8 +171,11 @@ class FriendGame extends React.Component {
         this.props.room.onError(err => {
             let that = this
             console.log(err)
-            this.setState({isQuitGameModalVisible: true, visibleView: 'serverError'})
-            setTimeout(function(){
+            this.setState({
+                isQuitGameModalVisible: true,
+                visibleView: 'serverError'
+            })
+            setTimeout(function() {
                 that.props.room.leave()
                 navigationReset('main')
             }, 3000)
@@ -184,26 +197,34 @@ class FriendGame extends React.Component {
                         firstJokerNameSecondWord: splittedFirstJoker[1],
                         firstJokerAmount: userJoker.amount
                     })
-                    if(userJoker.amount === 0){
-                        this.setState({isSeeOpponentAnswerJokerDisabled: true, isSeeOpponentAnswerJokerFinished: true})
-                    }
-                    else {
-                        this.setState({isSeeOpponentAnswerJokerDisabled: false})
+                    if (userJoker.amount === 0) {
+                        this.setState({
+                            isSeeOpponentAnswerJokerDisabled: true,
+                            isSeeOpponentAnswerJokerFinished: true
+                        })
+                    } else {
+                        this.setState({
+                            isSeeOpponentAnswerJokerDisabled: false
+                        })
                     }
                     break
                 case 2:
-                    let splittedSecondJoker = userJoker.joker.name.split(/[ ,]+/)
+                    let splittedSecondJoker = userJoker.joker.name.split(
+                        /[ ,]+/
+                    )
 
                     this.setState({
                         secondJokerNameFirstWord: splittedSecondJoker[0],
                         secondJokerNameSecondWord: splittedSecondJoker[1],
                         secondJokerAmount: userJoker.amount
                     })
-                    if(userJoker.amount === 0){
-                        this.setState({isRemoveOptionJokerDisabled: true, isRemoveOptionJokerFinished: true})
-                    }
-                    else {
-                        this.setState({isRemoveOptionJokerDisabled: false})
+                    if (userJoker.amount === 0) {
+                        this.setState({
+                            isRemoveOptionJokerDisabled: true,
+                            isRemoveOptionJokerFinished: true
+                        })
+                    } else {
+                        this.setState({ isRemoveOptionJokerDisabled: false })
                     }
                     break
                 case 3:
@@ -214,11 +235,13 @@ class FriendGame extends React.Component {
                         thirdJokerNameSecondWord: splittedThirdJoker[1],
                         thirdJokerAmount: userJoker.amount
                     })
-                    if(userJoker.amount === 0){
-                        this.setState({isSecondChanceJokerDisabled: true, isSecondChanceJokerFinished: true})
-                    }
-                    else {
-                        this.setState({isSecondChanceJokerDisabled: false})
+                    if (userJoker.amount === 0) {
+                        this.setState({
+                            isSecondChanceJokerDisabled: true,
+                            isSecondChanceJokerFinished: true
+                        })
+                    } else {
+                        this.setState({ isSecondChanceJokerDisabled: false })
                     }
                     break
             }
@@ -241,8 +264,9 @@ class FriendGame extends React.Component {
         switch (message.action) {
             // Which options to remove comes from the server
             case 'remove-options-joker':
-                this.setState({ isRemoveOptionJokerDisabled: true,
-                    secondJokerAmount: this.state.secondJokerAmount-1,
+                this.setState({
+                    isRemoveOptionJokerDisabled: true,
+                    secondJokerAmount: this.state.secondJokerAmount - 1,
                     isRemoveOptionJokerUsed: true
                 })
                 this.props.subtractJoker(2)
@@ -254,7 +278,7 @@ class FriendGame extends React.Component {
                 this.setState({
                     isSecondChanceJokerDisabled: true,
                     isSecondChanceJokerActive: true,
-                    thirdJokerAmount: this.state.thirdJokerAmount-1,
+                    thirdJokerAmount: this.state.thirdJokerAmount - 1,
                     isSecondChanceJokerUsed: true
                 })
                 this.props.subtractJoker(3)
@@ -265,7 +289,7 @@ class FriendGame extends React.Component {
                 this.setState({
                     isSeeOpponentAnswerJokerDisabled: true,
                     isSeeOpponentAnswerJokerActive: true,
-                    firstJokerAmount: this.state.firstJokerAmount-1,
+                    firstJokerAmount: this.state.firstJokerAmount - 1,
                     isSeeOpponentAnswerJokerUsed: true
                 })
                 this.props.subtractJoker(1)
@@ -293,19 +317,25 @@ class FriendGame extends React.Component {
                     Object.keys(message.playerProps[message.clientId].answers)
                         .length === 0
                 ) {
-                    this.setState({isQuitGameModalVisible: true, visibleView: 'opponentLeaveNoAnswer'})
+                    this.setState({
+                        isQuitGameModalVisible: true,
+                        visibleView: 'opponentLeaveNoAnswer'
+                    })
                     this.shutdownGame()
                     setTimeout(() => {
-                        that.props.room.leave(),
-                            navigationReset('main')
+                        that.props.room.leave(), navigationReset('main')
                     }, 3000)
                     break
                 }
                 // Do a shutdown routine
-                this.setState({isQuitGameModalVisible: true, visibleView: 'opponentLeaveAfterAnswer'})
+                this.setState({
+                    isQuitGameModalVisible: true,
+                    visibleView: 'opponentLeaveAfterAnswer'
+                })
                 setTimeout(() => {
                     that.shutdownGame()
-                    if(!that.props.clientInformation.isPremium) interstitialAd()
+                    if (!that.props.clientInformation.isPremium)
+                        interstitialAd()
                     navigationReplace(SCENE_KEYS.gameScreens.friendGameStats, {
                         playerProps: message.playerProps,
                         room: that.props.room,
@@ -315,7 +345,8 @@ class FriendGame extends React.Component {
                         playerProfilePicture: that.props.playerProfilePicture,
                         opponentUsername: that.props.opponentUsername,
                         opponentId: that.props.opponentId,
-                        opponentProfilePicture: that.props.opponentProfilePicture,
+                        opponentProfilePicture:
+                            that.props.opponentProfilePicture,
                         fullQuestionList: message.fullQuestionList,
                         isMatchFinished: false,
                         friendMatches: this.state.friendMatches,
@@ -337,7 +368,7 @@ class FriendGame extends React.Component {
                 // Do a shutdown routine
                 this.shutdownGame()
                 this.props.room.leave()
-                if(!this.props.clientInformation.isPremium) interstitialAd()
+                if (!this.props.clientInformation.isPremium) interstitialAd()
                 navigationReplace(SCENE_KEYS.gameScreens.friendGameStats, {
                     playerProps: message.playerProps,
                     room: this.props.room,
@@ -355,7 +386,7 @@ class FriendGame extends React.Component {
                 })
                 break
             case 'save-questions':
-                    this.setState({ fullQuestionList: message.fullQuestionList })
+                this.setState({ fullQuestionList: message.fullQuestionList })
                 break
         }
     }
@@ -429,7 +460,7 @@ class FriendGame extends React.Component {
                 return
             case 'match-finished':
                 this.shutdownGame()
-                if(!this.props.clientInformation.isPremium) interstitialAd()
+                if (!this.props.clientInformation.isPremium) interstitialAd()
                 navigationReplace(SCENE_KEYS.gameScreens.friendGameStats, {
                     playerProps: this.state.playerProps,
                     room: this.props.room,
@@ -450,7 +481,8 @@ class FriendGame extends React.Component {
 
     updatePlayerResults = () => {
         // Player answers to the question
-        const answers = this.state.playerProps[this.props.room.sessionId].answers
+        const answers = this.state.playerProps[this.props.room.sessionId]
+            .answers
         const answersOpponent = this.state.playerProps[this.state.opponentId]
             .answers
 
@@ -599,7 +631,12 @@ class FriendGame extends React.Component {
 
         let that = this
 
-        this.setState({ playerOneButton: buttonNumber, isRemoveOptionJokerDisabled: true, isSecondChanceJokerDisabled: true, isSeeOpponentAnswerJokerDisabled: true })
+        this.setState({
+            playerOneButton: buttonNumber,
+            isRemoveOptionJokerDisabled: true,
+            isSecondChanceJokerDisabled: true,
+            isSeeOpponentAnswerJokerDisabled: true
+        })
         this.highlightButton(buttonNumber)
 
         this.props.room.send({
@@ -698,9 +735,21 @@ class FriendGame extends React.Component {
             buttonFiveName: 'E',
             buttonSixName: 'Boş'
         })
-        if(!this.state.isRemoveOptionJokerUsed && !this.state.isRemoveOptionJokerFinished) this.setState({ isRemoveOptionJokerDisabled: false })
-        if(!this.state.isSecondChanceJokerUsed && !this.state.isSecondChanceJokerFinished) this.setState({ isSecondChanceJokerDisabled: false })
-        if(!this.state.isSeeOpponentAnswerJokerUsed && !this.state.isSeeOpponentAnswerJokerFinished) this.setState({ isSeeOpponentAnswerJokerDisabled: false })
+        if (
+            !this.state.isRemoveOptionJokerUsed &&
+            !this.state.isRemoveOptionJokerFinished
+        )
+            this.setState({ isRemoveOptionJokerDisabled: false })
+        if (
+            !this.state.isSecondChanceJokerUsed &&
+            !this.state.isSecondChanceJokerFinished
+        )
+            this.setState({ isSecondChanceJokerDisabled: false })
+        if (
+            !this.state.isSeeOpponentAnswerJokerUsed &&
+            !this.state.isSeeOpponentAnswerJokerFinished
+        )
+            this.setState({ isSeeOpponentAnswerJokerDisabled: false })
     }
 
     countdownOnFinish = () => {
@@ -801,7 +850,11 @@ class FriendGame extends React.Component {
     opponentLeaveNoAnswer() {
         return (
             <View
-                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.quitView}>
@@ -820,7 +873,11 @@ class FriendGame extends React.Component {
     opponentLeaveAfterAnswer() {
         return (
             <View
-                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.quitView}>
@@ -839,7 +896,11 @@ class FriendGame extends React.Component {
     serverError() {
         return (
             <View
-                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.quitView}>
@@ -858,16 +919,19 @@ class FriendGame extends React.Component {
     quitGameModal() {
         return (
             <View
-                style={{ height: hp(120), width: wp(100), backgroundColor: '#000000DE' }}
+                style={{
+                    height: hp(120),
+                    width: wp(100),
+                    backgroundColor: '#000000DE'
+                }}
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.quitView}>
                         <Text style={styles.areYouSureText}>
-                            Oyundan çıkmak istediğine
+                            Oyundan çıkarsan kaybetmiş sayılacaksın, çıkmak
+                            istediğine
                         </Text>
-                        <Text style={styles.areYouSureText}>
-                            emin misin?
-                        </Text>
+                        <Text style={styles.areYouSureText}>emin misin?</Text>
                     </View>
                     <View style={styles.yesOrNoButtonsContainer}>
                         <AuthButton
@@ -880,7 +944,8 @@ class FriendGame extends React.Component {
                             onPress={() =>
                                 this.props.room.send({
                                     action: 'leave-match'
-                                })}
+                                })
+                            }
                         />
                         <AuthButton
                             height={hp(7)}
@@ -889,7 +954,9 @@ class FriendGame extends React.Component {
                             buttonText="Hayır"
                             fontSize={hp(3)}
                             borderRadius={hp(1.5)}
-                            onPress={() => this.setState({isQuitGameModalVisible: false})}
+                            onPress={() =>
+                                this.setState({ isQuitGameModalVisible: false })
+                            }
                         />
                     </View>
                 </View>
@@ -902,9 +969,12 @@ class FriendGame extends React.Component {
             <View style={styles.container}>
                 <NotchView color={styles.topContainer.backgroundColor} />
                 <View style={styles.topContainer}>
-                    <Animatable.View style={styles.headerContainer} useNativeDriver={true}
+                    <Animatable.View
+                        style={styles.headerContainer}
+                        useNativeDriver={true}
                         delay={750}
-                        animation="fadeIn">
+                        animation="fadeIn"
+                    >
                         <View style={styles.userContainer}>
                             <Image
                                 source={{
@@ -918,17 +988,44 @@ class FriendGame extends React.Component {
                                 </Text>
                             </View>
                             <View style={styles.answersContainer}>
-                                <View style={[styles.answerView, {backgroundColor: '#6AC259', borderColor: 'white', borderWidth: 1}]}>
+                                <View
+                                    style={[
+                                        styles.answerView,
+                                        {
+                                            backgroundColor: '#6AC259',
+                                            borderColor: 'white',
+                                            borderWidth: 1
+                                        }
+                                    ]}
+                                >
                                     <Text style={styles.answersText}>
                                         {this.state.playerOneCorrect}
                                     </Text>
                                 </View>
-                                <View style={[styles.answerView, {backgroundColor: '#B72A2A', borderColor: 'white', borderWidth: 1}]}>
+                                <View
+                                    style={[
+                                        styles.answerView,
+                                        {
+                                            backgroundColor: '#B72A2A',
+                                            borderColor: 'white',
+                                            borderWidth: 1
+                                        }
+                                    ]}
+                                >
                                     <Text style={styles.answersText}>
                                         {this.state.playerOneIncorrect}
                                     </Text>
                                 </View>
-                                <View style={[styles.answerView, {backgroundColor: '#3A52A3', borderColor: 'white', borderWidth: 1}]}>
+                                <View
+                                    style={[
+                                        styles.answerView,
+                                        {
+                                            backgroundColor: '#3A52A3',
+                                            borderColor: 'white',
+                                            borderWidth: 1
+                                        }
+                                    ]}
+                                >
                                     <Text style={styles.answersText}>
                                         {this.state.playerOneUnanswered}
                                     </Text>
@@ -966,17 +1063,44 @@ class FriendGame extends React.Component {
                                 </Text>
                             </View>
                             <View style={styles.answersContainer}>
-                                <View style={[styles.answerView, {backgroundColor: '#6AC259', borderColor: 'white', borderWidth: 1}]}>
+                                <View
+                                    style={[
+                                        styles.answerView,
+                                        {
+                                            backgroundColor: '#6AC259',
+                                            borderColor: 'white',
+                                            borderWidth: 1
+                                        }
+                                    ]}
+                                >
                                     <Text style={styles.answersText}>
                                         {this.state.playerTwoCorrect}
                                     </Text>
                                 </View>
-                                <View style={[styles.answerView, {backgroundColor: '#B72A2A', borderColor: 'white', borderWidth: 1}]}>
+                                <View
+                                    style={[
+                                        styles.answerView,
+                                        {
+                                            backgroundColor: '#B72A2A',
+                                            borderColor: 'white',
+                                            borderWidth: 1
+                                        }
+                                    ]}
+                                >
                                     <Text style={styles.answersText}>
                                         {this.state.playerTwoIncorrect}
                                     </Text>
                                 </View>
-                                <View style={[styles.answerView, {backgroundColor: '#3A52A3', borderColor: 'white', borderWidth: 1}]}>
+                                <View
+                                    style={[
+                                        styles.answerView,
+                                        {
+                                            backgroundColor: '#3A52A3',
+                                            borderColor: 'white',
+                                            borderWidth: 1
+                                        }
+                                    ]}
+                                >
                                     <Text style={styles.answersText}>
                                         {this.state.playerTwoUnanswered}
                                     </Text>
@@ -993,7 +1117,7 @@ class FriendGame extends React.Component {
                             source={{
                                 uri: this.state.questionList[
                                     this.state.questionNumber
-                                    ]
+                                ]
                             }}
                         />
                     </View>
@@ -1003,48 +1127,173 @@ class FriendGame extends React.Component {
                         animationType={'fade'}
                     >
                         <View style={styles.questionModalContainer}>
-                            <View style={{ backgroundColor: 'transparent', flex: 1, width: wp(100), justifyContent: 'center'}}>
-                                <View style={{ position: 'absolute', height: hp(78), width: wp(100), justifyContent: 'center'}}>
+                            <View
+                                style={{
+                                    backgroundColor: 'transparent',
+                                    flex: 1,
+                                    width: wp(100),
+                                    justifyContent: 'center'
+                                }}
+                            >
+                                <View
+                                    style={{
+                                        position: 'absolute',
+                                        height: hp(78),
+                                        width: wp(100),
+                                        justifyContent: 'center'
+                                    }}
+                                >
                                     <Image
                                         source={{
                                             uri: this.state.questionList[
                                                 this.state.questionNumber
-                                                ]
+                                            ]
                                         }}
                                         style={styles.questionModalStyle}
                                     />
                                 </View>
                                 <RNSketchCanvas
-                                    ref={ref => this.canvas1 = ref}
-                                    containerStyle={{ backgroundColor: 'transparent', flex: 1 }}
-                                    canvasStyle={{ backgroundColor: 'transparent', flex: 1 }}
-                                    onStrokeEnd={data => {
+                                    ref={ref => (this.canvas1 = ref)}
+                                    containerStyle={{
+                                        backgroundColor: 'transparent',
+                                        flex: 1
                                     }}
-                                    closeComponent={<View style={[styles.functionButton, {marginLeft: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2), textAlign: 'center' }}>Kapat</Text></View>}
-                                    onClosePressed={this.questionModalCloseOnPress}
-                                    undoComponent={<View style={[styles.functionButton, {marginRight: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2), textAlign: 'center' }}>Geri al</Text></View>}
-                                    onUndoPressed={(id) => {
+                                    canvasStyle={{
+                                        backgroundColor: 'transparent',
+                                        flex: 1
+                                    }}
+                                    onStrokeEnd={data => {}}
+                                    closeComponent={
+                                        <View
+                                            style={[
+                                                styles.functionButton,
+                                                { marginLeft: wp(4) }
+                                            ]}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontFamily: 'Averta-Bold',
+                                                    color: 'white',
+                                                    fontSize: hp(2),
+                                                    textAlign: 'center'
+                                                }}
+                                            >
+                                                Kapat
+                                            </Text>
+                                        </View>
+                                    }
+                                    onClosePressed={
+                                        this.questionModalCloseOnPress
+                                    }
+                                    undoComponent={
+                                        <View
+                                            style={[
+                                                styles.functionButton,
+                                                { marginRight: wp(4) }
+                                            ]}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontFamily: 'Averta-Bold',
+                                                    color: 'white',
+                                                    fontSize: hp(2),
+                                                    textAlign: 'center'
+                                                }}
+                                            >
+                                                Geri al
+                                            </Text>
+                                        </View>
+                                    }
+                                    onUndoPressed={id => {
                                         this.canvas1.deletePath(id)
                                     }}
-                                    clearComponent={<View style={[styles.functionButton, {marginRight: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2), textAlign: 'center' }}>Temizle</Text></View>}
+                                    clearComponent={
+                                        <View
+                                            style={[
+                                                styles.functionButton,
+                                                { marginRight: wp(4) }
+                                            ]}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontFamily: 'Averta-Bold',
+                                                    color: 'white',
+                                                    fontSize: hp(2),
+                                                    textAlign: 'center'
+                                                }}
+                                            >
+                                                Temizle
+                                            </Text>
+                                        </View>
+                                    }
                                     onClearPressed={() => {
                                         this.canvas1.clear()
                                     }}
-                                    eraseComponent={<View style={[styles.functionButton, {marginLeft: wp(4)}]}><Text style={{ fontFamily: 'Averta-Bold', color: 'white', fontSize: hp(2), textAlign: 'center' }}>Silgi</Text></View>}
+                                    eraseComponent={
+                                        <View
+                                            style={[
+                                                styles.functionButton,
+                                                { marginLeft: wp(4) }
+                                            ]}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontFamily: 'Averta-Bold',
+                                                    color: 'white',
+                                                    fontSize: hp(2),
+                                                    textAlign: 'center'
+                                                }}
+                                            >
+                                                Silgi
+                                            </Text>
+                                        </View>
+                                    }
                                     strokeComponent={color => (
-                                        <View style={[{ backgroundColor: color, borderWidth: hp(1)  }, styles.strokeColorButton]} />
+                                        <View
+                                            style={[
+                                                {
+                                                    backgroundColor: color,
+                                                    borderWidth: hp(1)
+                                                },
+                                                styles.strokeColorButton
+                                            ]}
+                                        />
                                     )}
-                                    strokeSelectedComponent={(color, index, changed) => {
+                                    strokeSelectedComponent={(
+                                        color,
+                                        index,
+                                        changed
+                                    ) => {
                                         return (
-                                            <View style={[{ backgroundColor: color}, styles.strokeSelectedColorButton]} />
+                                            <View
+                                                style={[
+                                                    { backgroundColor: color },
+                                                    styles.strokeSelectedColorButton
+                                                ]}
+                                            />
                                         )
                                     }}
-                                    strokeWidthComponent={(w) => {
-                                        return (<View style={styles.strokeWidthButton}>
-                                                <View style={{
-                                                    backgroundColor: 'white',
-                                                    width: Math.sqrt(w / 3) * 10, height: Math.sqrt(w / 3) * 10, borderRadius: Math.sqrt(w / 3) * 10 / 2
-                                                }} />
+                                    strokeWidthComponent={w => {
+                                        return (
+                                            <View
+                                                style={styles.strokeWidthButton}
+                                            >
+                                                <View
+                                                    style={{
+                                                        backgroundColor:
+                                                            'white',
+                                                        width:
+                                                            Math.sqrt(w / 3) *
+                                                            10,
+                                                        height:
+                                                            Math.sqrt(w / 3) *
+                                                            10,
+                                                        borderRadius:
+                                                            (Math.sqrt(w / 3) *
+                                                                10) /
+                                                            2
+                                                    }}
+                                                />
                                             </View>
                                         )
                                     }}
@@ -1073,7 +1322,12 @@ class FriendGame extends React.Component {
                     </View>
                     <View style={styles.backButtonContainer}>
                         <TouchableOpacity
-                            onPress={() => this.setState({isQuitGameModalVisible: true, visibleView: 'quitGameModal'})}
+                            onPress={() =>
+                                this.setState({
+                                    isQuitGameModalVisible: true,
+                                    visibleView: 'quitGameModal'
+                                })
+                            }
                         >
                             <Image
                                 source={BACK_BUTTON}
@@ -1088,13 +1342,13 @@ class FriendGame extends React.Component {
                     animationType={'fade'}
                 >
                     {this.state.visibleView === 'opponentLeaveNoAnswer' &&
-                    this.opponentLeaveNoAnswer()}
+                        this.opponentLeaveNoAnswer()}
                     {this.state.visibleView === 'opponentLeaveAfterAnswer' &&
-                    this.opponentLeaveAfterAnswer()}
+                        this.opponentLeaveAfterAnswer()}
                     {this.state.visibleView === 'quitGameModal' &&
-                    this.quitGameModal()}
+                        this.quitGameModal()}
                     {this.state.visibleView === 'serverError' &&
-                    this.serverError()}
+                        this.serverError()}
                 </Modal>
                 <View style={styles.dummyButtonContainer}>
                     {this.state.start && (
@@ -1117,14 +1371,18 @@ class FriendGame extends React.Component {
                                             NORMAL_BUTTON_COLOR
                                                 ? 'bounceIn'
                                                 : this.state
-                                                .buttonOneBorderColor !==
-                                            SELECTED_BUTTON_COLOR
-                                          ? this.state.buttonOneBorderColor !== OPPONENT_ANSWER_COLOR ? this.state
-                                          .buttonOneBorderColor !==
-                                      CORRECT_ANSWER_COLOR
-                                        ? 'swing'
-                                        : 'pulse'
-                                    : null : null
+                                                      .buttonOneBorderColor !==
+                                                  SELECTED_BUTTON_COLOR
+                                                ? this.state
+                                                      .buttonOneBorderColor !==
+                                                  OPPONENT_ANSWER_COLOR
+                                                    ? this.state
+                                                          .buttonOneBorderColor !==
+                                                      CORRECT_ANSWER_COLOR
+                                                        ? 'swing'
+                                                        : 'pulse'
+                                                    : null
+                                                : null
                                         }
                                         useNativeDriver={true}
                                     >
@@ -1150,14 +1408,18 @@ class FriendGame extends React.Component {
                                             NORMAL_BUTTON_COLOR
                                                 ? 'bounceIn'
                                                 : this.state
-                                                .buttonTwoBorderColor !==
-                                            SELECTED_BUTTON_COLOR
-                                          ? this.state.buttonTwoBorderColor !== OPPONENT_ANSWER_COLOR ? this.state
-                                          .buttonTwoBorderColor !==
-                                      CORRECT_ANSWER_COLOR
-                                        ? 'swing'
-                                        : 'pulse'
-                                    : null : null
+                                                      .buttonTwoBorderColor !==
+                                                  SELECTED_BUTTON_COLOR
+                                                ? this.state
+                                                      .buttonTwoBorderColor !==
+                                                  OPPONENT_ANSWER_COLOR
+                                                    ? this.state
+                                                          .buttonTwoBorderColor !==
+                                                      CORRECT_ANSWER_COLOR
+                                                        ? 'swing'
+                                                        : 'pulse'
+                                                    : null
+                                                : null
                                         }
                                         delay={200}
                                         useNativeDriver={true}
@@ -1185,14 +1447,18 @@ class FriendGame extends React.Component {
                                             NORMAL_BUTTON_COLOR
                                                 ? 'bounceIn'
                                                 : this.state
-                                                .buttonThreeBorderColor !==
-                                            SELECTED_BUTTON_COLOR
-                                          ? this.state.buttonThreeBorderColor !== OPPONENT_ANSWER_COLOR ? this.state
-                                          .buttonThreeBorderColor !==
-                                      CORRECT_ANSWER_COLOR
-                                        ? 'swing'
-                                        : 'pulse'
-                                    : null : null
+                                                      .buttonThreeBorderColor !==
+                                                  SELECTED_BUTTON_COLOR
+                                                ? this.state
+                                                      .buttonThreeBorderColor !==
+                                                  OPPONENT_ANSWER_COLOR
+                                                    ? this.state
+                                                          .buttonThreeBorderColor !==
+                                                      CORRECT_ANSWER_COLOR
+                                                        ? 'swing'
+                                                        : 'pulse'
+                                                    : null
+                                                : null
                                         }
                                         delay={100}
                                         useNativeDriver={true}
@@ -1221,14 +1487,18 @@ class FriendGame extends React.Component {
                                             NORMAL_BUTTON_COLOR
                                                 ? 'bounceIn'
                                                 : this.state
-                                                .buttonFourBorderColor !==
-                                            SELECTED_BUTTON_COLOR
-                                          ? this.state.buttonFourBorderColor !== OPPONENT_ANSWER_COLOR ? this.state
-                                          .buttonFourBorderColor !==
-                                      CORRECT_ANSWER_COLOR
-                                        ? 'swing'
-                                        : 'pulse'
-                                    : null : null
+                                                      .buttonFourBorderColor !==
+                                                  SELECTED_BUTTON_COLOR
+                                                ? this.state
+                                                      .buttonFourBorderColor !==
+                                                  OPPONENT_ANSWER_COLOR
+                                                    ? this.state
+                                                          .buttonFourBorderColor !==
+                                                      CORRECT_ANSWER_COLOR
+                                                        ? 'swing'
+                                                        : 'pulse'
+                                                    : null
+                                                : null
                                         }
                                         delay={150}
                                         useNativeDriver={true}
@@ -1255,14 +1525,18 @@ class FriendGame extends React.Component {
                                             NORMAL_BUTTON_COLOR
                                                 ? 'bounceIn'
                                                 : this.state
-                                                .buttonFiveBorderColor !==
-                                            SELECTED_BUTTON_COLOR
-                                          ? this.state.buttonFiveBorderColor !== OPPONENT_ANSWER_COLOR ? this.state
-                                          .buttonFiveBorderColor !==
-                                      CORRECT_ANSWER_COLOR
-                                        ? 'swing'
-                                        : 'pulse'
-                                    : null : null
+                                                      .buttonFiveBorderColor !==
+                                                  SELECTED_BUTTON_COLOR
+                                                ? this.state
+                                                      .buttonFiveBorderColor !==
+                                                  OPPONENT_ANSWER_COLOR
+                                                    ? this.state
+                                                          .buttonFiveBorderColor !==
+                                                      CORRECT_ANSWER_COLOR
+                                                        ? 'swing'
+                                                        : 'pulse'
+                                                    : null
+                                                : null
                                         }
                                         delay={50}
                                         useNativeDriver={true}
@@ -1297,75 +1571,311 @@ class FriendGame extends React.Component {
                         </View>
                     )}
                 </View>
-                <Animatable.View style={styles.jokerContainer} useNativeDriver={true}
+                <Animatable.View
+                    style={styles.jokerContainer}
+                    useNativeDriver={true}
                     delay={750}
-                    animation="fadeIn">
+                    animation="fadeIn"
+                >
                     <View style={styles.touchableJokerContainer}>
-                        <TouchableOpacity style={styles.jokerImageContainer}
-                                          onPress={this.seeOpponentAnswerJokerOnPressed}
-                                          disabled={
-                                              this.state.isSeeOpponentAnswerJokerDisabled
-                                          }>
-                            <View style={[styles.jokerImageView, {borderColor: this.state.isSeeOpponentAnswerJokerDisabled === true ? '#FFD79C' : '#FF9900'}]}>
-                                <View style={[styles.jokerCounterView, { width: ((''+this.state.firstJokerAmount).length) < 3 ? hp(4) : hp(5.5), backgroundColor: this.state.isSeeOpponentAnswerJokerDisabled === true ? '#FE8B8B' : 'red'}]}>
-                                    <Text style={styles.jokerCounterText}>{this.state.firstJokerAmount}</Text>
+                        <TouchableOpacity
+                            style={styles.jokerImageContainer}
+                            onPress={this.seeOpponentAnswerJokerOnPressed}
+                            disabled={
+                                this.state.isSeeOpponentAnswerJokerDisabled
+                            }
+                        >
+                            <View
+                                style={[
+                                    styles.jokerImageView,
+                                    {
+                                        borderColor:
+                                            this.state
+                                                .isSeeOpponentAnswerJokerDisabled ===
+                                            true
+                                                ? '#FFD79C'
+                                                : '#FF9900'
+                                    }
+                                ]}
+                            >
+                                <View
+                                    style={[
+                                        styles.jokerCounterView,
+                                        {
+                                            width:
+                                                (
+                                                    '' +
+                                                    this.state.firstJokerAmount
+                                                ).length < 3
+                                                    ? hp(4)
+                                                    : hp(5.5),
+                                            backgroundColor:
+                                                this.state
+                                                    .isSeeOpponentAnswerJokerDisabled ===
+                                                true
+                                                    ? '#FE8B8B'
+                                                    : 'red'
+                                        }
+                                    ]}
+                                >
+                                    <Text style={styles.jokerCounterText}>
+                                        {this.state.firstJokerAmount}
+                                    </Text>
                                 </View>
-                                <Image source={SEE_OPPONENT} style={[styles.jokerImg, { opacity: this.state.isSeeOpponentAnswerJokerDisabled === true ? 0.3 : 1, resizeMode: 'contain'}]}/>
+                                <Image
+                                    source={SEE_OPPONENT}
+                                    style={[
+                                        styles.jokerImg,
+                                        {
+                                            opacity:
+                                                this.state
+                                                    .isSeeOpponentAnswerJokerDisabled ===
+                                                true
+                                                    ? 0.3
+                                                    : 1,
+                                            resizeMode: 'contain'
+                                        }
+                                    ]}
+                                />
                             </View>
                         </TouchableOpacity>
                         <View style={styles.jokerNameContainer}>
-                            <TouchableOpacity onPress={this.seeOpponentAnswerJokerOnPressed}
-                                              disabled={
-                                                  this.state.isSeeOpponentAnswerJokerDisabled
-                                              }>
-                                <Text style={[styles.jokerNameText, {color: this.state.isSeeOpponentAnswerJokerDisabled === true ? 'rgba(0,0,0,0.5)' : 'black'}]}>{this.state.firstJokerNameFirstWord}</Text>
-                                <Text style={[styles.jokerNameText, {color: this.state.isSeeOpponentAnswerJokerDisabled === true ? 'rgba(0,0,0,0.5)' : 'black'}]}>{this.state.firstJokerNameSecondWord}</Text>
+                            <TouchableOpacity
+                                onPress={this.seeOpponentAnswerJokerOnPressed}
+                                disabled={
+                                    this.state.isSeeOpponentAnswerJokerDisabled
+                                }
+                            >
+                                <Text
+                                    style={[
+                                        styles.jokerNameText,
+                                        {
+                                            color:
+                                                this.state
+                                                    .isSeeOpponentAnswerJokerDisabled ===
+                                                true
+                                                    ? 'rgba(0,0,0,0.5)'
+                                                    : 'black'
+                                        }
+                                    ]}
+                                >
+                                    {this.state.firstJokerNameFirstWord}
+                                </Text>
+                                <Text
+                                    style={[
+                                        styles.jokerNameText,
+                                        {
+                                            color:
+                                                this.state
+                                                    .isSeeOpponentAnswerJokerDisabled ===
+                                                true
+                                                    ? 'rgba(0,0,0,0.5)'
+                                                    : 'black'
+                                        }
+                                    ]}
+                                >
+                                    {this.state.firstJokerNameSecondWord}
+                                </Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                     <View style={styles.touchableJokerContainer}>
-                        <TouchableOpacity style={styles.jokerImageContainer}
-                                          onPress={this.removeOptionJokerOnPressed}
-                                          disabled={
-                                              this.state.isRemoveOptionJokerDisabled
-                                          }>
-                            <View style={[styles.jokerImageView, {borderColor: this.state.isRemoveOptionJokerDisabled === true ? '#FFD79C' : '#FF9900'}]}>
-                                <View style={[styles.jokerCounterView, { width: ((''+this.state.secondJokerAmount).length) < 3 ? hp(4) : hp(5.5), backgroundColor: this.state.isRemoveOptionJokerDisabled === true ? '#FE8B8B' : 'red'}]}>
-                                    <Text style={styles.jokerCounterText}>{this.state.secondJokerAmount}</Text>
+                        <TouchableOpacity
+                            style={styles.jokerImageContainer}
+                            onPress={this.removeOptionJokerOnPressed}
+                            disabled={this.state.isRemoveOptionJokerDisabled}
+                        >
+                            <View
+                                style={[
+                                    styles.jokerImageView,
+                                    {
+                                        borderColor:
+                                            this.state
+                                                .isRemoveOptionJokerDisabled ===
+                                            true
+                                                ? '#FFD79C'
+                                                : '#FF9900'
+                                    }
+                                ]}
+                            >
+                                <View
+                                    style={[
+                                        styles.jokerCounterView,
+                                        {
+                                            width:
+                                                (
+                                                    '' +
+                                                    this.state.secondJokerAmount
+                                                ).length < 3
+                                                    ? hp(4)
+                                                    : hp(5.5),
+                                            backgroundColor:
+                                                this.state
+                                                    .isRemoveOptionJokerDisabled ===
+                                                true
+                                                    ? '#FE8B8B'
+                                                    : 'red'
+                                        }
+                                    ]}
+                                >
+                                    <Text style={styles.jokerCounterText}>
+                                        {this.state.secondJokerAmount}
+                                    </Text>
                                 </View>
-                                <Image source={REMOVE_OPTIONS} style={[styles.jokerImg, { opacity: this.state.isRemoveOptionJokerDisabled === true ? 0.3 : 1, resizeMode: 'contain'}]}/>
+                                <Image
+                                    source={REMOVE_OPTIONS}
+                                    style={[
+                                        styles.jokerImg,
+                                        {
+                                            opacity:
+                                                this.state
+                                                    .isRemoveOptionJokerDisabled ===
+                                                true
+                                                    ? 0.3
+                                                    : 1,
+                                            resizeMode: 'contain'
+                                        }
+                                    ]}
+                                />
                             </View>
                         </TouchableOpacity>
                         <View style={styles.jokerNameContainer}>
-                            <TouchableOpacity onPress={this.removeOptionJokerOnPressed}
-                                              disabled={
-                                                  this.state.isRemoveOptionJokerDisabled
-                                              }>
-                                <Text style={[styles.jokerNameText, {color: this.state.isRemoveOptionJokerDisabled === true ? 'rgba(0,0,0,0.5)' : 'black'}]}>{this.state.secondJokerNameFirstWord}</Text>
-                                <Text style={[styles.jokerNameText, {color: this.state.isRemoveOptionJokerDisabled === true ? 'rgba(0,0,0,0.5)' : 'black'}]}>{this.state.secondJokerNameSecondWord}</Text>
+                            <TouchableOpacity
+                                onPress={this.removeOptionJokerOnPressed}
+                                disabled={
+                                    this.state.isRemoveOptionJokerDisabled
+                                }
+                            >
+                                <Text
+                                    style={[
+                                        styles.jokerNameText,
+                                        {
+                                            color:
+                                                this.state
+                                                    .isRemoveOptionJokerDisabled ===
+                                                true
+                                                    ? 'rgba(0,0,0,0.5)'
+                                                    : 'black'
+                                        }
+                                    ]}
+                                >
+                                    {this.state.secondJokerNameFirstWord}
+                                </Text>
+                                <Text
+                                    style={[
+                                        styles.jokerNameText,
+                                        {
+                                            color:
+                                                this.state
+                                                    .isRemoveOptionJokerDisabled ===
+                                                true
+                                                    ? 'rgba(0,0,0,0.5)'
+                                                    : 'black'
+                                        }
+                                    ]}
+                                >
+                                    {this.state.secondJokerNameSecondWord}
+                                </Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                     <View style={styles.touchableJokerContainer}>
-                        <TouchableOpacity style={styles.jokerImageContainer}
-                                          onPress={this.secondChangeJokerOnPressed}
-                                          disabled={
-                                              this.state.isSecondChanceJokerDisabled
-                                          }>
-                            <View style={[styles.jokerImageView, {borderColor: this.state.isSecondChanceJokerDisabled === true ? '#FFD79C' : '#FF9900'}]}>
-                                <View style={[styles.jokerCounterView, { width: ((''+this.state.thirdJokerAmount).length) < 3 ? hp(4) : hp(5.5), backgroundColor: this.state.isSecondChanceJokerDisabled === true ? '#FE8B8B' : 'red'}]}>
-                                    <Text style={styles.jokerCounterText}>{this.state.thirdJokerAmount}</Text>
+                        <TouchableOpacity
+                            style={styles.jokerImageContainer}
+                            onPress={this.secondChangeJokerOnPressed}
+                            disabled={this.state.isSecondChanceJokerDisabled}
+                        >
+                            <View
+                                style={[
+                                    styles.jokerImageView,
+                                    {
+                                        borderColor:
+                                            this.state
+                                                .isSecondChanceJokerDisabled ===
+                                            true
+                                                ? '#FFD79C'
+                                                : '#FF9900'
+                                    }
+                                ]}
+                            >
+                                <View
+                                    style={[
+                                        styles.jokerCounterView,
+                                        {
+                                            width:
+                                                (
+                                                    '' +
+                                                    this.state.thirdJokerAmount
+                                                ).length < 3
+                                                    ? hp(4)
+                                                    : hp(5.5),
+                                            backgroundColor:
+                                                this.state
+                                                    .isSecondChanceJokerDisabled ===
+                                                true
+                                                    ? '#FE8B8B'
+                                                    : 'red'
+                                        }
+                                    ]}
+                                >
+                                    <Text style={styles.jokerCounterText}>
+                                        {this.state.thirdJokerAmount}
+                                    </Text>
                                 </View>
-                                <Image source={SECOND_CHANCE} style={[styles.jokerImg, { opacity: this.state.isSecondChanceJokerDisabled === true ? 0.3 : 1, resizeMode: 'contain'}]}/>
+                                <Image
+                                    source={SECOND_CHANCE}
+                                    style={[
+                                        styles.jokerImg,
+                                        {
+                                            opacity:
+                                                this.state
+                                                    .isSecondChanceJokerDisabled ===
+                                                true
+                                                    ? 0.3
+                                                    : 1,
+                                            resizeMode: 'contain'
+                                        }
+                                    ]}
+                                />
                             </View>
                         </TouchableOpacity>
                         <View style={styles.jokerNameContainer}>
-                            <TouchableOpacity onPress={this.secondChangeJokerOnPressed}
-                                              disabled={
-                                                  this.state.isSecondChanceJokerDisabled
-                                              }>
-                                <Text style={[styles.jokerNameText, {color: this.state.isSecondChanceJokerDisabled === true ? 'rgba(0,0,0,0.5)' : 'black'}]}>{this.state.thirdJokerNameFirstWord}</Text>
-                                <Text style={[styles.jokerNameText, {color: this.state.isSecondChanceJokerDisabled === true ? 'rgba(0,0,0,0.5)' : 'black'}]}>{this.state.thirdJokerNameSecondWord}</Text>
+                            <TouchableOpacity
+                                onPress={this.secondChangeJokerOnPressed}
+                                disabled={
+                                    this.state.isSecondChanceJokerDisabled
+                                }
+                            >
+                                <Text
+                                    style={[
+                                        styles.jokerNameText,
+                                        {
+                                            color:
+                                                this.state
+                                                    .isSecondChanceJokerDisabled ===
+                                                true
+                                                    ? 'rgba(0,0,0,0.5)'
+                                                    : 'black'
+                                        }
+                                    ]}
+                                >
+                                    {this.state.thirdJokerNameFirstWord}
+                                </Text>
+                                <Text
+                                    style={[
+                                        styles.jokerNameText,
+                                        {
+                                            color:
+                                                this.state
+                                                    .isSecondChanceJokerDisabled ===
+                                                true
+                                                    ? 'rgba(0,0,0,0.5)'
+                                                    : 'black'
+                                        }
+                                    ]}
+                                >
+                                    {this.state.thirdJokerNameSecondWord}
+                                </Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -1384,7 +1894,4 @@ const mapDispatchToProps = dispatch => ({
     subtractJoker: jokerId => dispatch(clientActions.subtractJoker(jokerId))
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(FriendGame)
+export default connect(mapStateToProps, mapDispatchToProps)(FriendGame)
