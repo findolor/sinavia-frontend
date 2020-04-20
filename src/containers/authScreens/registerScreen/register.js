@@ -1042,7 +1042,7 @@ class Register extends React.Component {
                                             height: hp(3.5),
                                             width: hp(3.5),
                                             marginTop: hp(1),
-                                            rotation: 270
+                                            transform: [{ rotate: '270deg' }]
                                         }}
                                     />
                                 </TouchableOpacity>
