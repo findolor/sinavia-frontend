@@ -86,7 +86,7 @@ class FriendGame extends React.Component {
             isQuitGameModalVisible: false,
             visibleView: '',
             // Our countdown timer's time
-            countDownTime: 60,
+            countDownTime: 90,
             // playerProps state
             playerProps: {},
             // Opponent clientId

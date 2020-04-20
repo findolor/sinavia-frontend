@@ -74,7 +74,7 @@ class UnsolvedModeGameScreen extends React.Component {
             // Variable to know if the client has answered question
             isQuestionAnswered: false,
             // Our countdown timer's time
-            countDownTime: 60,
+            countDownTime: 90,
             // playerProps state
             playerProps: {},
             // modal visibility variable
