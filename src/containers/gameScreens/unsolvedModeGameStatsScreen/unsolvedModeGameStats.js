@@ -92,6 +92,7 @@ class UnsolvedModeGameStats extends React.Component {
             playerUsername = this.props.playerProps.username
             playerProfilePicture = this.props.playerProps.profilePicture
             this.props.playerProps.answers.forEach((result, index) => {
+                undefinedQuestionIndex = index
                 switch (result.result) {
                     case null:
                         playerUnanswered++
@@ -102,7 +103,6 @@ class UnsolvedModeGameStats extends React.Component {
                     case false:
                         playerIncorrect++
                 }
-                undefinedQuestionIndex = index
             })
 
             if (!this.props.isMatchFinished) {
