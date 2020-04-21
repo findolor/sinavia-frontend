@@ -510,7 +510,7 @@ export default StyleSheet.create({
     },
     purchasePremiumButtonText: {
         fontFamily: 'Averta-Bold',
-        fontSize: hp(3),
+        fontSize: hp(2.5),
         textAlign: 'center',
         color: 'white'
     },
@@ -756,8 +756,8 @@ export default StyleSheet.create({
         letterSpacing: wp(2)
     },
     copyImage: {
-        height: hp(4),
-        width: hp(4)
+        height: hp(3),
+        width: hp(3)
     },
     newPremiumUserJokerButtonStyle: {
         height: hp(14.25),

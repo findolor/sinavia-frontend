@@ -5,7 +5,8 @@ import {
     Image,
     Text,
     FlatList,
-    Modal
+    Modal,
+    Clipboard
 } from 'react-native'
 import DropDown from '../../../../../components/mainScreen/dropdown/dropdown'
 import AuthButton from '../../../../../components/authScreen/authButton'
