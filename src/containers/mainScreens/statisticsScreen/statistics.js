@@ -248,11 +248,17 @@ class Statistics extends React.Component {
         const index = contentMap.subjects.findIndex(
             x => x.name === this.state.subjectList[choosenSubjectId]
         )
-        
-        return {
-            subjectId: contentMap.subjects[index].id,
-            courseId: contentMap.subjects[index].courseId
-        }
+
+        if (contentMap.subjects[index]) {
+            return {
+                subjectId: contentMap.subjects[index].id,
+                courseId: contentMap.subjects[index].courseId
+            }
+        } else
+            return {
+                subjectId: null,
+                courseId: this.getActualCourseId(this.state.choosenCourseId)
+            }
     }
 
     getActualCourseId = choosenCourseId => {
@@ -262,7 +268,8 @@ class Statistics extends React.Component {
             x => x.name === this.state.courseList[choosenCourseId]
         )
 
-        return contentMap.courses[index].id
+        if (contentMap.courses[index]) return contentMap.courses[index].id
+        else return null
     }
 
     // Course name selector for dropdown
@@ -298,9 +305,11 @@ class Statistics extends React.Component {
                     })
                 } else {
                     this.state.originalWeeklyStatList.forEach(statistic => {
-                        if (statistic.courseId === id) {
-                            statisticsList.push(statistic)
-                        }
+                        if (id) {
+                            if (statistic.courseId === id) {
+                                statisticsList.push(statistic)
+                            }
+                        } else statisticsList.push(statistic)
                     })
                     this.setState({ weeklyStatList: statisticsList })
                 }
@@ -319,9 +328,11 @@ class Statistics extends React.Component {
                     })
                 } else {
                     this.state.originalMonthlyStatList.forEach(statistic => {
-                        if (statistic.courseId === id) {
-                            statisticsList.push(statistic)
-                        }
+                        if (id) {
+                            if (statistic.courseId === id) {
+                                statisticsList.push(statistic)
+                            }
+                        } else statisticsList.push(statistic)
                     })
                     this.setState({ monthlyStatList: statisticsList })
                 }
@@ -340,9 +351,11 @@ class Statistics extends React.Component {
                     })
                 } else {
                     this.state.originalSixMonthsStatList.forEach(statistic => {
-                        if (statistic.courseId === id) {
-                            statisticsList.push(statistic)
-                        }
+                        if (id) {
+                            if (statistic.courseId === id) {
+                                statisticsList.push(statistic)
+                            }
+                        } else statisticsList.push(statistic)
                     })
                     this.setState({ sixMonthsStatList: statisticsList })
                 }
@@ -366,10 +379,14 @@ class Statistics extends React.Component {
                     this.selectCourseDropdown(this.state.choosenCourseId)
                 } else {
                     this.state.originalWeeklyStatList.forEach(statistic => {
-                        if (
-                            statistic.subjectId === ids.subjectId &&
-                            statistic.courseId === ids.courseId
-                        ) {
+                        if (ids.subjectId) {
+                            if (
+                                statistic.subjectId === ids.subjectId &&
+                                statistic.courseId === ids.courseId
+                            ) {
+                                statisticsList.push(statistic)
+                            }
+                        } else if (statistic.courseId === ids.courseId) {
                             statisticsList.push(statistic)
                         }
                     })
@@ -388,10 +405,14 @@ class Statistics extends React.Component {
                     this.selectCourseDropdown(this.state.choosenCourseId)
                 } else {
                     this.state.originalMonthlyStatList.forEach(statistic => {
-                        if (
-                            statistic.subjectId === ids.subjectId &&
-                            statistic.courseId === ids.courseId
-                        ) {
+                        if (ids.subjectId) {
+                            if (
+                                statistic.subjectId === ids.subjectId &&
+                                statistic.courseId === ids.courseId
+                            ) {
+                                statisticsList.push(statistic)
+                            }
+                        } else if (statistic.courseId === ids.courseId) {
                             statisticsList.push(statistic)
                         }
                     })
@@ -410,10 +431,14 @@ class Statistics extends React.Component {
                     this.selectCourseDropdown(this.state.choosenCourseId)
                 } else {
                     this.state.originalSixMonthsStatList.forEach(statistic => {
-                        if (
-                            statistic.subjectId === ids.subjectId &&
-                            statistic.courseId === ids.courseId
-                        ) {
+                        if (ids.subjectId) {
+                            if (
+                                statistic.subjectId === ids.subjectId &&
+                                statistic.courseId === ids.courseId
+                            ) {
+                                statisticsList.push(statistic)
+                            }
+                        } else if (statistic.courseId === ids.courseId) {
                             statisticsList.push(statistic)
                         }
                     })

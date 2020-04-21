@@ -201,6 +201,7 @@ class FriendGameStatsScreen extends React.Component {
                     playerUsername = playerProps[element].username
                     playerProfilePicture = playerProps[element].profilePicture
                     playerProps[element].answers.forEach((result, index) => {
+                        undefinedQuestionIndex = index
                         switch (result.result) {
                             case null:
                                 playerUnanswered++
@@ -212,7 +213,6 @@ class FriendGameStatsScreen extends React.Component {
                                 playerIncorrect++
                                 break
                         }
-                        undefinedQuestionIndex = index
                     })
                 }
             })
