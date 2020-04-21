@@ -248,10 +248,7 @@ class Statistics extends React.Component {
         const index = contentMap.subjects.findIndex(
             x => x.name === this.state.subjectList[choosenSubjectId]
         )
-
-        console.log(choosenSubjectId)
-        console.log(this.state.subjectList[choosenSubjectId])
-
+        
         return {
             subjectId: contentMap.subjects[index].id,
             courseId: contentMap.subjects[index].courseId
