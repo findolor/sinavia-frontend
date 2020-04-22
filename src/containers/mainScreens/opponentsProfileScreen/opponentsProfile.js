@@ -194,7 +194,8 @@ class OpponentsProfile extends React.Component {
         navigationPush(SCENE_KEYS.mainScreens.friendsList, {
             opponentFriendIds: this.props.friendsList,
             isOpponentFriends: true,
-            friendsList: []
+            friendsList: [],
+            listSource: 'opponent'
         })
     }
 

@@ -229,9 +229,15 @@ class FriendsList extends React.Component {
                                 source={NO_RESULTS_USER}
                                 style={styles.noResultImg}
                             />
-                            <Text style={styles.noResultsText}>
-                                Henüz bir arkadaşın yok
-                            </Text>
+                            {this.props.listSource === 'profile' ? (
+                                <Text style={styles.noResultsText}>
+                                    Henüz bir arkadaşın yok
+                                </Text>
+                            ) : (
+                                <Text style={styles.noResultsText}>
+                                    Bu kişinin henüz bir arkadaşı yok
+                                </Text>
+                            )}
                         </View>
                     )}
                 {!this.props.clientInformation.isPremium && <BannerAd />}
