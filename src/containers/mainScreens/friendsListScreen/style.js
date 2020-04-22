@@ -57,7 +57,7 @@ export default StyleSheet.create({
         height: hp(6),
         width: wp(10),
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'flex-start'
     },
     headerText: {
         fontFamily: 'Averta-BoldItalic',
