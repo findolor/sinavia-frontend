@@ -55,6 +55,7 @@ import { checkOnline } from './api'
 import { getUserGoals, postUserGoal, deleteUserGoal } from './userGoal'
 import { sendReceipt } from './purchaseReceipt'
 import { getInviteCode } from './inviteCode'
+import { reportUser } from './userReporting'
 
 export const apiServicesTree = {
     api: {
@@ -140,6 +141,9 @@ export const apiServicesTree = {
     },
     inviteCodeApi: {
         getInviteCode: 'getInviteCode'
+    },
+    userReportingApi: {
+        reportUser: 'reportUser'
     }
 }
 
@@ -283,6 +287,10 @@ export const postRequest = async (functionName, params) => {
         case 'sendReceipt':
             headers.Authorization = 'Bearer ' + params.clientToken
             return sendReceipt(headers, params)
+        // USER REPORTING
+        case 'reportUser':
+            headers.Authorization = 'Bearer ' + params.clientToken
+            return reportUser(headers, params)
     }
 }
 

@@ -150,6 +150,7 @@ class GroupGameStatsScreen extends React.Component {
                     username = playerProps[playerId].username
                     profilePicture = playerProps[playerId].profilePicture
                     playerProps[playerId].answers.forEach((result, index) => {
+                        undefinedQuestionIndex = index
                         switch (result.result) {
                             case null:
                                 unanswered++
@@ -160,7 +161,6 @@ class GroupGameStatsScreen extends React.Component {
                             case false:
                                 incorrect++
                         }
-                        undefinedQuestionIndex = index
                     })
                     let net
 

@@ -74,7 +74,7 @@ class SoloModeGameScreen extends React.Component {
             // Variable to know if the client has answered question
             isQuestionAnswered: false,
             // Our countdown timer's time
-            countDownTime: 60,
+            countDownTime: 90,
             // playerProps state
             playerProps: {},
             // modal visibility variable
@@ -272,7 +272,8 @@ class SoloModeGameScreen extends React.Component {
                     playerUsername: this.props.playerUsername,
                     playerProfilePicture: this.props.playerProfilePicture,
                     fullQuestionList: message.fullQuestionList,
-                    isMatchFinished: false
+                    isMatchFinished: false,
+                    contentIds: this.props.contentIds
                 })
                 break
         }
@@ -332,7 +333,8 @@ class SoloModeGameScreen extends React.Component {
                     playerProfilePicture: this.props.clientInformation
                         .profilePicture,
                     fullQuestionList: this.state.fullQuestionList,
-                    isMatchFinished: true
+                    isMatchFinished: true,
+                    contentIds: this.props.contentIds
                 })
                 return
         }
@@ -835,7 +837,7 @@ class SoloModeGameScreen extends React.Component {
                             source={{
                                 uri: this.state.questionList[
                                     this.state.questionNumber
-                                    ]
+                                ]
                             }}
                         />
                     </View>
@@ -892,7 +894,7 @@ class SoloModeGameScreen extends React.Component {
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
-                                                    fontSize: hp(2.25),
+                                                    fontSize: hp(2),
                                                     textAlign: 'center'
                                                 }}
                                             >
@@ -914,7 +916,7 @@ class SoloModeGameScreen extends React.Component {
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
-                                                    fontSize: hp(2.25),
+                                                    fontSize: hp(2),
                                                     textAlign: 'center'
                                                 }}
                                             >
@@ -936,7 +938,7 @@ class SoloModeGameScreen extends React.Component {
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
-                                                    fontSize: hp(2.25),
+                                                    fontSize: hp(2),
                                                     textAlign: 'center'
                                                 }}
                                             >
@@ -958,7 +960,7 @@ class SoloModeGameScreen extends React.Component {
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
-                                                    fontSize: hp(2.25),
+                                                    fontSize: hp(2),
                                                     textAlign: 'center'
                                                 }}
                                             >

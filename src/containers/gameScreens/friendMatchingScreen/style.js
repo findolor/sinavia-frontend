@@ -49,6 +49,7 @@ export default StyleSheet.create({
     userPicContainer: {
         height: hp(20),
         width: wp(33),
+        justifyContent: 'center',
         alignItems: 'flex-end',
         marginBottom: hp(3)
     },
@@ -61,6 +62,7 @@ export default StyleSheet.create({
     opponentPicContainer: {
         height: hp(20),
         width: wp(33),
+        justifyContent: 'center',
         alignItems: 'flex-start',
         marginTop: hp(3)
     },
@@ -72,24 +74,22 @@ export default StyleSheet.create({
         marginTop: hp(3)
     },
     userPic: {
-        height: hp(15),
-        width: hp(15),
-        marginTop: hp(2.7),
+        height: hp(11.5),
+        width: hp(11.5),
         borderWidth: hp(0.5),
         borderColor: '#6AC259',
         borderRadius: 100
     },
     opponentPic: {
-        height: hp(15),
-        width: hp(15),
-        marginTop: hp(2.7),
+        height: hp(11.5),
+        width: hp(11.5),
         borderWidth: hp(0.5),
         borderColor: '#B72A2A',
         borderRadius: 100
     },
     usernameText: {
         fontFamily: 'Averta-BoldItalic',
-        fontSize: hp(3),
+        fontSize: hp(2.5),
         color: '#FFFFFF'
     },
     sinaviaScoreText: {
@@ -154,10 +154,10 @@ export default StyleSheet.create({
         backgroundColor: '#B72A2A'
     },
     separatorCircle: {
-        height: wp(30),
-        width: wp(30),
+        height: wp(33),
+        width: wp(33),
         position: 'absolute',
-        left: wp(35),
+        left: wp(33.5),
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: hp(1),
@@ -183,7 +183,7 @@ export default StyleSheet.create({
     },
     timerText: {
         fontFamily: 'Averta-BoldItalic',
-        fontSize: hp(9),
+        fontSize: hp(5),
         marginBottom: hp(1),
         color: '#FFFFFF'
     },
@@ -199,7 +199,7 @@ export default StyleSheet.create({
     },
     startFirstText: {
         fontFamily: 'Averta-Bold',
-        fontSize: hp(3),
+        fontSize: hp(2.5),
         color: '#FFFFFF',
         textAlign: 'center'
     }

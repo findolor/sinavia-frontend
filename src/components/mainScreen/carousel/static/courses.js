@@ -184,7 +184,7 @@ export const YKS = {
         'Mantık ve Dil',
         'Psikoloji',
         'Birey ve Toplum'
-    ],
+    ]
 }
 
 export const KPSS = {
@@ -243,30 +243,14 @@ export const KPSS = {
         'Ortak Payda: Bölge',
         'Doğal Afetler'
     ],
-    kpssVatandaslik: [
-
-    ],
-    kpssEgitimBilimleri: [
-
-    ],
-    kpssOABT: [
-
-    ],
-    kpssIsletme: [
-
-    ],
-    kpssMuhasebe: [
-
-    ],
-    kpssHukuk: [
-
-    ],
-    kpssIktisat: [
-
-    ],
-    kpssMaliye: [
-
-    ]
+    kpssVatandaslik: [],
+    kpssEgitimBilimleri: [],
+    kpssOABT: [],
+    kpssIsletme: [],
+    kpssMuhasebe: [],
+    kpssHukuk: [],
+    kpssIktisat: [],
+    kpssMaliye: []
 }
 
 export const ALES = {
@@ -405,19 +389,19 @@ export const YDS = {
 
 export const TUS = {
     tusTemelBilimler: [
-        "Anatomi",
-        "Fizyoloji",
-        "Biyokimya",
-        "Mikrobiyoloji",
-        "Patoloji",
-        "Farmakoloji"
+        'Anatomi',
+        'Fizyoloji',
+        'Biyokimya',
+        'Mikrobiyoloji',
+        'Patoloji',
+        'Farmakoloji'
     ],
     tusKlinikBilimler: [
-        "Dahiliye",
-        "Pediatri",
-        "Genel Cerrahi",
-        "Kadın Doğum",
-        "Küçük Stajlar"
+        'Dahiliye',
+        'Pediatri',
+        'Genel Cerrahi',
+        'Kadın Doğum',
+        'Küçük Stajlar'
     ]
 }
 

@@ -81,6 +81,10 @@ class Login extends React.Component {
 
         // Saving the used method for correct logic in login
         await deviceStorage.saveItemToStorage('signInMethod', 'normal')
+        this.setState({ isLogging: true })
+        this.indicatorTimeout = setTimeout(() => {
+            this.setState({ isLogging: false })
+        }, 4000)
         this.props.loginUser({
             email: this.state.email.replace(/ /g, ''),
             password: this.state.password.replace(/ /g, '')

@@ -54,7 +54,8 @@ class SoloModeLoadingScreen extends React.Component {
                             playerUsername: this.props.clientInformation
                                 .username,
                             playerProfilePicture: this.props.clientInformation
-                                .profilePicture
+                                .profilePicture,
+                            contentIds: this.props.contentIds
                         }
                     )
                 }, 5000)
@@ -83,6 +84,20 @@ class SoloModeLoadingScreen extends React.Component {
         navigationReset('main')
     }
 
+    getNames = () => {
+        const subjectIndex = this.props.gameContentMap.subjects.findIndex(
+            x => x.id === this.props.contentIds.subjectId
+        )
+        const courseIndex = this.props.gameContentMap.courses.findIndex(
+            x => x.id === this.props.contentIds.courseId
+        )
+
+        return {
+            courseName: this.props.gameContentMap.courses[courseIndex].name,
+            subjectName: this.props.gameContentMap.subjects[subjectIndex].name
+        }
+    }
+
     render() {
         const background = chooseImage(this.props.contentIds.examId, true)
         return (
@@ -101,18 +116,10 @@ class SoloModeLoadingScreen extends React.Component {
                             delay={500}
                         >
                             <Text style={styles.courseText}>
-                                {
-                                    this.props.gameContentMap.courses[
-                                        this.props.contentIds.courseId - 1
-                                    ].name
-                                }
+                                {this.getNames().courseName}
                             </Text>
                             <Text style={styles.subjectText}>
-                                {
-                                    this.props.gameContentMap.subjects[
-                                        this.props.contentIds.subjectId - 1
-                                    ].name
-                                }
+                                {this.getNames().subjectName}
                             </Text>
                             <Animatable.View
                                 useNativeDriver={true}

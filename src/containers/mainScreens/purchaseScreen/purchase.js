@@ -11,7 +11,8 @@ import {
     TouchableWithoutFeedback,
     KeyboardAvoidingView,
     Keyboard,
-    ActivityIndicator
+    ActivityIndicator,
+    Clipboard
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Swiper from 'react-native-swiper'
@@ -46,15 +47,9 @@ import SECOND_CHANGE_JOKER_IMAGE from '../../../assets/jokers/secondChance.png'
 import firebase from 'react-native-firebase'
 import { inviteCodeServices } from '../../../sagas/inviteCode'
 
-import FIRST_JOKER_AD_BUTTON from '../../../assets/firstJokerAdButton.png'
-import SECOND_JOKER_AD_BUTTON from '../../../assets/secondJokerAdButton.png'
-import THIRD_JOKER_AD_BUTTON from '../../../assets/thirdJokerAdButton.png'
-
-import FIRST_JOKER_AD_BUTTON_2 from '../../../assets/firstJokerAdButton2.png'
-import SECOND_JOKER_AD_BUTTON_2 from '../../../assets/secondJokerAdButton2.png'
-import THIRD_JOKER_AD_BUTTON_2 from '../../../assets/thirdJokerAdButton2.png'
-
 import COPY_IMAGE from '../../../assets/mainScreens/copy.png'
+
+import NEW_PLAY_AD from '../../../assets/mainScreens/newPlayAd.png'
 
 import {
     navigationPush,
@@ -608,7 +603,11 @@ class PurchaseScreen extends React.Component {
                                                                 }
                                                             ]}
                                                         >
-                                                            Yapamadığın soruların çözümlerini izleyerek anlamanı pekiştir
+                                                            Yapamadığın
+                                                            soruların
+                                                            çözümlerini
+                                                            izleyerek anlamanı
+                                                            pekiştir
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -659,62 +658,9 @@ class PurchaseScreen extends React.Component {
                                                                 }
                                                             ]}
                                                         >
-                                                            Soruların çözüm yöntemlerine bakarak kavrayabilirsin
-                                                        </Text>
-                                                    </View>
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumModalSwiperView
-                                                    }
-                                                >
-                                                    <View
-                                                        style={
-                                                            styles.premiumModalSwiperImgView
-                                                        }
-                                                    >
-                                                        <Image
-                                                            source={PREMIUM_MAP}
-                                                            style={
-                                                                styles.premiumModalImg
-                                                            }
-                                                        />
-                                                    </View>
-                                                    <View
-                                                        style={
-                                                            styles.premiumModalSwiperHeaderView
-                                                        }
-                                                    >
-                                                        <Text
-                                                            style={
-                                                                styles.premiumModalHeaderText
-                                                            }
-                                                        >
-                                                            Türkiye geneli
-                                                            deneme sınavları!
-                                                        </Text>
-                                                    </View>
-                                                    <View
-                                                        style={
-                                                            styles.premiumModalSwiperInfoView
-                                                        }
-                                                    >
-                                                        <Text
-                                                            style={[
-                                                                styles.premiumModalInfoText,
-                                                                {
-                                                                    marginBottom: hp(
-                                                                        0.5
-                                                                    )
-                                                                }
-                                                            ]}
-                                                        >
-                                                            Ülke çapındaki
-                                                            deneme sınavlarına
-                                                            ücretsiz katıl, tüm
-                                                            öğrenciler
-                                                            arasındaki
-                                                            sıralamanı gör
+                                                            Soruların çözüm
+                                                            yöntemlerine bakarak
+                                                            kavrayabilirsin
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -1304,11 +1250,12 @@ class PurchaseScreen extends React.Component {
                                                         style={{
                                                             height: hp(10),
                                                             width: wp(20),
-                                                            right: wp(4),
+                                                            right: wp(2),
+                                                            bottom: hp(1),
                                                             position:
                                                                 'absolute',
                                                             justifyContent:
-                                                                'center',
+                                                                'flex-end',
                                                             alignItems:
                                                                 'flex-end'
                                                         }}
@@ -1355,85 +1302,26 @@ class PurchaseScreen extends React.Component {
                                                 </Text>
                                             </View>
                                         </View>
-                                        <View style={styles.separator} />
-                                        <View style={styles.usePromotionView}>
-                                            <View
+                                        <TouchableOpacity
+                                            style={styles.usePromotionButton}
+                                            onPress={() => {
+                                                this.setState(
+                                                    {
+                                                        isPromotionCodeModalVisible: false
+                                                    },
+                                                    () =>
+                                                        this.onPressPremiumView()
+                                                )
+                                            }}
+                                        >
+                                            <Text
                                                 style={
-                                                    styles.usePromotionInfoView
+                                                    styles.purchasePremiumButtonText
                                                 }
                                             >
-                                                <Text
-                                                    style={[
-                                                        styles.promotionCodeInfoText,
-                                                        { marginBottom: hp(1) }
-                                                    ]}
-                                                >
-                                                    1 - Çekilişlerden aldığın
-                                                    kodu burada kullan
-                                                </Text>
-                                                <Text
-                                                    style={[
-                                                        styles.promotionCodeInfoText,
-                                                        {
-                                                            marginBottom: hp(1)
-                                                        }
-                                                    ]}
-                                                >
-                                                    2 - 1 haftalık{' '}
-                                                    <Text
-                                                        onPress={() => {
-                                                            this.setState(
-                                                                {
-                                                                    isPromotionCodeModalVisible: false
-                                                                },
-                                                                () =>
-                                                                    this.onPressPremiumView()
-                                                            )
-                                                        }}
-                                                        style={{
-                                                            color: 'black',
-                                                            fontFamily:
-                                                                'Averta-ExtraBold',
-                                                            textDecorationLine:
-                                                                'underline'
-                                                        }}
-                                                    >
-                                                        ELİT ÖĞRENCİ PAKETİ
-                                                    </Text>{' '}
-                                                    kazan!
-                                                </Text>
-                                            </View>
-                                            <View
-                                                style={styles.usePromotionBox}
-                                            >
-                                                <TextInput
-                                                    style={
-                                                        styles.usePromotionBoxText
-                                                    }
-                                                    maxLength={6}
-                                                    onChangeText={text =>
-                                                        this.setState({
-                                                            usePromotionCode: text
-                                                        })
-                                                    }
-                                                    placeholder="Kodu Gir"
-                                                    placeholderTextColor="#818181"
-                                                />
-                                            </View>
-                                            <TouchableOpacity
-                                                style={
-                                                    styles.usePromotionButton
-                                                }
-                                            >
-                                                <Text
-                                                    style={
-                                                        styles.purchasePremiumButtonText
-                                                    }
-                                                >
-                                                    Onayla
-                                                </Text>
-                                            </TouchableOpacity>
-                                        </View>
+                                                ELİT ÖĞRENCİ PAKETİ
+                                            </Text>
+                                        </TouchableOpacity>
                                     </LinearGradient>
                                 </View>
                             </View>
@@ -2501,31 +2389,196 @@ class PurchaseScreen extends React.Component {
                                         onPress={() =>
                                             this.jokerRewardOnPress(1)
                                         }
+                                        style={[
+                                            styles.newPremiumUserJokerButtonStyle,
+                                            { height: hp(9), width: wp(30) }
+                                        ]}
                                     >
-                                        <Image
-                                            source={FIRST_JOKER_AD_BUTTON_2}
-                                            style={styles.adButton2}
-                                        />
+                                        <View
+                                            style={[
+                                                styles.newPremiumUserJokerButton1Style,
+                                                { height: hp(9), width: wp(12) }
+                                            ]}
+                                        >
+                                            <Image
+                                                source={
+                                                    this.state.firstJoker.joker
+                                                        .imageLink
+                                                }
+                                                style={[
+                                                    styles.newJokerPlayAdImg,
+                                                    {
+                                                        height: hp(3),
+                                                        width: hp(3)
+                                                    }
+                                                ]}
+                                            />
+                                        </View>
+                                        <View
+                                            style={[
+                                                styles.newPremiumUserJokerButton2Style,
+                                                { height: hp(9), width: wp(6) }
+                                            ]}
+                                        >
+                                            <Image
+                                                source={NEW_PLAY_AD}
+                                                style={[
+                                                    styles.newPlayAd,
+                                                    {
+                                                        height: hp(3),
+                                                        width: hp(3)
+                                                    }
+                                                ]}
+                                            />
+                                        </View>
+                                        <View
+                                            style={[
+                                                styles.newPremiumUserJokerButton3Style,
+                                                { height: hp(9), width: wp(12) }
+                                            ]}
+                                        >
+                                            <Text
+                                                style={[
+                                                    styles.newPlayAdText,
+                                                    {
+                                                        fontSize: hp(1.5),
+                                                        textAlign: 'center'
+                                                    }
+                                                ]}
+                                            >
+                                                İzle & Kazan
+                                            </Text>
+                                        </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         onPress={() =>
                                             this.jokerRewardOnPress(2)
                                         }
+                                        style={[
+                                            styles.newPremiumUserJokerButtonStyle,
+                                            { height: hp(9), width: wp(30) }
+                                        ]}
                                     >
-                                        <Image
-                                            source={SECOND_JOKER_AD_BUTTON_2}
-                                            style={styles.adButton2}
-                                        />
+                                        <View
+                                            style={[
+                                                styles.newPremiumUserJokerButton1Style,
+                                                { height: hp(9), width: wp(12) }
+                                            ]}
+                                        >
+                                            <Image
+                                                source={
+                                                    this.state.secondJoker.joker
+                                                        .imageLink
+                                                }
+                                                style={[
+                                                    styles.newJokerPlayAdImg,
+                                                    {
+                                                        height: hp(3),
+                                                        width: hp(3)
+                                                    }
+                                                ]}
+                                            />
+                                        </View>
+                                        <View
+                                            style={[
+                                                styles.newPremiumUserJokerButton2Style,
+                                                { height: hp(9), width: wp(6) }
+                                            ]}
+                                        >
+                                            <Image
+                                                source={NEW_PLAY_AD}
+                                                style={[
+                                                    styles.newPlayAd,
+                                                    {
+                                                        height: hp(3),
+                                                        width: hp(3)
+                                                    }
+                                                ]}
+                                            />
+                                        </View>
+                                        <View
+                                            style={[
+                                                styles.newPremiumUserJokerButton3Style,
+                                                { height: hp(9), width: wp(12) }
+                                            ]}
+                                        >
+                                            <Text
+                                                style={[
+                                                    styles.newPlayAdText,
+                                                    {
+                                                        fontSize: hp(1.5),
+                                                        textAlign: 'center'
+                                                    }
+                                                ]}
+                                            >
+                                                İzle & Kazan
+                                            </Text>
+                                        </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         onPress={() =>
                                             this.jokerRewardOnPress(3)
                                         }
+                                        style={[
+                                            styles.newPremiumUserJokerButtonStyle,
+                                            { height: hp(9), width: wp(30) }
+                                        ]}
                                     >
-                                        <Image
-                                            source={THIRD_JOKER_AD_BUTTON_2}
-                                            style={styles.adButton2}
-                                        />
+                                        <View
+                                            style={[
+                                                styles.newPremiumUserJokerButton1Style,
+                                                { height: hp(9), width: wp(12) }
+                                            ]}
+                                        >
+                                            <Image
+                                                source={
+                                                    this.state.thirdJoker.joker
+                                                        .imageLink
+                                                }
+                                                style={[
+                                                    styles.newJokerPlayAdImg,
+                                                    {
+                                                        height: hp(3),
+                                                        width: hp(3)
+                                                    }
+                                                ]}
+                                            />
+                                        </View>
+                                        <View
+                                            style={[
+                                                styles.newPremiumUserJokerButton2Style,
+                                                { height: hp(9), width: wp(6) }
+                                            ]}
+                                        >
+                                            <Image
+                                                source={NEW_PLAY_AD}
+                                                style={[
+                                                    styles.newPlayAd,
+                                                    {
+                                                        height: hp(3),
+                                                        width: hp(3)
+                                                    }
+                                                ]}
+                                            />
+                                        </View>
+                                        <View
+                                            style={[
+                                                styles.newPremiumUserJokerButton3Style,
+                                                { height: hp(9), width: wp(12) }
+                                            ]}
+                                        >
+                                            <Text
+                                                style={[
+                                                    styles.newPlayAdText,
+                                                    {
+                                                        fontSize: hp(1.5),
+                                                        textAlign: 'center'
+                                                    }
+                                                ]}
+                                            >
+                                                İzle & Kazan
+                                            </Text>
+                                        </View>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={styles.premiumContainer}>
@@ -2681,7 +2734,11 @@ class PurchaseScreen extends React.Component {
                                                                 styles.premiumInfoText
                                                             }
                                                         >
-                                                            Yapamadığın soruların çözümlerini izleyerek anlamanı pekiştir
+                                                            Yapamadığın
+                                                            soruların
+                                                            çözümlerini
+                                                            izleyerek anlamanı
+                                                            pekiştir
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -2727,57 +2784,9 @@ class PurchaseScreen extends React.Component {
                                                                 styles.premiumInfoText
                                                             }
                                                         >
-                                                            Soruların çözüm yöntemlerine bakarak kavrayabilirsin
-                                                        </Text>
-                                                    </View>
-                                                </View>
-                                                <View
-                                                    style={
-                                                        styles.premiumSwiperView
-                                                    }
-                                                >
-                                                    <View
-                                                        style={
-                                                            styles.premiumSwiperImgView
-                                                        }
-                                                    >
-                                                        <Image
-                                                            source={PREMIUM_MAP}
-                                                            style={
-                                                                styles.premiumImg
-                                                            }
-                                                        />
-                                                    </View>
-                                                    <View
-                                                        style={
-                                                            styles.premiumSwiperHeaderView
-                                                        }
-                                                    >
-                                                        <Text
-                                                            style={
-                                                                styles.premiumHeaderText
-                                                            }
-                                                        >
-                                                            Türkiye geneli
-                                                            deneme sınavları!
-                                                        </Text>
-                                                    </View>
-                                                    <View
-                                                        style={
-                                                            styles.premiumSwiperInfoView
-                                                        }
-                                                    >
-                                                        <Text
-                                                            style={
-                                                                styles.premiumInfoText
-                                                            }
-                                                        >
-                                                            Ülke çapındaki
-                                                            deneme sınavlarına
-                                                            ücretsiz katıl, tüm
-                                                            öğrenciler
-                                                            arasındaki
-                                                            sıralamanı gör
+                                                            Soruların çözüm
+                                                            yöntemlerine bakarak
+                                                            kavrayabilirsin
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -2925,9 +2934,7 @@ class PurchaseScreen extends React.Component {
                                                             Her gün sana verilen
                                                             jokerler ile
                                                             soruların cevabına 1
-                                                            adım daha yaklaş,
-                                                            rakiplerinin önüne
-                                                            geç
+                                                            adım daha yaklaş
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -2956,8 +2963,7 @@ class PurchaseScreen extends React.Component {
                                         style={styles.premiumBottomView}
                                     >
                                         <Text style={styles.inviteText}>
-                                            Arkadaşını davet et veya çekiliş
-                                            kodunu gir
+                                            Arkadaşını davet et,
                                         </Text>
                                         <Text
                                             style={
@@ -2974,33 +2980,123 @@ class PurchaseScreen extends React.Component {
                             <View style={styles.premiumUserAddButtonsContainer}>
                                 <TouchableOpacity
                                     onPress={() => this.jokerRewardOnPress(1)}
+                                    style={
+                                        styles.newPremiumUserJokerButtonStyle
+                                    }
                                 >
-                                    <Image
-                                        source={FIRST_JOKER_AD_BUTTON}
+                                    <View
                                         style={
-                                            styles.premiumUserJokerButtonStyle
+                                            styles.newPremiumUserJokerButton1Style
                                         }
-                                    />
+                                    >
+                                        <Image
+                                            source={
+                                                this.state.firstJoker.joker
+                                                    .imageLink
+                                            }
+                                            style={styles.newJokerPlayAdImg}
+                                        />
+                                    </View>
+                                    <View
+                                        style={
+                                            styles.newPremiumUserJokerButton2Style
+                                        }
+                                    >
+                                        <Image
+                                            source={NEW_PLAY_AD}
+                                            style={styles.newPlayAd}
+                                        />
+                                    </View>
+                                    <View
+                                        style={
+                                            styles.newPremiumUserJokerButton3Style
+                                        }
+                                    >
+                                        <Text style={styles.newPlayAdText}>
+                                            {'     '}
+                                            İzle & Kazan
+                                        </Text>
+                                    </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => this.jokerRewardOnPress(2)}
+                                    style={
+                                        styles.newPremiumUserJokerButtonStyle
+                                    }
                                 >
-                                    <Image
-                                        source={SECOND_JOKER_AD_BUTTON}
+                                    <View
                                         style={
-                                            styles.premiumUserJokerButtonStyle
+                                            styles.newPremiumUserJokerButton1Style
                                         }
-                                    />
+                                    >
+                                        <Image
+                                            source={
+                                                this.state.secondJoker.joker
+                                                    .imageLink
+                                            }
+                                            style={styles.newJokerPlayAdImg}
+                                        />
+                                    </View>
+                                    <View
+                                        style={
+                                            styles.newPremiumUserJokerButton2Style
+                                        }
+                                    >
+                                        <Image
+                                            source={NEW_PLAY_AD}
+                                            style={styles.newPlayAd}
+                                        />
+                                    </View>
+                                    <View
+                                        style={
+                                            styles.newPremiumUserJokerButton3Style
+                                        }
+                                    >
+                                        <Text style={styles.newPlayAdText}>
+                                            {'     '}
+                                            İzle & Kazan
+                                        </Text>
+                                    </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => this.jokerRewardOnPress(3)}
+                                    style={
+                                        styles.newPremiumUserJokerButtonStyle
+                                    }
                                 >
-                                    <Image
-                                        source={THIRD_JOKER_AD_BUTTON}
+                                    <View
                                         style={
-                                            styles.premiumUserJokerButtonStyle
+                                            styles.newPremiumUserJokerButton1Style
                                         }
-                                    />
+                                    >
+                                        <Image
+                                            source={
+                                                this.state.thirdJoker.joker
+                                                    .imageLink
+                                            }
+                                            style={styles.newJokerPlayAdImg}
+                                        />
+                                    </View>
+                                    <View
+                                        style={
+                                            styles.newPremiumUserJokerButton2Style
+                                        }
+                                    >
+                                        <Image
+                                            source={NEW_PLAY_AD}
+                                            style={styles.newPlayAd}
+                                        />
+                                    </View>
+                                    <View
+                                        style={
+                                            styles.newPremiumUserJokerButton3Style
+                                        }
+                                    >
+                                        <Text style={styles.newPlayAdText}>
+                                            {'     '}
+                                            İzle & Kazan
+                                        </Text>
+                                    </View>
                                 </TouchableOpacity>
                             </View>
                         )}
@@ -3026,33 +3122,60 @@ class PurchaseScreen extends React.Component {
                                             onPress={() =>
                                                 Linking.openURL(instagram_page)
                                             }
-                                            style={styles.socialMediaLogoCircle}
+                                            style={[
+                                                styles.socialMediaLogoCircle,
+                                                {
+                                                    height: hp(4.8),
+                                                    width: hp(4.8)
+                                                }
+                                            ]}
                                         >
                                             <Image
                                                 source={INSTAGRAM_LOGO}
-                                                style={styles.socialMediaLogo}
+                                                style={[
+                                                    styles.socialMediaLogo,
+                                                    { height: hp(2.75) }
+                                                ]}
                                             />
                                         </TouchableOpacity>
                                         <TouchableOpacity
                                             onPress={() =>
                                                 Linking.openURL(twitter_page)
                                             }
-                                            style={styles.socialMediaLogoCircle}
+                                            style={[
+                                                styles.socialMediaLogoCircle,
+                                                {
+                                                    height: hp(4.8),
+                                                    width: hp(4.8)
+                                                }
+                                            ]}
                                         >
                                             <Image
                                                 source={TWITTER_LOGO}
-                                                style={styles.socialMediaLogo}
+                                                style={[
+                                                    styles.socialMediaLogo,
+                                                    { height: hp(2.75) }
+                                                ]}
                                             />
                                         </TouchableOpacity>
                                         <TouchableOpacity
                                             onPress={() =>
                                                 Linking.openURL(facebook_page)
                                             }
-                                            style={styles.socialMediaLogoCircle}
+                                            style={[
+                                                styles.socialMediaLogoCircle,
+                                                {
+                                                    height: hp(4.8),
+                                                    width: hp(4.8)
+                                                }
+                                            ]}
                                         >
                                             <Image
                                                 source={FACEBOOK_LOGO}
-                                                style={styles.socialMediaLogo}
+                                                style={[
+                                                    styles.socialMediaLogo,
+                                                    { height: hp(2.75) }
+                                                ]}
                                             />
                                         </TouchableOpacity>
                                     </View>
@@ -3067,17 +3190,6 @@ class PurchaseScreen extends React.Component {
                                             }
                                         ]}
                                     >
-                                        <Text
-                                            style={[
-                                                styles.socialMediaInfoText,
-                                                {
-                                                    fontFamily: 'Averta-Bold',
-                                                    fontSize: hp(1.7)
-                                                }
-                                            ]}
-                                        >
-                                            Arkadaş daveti veya çekiliş ile
-                                        </Text>
                                         <Text
                                             style={[
                                                 styles.socialMediaInfoText,

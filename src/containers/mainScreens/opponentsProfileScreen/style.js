@@ -93,6 +93,7 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Bold',
         fontSize: hp(3.5),
         color: 'white',
+        textAlign: 'center',
         paddingVertical: hp(0)
     },
     usernameText: {
@@ -423,7 +424,8 @@ export default StyleSheet.create({
         height: hp(4.5),
         width: wp(90),
         justifyContent: 'flex-end',
-        alignItems: 'center'
+        alignItems: 'flex-start',
+        marginLeft: wp(3)
     },
     reportOptionsView: {
         height: hp(19),
@@ -466,7 +468,7 @@ export default StyleSheet.create({
     },
     reportHeaderText: {
         fontFamily: 'Averta-Semibold',
-        fontSize: hp(2.2),
+        fontSize: hp(2),
         color: '#000000'
     },
     reportButton: {

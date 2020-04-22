@@ -38,6 +38,7 @@ import { opponentActions } from '../../../redux/opponents/actions'
 import AuthButton from '../../../components/authScreen/authButton'
 import { flashMessages } from '../../../services/flashMessageBuilder'
 import { friendshipServices } from '../../../sagas/friendship'
+import { reportUserServices } from '../../../sagas/userReporting'
 
 class OpponentsProfile extends React.Component {
     constructor(props) {
@@ -441,6 +442,16 @@ class OpponentsProfile extends React.Component {
             this.state.reportUsername === true ||
             this.state.reportPic === true
         ) {
+            reportUserServices.reportUser(
+                this.props.clientToken,
+                this.props.clientDBId,
+                this.props.opponentInformation.id,
+                {
+                    name: this.state.reportName,
+                    username: this.state.reportUsername,
+                    pictures: this.state.reportPic
+                }
+            )
             this.setState({ reportViewVisible: 'afterReport' })
             setTimeout(() => {
                 this.setState({
@@ -486,6 +497,8 @@ class OpponentsProfile extends React.Component {
                                         this.setState({ searchText: text })
                                     }
                                     autoCapitalize={'none'}
+                                    returnKeyType="search"
+                                    onSubmitEditing={this.profileSearchOnPress}
                                 />
                             </View>
                             <TouchableOpacity

@@ -112,6 +112,7 @@ class SoloModeGameStats extends React.Component {
             playerUsername = this.props.playerProps.username
             playerProfilePicture = this.props.playerProps.profilePicture
             this.props.playerProps.answers.forEach((result, index) => {
+                undefinedQuestionIndex = index
                 switch (result.result) {
                     case null:
                         playerUnanswered++
@@ -122,7 +123,6 @@ class SoloModeGameStats extends React.Component {
                     case false:
                         playerIncorrect++
                 }
-                undefinedQuestionIndex = index
             })
 
             if (!this.props.isMatchFinished) {
@@ -318,7 +318,11 @@ class SoloModeGameStats extends React.Component {
                     <View style={styles.resultsContainer}>
                         <View style={styles.courseTextView}>
                             <Text style={styles.courseText}>
-                                Paragrafta Anlam
+                                {
+                                    this.props.gameContentMap.subjects[
+                                        this.props.contentIds.subjectId - 1
+                                    ].name
+                                }
                             </Text>
                         </View>
                         <View style={styles.userAndResultView}>
@@ -609,7 +613,8 @@ const mapStateToProps = state => ({
     clientDBId: state.client.clientDBId,
     clientToken: state.client.clientToken,
     favouriteQuestions: state.client.favouriteQuestions,
-    clientInformation: state.client.clientInformation
+    clientInformation: state.client.clientInformation,
+    gameContentMap: state.gameContent.gameContentMap
 })
 
 const mapDispatchToProps = dispatch => ({

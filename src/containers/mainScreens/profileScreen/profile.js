@@ -224,6 +224,8 @@ class Profile extends React.Component {
                                     this.setState({ searchText: text })
                                 }
                                 autoCapitalize={'none'}
+                                returnKeyType="search"
+                                onSubmitEditing={this.profileSearchOnPress}
                             />
                         </View>
                         <TouchableOpacity onPress={this.profileSearchOnPress}>

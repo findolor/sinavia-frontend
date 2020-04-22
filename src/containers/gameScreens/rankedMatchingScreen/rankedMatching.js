@@ -35,7 +35,8 @@ class RankedMatchingScreen extends React.Component {
                 opponentId: this.props.opponentId,
                 opponentProfilePicture: this.props.opponentProfilePicture,
                 playerCoverPicture: this.props.playerCoverPicture,
-                opponentCoverPicture: this.props.opponentCoverPicture
+                opponentCoverPicture: this.props.opponentCoverPicture,
+                userScoreBeforeGame: this.props.clientPoints
             })
         }, 5000)
 

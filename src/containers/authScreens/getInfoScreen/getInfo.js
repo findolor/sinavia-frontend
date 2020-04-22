@@ -225,12 +225,13 @@ class GetInfo extends React.Component {
     }
 
     usernameOnChange = text => {
-        const validCharacters = /[^a-zA-Z0-9ğüşıöçĞÜŞİÖÇ]/g
-        if (validCharacters.test(text)) {
+        lowercaseText = text.toLowerCase()
+        const validCharacters = /[^a-z0-9ğüşıöç]/g
+        if (validCharacters.test(lowercaseText) || text.length < 3) {
             this.setState({ usernameBorderColor: 'red' })
         } else this.setState({ usernameBorderColor: '#989696' })
-        if (text === '') text = null
-        this.setState({ username: text })
+        if (lowercaseText === '') lowercaseText = null
+        this.setState({ username: lowercaseText })
     }
 
     nameOnChange = text => {
@@ -239,7 +240,8 @@ class GetInfo extends React.Component {
             validCharacters.test(text) ||
             text.substr(-2) === '  ' ||
             text.charAt(0) === ' ' ||
-            text.endsWith(' ')
+            text.endsWith(' ') ||
+            text.length < 2
         ) {
             this.setState({ nameBorderColor: 'red' })
         } else this.setState({ nameBorderColor: '#989696' })
@@ -249,7 +251,7 @@ class GetInfo extends React.Component {
 
     lastnameOnChange = text => {
         const validCharacters = /[^a-zA-ZğüşıöçĞÜŞİÖÇ]/g
-        if (validCharacters.test(text)) {
+        if (validCharacters.test(text) || text.length < 2) {
             this.setState({ lastnameBorderColor: 'red' })
         } else this.setState({ lastnameBorderColor: '#989696' })
         this.setState({ lastname: text })
@@ -277,7 +279,7 @@ class GetInfo extends React.Component {
         if (this.state.nameBorderColor === 'red') {
             flashMessages.authInfosOrSettingsError(
                 'Ad hatası',
-                'Ad sadece harflerden oluşmalıdır',
+                'Ad(en az 2 karakter) sadece harflerden oluşmalıdır',
                 {
                     backgroundColor: '#FFFFFF',
                     borderBottomLeftRadius: 10,
@@ -292,7 +294,7 @@ class GetInfo extends React.Component {
         if (this.state.lastnameBorderColor === 'red') {
             flashMessages.authInfosOrSettingsError(
                 'Soyad hatası',
-                'Soyad sadece harflerden oluşmalıdır',
+                'Soyad(en az 2 karakter) sadece harflerden oluşmalıdır',
                 {
                     backgroundColor: '#FFFFFF',
                     borderBottomLeftRadius: 10,
@@ -307,7 +309,7 @@ class GetInfo extends React.Component {
         if (this.state.usernameBorderColor === 'red') {
             flashMessages.authInfosOrSettingsError(
                 'Kullanıcı adı hatası',
-                'Kullanıcı adı sadece harf veya rakamlardan oluşabilir',
+                'Kullanıcı adı(en az 3 karakter) sadece harf veya rakamlardan oluşabilir',
                 {
                     backgroundColor: '#FFFFFF',
                     borderBottomLeftRadius: 10,

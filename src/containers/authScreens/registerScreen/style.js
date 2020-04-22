@@ -30,7 +30,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row'
     },
-    authButtonView:{
+    authButtonView: {
         flex: 7,
         justifyContent: 'center',
         alignItems: 'center',
@@ -121,17 +121,33 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     licenceView: {
+        position: 'absolute',
+        justifyContent: 'center',
+        alignItems: 'center',
+        left: wp(7.5),
+        top: hp(15),
         height: hp(60),
         width: wp(85),
-        borderTopWidth: hp(0.7),
-        borderLeftWidth: hp(0.7),
-        borderRightWidth: hp(0.7),
+        paddingVertical: hp(1.5),
+        paddingTop: hp(2),
+        paddingLeft: hp(2),
+        paddingRight: hp(2),
+        borderWidth: hp(0.7),
         borderColor: '#00D9EF',
-        borderTopLeftRadius: hp(2),
-        borderTopRightRadius: hp(2),
-        backgroundColor: 'white'
+        borderRadius: hp(2),
+        borderRadius: hp(2),
+        backgroundColor: 'white',
+        overflow: 'hidden'
+    },
+    licenceScrollView: {
+        height: hp(20),
+        width: wp(80),
+        overflow: 'hidden'
     },
     acceptLicenceButton: {
+        position: 'absolute',
+        top: hp(73),
+        left: wp(7.5),
         height: hp(8),
         width: wp(85),
         borderBottomLeftRadius: hp(2),
@@ -144,5 +160,10 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Semibold',
         color: 'white',
         fontSize: hp(3)
+    },
+    userAgreementText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(1.5),
+        color: '#000000'
     }
 })

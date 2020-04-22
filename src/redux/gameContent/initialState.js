@@ -1,6 +1,6 @@
 export const INITIAL_STATE = {
     // TODO THINK ABOUT CONTETT LATER IMPORTRRANT
-    choosenExam: 'LGS',
+    choosenExam: 'ALES',
     examList: [],
     // We save the choosen content ids here
     gameContentIds: {

@@ -106,8 +106,8 @@ class GameStatsScreen extends React.Component {
             isModalVisible: false,
             visibleView: '',
             // Client level variable
-            clientTotalPoints: this.props.clientInformation.totalPoints,
-            oldPoints: this.props.clientInformation.totalPoints,
+            clientTotalPoints: this.props.userScoreBeforeGame,
+            oldPoints: this.props.userScoreBeforeGame,
             levelUp: false,
             solvedQuestionImage: null,
             solvedQuestionVideo: null,
@@ -234,6 +234,7 @@ class GameStatsScreen extends React.Component {
                     playerUsername = playerProps[element].username
                     playerProfilePicture = playerProps[element].profilePicture
                     playerProps[element].answers.forEach((result, index) => {
+                        undefinedQuestionIndex = index
                         switch (result.result) {
                             case null:
                                 playerUnanswered++
@@ -244,7 +245,6 @@ class GameStatsScreen extends React.Component {
                             case false:
                                 playerIncorrect++
                         }
-                        undefinedQuestionIndex = index
                     })
                 }
             })

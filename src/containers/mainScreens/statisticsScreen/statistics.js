@@ -242,6 +242,36 @@ class Statistics extends React.Component {
         })
     }
 
+    getActualSubjectId = choosenSubjectId => {
+        const contentMap = this.props.gameContentMap
+
+        const index = contentMap.subjects.findIndex(
+            x => x.name === this.state.subjectList[choosenSubjectId]
+        )
+
+        if (contentMap.subjects[index]) {
+            return {
+                subjectId: contentMap.subjects[index].id,
+                courseId: contentMap.subjects[index].courseId
+            }
+        } else
+            return {
+                subjectId: null,
+                courseId: this.getActualCourseId(this.state.choosenCourseId)
+            }
+    }
+
+    getActualCourseId = choosenCourseId => {
+        const contentMap = this.props.gameContentMap
+
+        const index = contentMap.courses.findIndex(
+            x => x.name === this.state.courseList[choosenCourseId]
+        )
+
+        if (contentMap.courses[index]) return contentMap.courses[index].id
+        else return null
+    }
+
     // Course name selector for dropdown
     pickerSelectCourse = (idx, value) => {
         this.setState({ isSubjectDropdownVisible: false })
@@ -266,6 +296,7 @@ class Statistics extends React.Component {
 
     refreshCourseStatistics = isGeneral => {
         let statisticsList = []
+        const id = this.getActualCourseId(this.state.choosenCourseId)
         switch (this.state.timezone) {
             case 'Bu hafta':
                 if (isGeneral) {
@@ -274,9 +305,11 @@ class Statistics extends React.Component {
                     })
                 } else {
                     this.state.originalWeeklyStatList.forEach(statistic => {
-                        if (statistic.courseId === this.state.choosenCourseId) {
-                            statisticsList.push(statistic)
-                        }
+                        if (id) {
+                            if (statistic.courseId === id) {
+                                statisticsList.push(statistic)
+                            }
+                        } else statisticsList.push(statistic)
                     })
                     this.setState({ weeklyStatList: statisticsList })
                 }
@@ -295,9 +328,11 @@ class Statistics extends React.Component {
                     })
                 } else {
                     this.state.originalMonthlyStatList.forEach(statistic => {
-                        if (statistic.courseId === this.state.choosenCourseId) {
-                            statisticsList.push(statistic)
-                        }
+                        if (id) {
+                            if (statistic.courseId === id) {
+                                statisticsList.push(statistic)
+                            }
+                        } else statisticsList.push(statistic)
                     })
                     this.setState({ monthlyStatList: statisticsList })
                 }
@@ -316,9 +351,11 @@ class Statistics extends React.Component {
                     })
                 } else {
                     this.state.originalSixMonthsStatList.forEach(statistic => {
-                        if (statistic.courseId === this.state.choosenCourseId) {
-                            statisticsList.push(statistic)
-                        }
+                        if (id) {
+                            if (statistic.courseId === id) {
+                                statisticsList.push(statistic)
+                            }
+                        } else statisticsList.push(statistic)
                     })
                     this.setState({ sixMonthsStatList: statisticsList })
                 }
@@ -335,17 +372,21 @@ class Statistics extends React.Component {
 
     refreshSubjectStatistics = isGeneral => {
         let statisticsList = []
+        const ids = this.getActualSubjectId(this.state.choosenSubjectId)
         switch (this.state.timezone) {
             case 'Bu hafta':
                 if (isGeneral) {
                     this.selectCourseDropdown(this.state.choosenCourseId)
                 } else {
                     this.state.originalWeeklyStatList.forEach(statistic => {
-                        if (
-                            statistic.subjectId ===
-                                this.state.choosenSubjectId &&
-                            statistic.courseId === this.state.choosenCourseId
-                        ) {
+                        if (ids.subjectId) {
+                            if (
+                                statistic.subjectId === ids.subjectId &&
+                                statistic.courseId === ids.courseId
+                            ) {
+                                statisticsList.push(statistic)
+                            }
+                        } else if (statistic.courseId === ids.courseId) {
                             statisticsList.push(statistic)
                         }
                     })
@@ -364,11 +405,14 @@ class Statistics extends React.Component {
                     this.selectCourseDropdown(this.state.choosenCourseId)
                 } else {
                     this.state.originalMonthlyStatList.forEach(statistic => {
-                        if (
-                            statistic.subjectId ===
-                                this.state.choosenSubjectId &&
-                            statistic.courseId === this.state.choosenCourseId
-                        ) {
+                        if (ids.subjectId) {
+                            if (
+                                statistic.subjectId === ids.subjectId &&
+                                statistic.courseId === ids.courseId
+                            ) {
+                                statisticsList.push(statistic)
+                            }
+                        } else if (statistic.courseId === ids.courseId) {
                             statisticsList.push(statistic)
                         }
                     })
@@ -387,11 +431,14 @@ class Statistics extends React.Component {
                     this.selectCourseDropdown(this.state.choosenCourseId)
                 } else {
                     this.state.originalSixMonthsStatList.forEach(statistic => {
-                        if (
-                            statistic.subjectId ===
-                                this.state.choosenSubjectId &&
-                            statistic.courseId === this.state.choosenCourseId
-                        ) {
+                        if (ids.subjectId) {
+                            if (
+                                statistic.subjectId === ids.subjectId &&
+                                statistic.courseId === ids.courseId
+                            ) {
+                                statisticsList.push(statistic)
+                            }
+                        } else if (statistic.courseId === ids.courseId) {
                             statisticsList.push(statistic)
                         }
                     })
@@ -411,6 +458,7 @@ class Statistics extends React.Component {
     // this index is the course id in gameContentMap
     selectCourseDropdown = index => {
         index = parseInt(index, 10)
+        const id = this.getActualCourseId(index)
         if (index === 0) {
             this.setState(
                 {
@@ -426,7 +474,7 @@ class Statistics extends React.Component {
         }
         const subjectList = ['Hepsi']
         this.props.gameContentMap.subjects.forEach(subject => {
-            if (subject.courseId === index) subjectList.push(subject.name)
+            if (subject.courseId === id) subjectList.push(subject.name)
         })
         this.setState(
             {

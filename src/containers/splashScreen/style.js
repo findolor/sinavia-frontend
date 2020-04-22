@@ -37,7 +37,7 @@ export default StyleSheet.create({
         width: wp(100),
         justifyContent: 'flex-end',
         alignItems: 'center',
-        marginTop: hp(32),
+        marginTop: hp(32)
     },
     tryAgainButtonContainer: {
         position: 'absolute',
@@ -50,7 +50,8 @@ export default StyleSheet.create({
     tryAgainText: {
         fontFamily: 'Averta-Semibold',
         fontSize: hp(4),
-        color: '#2E313C'
+        color: '#2E313C',
+        textAlign: 'center'
     },
     networkErrorStyle: {
         fontFamily: 'Averta-Regular',
