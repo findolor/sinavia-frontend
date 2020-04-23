@@ -228,12 +228,15 @@ class OpponentsProfile extends React.Component {
 
     acceptFriendshipRequestModal() {
         return (
-            <View
+            <TouchableOpacity
                 style={{
                     height: hp(120),
                     width: wp(100),
                     backgroundColor: '#000000DE'
                 }}
+                onPress={() =>
+                    this.setState({ isModalVisible: false, visibleView: '' })
+                }
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.quitView}>
@@ -295,7 +298,7 @@ class OpponentsProfile extends React.Component {
                         />
                     </View>
                 </View>
-            </View>
+            </TouchableOpacity>
         )
     }
 
