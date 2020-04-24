@@ -9,7 +9,7 @@ export const sendReceipt = async (headers, params) => {
             API_ENDPOINT + APP_VERSION + '/purchaseReceipts/',
             {
                 userId: params.userId,
-                receipt: JSON.stringify(params.receipt)
+                receipt: params.receipt
             },
             {
                 headers: headers
@@ -28,7 +28,7 @@ export const sendReceipt = async (headers, params) => {
                 API_ENDPOINT + APP_VERSION + '/purchaseReceipts/',
                 {
                     userId: params.userId,
-                    receipt: JSON.stringify(params.receipt)
+                    receipt: params.receipt
                 },
                 {
                     headers: headers

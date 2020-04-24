@@ -56,6 +56,7 @@ import { getUserGoals, postUserGoal, deleteUserGoal } from './userGoal'
 import { sendReceipt } from './purchaseReceipt'
 import { getInviteCode } from './inviteCode'
 import { reportUser } from './userReporting'
+import getAgreement from './agreement/getAgreement'
 
 export const apiServicesTree = {
     api: {
@@ -144,6 +145,9 @@ export const apiServicesTree = {
     },
     userReportingApi: {
         reportUser: 'reportUser'
+    },
+    agreementApi: {
+        getAgreement: 'getAgreement'
     }
 }
 
@@ -252,6 +256,9 @@ export const getRequest = async (functionName, params) => {
         case 'getInviteCode':
             headers.Authorization = 'Bearer ' + params.clientToken
             return getInviteCode(headers, params)
+        // AGREEMENT
+        case 'getAgreement':
+            return getAgreement()
     }
 }
 

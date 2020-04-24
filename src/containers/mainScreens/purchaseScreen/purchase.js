@@ -54,7 +54,8 @@ import NEW_PLAY_AD from '../../../assets/mainScreens/newPlayAd.png'
 import {
     navigationPush,
     SCENE_KEYS,
-    navigationReset
+    navigationReset,
+    navigationRefresh
 } from '../../../services/navigationService'
 
 const instagram_page = 'https://www.instagram.com/sinavia.app/'
@@ -164,12 +165,16 @@ class PurchaseScreen extends React.Component {
                                     RNIap.finishTransaction(purchase, true)
                                         .then(() => {
                                             // TODO CHANGE THE JOKER NUMS
+                                            // Hangi itemi sectigine gore
+                                            // Burada kac joker olcagini
+                                            // Ve jokeri secip istek at
                                             this.props.rewardUserJoker(
                                                 this.props.clientToken,
                                                 this.props.clientDBId,
                                                 1,
                                                 10
                                             )
+                                            navigationRefresh()
                                         })
                                         .catch(error => {
                                             console.log(error)
@@ -208,6 +213,8 @@ class PurchaseScreen extends React.Component {
     getProducts = async () => {
         try {
             const products = await RNIap.getProducts(itemSkus)
+            // TODO available products icinde
+            // Itemlari gorebilirsin
             this.setState({ availableProducts: products })
             console.log(products)
         } catch (err) {
@@ -217,6 +224,8 @@ class PurchaseScreen extends React.Component {
 
     requestPurchase = async () => {
         try {
+            // TODO bu kisimda hard coded string yerine yukaridaki
+            // Itemler icinden istenileni alip bu fonskiyonun icine koy
             await RNIap.requestPurchase('10_jokers_each', false)
         } catch (err) {
             console.warn(err.code, err.message)
