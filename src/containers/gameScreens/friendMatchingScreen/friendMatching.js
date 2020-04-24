@@ -30,7 +30,10 @@ import SWORD from '../../../assets/sword.png'
 import BACK_BUTTON from '../../../assets/backButton.png'
 //import { gameEnergyServices } from '../../../sagas/gameEnergy'
 import { levelFinder } from '../../../services/userLevelFinder'
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP as wp
+} from 'react-native-responsive-screen'
 
 class FriendMatchingScreen extends React.Component {
     constructor(props) {
@@ -44,7 +47,8 @@ class FriendMatchingScreen extends React.Component {
             isFriendJoined: false,
             friendMatches: [],
             friendMatchClientWinCount: null,
-            friendMatchOpponentWinCount: null
+            friendMatchOpponentWinCount: null,
+            errorMessage: false
         }
     }
 
@@ -104,9 +108,13 @@ class FriendMatchingScreen extends React.Component {
         let playerProfilePicture
         this.room.onMessage(message => {
             if (message.action === 'game-reject') {
-                Alert.alert('Arkadaşın oyunu reddetti!')
+                this.setState({
+                    errorMessage: true
+                })
                 this.room.removeAllListeners()
-                navigationReset('main')
+                this.timeout = setTimeout(() => {
+                    navigationReset('main')
+                }, 5000)
                 return
             }
             if (message.action === 'save-user-points') {
@@ -313,18 +321,39 @@ class FriendMatchingScreen extends React.Component {
                                                 .username
                                         }
                                     </Text>
-                                    <Text
-                                        style={[
-                                            styles.subjectBasedSinaviaScoreText,
-                                            { marginRight: wp(3) }
-                                        ]}
-                                    >
-                                        Konu Seviyesi:{' '}
-                                        {Math.floor(
-                                            levelFinder(this.state.friendPoint)
-                                                .level
-                                        )}
-                                    </Text>
+
+                                    {this.state.errorMessage === true && (
+                                        <Text
+                                            style={[
+                                                styles.subjectBasedSinaviaScoreText,
+                                                {
+                                                    color: 'red',
+                                                    fontFamily:
+                                                        'Averta-Semibold',
+                                                    fontSize: hp(2.5),
+                                                    marginRight: wp(3)
+                                                }
+                                            ]}
+                                        >
+                                            davetini reddetti
+                                        </Text>
+                                    )}
+                                    {this.state.errorMessage === false && (
+                                        <Text
+                                            style={[
+                                                styles.subjectBasedSinaviaScoreText,
+                                                { marginRight: wp(3) }
+                                            ]}
+                                        >
+                                            {' '}
+                                            Konu Seviyesi:{' '}
+                                            {Math.floor(
+                                                levelFinder(
+                                                    this.state.friendPoint
+                                                ).level
+                                            )}{' '}
+                                        </Text>
+                                    )}
                                 </Animatable.View>
                                 <Animatable.View
                                     style={styles.opponentPicContainer}
