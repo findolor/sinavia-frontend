@@ -143,6 +143,15 @@ const rewardUserJoker = (clientToken, clientId, jokerId, jokerAmount) => {
     }
 }
 
+const purchaseAllJokers = (clientToken, clientId, jokerAmount) => {
+    return {
+        type: clientTypes.REWARD_USER_ALL_JOKERS,
+        clientToken: clientToken,
+        clientId: clientId,
+        jokerAmount: jokerAmount
+    }
+}
+
 const saveOneJoker = userJoker => {
     return {
         type: clientTypes.SAVE_ONE_JOKER,
@@ -164,5 +173,6 @@ export const clientActions = {
     updateTotalPoints: updateTotalPoints,
     rewardAllUserJokers: rewardAllUserJokers,
     rewardUserJoker: rewardUserJoker,
+    purchaseAllJokers: purchaseAllJokers,
     saveOneJoker: saveOneJoker
 }
