@@ -106,8 +106,8 @@ class GameStatsScreen extends React.Component {
             isModalVisible: false,
             visibleView: '',
             // Client level variable
-            clientTotalPoints: this.props.clientInformation.totalPoints,
-            oldPoints: this.props.clientInformation.totalPoints,
+            clientTotalPoints: this.props.userScoreBeforeGame,
+            oldPoints: this.props.userScoreBeforeGame,
             levelUp: false,
             solvedQuestionImage: null,
             solvedQuestionVideo: null,

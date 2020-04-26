@@ -271,7 +271,8 @@ class Settings extends React.Component {
             validCharacters.test(text) ||
             text.substr(-2) === '  ' ||
             text.charAt(0) === ' ' ||
-            text.endsWith(' ')
+            text.endsWith(' ') ||
+            text.length < 2
         ) {
             this.setState({ nameBorderColor: '#B72A2A' })
         } else if (text === '' || text === this.props.clientInformation.name) {
@@ -285,7 +286,7 @@ class Settings extends React.Component {
 
     lastnameOnChange = text => {
         const validCharacters = /[^a-zA-ZğüşıöçĞÜŞİÖÇ]/g
-        if (validCharacters.test(text)) {
+        if (validCharacters.test(text) || text.length < 2) {
             this.setState({ lastnameBorderColor: '#B72A2A' })
         } else if (
             text === '' ||
@@ -300,7 +301,7 @@ class Settings extends React.Component {
 
     usernameOnChange = text => {
         const validCharacters = /[^a-z0-9ğüşıöç]/g
-        if (validCharacters.test(text)) {
+        if (validCharacters.test(text) || text.length < 3) {
             this.setState({ usernameBorderColor: '#B72A2A' })
         } else if (
             text === '' ||
@@ -363,7 +364,7 @@ class Settings extends React.Component {
             if (this.state.usernameBorderColor === '#B72A2A') {
                 flashMessages.authInfosOrSettingsError(
                     'Kullanıcı adı hatası',
-                    'Kullanıcı adı sadece harf veya rakamlardan oluşabilir',
+                    'Kullanıcı adı(en az 3 karakter) sadece harf veya rakamlardan oluşabilir',
                     {
                         backgroundColor: '#FFFFFF',
                         borderBottomLeftRadius: 10,
@@ -378,7 +379,7 @@ class Settings extends React.Component {
             if (this.state.nameBorderColor === '#B72A2A') {
                 flashMessages.authInfosOrSettingsError(
                     'Ad hatası',
-                    'Ad sadece harflerden oluşmalıdır',
+                    'Ad(en az 2 karakter) sadece harflerden oluşmalıdır',
                     {
                         backgroundColor: '#FFFFFF',
                         borderBottomLeftRadius: 10,
@@ -393,37 +394,7 @@ class Settings extends React.Component {
             if (this.state.lastnameBorderColor === '#B72A2A') {
                 flashMessages.authInfosOrSettingsError(
                     'Soyad hatası',
-                    'Soyad sadece harflerden oluşmalıdır',
-                    {
-                        backgroundColor: '#FFFFFF',
-                        borderBottomLeftRadius: 10,
-                        borderBottomRightRadius: 10,
-                        borderColor: '#00D9EF',
-                        borderWidth: hp(0.25),
-                        height: hp(10)
-                    }
-                )
-                return
-            }
-            if (this.state.nameBorderColor === 'red') {
-                flashMessages.authInfosOrSettingsError(
-                    'Ad hatası',
-                    'Ad sadece harflerden oluşmalıdır',
-                    {
-                        backgroundColor: '#FFFFFF',
-                        borderBottomLeftRadius: 10,
-                        borderBottomRightRadius: 10,
-                        borderColor: '#00D9EF',
-                        borderWidth: hp(0.25),
-                        height: hp(10)
-                    }
-                )
-                return
-            }
-            if (this.state.lastnameBorderColor === 'red') {
-                flashMessages.authInfosOrSettingsError(
-                    'Soyad hatası',
-                    'Soyad sadece harflerden oluşmalıdır',
+                    'Soyad(en az 2 karakter) sadece harflerden oluşmalıdır',
                     {
                         backgroundColor: '#FFFFFF',
                         borderBottomLeftRadius: 10,

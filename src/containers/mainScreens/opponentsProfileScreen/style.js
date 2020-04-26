@@ -93,6 +93,7 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Bold',
         fontSize: hp(3.5),
         color: 'white',
+        textAlign: 'center',
         paddingVertical: hp(0)
     },
     usernameText: {

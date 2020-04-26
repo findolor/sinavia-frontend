@@ -54,6 +54,7 @@ import { getUserScore } from './userScore'
 import { checkOnline } from './api'
 import { getUserGoals, postUserGoal, deleteUserGoal } from './userGoal'
 import { getInviteCode } from './inviteCode'
+import { reportUser } from './userReporting'
 
 export const apiServicesTree = {
     api: {
@@ -136,6 +137,9 @@ export const apiServicesTree = {
     },
     inviteCodeApi: {
         getInviteCode: 'getInviteCode'
+    },
+    userReportingApi: {
+        reportUser: 'reportUser'
     }
 }
 
@@ -275,6 +279,10 @@ export const postRequest = async (functionName, params) => {
         case 'postUserGoal':
             headers.Authorization = 'Bearer ' + params.clientToken
             return postUserGoal(headers, params)
+        // USER REPORTING
+        case 'reportUser':
+            headers.Authorization = 'Bearer ' + params.clientToken
+            return reportUser(headers, params)
     }
 }
 

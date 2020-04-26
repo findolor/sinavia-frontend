@@ -2237,7 +2237,21 @@ class Home extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.pickerContainer}>
-                        <DropDown
+                        <View
+                            style={[
+                                styles.picker,
+                                {
+                                    height: hp(7),
+                                    justifyContent: 'center',
+                                    alignItems: 'center'
+                                }
+                            ]}
+                        >
+                            <Text style={styles.pickerText}>
+                                {this.state.examList[0]}
+                            </Text>
+                        </View>
+                        {/* <DropDown
                             style={styles.picker}
                             textStyle={styles.pickerText}
                             dropdownTextStyle={styles.pickerDropdownText}
@@ -2247,7 +2261,7 @@ class Home extends React.Component {
                             onSelect={(idx, value) =>
                                 this.pickerSelect(idx, value)
                             }
-                        />
+                        /> */}
                     </View>
                     <View style={styles.notificationLogoContainer}>
                         <TouchableOpacity onPress={this.notificationPicOnPress}>
