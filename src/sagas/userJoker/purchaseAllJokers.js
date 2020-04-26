@@ -7,7 +7,7 @@ export function* purchaseAllJokersSaga(action) {
     try {
         response = yield call(
             makePutRequest,
-            apiServicesTree.userJokerApi.rewardUserJoker,
+            apiServicesTree.userJokerApi.purchaseAllJokers,
             {
                 userId: action.clientId,
                 clientToken: action.clientToken,
