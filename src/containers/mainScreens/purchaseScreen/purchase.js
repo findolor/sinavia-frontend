@@ -142,7 +142,22 @@ class PurchaseScreen extends React.Component {
     }
 
     async componentDidMount() {
-        this.userJokersUpdate()
+        this.props.userJokers.forEach(userJoker => {
+            switch (userJoker.jokerId) {
+                case 1:
+                    userJoker.joker.imageLink = SEE_OPPONENT_JOKER_IMAGE
+                    this.setState({ firstJoker: userJoker })
+                    break
+                case 2:
+                    userJoker.joker.imageLink = REMOVE_OPTIONS_JOKER_IMAGE
+                    this.setState({ secondJoker: userJoker })
+                    break
+                case 3:
+                    userJoker.joker.imageLink = SECOND_CHANGE_JOKER_IMAGE
+                    this.setState({ thirdJoker: userJoker })
+                    break
+            }
+        })
 
         inviteCodeServices
             .getInviteCode(this.props.clientToken, this.props.clientDBId)
@@ -266,7 +281,7 @@ class PurchaseScreen extends React.Component {
                 this.props.clientDBId,
                 purchasedJokerAmount
             )
-            //navigationReset('main')
+            navigationRefresh()
             //await RNIap.requestPurchase(requestedItem, false)
         } catch (err) {
             console.warn(err.code, err.message)
@@ -3812,7 +3827,7 @@ const mapDispatchToProps = dispatch => ({
                 jokerAmount
             )
         ),
-    purchaseAllJokers: (clientToken, clientId, jokerId, jokerAmount) =>
+    purchaseAllJokers: (clientToken, clientId, jokerAmount) =>
         dispatch(
             clientActions.purchaseAllJokers(clientToken, clientId, jokerAmount)
         )

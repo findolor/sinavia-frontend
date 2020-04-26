@@ -14,12 +14,13 @@ export function* purchaseAllJokersSaga(action) {
                 jokerAmount: action.jokerAmount
             }
         )
+        consol.log(response)
     } catch (err) {
         return
     }
 
     yield put({
         type: clientTypes.SAVE_USER_JOKERS,
-        joker: response
+        payload: response
     })
 }
