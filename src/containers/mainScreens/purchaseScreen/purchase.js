@@ -64,7 +64,23 @@ const facebook_page = 'https://www.facebook.com/sinaviaapp'
 
 const itemSkus = Platform.select({
     ios: ['10_jokers_each_new', '30_jokers_each_new', '60_jokers_each_new'],
-    android: ['10_jokers_each', '30_jokers_each', '60_jokers_each']
+    android: [
+        '10_jokers_each',
+        '30_jokers_each',
+        '60_jokers_each',
+        '30_firstjoker',
+        '30_secondjoker',
+        '30_thirdjoker',
+        '90_firstjoker',
+        '90_secondjoker',
+        '90_thirdjoker',
+        '180_firstjoker',
+        '180_secondjoker',
+        '180_thirdjoker',
+        '1_month_premium',
+        '3_months_premium',
+        '6_months_premium'
+    ]
 })
 
 class PurchaseScreen extends React.Component {
@@ -99,31 +115,34 @@ class PurchaseScreen extends React.Component {
             remainingExamWeeks: null,
             remainingExamMonths: null,
             // Available products for in-app purchase
-            availableProducts: null,
+            availableProducts: [
+                '10_jokers_each',
+                '30_jokers_each',
+                '60_jokers_each',
+                '30_firstjoker',
+                '30_secondjoker',
+                '30_thirdjoker',
+                '90_firstjoker',
+                '90_secondjoker',
+                '90_thirdjoker',
+                '180_firstjoker',
+                '180_secondjoker',
+                '180_thirdjoker',
+                '1_month_premium',
+                '3_months_premium',
+                '6_months_premium'
+            ],
             friendCode: null,
             usePromotionCode: null,
             remaningInviteCodes: 0,
-            isActivityIndicatorOn: false
+            isActivityIndicatorOn: false,
+            selectedPurchasedJokers: [],
+            selectedPurchasedJokerAmount: null
         }
     }
 
     async componentDidMount() {
-        this.props.userJokers.forEach(userJoker => {
-            switch (userJoker.jokerId) {
-                case 1:
-                    userJoker.joker.imageLink = SEE_OPPONENT_JOKER_IMAGE
-                    this.setState({ firstJoker: userJoker })
-                    break
-                case 2:
-                    userJoker.joker.imageLink = REMOVE_OPTIONS_JOKER_IMAGE
-                    this.setState({ secondJoker: userJoker })
-                    break
-                case 3:
-                    userJoker.joker.imageLink = SECOND_CHANGE_JOKER_IMAGE
-                    this.setState({ thirdJoker: userJoker })
-                    break
-            }
-        })
+        this.setUserJokers()
 
         inviteCodeServices
             .getInviteCode(this.props.clientToken, this.props.clientDBId)
@@ -168,11 +187,16 @@ class PurchaseScreen extends React.Component {
                                             // Hangi itemi sectigine gore
                                             // Burada kac joker olcagini
                                             // Ve jokeri secip istek at
-                                            this.props.rewardUserJoker(
-                                                this.props.clientToken,
-                                                this.props.clientDBId,
-                                                1,
-                                                10
+                                            this.state.selectedPurchasedJokers.forEach(
+                                                function(item) {
+                                                    this.props.rewardUserJoker(
+                                                        this.props.clientToken,
+                                                        this.props.clientDBId,
+                                                        item,
+                                                        this.state
+                                                            .selectedPurchasedJokerAmount
+                                                    )
+                                                }
                                             )
                                             navigationRefresh()
                                         })
@@ -199,6 +223,31 @@ class PurchaseScreen extends React.Component {
         })
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.userJokers !== prevProps.userJokers) {
+            this.setUserJokers()
+        }
+    }
+
+    setUserJokers = () => {
+        this.props.userJokers.forEach(userJoker => {
+            switch (userJoker.jokerId) {
+                case 1:
+                    userJoker.joker.imageLink = SEE_OPPONENT_JOKER_IMAGE
+                    this.setState({ firstJoker: userJoker })
+                    break
+                case 2:
+                    userJoker.joker.imageLink = REMOVE_OPTIONS_JOKER_IMAGE
+                    this.setState({ secondJoker: userJoker })
+                    break
+                case 3:
+                    userJoker.joker.imageLink = SECOND_CHANGE_JOKER_IMAGE
+                    this.setState({ thirdJoker: userJoker })
+                    break
+            }
+        })
+    }
+
     componentWillUnmount() {
         if (this.purchaseUpdateSubscription) {
             this.purchaseUpdateSubscription.remove()
@@ -216,17 +265,33 @@ class PurchaseScreen extends React.Component {
             // TODO available products icinde
             // Itemlari gorebilirsin
             this.setState({ availableProducts: products })
-            console.log(products)
+            //console.log(products)
         } catch (err) {
             console.warn(err)
         }
     }
 
-    requestPurchase = async () => {
+    requestPurchase = async (
+        requestedItem,
+        purchasedJokers,
+        purchasedJokerAmount
+    ) => {
         try {
             // TODO bu kisimda hard coded string yerine yukaridaki
             // Itemler icinden istenileni alip bu fonskiyonun icine koy
-            await RNIap.requestPurchase('10_jokers_each', false)
+            this.setState({
+                selectedPurchasedJokers: purchasedJokers,
+                selectedPurchasedJokerAmount: purchasedJokerAmount
+            })
+            console.log(requestedItem)
+            console.log(this.state.selectedPurchasedJokers)
+            console.log(this.state.selectedPurchasedJokerAmount)
+            this.props.purchaseAllJokers(
+                this.props.clientToken,
+                this.props.clientDBId,
+                purchasedJokerAmount
+            )
+            //await RNIap.requestPurchase(requestedItem, false)
         } catch (err) {
             console.warn(err.code, err.message)
         }
@@ -349,6 +414,16 @@ class PurchaseScreen extends React.Component {
         this.setState({
             premiumOption: 'sixMonths'
         })
+    }
+
+    requestPremiumSelection = () => {
+        if (this.state.premiumOption === 'oneMonth') {
+            this.requestPurchase(this.state.availableProducts[12])
+        } else if (this.state.premiumOption === 'threeMonths') {
+            this.requestPurchase(this.state.availableProducts[13])
+        } else {
+            this.requestPurchase(this.state.availableProducts[14])
+        }
     }
 
     rewardAd = jokerNumber => {
@@ -1152,6 +1227,9 @@ class PurchaseScreen extends React.Component {
                                                 style={
                                                     styles.purchasePremiumButton
                                                 }
+                                                onPress={
+                                                    this.requestPremiumSelection
+                                                }
                                             >
                                                 <Text
                                                     style={
@@ -1369,6 +1447,14 @@ class PurchaseScreen extends React.Component {
                                     <View style={styles.swiperView}>
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[0],
+                                                    [1, 2, 3],
+                                                    10
+                                                )
+                                            }
                                         >
                                             <View
                                                 style={
@@ -1456,8 +1542,13 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
-                                                    onPress={
-                                                        this.requestPurchase
+                                                    onPress={() =>
+                                                        this.requestPurchase(
+                                                            this.state
+                                                                .availableProducts[0],
+                                                            [1, 2, 3],
+                                                            10
+                                                        )
                                                     }
                                                 >
                                                     <Text
@@ -1473,6 +1564,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[1],
+                                                    [1, 2, 3],
+                                                    30
+                                                )
+                                            }
                                         >
                                             <View
                                                 style={
@@ -1560,6 +1659,14 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() =>
+                                                        this.requestPurchase(
+                                                            this.state
+                                                                .availableProducts[1],
+                                                            [1, 2, 3],
+                                                            30
+                                                        )
+                                                    }
                                                 >
                                                     <Text
                                                         style={
@@ -1574,6 +1681,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[2],
+                                                    [1, 2, 3],
+                                                    60
+                                                )
+                                            }
                                         >
                                             <View
                                                 style={
@@ -1661,6 +1776,14 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() =>
+                                                        this.requestPurchase(
+                                                            this.state
+                                                                .availableProducts[2],
+                                                            [1, 2, 3],
+                                                            60
+                                                        )
+                                                    }
                                                 >
                                                     <Text
                                                         style={
@@ -1676,7 +1799,14 @@ class PurchaseScreen extends React.Component {
                                     <View style={styles.swiperView}>
                                         <TouchableOpacity
                                             style={styles.bundleView}
-                                            onPress={this.requestPurchase}
+                                            onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[3],
+                                                    [1],
+                                                    30
+                                                )
+                                            }
                                         >
                                             <View
                                                 style={
@@ -1742,6 +1872,14 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() =>
+                                                        this.requestPurchase(
+                                                            this.state
+                                                                .availableProducts[3],
+                                                            [1],
+                                                            30
+                                                        )
+                                                    }
                                                 >
                                                     <Text
                                                         style={
@@ -1756,6 +1894,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[4],
+                                                    [2],
+                                                    30
+                                                )
+                                            }
                                         >
                                             <View
                                                 style={
@@ -1821,6 +1967,14 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() =>
+                                                        this.requestPurchase(
+                                                            this.state
+                                                                .availableProducts[4],
+                                                            [2],
+                                                            30
+                                                        )
+                                                    }
                                                 >
                                                     <Text
                                                         style={
@@ -1835,6 +1989,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[5],
+                                                    [3],
+                                                    30
+                                                )
+                                            }
                                         >
                                             <View
                                                 style={
@@ -1900,6 +2062,14 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() =>
+                                                        this.requestPurchase(
+                                                            this.state
+                                                                .availableProducts[5],
+                                                            [3],
+                                                            30
+                                                        )
+                                                    }
                                                 >
                                                     <Text
                                                         style={
@@ -1915,6 +2085,14 @@ class PurchaseScreen extends React.Component {
                                     <View style={styles.swiperView}>
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[6],
+                                                    [1],
+                                                    90
+                                                )
+                                            }
                                         >
                                             <View
                                                 style={
@@ -1980,6 +2158,14 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() =>
+                                                        this.requestPurchase(
+                                                            this.state
+                                                                .availableProducts[6],
+                                                            [1],
+                                                            90
+                                                        )
+                                                    }
                                                 >
                                                     <Text
                                                         style={
@@ -1994,6 +2180,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[7],
+                                                    [2],
+                                                    90
+                                                )
+                                            }
                                         >
                                             <View
                                                 style={
@@ -2059,6 +2253,14 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() =>
+                                                        this.requestPurchase(
+                                                            this.state
+                                                                .availableProducts[7],
+                                                            [2],
+                                                            90
+                                                        )
+                                                    }
                                                 >
                                                     <Text
                                                         style={
@@ -2073,6 +2275,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[8],
+                                                    [3],
+                                                    90
+                                                )
+                                            }
                                         >
                                             <View
                                                 style={
@@ -2138,6 +2348,14 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() =>
+                                                        this.requestPurchase(
+                                                            this.state
+                                                                .availableProducts[8],
+                                                            [3],
+                                                            90
+                                                        )
+                                                    }
                                                 >
                                                     <Text
                                                         style={
@@ -2153,6 +2371,14 @@ class PurchaseScreen extends React.Component {
                                     <View style={styles.swiperView}>
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[9],
+                                                    [1],
+                                                    180
+                                                )
+                                            }
                                         >
                                             <View
                                                 style={
@@ -2218,6 +2444,14 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() =>
+                                                        this.requestPurchase(
+                                                            this.state
+                                                                .availableProducts[9],
+                                                            [1],
+                                                            180
+                                                        )
+                                                    }
                                                 >
                                                     <Text
                                                         style={
@@ -2232,6 +2466,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[10],
+                                                    [2],
+                                                    180
+                                                )
+                                            }
                                         >
                                             <View
                                                 style={
@@ -2297,6 +2539,14 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() =>
+                                                        this.requestPurchase(
+                                                            this.state
+                                                                .availableProducts[10],
+                                                            [2],
+                                                            180
+                                                        )
+                                                    }
                                                 >
                                                     <Text
                                                         style={
@@ -2311,6 +2561,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[11],
+                                                    [3],
+                                                    180
+                                                )
+                                            }
                                         >
                                             <View
                                                 style={
@@ -2375,6 +2633,14 @@ class PurchaseScreen extends React.Component {
                                                 <TouchableOpacity
                                                     style={
                                                         styles.purchaseJokerButton
+                                                    }
+                                                    onPress={() =>
+                                                        this.requestPurchase(
+                                                            this.state
+                                                                .availableProducts[11],
+                                                            [3],
+                                                            180
+                                                        )
                                                     }
                                                 >
                                                     <Text
@@ -3569,6 +3835,10 @@ const mapDispatchToProps = dispatch => ({
                 jokerId,
                 jokerAmount
             )
+        ),
+    purchaseAllJokers: (clientToken, clientId, jokerAmount) =>
+        dispatch(
+            clientActions.purchaseAllJokers(clientToken, clientId, jokerAmount)
         )
 })
 

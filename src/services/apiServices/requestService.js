@@ -48,7 +48,8 @@ import {
 import {
     getUserJokers,
     rewardAllUserJokers,
-    rewardUserJoker
+    rewardUserJoker,
+    purchaseAllJokers
 } from './userJoker'
 import { getUserScore } from './userScore'
 import { checkOnline } from './api'
@@ -127,7 +128,8 @@ export const apiServicesTree = {
     userJokerApi: {
         getUserJokers: 'getUserJokers',
         rewardAllUserJokers: 'rewardAllUserJokers',
-        rewardUserJoker: 'rewardUserJoker'
+        rewardUserJoker: 'rewardUserJoker',
+        purchaseAllJokers: 'purchaseAllJokers'
     },
     userScoreApi: {
         getUserScore: 'getUserScore'
@@ -330,6 +332,9 @@ export const putRequest = async (functionName, params) => {
         case 'rewardUserJoker':
             headers.Authorization = 'Bearer ' + params.clientToken
             return rewardUserJoker(headers, params)
+        case 'purchaseAllJokers':
+            headers.Authorization = 'Bearer ' + params.clientToken
+            return purchaseAllJokers(headers, params)
     }
 }
 
