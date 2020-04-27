@@ -117,8 +117,8 @@ class GetInfo extends React.Component {
         super(props)
         this.state = {
             // Register related stuff
-            cityUI: 'Yaşadığın şehri seç',
-            birthDateUI: 'Doğum tarihi seç',
+            cityUI: 'Yaşadığın şehri seç (zorunlu değil)',
+            birthDateUI: 'Doğum tarihi seç (zorunlu değil)',
             isDateTimePickerVisible: false,
             switchValue: false,
             dateColor: '#2E313C',
@@ -339,9 +339,9 @@ class GetInfo extends React.Component {
         if (
             this.state.username === null ||
             this.state.name === null ||
-            this.state.lastname === null ||
-            this.state.birthDate === null ||
-            this.state.city === null
+            this.state.lastname === null
+            /* this.state.birthDate === null ||
+            this.state.city === null */
         ) {
             flashMessages.authInfosOrSettingsError(
                 'Boş alan hatası',
