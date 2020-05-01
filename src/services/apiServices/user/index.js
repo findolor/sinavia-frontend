@@ -7,6 +7,7 @@ import { searchUsers } from './searchUsers'
 import { updateUser } from './updateUser'
 import { checkUserWithEmail } from './checkUserWithEmail'
 import { checkUserWithIdentityToken } from './checkUserWithIdentityToken'
+import { purchasePremium } from './purchasePremium'
 
 export {
     forgotPassword,
@@ -17,5 +18,6 @@ export {
     searchUsers,
     updateUser,
     checkUserWithEmail,
-    checkUserWithIdentityToken
+    checkUserWithIdentityToken,
+    purchasePremium
 }

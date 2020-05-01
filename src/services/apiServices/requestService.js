@@ -43,7 +43,8 @@ import {
     searchUsers,
     updateUser,
     checkUserWithEmail,
-    checkUserWithIdentityToken
+    checkUserWithIdentityToken,
+    purchasePremium
 } from './user'
 import {
     getUserJokers,
@@ -58,6 +59,7 @@ import { sendReceipt } from './purchaseReceipt'
 import { getInviteCode } from './inviteCode'
 import { reportUser } from './userReporting'
 import getAgreement from './agreement/getAgreement'
+import { getPrices } from './productPrice/getPrices'
 
 export const apiServicesTree = {
     api: {
@@ -123,7 +125,8 @@ export const apiServicesTree = {
         searchUsers: 'searchUsers',
         updateUser: 'updateUser',
         checkUserWithEmail: 'checkUserWithEmail',
-        checkUserWithIdentityToken: 'checkUserWithIdentityToken'
+        checkUserWithIdentityToken: 'checkUserWithIdentityToken',
+        purchasePremium: 'purchasePremium'
     },
     userJokerApi: {
         getUserJokers: 'getUserJokers',
@@ -150,6 +153,9 @@ export const apiServicesTree = {
     },
     agreementApi: {
         getAgreement: 'getAgreement'
+    },
+    productPriceApi: {
+        getPrices: 'getPrices'
     }
 }
 
@@ -261,6 +267,10 @@ export const getRequest = async (functionName, params) => {
         // AGREEMENT
         case 'getAgreement':
             return getAgreement()
+        // PRODUCT PRICES
+        case 'getPrices':
+            headers.Authorization = 'Bearer ' + params.clientToken
+            return getPrices(headers)
     }
 }
 
@@ -325,6 +335,9 @@ export const putRequest = async (functionName, params) => {
         case 'updateUser':
             headers.Authorization = 'Bearer ' + params.clientToken
             return updateUser(headers, params)
+        case 'purchasePremium':
+            headers.Authorization = 'Bearer ' + params.clientToken
+            return purchasePremium(headers, params)
         // USER JOKER
         case 'rewardAllUserJokers':
             headers.Authorization = 'Bearer ' + params.clientToken

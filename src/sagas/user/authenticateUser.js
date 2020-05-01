@@ -335,7 +335,6 @@ export function* authenticateUser(action) {
                     signInMethod: signInMethod
                 }
             )
-            console.log(res)
             // Saving the api token to redux state
             yield put({
                 type: clientTypes.SAVE_API_TOKEN,
