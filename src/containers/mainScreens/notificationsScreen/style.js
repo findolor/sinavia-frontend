@@ -159,7 +159,8 @@ export default StyleSheet.create({
     gameContentText: {
         fontFamily: 'Averta-BoldItalic',
         fontSize: hp(2),
-        color: '#FF9900'
+        color: '#FF9900',
+        textAlign: 'center'
     },
     gameRequestText: {
         fontFamily: 'Averta-Semibold',

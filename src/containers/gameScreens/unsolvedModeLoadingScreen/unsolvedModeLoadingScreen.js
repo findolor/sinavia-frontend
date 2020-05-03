@@ -24,11 +24,14 @@ import { connect } from 'react-redux'
 import LOGO from '../../../assets/sinavia_logo_cut.png'
 import * as Animatable from 'react-native-animatable'
 import { chooseImage } from '../../../services/courseAssetChooser'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 
 class UnsolvedModeLoadingScreen extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = {
+            errorMessage: false
+        }
     }
 
     componentDidMount() {
@@ -68,8 +71,13 @@ class UnsolvedModeLoadingScreen extends React.Component {
 
                 this.room.onMessage(message => {
                     if (message.action === 'no-questions') {
-                        Alert.alert('Tekrar çözebileceğin soru yok')
-                        this.connectionErrorRoutine()
+                        this.setState({
+                            errorMessage: true
+                        })
+                        clearTimeout(this.timeout)
+                        this.timeout = setTimeout(() => {
+                            this.connectionErrorRoutine()
+                        }, 5000)
                     }
                 })
 
@@ -134,6 +142,21 @@ class UnsolvedModeLoadingScreen extends React.Component {
                             <Text style={styles.subjectText}>
                                 {this.getNames().subjectName}
                             </Text>
+                            {this.state.errorMessage === true && (
+                                <Text
+                                    style={[
+                                        styles.subjectText,
+                                        {
+                                            color: '#FF9900',
+                                            fontFamily: 'Averta-Semibold',
+                                            fontSize: hp(2.5)
+                                        }
+                                    ]}
+                                >
+                                    konusundan daha önce çözemediğin bir soru
+                                    bulunmuyor. Ana sayfaya yönlendirileceksin
+                                </Text>
+                            )}
                         </Animatable.View>
                     </View>
                 </ImageBackground>

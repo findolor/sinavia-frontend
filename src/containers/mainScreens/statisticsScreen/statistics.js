@@ -1490,7 +1490,7 @@ class Statistics extends React.Component {
                                             }{' '}
                                             -{' '}
                                             {this.questionStatsSwitcher().correctPercentage.toFixed(
-                                                2
+                                                1
                                             )}
                                             %
                                         </Text>
@@ -1509,7 +1509,7 @@ class Statistics extends React.Component {
                                             }{' '}
                                             -{' '}
                                             {this.questionStatsSwitcher().incorrectPercentage.toFixed(
-                                                2
+                                                1
                                             )}
                                             %
                                         </Text>
@@ -1528,7 +1528,7 @@ class Statistics extends React.Component {
                                             }{' '}
                                             -{' '}
                                             {this.questionStatsSwitcher().unansweredPercentage.toFixed(
-                                                2
+                                                1
                                             )}
                                             %
                                         </Text>

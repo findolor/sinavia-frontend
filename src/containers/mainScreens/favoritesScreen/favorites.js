@@ -333,10 +333,14 @@ class Favorites extends React.Component {
 
                 if (Platform.OS === 'ios') {
                     shareOptions.url = `file://${response.path()}`
-                    delete shareOptions.message
+                    shareOptions.message =
+                        "Sınavia'daki bu soruya sen de bakabilir misin? sinavia.app/#indir"
+                    //delete shareOptions.message
                 } else {
                     //shareOptions.url = `data:image/jpg;base64,${base64Str}`
                     shareOptions.url = `file://${response.path()}`
+                    shareOptions.message =
+                        "Sınavia'daki bu soruya sen de bakabilir misin? sinavia.app/#indir"
                 }
 
                 Share.open(shareOptions)

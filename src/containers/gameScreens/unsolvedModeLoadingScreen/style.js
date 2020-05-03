@@ -52,11 +52,13 @@ export default StyleSheet.create({
     courseText: {
         color: '#fff',
         fontFamily: 'Averta-Bold',
-        fontSize: hp(4.5)
+        fontSize: hp(4.5),
+        textAlign: 'center'
     },
     subjectText: {
         color: '#fff',
         fontFamily: 'Averta-SemiboldItalic',
-        fontSize: hp(4)
+        fontSize: hp(4),
+        textAlign: 'center'
     }
 })

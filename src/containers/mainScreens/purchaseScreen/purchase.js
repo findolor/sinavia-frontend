@@ -1069,18 +1069,35 @@ class PurchaseScreen extends React.Component {
                                                 styles.buttonsInPremiumModalView
                                             }
                                         >
+                                            <Text style={styles.premiumWarning}>
+                                                *Tek seferlik satın almadır,
+                                                süre bitince tekrarlanmaz
+                                            </Text>
                                             <TouchableOpacity
                                                 style={
                                                     styles.purchasePremiumButton
                                                 }
                                             >
-                                                <Text
-                                                    style={
-                                                        styles.purchasePremiumButtonText
-                                                    }
-                                                >
-                                                    HEMEN SATIN AL
-                                                </Text>
+                                                {this.props.clientInformation
+                                                    .isPremium === false && (
+                                                    <Text
+                                                        style={
+                                                            styles.purchasePremiumButtonText
+                                                        }
+                                                    >
+                                                        HEMEN SATIN AL
+                                                    </Text>
+                                                )}
+                                                {this.props.clientInformation
+                                                    .isPremium === true && (
+                                                    <Text
+                                                        style={
+                                                            styles.purchasePremiumButtonText
+                                                        }
+                                                    >
+                                                        SÜRENİ UZAT
+                                                    </Text>
+                                                )}
                                             </TouchableOpacity>
                                             <TouchableOpacity
                                                 onPress={() => {
@@ -3241,18 +3258,31 @@ class PurchaseScreen extends React.Component {
                                                     }
                                                 </Text>{' '}
                                                 Hafta
-                                                <Text
-                                                    style={
-                                                        styles.yourPremiumCounterNumbersText
-                                                    }
-                                                >
-                                                    {' '}
-                                                    {
-                                                        this.state
-                                                            .remainingExamDays
-                                                    }
-                                                </Text>{' '}
-                                                Gün
+                                                {this.state
+                                                    .remainingExamMonths <
+                                                    10 && (
+                                                    <Text>
+                                                        <Text
+                                                            style={
+                                                                styles.yourPremiumCounterNumbersText
+                                                            }
+                                                        >
+                                                            {' '}
+                                                            {
+                                                                this.state
+                                                                    .remainingExamDays
+                                                            }
+                                                        </Text>
+                                                        <Text
+                                                            style={
+                                                                styles.yourPremiumCounterText
+                                                            }
+                                                        >
+                                                            {' '}
+                                                            Gün
+                                                        </Text>
+                                                    </Text>
+                                                )}
                                             </Text>
                                         </View>
                                     </View>
@@ -3304,18 +3334,31 @@ class PurchaseScreen extends React.Component {
                                                     }
                                                 </Text>{' '}
                                                 Hafta
-                                                <Text
-                                                    style={
-                                                        styles.yourPremiumCounterNumbersText
-                                                    }
-                                                >
-                                                    {' '}
-                                                    {
-                                                        this.state
-                                                            .remainingPremiumDays
-                                                    }
-                                                </Text>{' '}
-                                                Gün
+                                                {this.state
+                                                    .remainingPremiumMonths <
+                                                    10 && (
+                                                    <Text>
+                                                        <Text
+                                                            style={
+                                                                styles.yourPremiumCounterNumbersText
+                                                            }
+                                                        >
+                                                            {' '}
+                                                            {
+                                                                this.state
+                                                                    .remainingPremiumDays
+                                                            }
+                                                        </Text>
+                                                        <Text
+                                                            style={
+                                                                styles.yourPremiumCounterText
+                                                            }
+                                                        >
+                                                            {' '}
+                                                            Gün
+                                                        </Text>
+                                                    </Text>
+                                                )}
                                             </Text>
                                         </View>
                                     </View>
