@@ -213,7 +213,7 @@ class PurchaseScreen extends React.Component {
             this.setUserJokers()
         }
         if (this.props.clientInformation !== prevProps.clientInformation) {
-            this.calculateDatßeUntilPremiumEnd()
+            this.calculateDateUntilPremiumEnd()
         }
     }
 
