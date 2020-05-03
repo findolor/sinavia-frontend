@@ -1069,18 +1069,35 @@ class PurchaseScreen extends React.Component {
                                                 styles.buttonsInPremiumModalView
                                             }
                                         >
+                                            <Text style={styles.premiumWarning}>
+                                                *Tek seferlik satın almadır,
+                                                süre bitince tekrarlanmaz
+                                            </Text>
                                             <TouchableOpacity
                                                 style={
                                                     styles.purchasePremiumButton
                                                 }
                                             >
-                                                <Text
-                                                    style={
-                                                        styles.purchasePremiumButtonText
-                                                    }
-                                                >
-                                                    HEMEN SATIN AL
-                                                </Text>
+                                                {this.props.clientInformation
+                                                    .isPremium === false && (
+                                                    <Text
+                                                        style={
+                                                            styles.purchasePremiumButtonText
+                                                        }
+                                                    >
+                                                        HEMEN SATIN AL
+                                                    </Text>
+                                                )}
+                                                {this.props.clientInformation
+                                                    .isPremium === true && (
+                                                    <Text
+                                                        style={
+                                                            styles.purchasePremiumButtonText
+                                                        }
+                                                    >
+                                                        SÜRENİ UZAT
+                                                    </Text>
+                                                )}
                                             </TouchableOpacity>
                                             <TouchableOpacity
                                                 onPress={() => {
