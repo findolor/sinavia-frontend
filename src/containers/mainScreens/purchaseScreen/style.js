@@ -428,7 +428,7 @@ export default StyleSheet.create({
     },
     normalPriceText: {
         fontFamily: 'Averta-Bold',
-        fontSize: hp(2.25),
+        fontSize: hp(2),
         textAlign: 'center',
         color: '#858585'
     },

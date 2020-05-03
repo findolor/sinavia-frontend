@@ -3241,18 +3241,31 @@ class PurchaseScreen extends React.Component {
                                                     }
                                                 </Text>{' '}
                                                 Hafta
-                                                <Text
-                                                    style={
-                                                        styles.yourPremiumCounterNumbersText
-                                                    }
-                                                >
-                                                    {' '}
-                                                    {
-                                                        this.state
-                                                            .remainingExamDays
-                                                    }
-                                                </Text>{' '}
-                                                Gün
+                                                {this.state
+                                                    .remainingExamMonths <
+                                                    10 && (
+                                                    <Text>
+                                                        <Text
+                                                            style={
+                                                                styles.yourPremiumCounterNumbersText
+                                                            }
+                                                        >
+                                                            {' '}
+                                                            {
+                                                                this.state
+                                                                    .remainingExamDays
+                                                            }
+                                                        </Text>
+                                                        <Text
+                                                            style={
+                                                                styles.yourPremiumCounterText
+                                                            }
+                                                        >
+                                                            {' '}
+                                                            Gün
+                                                        </Text>
+                                                    </Text>
+                                                )}
                                             </Text>
                                         </View>
                                     </View>
@@ -3304,18 +3317,31 @@ class PurchaseScreen extends React.Component {
                                                     }
                                                 </Text>{' '}
                                                 Hafta
-                                                <Text
-                                                    style={
-                                                        styles.yourPremiumCounterNumbersText
-                                                    }
-                                                >
-                                                    {' '}
-                                                    {
-                                                        this.state
-                                                            .remainingPremiumDays
-                                                    }
-                                                </Text>{' '}
-                                                Gün
+                                                {this.state
+                                                    .remainingPremiumMonths <
+                                                    10 && (
+                                                    <Text>
+                                                        <Text
+                                                            style={
+                                                                styles.yourPremiumCounterNumbersText
+                                                            }
+                                                        >
+                                                            {' '}
+                                                            {
+                                                                this.state
+                                                                    .remainingPremiumDays
+                                                            }
+                                                        </Text>
+                                                        <Text
+                                                            style={
+                                                                styles.yourPremiumCounterText
+                                                            }
+                                                        >
+                                                            {' '}
+                                                            Gün
+                                                        </Text>
+                                                    </Text>
+                                                )}
                                             </Text>
                                         </View>
                                     </View>
