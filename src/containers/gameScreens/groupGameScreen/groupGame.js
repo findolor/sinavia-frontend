@@ -397,7 +397,7 @@ class GroupGame extends React.Component {
                     start: false,
                     questionNumber: groupState.questionNumber,
                     isQuestionAnswered: false,
-                    countDownTime: 60,
+                    countDownTime: 90,
                     isCountDownRunning: false
                 })
                 // 5s is the question reading time
