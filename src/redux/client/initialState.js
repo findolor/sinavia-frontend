@@ -5,5 +5,6 @@ export const INITIAL_STATE = {
     clientToken: '',
     clientDBId: '',
     favouriteQuestions: [],
-    userJokers: []
+    userJokers: [],
+    jokerUpdate: 0
 }

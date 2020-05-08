@@ -212,6 +212,9 @@ class PurchaseScreen extends React.Component {
         if (this.props.userJokers !== prevProps.userJokers) {
             this.setUserJokers()
         }
+        if (this.props.jokerUpdate !== prevProps.jokerUpdate) {
+            this.setUserJokers()
+        }
         if (this.props.clientInformation !== prevProps.clientInformation) {
             this.calculateDateUntilPremiumEnd()
         }
@@ -226,7 +229,8 @@ class PurchaseScreen extends React.Component {
                             this.props.clientToken,
                             this.props.clientDBId,
                             1,
-                            this.purchasedItem.amount
+                            this.purchasedItem.amount,
+                            this.props.jokerUpdate
                         )
                         this.purchasedItem = {}
                         break
@@ -235,7 +239,8 @@ class PurchaseScreen extends React.Component {
                             this.props.clientToken,
                             this.props.clientDBId,
                             2,
-                            this.purchasedItem.amount
+                            this.purchasedItem.amount,
+                            this.props.jokerUpdate
                         )
                         this.purchasedItem = {}
                         break
@@ -244,7 +249,8 @@ class PurchaseScreen extends React.Component {
                             this.props.clientToken,
                             this.props.clientDBId,
                             3,
-                            this.purchasedItem.amount
+                            this.purchasedItem.amount,
+                            this.props.jokerUpdate
                         )
                         this.purchasedItem = {}
                         break
@@ -4083,17 +4089,25 @@ const mapStateToProps = state => ({
     choosenExam: state.gameContent.choosenExam,
     clientDBId: state.client.clientDBId,
     clientToken: state.client.clientToken,
-    isJokerBought: state.client.isJokerBought
+    isJokerBought: state.client.isJokerBought,
+    jokerUpdate: state.client.jokerUpdate
 })
 
 const mapDispatchToProps = dispatch => ({
-    rewardUserJoker: (clientToken, clientId, jokerId, jokerAmount) =>
+    rewardUserJoker: (
+        clientToken,
+        clientId,
+        jokerId,
+        jokerAmount,
+        jokerUpdate
+    ) =>
         dispatch(
             clientActions.rewardUserJoker(
                 clientToken,
                 clientId,
                 jokerId,
-                jokerAmount
+                jokerAmount,
+                jokerUpdate
             )
         ),
     purchaseAllJokers: (clientToken, clientId, jokerAmount) =>

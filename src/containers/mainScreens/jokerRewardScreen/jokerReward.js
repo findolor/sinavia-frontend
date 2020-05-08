@@ -13,10 +13,7 @@ import SECOND_JOKER_WHEEL from '../../../assets/secondJokerWheel.png'
 import THIRD_JOKER_WHEEL from '../../../assets/thirdJokerWheel.png'
 import WHEEL_PICKER from '../../../assets/wheelPicker.png'
 import BACKGROUND from '../../../assets/gameScreens/gameStatsBackground.jpg'
-import {
-    navigationReset,
-    SCENE_KEYS
-} from '../../../services/navigationService'
+import { navigationPop } from '../../../services/navigationService'
 
 const numbers = [
     20,
@@ -75,7 +72,8 @@ class JokerReward extends React.Component {
             this.props.clientToken,
             this.props.clientDBId,
             this.props.jokerNumber,
-            option
+            option,
+            this.props.jokerUpdate
         )
     }
 
@@ -91,7 +89,7 @@ class JokerReward extends React.Component {
         })
         this.updateJokerAmounts(option.index)
         setTimeout(() => {
-            navigationReset(SCENE_KEYS.mainScreens.main)
+            navigationPop()
         }, 7000)
     }
 
@@ -217,17 +215,25 @@ class JokerReward extends React.Component {
 
 const mapStateToProps = state => ({
     clientToken: state.client.clientToken,
-    clientDBId: state.client.clientDBId
+    clientDBId: state.client.clientDBId,
+    jokerUpdate: state.client.jokerUpdate
 })
 
 const mapDispatchToProps = dispatch => ({
-    rewardUserJoker: (clientToken, clientId, jokerId, jokerAmount) =>
+    rewardUserJoker: (
+        clientToken,
+        clientId,
+        jokerId,
+        jokerAmount,
+        jokerUpdate
+    ) =>
         dispatch(
             clientActions.rewardUserJoker(
                 clientToken,
                 clientId,
                 jokerId,
-                jokerAmount
+                jokerAmount,
+                jokerUpdate
             )
         )
 })

@@ -68,6 +68,11 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 userJokers: userJokers
             }
+        case clientTypes.SAVE_JOKER_UPDATE:
+            return {
+                ...state,
+                jokerUpdate: action.payload
+            }
         default:
             return state
     }

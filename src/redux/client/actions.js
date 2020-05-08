@@ -23,7 +23,8 @@ export const clientTypes = {
     REWARD_USER_JOKER: 'reward_user_joker',
     PURCHASE_ALL_JOKERS: 'purchase_all_jokers',
     SAVE_ONE_JOKER: 'save_one_joker',
-    PURCHASE_PREMIUM: 'purchase_premium'
+    PURCHASE_PREMIUM: 'purchase_premium',
+    SAVE_JOKER_UPDATE: 'save_joker_update'
 }
 
 const userSignUp = userInformation => {
@@ -135,13 +136,20 @@ const rewardAllUserJokers = (clientToken, clientId) => {
     }
 }
 
-const rewardUserJoker = (clientToken, clientId, jokerId, jokerAmount) => {
+const rewardUserJoker = (
+    clientToken,
+    clientId,
+    jokerId,
+    jokerAmount,
+    jokerUpdate
+) => {
     return {
         type: clientTypes.REWARD_USER_JOKER,
         clientToken: clientToken,
         clientId: clientId,
         jokerId: jokerId,
-        jokerAmount: jokerAmount
+        jokerAmount: jokerAmount,
+        jokerUpdate: jokerUpdate
     }
 }
 
