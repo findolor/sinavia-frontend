@@ -1,5 +1,21 @@
 import React from 'react'
 import firebase from 'react-native-firebase'
+import { Platform } from 'react-native'
+
+const bannerId = Platform.select({
+    ios: 'ca-app-pub-1451210312091686/6809628070',
+    android: 'ca-app-pub-1451210312091686/2092009086'
+})
+
+const interstitialId = Platform.select({
+    ios: 'ca-app-pub-1451210312091686/5990891492',
+    android: 'ca-app-pub-1451210312091686/4526600737'
+})
+
+const rewardId = Platform.select({
+    ios: 'ca-app-pub-1451210312091686/8793627730',
+    android: 'ca-app-pub-1451210312091686/6961192383'
+})
 
 export const BannerAd = () => {
     const Banner = firebase.admob.Banner
@@ -8,7 +24,7 @@ export const BannerAd = () => {
 
     return (
         <Banner
-            unitId={'ca-app-pub-3940256099942544/2934735716'}
+            unitId={bannerId}
             size={'Banner'}
             request={request.build()}
             onAdLoaded={() => {
@@ -19,9 +35,7 @@ export const BannerAd = () => {
 }
 
 export const interstitialAd = () => {
-    const advert = firebase
-        .admob()
-        .interstitial('ca-app-pub-3940256099942544/5135589807')
+    const advert = firebase.admob().interstitial(interstitialId)
     const AdRequest = firebase.admob.AdRequest
     const request = new AdRequest()
     advert.loadAd(request.build())
@@ -34,9 +48,7 @@ export const interstitialAd = () => {
 
 export const rewardAd = (callbackFunction, callbackFunctionSecond, params) => {
     let isAdWatched = false
-    const advert = firebase
-        .admob()
-        .rewarded('ca-app-pub-3940256099942544/1712485313')
+    const advert = firebase.admob().rewarded(rewardId)
 
     const AdRequest = firebase.admob.AdRequest
     const request = new AdRequest()

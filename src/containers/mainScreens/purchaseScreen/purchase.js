@@ -472,9 +472,12 @@ class PurchaseScreen extends React.Component {
 
     rewardAd = jokerNumber => {
         let isAdWatched = false
-        const advert = firebase
-            .admob()
-            .rewarded('ca-app-pub-3940256099942544/1712485313')
+        const rewardId = Platform.select({
+            ios: 'ca-app-pub-1451210312091686/8793627730',
+            android: 'ca-app-pub-1451210312091686/6961192383'
+        })
+
+        const advert = firebase.admob().rewarded(rewardId)
 
         const AdRequest = firebase.admob.AdRequest
         const request = new AdRequest()
