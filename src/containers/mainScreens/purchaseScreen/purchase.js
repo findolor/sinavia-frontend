@@ -1562,14 +1562,14 @@ class PurchaseScreen extends React.Component {
                                     <View style={styles.swiperView}>
                                         <TouchableOpacity
                                             style={styles.bundleView}
-                                            /* onPress={() =>
-                                                this.requestPurchase(
-                                                    this.state
-                                                        .availableProducts[0],
-                                                    [1, 2, 3],
-                                                    10
-                                                )
-                                            } */
+                                            onPress={() => {
+                                                this.purchasedItem = {
+                                                    amount: 10,
+                                                    type: 'all',
+                                                    item: 'joker'
+                                                }
+                                                this.requestPurchase(0)
+                                            }}
                                         >
                                             <View
                                                 style={
@@ -1693,13 +1693,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
-                                            /* onPress={() => {
-                                                this.purchasedItem.push({
-                                                    amount: 10,
-                                                    type: 'all'
-                                                })
-                                                this.requestPurchase(0)
-                                            }} */
+                                            onPress={() => {
+                                                this.purchasedItem = {
+                                                    amount: 30,
+                                                    type: 'all',
+                                                    item: 'joker'
+                                                }
+                                                this.requestPurchase(1)
+                                            }}
                                         >
                                             <View
                                                 style={
@@ -1823,14 +1824,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
-                                            /* onPress={() =>
-                                                this.requestPurchase(
-                                                    this.state
-                                                        .availableProducts[2],
-                                                    [1, 2, 3],
-                                                    60
-                                                )
-                                            } */
+                                            onPress={() => {
+                                                this.purchasedItem = {
+                                                    amount: 60,
+                                                    type: 'all',
+                                                    item: 'joker'
+                                                }
+                                                this.requestPurchase(2)
+                                            }}
                                         >
                                             <View
                                                 style={
@@ -1955,14 +1956,14 @@ class PurchaseScreen extends React.Component {
                                     <View style={styles.swiperView}>
                                         <TouchableOpacity
                                             style={styles.bundleView}
-                                            /* onPress={() =>
-                                                this.requestPurchase(
-                                                    this.state
-                                                        .availableProducts[3],
-                                                    [1],
-                                                    30
-                                                )
-                                            } */
+                                            onPress={() => {
+                                                this.purchasedItem = {
+                                                    amount: 30,
+                                                    type: 1,
+                                                    item: 'joker'
+                                                }
+                                                this.requestPurchase(3)
+                                            }}
                                         >
                                             <View
                                                 style={
@@ -2064,14 +2065,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
-                                            /* onPress={() =>
-                                                this.requestPurchase(
-                                                    this.state
-                                                        .availableProducts[4],
-                                                    [2],
-                                                    30
-                                                )
-                                            } */
+                                            onPress={() => {
+                                                this.purchasedItem = {
+                                                    amount: 30,
+                                                    type: 2,
+                                                    item: 'joker'
+                                                }
+                                                this.requestPurchase(4)
+                                            }}
                                         >
                                             <View
                                                 style={
@@ -2173,14 +2174,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
-                                            /* onPress={() =>
-                                                this.requestPurchase(
-                                                    this.state
-                                                        .availableProducts[5],
-                                                    [3],
-                                                    30
-                                                )
-                                            } */
+                                            onPress={() => {
+                                                this.purchasedItem = {
+                                                    amount: 30,
+                                                    type: 3,
+                                                    item: 'joker'
+                                                }
+                                                this.requestPurchase(5)
+                                            }}
                                         >
                                             <View
                                                 style={
@@ -2283,14 +2284,14 @@ class PurchaseScreen extends React.Component {
                                     <View style={styles.swiperView}>
                                         <TouchableOpacity
                                             style={styles.bundleView}
-                                            /* onPress={() =>
-                                                this.requestPurchase(
-                                                    this.state
-                                                        .availableProducts[6],
-                                                    [1],
-                                                    90
-                                                )
-                                            } */
+                                            onPress={() => {
+                                                this.purchasedItem = {
+                                                    amount: 90,
+                                                    type: 1,
+                                                    item: 'joker'
+                                                }
+                                                this.requestPurchase(6)
+                                            }}
                                         >
                                             <View
                                                 style={
@@ -2392,14 +2393,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
-                                            /* onPress={() =>
-                                                this.requestPurchase(
-                                                    this.state
-                                                        .availableProducts[7],
-                                                    [2],
-                                                    90
-                                                )
-                                            } */
+                                            onPress={() => {
+                                                this.purchasedItem = {
+                                                    amount: 90,
+                                                    type: 2,
+                                                    item: 'joker'
+                                                }
+                                                this.requestPurchase(7)
+                                            }}
                                         >
                                             <View
                                                 style={
@@ -2501,14 +2502,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
-                                            /* onPress={() =>
-                                                this.requestPurchase(
-                                                    this.state
-                                                        .availableProducts[8],
-                                                    [3],
-                                                    90
-                                                )
-                                            } */
+                                            onPress={() => {
+                                                this.purchasedItem = {
+                                                    amount: 90,
+                                                    type: 3,
+                                                    item: 'joker'
+                                                }
+                                                this.requestPurchase(8)
+                                            }}
                                         >
                                             <View
                                                 style={
@@ -2611,14 +2612,14 @@ class PurchaseScreen extends React.Component {
                                     <View style={styles.swiperView}>
                                         <TouchableOpacity
                                             style={styles.bundleView}
-                                            /* onPress={() =>
-                                                this.requestPurchase(
-                                                    this.state
-                                                        .availableProducts[9],
-                                                    [1],
-                                                    180
-                                                )
-                                            } */
+                                            onPress={() => {
+                                                this.purchasedItem = {
+                                                    amount: 180,
+                                                    type: 1,
+                                                    item: 'joker'
+                                                }
+                                                this.requestPurchase(9)
+                                            }}
                                         >
                                             <View
                                                 style={
@@ -2720,14 +2721,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
-                                            /* onPress={() =>
-                                                this.requestPurchase(
-                                                    this.state
-                                                        .availableProducts[10],
-                                                    [2],
-                                                    180
-                                                )
-                                            } */
+                                            onPress={() => {
+                                                this.purchasedItem = {
+                                                    amount: 180,
+                                                    type: 2,
+                                                    item: 'joker'
+                                                }
+                                                this.requestPurchase(10)
+                                            }}
                                         >
                                             <View
                                                 style={
@@ -2829,14 +2830,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
-                                            /* onPress={() =>
-                                                this.requestPurchase(
-                                                    this.state
-                                                        .availableProducts[11],
-                                                    [3],
-                                                    180
-                                                )
-                                            } */
+                                            onPress={() => {
+                                                this.purchasedItem = {
+                                                    amount: 180,
+                                                    type: 3,
+                                                    item: 'joker'
+                                                }
+                                                this.requestPurchase(11)
+                                            }}
                                         >
                                             <View
                                                 style={
