@@ -15,6 +15,7 @@ import {
 } from '../../services/apiServices'
 import firebase from 'react-native-firebase'
 import { flashMessages } from '../../services/flashMessageBuilder'
+import { GoogleSignin } from '@react-native-community/google-signin'
 
 async function getFromStorage(key) {
     const item = await deviceStorage.getItemFromStorage(key)
@@ -312,7 +313,7 @@ export function* authenticateUser(action) {
                 password: clientCredentials.password
             }) */
 
-            let tokenObject = {
+            /* let tokenObject = {
                 email: clientCredentials.email,
                 password: clientCredentials.password,
                 identityToken: null
@@ -323,13 +324,13 @@ export function* authenticateUser(action) {
                     'appleIdentityToken'
                 )
                 tokenObject.identityToken = idToken
-            }
+            } */
 
             let res = yield call(
                 makePostRequest,
                 apiServicesTree.tokenApi.getToken,
                 {
-                    userInformation: tokenObject,
+                    userInformation: clientCredentials,
                     deviceId: deviceId,
                     signInMethod: signInMethod
                 }

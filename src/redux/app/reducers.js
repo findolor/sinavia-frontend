@@ -59,6 +59,11 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state
             }
+        case appTypes.IS_LOGGING:
+            return {
+                ...state,
+                isLogging: !state.isLogging
+            }
         default:
             return state
     }

@@ -64,17 +64,14 @@ export function* createUser(action) {
         }
 
         // Saving the credentials to storage
-        deviceStorage.saveItemToStorage('clientCredentials', {
-            email: action.payload.email,
-            password: action.payload.password
-        })
+        deviceStorage.saveItemToStorage(
+            'clientCredentials',
+            tokenRequestUserInfo
+        )
         // Saving credentials to redux state
         yield put({
             type: clientTypes.SAVE_CLIENT_CREDENTIALS,
-            payload: {
-                email: action.payload.email,
-                password: action.payload.password
-            }
+            payload: tokenRequestUserInfo
         })
 
         // Saving the id to storage

@@ -71,6 +71,11 @@ export default function* root() {
         takeLatest(
             clientTypes.REWARD_USER_JOKER,
             userJokerSagas.rewardUserJoker
-        )
+        ),
+        takeLatest(
+            clientTypes.PURCHASE_ALL_JOKERS,
+            userJokerSagas.purchaseAllJokers
+        ),
+        takeLatest(clientTypes.PURCHASE_PREMIUM, userSagas.purchasePremium)
     ])
 }

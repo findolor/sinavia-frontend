@@ -11,6 +11,7 @@ import {
 import { updateUserSaga } from './updateUser'
 import { createUser } from './createUser'
 import { resetPassword } from './resetPassword'
+import { purchasePremium } from './purchasePremium'
 
 export const userSagas = {
     userSignUp: userSignUp,
@@ -19,7 +20,8 @@ export const userSagas = {
     loginUser: loginUser,
     getOpponentFullInformation: getOpponentFullInformationSaga,
     updateUser: updateUserSaga,
-    createUser: createUser
+    createUser: createUser,
+    purchasePremium: purchasePremium
 }
 
 export const userServices = {

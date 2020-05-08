@@ -16,6 +16,7 @@ export const getToken = async params => {
 
         return { token: response.data.data.token, id: response.data.data.id }
     } catch (err) {
+        console.log(err)
         throw err
     }
 }

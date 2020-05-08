@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, TouchableOpacity, Text } from 'react-native'
+import { StyleSheet, TouchableOpacity, Text, Image } from 'react-native'
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp
@@ -17,7 +17,9 @@ export default AuthButton = ({
     borderRadius,
     fontSize,
     position,
-    disabled
+    disabled,
+    image,
+    imageStyle
 }) => {
     return (
         <TouchableOpacity
@@ -30,7 +32,15 @@ export default AuthButton = ({
                 { width: width },
                 { borderRadius: borderRadius },
                 { position: position },
-                { marginLeft: marginLeft }
+                { marginLeft: marginLeft },
+                { flexDirection: image !== undefined ? 'row' : 'column' },
+                {
+                    paddingHorizontal: image !== undefined ? wp(13) : wp(0)
+                },
+                {
+                    justifyContent:
+                        image !== undefined ? 'space-around' : 'center'
+                }
             ]}
             onPress={onPress}
             disabled={disabled}
@@ -38,18 +48,13 @@ export default AuthButton = ({
             <Text style={[styles.buttonText, { fontSize: fontSize }]}>
                 {buttonText}
             </Text>
+
+            {image && <Image source={image} style={imageStyle} />}
         </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
-    buttonContainer: {
-        height: hp(18),
-        width: wp(100),
-        backgroundColor: '#efefef',
-        justifyContent: 'space-evenly',
-        alignItems: 'center'
-    },
     button: {
         width: wp(85),
         height: hp(7),

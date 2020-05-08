@@ -40,13 +40,8 @@ class Login extends React.Component {
             showPasswordEye: false,
             hidePassword: true,
             email: '',
-            password: '',
-            isLogging: false
+            password: ''
         }
-    }
-
-    componentWillUnmount() {
-        clearTimeout(this.indicatorTimeout)
     }
 
     forgotPasswordOnPress = () => {
@@ -73,6 +68,17 @@ class Login extends React.Component {
             return
         }
 
+        if (this.state.email === '' || this.state.password === '') {
+            showMessage({
+                message: 'Lütfen alanları kontrol ediniz',
+                type: 'danger',
+                duration: 2000,
+                titleStyle: styles.networkErrorStyle,
+                icon: 'auto'
+            })
+            return
+        }
+
         // Saving the used method for correct logic in login
         await deviceStorage.saveItemToStorage('signInMethod', 'normal')
         this.setState({ isLogging: true })
@@ -90,7 +96,7 @@ class Login extends React.Component {
     }
 
     render() {
-        if (this.state.isLogging) {
+        if (this.props.isLogging) {
             return (
                 <View style={[styles.container, { justifyContent: 'center' }]}>
                     <ActivityIndicator />
@@ -156,6 +162,7 @@ class Login extends React.Component {
                                         })
                                     }
                                 }}
+                                autoCapitalize="none"
                             />
                             {this.state.showForgotPasswordText && (
                                 <View style={styles.forgetPasswordContainer}>
@@ -217,7 +224,8 @@ class Login extends React.Component {
 
 const mapStateToProps = state => ({
     isNetworkConnected: state.app.isNetworkConnected,
-    buttonLock: state.app.buttonLock
+    buttonLock: state.app.buttonLock,
+    isLogging: state.app.isLogging
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -1,55 +1,47 @@
 {
-  "project_info": {
-    "project_number": "164358621877",
-    "firebase_url": "https://sinavia-deploy-test-258708.firebaseio.com",
-    "project_id": "sinavia-deploy-test-258708",
-    "storage_bucket": "sinavia-deploy-test-258708.appspot.com"
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:164358621877:android:80a7a32614ef01502d0cfc",
-        "android_client_info": {
-          "package_name": "com.mobee.sinavia"
-        }
-      },
-      "oauth_client": [
+    "project_info": {
+        "project_number": "164358621877",
+        "firebase_url": "https://sinavia-deploy-test-258708.firebaseio.com",
+        "project_id": "sinavia-deploy-test-258708",
+        "storage_bucket": "sinavia-deploy-test-258708.appspot.com"
+    },
+    "client": [
         {
-          "client_id": "164358621877-77njnli08qgcd7u8brrb7pu8ondave40.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.mobee.sinavia",
-            "certificate_hash": "ddd782e8e8960ce02581f6717f1c4c19ab961e62"
-          }
-        },
-        {
-          "client_id": "164358621877-b667q0k93klv7245t6gl54u6pnjphsvg.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAtWlg6G6xlJiyFcxkWEkwMZZegHjUjQTI"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "164358621877-b667q0k93klv7245t6gl54u6pnjphsvg.apps.googleusercontent.com",
-              "client_type": 3
+            "client_info": {
+                "mobilesdk_app_id": "1:164358621877:android:bfbe0d329ed71fa72d0cfc",
+                "android_client_info": {
+                    "package_name": "com.sinavia"
+                }
             },
-            {
-              "client_id": "164358621877-k1apvk0v34s7tqk1l363kqhrnrksnjua.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.mobee.sinavia"
-              }
+            "oauth_client": [
+                {
+                    "client_id": "164358621877-b667q0k93klv7245t6gl54u6pnjphsvg.apps.googleusercontent.com",
+                    "client_type": 3
+                }
+            ],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyAtWlg6G6xlJiyFcxkWEkwMZZegHjUjQTI"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": [
+                        {
+                            "client_id": "164358621877-b667q0k93klv7245t6gl54u6pnjphsvg.apps.googleusercontent.com",
+                            "client_type": 3
+                        },
+                        {
+                            "client_id": "164358621877-k1apvk0v34s7tqk1l363kqhrnrksnjua.apps.googleusercontent.com",
+                            "client_type": 2,
+                            "ios_info": {
+                                "bundle_id": "com.mobee.sinavia"
+                            }
+                        }
+                    ]
+                }
             }
-          ]
         }
-      }
-    }
-  ],
-  "configuration_version": "1"
+    ],
+    "configuration_version": "1"
 }

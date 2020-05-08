@@ -29,7 +29,15 @@ export function* loginUser(action) {
     yield put({
         type: appTypes.LOCK_UNLOCK_BUTTON
     })
+    yield put({
+        type: appTypes.IS_LOGGING
+    })
 
+    let tokenRequestUserInfo = {
+        email: action.payload.email,
+        password: action.payload.password,
+        identityToken: action.payload.identityToken
+    }
     this.email = action.payload.email
     this.password = action.payload.password
 
@@ -69,6 +77,9 @@ export function* loginUser(action) {
             yield put({
                 type: appTypes.LOCK_UNLOCK_BUTTON
             })
+            yield put({
+                type: appTypes.IS_LOGGING
+            })
         } else {
             const deviceId = yield call(DeviceInfo.getUniqueId)
 
@@ -80,7 +91,7 @@ export function* loginUser(action) {
                     apiServicesTree.tokenApi.getToken,
                     {
                         deviceId: deviceId,
-                        userInformation: action.payload,
+                        userInformation: tokenRequestUserInfo,
                         signInMethod: signInMethod
                     }
                 )
@@ -91,16 +102,16 @@ export function* loginUser(action) {
                 })
                 // We save the token to storage
                 deviceStorage.saveItemToStorage('clientToken', res.token)
-
+                console.log(tokenRequestUserInfo)
                 // We save our user credentials
                 deviceStorage.saveItemToStorage(
                     'clientCredentials',
-                    action.payload
+                    tokenRequestUserInfo
                 )
                 // Save credential state to redux
                 yield put({
                     type: clientTypes.SAVE_CLIENT_CREDENTIALS,
-                    payload: action.payload
+                    payload: tokenRequestUserInfo
                 })
 
                 // We save user favourite questions
@@ -229,6 +240,9 @@ export function* loginUser(action) {
                 yield put({
                     type: appTypes.LOCK_UNLOCK_BUTTON
                 })
+                yield put({
+                    type: appTypes.IS_LOGGING
+                })
 
                 if (error.message === 'Network Error') {
                     flashMessages.networkError()
@@ -245,6 +259,9 @@ export function* loginUser(action) {
     } catch (error) {
         yield put({
             type: appTypes.LOCK_UNLOCK_BUTTON
+        })
+        yield put({
+            type: appTypes.IS_LOGGING
         })
 
         if (error.code === 'auth/invalid-email')
