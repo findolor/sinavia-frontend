@@ -59,9 +59,9 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>$(PRODUCT_NAME) fotoğraflarına erişmek istiyor</string>
+	<string>$(PRODUCT_NAME) fotoğraf kaydetmek istiyor</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Profil ve arka plan fotoğrafı için erişim izni</string>
+	<string>Kullanıcı ve arka plan fotoğrafı için fotoğraf izni</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Averta-Black.otf</string>

@@ -340,8 +340,6 @@ class GetInfo extends React.Component {
             this.state.username === null ||
             this.state.name === null ||
             this.state.lastname === null
-            //this.state.birthDate === null ||
-            //this.state.city === null
         ) {
             flashMessages.authInfosOrSettingsError(
                 'Boş alan hatası',
