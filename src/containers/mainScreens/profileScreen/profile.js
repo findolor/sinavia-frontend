@@ -104,7 +104,8 @@ class Profile extends React.Component {
             interstitialAd()
         navigationPush(SCENE_KEYS.mainScreens.friendsList, {
             friendsList: [],
-            isOpponentFriends: false
+            isOpponentFriends: false,
+            listSource: 'profile'
         })
     }
 

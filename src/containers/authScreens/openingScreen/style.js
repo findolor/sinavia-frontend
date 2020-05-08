@@ -24,7 +24,8 @@ export default StyleSheet.create({
     },
     spaceView: {
         flex: 7,
-        width: wp(85)
+        width: wp(85),
+        paddingBottom: hp(1)
     },
     sinaviaText: {
         fontFamily: 'Averta-ExtraBoldItalic',

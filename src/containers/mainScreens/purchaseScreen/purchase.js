@@ -7,7 +7,6 @@ import {
     TouchableOpacity,
     View,
     Platform,
-    TextInput,
     TouchableWithoutFeedback,
     KeyboardAvoidingView,
     Keyboard,
@@ -24,6 +23,8 @@ import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
 } from 'react-native-responsive-screen'
+import { purhcaseReceiptServices } from '../../../sagas/purchaseReceipt/'
+import { clientActions } from '../../../redux/client/actions'
 
 import INSTAGRAM_LOGO from '../../../assets/instagram_logo.png'
 import TWITTER_LOGO from '../../../assets/twitter_logo.png'
@@ -52,16 +53,50 @@ import NEW_PLAY_AD from '../../../assets/mainScreens/newPlayAd.png'
 import {
     navigationPush,
     SCENE_KEYS,
-    navigationReset
+    navigationReset,
+    navigationRefresh
 } from '../../../services/navigationService'
+import { apiServicesTree, makeGetRequest } from '../../../services/apiServices'
 
 const instagram_page = 'https://www.instagram.com/sinavia.app/'
 const twitter_page = 'https://twitter.com/sinavia'
 const facebook_page = 'https://www.facebook.com/sinaviaapp'
 
 const itemSkus = Platform.select({
-    ios: ['10_jokers_each'],
-    android: []
+    ios: [
+        'com.mobee.sinavia.10.each',
+        'com.mobee.sinavia.30.each',
+        'com.mobee.sinavia.60.each',
+        'com.mobee.sinavia.30.first',
+        'com.mobee.sinavia.30.second',
+        'com.mobee.sinavia.30.third',
+        'com.mobee.sinavia.90.first',
+        'com.mobee.sinavia.90.second',
+        'com.mobee.sinavia.90.third',
+        'com.mobee.sinavia.180.first',
+        'com.mobee.sinavia.180.second',
+        'com.mobee.sinavia.180.third',
+        'com.mobee.sinavia.premium.1',
+        'com.mobee.sinavia.premium.3',
+        'com.mobee.sinavia.premium.6'
+    ],
+    android: [
+        '10_jokers_each',
+        '30_jokers_each',
+        '60_jokers_each',
+        '30_firstjoker',
+        '30_secondjoker',
+        '30_thirdjoker',
+        '90_firstjoker',
+        '90_secondjoker',
+        '90_thirdjoker',
+        '180_firstjoker',
+        '180_secondjoker',
+        '180_thirdjoker',
+        '1_month_premium',
+        '3_months_premium',
+        '6_months_premium'
+    ]
 })
 
 class PurchaseScreen extends React.Component {
@@ -96,31 +131,20 @@ class PurchaseScreen extends React.Component {
             remainingExamWeeks: null,
             remainingExamMonths: null,
             // Available products for in-app purchase
-            availableProducts: null,
-            friendCode: 'PAROLA',
-            usePromotionCode: '',
+            availableProducts: [],
+            friendCode: null,
+            usePromotionCode: null,
             remaningInviteCodes: 0,
-            isActivityIndicatorOn: false
+            isActivityIndicatorOn: false,
+            priceList: null
         }
+        this.purchasedItem = {}
     }
 
     async componentDidMount() {
-        this.props.userJokers.forEach(userJoker => {
-            switch (userJoker.jokerId) {
-                case 1:
-                    userJoker.joker.imageLink = SEE_OPPONENT_JOKER_IMAGE
-                    this.setState({ firstJoker: userJoker })
-                    break
-                case 2:
-                    userJoker.joker.imageLink = REMOVE_OPTIONS_JOKER_IMAGE
-                    this.setState({ secondJoker: userJoker })
-                    break
-                case 3:
-                    userJoker.joker.imageLink = SECOND_CHANGE_JOKER_IMAGE
-                    this.setState({ thirdJoker: userJoker })
-                    break
-            }
-        })
+        this.setUserJokers()
+
+        await this.fetchPrices()
 
         inviteCodeServices
             .getInviteCode(this.props.clientToken, this.props.clientDBId)
@@ -143,15 +167,174 @@ class PurchaseScreen extends React.Component {
         this.calculateDateUntilPremiumEnd()
         this.calculateRemainingExamTime()
         await this.getProducts()
+
+        this.purchaseUpdateSubscription = RNIap.purchaseUpdatedListener(
+            purchase => {
+                const receipt = purchase.transactionReceipt
+                if (receipt) {
+                    purhcaseReceiptServices
+                        .sendReceipt(
+                            this.props.clientToken,
+                            this.props.clientDBId,
+                            receipt
+                        )
+                        .then(data => {
+                            if (data) {
+                                try {
+                                    RNIap.finishTransaction(
+                                        purchase,
+                                        true
+                                    ).then(() => {
+                                        this.closePremiumView()
+                                        this.sendPurchaseRequestToServer()
+                                    })
+                                    // If not consumable
+                                    //RNIap.finishTransaction(purchase, false)
+                                } catch (error) {
+                                    console.log(error)
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error)
+                        })
+                }
+            }
+        )
+
+        this.purchaseErrorSubscription = RNIap.purchaseErrorListener(error => {
+            console.log('purchaseErrorListener', error)
+            //Alert.alert('purchase error', JSON.stringify(error))
+        })
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.userJokers !== prevProps.userJokers) {
+            this.setUserJokers()
+        }
+        if (this.props.jokerUpdate !== prevProps.jokerUpdate) {
+            this.setUserJokers()
+        }
+        if (this.props.clientInformation !== prevProps.clientInformation) {
+            this.calculateDateUntilPremiumEnd()
+        }
+    }
+
+    sendPurchaseRequestToServer = () => {
+        if (this.purchasedItem.item) {
+            if (this.purchasedItem.item === 'joker') {
+                switch (this.purchasedItem.type) {
+                    case 1:
+                        this.props.rewardUserJoker(
+                            this.props.clientToken,
+                            this.props.clientDBId,
+                            1,
+                            this.purchasedItem.amount,
+                            this.props.jokerUpdate
+                        )
+                        this.purchasedItem = {}
+                        break
+                    case 2:
+                        this.props.rewardUserJoker(
+                            this.props.clientToken,
+                            this.props.clientDBId,
+                            2,
+                            this.purchasedItem.amount,
+                            this.props.jokerUpdate
+                        )
+                        this.purchasedItem = {}
+                        break
+                    case 3:
+                        this.props.rewardUserJoker(
+                            this.props.clientToken,
+                            this.props.clientDBId,
+                            3,
+                            this.purchasedItem.amount,
+                            this.props.jokerUpdate
+                        )
+                        this.purchasedItem = {}
+                        break
+                    case 'all':
+                        this.props.purchaseAllJokers(
+                            this.props.clientToken,
+                            this.props.clientDBId,
+                            this.purchasedItem.amount
+                        )
+                        this.purchasedItem = {}
+                        break
+                }
+            } else {
+                this.props.purchasePremium(
+                    this.props.clientToken,
+                    this.props.clientDBId,
+                    this.premiumTimeAmount
+                )
+                this.purchasedItem = {}
+            }
+        }
+    }
+
+    fetchPrices = async () => {
+        const prices = {}
+        return new Promise(resolve => {
+            makeGetRequest(apiServicesTree.productPriceApi.getPrices, {
+                clientToken: this.props.clientToken
+            }).then(priceList => {
+                priceList.forEach(price => {
+                    prices[price.name] = price
+                })
+
+                this.setState({ priceList: prices })
+                resolve(true)
+            })
+        })
+    }
+
+    setUserJokers = () => {
+        this.props.userJokers.forEach(userJoker => {
+            switch (userJoker.jokerId) {
+                case 1:
+                    userJoker.joker.imageLink = SEE_OPPONENT_JOKER_IMAGE
+                    this.setState({ firstJoker: userJoker })
+                    break
+                case 2:
+                    userJoker.joker.imageLink = REMOVE_OPTIONS_JOKER_IMAGE
+                    this.setState({ secondJoker: userJoker })
+                    break
+                case 3:
+                    userJoker.joker.imageLink = SECOND_CHANGE_JOKER_IMAGE
+                    this.setState({ thirdJoker: userJoker })
+                    break
+            }
+        })
+    }
+
+    componentWillUnmount() {
+        if (this.purchaseUpdateSubscription) {
+            this.purchaseUpdateSubscription.remove()
+            this.purchaseUpdateSubscription = null
+        }
+        if (this.purchaseErrorSubscription) {
+            this.purchaseErrorSubscription.remove()
+            this.purchaseErrorSubscription = null
+        }
     }
 
     getProducts = async () => {
         try {
             const products = await RNIap.getProducts(itemSkus)
             this.setState({ availableProducts: products })
-            console.log(products)
         } catch (err) {
             console.warn(err)
+        }
+    }
+
+    requestPurchase = async itemSkusIndex => {
+        try {
+            const productId = itemSkus[itemSkusIndex]
+            await RNIap.requestPurchase(productId, false)
+        } catch (err) {
+            console.warn(err.code, err.message)
         }
     }
 
@@ -170,6 +353,8 @@ class PurchaseScreen extends React.Component {
         const remainingPremiumMonths = endDate.diff(dateToday, 'months')
         let remainingPremiumWeeks = 0
         let remainingPremiumDays = endDate.diff(dateToday, 'days')
+        // This is used because we still have today
+        remainingPremiumDays++
         let daysToSubtract = 0
 
         if (remainingPremiumMonths !== 0) {
@@ -270,6 +455,19 @@ class PurchaseScreen extends React.Component {
         this.setState({
             premiumOption: 'sixMonths'
         })
+    }
+
+    requestPremiumSelection = () => {
+        if (this.state.premiumOption === 'oneMonth') {
+            this.premiumTimeAmount = 1
+            this.requestPurchase(12)
+        } else if (this.state.premiumOption === 'threeMonths') {
+            this.premiumTimeAmount = 3
+            this.requestPurchase(13)
+        } else {
+            this.premiumTimeAmount = 6
+            this.requestPurchase(14)
+        }
     }
 
     rewardAd = jokerNumber => {
@@ -845,7 +1043,16 @@ class PurchaseScreen extends React.Component {
                                                                     : styles.unselectedPricePerMonthText
                                                             }
                                                         >
-                                                            5,99 TL/ay
+                                                            {this.state
+                                                                .priceList ===
+                                                            null
+                                                                ? null
+                                                                : this.state
+                                                                      .priceList[
+                                                                      '1_month_premium'
+                                                                  ]
+                                                                      .discountPrice}{' '}
+                                                            TL/ay
                                                         </Text>
                                                         <Text
                                                             style={
@@ -856,7 +1063,15 @@ class PurchaseScreen extends React.Component {
                                                                     : styles.unselectedPriceAmountText
                                                             }
                                                         >
-                                                            5,99 TL
+                                                            {this.state
+                                                                .priceList ===
+                                                            null
+                                                                ? null
+                                                                : this.state
+                                                                      .priceList[
+                                                                      '1_month_premium'
+                                                                  ].price}{' '}
+                                                            TL
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -947,7 +1162,16 @@ class PurchaseScreen extends React.Component {
                                                                     : styles.unselectedPricePerMonthText
                                                             }
                                                         >
-                                                            4,99 TL/ay
+                                                            {this.state
+                                                                .priceList ===
+                                                            null
+                                                                ? null
+                                                                : this.state
+                                                                      .priceList[
+                                                                      '3_month_premium'
+                                                                  ]
+                                                                      .discountPrice}{' '}
+                                                            TL/ay
                                                         </Text>
                                                         <Text
                                                             style={
@@ -958,7 +1182,15 @@ class PurchaseScreen extends React.Component {
                                                                     : styles.unselectedPriceAmountText
                                                             }
                                                         >
-                                                            14,99 TL
+                                                            {this.state
+                                                                .priceList ===
+                                                            null
+                                                                ? null
+                                                                : this.state
+                                                                      .priceList[
+                                                                      '3_month_premium'
+                                                                  ].price}{' '}
+                                                            TL
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -1047,7 +1279,16 @@ class PurchaseScreen extends React.Component {
                                                                     : styles.unselectedPricePerMonthText
                                                             }
                                                         >
-                                                            2,99 TL/ay
+                                                            {this.state
+                                                                .priceList ===
+                                                            null
+                                                                ? null
+                                                                : this.state
+                                                                      .priceList[
+                                                                      '6_month_premium'
+                                                                  ]
+                                                                      .discountPrice}{' '}
+                                                            TL/ay
                                                         </Text>
                                                         <Text
                                                             style={
@@ -1058,7 +1299,15 @@ class PurchaseScreen extends React.Component {
                                                                     : styles.unselectedPriceAmountText
                                                             }
                                                         >
-                                                            17,99 TL
+                                                            {this.state
+                                                                .priceList ===
+                                                            null
+                                                                ? null
+                                                                : this.state
+                                                                      .priceList[
+                                                                      '6_month_premium'
+                                                                  ].price}{' '}
+                                                            TL
                                                         </Text>
                                                     </View>
                                                 </View>
@@ -1069,18 +1318,41 @@ class PurchaseScreen extends React.Component {
                                                 styles.buttonsInPremiumModalView
                                             }
                                         >
+                                            <Text style={styles.premiumWarning}>
+                                                *Tek seferlik satın almadır,
+                                                süre bitince tekrarlanmaz
+                                            </Text>
                                             <TouchableOpacity
                                                 style={
                                                     styles.purchasePremiumButton
                                                 }
-                                            >
-                                                <Text
-                                                    style={
-                                                        styles.purchasePremiumButtonText
+                                                onPress={() => {
+                                                    this.purchasedItem = {
+                                                        item: 'premium'
                                                     }
-                                                >
-                                                    HEMEN SATIN AL
-                                                </Text>
+                                                    this.requestPremiumSelection()
+                                                }}
+                                            >
+                                                {this.props.clientInformation
+                                                    .isPremium === false && (
+                                                    <Text
+                                                        style={
+                                                            styles.purchasePremiumButtonText
+                                                        }
+                                                    >
+                                                        HEMEN SATIN AL
+                                                    </Text>
+                                                )}
+                                                {this.props.clientInformation
+                                                    .isPremium === true && (
+                                                    <Text
+                                                        style={
+                                                            styles.purchasePremiumButtonText
+                                                        }
+                                                    >
+                                                        SÜRENİ UZAT
+                                                    </Text>
+                                                )}
                                             </TouchableOpacity>
                                             <TouchableOpacity
                                                 onPress={() => {
@@ -1290,6 +1562,14 @@ class PurchaseScreen extends React.Component {
                                     <View style={styles.swiperView}>
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            /* onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[0],
+                                                    [1, 2, 3],
+                                                    10
+                                                )
+                                            } */
                                         >
                                             <View
                                                 style={
@@ -1365,7 +1645,13 @@ class PurchaseScreen extends React.Component {
                                                         styles.normalPriceText
                                                     }
                                                 >
-                                                    9 ₺ yerine
+                                                    {this.state.priceList ===
+                                                    null
+                                                        ? null
+                                                        : this.state.priceList[
+                                                              '10_jokers_each'
+                                                          ].price}{' '}
+                                                    ₺ yerine
                                                 </Text>
                                             </View>
                                             <View
@@ -1377,13 +1663,29 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() => {
+                                                        this.purchasedItem = {
+                                                            amount: 10,
+                                                            type: 'all',
+                                                            item: 'joker'
+                                                        }
+                                                        this.requestPurchase(0)
+                                                    }}
                                                 >
                                                     <Text
                                                         style={
                                                             styles.discountPriceText
                                                         }
                                                     >
-                                                        6 ₺
+                                                        {this.state
+                                                            .priceList === null
+                                                            ? null
+                                                            : this.state
+                                                                  .priceList[
+                                                                  '10_jokers_each'
+                                                              ]
+                                                                  .discountPrice}{' '}
+                                                        ₺
                                                     </Text>
                                                 </TouchableOpacity>
                                             </View>
@@ -1391,6 +1693,13 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            /* onPress={() => {
+                                                this.purchasedItem.push({
+                                                    amount: 10,
+                                                    type: 'all'
+                                                })
+                                                this.requestPurchase(0)
+                                            }} */
                                         >
                                             <View
                                                 style={
@@ -1466,7 +1775,13 @@ class PurchaseScreen extends React.Component {
                                                         styles.normalPriceText
                                                     }
                                                 >
-                                                    27 ₺ yerine
+                                                    {this.state.priceList ===
+                                                    null
+                                                        ? null
+                                                        : this.state.priceList[
+                                                              '30_jokers_each'
+                                                          ].price}{' '}
+                                                    ₺ yerine
                                                 </Text>
                                             </View>
                                             <View
@@ -1478,13 +1793,29 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() => {
+                                                        this.purchasedItem = {
+                                                            amount: 30,
+                                                            type: 'all',
+                                                            item: 'joker'
+                                                        }
+                                                        this.requestPurchase(1)
+                                                    }}
                                                 >
                                                     <Text
                                                         style={
                                                             styles.discountPriceText
                                                         }
                                                     >
-                                                        15 ₺
+                                                        {this.state
+                                                            .priceList === null
+                                                            ? null
+                                                            : this.state
+                                                                  .priceList[
+                                                                  '30_jokers_each'
+                                                              ]
+                                                                  .discountPrice}{' '}
+                                                        ₺
                                                     </Text>
                                                 </TouchableOpacity>
                                             </View>
@@ -1492,6 +1823,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            /* onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[2],
+                                                    [1, 2, 3],
+                                                    60
+                                                )
+                                            } */
                                         >
                                             <View
                                                 style={
@@ -1567,7 +1906,13 @@ class PurchaseScreen extends React.Component {
                                                         styles.normalPriceText
                                                     }
                                                 >
-                                                    54 ₺ yerine
+                                                    {this.state.priceList ===
+                                                    null
+                                                        ? null
+                                                        : this.state.priceList[
+                                                              '60_jokers_each'
+                                                          ].price}{' '}
+                                                    ₺ yerine
                                                 </Text>
                                             </View>
                                             <View
@@ -1579,13 +1924,29 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() => {
+                                                        this.purchasedItem = {
+                                                            amount: 60,
+                                                            type: 'all',
+                                                            item: 'joker'
+                                                        }
+                                                        this.requestPurchase(2)
+                                                    }}
                                                 >
                                                     <Text
                                                         style={
                                                             styles.discountPriceText
                                                         }
                                                     >
-                                                        25 ₺
+                                                        {this.state
+                                                            .priceList === null
+                                                            ? null
+                                                            : this.state
+                                                                  .priceList[
+                                                                  '60_jokers_each'
+                                                              ]
+                                                                  .discountPrice}{' '}
+                                                        ₺
                                                     </Text>
                                                 </TouchableOpacity>
                                             </View>
@@ -1594,6 +1955,14 @@ class PurchaseScreen extends React.Component {
                                     <View style={styles.swiperView}>
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            /* onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[3],
+                                                    [1],
+                                                    30
+                                                )
+                                            } */
                                         >
                                             <View
                                                 style={
@@ -1647,7 +2016,13 @@ class PurchaseScreen extends React.Component {
                                                         styles.normalPriceText
                                                     }
                                                 >
-                                                    12 ₺ yerine
+                                                    {this.state.priceList ===
+                                                    null
+                                                        ? null
+                                                        : this.state.priceList[
+                                                              '30_first_joker'
+                                                          ].price}{' '}
+                                                    ₺ yerine
                                                 </Text>
                                             </View>
                                             <View
@@ -1659,13 +2034,29 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() => {
+                                                        this.purchasedItem = {
+                                                            amount: 30,
+                                                            type: 1,
+                                                            item: 'joker'
+                                                        }
+                                                        this.requestPurchase(3)
+                                                    }}
                                                 >
                                                     <Text
                                                         style={
                                                             styles.discountPriceText
                                                         }
                                                     >
-                                                        8 ₺
+                                                        {this.state
+                                                            .priceList === null
+                                                            ? null
+                                                            : this.state
+                                                                  .priceList[
+                                                                  '30_first_joker'
+                                                              ]
+                                                                  .discountPrice}{' '}
+                                                        ₺
                                                     </Text>
                                                 </TouchableOpacity>
                                             </View>
@@ -1673,6 +2064,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            /* onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[4],
+                                                    [2],
+                                                    30
+                                                )
+                                            } */
                                         >
                                             <View
                                                 style={
@@ -1726,7 +2125,13 @@ class PurchaseScreen extends React.Component {
                                                         styles.normalPriceText
                                                     }
                                                 >
-                                                    8 ₺ yerine
+                                                    {this.state.priceList ===
+                                                    null
+                                                        ? null
+                                                        : this.state.priceList[
+                                                              '30_second_joker'
+                                                          ].price}{' '}
+                                                    ₺ yerine
                                                 </Text>
                                             </View>
                                             <View
@@ -1738,13 +2143,29 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() => {
+                                                        this.purchasedItem = {
+                                                            amount: 30,
+                                                            type: 2,
+                                                            item: 'joker'
+                                                        }
+                                                        this.requestPurchase(4)
+                                                    }}
                                                 >
                                                     <Text
                                                         style={
                                                             styles.discountPriceText
                                                         }
                                                     >
-                                                        5 ₺
+                                                        {this.state
+                                                            .priceList === null
+                                                            ? null
+                                                            : this.state
+                                                                  .priceList[
+                                                                  '30_second_joker'
+                                                              ]
+                                                                  .discountPrice}{' '}
+                                                        ₺
                                                     </Text>
                                                 </TouchableOpacity>
                                             </View>
@@ -1752,6 +2173,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            /* onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[5],
+                                                    [3],
+                                                    30
+                                                )
+                                            } */
                                         >
                                             <View
                                                 style={
@@ -1805,7 +2234,13 @@ class PurchaseScreen extends React.Component {
                                                         styles.normalPriceText
                                                     }
                                                 >
-                                                    10 ₺ yerine
+                                                    {this.state.priceList ===
+                                                    null
+                                                        ? null
+                                                        : this.state.priceList[
+                                                              '30_third_joker'
+                                                          ].price}{' '}
+                                                    ₺ yerine
                                                 </Text>
                                             </View>
                                             <View
@@ -1817,13 +2252,29 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() => {
+                                                        this.purchasedItem = {
+                                                            amount: 30,
+                                                            type: 3,
+                                                            item: 'joker'
+                                                        }
+                                                        this.requestPurchase(5)
+                                                    }}
                                                 >
                                                     <Text
                                                         style={
                                                             styles.discountPriceText
                                                         }
                                                     >
-                                                        7 ₺
+                                                        {this.state
+                                                            .priceList === null
+                                                            ? null
+                                                            : this.state
+                                                                  .priceList[
+                                                                  '30_third_joker'
+                                                              ]
+                                                                  .discountPrice}{' '}
+                                                        ₺
                                                     </Text>
                                                 </TouchableOpacity>
                                             </View>
@@ -1832,6 +2283,14 @@ class PurchaseScreen extends React.Component {
                                     <View style={styles.swiperView}>
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            /* onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[6],
+                                                    [1],
+                                                    90
+                                                )
+                                            } */
                                         >
                                             <View
                                                 style={
@@ -1885,7 +2344,13 @@ class PurchaseScreen extends React.Component {
                                                         styles.normalPriceText
                                                     }
                                                 >
-                                                    36 ₺ yerine
+                                                    {this.state.priceList ===
+                                                    null
+                                                        ? null
+                                                        : this.state.priceList[
+                                                              '90_first_joker'
+                                                          ].price}{' '}
+                                                    ₺ yerine
                                                 </Text>
                                             </View>
                                             <View
@@ -1897,13 +2362,29 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() => {
+                                                        this.purchasedItem = {
+                                                            amount: 90,
+                                                            type: 1,
+                                                            item: 'joker'
+                                                        }
+                                                        this.requestPurchase(6)
+                                                    }}
                                                 >
                                                     <Text
                                                         style={
                                                             styles.discountPriceText
                                                         }
                                                     >
-                                                        21 ₺
+                                                        {this.state
+                                                            .priceList === null
+                                                            ? null
+                                                            : this.state
+                                                                  .priceList[
+                                                                  '90_first_joker'
+                                                              ]
+                                                                  .discountPrice}{' '}
+                                                        ₺
                                                     </Text>
                                                 </TouchableOpacity>
                                             </View>
@@ -1911,6 +2392,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            /* onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[7],
+                                                    [2],
+                                                    90
+                                                )
+                                            } */
                                         >
                                             <View
                                                 style={
@@ -1964,7 +2453,13 @@ class PurchaseScreen extends React.Component {
                                                         styles.normalPriceText
                                                     }
                                                 >
-                                                    24 ₺ yerine
+                                                    {this.state.priceList ===
+                                                    null
+                                                        ? null
+                                                        : this.state.priceList[
+                                                              '90_second_joker'
+                                                          ].price}{' '}
+                                                    ₺ yerine
                                                 </Text>
                                             </View>
                                             <View
@@ -1976,13 +2471,29 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() => {
+                                                        this.purchasedItem = {
+                                                            amount: 90,
+                                                            type: 2,
+                                                            item: 'joker'
+                                                        }
+                                                        this.requestPurchase(7)
+                                                    }}
                                                 >
                                                     <Text
                                                         style={
                                                             styles.discountPriceText
                                                         }
                                                     >
-                                                        14 ₺
+                                                        {this.state
+                                                            .priceList === null
+                                                            ? null
+                                                            : this.state
+                                                                  .priceList[
+                                                                  '90_second_joker'
+                                                              ]
+                                                                  .discountPrice}{' '}
+                                                        ₺
                                                     </Text>
                                                 </TouchableOpacity>
                                             </View>
@@ -1990,6 +2501,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            /* onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[8],
+                                                    [3],
+                                                    90
+                                                )
+                                            } */
                                         >
                                             <View
                                                 style={
@@ -2043,7 +2562,13 @@ class PurchaseScreen extends React.Component {
                                                         styles.normalPriceText
                                                     }
                                                 >
-                                                    30 ₺ yerine
+                                                    {this.state.priceList ===
+                                                    null
+                                                        ? null
+                                                        : this.state.priceList[
+                                                              '90_third_joker'
+                                                          ].price}{' '}
+                                                    ₺ yerine
                                                 </Text>
                                             </View>
                                             <View
@@ -2055,13 +2580,29 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() => {
+                                                        this.purchasedItem = {
+                                                            amount: 90,
+                                                            type: 3,
+                                                            item: 'joker'
+                                                        }
+                                                        this.requestPurchase(8)
+                                                    }}
                                                 >
                                                     <Text
                                                         style={
                                                             styles.discountPriceText
                                                         }
                                                     >
-                                                        18 ₺
+                                                        {this.state
+                                                            .priceList === null
+                                                            ? null
+                                                            : this.state
+                                                                  .priceList[
+                                                                  '90_third_joker'
+                                                              ]
+                                                                  .discountPrice}{' '}
+                                                        ₺
                                                     </Text>
                                                 </TouchableOpacity>
                                             </View>
@@ -2070,6 +2611,14 @@ class PurchaseScreen extends React.Component {
                                     <View style={styles.swiperView}>
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            /* onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[9],
+                                                    [1],
+                                                    180
+                                                )
+                                            } */
                                         >
                                             <View
                                                 style={
@@ -2123,7 +2672,13 @@ class PurchaseScreen extends React.Component {
                                                         styles.normalPriceText
                                                     }
                                                 >
-                                                    72 ₺ yerine
+                                                    {this.state.priceList ===
+                                                    null
+                                                        ? null
+                                                        : this.state.priceList[
+                                                              '180_first_joker'
+                                                          ].price}{' '}
+                                                    ₺ yerine
                                                 </Text>
                                             </View>
                                             <View
@@ -2135,13 +2690,29 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() => {
+                                                        this.purchasedItem = {
+                                                            amount: 180,
+                                                            type: 1,
+                                                            item: 'joker'
+                                                        }
+                                                        this.requestPurchase(9)
+                                                    }}
                                                 >
                                                     <Text
                                                         style={
                                                             styles.discountPriceText
                                                         }
                                                     >
-                                                        36 ₺
+                                                        {this.state
+                                                            .priceList === null
+                                                            ? null
+                                                            : this.state
+                                                                  .priceList[
+                                                                  '180_first_joker'
+                                                              ]
+                                                                  .discountPrice}{' '}
+                                                        ₺
                                                     </Text>
                                                 </TouchableOpacity>
                                             </View>
@@ -2149,6 +2720,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            /* onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[10],
+                                                    [2],
+                                                    180
+                                                )
+                                            } */
                                         >
                                             <View
                                                 style={
@@ -2202,7 +2781,13 @@ class PurchaseScreen extends React.Component {
                                                         styles.normalPriceText
                                                     }
                                                 >
-                                                    48 ₺ yerine
+                                                    {this.state.priceList ===
+                                                    null
+                                                        ? null
+                                                        : this.state.priceList[
+                                                              '180_second_joker'
+                                                          ].price}{' '}
+                                                    ₺ yerine
                                                 </Text>
                                             </View>
                                             <View
@@ -2214,13 +2799,29 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() => {
+                                                        this.purchasedItem = {
+                                                            amount: 180,
+                                                            type: 2,
+                                                            item: 'joker'
+                                                        }
+                                                        this.requestPurchase(10)
+                                                    }}
                                                 >
                                                     <Text
                                                         style={
                                                             styles.discountPriceText
                                                         }
                                                     >
-                                                        27 ₺
+                                                        {this.state
+                                                            .priceList === null
+                                                            ? null
+                                                            : this.state
+                                                                  .priceList[
+                                                                  '180_second_joker'
+                                                              ]
+                                                                  .discountPrice}{' '}
+                                                        ₺
                                                     </Text>
                                                 </TouchableOpacity>
                                             </View>
@@ -2228,6 +2829,14 @@ class PurchaseScreen extends React.Component {
                                         <View style={styles.bundleDivider} />
                                         <TouchableOpacity
                                             style={styles.bundleView}
+                                            /* onPress={() =>
+                                                this.requestPurchase(
+                                                    this.state
+                                                        .availableProducts[11],
+                                                    [3],
+                                                    180
+                                                )
+                                            } */
                                         >
                                             <View
                                                 style={
@@ -2281,7 +2890,13 @@ class PurchaseScreen extends React.Component {
                                                         styles.normalPriceText
                                                     }
                                                 >
-                                                    60 ₺ yerine
+                                                    {this.state.priceList ===
+                                                    null
+                                                        ? null
+                                                        : this.state.priceList[
+                                                              '180_third_joker'
+                                                          ].price}{' '}
+                                                    ₺ yerine
                                                 </Text>
                                             </View>
                                             <View
@@ -2293,13 +2908,29 @@ class PurchaseScreen extends React.Component {
                                                     style={
                                                         styles.purchaseJokerButton
                                                     }
+                                                    onPress={() => {
+                                                        this.purchasedItem = {
+                                                            amount: 180,
+                                                            type: 3,
+                                                            item: 'joker'
+                                                        }
+                                                        this.requestPurchase(11)
+                                                    }}
                                                 >
                                                     <Text
                                                         style={
                                                             styles.discountPriceText
                                                         }
                                                     >
-                                                        30 ₺
+                                                        {this.state
+                                                            .priceList === null
+                                                            ? null
+                                                            : this.state
+                                                                  .priceList[
+                                                                  '180_third_joker'
+                                                              ]
+                                                                  .discountPrice}{' '}
+                                                        ₺
                                                     </Text>
                                                 </TouchableOpacity>
                                             </View>
@@ -3241,18 +3872,31 @@ class PurchaseScreen extends React.Component {
                                                     }
                                                 </Text>{' '}
                                                 Hafta
-                                                <Text
-                                                    style={
-                                                        styles.yourPremiumCounterNumbersText
-                                                    }
-                                                >
-                                                    {' '}
-                                                    {
-                                                        this.state
-                                                            .remainingExamDays
-                                                    }
-                                                </Text>{' '}
-                                                Gün
+                                                {this.state
+                                                    .remainingExamMonths <
+                                                    10 && (
+                                                    <Text>
+                                                        <Text
+                                                            style={
+                                                                styles.yourPremiumCounterNumbersText
+                                                            }
+                                                        >
+                                                            {' '}
+                                                            {
+                                                                this.state
+                                                                    .remainingExamDays
+                                                            }
+                                                        </Text>
+                                                        <Text
+                                                            style={
+                                                                styles.yourPremiumCounterText
+                                                            }
+                                                        >
+                                                            {' '}
+                                                            Gün
+                                                        </Text>
+                                                    </Text>
+                                                )}
                                             </Text>
                                         </View>
                                     </View>
@@ -3304,18 +3948,31 @@ class PurchaseScreen extends React.Component {
                                                     }
                                                 </Text>{' '}
                                                 Hafta
-                                                <Text
-                                                    style={
-                                                        styles.yourPremiumCounterNumbersText
-                                                    }
-                                                >
-                                                    {' '}
-                                                    {
-                                                        this.state
-                                                            .remainingPremiumDays
-                                                    }
-                                                </Text>{' '}
-                                                Gün
+                                                {this.state
+                                                    .remainingPremiumMonths <
+                                                    10 && (
+                                                    <Text>
+                                                        <Text
+                                                            style={
+                                                                styles.yourPremiumCounterNumbersText
+                                                            }
+                                                        >
+                                                            {' '}
+                                                            {
+                                                                this.state
+                                                                    .remainingPremiumDays
+                                                            }
+                                                        </Text>
+                                                        <Text
+                                                            style={
+                                                                styles.yourPremiumCounterText
+                                                            }
+                                                        >
+                                                            {' '}
+                                                            Gün
+                                                        </Text>
+                                                    </Text>
+                                                )}
                                             </Text>
                                         </View>
                                     </View>
@@ -3467,14 +4124,43 @@ class PurchaseScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
+    clientToken: state.client.clientToken,
+    clientDBId: state.client.clientDBId,
     userJokers: state.client.userJokers,
     clientInformation: state.client.clientInformation,
     gameContentMap: state.gameContent.gameContentMap,
     choosenExam: state.gameContent.choosenExam,
     clientDBId: state.client.clientDBId,
-    clientToken: state.client.clientToken
+    clientToken: state.client.clientToken,
+    isJokerBought: state.client.isJokerBought,
+    jokerUpdate: state.client.jokerUpdate
 })
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+    rewardUserJoker: (
+        clientToken,
+        clientId,
+        jokerId,
+        jokerAmount,
+        jokerUpdate
+    ) =>
+        dispatch(
+            clientActions.rewardUserJoker(
+                clientToken,
+                clientId,
+                jokerId,
+                jokerAmount,
+                jokerUpdate
+            )
+        ),
+    purchaseAllJokers: (clientToken, clientId, jokerAmount) =>
+        dispatch(
+            clientActions.purchaseAllJokers(clientToken, clientId, jokerAmount)
+        ),
+    purchasePremium: (clientToken, clientId, premiumTime) =>
+        dispatch(
+            clientActions.purchasePremium(clientToken, clientId, premiumTime)
+        )
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(PurchaseScreen)

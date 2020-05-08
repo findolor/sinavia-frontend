@@ -21,7 +21,10 @@ export const clientTypes = {
     UPDATE_TOTAL_POINTS: 'update_total_points',
     REWARD_ALL_USER_JOKERS: 'reward_all_user_jokers',
     REWARD_USER_JOKER: 'reward_user_joker',
-    SAVE_ONE_JOKER: 'save_one_joker'
+    PURCHASE_ALL_JOKERS: 'purchase_all_jokers',
+    SAVE_ONE_JOKER: 'save_one_joker',
+    PURCHASE_PREMIUM: 'purchase_premium',
+    SAVE_JOKER_UPDATE: 'save_joker_update'
 }
 
 const userSignUp = userInformation => {
@@ -133,12 +136,28 @@ const rewardAllUserJokers = (clientToken, clientId) => {
     }
 }
 
-const rewardUserJoker = (clientToken, clientId, jokerId, jokerAmount) => {
+const rewardUserJoker = (
+    clientToken,
+    clientId,
+    jokerId,
+    jokerAmount,
+    jokerUpdate
+) => {
     return {
         type: clientTypes.REWARD_USER_JOKER,
         clientToken: clientToken,
         clientId: clientId,
         jokerId: jokerId,
+        jokerAmount: jokerAmount,
+        jokerUpdate: jokerUpdate
+    }
+}
+
+const purchaseAllJokers = (clientToken, clientId, jokerAmount) => {
+    return {
+        type: clientTypes.PURCHASE_ALL_JOKERS,
+        clientToken: clientToken,
+        clientId: clientId,
         jokerAmount: jokerAmount
     }
 }
@@ -147,6 +166,15 @@ const saveOneJoker = userJoker => {
     return {
         type: clientTypes.SAVE_ONE_JOKER,
         joker: userJoker
+    }
+}
+
+const purchasePremium = (clientToken, clientId, premiumTime) => {
+    return {
+        type: clientTypes.PURCHASE_PREMIUM,
+        clientToken: clientToken,
+        id: clientId,
+        premiumTime: premiumTime
     }
 }
 
@@ -164,5 +192,7 @@ export const clientActions = {
     updateTotalPoints: updateTotalPoints,
     rewardAllUserJokers: rewardAllUserJokers,
     rewardUserJoker: rewardUserJoker,
-    saveOneJoker: saveOneJoker
+    purchaseAllJokers: purchaseAllJokers,
+    saveOneJoker: saveOneJoker,
+    purchasePremium: purchasePremium
 }

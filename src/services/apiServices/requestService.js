@@ -43,18 +43,23 @@ import {
     searchUsers,
     updateUser,
     checkUserWithEmail,
-    checkUserWithIdentityToken
+    checkUserWithIdentityToken,
+    purchasePremium
 } from './user'
 import {
     getUserJokers,
     rewardAllUserJokers,
-    rewardUserJoker
+    rewardUserJoker,
+    purchaseAllJokers
 } from './userJoker'
 import { getUserScore } from './userScore'
 import { checkOnline } from './api'
 import { getUserGoals, postUserGoal, deleteUserGoal } from './userGoal'
+import { sendReceipt } from './purchaseReceipt'
 import { getInviteCode } from './inviteCode'
 import { reportUser } from './userReporting'
+import getAgreement from './agreement/getAgreement'
+import { getPrices } from './productPrice/getPrices'
 
 export const apiServicesTree = {
     api: {
@@ -120,12 +125,14 @@ export const apiServicesTree = {
         searchUsers: 'searchUsers',
         updateUser: 'updateUser',
         checkUserWithEmail: 'checkUserWithEmail',
-        checkUserWithIdentityToken: 'checkUserWithIdentityToken'
+        checkUserWithIdentityToken: 'checkUserWithIdentityToken',
+        purchasePremium: 'purchasePremium'
     },
     userJokerApi: {
         getUserJokers: 'getUserJokers',
         rewardAllUserJokers: 'rewardAllUserJokers',
-        rewardUserJoker: 'rewardUserJoker'
+        rewardUserJoker: 'rewardUserJoker',
+        purchaseAllJokers: 'purchaseAllJokers'
     },
     userScoreApi: {
         getUserScore: 'getUserScore'
@@ -135,11 +142,20 @@ export const apiServicesTree = {
         postUserGoal: 'postUserGoal',
         deleteUserGoal: 'deleteUserGoal'
     },
+    purchaseReceiptApi: {
+        sendReceipt: 'sendReceipt'
+    },
     inviteCodeApi: {
         getInviteCode: 'getInviteCode'
     },
     userReportingApi: {
         reportUser: 'reportUser'
+    },
+    agreementApi: {
+        getAgreement: 'getAgreement'
+    },
+    productPriceApi: {
+        getPrices: 'getPrices'
     }
 }
 
@@ -248,6 +264,13 @@ export const getRequest = async (functionName, params) => {
         case 'getInviteCode':
             headers.Authorization = 'Bearer ' + params.clientToken
             return getInviteCode(headers, params)
+        // AGREEMENT
+        case 'getAgreement':
+            return getAgreement()
+        // PRODUCT PRICES
+        case 'getPrices':
+            headers.Authorization = 'Bearer ' + params.clientToken
+            return getPrices(headers)
     }
 }
 
@@ -279,6 +302,10 @@ export const postRequest = async (functionName, params) => {
         case 'postUserGoal':
             headers.Authorization = 'Bearer ' + params.clientToken
             return postUserGoal(headers, params)
+        // PURCHASE RECEIPT
+        case 'sendReceipt':
+            headers.Authorization = 'Bearer ' + params.clientToken
+            return sendReceipt(headers, params)
         // USER REPORTING
         case 'reportUser':
             headers.Authorization = 'Bearer ' + params.clientToken
@@ -308,6 +335,9 @@ export const putRequest = async (functionName, params) => {
         case 'updateUser':
             headers.Authorization = 'Bearer ' + params.clientToken
             return updateUser(headers, params)
+        case 'purchasePremium':
+            headers.Authorization = 'Bearer ' + params.clientToken
+            return purchasePremium(headers, params)
         // USER JOKER
         case 'rewardAllUserJokers':
             headers.Authorization = 'Bearer ' + params.clientToken
@@ -315,6 +345,9 @@ export const putRequest = async (functionName, params) => {
         case 'rewardUserJoker':
             headers.Authorization = 'Bearer ' + params.clientToken
             return rewardUserJoker(headers, params)
+        case 'purchaseAllJokers':
+            headers.Authorization = 'Bearer ' + params.clientToken
+            return purchaseAllJokers(headers, params)
     }
 }
 

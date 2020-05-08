@@ -410,7 +410,7 @@ class FriendGame extends React.Component {
                     start: false,
                     questionNumber: friendState.questionNumber,
                     isQuestionAnswered: false,
-                    countDownTime: 60,
+                    countDownTime: 90,
                     isCountDownRunning: false
                 })
                 // 5s is the question reading time

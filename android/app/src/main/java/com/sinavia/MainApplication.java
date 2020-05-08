@@ -1,4 +1,4 @@
-package com.mobee.sinavia;
+package com.sinavia;
 
 import android.app.Application;
 import android.util.Log;

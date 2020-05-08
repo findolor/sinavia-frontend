@@ -406,7 +406,7 @@ export default StyleSheet.create({
         width: wp(10),
         justifyContent: 'flex-end',
         alignItems: 'flex-start',
-        left: wp(80)
+        left: wp(79)
     },
     reportIcon: {
         height: hp(3.5),

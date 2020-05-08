@@ -23,4 +23,8 @@ export function* rewardUserJokerSaga(action) {
         type: clientTypes.SAVE_ONE_JOKER,
         joker: response
     })
+    yield put({
+        type: clientTypes.SAVE_JOKER_UPDATE,
+        payload: action.jokerUpdate + 1
+    })
 }

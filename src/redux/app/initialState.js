@@ -8,5 +8,6 @@ export const INITIAL_STATE = {
     notificationOpen: {},
     connectionErrorMessage: 'Bağlantı problemi',
     // We count how many times a feature has been pressed for ad display
-    featurePressCount: -1
+    featurePressCount: -1,
+    isLogging: false
 }

@@ -128,12 +128,12 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.mobee.sinavia"
+        applicationId "com.sinavia"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         vectorDrawables.useSupportLibrary = true
-        versionCode 10
-        versionName "1.0"
+        versionCode 2
+        versionName "1.0.1"
         multiDexEnabled true
     }
     signingConfigs {

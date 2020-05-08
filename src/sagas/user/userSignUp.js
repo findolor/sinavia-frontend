@@ -19,7 +19,9 @@ export function* userSignUp(action) {
     try {
         const firebaseResponse = yield call(firebaseSignUp)
         firebaseResponse.user.sendEmailVerification().then(() => {
-            flashMessages.generalMessage('Lütfen e-postanızı onaylayınız.')
+            flashMessages.generalMessage(
+                'Lütfen e-postanızı onayla. (Gereksiz/Spam) kutunu da kontrol etmeyi unutma '
+            )
             navigationReset('auth')
         })
     } catch (error) {

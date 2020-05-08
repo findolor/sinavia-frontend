@@ -428,7 +428,7 @@ export default StyleSheet.create({
     },
     normalPriceText: {
         fontFamily: 'Averta-Bold',
-        fontSize: hp(2.25),
+        fontSize: hp(2),
         textAlign: 'center',
         color: '#858585'
     },
@@ -506,7 +506,7 @@ export default StyleSheet.create({
         backgroundColor: '#00D9EF',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: hp(2.5)
+        marginTop: hp(1)
     },
     purchasePremiumButtonText: {
         fontFamily: 'Averta-Bold',
@@ -519,7 +519,7 @@ export default StyleSheet.create({
         fontSize: hp(2.5),
         textAlign: 'center',
         color: 'white',
-        marginTop: hp(2)
+        marginTop: hp(1.2)
     },
     premiumOptionView: {
         height: hp(22),
@@ -799,5 +799,12 @@ export default StyleSheet.create({
         resizeMode: 'contain',
         height: hp(7.5),
         width: hp(7.5)
+    },
+    premiumWarning: {
+        fontFamily: 'Averta-Semibold',
+        fontSize: hp(1.5),
+        color: '#858585',
+        textAlign: 'center',
+        marginTop: hp(1)
     }
 })

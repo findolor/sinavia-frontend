@@ -122,10 +122,11 @@ export default StyleSheet.create({
         borderRadius: hp(1.5),
         marginTop: hp(1.35),
         marginLeft: wp(3),
-        overflow: 'hidden'
+        overflow: 'hidden',
+        backgroundColor: 'white'
     },
     question: {
-        resizeMode: 'stretch',
+        resizeMode: 'contain',
         height: hp(25),
         marginTop: hp(1)
     },
@@ -248,5 +249,5 @@ export default StyleSheet.create({
         resizeMode: 'contain',
         flex: 1,
         width: wp(100)
-    },
+    }
 })

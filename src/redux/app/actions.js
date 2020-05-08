@@ -11,7 +11,8 @@ export const appTypes = {
     LOCK_UNLOCK_BUTTON: 'lock_unlock_button',
     SAVE_NOTIFICATION_OPEN: 'save_notification_open',
     SET_CONNECTION_ERROR_MESSAGE: 'set_connection_error_message',
-    INCREASE_FEATURE_PRESS_COUNT: 'increase_feature_press_count'
+    INCREASE_FEATURE_PRESS_COUNT: 'increase_feature_press_count',
+    IS_LOGGING: 'is_logging'
 }
 
 const setNetworkConnectionInfo = isNetworkConnected => {
