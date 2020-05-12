@@ -348,7 +348,7 @@ class RankedGame extends React.Component {
                         fullQuestionList: message.fullQuestionList,
                         isMatchFinished: false,
                         isWon: true,
-                        userScoreBeforeGame: this.props.userScoreBeforeGame
+                        userScoreBeforeGame: that.props.userScoreBeforeGame
                     })
                 }, 3000)
                 break
