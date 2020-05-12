@@ -886,7 +886,7 @@ class RankedGame extends React.Component {
                 <View style={styles.modalContainer}>
                     <View style={styles.quitView}>
                         <Text style={styles.areYouSureText}>
-                            Rakibin oyundan ayrıldı
+                            Rakibin oyundan ayrıldı 100 Sınavia Puanı kazandın
                         </Text>
                         <Text style={styles.areYouSureText}>
                             Ana sayfaya yönlendirileceksin
