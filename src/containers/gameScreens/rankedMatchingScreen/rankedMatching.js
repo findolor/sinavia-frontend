@@ -115,13 +115,15 @@ class RankedMatchingScreen extends React.Component {
                                         )}
                                     </Text>
                                     <View style={styles.locationView}>
-                                        <Image
-                                            source={LOCATION_IMG}
-                                            style={[
-                                                styles.locationImg,
-                                                { marginLeft: wp(3) }
-                                            ]}
-                                        />
+                                        {this.props.playerCity && (
+                                            <Image
+                                                source={LOCATION_IMG}
+                                                style={[
+                                                    styles.locationImg,
+                                                    { marginLeft: wp(3) }
+                                                ]}
+                                            />
+                                        )}
                                         <Text
                                             style={[
                                                 styles.locationText,
@@ -176,13 +178,15 @@ class RankedMatchingScreen extends React.Component {
                                             { justifyContent: 'flex-end' }
                                         ]}
                                     >
-                                        <Image
-                                            source={LOCATION_IMG}
-                                            style={[
-                                                styles.locationImg,
-                                                { marginRight: wp(1.7) }
-                                            ]}
-                                        />
+                                        {this.props.opponentCity && (
+                                            <Image
+                                                source={LOCATION_IMG}
+                                                style={[
+                                                    styles.locationImg,
+                                                    { marginRight: wp(1.7) }
+                                                ]}
+                                            />
+                                        )}
                                         <Text
                                             style={[
                                                 styles.locationText,
