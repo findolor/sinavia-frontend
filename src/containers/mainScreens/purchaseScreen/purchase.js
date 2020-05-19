@@ -64,21 +64,21 @@ const facebook_page = 'https://www.facebook.com/sinaviaapp'
 
 const itemSkus = Platform.select({
     ios: [
-        'com.mobee.sinavia.10.each',
-        'com.mobee.sinavia.30.each',
-        'com.mobee.sinavia.60.each',
-        'com.mobee.sinavia.30.first',
-        'com.mobee.sinavia.30.second',
-        'com.mobee.sinavia.30.third',
-        'com.mobee.sinavia.90.first',
-        'com.mobee.sinavia.90.second',
-        'com.mobee.sinavia.90.third',
-        'com.mobee.sinavia.180.first',
-        'com.mobee.sinavia.180.second',
-        'com.mobee.sinavia.180.third',
-        'com.mobee.sinavia.premium.1',
-        'com.mobee.sinavia.premium.3',
-        'com.mobee.sinavia.premium.6'
+        'com.mobee.sinavia.each.10',
+        'com.mobee.sinavia.each.30',
+        'com.mobee.sinavia.each.60',
+        'com.mobee.sinavia.first.30',
+        'com.mobee.sinavia.second.30',
+        'com.mobee.sinavia.third.30',
+        'com.mobee.sinavia.first.90',
+        'com.mobee.sinavia.second.90',
+        'com.mobee.sinavia.third.90',
+        'com.mobee.sinavia.first.180',
+        'com.mobee.sinavia.second.180',
+        'com.mobee.sinavia.third.180',
+        'com.mobee.sinavia.1.premium',
+        'com.mobee.sinavia.3.premium',
+        'com.mobee.sinavia.6.premium'
     ],
     android: [
         '10_jokers_each',
@@ -331,8 +331,26 @@ class PurchaseScreen extends React.Component {
 
     requestPurchase = async itemSkusIndex => {
         try {
+            if (
+                Platform.OS === 'ios' &&
+                (itemSkusIndex === 12 ||
+                    itemSkusIndex === 13 ||
+                    itemSkusIndex === 14)
+            ) {
+                await this.requestSubscription(itemSkusIndex)
+                return
+            }
             const productId = itemSkus[itemSkusIndex]
             await RNIap.requestPurchase(productId, false)
+        } catch (err) {
+            console.warn(err.code, err.message)
+        }
+    }
+
+    requestSubscription = async itemSkusIndex => {
+        try {
+            const productId = itemSkus[itemSkusIndex]
+            await RNIap.requestSubscription(productId, false)
         } catch (err) {
             console.warn(err.code, err.message)
         }
