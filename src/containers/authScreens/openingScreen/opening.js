@@ -159,7 +159,7 @@ class Opening extends React.Component {
         }
     }
 
-    signInWithApple = () => {
+    signInWithApple = async () => {
         if (!appleAuth.isSupported) {
             flashMessages.generalErrorWithProps(
                 'Hata!',
@@ -175,181 +175,145 @@ class Opening extends React.Component {
             )
             return
         }
-        Alert.alert(
-            'Apple ile giriş',
-            'Lütfen çıkan ekranda e-postamı paylaş seçeneğini seçiniz.',
-            [
-                {
-                    text: 'Tamam',
-                    onPress: async () => {
-                        try {
-                            // performs login request
-                            const appleAuthRequestResponse = await appleAuth.performRequest(
-                                {
-                                    requestedOperation:
-                                        AppleAuthRequestOperation.LOGIN,
-                                    requestedScopes: [
-                                        AppleAuthRequestScope.EMAIL,
-                                        AppleAuthRequestScope.FULL_NAME
-                                    ]
-                                }
-                            )
+        try {
+            // performs login request
+            const appleAuthRequestResponse = await appleAuth.performRequest({
+                requestedOperation: AppleAuthRequestOperation.LOGIN,
+                requestedScopes: [
+                    AppleAuthRequestScope.EMAIL,
+                    AppleAuthRequestScope.FULL_NAME
+                ]
+            })
 
-                            // get current authentication state for user
-                            const credentialState = await appleAuth.getCredentialStateForUser(
+            // get current authentication state for user
+            const credentialState = await appleAuth.getCredentialStateForUser(
+                appleAuthRequestResponse.user
+            )
+
+            // use credentialState response to ensure the user is authenticated
+            if (credentialState === AppleAuthCredentialState.AUTHORIZED) {
+                if (appleAuthRequestResponse.email !== null) {
+                    makeGetRequest(apiServicesTree.userApi.checkUserWithEmail, {
+                        email: appleAuthRequestResponse.email
+                    }).then(async response => {
+                        // If the user doesn't exist we create one
+                        if (response === null) {
+                            await deviceStorage.saveItemToStorage(
+                                'appleIdentityToken',
                                 appleAuthRequestResponse.user
                             )
-
-                            // use credentialState response to ensure the user is authenticated
-                            if (
-                                credentialState ===
-                                AppleAuthCredentialState.AUTHORIZED
-                            ) {
-                                if (appleAuthRequestResponse.email !== null) {
-                                    makeGetRequest(
-                                        apiServicesTree.userApi
-                                            .checkUserWithEmail,
-                                        {
-                                            email:
-                                                appleAuthRequestResponse.email
-                                        }
-                                    ).then(async response => {
-                                        // If the user doesn't exist we create one
-                                        if (response === null) {
-                                            await deviceStorage.saveItemToStorage(
-                                                'appleIdentityToken',
-                                                appleAuthRequestResponse.user
-                                            )
-                                            navigationReplace(
-                                                SCENE_KEYS.authScreens.getInfo,
-                                                {
-                                                    email:
-                                                        appleAuthRequestResponse.email,
-                                                    password: 'null',
-                                                    signInMethod: 'apple'
-                                                }
-                                            )
-                                        } else {
-                                            if (response === 'normal') {
-                                                flashMessages.generalErrorWithProps(
-                                                    'Giriş hatası',
-                                                    "Lütfen 'Giriş Yap' ile giriş yapınız.",
-                                                    {
-                                                        backgroundColor:
-                                                            '#FFFFFF',
-                                                        borderBottomLeftRadius: 10,
-                                                        borderBottomRightRadius: 10,
-                                                        borderColor: '#00D9EF',
-                                                        borderWidth: hp(0.25),
-                                                        height: hp(10)
-                                                    }
-                                                )
-                                                await this.logoutFromApple()
-                                                return
-                                            }
-                                            if (response === 'google') {
-                                                flashMessages.generalErrorWithProps(
-                                                    'Giriş hatası',
-                                                    "Lütfen 'Google' ile giriş yapınız.",
-                                                    {
-                                                        backgroundColor:
-                                                            '#FFFFFF',
-                                                        borderBottomLeftRadius: 10,
-                                                        borderBottomRightRadius: 10,
-                                                        borderColor: '#00D9EF',
-                                                        borderWidth: hp(0.25),
-                                                        height: hp(10)
-                                                    }
-                                                )
-                                                await this.logoutFromApple()
-                                                return
-                                            }
-                                        }
-                                    })
-                                }
-                                // Getting the user from our db
-                                else
-                                    makeGetRequest(
-                                        apiServicesTree.userApi
-                                            .checkUserWithIdentityToken,
-                                        {
-                                            identityToken:
-                                                appleAuthRequestResponse.user
-                                        }
-                                    ).then(async response => {
-                                        // If the user doesn't exist we create one
-                                        if (response === null) {
-                                            await deviceStorage.saveItemToStorage(
-                                                'appleIdentityToken',
-                                                appleAuthRequestResponse.user
-                                            )
-                                            navigationReplace(
-                                                SCENE_KEYS.authScreens.getInfo,
-                                                {
-                                                    email: 'email',
-                                                    password: 'null',
-                                                    signInMethod: 'apple'
-                                                }
-                                            )
-                                        } else {
-                                            if (response === 'normal') {
-                                                flashMessages.generalErrorWithProps(
-                                                    'Giriş hatası',
-                                                    "Lütfen 'Giriş Yap' ile giriş yapınız.",
-                                                    {
-                                                        backgroundColor:
-                                                            '#FFFFFF',
-                                                        borderBottomLeftRadius: 10,
-                                                        borderBottomRightRadius: 10,
-                                                        borderColor: '#00D9EF',
-                                                        borderWidth: hp(0.25),
-                                                        height: hp(10)
-                                                    }
-                                                )
-                                                await this.logoutFromApple()
-                                                return
-                                            }
-                                            if (response === 'google') {
-                                                flashMessages.generalErrorWithProps(
-                                                    'Giriş hatası',
-                                                    "Lütfen 'Google' ile giriş yapınız.",
-                                                    {
-                                                        backgroundColor:
-                                                            '#FFFFFF',
-                                                        borderBottomLeftRadius: 10,
-                                                        borderBottomRightRadius: 10,
-                                                        borderColor: '#00D9EF',
-                                                        borderWidth: hp(0.25),
-                                                        height: hp(10)
-                                                    }
-                                                )
-                                                await this.logoutFromApple()
-                                                return
-                                            }
-                                            // Saving the sign-in method and token
-                                            await deviceStorage.saveItemToStorage(
-                                                'signInMethod',
-                                                'apple'
-                                            )
-                                            await deviceStorage.saveItemToStorage(
-                                                'appleIdentityToken',
-                                                appleAuthRequestResponse.user
-                                            )
-                                            this.props.loginUser({
-                                                identityToken:
-                                                    appleAuthRequestResponse.user,
-                                                password: 'null'
-                                            })
-                                        }
-                                    })
+                            navigationReplace(SCENE_KEYS.authScreens.getInfo, {
+                                email: appleAuthRequestResponse.email,
+                                password: 'null',
+                                signInMethod: 'apple'
+                            })
+                        } else {
+                            if (response === 'normal') {
+                                flashMessages.generalErrorWithProps(
+                                    'Giriş hatası',
+                                    "Lütfen 'Giriş Yap' ile giriş yapınız.",
+                                    {
+                                        backgroundColor: '#FFFFFF',
+                                        borderBottomLeftRadius: 10,
+                                        borderBottomRightRadius: 10,
+                                        borderColor: '#00D9EF',
+                                        borderWidth: hp(0.25),
+                                        height: hp(10)
+                                    }
+                                )
+                                await this.logoutFromApple()
+                                return
                             }
-                        } catch (error) {
-                            console.log(error)
+                            if (response === 'google') {
+                                flashMessages.generalErrorWithProps(
+                                    'Giriş hatası',
+                                    "Lütfen 'Google' ile giriş yapınız.",
+                                    {
+                                        backgroundColor: '#FFFFFF',
+                                        borderBottomLeftRadius: 10,
+                                        borderBottomRightRadius: 10,
+                                        borderColor: '#00D9EF',
+                                        borderWidth: hp(0.25),
+                                        height: hp(10)
+                                    }
+                                )
+                                await this.logoutFromApple()
+                                return
+                            }
                         }
-                    }
+                    })
                 }
-            ]
-        )
+                // Getting the user from our db
+                else
+                    makeGetRequest(
+                        apiServicesTree.userApi.checkUserWithIdentityToken,
+                        {
+                            identityToken: appleAuthRequestResponse.user
+                        }
+                    ).then(async response => {
+                        // If the user doesn't exist we create one
+                        if (response === null) {
+                            await deviceStorage.saveItemToStorage(
+                                'appleIdentityToken',
+                                appleAuthRequestResponse.user
+                            )
+                            navigationReplace(SCENE_KEYS.authScreens.getInfo, {
+                                email: 'email',
+                                password: 'null',
+                                signInMethod: 'apple'
+                            })
+                        } else {
+                            if (response === 'normal') {
+                                flashMessages.generalErrorWithProps(
+                                    'Giriş hatası',
+                                    "Lütfen 'Giriş Yap' ile giriş yapınız.",
+                                    {
+                                        backgroundColor: '#FFFFFF',
+                                        borderBottomLeftRadius: 10,
+                                        borderBottomRightRadius: 10,
+                                        borderColor: '#00D9EF',
+                                        borderWidth: hp(0.25),
+                                        height: hp(10)
+                                    }
+                                )
+                                await this.logoutFromApple()
+                                return
+                            }
+                            if (response === 'google') {
+                                flashMessages.generalErrorWithProps(
+                                    'Giriş hatası',
+                                    "Lütfen 'Google' ile giriş yapınız.",
+                                    {
+                                        backgroundColor: '#FFFFFF',
+                                        borderBottomLeftRadius: 10,
+                                        borderBottomRightRadius: 10,
+                                        borderColor: '#00D9EF',
+                                        borderWidth: hp(0.25),
+                                        height: hp(10)
+                                    }
+                                )
+                                await this.logoutFromApple()
+                                return
+                            }
+                            // Saving the sign-in method and token
+                            await deviceStorage.saveItemToStorage(
+                                'signInMethod',
+                                'apple'
+                            )
+                            await deviceStorage.saveItemToStorage(
+                                'appleIdentityToken',
+                                appleAuthRequestResponse.user
+                            )
+                            this.props.loginUser({
+                                identityToken: appleAuthRequestResponse.user,
+                                password: 'null'
+                            })
+                        }
+                    })
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     onPressLicenceView = () => {
