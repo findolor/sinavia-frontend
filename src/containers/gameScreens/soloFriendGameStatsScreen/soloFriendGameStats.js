@@ -393,7 +393,10 @@ class SoloFriendGameStatsScreen extends React.Component {
                         ]}
                     >
                         <View style={premiumStyles.premiumModalHeaderView}>
-                            <Text style={premiumStyles.premiumModalHeaderText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={premiumStyles.premiumModalHeaderText}
+                            >
                                 ELİT ÖĞRENCİ PAKETİ
                             </Text>
                         </View>
@@ -416,6 +419,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={
                                             premiumStyles.premiumModalHeaderText
                                         }
@@ -433,6 +437,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             premiumStyles.premiumModalInfoText,
                                             { marginTop: hp(1.5) }
@@ -468,7 +473,10 @@ class SoloFriendGameStatsScreen extends React.Component {
                         ]}
                     >
                         <View style={premiumStyles.premiumModalHeaderView}>
-                            <Text style={premiumStyles.premiumModalHeaderText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={premiumStyles.premiumModalHeaderText}
+                            >
                                 ELİT ÖĞRENCİ PAKETİ
                             </Text>
                         </View>
@@ -491,6 +499,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={
                                             premiumStyles.premiumModalHeaderText
                                         }
@@ -508,6 +517,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             premiumStyles.premiumModalInfoText,
                                             { marginTop: hp(1.5) }
@@ -543,7 +553,10 @@ class SoloFriendGameStatsScreen extends React.Component {
                         ]}
                     >
                         <View style={premiumStyles.premiumModalHeaderView}>
-                            <Text style={premiumStyles.premiumModalHeaderText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={premiumStyles.premiumModalHeaderText}
+                            >
                                 ELİT ÖĞRENCİ PAKETİ
                             </Text>
                         </View>
@@ -566,6 +579,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={
                                             premiumStyles.premiumModalHeaderText
                                         }
@@ -583,6 +597,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             premiumStyles.premiumModalInfoText,
                                             { marginTop: hp(1.5) }
@@ -652,7 +667,10 @@ class SoloFriendGameStatsScreen extends React.Component {
                                     }}
                                     style={styles.profilePic}
                                 />
-                                <Text style={styles.usernameText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.usernameText}
+                                >
                                     {this.props.clientInformation.username}
                                 </Text>
                             </View>
@@ -663,7 +681,10 @@ class SoloFriendGameStatsScreen extends React.Component {
                                     }}
                                     style={styles.profilePic}
                                 />
-                                <Text style={styles.usernameText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.usernameText}
+                                >
                                     {this.state.opponentUsername}
                                 </Text>
                             </View>
@@ -671,7 +692,10 @@ class SoloFriendGameStatsScreen extends React.Component {
                         <View style={styles.resultsAndStatisticsContainer}>
                             <View style={styles.dividedAnswer}>
                                 <View style={styles.numberContainer}>
-                                    <Text style={styles.numbers}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.numbers}
+                                    >
                                         {this.state.correctAnswerNumber}
                                     </Text>
                                 </View>
@@ -680,14 +704,20 @@ class SoloFriendGameStatsScreen extends React.Component {
                                     style={styles.answerImg}
                                 />
                                 <View style={styles.numberContainer}>
-                                    <Text style={styles.numbers}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.numbers}
+                                    >
                                         {this.state.opponentCorrectAnswerNumber}
                                     </Text>
                                 </View>
                             </View>
                             <View style={styles.dividedAnswer}>
                                 <View style={styles.numberContainer}>
-                                    <Text style={styles.numbers}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.numbers}
+                                    >
                                         {this.state.incorrectAnswerNumber}
                                     </Text>
                                 </View>
@@ -696,7 +726,10 @@ class SoloFriendGameStatsScreen extends React.Component {
                                     style={styles.answerImg}
                                 />
                                 <View style={styles.numberContainer}>
-                                    <Text style={styles.numbers}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.numbers}
+                                    >
                                         {
                                             this.state
                                                 .opponentInorrectAnswerNumber
@@ -706,7 +739,10 @@ class SoloFriendGameStatsScreen extends React.Component {
                             </View>
                             <View style={styles.dividedAnswer}>
                                 <View style={styles.numberContainer}>
-                                    <Text style={styles.numbers}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.numbers}
+                                    >
                                         {this.state.unansweredAnswerNumber}
                                     </Text>
                                 </View>
@@ -715,7 +751,10 @@ class SoloFriendGameStatsScreen extends React.Component {
                                     style={styles.answerImg}
                                 />
                                 <View style={styles.numberContainer}>
-                                    <Text style={styles.numbers}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.numbers}
+                                    >
                                         {
                                             this.state
                                                 .opponentUnansweredAnswerNumber
@@ -734,6 +773,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                             }
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={
                                                     styles.versusGameTitleText
                                                 }
@@ -747,11 +787,13 @@ class SoloFriendGameStatsScreen extends React.Component {
                                             }
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={styles.versusTotalText}
                                             >
                                                 Toplam Oyun{' '}
                                             </Text>
                                             <Text
+                                                allowFontScaling={false}
                                                 style={
                                                     styles.versusTotalCounter
                                                 }
@@ -785,6 +827,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                                     ]}
                                                 >
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.noneWinsInfoText
                                                         }
@@ -794,6 +837,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                                     </Text>
                                                 </View>
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.yourWinsCounter
                                                     }
@@ -804,6 +848,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                                     }
                                                 </Text>
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.opponentWinsCounter
                                                     }
@@ -858,6 +903,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                                     ]}
                                                 />
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.yourWinsCounter
                                                     }
@@ -868,6 +914,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                                     }
                                                 </Text>
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.opponentWinsCounter
                                                     }
@@ -903,6 +950,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                                     ]}
                                                 />
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.yourWinsCounter
                                                     }
@@ -913,6 +961,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                                     }
                                                 </Text>
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.opponentWinsCounter
                                                     }
@@ -948,6 +997,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                                     ]}
                                                 />
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.yourWinsCounter
                                                     }
@@ -958,6 +1008,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                                     }
                                                 </Text>
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.opponentWinsCounter
                                                     }
@@ -973,11 +1024,13 @@ class SoloFriendGameStatsScreen extends React.Component {
                                         style={styles.versusGameNamesContainer}
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={styles.versusGameTitleText}
                                         >
                                             Sen
                                         </Text>
                                         <Text
+                                            allowFontScaling={false}
                                             style={styles.versusGameTitleText}
                                         >
                                             {this.state.opponentUsername}
@@ -989,7 +1042,10 @@ class SoloFriendGameStatsScreen extends React.Component {
                                 <View
                                     style={styles.friendMatchWaitingContainer}
                                 >
-                                    <Text style={styles.friendMatchWaitingText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.friendMatchWaitingText}
+                                    >
                                         {this.state.opponentUsername} bekleniyor
                                     </Text>
                                 </View>
@@ -1001,8 +1057,18 @@ class SoloFriendGameStatsScreen extends React.Component {
                             onPress={this.mainScreenButtonOnPress}
                         >
                             <View style={styles.mainScreenButton}>
-                                <Text style={styles.buttonText}>Ana</Text>
-                                <Text style={styles.buttonText}>Menü</Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.buttonText}
+                                >
+                                    Ana
+                                </Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.buttonText}
+                                >
+                                    Menü
+                                </Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -1016,7 +1082,10 @@ class SoloFriendGameStatsScreen extends React.Component {
                                 }
                                 style={styles.slideUpImg}
                             />
-                            <Text style={styles.slideViewText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.slideViewText}
+                            >
                                 {' '}
                                 {this.state.screenPosition === 1
                                     ? 'SORULARI GÖRMEK İÇİN KAYDIR'
@@ -1070,6 +1139,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                                 style={styles.solvingLogo}
                                             />
                                             <Text
+                                                allowFontScaling={false}
                                                 style={styles.videoButtonText}
                                             >
                                                 Çözüme bak
@@ -1085,6 +1155,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                                 style={styles.solvingLogo}
                                             />
                                             <Text
+                                                allowFontScaling={false}
                                                 style={styles.videoButtonText}
                                             >
                                                 Soruya Dön
@@ -1105,7 +1176,10 @@ class SoloFriendGameStatsScreen extends React.Component {
                                     marginLeft: wp(34)
                                 }}
                             >
-                                <Text style={styles.questionNumberText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.questionNumberText}
+                                >
                                     {this.state.questionPosition}/
                                     {
                                         Object.keys(this.state.allQuestionsList)
@@ -1131,7 +1205,10 @@ class SoloFriendGameStatsScreen extends React.Component {
                                             source={VIDEO_LOGO}
                                             style={styles.videoLogo}
                                         />
-                                        <Text style={styles.videoButtonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.videoButtonText}
+                                        >
                                             Çözümü izle
                                         </Text>
                                     </TouchableOpacity>
@@ -1198,6 +1275,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             styles.optionText,
                                             { color: '#00D9EF' }
@@ -1210,7 +1288,10 @@ class SoloFriendGameStatsScreen extends React.Component {
                                         )}
                                     </Text>
                                 </View>
-                                <Text style={styles.answerText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.answerText}
+                                >
                                     Doğru Cevap
                                 </Text>
                             </View>
@@ -1234,6 +1315,7 @@ class SoloFriendGameStatsScreen extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             styles.optionText,
                                             { color: '#00D9EF' }
@@ -1246,7 +1328,10 @@ class SoloFriendGameStatsScreen extends React.Component {
                                         )}
                                     </Text>
                                 </View>
-                                <Text style={styles.answerText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.answerText}
+                                >
                                     Senin Cevabın
                                 </Text>
                             </View>

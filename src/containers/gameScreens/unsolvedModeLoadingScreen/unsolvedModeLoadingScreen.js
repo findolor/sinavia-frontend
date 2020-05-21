@@ -136,14 +136,21 @@ class UnsolvedModeLoadingScreen extends React.Component {
                             animation="fadeIn"
                             delay={500}
                         >
-                            <Text style={styles.courseText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.courseText}
+                            >
                                 {this.getNames().courseName}
                             </Text>
-                            <Text style={styles.subjectText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.subjectText}
+                            >
                                 {this.getNames().subjectName}
                             </Text>
                             {this.state.errorMessage === true && (
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.subjectText,
                                         {

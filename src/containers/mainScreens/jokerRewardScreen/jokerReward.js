@@ -118,15 +118,17 @@ class JokerReward extends React.Component {
                 <View style={styles.textView}>
                     {rouletteState === 'start' && (
                         <View>
-                            <Text style={styles.text}>
+                            <Text allowFontScaling={false} style={styles.text}>
                                 JOKER ÇARKIN DÖNÜYOR
                             </Text>
-                            <Text style={styles.text}>BOL ŞANS!</Text>
+                            <Text allowFontScaling={false} style={styles.text}>
+                                BOL ŞANS!
+                            </Text>
                         </View>
                     )}
                     {rouletteState === 'stop' && option === null && (
                         <View>
-                            <Text style={styles.text}>
+                            <Text allowFontScaling={false} style={styles.text}>
                                 JOKER KAZANMAK İÇİN ÇARKI ÇEVİR!
                             </Text>
                         </View>
@@ -134,6 +136,7 @@ class JokerReward extends React.Component {
                     {rouletteState === 'stop' && option != null && (
                         <View>
                             <Text
+                                allowFontScaling={false}
                                 style={[
                                     styles.text,
                                     {
@@ -145,10 +148,14 @@ class JokerReward extends React.Component {
                             >
                                 {option}
                             </Text>
-                            <Text style={[styles.text, { color: '#00A14C' }]}>
+                            <Text
+                                allowFontScaling={false}
+                                style={[styles.text, { color: '#00A14C' }]}
+                            >
                                 {' '}
                                 {this.props.jokerNumber === 1 ? (
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             styles.text,
                                             { color: '#00A14C' }
@@ -158,6 +165,7 @@ class JokerReward extends React.Component {
                                     </Text>
                                 ) : this.props.jokerNumber === 2 ? (
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             styles.text,
                                             { color: '#00A14C' }
@@ -167,6 +175,7 @@ class JokerReward extends React.Component {
                                     </Text>
                                 ) : (
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             styles.text,
                                             { color: '#00A14C' }
@@ -177,7 +186,10 @@ class JokerReward extends React.Component {
                                 )}{' '}
                                 JOKERİ
                             </Text>
-                            <Text style={[styles.text, { color: '#00A14C' }]}>
+                            <Text
+                                allowFontScaling={false}
+                                style={[styles.text, { color: '#00A14C' }]}
+                            >
                                 {' '}
                                 KAZANDIN!
                             </Text>

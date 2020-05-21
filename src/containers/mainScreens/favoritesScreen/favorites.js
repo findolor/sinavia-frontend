@@ -120,7 +120,10 @@ class Favorites extends React.Component {
                                 key={index}
                             >
                                 <View style={styles.contentContainerWrapper}>
-                                    <Text style={styles.contentText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.contentText}
+                                    >
                                         {examName} - {courseName}
                                     </Text>
                                 </View>
@@ -159,7 +162,11 @@ class Favorites extends React.Component {
                                                                 styles.question
                                                             }
                                                         />
-                                                        <Text>
+                                                        <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
+                                                        >
                                                             {item.subjectId}
                                                         </Text>
                                                     </View>
@@ -176,6 +183,7 @@ class Favorites extends React.Component {
                                         }
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={
                                                 styles.subjectQuestionCounterText
                                             }
@@ -424,7 +432,12 @@ class Favorites extends React.Component {
                         </View>
                     </TouchableOpacity>
                     <View style={styles.headerTextWrapper}>
-                        <Text style={styles.headerText}>Favori Sorular</Text>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.headerText}
+                        >
+                            Favori Sorular
+                        </Text>
                     </View>
                 </View>
                 <Modal
@@ -450,7 +463,10 @@ class Favorites extends React.Component {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.questionNumberContainer}>
-                            <Text style={styles.questionNumberText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.questionNumberText}
+                            >
                                 Soru {this.state.galleryPosition}/
                                 {Object.keys(this.state.data).length}
                             </Text>
@@ -486,6 +502,7 @@ class Favorites extends React.Component {
                                             }
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={
                                                     styles.questionSubjectText
                                                 }
@@ -534,6 +551,7 @@ class Favorites extends React.Component {
                                 ]}
                             >
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.optionText,
                                         { color: '#00D9EF' }
@@ -544,7 +562,12 @@ class Favorites extends React.Component {
                                     )}
                                 </Text>
                             </View>
-                            <Text style={styles.answerText}>Doğru cevap</Text>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.answerText}
+                            >
+                                Doğru cevap
+                            </Text>
                         </View>
                         <View style={styles.answerContainer}>
                             <TouchableOpacity onPress={this.favouriteOnPress}>
@@ -553,7 +576,10 @@ class Favorites extends React.Component {
                                     style={styles.favIcon}
                                 />
                             </TouchableOpacity>
-                            <Text style={styles.answerText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.answerText}
+                            >
                                 {this.state.isFaved === true
                                     ? 'Favoriden çıkar'
                                     : 'Favoriye ekle'}
@@ -572,7 +598,10 @@ class Favorites extends React.Component {
                                                 style={styles.favIcon}
                                             />
                                         </TouchableOpacity>
-                                        <Text style={styles.answerText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.answerText}
+                                        >
                                             Çözüme bak
                                         </Text>
                                     </View>
@@ -586,7 +615,10 @@ class Favorites extends React.Component {
                                                 style={styles.favIcon}
                                             />
                                         </TouchableOpacity>
-                                        <Text style={styles.answerText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.answerText}
+                                        >
                                             Soruya Dön
                                         </Text>
                                     </View>
@@ -601,7 +633,10 @@ class Favorites extends React.Component {
                                         style={styles.favIcon}
                                     />
                                 </TouchableOpacity>
-                                <Text style={styles.answerText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.answerText}
+                                >
                                     Çözümü izle
                                 </Text>
                             </View>
@@ -624,7 +659,10 @@ class Favorites extends React.Component {
                             source={NO_RESULTS_FAV}
                             style={styles.noResultImg}
                         />
-                        <Text style={styles.noResultsText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.noResultsText}
+                        >
                             Henüz herhangi bir soru favorilemedin
                         </Text>
                     </View>

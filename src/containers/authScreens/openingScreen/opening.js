@@ -355,7 +355,10 @@ class Opening extends React.Component {
                             style={styles.licenceScrollView}
                             showsVerticalScrollIndicator={false}
                         >
-                            <Text style={styles.userAgreementText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.userAgreementText}
+                            >
                                 {this.state.agreementText}
                             </Text>
                         </ScrollView>
@@ -372,7 +375,9 @@ class Opening extends React.Component {
                             marginLeft: wp(6)
                         }}
                     />
-                    <Text style={styles.sinaviaText}>Sınavia</Text>
+                    <Text allowFontScaling={false} style={styles.sinaviaText}>
+                        Sınavia
+                    </Text>
                 </View>
                 <View style={styles.buttonContainer}>
                     <AuthButton
@@ -438,11 +443,12 @@ class Opening extends React.Component {
                     />
                 </View>
                 <View style={styles.spaceView}>
-                    <Text style={styles.oauthInfoText}>
+                    <Text allowFontScaling={false} style={styles.oauthInfoText}>
                         {Platform.OS === 'ios'
                             ? 'Apple veya Google ile Bağlan seçeneklerini kullanarak '
                             : 'Google ile bağlan seçeneğini kullanarak '}
                         <Text
+                            allowFontScaling={false}
                             onPress={this.onPressLicenceView}
                             style={{
                                 textDecorationLine: 'underline',

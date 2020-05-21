@@ -253,7 +253,10 @@ class Notifications extends React.Component {
                                 />
                             </View>
                             <View style={styles.textsinRowWithPic}>
-                                <Text style={styles.notificationRowsText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.notificationRowsText}
+                                >
                                     {item.notificationData.message}
                                 </Text>
                             </View>
@@ -277,13 +280,22 @@ class Notifications extends React.Component {
                                 { height: hp(12) }
                             ]}
                         >
-                            <Text style={styles.gameContentText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.gameContentText}
+                            >
                                 {item.notificationData.examName}
                             </Text>
-                            <Text style={styles.gameContentText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.gameContentText}
+                            >
                                 {item.notificationData.courseName}
                             </Text>
-                            <Text style={styles.gameContentText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.gameContentText}
+                            >
                                 {item.notificationData.subjectName}
                             </Text>
                         </View>
@@ -293,7 +305,10 @@ class Notifications extends React.Component {
                                 { height: hp(12) }
                             ]}
                         >
-                            <Text style={styles.gameRequestText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.gameRequestText}
+                            >
                                 {item.notificationData.message}
                             </Text>
                             <View style={styles.gameRequestButtonsContainer}>
@@ -316,6 +331,7 @@ class Notifications extends React.Component {
                                 >
                                     <View style={styles.acceptButton}>
                                         <Text
+                                            allowFontScaling={false}
                                             style={
                                                 styles.gameRequestsButtonText
                                             }
@@ -343,6 +359,7 @@ class Notifications extends React.Component {
                                 >
                                     <View style={styles.rejectButton}>
                                         <Text
+                                            allowFontScaling={false}
                                             style={
                                                 styles.gameRequestsButtonText
                                             }
@@ -374,7 +391,10 @@ class Notifications extends React.Component {
                                 />
                             </View>
                             <View style={styles.textsinRowWithPic}>
-                                <Text style={styles.notificationRowsText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.notificationRowsText}
+                                >
                                     {item.notificationData.message}
                                 </Text>
                             </View>
@@ -384,9 +404,15 @@ class Notifications extends React.Component {
             case 'nationalPlace':
                 return (
                     <View style={styles.userRow}>
-                        <Text style={styles.notificationRowsText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.notificationRowsText}
+                        >
                             Geçen {item.timePeriod} Türkiye sıralaman{' '}
-                            <Text style={{ color: '#FF9900' }}>
+                            <Text
+                                allowFontScaling={false}
+                                style={{ color: '#FF9900' }}
+                            >
                                 {item.order}
                             </Text>
                             . Başarılı bir hafta dileriz.
@@ -396,10 +422,16 @@ class Notifications extends React.Component {
             case 'earnedScore':
                 return (
                     <View style={styles.userRow}>
-                        <Text style={styles.notificationRowsText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.notificationRowsText}
+                        >
                             Önceki {item.timePeriod}, {item.examName}-
                             {item.courseName} kategorisinde
-                            <Text style={{ color: '#FF9900' }}>
+                            <Text
+                                allowFontScaling={false}
+                                style={{ color: '#FF9900' }}
+                            >
                                 {' '}
                                 {item.sinaviaScore} Sınavia Puanı{' '}
                             </Text>
@@ -411,13 +443,22 @@ class Notifications extends React.Component {
                 return (
                     <View>
                         <View style={styles.userRow}>
-                            <Text style={styles.notificationRowsText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.notificationRowsText}
+                            >
                                 {item.examName}-{item.courseName} dersinin{' '}
-                                <Text style={{ color: '#00D9EF' }}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{ color: '#00D9EF' }}
+                                >
                                     {item.subjectName}
                                 </Text>{' '}
                                 konusundaki başarı oranın{' '}
-                                <Text style={{ color: '#FF9900' }}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={{ color: '#FF9900' }}
+                                >
                                     {item.successPercentage}%
                                 </Text>
                                 . Biraz daha çalışmalısın.
@@ -433,10 +474,16 @@ class Notifications extends React.Component {
                     <View>
                         <TouchableOpacity>
                             <View style={styles.userRow}>
-                                <Text style={styles.notificationRowsText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.notificationRowsText}
+                                >
                                     Geçen {item.timePeriod} istatistiklerini
                                     görmek için{' '}
-                                    <Text style={{ color: '#00D9EF' }}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={{ color: '#00D9EF' }}
+                                    >
                                         TIKLA!
                                     </Text>{' '}
                                 </Text>
@@ -590,7 +637,10 @@ class Notifications extends React.Component {
         else
             return (
                 <View style={styles.emptyFlatListContainer}>
-                    <Text style={styles.emptyFlatListText}>
+                    <Text
+                        allowFontScaling={false}
+                        style={styles.emptyFlatListText}
+                    >
                         Henüz arkadaşlık isteğin yok!
                     </Text>
                 </View>
@@ -607,7 +657,10 @@ class Notifications extends React.Component {
         else
             return (
                 <View style={styles.emptyFlatListContainer}>
-                    <Text style={styles.emptyFlatListText}>
+                    <Text
+                        allowFontScaling={false}
+                        style={styles.emptyFlatListText}
+                    >
                         Henüz bir bildirimin yok!
                     </Text>
                 </View>
@@ -641,6 +694,7 @@ class Notifications extends React.Component {
                             ]}
                         >
                             <Text
+                                allowFontScaling={false}
                                 style={[
                                     styles.tabbarGeneralNotificationsText,
                                     {
@@ -670,6 +724,7 @@ class Notifications extends React.Component {
                             ]}
                         >
                             <Text
+                                allowFontScaling={false}
                                 style={[
                                     styles.tabbarFriendsRequestsText,
                                     {
@@ -736,7 +791,10 @@ class Notifications extends React.Component {
                                                     )
                                                 }
                                             >
-                                                <Text style={styles.nameText}>
+                                                <Text
+                                                    allowFontScaling={false}
+                                                    style={styles.nameText}
+                                                >
                                                     {item.name +
                                                         ' ' +
                                                         item.lastname}

@@ -95,7 +95,12 @@ class Tutorial extends React.Component {
                                 style={styles.skipButton}
                                 onPress={this.goToLastIndex}
                             >
-                                <Text style={styles.skipButtonText}>Atla</Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.skipButtonText}
+                                >
+                                    Atla
+                                </Text>
                             </TouchableOpacity>
                             <Image
                                 source={firstPageTutorialImg}
@@ -103,12 +108,18 @@ class Tutorial extends React.Component {
                             />
                         </View>
                         <View style={styles.headerTextContainer}>
-                            <Text style={styles.headerText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.headerText}
+                            >
                                 Sınavia'ya hoş geldin!
                             </Text>
                         </View>
                         <View style={styles.infoTextContainer}>
-                            <Text style={styles.infoText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.infoText}
+                            >
                                 Başarı basamaklarını beraber çıkmaya ne dersin?
                                 Sınavia ile sen de kazanacaksın!
                             </Text>
@@ -122,12 +133,18 @@ class Tutorial extends React.Component {
                             />
                         </View>
                         <View style={styles.headerTextContainer}>
-                            <Text style={styles.headerText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.headerText}
+                            >
                                 Eğlenerek soru çöz
                             </Text>
                         </View>
                         <View style={styles.infoTextContainer}>
-                            <Text style={styles.infoText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.infoText}
+                            >
                                 İster dereceli, istersen arkadaşın veya arkadaş
                                 grubunla soru çözerek yarış!
                             </Text>
@@ -145,6 +162,7 @@ class Tutorial extends React.Component {
                         </View>
                         <View style={styles.headerTextContainer}>
                             <Text
+                                allowFontScaling={false}
                                 style={[
                                     styles.headerText,
                                     { fontSize: hp(4.2) }
@@ -154,7 +172,10 @@ class Tutorial extends React.Component {
                             </Text>
                         </View>
                         <View style={styles.infoTextContainer}>
-                            <Text style={styles.infoText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.infoText}
+                            >
                                 Tüm derslerinin istatistiklerini takip et,
                                 dilediğin soruyu favorile veya paylaş!
                             </Text>
@@ -179,6 +200,7 @@ class Tutorial extends React.Component {
                             style={[styles.headerTextContainer, { flex: 11 }]}
                         >
                             <Text
+                                allowFontScaling={false}
                                 style={[
                                     styles.headerText,
                                     { fontSize: hp(3.2), marginBottom: hp(0) }
@@ -189,6 +211,7 @@ class Tutorial extends React.Component {
                         </View>
                         <View style={[styles.infoTextContainer, { flex: 39 }]}>
                             <Text
+                                allowFontScaling={false}
                                 style={[
                                     styles.infoText,
                                     { marginTop: hp(4.2) }
@@ -202,7 +225,12 @@ class Tutorial extends React.Component {
                                 style={styles.startButton}
                                 onPress={() => this.goToOpeningScreen()}
                             >
-                                <Text style={styles.skipButtonText}>BAŞLA</Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.skipButtonText}
+                                >
+                                    BAŞLA
+                                </Text>
                             </TouchableOpacity>
                         </View>
                     </View>

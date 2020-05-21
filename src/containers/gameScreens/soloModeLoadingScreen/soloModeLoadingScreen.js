@@ -115,10 +115,16 @@ class SoloModeLoadingScreen extends React.Component {
                             animation="fadeIn"
                             delay={500}
                         >
-                            <Text style={styles.courseText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.courseText}
+                            >
                                 {this.getNames().courseName}
                             </Text>
-                            <Text style={styles.subjectText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.subjectText}
+                            >
                                 {this.getNames().subjectName}
                             </Text>
                             <Animatable.View
@@ -127,7 +133,10 @@ class SoloModeLoadingScreen extends React.Component {
                                 delay={2000}
                                 duration={1500}
                             >
-                                <Text style={styles.questionCounterText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.questionCounterText}
+                                >
                                     Soru Sayısı:{' '}
                                     {this.props.choosenQuestionAmount}
                                 </Text>

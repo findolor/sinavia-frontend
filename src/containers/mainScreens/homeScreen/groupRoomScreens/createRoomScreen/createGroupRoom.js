@@ -249,6 +249,7 @@ class CreateGroupRoom extends React.Component {
                                     <View style={styles.gameCodeBoxLeftView} />
                                     <View style={styles.gameCodeBoxTextView}>
                                         <Text
+                                            allowFontScaling={false}
                                             style={styles.gameCodeText}
                                             selectable={true}
                                         >
@@ -268,15 +269,24 @@ class CreateGroupRoom extends React.Component {
                                 </View>
                             </View>
                             <View style={styles.gameCodeInfoTextContainer}>
-                                <Text style={styles.gameCodeInfoText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.gameCodeInfoText}
+                                >
                                     Grup olarak oynamak için{' '}
                                 </Text>
-                                <Text style={styles.gameCodeInfoText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.gameCodeInfoText}
+                                >
                                     yukarıdaki kodu arkadaşlarınla paylaş
                                 </Text>
                             </View>
                             <View style={styles.questionsNumberContainer}>
-                                <Text style={styles.questionsNumberText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.questionsNumberText}
+                                >
                                     Soru Sayısı
                                 </Text>
                                 <TouchableOpacity
@@ -296,6 +306,7 @@ class CreateGroupRoom extends React.Component {
                                     }}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             styles.questionNumberText,
                                             {
@@ -334,6 +345,7 @@ class CreateGroupRoom extends React.Component {
                                     }}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             styles.questionNumberText,
                                             {
@@ -381,6 +393,7 @@ class CreateGroupRoom extends React.Component {
                                                     style={styles.nameContainer}
                                                 >
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={styles.nameText}
                                                     >
                                                         {item.username}
@@ -398,6 +411,9 @@ class CreateGroupRoom extends React.Component {
                                                         ]}
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.playerStatusText
                                                             }
@@ -435,7 +451,10 @@ class CreateGroupRoom extends React.Component {
                                     source={PEOPLE_COUNTER_IMG}
                                     style={styles.peopleCounterImg}
                                 />
-                                <Text style={styles.usersCounterText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.usersCounterText}
+                                >
                                     {
                                         Object.keys(
                                             this.state.groupRoomPlayerList
@@ -477,10 +496,16 @@ class CreateGroupRoom extends React.Component {
                         ></View>
                         <View style={styles.modalContainer}>
                             <View style={styles.quitView}>
-                                <Text style={styles.areYouSureText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.areYouSureText}
+                                >
                                     Odadan çıkış yapmak istediğine
                                 </Text>
-                                <Text style={styles.areYouSureText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.areYouSureText}
+                                >
                                     emin misin?
                                 </Text>
                             </View>

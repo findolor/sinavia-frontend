@@ -358,7 +358,10 @@ class Register extends React.Component {
                                 }}
                                 showsVerticalScrollIndicator={false}
                             >
-                                <Text style={styles.userAgreementText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.userAgreementText}
+                                >
                                     {this.props.agreementText}
                                 </Text>
                             </ScrollView>
@@ -389,7 +392,10 @@ class Register extends React.Component {
                                 }}
                                 style={styles.acceptLicenceButton}
                             >
-                                <Text style={styles.acceptLicenceText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.acceptLicenceText}
+                                >
                                     Onaylıyorum
                                 </Text>
                             </TouchableOpacity>
@@ -428,6 +434,7 @@ class Register extends React.Component {
                             ]}
                         >
                             <TextInput
+                                allowFontScaling={false}
                                 style={styles.textInput}
                                 secureTextEntry={this.state.hidePasswordFirst}
                                 placeholder="Şifre"
@@ -479,6 +486,7 @@ class Register extends React.Component {
                             ]}
                         >
                             <TextInput
+                                allowFontScaling={false}
                                 style={styles.textInput}
                                 secureTextEntry={this.state.hidePasswordSecond}
                                 placeholder="Şifre (Tekrar)                                                                     "
@@ -546,8 +554,12 @@ class Register extends React.Component {
                             />
                         </View>
                         <View style={styles.licenseTextContainer}>
-                            <Text style={styles.toggleText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.toggleText}
+                            >
                                 <Text
+                                    allowFontScaling={false}
                                     onPress={this.onPressLicenceView}
                                     style={{
                                         textDecorationLine: 'underline',
@@ -573,9 +585,13 @@ class Register extends React.Component {
                         />
                     </View>
                     <View style={styles.gotoLoginContainer}>
-                        <Text style={styles.gotoLoginTextFirst}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.gotoLoginTextFirst}
+                        >
                             Zaten bir hesabın var mı?{' '}
                             <Text
+                                allowFontScaling={false}
                                 onPress={this.goToLoginScreen}
                                 style={styles.gotoLoginTextSecond}
                             >

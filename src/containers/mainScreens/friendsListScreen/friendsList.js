@@ -137,6 +137,7 @@ class FriendsList extends React.Component {
                     <View style={styles.searchBar}>
                         <View style={styles.textInputView}>
                             <TextInput
+                                allowFontScaling={false}
                                 style={styles.searchBarText}
                                 placeholder={
                                     this.props.isFromOpponentScreen === true
@@ -197,6 +198,9 @@ class FriendsList extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.nameText
                                                             }
@@ -206,6 +210,9 @@ class FriendsList extends React.Component {
                                                                 item.lastname}
                                                         </Text>
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.userNameText
                                                             }
@@ -230,11 +237,17 @@ class FriendsList extends React.Component {
                                 style={styles.noResultImg}
                             />
                             {this.props.listSource === 'profile' ? (
-                                <Text style={styles.noResultsText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.noResultsText}
+                                >
                                     Henüz bir arkadaşın yok
                                 </Text>
                             ) : (
-                                <Text style={styles.noResultsText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.noResultsText}
+                                >
                                     Bu kişinin henüz bir arkadaşı yok
                                 </Text>
                             )}

@@ -222,14 +222,14 @@ class FriendMatchingScreen extends React.Component {
             <View style={styles.container}>
                 <NotchView color={'#00D9EF'} />
                 <View style={styles.contentContainer}>
-                    <Text style={styles.courseText}>
+                    <Text allowFontScaling={false} style={styles.courseText}>
                         {
                             this.props.gameContentMap.courses[
                                 this.props.courseId - 1
                             ].name
                         }
                     </Text>
-                    <Text style={styles.subjectText}>
+                    <Text allowFontScaling={false} style={styles.subjectText}>
                         {
                             this.props.gameContentMap.subjects[
                                 this.props.subjectId - 1
@@ -270,6 +270,7 @@ class FriendMatchingScreen extends React.Component {
                                     delay={800}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             styles.usernameText,
                                             { marginLeft: wp(3) }
@@ -278,6 +279,7 @@ class FriendMatchingScreen extends React.Component {
                                         @{this.props.clientInformation.username}
                                     </Text>
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             styles.subjectBasedSinaviaScoreText,
                                             { marginLeft: wp(3) }
@@ -310,6 +312,7 @@ class FriendMatchingScreen extends React.Component {
                                     delay={800}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             styles.usernameText,
                                             { marginRight: wp(3) }
@@ -324,6 +327,7 @@ class FriendMatchingScreen extends React.Component {
 
                                     {this.state.errorMessage === true && (
                                         <Text
+                                            allowFontScaling={false}
                                             style={[
                                                 styles.subjectBasedSinaviaScoreText,
                                                 {
@@ -340,6 +344,7 @@ class FriendMatchingScreen extends React.Component {
                                     )}
                                     {this.state.errorMessage === false && (
                                         <Text
+                                            allowFontScaling={false}
                                             style={[
                                                 styles.subjectBasedSinaviaScoreText,
                                                 { marginRight: wp(3) }
@@ -375,10 +380,16 @@ class FriendMatchingScreen extends React.Component {
                     </View>
                     <View style={styles.separatorView}>
                         <View style={styles.separatorLineUser}>
-                            <Text style={styles.winLoseText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.winLoseText}
+                            >
                                 {this.state.friendMatchClientWinCount}
                             </Text>
-                            <Text style={styles.winLoseCounterText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.winLoseCounterText}
+                            >
                                 Galibiyet
                             </Text>
                         </View>
@@ -403,10 +414,16 @@ class FriendMatchingScreen extends React.Component {
                                     <TouchableOpacity
                                         onPress={this.playAheadOnPress}
                                     >
-                                        <Text style={styles.startFirstText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.startFirstText}
+                                        >
                                             ÖNDEN
                                         </Text>
-                                        <Text style={styles.startFirstText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.startFirstText}
+                                        >
                                             OYNA
                                         </Text>
                                     </TouchableOpacity>
@@ -416,10 +433,16 @@ class FriendMatchingScreen extends React.Component {
                             )}
                         </View>
                         <View style={styles.separatorLineOpponent}>
-                            <Text style={styles.winLoseText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.winLoseText}
+                            >
                                 {this.state.friendMatchOpponentWinCount}
                             </Text>
-                            <Text style={styles.winLoseCounterText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.winLoseCounterText}
+                            >
                                 Galibiyet
                             </Text>
                         </View>

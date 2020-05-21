@@ -170,7 +170,9 @@ class GetInfo extends React.Component {
                     }}
                 />
                 <View style={styles.modalView}>
-                    <Text style={styles.pickCityText}>Şehir Seç</Text>
+                    <Text allowFontScaling={false} style={styles.pickCityText}>
+                        Şehir Seç
+                    </Text>
                     <FlatList
                         data={this.state.citiesList}
                         vertical={true}
@@ -183,7 +185,10 @@ class GetInfo extends React.Component {
                                             this.cityOnPress(item.cityName)
                                         }
                                     >
-                                        <Text style={styles.cityRowText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.cityRowText}
+                                        >
                                             {item.cityName}
                                         </Text>
                                     </TouchableOpacity>
@@ -422,6 +427,7 @@ class GetInfo extends React.Component {
                         <TouchableOpacity onPress={this.showDateTimePicker}>
                             <View style={styles.textInputContainer}>
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.textInput,
                                         {
@@ -445,6 +451,7 @@ class GetInfo extends React.Component {
                         <TouchableOpacity onPress={this.openModalVisible}>
                             <View style={styles.textInputContainer}>
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.textInput,
                                         {
