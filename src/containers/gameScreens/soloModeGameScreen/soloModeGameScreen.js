@@ -669,7 +669,7 @@ class SoloModeGameScreen extends React.Component {
                             allowFontScaling={false}
                             style={styles.areYouSureText}
                         >
-                            Sonuç sayfasına yönlendirileceksin
+                            Ana sayfaya yönlendirileceksin
                         </Text>
                     </View>
                 </View>
@@ -726,35 +726,6 @@ class SoloModeGameScreen extends React.Component {
                                 this.setState({ isQuitGameModalVisible: false })
                             }
                         />
-                    </View>
-                </View>
-            </View>
-        )
-    }
-
-    serverError() {
-        return (
-            <View
-                style={{
-                    height: hp(120),
-                    width: wp(100),
-                    backgroundColor: '#000000DE'
-                }}
-            >
-                <View style={styles.modalContainer}>
-                    <View style={styles.quitView}>
-                        <Text
-                            allowFontScaling={false}
-                            style={styles.areYouSureText}
-                        >
-                            Sunucu hatası
-                        </Text>
-                        <Text
-                            allowFontScaling={false}
-                            style={styles.areYouSureText}
-                        >
-                            Sonuç sayfasına yönlendirileceksin
-                        </Text>
                     </View>
                 </View>
             </View>

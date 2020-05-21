@@ -752,7 +752,7 @@ class SoloFriendGameScreen extends React.Component {
                             allowFontScaling={false}
                             style={styles.areYouSureText}
                         >
-                            Sonuç sayfasına yönlendirileceksin
+                            Ana sayfaya yönlendirileceksin
                         </Text>
                     </View>
                 </View>
