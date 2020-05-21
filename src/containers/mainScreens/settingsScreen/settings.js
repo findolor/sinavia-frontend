@@ -583,7 +583,9 @@ class Settings extends React.Component {
                     }}
                 />
                 <View style={styles.modalView}>
-                    <Text style={styles.pickCityText}>Şehir Seç</Text>
+                    <Text allowFontScaling={false} style={styles.pickCityText}>
+                        Şehir Seç
+                    </Text>
                     <FlatList
                         data={this.state.citiesList}
                         vertical={true}
@@ -596,7 +598,10 @@ class Settings extends React.Component {
                                             this.cityOnPress(item.cityName)
                                         }
                                     >
-                                        <Text style={styles.cityRowText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.cityRowText}
+                                        >
                                             {item.cityName}
                                         </Text>
                                     </TouchableOpacity>
@@ -638,7 +643,12 @@ class Settings extends React.Component {
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this.saveButtonOnPress}>
                             <View style={styles.saveButton}>
-                                <Text style={styles.saveText}>Kaydet</Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.saveText}
+                                >
+                                    Kaydet
+                                </Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -699,7 +709,10 @@ class Settings extends React.Component {
                     <View style={styles.textInputsContainer}>
                         <View style={styles.textInputContainer}>
                             <View style={styles.textInputTitleContainer}>
-                                <Text style={styles.textInputTitle}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.textInputTitle}
+                                >
                                     Kullanıcı Adı
                                 </Text>
                             </View>
@@ -713,6 +726,7 @@ class Settings extends React.Component {
                                 ]}
                             >
                                 <TextInput
+                                    allowFontScaling={false}
                                     placeholder={
                                         this.props.clientInformation.username
                                     }
@@ -730,7 +744,12 @@ class Settings extends React.Component {
                         </View>
                         <View style={styles.textInputContainer}>
                             <View style={styles.textInputTitleContainer}>
-                                <Text style={styles.textInputTitle}>Ad</Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.textInputTitle}
+                                >
+                                    Ad
+                                </Text>
                             </View>
                             <View
                                 style={[
@@ -739,6 +758,7 @@ class Settings extends React.Component {
                                 ]}
                             >
                                 <TextInput
+                                    allowFontScaling={false}
                                     placeholder={
                                         this.props.clientInformation.name
                                     }
@@ -754,7 +774,12 @@ class Settings extends React.Component {
                         </View>
                         <View style={styles.textInputContainer}>
                             <View style={styles.textInputTitleContainer}>
-                                <Text style={styles.textInputTitle}>Soyad</Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.textInputTitle}
+                                >
+                                    Soyad
+                                </Text>
                             </View>
                             <View
                                 style={[
@@ -766,6 +791,7 @@ class Settings extends React.Component {
                                 ]}
                             >
                                 <TextInput
+                                    allowFontScaling={false}
                                     placeholder={
                                         this.props.clientInformation.lastname
                                     }
@@ -781,7 +807,12 @@ class Settings extends React.Component {
                         </View>
                         <View style={styles.textInputContainer}>
                             <View style={styles.textInputTitleContainer}>
-                                <Text style={styles.textInputTitle}>Şehir</Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.textInputTitle}
+                                >
+                                    Şehir
+                                </Text>
                             </View>
                             <TouchableOpacity
                                 onPress={this.openCityModalVisible}
@@ -795,7 +826,10 @@ class Settings extends React.Component {
                                         }
                                     ]}
                                 >
-                                    <Text style={styles.cityTextInputStyle}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.cityTextInputStyle}
+                                    >
                                         {this.state.city}
                                     </Text>
                                 </View>
@@ -809,7 +843,10 @@ class Settings extends React.Component {
                                 onPress={this.changePasswordOnPress}
                             >
                                 <View style={styles.changePasswordButton}>
-                                    <Text style={styles.changePasswordText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.changePasswordText}
+                                    >
                                         Şifre değiştir
                                     </Text>
                                 </View>
@@ -817,7 +854,12 @@ class Settings extends React.Component {
                         )}
                         <TouchableOpacity onPress={this.logoutButtonOnPress}>
                             <View style={styles.logoutButton}>
-                                <Text style={styles.logoutText}>Çıkış yap</Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.logoutText}
+                                >
+                                    Çıkış yap
+                                </Text>
                             </View>
                         </TouchableOpacity>
                     </View>

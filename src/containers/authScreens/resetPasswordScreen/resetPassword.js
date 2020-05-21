@@ -104,7 +104,7 @@ class ResetPassword extends React.Component {
                         />
                     </View>
                     <View style={styles.textContainer}>
-                        <Text style={styles.textStyle}>
+                        <Text allowFontScaling={false} style={styles.textStyle}>
                             Uygulamada kullanmakta olduğun e-posta'nı gir, biz
                             de sana şifreni yenilemen için bir link gönderelim.
                         </Text>

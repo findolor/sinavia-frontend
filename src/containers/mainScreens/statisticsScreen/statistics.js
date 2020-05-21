@@ -1187,6 +1187,7 @@ class Statistics extends React.Component {
                                         }
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={
                                                 styles.totalGamesPlayedAndSolvedQuestionsCounter
                                             }
@@ -1194,6 +1195,7 @@ class Statistics extends React.Component {
                                             {this.state.overallGames}
                                         </Text>
                                         <Text
+                                            allowFontScaling={false}
                                             style={
                                                 styles.totalGamesPlayedAndSolvedQuestionsText
                                             }
@@ -1201,19 +1203,29 @@ class Statistics extends React.Component {
                                             Bütün Modlar
                                         </Text>
                                         <Text
+                                            allowFontScaling={false}
                                             style={
                                                 styles.totalGamesPlayedAndSolvedQuestionsAmountText
                                             }
                                         >
                                             Oyun Sayısı
                                         </Text>
-                                        <Text style={styles.wonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.wonText}
+                                        >
                                             Kazandığı: {this.state.overallWin}
                                         </Text>
-                                        <Text style={styles.drawText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.drawText}
+                                        >
                                             Beraberlik: {this.state.overallDraw}
                                         </Text>
-                                        <Text style={styles.lostText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.lostText}
+                                        >
                                             Kaybettiği: {this.state.overallLose}
                                         </Text>
                                     </View>
@@ -1230,6 +1242,7 @@ class Statistics extends React.Component {
                                             progressWidth={wp(5)}
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={
                                                     styles.chartPercentageText
                                                 }
@@ -1255,6 +1268,7 @@ class Statistics extends React.Component {
                                         }
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={
                                                 styles.totalGamesPlayedAndSolvedQuestionsCounter
                                             }
@@ -1262,6 +1276,7 @@ class Statistics extends React.Component {
                                             {this.state.totalRankedGames}
                                         </Text>
                                         <Text
+                                            allowFontScaling={false}
                                             style={
                                                 styles.totalGamesPlayedAndSolvedQuestionsText
                                             }
@@ -1269,21 +1284,31 @@ class Statistics extends React.Component {
                                             Dereceli
                                         </Text>
                                         <Text
+                                            allowFontScaling={false}
                                             style={
                                                 styles.totalGamesPlayedAndSolvedQuestionsAmountText
                                             }
                                         >
                                             Oyun Sayısı
                                         </Text>
-                                        <Text style={styles.wonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.wonText}
+                                        >
                                             Kazandığı:{' '}
                                             {this.state.totalRankedWin}
                                         </Text>
-                                        <Text style={styles.drawText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.drawText}
+                                        >
                                             Beraberlik:{' '}
                                             {this.state.totalRankedDraw}
                                         </Text>
-                                        <Text style={styles.lostText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.lostText}
+                                        >
                                             Kaybettiği:{' '}
                                             {this.state.totalRankedLose}
                                         </Text>
@@ -1302,6 +1327,7 @@ class Statistics extends React.Component {
                                             progressWidth={wp(5)}
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={
                                                     styles.chartPercentageText
                                                 }
@@ -1328,6 +1354,7 @@ class Statistics extends React.Component {
                                         }
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={
                                                 styles.totalGamesPlayedAndSolvedQuestionsCounter
                                             }
@@ -1335,6 +1362,7 @@ class Statistics extends React.Component {
                                             {this.state.totalFriendGames}
                                         </Text>
                                         <Text
+                                            allowFontScaling={false}
                                             style={
                                                 styles.totalGamesPlayedAndSolvedQuestionsText
                                             }
@@ -1342,21 +1370,31 @@ class Statistics extends React.Component {
                                             Arkadaşla
                                         </Text>
                                         <Text
+                                            allowFontScaling={false}
                                             style={
                                                 styles.totalGamesPlayedAndSolvedQuestionsAmountText
                                             }
                                         >
                                             Oyun Sayısı
                                         </Text>
-                                        <Text style={styles.wonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.wonText}
+                                        >
                                             Kazandığı:{' '}
                                             {this.state.totalFriendWin}
                                         </Text>
-                                        <Text style={styles.drawText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.drawText}
+                                        >
                                             Beraberlik:{' '}
                                             {this.state.totalFriendDraw}
                                         </Text>
-                                        <Text style={styles.lostText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.lostText}
+                                        >
                                             Kaybettiği:{' '}
                                             {this.state.totalFriendLose}
                                         </Text>
@@ -1375,6 +1413,7 @@ class Statistics extends React.Component {
                                             progressWidth={wp(5)}
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={
                                                     styles.chartPercentageText
                                                 }
@@ -1401,6 +1440,7 @@ class Statistics extends React.Component {
                                         }
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={
                                                 styles.totalGamesPlayedAndSolvedQuestionsCounter
                                             }
@@ -1408,6 +1448,7 @@ class Statistics extends React.Component {
                                             {this.state.totalGroupGames}
                                         </Text>
                                         <Text
+                                            allowFontScaling={false}
                                             style={
                                                 styles.totalGamesPlayedAndSolvedQuestionsText
                                             }
@@ -1415,6 +1456,7 @@ class Statistics extends React.Component {
                                             Grupla
                                         </Text>
                                         <Text
+                                            allowFontScaling={false}
                                             style={
                                                 styles.totalGamesPlayedAndSolvedQuestionsAmountText
                                             }
@@ -1430,6 +1472,7 @@ class Statistics extends React.Component {
                                         }
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={
                                                 styles.totalGamesPlayedAndSolvedQuestionsCounter
                                             }
@@ -1437,6 +1480,7 @@ class Statistics extends React.Component {
                                             {this.state.totalSoloGames}
                                         </Text>
                                         <Text
+                                            allowFontScaling={false}
                                             style={
                                                 styles.totalGamesPlayedAndSolvedQuestionsText
                                             }
@@ -1444,6 +1488,7 @@ class Statistics extends React.Component {
                                             Solo/TekrarÇöz
                                         </Text>
                                         <Text
+                                            allowFontScaling={false}
                                             style={
                                                 styles.totalGamesPlayedAndSolvedQuestionsAmountText
                                             }
@@ -1460,6 +1505,7 @@ class Statistics extends React.Component {
                                     style={styles.totalQuestionsSolvedContainer}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={
                                             styles.totalGamesPlayedAndSolvedQuestionsCounter
                                         }
@@ -1470,6 +1516,7 @@ class Statistics extends React.Component {
                                         }
                                     </Text>
                                     <Text
+                                        allowFontScaling={false}
                                         style={
                                             styles.totalGamesPlayedAndSolvedQuestionsText
                                         }
@@ -1480,10 +1527,16 @@ class Statistics extends React.Component {
                                 <View style={styles.percentageContainer}>
                                     <View style={styles.correctPoint} />
                                     <View style={styles.percentagesTextView}>
-                                        <Text style={styles.optionsText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.optionsText}
+                                        >
                                             DOĞRU
                                         </Text>
-                                        <Text style={styles.percentagesText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.percentagesText}
+                                        >
                                             {
                                                 this.questionStatsSwitcher()
                                                     .totalCorrect
@@ -1499,10 +1552,16 @@ class Statistics extends React.Component {
                                 <View style={styles.percentageContainer}>
                                     <View style={styles.incorrectPoint} />
                                     <View style={styles.percentagesTextView}>
-                                        <Text style={styles.optionsText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.optionsText}
+                                        >
                                             YANLIŞ
                                         </Text>
-                                        <Text style={styles.percentagesText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.percentagesText}
+                                        >
                                             {
                                                 this.questionStatsSwitcher()
                                                     .totalIncorrect
@@ -1518,10 +1577,16 @@ class Statistics extends React.Component {
                                 <View style={styles.percentageContainer}>
                                     <View style={styles.unansweredPoint} />
                                     <View style={styles.percentagesTextView}>
-                                        <Text style={styles.optionsText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.optionsText}
+                                        >
                                             BOŞ
                                         </Text>
-                                        <Text style={styles.percentagesText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.percentagesText}
+                                        >
                                             {
                                                 this.questionStatsSwitcher()
                                                     .totalUnanswered
@@ -1574,7 +1639,10 @@ class Statistics extends React.Component {
                         <View style={styles.timezoneChartContainer}>
                             <View style={styles.timezonesTextView}>
                                 {this.state.timezone === 'Bu hafta' && (
-                                    <Text style={styles.timezonesText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.timezonesText}
+                                    >
                                         {Moment.utc()
                                             .startOf('week')
                                             .add(
@@ -1593,7 +1661,10 @@ class Statistics extends React.Component {
                                     </Text>
                                 )}
                                 {this.state.timezone === 'Bu ay' && (
-                                    <Text style={styles.timezonesText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.timezonesText}
+                                    >
                                         {Moment.utc()
                                             .startOf('month')
                                             .add(
@@ -1613,6 +1684,7 @@ class Statistics extends React.Component {
                                 )}
                                 {this.state.timezone === 'Son 6 ay' && (
                                     <Text
+                                        allowFontScaling={false}
                                         style={styles.timezonesTextLastMonths}
                                     >
                                         {Moment.utc()

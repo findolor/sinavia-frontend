@@ -58,10 +58,10 @@ class RankedMatchingScreen extends React.Component {
             <View style={styles.container}>
                 <NotchView color={'#00D9EF'} />
                 <View style={styles.contentContainer}>
-                    <Text style={styles.courseText}>
+                    <Text allowFontScaling={false} style={styles.courseText}>
                         {this.props.courseName}
                     </Text>
-                    <Text style={styles.subjectText}>
+                    <Text allowFontScaling={false} style={styles.subjectText}>
                         {this.props.subjectName}
                     </Text>
                 </View>
@@ -95,6 +95,7 @@ class RankedMatchingScreen extends React.Component {
                                     delay={800}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             styles.usernameText,
                                             { marginLeft: wp(3) }
@@ -103,6 +104,7 @@ class RankedMatchingScreen extends React.Component {
                                         @{this.props.playerUsername}
                                     </Text>
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             styles.sinaviaScoreText,
                                             { marginLeft: wp(3) }
@@ -125,6 +127,7 @@ class RankedMatchingScreen extends React.Component {
                                             />
                                         )}
                                         <Text
+                                            allowFontScaling={false}
                                             style={[
                                                 styles.locationText,
                                                 { marginLeft: wp(1.7) }
@@ -152,6 +155,7 @@ class RankedMatchingScreen extends React.Component {
                                     delay={800}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             styles.usernameText,
                                             { marginRight: wp(3) }
@@ -160,6 +164,7 @@ class RankedMatchingScreen extends React.Component {
                                         @{this.props.opponentUsername}
                                     </Text>
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             styles.sinaviaScoreText,
                                             { marginRight: wp(3) }
@@ -188,6 +193,7 @@ class RankedMatchingScreen extends React.Component {
                                             />
                                         )}
                                         <Text
+                                            allowFontScaling={false}
                                             style={[
                                                 styles.locationText,
                                                 { marginRight: wp(3) }

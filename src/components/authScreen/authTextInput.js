@@ -16,6 +16,7 @@ export default AuthTextInput = ({
     return (
         <View style={[styles.textInputContainer, { borderColor: borderColor }]}>
             <TextInput
+                allowFontScaling={false}
                 style={styles.textInput}
                 placeholder={placeholder}
                 placeholderTextColor={placeholderTextColor}

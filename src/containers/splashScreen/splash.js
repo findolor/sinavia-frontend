@@ -153,7 +153,10 @@ class SplashScreen extends React.PureComponent {
                                         />
                                     </View>
                                     <View style={styles.tryAgainTextContainer}>
-                                        <Text style={styles.tryAgainText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.tryAgainText}
+                                        >
                                             {this.props.connectionErrorMessage}
                                         </Text>
                                     </View>

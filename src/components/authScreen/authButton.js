@@ -45,7 +45,10 @@ export default AuthButton = ({
             onPress={onPress}
             disabled={disabled}
         >
-            <Text style={[styles.buttonText, { fontSize: fontSize }]}>
+            <Text
+                allowFontScaling={false}
+                style={[styles.buttonText, { fontSize: fontSize }]}
+            >
                 {buttonText}
             </Text>
 

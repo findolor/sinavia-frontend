@@ -599,7 +599,10 @@ class GameStatsScreen extends React.Component {
                         ]}
                     >
                         <View style={premiumStyles.premiumModalHeaderView}>
-                            <Text style={premiumStyles.premiumModalHeaderText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={premiumStyles.premiumModalHeaderText}
+                            >
                                 ELİT ÖĞRENCİ PAKETİ
                             </Text>
                         </View>
@@ -622,6 +625,7 @@ class GameStatsScreen extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={
                                             premiumStyles.premiumModalHeaderText
                                         }
@@ -639,6 +643,7 @@ class GameStatsScreen extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             premiumStyles.premiumModalInfoText,
                                             { marginTop: hp(1.5) }
@@ -674,7 +679,10 @@ class GameStatsScreen extends React.Component {
                         ]}
                     >
                         <View style={premiumStyles.premiumModalHeaderView}>
-                            <Text style={premiumStyles.premiumModalHeaderText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={premiumStyles.premiumModalHeaderText}
+                            >
                                 ELİT ÖĞRENCİ PAKETİ
                             </Text>
                         </View>
@@ -697,6 +705,7 @@ class GameStatsScreen extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={
                                             premiumStyles.premiumModalHeaderText
                                         }
@@ -714,6 +723,7 @@ class GameStatsScreen extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             premiumStyles.premiumModalInfoText,
                                             { marginTop: hp(1.5) }
@@ -749,7 +759,10 @@ class GameStatsScreen extends React.Component {
                         ]}
                     >
                         <View style={premiumStyles.premiumModalHeaderView}>
-                            <Text style={premiumStyles.premiumModalHeaderText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={premiumStyles.premiumModalHeaderText}
+                            >
                                 ELİT ÖĞRENCİ PAKETİ
                             </Text>
                         </View>
@@ -772,6 +785,7 @@ class GameStatsScreen extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={
                                             premiumStyles.premiumModalHeaderText
                                         }
@@ -789,6 +803,7 @@ class GameStatsScreen extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             premiumStyles.premiumModalInfoText,
                                             { marginTop: hp(1.5) }
@@ -879,8 +894,14 @@ class GameStatsScreen extends React.Component {
                     <View style={styles.resultsContainer}>
                         {this.state.levelUp ? (
                             <View style={styles.levelUpContainer}>
-                                <Text style={styles.levelUpText}>SÜPER!</Text>
                                 <Text
+                                    allowFontScaling={false}
+                                    style={styles.levelUpText}
+                                >
+                                    SÜPER!
+                                </Text>
+                                <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.levelUpText2,
                                         { fontSize: hp(8) }
@@ -890,7 +911,10 @@ class GameStatsScreen extends React.Component {
                                         levelFinder(this.state.oldPoints).level
                                     ) + 1}
                                 </Text>
-                                <Text style={styles.levelUpText2}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.levelUpText2}
+                                >
                                     seviyeye ulaştın
                                 </Text>
                             </View>
@@ -905,7 +929,10 @@ class GameStatsScreen extends React.Component {
                                             }}
                                             style={styles.profilePic}
                                         />
-                                        <Text style={styles.usernameText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.usernameText}
+                                        >
                                             {this.state.clientUsername}
                                         </Text>
                                     </View>
@@ -916,7 +943,10 @@ class GameStatsScreen extends React.Component {
                                                     styles.playerOneAnswerView
                                                 }
                                             >
-                                                <Text style={styles.numbers}>
+                                                <Text
+                                                    allowFontScaling={false}
+                                                    style={styles.numbers}
+                                                >
                                                     {
                                                         this.state
                                                             .correctAnswerNumber
@@ -934,7 +964,10 @@ class GameStatsScreen extends React.Component {
                                                     styles.playerTwoAnswerView
                                                 }
                                             >
-                                                <Text style={styles.numbers}>
+                                                <Text
+                                                    allowFontScaling={false}
+                                                    style={styles.numbers}
+                                                >
                                                     {
                                                         this.state
                                                             .opponentCorrectAnswerNumber
@@ -948,7 +981,10 @@ class GameStatsScreen extends React.Component {
                                                     styles.playerOneAnswerView
                                                 }
                                             >
-                                                <Text style={styles.numbers}>
+                                                <Text
+                                                    allowFontScaling={false}
+                                                    style={styles.numbers}
+                                                >
                                                     {
                                                         this.state
                                                             .incorrectAnswerNumber
@@ -966,7 +1002,10 @@ class GameStatsScreen extends React.Component {
                                                     styles.playerTwoAnswerView
                                                 }
                                             >
-                                                <Text style={styles.numbers}>
+                                                <Text
+                                                    allowFontScaling={false}
+                                                    style={styles.numbers}
+                                                >
                                                     {
                                                         this.state
                                                             .opponentInorrectAnswerNumber
@@ -980,7 +1019,10 @@ class GameStatsScreen extends React.Component {
                                                     styles.playerOneAnswerView
                                                 }
                                             >
-                                                <Text style={styles.numbers}>
+                                                <Text
+                                                    allowFontScaling={false}
+                                                    style={styles.numbers}
+                                                >
                                                     {
                                                         this.state
                                                             .unansweredAnswerNumber
@@ -998,7 +1040,10 @@ class GameStatsScreen extends React.Component {
                                                     styles.playerTwoAnswerView
                                                 }
                                             >
-                                                <Text style={styles.numbers}>
+                                                <Text
+                                                    allowFontScaling={false}
+                                                    style={styles.numbers}
+                                                >
                                                     {
                                                         this.state
                                                             .opponentUnansweredAnswerNumber
@@ -1015,7 +1060,10 @@ class GameStatsScreen extends React.Component {
                                             }}
                                             style={styles.profilePic}
                                         />
-                                        <Text style={styles.usernameText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.usernameText}
+                                        >
                                             {this.state.opponentUsername}
                                         </Text>
                                     </View>
@@ -1023,27 +1071,45 @@ class GameStatsScreen extends React.Component {
                                 <View style={styles.results2Container}>
                                     <View style={styles.allScoresContainer}>
                                         <View style={styles.scoreContainer}>
-                                            <Text style={styles.scoresText}>
+                                            <Text
+                                                allowFontScaling={false}
+                                                style={styles.scoresText}
+                                            >
                                                 Oyunu Bitirdin
                                             </Text>
-                                            <Text style={styles.scoresText}>
+                                            <Text
+                                                allowFontScaling={false}
+                                                style={styles.scoresText}
+                                            >
                                                 {this.state.finishedGamePoint}
                                             </Text>
                                         </View>
                                         <View style={styles.scoreContainer}>
-                                            <Text style={styles.scoresText}>
+                                            <Text
+                                                allowFontScaling={false}
+                                                style={styles.scoresText}
+                                            >
                                                 Doğru Cevap x{' '}
                                                 {this.state.correctAnswerNumber}
                                             </Text>
-                                            <Text style={styles.scoresText}>
+                                            <Text
+                                                allowFontScaling={false}
+                                                style={styles.scoresText}
+                                            >
                                                 {this.state.correctAnswerPoint}
                                             </Text>
                                         </View>
                                         <View style={styles.scoreContainer}>
-                                            <Text style={styles.scoresText}>
+                                            <Text
+                                                allowFontScaling={false}
+                                                style={styles.scoresText}
+                                            >
                                                 {this.state.matchResultText}
                                             </Text>
-                                            <Text style={styles.scoresText}>
+                                            <Text
+                                                allowFontScaling={false}
+                                                style={styles.scoresText}
+                                            >
                                                 {this.state.matchResultPoint}
                                             </Text>
                                         </View>
@@ -1052,10 +1118,16 @@ class GameStatsScreen extends React.Component {
                                         <View style={styles.separatorLine} />
                                     </View>
                                     <View style={styles.sinaviaScoreContainer}>
-                                        <Text style={styles.sinaviaScoreText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.sinaviaScoreText}
+                                        >
                                             Sınavia Puanı
                                         </Text>
-                                        <Text style={styles.sinaviaScoreText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.sinaviaScoreText}
+                                        >
                                             {this.state.totalEarnedPoints}
                                         </Text>
                                     </View>
@@ -1065,7 +1137,10 @@ class GameStatsScreen extends React.Component {
                         <View style={styles.levelProgressBarContainer}>
                             <View style={styles.progressBarView}>
                                 {this.state.levelUp ? (
-                                    <Text style={styles.levelText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.levelText}
+                                    >
                                         Seviye{' '}
                                         {Math.floor(
                                             levelFinder(this.state.oldPoints)
@@ -1073,7 +1148,10 @@ class GameStatsScreen extends React.Component {
                                         )}
                                     </Text>
                                 ) : (
-                                    <Text style={styles.levelText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.levelText}
+                                    >
                                         Seviye{' '}
                                         {Math.floor(
                                             levelFinder(
@@ -1088,6 +1166,7 @@ class GameStatsScreen extends React.Component {
                                 <View style={styles.progressScoreView}>
                                     {this.state.levelUp ? (
                                         <Text
+                                            allowFontScaling={false}
                                             style={styles.levelInProgressText}
                                         >
                                             {Math.floor(
@@ -1106,6 +1185,7 @@ class GameStatsScreen extends React.Component {
                                         </Text>
                                     ) : (
                                         <Text
+                                            allowFontScaling={false}
                                             style={styles.levelInProgressText}
                                         >
                                             {Math.floor(
@@ -1149,24 +1229,54 @@ class GameStatsScreen extends React.Component {
                                     }
                                 ]}
                             >
-                                <Text style={styles.buttonText}>Yeniden</Text>
-                                <Text style={styles.buttonText}>Oyna</Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.buttonText}
+                                >
+                                    Yeniden
+                                </Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.buttonText}
+                                >
+                                    Oyna
+                                </Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={this.newOpponentButtonOnPress}
                         >
                             <View style={styles.newOpponentButton}>
-                                <Text style={styles.buttonText}>Yeni</Text>
-                                <Text style={styles.buttonText}>Rakip</Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.buttonText}
+                                >
+                                    Yeni
+                                </Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.buttonText}
+                                >
+                                    Rakip
+                                </Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={this.mainScreenButtonOnPress}
                         >
                             <View style={styles.mainScreenButton}>
-                                <Text style={styles.buttonText}>Ana</Text>
-                                <Text style={styles.buttonText}>Menü</Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.buttonText}
+                                >
+                                    Ana
+                                </Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.buttonText}
+                                >
+                                    Menü
+                                </Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -1180,7 +1290,10 @@ class GameStatsScreen extends React.Component {
                                 }
                                 style={styles.slideUpImg}
                             />
-                            <Text style={styles.slideViewText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.slideViewText}
+                            >
                                 {' '}
                                 {this.state.screenPosition === 1
                                     ? 'SORULARI GÖRMEK İÇİN KAYDIR'
@@ -1231,7 +1344,10 @@ class GameStatsScreen extends React.Component {
                                             source={SOLVING_LOGO}
                                             style={styles.solvingLogo}
                                         />
-                                        <Text style={styles.videoButtonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.videoButtonText}
+                                        >
                                             Çözüme bak
                                         </Text>
                                     </TouchableOpacity>
@@ -1244,7 +1360,10 @@ class GameStatsScreen extends React.Component {
                                             source={QUESTION_MARK}
                                             style={styles.solvingLogo}
                                         />
-                                        <Text style={styles.videoButtonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.videoButtonText}
+                                        >
                                             Soruya dön
                                         </Text>
                                     </TouchableOpacity>
@@ -1263,7 +1382,10 @@ class GameStatsScreen extends React.Component {
                                 marginLeft: wp(34)
                             }}
                         >
-                            <Text style={styles.questionNumberText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.questionNumberText}
+                            >
                                 {this.state.questionPosition}/
                                 {
                                     Object.keys(this.state.allQuestionsList)
@@ -1289,7 +1411,10 @@ class GameStatsScreen extends React.Component {
                                         source={VIDEO_LOGO}
                                         style={styles.videoLogo}
                                     />
-                                    <Text style={styles.videoButtonText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.videoButtonText}
+                                    >
                                         Çözümü izle
                                     </Text>
                                 </TouchableOpacity>
@@ -1350,6 +1475,7 @@ class GameStatsScreen extends React.Component {
                                 ]}
                             >
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.optionText,
                                         { color: '#00D9EF' }
@@ -1364,7 +1490,12 @@ class GameStatsScreen extends React.Component {
                                     )}
                                 </Text>
                             </View>
-                            <Text style={styles.answerText}>Doğru Cevap</Text>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.answerText}
+                            >
+                                Doğru Cevap
+                            </Text>
                         </View>
                         <View style={styles.favIconContainer}>
                             <TouchableOpacity onPress={this.favouriteOnPress}>
@@ -1384,6 +1515,7 @@ class GameStatsScreen extends React.Component {
                                 ]}
                             >
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.optionText,
                                         { color: '#00D9EF' }
@@ -1398,7 +1530,12 @@ class GameStatsScreen extends React.Component {
                                     )}
                                 </Text>
                             </View>
-                            <Text style={styles.answerText}>Senin Cevabın</Text>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.answerText}
+                            >
+                                Senin Cevabın
+                            </Text>
                         </View>
                     </View>
                 </View>

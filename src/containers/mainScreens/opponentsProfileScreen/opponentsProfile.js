@@ -244,8 +244,12 @@ class OpponentsProfile extends React.Component {
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.quitView}>
-                        <Text style={styles.areYouSureText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.areYouSureText}
+                        >
                             <Text
+                                allowFontScaling={false}
                                 style={[
                                     {
                                         color: '#FF9900',
@@ -257,10 +261,16 @@ class OpponentsProfile extends React.Component {
                             </Text>{' '}
                             kişisinden
                         </Text>
-                        <Text style={styles.areYouSureText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.areYouSureText}
+                        >
                             gelen arkadaşlık isteğini
                         </Text>
-                        <Text style={styles.areYouSureText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.areYouSureText}
+                        >
                             kabul ediyor musun?
                         </Text>
                     </View>
@@ -317,8 +327,12 @@ class OpponentsProfile extends React.Component {
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.quitView}>
-                        <Text style={styles.areYouSureText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.areYouSureText}
+                        >
                             <Text
+                                allowFontScaling={false}
                                 style={[
                                     {
                                         color: '#FF9900',
@@ -330,10 +344,16 @@ class OpponentsProfile extends React.Component {
                             </Text>{' '}
                             kişisine
                         </Text>
-                        <Text style={styles.areYouSureText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.areYouSureText}
+                        >
                             gönderdiğin arkadaşlık isteği
                         </Text>
-                        <Text style={styles.areYouSureText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.areYouSureText}
+                        >
                             iptal edilsin mi?
                         </Text>
                     </View>
@@ -375,8 +395,12 @@ class OpponentsProfile extends React.Component {
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.quitView}>
-                        <Text style={styles.areYouSureText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.areYouSureText}
+                        >
                             <Text
+                                allowFontScaling={false}
                                 style={[
                                     {
                                         color: '#FF9900',
@@ -388,7 +412,10 @@ class OpponentsProfile extends React.Component {
                             </Text>{' '}
                             kişisi
                         </Text>
-                        <Text style={styles.areYouSureText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.areYouSureText}
+                        >
                             arkadaşlıktan çıkarılsın mı?
                         </Text>
                     </View>
@@ -498,6 +525,7 @@ class OpponentsProfile extends React.Component {
                         <View style={styles.searchBar}>
                             <View style={styles.textInputView}>
                                 <TextInput
+                                    allowFontScaling={false}
                                     style={styles.searchBarText}
                                     placeholder="Kullanıcı ara..."
                                     placeholderTextColor={'#7B7B7B'}
@@ -540,7 +568,10 @@ class OpponentsProfile extends React.Component {
                                 />
                             </TouchableOpacity>
                             <View style={styles.reportViewHeader}>
-                                <Text style={styles.reportHeaderText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.reportHeaderText}
+                                >
                                     Şikayet etmek istediğin konuyu seç
                                 </Text>
                             </View>
@@ -562,7 +593,10 @@ class OpponentsProfile extends React.Component {
                                     <TouchableOpacity
                                         onPress={this.reportNameOnPress}
                                     >
-                                        <Text style={styles.reportOptionText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.reportOptionText}
+                                        >
                                             Uygunsuz ad/soyad
                                         </Text>
                                     </TouchableOpacity>
@@ -584,7 +618,10 @@ class OpponentsProfile extends React.Component {
                                     <TouchableOpacity
                                         onPress={this.reportUsernameOnPress}
                                     >
-                                        <Text style={styles.reportOptionText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.reportOptionText}
+                                        >
                                             Uygunsuz kullanıcı adı
                                         </Text>
                                     </TouchableOpacity>
@@ -606,7 +643,10 @@ class OpponentsProfile extends React.Component {
                                     <TouchableOpacity
                                         onPress={this.reportPicOnPress}
                                     >
-                                        <Text style={styles.reportOptionText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.reportOptionText}
+                                        >
                                             Uygunsuz profil/kapak fotoğrafı
                                         </Text>
                                     </TouchableOpacity>
@@ -617,7 +657,10 @@ class OpponentsProfile extends React.Component {
                                     onPress={this.reportButtonOnPress}
                                     style={styles.reportButton}
                                 >
-                                    <Text style={styles.reportButtonText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.reportButtonText}
+                                    >
                                         GÖNDER
                                     </Text>
                                 </TouchableOpacity>
@@ -642,7 +685,10 @@ class OpponentsProfile extends React.Component {
                                     marginBottom: hp(2)
                                 }}
                             />
-                            <Text style={styles.afterReportText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.afterReportText}
+                            >
                                 Geri bildirimde bulunduğun için teşekkürler!
                             </Text>
                         </View>
@@ -676,6 +722,7 @@ class OpponentsProfile extends React.Component {
                                 </View>
                                 <View style={styles.profileInfoView}>
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             styles.nameSurnameText,
                                             {
@@ -698,14 +745,20 @@ class OpponentsProfile extends React.Component {
                                                 .lastname
                                         }
                                     </Text>
-                                    <Text style={styles.usernameText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.usernameText}
+                                    >
                                         @
                                         {
                                             this.props.opponentInformation
                                                 .username
                                         }
                                     </Text>
-                                    <Text style={styles.sinaviaScoreText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.sinaviaScoreText}
+                                    >
                                         Sınavia Puanı:{' '}
                                         {
                                             this.props.opponentInformation
@@ -725,12 +778,18 @@ class OpponentsProfile extends React.Component {
                             disabled={this.state.friendsListButtonDisable}
                         >
                             <View style={styles.opponentsFriendsTextView}>
-                                <Text style={styles.opponentsFriendsText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.opponentsFriendsText}
+                                >
                                     Arkadaşlar
                                 </Text>
                             </View>
                             <View style={styles.opponentsFriendsCounterView}>
-                                <Text style={styles.opponentsFriendsCounter}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.opponentsFriendsCounter}
+                                >
                                     {Object.keys(this.props.friendsList).length}
                                 </Text>
                             </View>
@@ -757,10 +816,16 @@ class OpponentsProfile extends React.Component {
                                                 styles.friendshipStatusInfoContainer
                                             }
                                         >
-                                            <Text style={styles.addFriendText}>
+                                            <Text
+                                                allowFontScaling={false}
+                                                style={styles.addFriendText}
+                                            >
                                                 Arkadaş
                                             </Text>
-                                            <Text style={styles.addFriendText}>
+                                            <Text
+                                                allowFontScaling={false}
+                                                style={styles.addFriendText}
+                                            >
                                                 olarak ekle
                                             </Text>
                                         </View>
@@ -785,6 +850,7 @@ class OpponentsProfile extends React.Component {
                                             }
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={
                                                     styles.addFriendRequestedText
                                                 }
@@ -792,6 +858,7 @@ class OpponentsProfile extends React.Component {
                                                 Arkadaşlık isteği
                                             </Text>
                                             <Text
+                                                allowFontScaling={false}
                                                 style={
                                                     styles.addFriendRequestedText
                                                 }
@@ -825,6 +892,7 @@ class OpponentsProfile extends React.Component {
                                             }
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={styles.alreadyFriendText}
                                             >
                                                 Arkadaşın
@@ -870,24 +938,40 @@ class OpponentsProfile extends React.Component {
                                 <View
                                     style={styles.totalGameStatsInfosContainer}
                                 >
-                                    <Text style={styles.totalGameStatsText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.totalGameStatsText}
+                                    >
                                         Dereceli Mod
                                     </Text>
                                     <Text
+                                        allowFontScaling={false}
                                         style={styles.totalGamesPlayedCounter}
                                     >
                                         {this.state.totalRankedGames}
                                     </Text>
-                                    <Text style={styles.totalGamesPlayedText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.totalGamesPlayedText}
+                                    >
                                         Oynadığı Oyun
                                     </Text>
-                                    <Text style={styles.wonText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.wonText}
+                                    >
                                         Kazandığı: {this.state.totalRankedWin}
                                     </Text>
-                                    <Text style={styles.drawText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.drawText}
+                                    >
                                         Beraberlik: {this.state.totalRankedDraw}
                                     </Text>
-                                    <Text style={styles.lostText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.lostText}
+                                    >
                                         Kaybettiği: {this.state.totalRankedLose}
                                     </Text>
                                 </View>
@@ -909,6 +993,7 @@ class OpponentsProfile extends React.Component {
                                         progressWidth={wp(5)}
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={styles.chartPercentageText}
                                         >
                                             {this.state.totalRankedGames !== 0
@@ -925,24 +1010,40 @@ class OpponentsProfile extends React.Component {
                                 <View
                                     style={styles.totalGameStatsInfosContainer}
                                 >
-                                    <Text style={styles.totalGameStatsText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.totalGameStatsText}
+                                    >
                                         Arkadaş Modu
                                     </Text>
                                     <Text
+                                        allowFontScaling={false}
                                         style={styles.totalGamesPlayedCounter}
                                     >
                                         {this.state.totalFriendGames}
                                     </Text>
-                                    <Text style={styles.totalGamesPlayedText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.totalGamesPlayedText}
+                                    >
                                         Oynadığı Oyun
                                     </Text>
-                                    <Text style={styles.wonText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.wonText}
+                                    >
                                         Kazandığı: {this.state.totalFriendWin}
                                     </Text>
-                                    <Text style={styles.drawText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.drawText}
+                                    >
                                         Beraberlik: {this.state.totalFriendDraw}
                                     </Text>
-                                    <Text style={styles.lostText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.lostText}
+                                    >
                                         Kaybettiği: {this.state.totalFriendLose}
                                     </Text>
                                 </View>
@@ -964,6 +1065,7 @@ class OpponentsProfile extends React.Component {
                                         progressWidth={wp(5)}
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={styles.chartPercentageText}
                                         >
                                             {this.state.totalFriendGames !== 0
@@ -981,15 +1083,24 @@ class OpponentsProfile extends React.Component {
                     <View style={styles.versusGameStatsBox}>
                         <View style={styles.versusGameTextsContainer}>
                             <View style={styles.versusGameTitleContainer}>
-                                <Text style={styles.versusGameTitleText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.versusGameTitleText}
+                                >
                                     Aranızdaki Oyunlar
                                 </Text>
                             </View>
                             <View style={styles.versusGameTotalContainer}>
-                                <Text style={styles.versusTotalText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.versusTotalText}
+                                >
                                     Toplam Oyun{' '}
                                 </Text>
-                                <Text style={styles.versusTotalCounter}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.versusTotalCounter}
+                                >
                                     {this.state.totalFriendMatchesCount}
                                 </Text>
                             </View>
@@ -1028,10 +1139,16 @@ class OpponentsProfile extends React.Component {
                                             }
                                         ]}
                                     />
-                                    <Text style={styles.yourWinsCounter}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.yourWinsCounter}
+                                    >
                                         {this.state.clientWinCount}
                                     </Text>
-                                    <Text style={styles.opponentWinsCounter}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.opponentWinsCounter}
+                                    >
                                         {this.state.opponentWinCount}
                                     </Text>
                                 </View>
@@ -1049,10 +1166,16 @@ class OpponentsProfile extends React.Component {
                                             }
                                         ]}
                                     />
-                                    <Text style={styles.yourWinsCounter}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.yourWinsCounter}
+                                    >
                                         {this.state.clientWinCount}
                                     </Text>
-                                    <Text style={styles.opponentWinsCounter}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.opponentWinsCounter}
+                                    >
                                         {this.state.opponentWinCount}
                                     </Text>
                                 </View>
@@ -1070,10 +1193,16 @@ class OpponentsProfile extends React.Component {
                                             }
                                         ]}
                                     />
-                                    <Text style={styles.yourWinsCounter}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.yourWinsCounter}
+                                    >
                                         {this.state.clientWinCount}
                                     </Text>
-                                    <Text style={styles.opponentWinsCounter}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.opponentWinsCounter}
+                                    >
                                         {this.state.opponentWinCount}
                                     </Text>
                                 </View>
@@ -1091,24 +1220,39 @@ class OpponentsProfile extends React.Component {
                                             }
                                         ]}
                                     >
-                                        <Text style={styles.noneWinsInfoText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.noneWinsInfoText}
+                                        >
                                             Henüz kazanan yok, hadi bunu
                                             değiştir!
                                         </Text>
                                     </View>
-                                    <Text style={styles.yourWinsCounter}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.yourWinsCounter}
+                                    >
                                         {this.state.clientWinCount}
                                     </Text>
-                                    <Text style={styles.opponentWinsCounter}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.opponentWinsCounter}
+                                    >
                                         {this.state.opponentWinCount}
                                     </Text>
                                 </View>
                             )}
                         <View style={styles.versusGameNamesContainer}>
-                            <Text style={styles.versusGamePlayersTitleText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.versusGamePlayersTitleText}
+                            >
                                 Sen
                             </Text>
-                            <Text style={styles.versusGamePlayersTitleText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.versusGamePlayersTitleText}
+                            >
                                 {this.props.opponentInformation.username}
                             </Text>
                         </View>

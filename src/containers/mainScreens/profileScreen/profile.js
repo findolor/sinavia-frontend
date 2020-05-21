@@ -143,7 +143,10 @@ class Profile extends React.Component {
                         ]}
                     >
                         <View style={premiumStyles.premiumModalHeaderView}>
-                            <Text style={premiumStyles.premiumModalHeaderText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={premiumStyles.premiumModalHeaderText}
+                            >
                                 ELİT ÖĞRENCİ PAKETİ
                             </Text>
                         </View>
@@ -166,6 +169,7 @@ class Profile extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={
                                             premiumStyles.premiumModalHeaderText
                                         }
@@ -183,6 +187,7 @@ class Profile extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             premiumStyles.premiumModalInfoText,
                                             { marginTop: hp(1.5) }
@@ -218,6 +223,7 @@ class Profile extends React.Component {
                     <View style={styles.searchBar}>
                         <View style={styles.textInputView}>
                             <TextInput
+                                allowFontScaling={false}
                                 style={styles.searchBarText}
                                 placeholder="Kullanıcı adı ile ara..."
                                 placeholderTextColor={'#7B7B7B'}
@@ -263,6 +269,7 @@ class Profile extends React.Component {
                             </View>
                             <View style={styles.profileInfoView}>
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.nameSurnameText,
                                         {
@@ -276,15 +283,20 @@ class Profile extends React.Component {
                                                     : hp(3.5)
                                         }
                                     ]}
-                                    allowFontScaling={false}
                                 >
                                     {this.props.clientInformation.name}{' '}
                                     {this.props.clientInformation.lastname}
                                 </Text>
-                                <Text style={styles.usernameText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.usernameText}
+                                >
                                     @{this.props.clientInformation.username}
                                 </Text>
-                                <Text style={styles.sinaviaScoreText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.sinaviaScoreText}
+                                >
                                     Sınavia Puanı:{' '}
                                     {this.props.clientInformation.totalPoints}
                                 </Text>
@@ -297,7 +309,10 @@ class Profile extends React.Component {
                         <TouchableOpacity onPress={this.statisticsLogoOnPress}>
                             <View style={styles.statisticsBox}>
                                 <View style={styles.boxTextContainer}>
-                                    <Text style={styles.boxText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.boxText}
+                                    >
                                         İstatistikler
                                     </Text>
                                 </View>
@@ -312,12 +327,18 @@ class Profile extends React.Component {
                         <TouchableOpacity onPress={this.friendsLogoOnPress}>
                             <View style={styles.friendsBox}>
                                 <View style={styles.boxTextContainer}>
-                                    <Text style={styles.boxText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.boxText}
+                                    >
                                         Arkadaşlar
                                     </Text>
                                 </View>
                                 <View style={styles.boxLogoContainer}>
-                                    <Text style={styles.friendsCounterBoxText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.friendsCounterBoxText}
+                                    >
                                         {this.props.friendIds.length}
                                     </Text>
                                 </View>
@@ -328,7 +349,10 @@ class Profile extends React.Component {
                         <TouchableOpacity onPress={this.goalsOnPress}>
                             <View style={styles.badgesBox}>
                                 <View style={styles.boxTextContainer}>
-                                    <Text style={styles.boxText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.boxText}
+                                    >
                                         Haftalık Hedefler
                                     </Text>
                                 </View>
@@ -343,7 +367,10 @@ class Profile extends React.Component {
                         <TouchableOpacity onPress={this.favoriteLogoOnPress}>
                             <View style={styles.favoritesBox}>
                                 <View style={styles.boxTextContainer}>
-                                    <Text style={styles.boxText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.boxText}
+                                    >
                                         Favori Sorular
                                     </Text>
                                 </View>
