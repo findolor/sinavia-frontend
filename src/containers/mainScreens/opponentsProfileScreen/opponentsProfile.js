@@ -70,7 +70,8 @@ class OpponentsProfile extends React.Component {
             reportViewVisible: 'profile',
             reportName: false,
             reportUsername: false,
-            reportPic: false
+            reportPic: false,
+            friendsListButtonDisable: false
         }
     }
 
@@ -96,6 +97,9 @@ class OpponentsProfile extends React.Component {
             this.setState({
                 friendshipStatus: 'alreadyFriend'
             })
+        }
+        if (Object.keys(this.props.friendsList).length === 0) {
+            this.setState({ friendsListButtonDisable: true })
         }
     }
 
@@ -718,6 +722,7 @@ class OpponentsProfile extends React.Component {
                         <TouchableOpacity
                             style={styles.opponentsFriendsBox}
                             onPress={this.opponentFriendsOnPress}
+                            disabled={this.state.friendsListButtonDisable}
                         >
                             <View style={styles.opponentsFriendsTextView}>
                                 <Text style={styles.opponentsFriendsText}>

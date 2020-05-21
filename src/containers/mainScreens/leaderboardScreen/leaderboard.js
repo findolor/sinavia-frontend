@@ -655,15 +655,24 @@ class Leaderboard extends React.Component {
                                         { justifyContent: 'flex-end' }
                                     ]}
                                 >
-                                    <View style={styles.lastUpdateView}>
-                                        <Text style={styles.lastUpdateText}>
-                                            Son Güncelleme Tarihi
-                                        </Text>
-                                        <Text style={styles.lastUpdateTimeText}>
-                                            {this.state.hoursPassedSinceUpdate}{' '}
-                                            saat önce
-                                        </Text>
-                                    </View>
+                                    {this.state.rankingMode === 'global' && (
+                                        <View style={styles.lastUpdateView}>
+                                            <Text style={styles.lastUpdateText}>
+                                                Son Güncelleme Tarihi
+                                            </Text>
+                                            <Text
+                                                style={
+                                                    styles.lastUpdateTimeText
+                                                }
+                                            >
+                                                {
+                                                    this.state
+                                                        .hoursPassedSinceUpdate
+                                                }{' '}
+                                                saat önce
+                                            </Text>
+                                        </View>
+                                    )}
                                 </View>
                             </View>
                             <Animatable.View

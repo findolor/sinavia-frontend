@@ -229,8 +229,7 @@ class UnsolvedModeGameScreen extends React.Component {
             case 'remove-options-joker':
                 this.setState({
                     isRemoveOptionJokerDisabled: true,
-                    secondJokerAmount: this.state.secondJokerAmount - 1,
-                    isRemoveOptionJokerUsed: true
+                    secondJokerAmount: this.state.secondJokerAmount - 1
                 })
                 this.props.subtractJoker(2)
 
@@ -241,8 +240,7 @@ class UnsolvedModeGameScreen extends React.Component {
                 this.setState({
                     isSecondChanceJokerDisabled: true,
                     isSecondChanceJokerActive: true,
-                    thirdJokerAmount: this.state.thirdJokerAmount - 1,
-                    isSecondChanceJokerUsed: true
+                    thirdJokerAmount: this.state.thirdJokerAmount - 1
                 })
                 this.props.subtractJoker(3)
 
@@ -562,12 +560,12 @@ class UnsolvedModeGameScreen extends React.Component {
         })
         if (
             !this.state.isRemoveOptionJokerFinished &&
-            !this.state.isRemoveOptionJokerUsed
+            this.state.secondJokerAmount != 0
         )
             this.setState({ isRemoveOptionJokerDisabled: false })
         if (
             !this.state.isSecondChanceJokerFinished &&
-            !this.state.isSecondChanceJokerUsed
+            this.state.thirdJokerAmount != 0
         )
             this.setState({ isSecondChanceJokerDisabled: false })
     }

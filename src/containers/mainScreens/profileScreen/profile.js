@@ -276,6 +276,7 @@ class Profile extends React.Component {
                                                     : hp(3.5)
                                         }
                                     ]}
+                                    allowFontScaling={false}
                                 >
                                     {this.props.clientInformation.name}{' '}
                                     {this.props.clientInformation.lastname}
