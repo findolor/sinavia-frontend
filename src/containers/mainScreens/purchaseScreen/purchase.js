@@ -64,21 +64,21 @@ const facebook_page = 'https://www.facebook.com/sinaviaapp'
 
 const itemSkus = Platform.select({
     ios: [
-        'com.mobee.sinavia.each.10.new',
-        'com.mobee.sinavia.each.30.new',
-        'com.mobee.sinavia.each.60.new',
-        'com.mobee.sinavia.first.30.new',
-        'com.mobee.sinavia.second.30.new',
-        'com.mobee.sinavia.third.30.new',
-        'com.mobee.sinavia.first.90.new',
-        'com.mobee.sinavia.second.90.new',
-        'com.mobee.sinavia.third.90.new',
-        'com.mobee.sinavia.first.180.new',
-        'com.mobee.sinavia.second.180.new',
-        'com.mobee.sinavia.third.180.new',
-        'com.mobee.sinavia.1.premium.new',
-        'com.mobee.sinavia.3.premium.new',
-        'com.mobee.sinavia.6.premium.new'
+        'com.mobee.sinavia.each.10.ne',
+        'com.mobee.sinavia.each.30.ne',
+        'com.mobee.sinavia.each.60.ne',
+        'com.mobee.sinavia.first.30.ne',
+        'com.mobee.sinavia.second.30.ne',
+        'com.mobee.sinavia.third.30.ne',
+        'com.mobee.sinavia.first.90.ne',
+        'com.mobee.sinavia.second.90.ne',
+        'com.mobee.sinavia.third.90.ne',
+        'com.mobee.sinavia.first.180.ne',
+        'com.mobee.sinavia.second.180.ne',
+        'com.mobee.sinavia.third.180.ne',
+        'com.mobee.sinavia.1.premium.ne',
+        'com.mobee.sinavia.3.premium.ne',
+        'com.mobee.sinavia.6.premium.ne'
     ],
     android: [
         '10_jokers_each',
