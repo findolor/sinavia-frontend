@@ -733,7 +733,7 @@ class OpponentsProfile extends React.Component {
                                                         this.props
                                                             .opponentInformation
                                                             .lastname.length >
-                                                    21
+                                                    18
                                                         ? hp(2.25)
                                                         : hp(3.5)
                                             }

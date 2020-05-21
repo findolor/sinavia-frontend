@@ -278,7 +278,7 @@ class Profile extends React.Component {
                                                     .name.length +
                                                     this.props.clientInformation
                                                         .lastname.length >
-                                                21
+                                                18
                                                     ? hp(2.25)
                                                     : hp(3.5)
                                         }
