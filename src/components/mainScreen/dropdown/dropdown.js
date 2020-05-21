@@ -211,6 +211,7 @@ export default class ModalDropdown extends Component {
                 {children || (
                     <View style={styles.button}>
                         <Text
+                            allowFontScaling={false}
                             style={[styles.buttonText, textStyle]}
                             numberOfLines={1}
                         >
@@ -377,6 +378,7 @@ export default class ModalDropdown extends Component {
         const highlighted = rowID == selectedIndex
         const row = !renderRow ? (
             <Text
+                allowFontScaling={false}
                 style={[
                     styles.rowText,
                     dropdownTextStyle,

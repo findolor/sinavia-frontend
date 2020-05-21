@@ -201,7 +201,10 @@ class JoinGroupRoom extends React.Component {
                                 <View
                                     style={styles.isJoinedRoomSubjectContainer}
                                 >
-                                    <Text style={styles.modalSubjectText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.modalSubjectText}
+                                    >
                                         {this.state.matchSubjectId === null
                                             ? ''
                                             : this.props.gameContentMap
@@ -226,6 +229,7 @@ class JoinGroupRoom extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={styles.gameCodeText}
                                                     selectable={true}
                                                 >
@@ -257,10 +261,16 @@ class JoinGroupRoom extends React.Component {
                                     <View
                                         style={styles.gameCodeInfoTextContainer}
                                     >
-                                        <Text style={styles.gameCodeInfoText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.gameCodeInfoText}
+                                        >
                                             Grup olarak oynamak için{' '}
                                         </Text>
-                                        <Text style={styles.gameCodeInfoText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.gameCodeInfoText}
+                                        >
                                             yukarıdaki kodu arkadaşlarınla
                                             paylaş
                                         </Text>
@@ -269,6 +279,7 @@ class JoinGroupRoom extends React.Component {
                                         style={styles.questionsNumberContainer}
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={styles.questionsNumberText}
                                         >
                                             Soru Sayısı
@@ -291,6 +302,7 @@ class JoinGroupRoom extends React.Component {
                                             }}
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={[
                                                     styles.questionNumberText,
                                                     {
@@ -329,6 +341,7 @@ class JoinGroupRoom extends React.Component {
                                             }}
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={[
                                                     styles.questionNumberText,
                                                     {
@@ -373,7 +386,10 @@ class JoinGroupRoom extends React.Component {
                                                 />
                                             </View>
                                             <View style={styles.nameContainer}>
-                                                <Text style={styles.nameText}>
+                                                <Text
+                                                    allowFontScaling={false}
+                                                    style={styles.nameText}
+                                                >
                                                     {item.username}
                                                 </Text>
                                                 <View
@@ -389,6 +405,7 @@ class JoinGroupRoom extends React.Component {
                                                     ]}
                                                 >
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.playerStatusText
                                                         }
@@ -426,7 +443,10 @@ class JoinGroupRoom extends React.Component {
                                         source={PEOPLE_COUNTER_IMG}
                                         style={styles.peopleCounterImg}
                                     />
-                                    <Text style={styles.usersCounterText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.usersCounterText}
+                                    >
                                         {
                                             Object.keys(
                                                 this.state.groupRoomPlayerList
@@ -439,9 +459,15 @@ class JoinGroupRoom extends React.Component {
                                     <View
                                         style={styles.questionsCounterContainer}
                                     >
-                                        <Text style={styles.usersCounterText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.usersCounterText}
+                                        >
                                             Soru sayısı{' '}
-                                            <Text style={{ color: '#FF9900' }}>
+                                            <Text
+                                                allowFontScaling={false}
+                                                style={{ color: '#FF9900' }}
+                                            >
                                                 {
                                                     this.state
                                                         .choosenQuestionAmount
@@ -484,10 +510,16 @@ class JoinGroupRoom extends React.Component {
                         ></View>
                         <View style={styles.modalContainer}>
                             <View style={styles.quitView}>
-                                <Text style={styles.areYouSureText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.areYouSureText}
+                                >
                                     Odadan çıkış yapmak istediğine
                                 </Text>
-                                <Text style={styles.areYouSureText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.areYouSureText}
+                                >
                                     emin misin?
                                 </Text>
                             </View>

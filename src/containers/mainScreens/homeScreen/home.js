@@ -506,7 +506,10 @@ class Home extends React.Component {
                                     delay={index * 25 + 75}
                                     useNativeDriver={true}
                                 >
-                                    <Text style={styles.cardText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.cardText}
+                                    >
                                         {subject.name}
                                     </Text>
                                 </Animatable.View>
@@ -544,7 +547,10 @@ class Home extends React.Component {
                                 delay={index * 25 + 75}
                                 useNativeDriver={true}
                             >
-                                <Text style={styles.cardText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.cardText}
+                                >
                                     {subject.name}
                                 </Text>
                             </Animatable.View>
@@ -572,7 +578,12 @@ class Home extends React.Component {
                             delay={index * 25 + 75}
                             useNativeDriver={true}
                         >
-                            <Text style={styles.cardText}>{subject.name}</Text>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.cardText}
+                            >
+                                {subject.name}
+                            </Text>
                         </Animatable.View>
                     </TouchableOpacity>
                 )
@@ -659,7 +670,10 @@ class Home extends React.Component {
                     }}
                 />
                 <View style={styles.modalView}>
-                    <Text style={styles.modalSubjectText}>
+                    <Text
+                        allowFontScaling={false}
+                        style={styles.modalSubjectText}
+                    >
                         {this.state.subject}
                     </Text>
                     <View style={styles.separatorContainer}>
@@ -690,8 +704,12 @@ class Home extends React.Component {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.gameModeContextContainer}>
-                            <Text style={styles.gameModeContextText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.gameModeContextText}
+                            >
                                 <Text
+                                    allowFontScaling={false}
                                     style={{
                                         fontFamily: 'Averta-Bold',
                                         fontSize: hp(2),
@@ -712,16 +730,25 @@ class Home extends React.Component {
                         delay={200}
                         duration={1750}
                     >
-                        <Text style={styles.scoreTextInModal}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.scoreTextInModal}
+                        >
                             Sınavia Puanı:{' '}
                         </Text>
-                        <Text style={styles.scoreInModal}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.scoreInModal}
+                        >
                             {this.state.selectedContentTotalPoints}
                         </Text>
                     </Animatable.View>
                     <View style={styles.levelProgressBarContainer}>
                         <View style={styles.progressBarView}>
-                            <Text style={styles.levelText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.levelText}
+                            >
                                 Seviye{' '}
                                 {Math.floor(
                                     levelFinder(
@@ -733,7 +760,10 @@ class Home extends React.Component {
                                 style={[this.getProgressStyles.call(this)]}
                             ></Animated.View>
                             <View style={styles.progressScoreView}>
-                                <Text style={styles.levelInProgressText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.levelInProgressText}
+                                >
                                     {Math.floor(
                                         levelFinder(
                                             this.state
@@ -777,8 +807,12 @@ class Home extends React.Component {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.gameModeContextContainer}>
-                            <Text style={styles.gameModeContextText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.gameModeContextText}
+                            >
                                 <Text
+                                    allowFontScaling={false}
                                     style={{
                                         fontFamily: 'Averta-Bold',
                                         fontSize: hp(2),
@@ -810,8 +844,12 @@ class Home extends React.Component {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.gameModeContextContainer}>
-                            <Text style={styles.gameModeContextText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.gameModeContextText}
+                            >
                                 <Text
+                                    allowFontScaling={false}
                                     style={{
                                         fontFamily: 'Averta-Bold',
                                         fontSize: hp(2),
@@ -860,7 +898,10 @@ class Home extends React.Component {
                                         }
                                     ]}
                                 >
-                                    <Text style={styles.questionsNumberText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.questionsNumberText}
+                                    >
                                         Soru sayısı
                                     </Text>
                                     <TouchableOpacity
@@ -881,6 +922,7 @@ class Home extends React.Component {
                                         }}
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={[
                                                 styles.questionNumberText,
                                                 {
@@ -921,6 +963,7 @@ class Home extends React.Component {
                                         }}
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={[
                                                 styles.questionNumberText,
                                                 {
@@ -944,8 +987,12 @@ class Home extends React.Component {
                                     </TouchableOpacity>
                                 </View>
                             ) : (
-                                <Text style={styles.gameModeContextText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.gameModeContextText}
+                                >
                                     <Text
+                                        allowFontScaling={false}
                                         style={{
                                             fontFamily: 'Averta-Bold',
                                             fontSize: hp(2),
@@ -984,8 +1031,12 @@ class Home extends React.Component {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.gameModeContextContainer}>
-                            <Text style={styles.gameModeContextText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.gameModeContextText}
+                            >
                                 <Text
+                                    allowFontScaling={false}
                                     style={{
                                         fontFamily: 'Averta-Bold',
                                         fontSize: hp(2),
@@ -1229,6 +1280,7 @@ class Home extends React.Component {
                             </View>
                             <View style={styles.nameAndUsernameContainer}>
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.nameAndSurnameText,
                                         { fontSize: hp(1.75) }
@@ -1239,6 +1291,7 @@ class Home extends React.Component {
                                         this.props.clientInformation.lastname}
                                 </Text>
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.userNameText,
                                         { fontSize: hp(1.75) }
@@ -1258,6 +1311,7 @@ class Home extends React.Component {
                             </View>
                             <View style={styles.nameAndUsernameContainer}>
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.nameAndSurnameText,
                                         { fontSize: hp(1.75) }
@@ -1266,6 +1320,7 @@ class Home extends React.Component {
                                     {this.state.opponentName}
                                 </Text>
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.userNameText,
                                         { fontSize: hp(1.75) }
@@ -1282,6 +1337,7 @@ class Home extends React.Component {
                         <View style={styles.searchBar}>
                             <View style={styles.textInputView}>
                                 <TextInput
+                                    allowFontScaling={false}
                                     style={styles.searchBarText}
                                     placeholder="Arkadaşını ara..."
                                     placeholderTextColor={'#7B7B7B'}
@@ -1318,6 +1374,7 @@ class Home extends React.Component {
                                             </View>
                                             <View style={styles.nameContainer}>
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={[
                                                         styles.nameText,
                                                         { paddingLeft: wp(1.5) }
@@ -1328,6 +1385,7 @@ class Home extends React.Component {
                                                         item.lastname}
                                                 </Text>
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={[
                                                         styles.userNameText,
                                                         { paddingLeft: wp(1.5) }
@@ -1436,6 +1494,7 @@ class Home extends React.Component {
                     <View style={styles.joinGameCodeContainer}>
                         <View style={styles.gameCodeBox}>
                             <TextInput
+                                allowFontScaling={false}
                                 style={styles.joinGameCodeTextInput}
                                 maxLength={6}
                                 placeholder="Oda Kodu"
@@ -1452,13 +1511,22 @@ class Home extends React.Component {
                         </View>
                     </View>
                     <View style={styles.joinGameInfoContainer}>
-                        <Text style={styles.joinGameInfoText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.joinGameInfoText}
+                        >
                             Aldığın oda kodunu
                         </Text>
-                        <Text style={styles.joinGameInfoText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.joinGameInfoText}
+                        >
                             yukarıdaki alana girerek
                         </Text>
-                        <Text style={styles.joinGameInfoText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.joinGameInfoText}
+                        >
                             oyuna dahil ol
                         </Text>
                     </View>
@@ -1491,8 +1559,12 @@ class Home extends React.Component {
                 >
                     <View style={styles.modalContainer}>
                         <View style={styles.gameRequestView}>
-                            <Text style={styles.gameRequestText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.gameRequestText}
+                            >
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         {
                                             color: '#FF9900',
@@ -1505,6 +1577,7 @@ class Home extends React.Component {
                                 kişisi sana
                             </Text>
                             <Text
+                                allowFontScaling={false}
                                 style={[
                                     styles.gameRequestText,
                                     {
@@ -1526,6 +1599,7 @@ class Home extends React.Component {
                                 }
                             </Text>
                             <Text
+                                allowFontScaling={false}
                                 style={[
                                     styles.gameRequestText,
                                     {
@@ -1540,7 +1614,10 @@ class Home extends React.Component {
                                     ].name
                                 }
                             </Text>
-                            <Text style={styles.gameRequestText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.gameRequestText}
+                            >
                                 konusunda oyun isteği gönderdi
                             </Text>
                         </View>
@@ -1698,7 +1775,10 @@ class Home extends React.Component {
                         ]}
                     >
                         <View style={premiumStyles.premiumModalHeaderView}>
-                            <Text style={premiumStyles.premiumModalHeaderText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={premiumStyles.premiumModalHeaderText}
+                            >
                                 ELİT ÖĞRENCİ PAKETİ
                             </Text>
                         </View>
@@ -1722,6 +1802,7 @@ class Home extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             premiumStyles.premiumModalHeaderText,
                                             {
@@ -1743,6 +1824,7 @@ class Home extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             premiumStyles.premiumModalInfoText,
                                             { color: '#555861' }
@@ -1777,7 +1859,10 @@ class Home extends React.Component {
                         ]}
                     >
                         <View style={premiumStyles.premiumModalHeaderView}>
-                            <Text style={premiumStyles.premiumModalHeaderText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={premiumStyles.premiumModalHeaderText}
+                            >
                                 ELİT ÖĞRENCİ PAKETİ
                             </Text>
                         </View>
@@ -1801,6 +1886,7 @@ class Home extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             premiumStyles.premiumModalHeaderText,
                                             {
@@ -1822,6 +1908,7 @@ class Home extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             premiumStyles.premiumModalInfoText,
                                             { color: '#555861' }
@@ -1857,7 +1944,10 @@ class Home extends React.Component {
                         ]}
                     >
                         <View style={premiumStyles.premiumModalHeaderView}>
-                            <Text style={premiumStyles.premiumModalHeaderText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={premiumStyles.premiumModalHeaderText}
+                            >
                                 ELİT ÖĞRENCİ PAKETİ
                             </Text>
                         </View>
@@ -1884,6 +1974,7 @@ class Home extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             premiumStyles.premiumModalHeaderText,
                                             {
@@ -1906,6 +1997,7 @@ class Home extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             premiumStyles.premiumModalInfoText,
                                             { color: '#555861' }
@@ -1934,7 +2026,10 @@ class Home extends React.Component {
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.gameRequestView}>
-                        <Text style={styles.gameRequestText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.gameRequestText}
+                        >
                             Odaya giriş yapman bekleniyor...
                         </Text>
                     </View>
@@ -1954,7 +2049,10 @@ class Home extends React.Component {
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.gameRequestView}>
-                        <Text style={styles.gameRequestText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.gameRequestText}
+                        >
                             Üzgünüm, ancak oda aktif değil :(
                         </Text>
                     </View>
@@ -1985,7 +2083,10 @@ class Home extends React.Component {
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.gameRequestView}>
-                        <Text style={styles.gameRequestText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.gameRequestText}
+                        >
                             Arkadaşın önden oynamaya başladı, oyununu
                             bitirdikten sonra sıra sende olacak, bol şans :)
                         </Text>
@@ -2247,7 +2348,10 @@ class Home extends React.Component {
                                 }
                             ]}
                         >
-                            <Text style={styles.pickerText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.pickerText}
+                            >
                                 {this.state.examList[0]}
                             </Text>
                         </View>

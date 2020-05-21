@@ -317,7 +317,10 @@ class SoloModeGameStats extends React.Component {
                     </View>
                     <View style={styles.resultsContainer}>
                         <View style={styles.courseTextView}>
-                            <Text style={styles.courseText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.courseText}
+                            >
                                 {
                                     this.props.gameContentMap.subjects[
                                         this.props.contentIds.subjectId - 1
@@ -333,7 +336,10 @@ class SoloModeGameStats extends React.Component {
                                     }}
                                     style={styles.profilePic}
                                 />
-                                <Text style={styles.usernameText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.usernameText}
+                                >
                                     {this.state.clientUsername}
                                 </Text>
                             </View>
@@ -343,7 +349,10 @@ class SoloModeGameStats extends React.Component {
                                         source={correct}
                                         style={styles.answerImg}
                                     />
-                                    <Text style={styles.numbers}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.numbers}
+                                    >
                                         {this.state.correctAnswerNumber} Doğru
                                     </Text>
                                 </View>
@@ -352,7 +361,10 @@ class SoloModeGameStats extends React.Component {
                                         source={incorrect}
                                         style={styles.answerImg}
                                     />
-                                    <Text style={styles.numbers}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.numbers}
+                                    >
                                         {this.state.incorrectAnswerNumber}{' '}
                                         Yanlış
                                     </Text>
@@ -362,7 +374,10 @@ class SoloModeGameStats extends React.Component {
                                         source={unanswered}
                                         style={styles.answerImg}
                                     />
-                                    <Text style={styles.numbers}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.numbers}
+                                    >
                                         {this.state.unansweredAnswerNumber} Boş
                                     </Text>
                                 </View>
@@ -375,16 +390,36 @@ class SoloModeGameStats extends React.Component {
                             disabled={this.state.isReplayDisabled}
                         >
                             <View style={styles.replayButton}>
-                                <Text style={styles.buttonText}>Yeniden</Text>
-                                <Text style={styles.buttonText}>Oyna</Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.buttonText}
+                                >
+                                    Yeniden
+                                </Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.buttonText}
+                                >
+                                    Oyna
+                                </Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={this.mainScreenButtonOnPress}
                         >
                             <View style={styles.mainScreenButton}>
-                                <Text style={styles.buttonText}>Ana</Text>
-                                <Text style={styles.buttonText}>Menü</Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.buttonText}
+                                >
+                                    Ana
+                                </Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.buttonText}
+                                >
+                                    Menü
+                                </Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -398,7 +433,10 @@ class SoloModeGameStats extends React.Component {
                                 }
                                 style={styles.slideUpImg}
                             />
-                            <Text style={styles.slideViewText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.slideViewText}
+                            >
                                 {' '}
                                 {this.state.screenPosition === 1
                                     ? 'SORULARI GÖRMEK İÇİN KAYDIR'
@@ -437,7 +475,10 @@ class SoloModeGameStats extends React.Component {
                                             source={SOLVING_LOGO}
                                             style={styles.solvingLogo}
                                         />
-                                        <Text style={styles.videoButtonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.videoButtonText}
+                                        >
                                             Çözüme bak
                                         </Text>
                                     </TouchableOpacity>
@@ -450,7 +491,10 @@ class SoloModeGameStats extends React.Component {
                                             source={SOLVING_LOGO}
                                             style={styles.solvingLogo}
                                         />
-                                        <Text style={styles.videoButtonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.videoButtonText}
+                                        >
                                             Soruya Dön
                                         </Text>
                                     </TouchableOpacity>
@@ -469,7 +513,10 @@ class SoloModeGameStats extends React.Component {
                                 marginLeft: wp(34)
                             }}
                         >
-                            <Text style={styles.questionNumberText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.questionNumberText}
+                            >
                                 {this.state.questionPosition}/
                                 {
                                     Object.keys(this.state.allQuestionsList)
@@ -495,7 +542,10 @@ class SoloModeGameStats extends React.Component {
                                         source={VIDEO_LOGO}
                                         style={styles.videoLogo}
                                     />
-                                    <Text style={styles.videoButtonText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.videoButtonText}
+                                    >
                                         Çözümü izle
                                     </Text>
                                 </TouchableOpacity>
@@ -556,6 +606,7 @@ class SoloModeGameStats extends React.Component {
                                 ]}
                             >
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.optionText,
                                         { color: '#00D9EF' }
@@ -568,7 +619,12 @@ class SoloModeGameStats extends React.Component {
                                     )}
                                 </Text>
                             </View>
-                            <Text style={styles.answerText}>Doğru Cevap</Text>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.answerText}
+                            >
+                                Doğru Cevap
+                            </Text>
                         </View>
                         <View style={styles.favIconContainer}>
                             <TouchableOpacity onPress={this.favouriteOnPress}>
@@ -588,6 +644,7 @@ class SoloModeGameStats extends React.Component {
                                 ]}
                             >
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.optionText,
                                         { color: '#00D9EF' }
@@ -600,7 +657,12 @@ class SoloModeGameStats extends React.Component {
                                     )}
                                 </Text>
                             </View>
-                            <Text style={styles.answerText}>Senin Cevabın</Text>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.answerText}
+                            >
+                                Senin Cevabın
+                            </Text>
                         </View>
                     </View>
                 </View>

@@ -71,10 +71,16 @@ class ProfileSearch extends React.Component {
                         </View>
                     </TouchableOpacity>
                     <View style={styles.headerTextWrapper}>
-                        <Text style={styles.searchText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.searchText}
+                        >
                             "{this.props.searchedKeyword}"
                         </Text>
-                        <Text style={styles.searchInfoText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.searchInfoText}
+                        >
                             ile alakalı sonuçlar
                         </Text>
                     </View>
@@ -113,6 +119,7 @@ class ProfileSearch extends React.Component {
                                                     }
                                                 >
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={styles.nameText}
                                                     >
                                                         {item.name +
@@ -120,6 +127,7 @@ class ProfileSearch extends React.Component {
                                                             item.lastname}
                                                     </Text>
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.usernameText
                                                         }
@@ -146,7 +154,10 @@ class ProfileSearch extends React.Component {
                             source={NO_RESULTS_USER}
                             style={styles.noResultImg}
                         />
-                        <Text style={styles.noResultsText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.noResultsText}
+                        >
                             Bu isimle bir kullanıcı bulamadık
                         </Text>
                     </View>

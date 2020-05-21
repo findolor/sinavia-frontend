@@ -582,6 +582,7 @@ class PurchaseScreen extends React.Component {
                                             }
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={
                                                     styles.premiumModalHeaderText
                                                 }
@@ -625,6 +626,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.premiumModalHeaderText
                                                             }
@@ -638,6 +642,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={[
                                                                 styles.premiumModalInfoText,
                                                                 {
@@ -676,6 +683,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.premiumModalHeaderText
                                                             }
@@ -689,6 +699,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={[
                                                                 styles.premiumModalInfoText,
                                                                 {
@@ -730,6 +743,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.premiumModalHeaderText
                                                             }
@@ -743,6 +759,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={[
                                                                 styles.premiumModalInfoText,
                                                                 {
@@ -785,6 +804,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.premiumModalHeaderText
                                                             }
@@ -798,6 +820,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={[
                                                                 styles.premiumModalInfoText,
                                                                 {
@@ -838,6 +863,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.premiumModalHeaderText
                                                             }
@@ -851,6 +879,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={[
                                                                 styles.premiumModalInfoText,
                                                                 {
@@ -892,6 +923,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.premiumModalHeaderText
                                                             }
@@ -906,6 +940,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={[
                                                                 styles.premiumModalInfoText,
                                                                 {
@@ -947,6 +984,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.premiumModalHeaderText
                                                             }
@@ -960,6 +1000,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={[
                                                                 styles.premiumModalInfoText,
                                                                 {
@@ -998,6 +1041,7 @@ class PurchaseScreen extends React.Component {
                                                     ]}
                                                 >
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             this.state
                                                                 .premiumOption ===
@@ -1028,6 +1072,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 this.state
                                                                     .premiumOption ===
@@ -1039,6 +1086,9 @@ class PurchaseScreen extends React.Component {
                                                             1
                                                         </Text>
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 this.state
                                                                     .premiumOption ===
@@ -1056,6 +1106,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 this.state
                                                                     .premiumOption ===
@@ -1076,6 +1129,9 @@ class PurchaseScreen extends React.Component {
                                                             TL/ay
                                                         </Text>
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 this.state
                                                                     .premiumOption ===
@@ -1117,6 +1173,7 @@ class PurchaseScreen extends React.Component {
                                                     ]}
                                                 >
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             this.state
                                                                 .premiumOption ===
@@ -1147,6 +1204,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 this.state
                                                                     .premiumOption ===
@@ -1158,6 +1218,9 @@ class PurchaseScreen extends React.Component {
                                                             3
                                                         </Text>
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 this.state
                                                                     .premiumOption ===
@@ -1175,6 +1238,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 this.state
                                                                     .premiumOption ===
@@ -1195,6 +1261,9 @@ class PurchaseScreen extends React.Component {
                                                             TL/ay
                                                         </Text>
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 this.state
                                                                     .premiumOption ===
@@ -1234,6 +1303,7 @@ class PurchaseScreen extends React.Component {
                                                     ]}
                                                 >
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             this.state
                                                                 .premiumOption ===
@@ -1264,6 +1334,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 this.state
                                                                     .premiumOption ===
@@ -1275,6 +1348,9 @@ class PurchaseScreen extends React.Component {
                                                             6
                                                         </Text>
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 this.state
                                                                     .premiumOption ===
@@ -1292,6 +1368,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 this.state
                                                                     .premiumOption ===
@@ -1312,6 +1391,9 @@ class PurchaseScreen extends React.Component {
                                                             TL/ay
                                                         </Text>
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 this.state
                                                                     .premiumOption ===
@@ -1339,7 +1421,10 @@ class PurchaseScreen extends React.Component {
                                                 styles.buttonsInPremiumModalView
                                             }
                                         >
-                                            <Text style={styles.premiumWarning}>
+                                            <Text
+                                                allowFontScaling={false}
+                                                style={styles.premiumWarning}
+                                            >
                                                 *Tek seferlik satın almadır,
                                                 süre bitince tekrarlanmaz
                                             </Text>
@@ -1357,6 +1442,7 @@ class PurchaseScreen extends React.Component {
                                                 {this.props.clientInformation
                                                     .isPremium === false && (
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.purchasePremiumButtonText
                                                         }
@@ -1367,6 +1453,7 @@ class PurchaseScreen extends React.Component {
                                                 {this.props.clientInformation
                                                     .isPremium === true && (
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.purchasePremiumButtonText
                                                         }
@@ -1381,6 +1468,7 @@ class PurchaseScreen extends React.Component {
                                                 }}
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.purchasePremiumCancelText
                                                     }
@@ -1417,6 +1505,7 @@ class PurchaseScreen extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.promotionCodeInfoText
                                                     }
@@ -1426,6 +1515,7 @@ class PurchaseScreen extends React.Component {
                                                     kodu gönder
                                                 </Text>
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.promotionCodeInfoText
                                                     }
@@ -1435,12 +1525,14 @@ class PurchaseScreen extends React.Component {
                                                     kullansın
                                                 </Text>
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.promotionCodeInfoText
                                                     }
                                                 >
                                                     3 - 1 haftalık{' '}
                                                     <Text
+                                                        allowFontScaling={false}
                                                         onPress={() => {
                                                             this.setState(
                                                                 {
@@ -1501,6 +1593,7 @@ class PurchaseScreen extends React.Component {
                                                     </View>
                                                 )}
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={styles.promotionCode}
                                                     selectable={true}
                                                 >
@@ -1513,6 +1606,7 @@ class PurchaseScreen extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.inviteFriendKeyAmounts
                                                     }
@@ -1538,6 +1632,7 @@ class PurchaseScreen extends React.Component {
                                             }}
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={
                                                     styles.purchasePremiumButtonText
                                                 }
@@ -1598,6 +1693,7 @@ class PurchaseScreen extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.jokerAmountsText
                                                     }
@@ -1616,6 +1712,7 @@ class PurchaseScreen extends React.Component {
                                                         style={styles.jokerImg}
                                                     />
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.jokerAmountText
                                                         }
@@ -1633,6 +1730,7 @@ class PurchaseScreen extends React.Component {
                                                         style={styles.jokerImg}
                                                     />
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.jokerAmountText
                                                         }
@@ -1650,6 +1748,7 @@ class PurchaseScreen extends React.Component {
                                                         style={styles.jokerImg}
                                                     />
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.jokerAmountText
                                                         }
@@ -1662,6 +1761,7 @@ class PurchaseScreen extends React.Component {
                                                 style={styles.jokerPricesView}
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.normalPriceText
                                                     }
@@ -1694,6 +1794,7 @@ class PurchaseScreen extends React.Component {
                                                     }}
                                                 >
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.discountPriceText
                                                         }
@@ -1729,6 +1830,7 @@ class PurchaseScreen extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.jokerAmountsText
                                                     }
@@ -1747,6 +1849,7 @@ class PurchaseScreen extends React.Component {
                                                         style={styles.jokerImg}
                                                     />
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.jokerAmountText
                                                         }
@@ -1764,6 +1867,7 @@ class PurchaseScreen extends React.Component {
                                                         style={styles.jokerImg}
                                                     />
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.jokerAmountText
                                                         }
@@ -1781,6 +1885,7 @@ class PurchaseScreen extends React.Component {
                                                         style={styles.jokerImg}
                                                     />
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.jokerAmountText
                                                         }
@@ -1793,6 +1898,7 @@ class PurchaseScreen extends React.Component {
                                                 style={styles.jokerPricesView}
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.normalPriceText
                                                     }
@@ -1825,6 +1931,7 @@ class PurchaseScreen extends React.Component {
                                                     }}
                                                 >
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.discountPriceText
                                                         }
@@ -1860,6 +1967,7 @@ class PurchaseScreen extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.jokerAmountsText
                                                     }
@@ -1878,6 +1986,7 @@ class PurchaseScreen extends React.Component {
                                                         style={styles.jokerImg}
                                                     />
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.jokerAmountText
                                                         }
@@ -1895,6 +2004,7 @@ class PurchaseScreen extends React.Component {
                                                         style={styles.jokerImg}
                                                     />
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.jokerAmountText
                                                         }
@@ -1912,6 +2022,7 @@ class PurchaseScreen extends React.Component {
                                                         style={styles.jokerImg}
                                                     />
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.jokerAmountText
                                                         }
@@ -1924,6 +2035,7 @@ class PurchaseScreen extends React.Component {
                                                 style={styles.jokerPricesView}
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.normalPriceText
                                                     }
@@ -1956,6 +2068,7 @@ class PurchaseScreen extends React.Component {
                                                     }}
                                                 >
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.discountPriceText
                                                         }
@@ -1992,6 +2105,7 @@ class PurchaseScreen extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.jokerAmountsText
                                                     }
@@ -2017,6 +2131,7 @@ class PurchaseScreen extends React.Component {
                                                     ]}
                                                 />
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={[
                                                         styles.jokerAmountText,
                                                         {
@@ -2034,6 +2149,7 @@ class PurchaseScreen extends React.Component {
                                                 style={styles.jokerPricesView}
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.normalPriceText
                                                     }
@@ -2066,6 +2182,7 @@ class PurchaseScreen extends React.Component {
                                                     }}
                                                 >
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.discountPriceText
                                                         }
@@ -2101,6 +2218,7 @@ class PurchaseScreen extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.jokerAmountsText
                                                     }
@@ -2126,6 +2244,7 @@ class PurchaseScreen extends React.Component {
                                                     ]}
                                                 />
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={[
                                                         styles.jokerAmountText,
                                                         {
@@ -2143,6 +2262,7 @@ class PurchaseScreen extends React.Component {
                                                 style={styles.jokerPricesView}
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.normalPriceText
                                                     }
@@ -2175,6 +2295,7 @@ class PurchaseScreen extends React.Component {
                                                     }}
                                                 >
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.discountPriceText
                                                         }
@@ -2210,6 +2331,7 @@ class PurchaseScreen extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.jokerAmountsText
                                                     }
@@ -2235,6 +2357,7 @@ class PurchaseScreen extends React.Component {
                                                     ]}
                                                 />
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={[
                                                         styles.jokerAmountText,
                                                         {
@@ -2252,6 +2375,7 @@ class PurchaseScreen extends React.Component {
                                                 style={styles.jokerPricesView}
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.normalPriceText
                                                     }
@@ -2284,6 +2408,7 @@ class PurchaseScreen extends React.Component {
                                                     }}
                                                 >
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.discountPriceText
                                                         }
@@ -2320,6 +2445,7 @@ class PurchaseScreen extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.jokerAmountsText
                                                     }
@@ -2345,6 +2471,7 @@ class PurchaseScreen extends React.Component {
                                                     ]}
                                                 />
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={[
                                                         styles.jokerAmountText,
                                                         {
@@ -2362,6 +2489,7 @@ class PurchaseScreen extends React.Component {
                                                 style={styles.jokerPricesView}
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.normalPriceText
                                                     }
@@ -2394,6 +2522,7 @@ class PurchaseScreen extends React.Component {
                                                     }}
                                                 >
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.discountPriceText
                                                         }
@@ -2429,6 +2558,7 @@ class PurchaseScreen extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.jokerAmountsText
                                                     }
@@ -2454,6 +2584,7 @@ class PurchaseScreen extends React.Component {
                                                     ]}
                                                 />
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={[
                                                         styles.jokerAmountText,
                                                         {
@@ -2471,6 +2602,7 @@ class PurchaseScreen extends React.Component {
                                                 style={styles.jokerPricesView}
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.normalPriceText
                                                     }
@@ -2503,6 +2635,7 @@ class PurchaseScreen extends React.Component {
                                                     }}
                                                 >
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.discountPriceText
                                                         }
@@ -2538,6 +2671,7 @@ class PurchaseScreen extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.jokerAmountsText
                                                     }
@@ -2563,6 +2697,7 @@ class PurchaseScreen extends React.Component {
                                                     ]}
                                                 />
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={[
                                                         styles.jokerAmountText,
                                                         {
@@ -2580,6 +2715,7 @@ class PurchaseScreen extends React.Component {
                                                 style={styles.jokerPricesView}
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.normalPriceText
                                                     }
@@ -2612,6 +2748,7 @@ class PurchaseScreen extends React.Component {
                                                     }}
                                                 >
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.discountPriceText
                                                         }
@@ -2648,6 +2785,7 @@ class PurchaseScreen extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.jokerAmountsText
                                                     }
@@ -2673,6 +2811,7 @@ class PurchaseScreen extends React.Component {
                                                     ]}
                                                 />
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={[
                                                         styles.jokerAmountText,
                                                         {
@@ -2690,6 +2829,7 @@ class PurchaseScreen extends React.Component {
                                                 style={styles.jokerPricesView}
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.normalPriceText
                                                     }
@@ -2722,6 +2862,7 @@ class PurchaseScreen extends React.Component {
                                                     }}
                                                 >
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.discountPriceText
                                                         }
@@ -2757,6 +2898,7 @@ class PurchaseScreen extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.jokerAmountsText
                                                     }
@@ -2782,6 +2924,7 @@ class PurchaseScreen extends React.Component {
                                                     ]}
                                                 />
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={[
                                                         styles.jokerAmountText,
                                                         {
@@ -2799,6 +2942,7 @@ class PurchaseScreen extends React.Component {
                                                 style={styles.jokerPricesView}
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.normalPriceText
                                                     }
@@ -2831,6 +2975,7 @@ class PurchaseScreen extends React.Component {
                                                     }}
                                                 >
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.discountPriceText
                                                         }
@@ -2866,6 +3011,7 @@ class PurchaseScreen extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.jokerAmountsText
                                                     }
@@ -2891,6 +3037,7 @@ class PurchaseScreen extends React.Component {
                                                     ]}
                                                 />
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={[
                                                         styles.jokerAmountText,
                                                         {
@@ -2908,6 +3055,7 @@ class PurchaseScreen extends React.Component {
                                                 style={styles.jokerPricesView}
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.normalPriceText
                                                     }
@@ -2940,6 +3088,7 @@ class PurchaseScreen extends React.Component {
                                                     }}
                                                 >
                                                     <Text
+                                                        allowFontScaling={false}
                                                         style={
                                                             styles.discountPriceText
                                                         }
@@ -3017,6 +3166,7 @@ class PurchaseScreen extends React.Component {
                                             ]}
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={[
                                                     styles.newPlayAdText,
                                                     {
@@ -3082,6 +3232,7 @@ class PurchaseScreen extends React.Component {
                                             ]}
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={[
                                                     styles.newPlayAdText,
                                                     {
@@ -3147,6 +3298,7 @@ class PurchaseScreen extends React.Component {
                                             ]}
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={[
                                                     styles.newPlayAdText,
                                                     {
@@ -3201,6 +3353,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.premiumHeaderText
                                                             }
@@ -3214,6 +3369,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.premiumInfoText
                                                             }
@@ -3247,6 +3405,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.premiumHeaderText
                                                             }
@@ -3260,6 +3421,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.premiumInfoText
                                                             }
@@ -3296,6 +3460,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.premiumHeaderText
                                                             }
@@ -3309,6 +3476,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.premiumInfoText
                                                             }
@@ -3346,6 +3516,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.premiumHeaderText
                                                             }
@@ -3359,6 +3532,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.premiumInfoText
                                                             }
@@ -3394,6 +3570,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.premiumHeaderText
                                                             }
@@ -3407,6 +3586,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.premiumInfoText
                                                             }
@@ -3443,6 +3625,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.premiumHeaderText
                                                             }
@@ -3457,6 +3642,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.premiumInfoText
                                                             }
@@ -3493,6 +3681,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.premiumHeaderText
                                                             }
@@ -3506,6 +3697,9 @@ class PurchaseScreen extends React.Component {
                                                         }
                                                     >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.premiumInfoText
                                                             }
@@ -3527,6 +3721,7 @@ class PurchaseScreen extends React.Component {
                                                 style={styles.premiumButton}
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.premiumButtonText
                                                     }
@@ -3541,10 +3736,14 @@ class PurchaseScreen extends React.Component {
                                         onPress={this.onPressPromotionCodeView}
                                         style={styles.premiumBottomView}
                                     >
-                                        <Text style={styles.inviteText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.inviteText}
+                                        >
                                             Arkadaşını davet et,
                                         </Text>
                                         <Text
+                                            allowFontScaling={false}
                                             style={
                                                 styles.earnPremiumWithInviteText
                                             }
@@ -3591,7 +3790,10 @@ class PurchaseScreen extends React.Component {
                                             styles.newPremiumUserJokerButton3Style
                                         }
                                     >
-                                        <Text style={styles.newPlayAdText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.newPlayAdText}
+                                        >
                                             {'     '}
                                             İzle & Kazan
                                         </Text>
@@ -3631,7 +3833,10 @@ class PurchaseScreen extends React.Component {
                                             styles.newPremiumUserJokerButton3Style
                                         }
                                     >
-                                        <Text style={styles.newPlayAdText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.newPlayAdText}
+                                        >
                                             {'     '}
                                             İzle & Kazan
                                         </Text>
@@ -3671,7 +3876,10 @@ class PurchaseScreen extends React.Component {
                                             styles.newPremiumUserJokerButton3Style
                                         }
                                     >
-                                        <Text style={styles.newPlayAdText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.newPlayAdText}
+                                        >
                                             {'     '}
                                             İzle & Kazan
                                         </Text>
@@ -3770,6 +3978,7 @@ class PurchaseScreen extends React.Component {
                                         ]}
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={[
                                                 styles.socialMediaInfoText,
                                                 {
@@ -3828,6 +4037,7 @@ class PurchaseScreen extends React.Component {
                                     </View>
                                     <View style={styles.socialMediaInfoView}>
                                         <Text
+                                            allowFontScaling={false}
                                             style={styles.socialMediaInfoText}
                                         >
                                             Sosyal medya hesaplarımızı takip
@@ -3851,11 +4061,13 @@ class PurchaseScreen extends React.Component {
                                             style={styles.yourPremiumTextView}
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={styles.yourPremiumText}
                                             >
                                                 {this.props.choosenExam}
                                             </Text>
                                             <Text
+                                                allowFontScaling={false}
                                                 style={styles.yourPremiumText}
                                             >
                                                 Kalan Süre
@@ -3867,11 +4079,13 @@ class PurchaseScreen extends React.Component {
                                             }
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={
                                                     styles.yourPremiumCounterText
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.yourPremiumCounterNumbersText
                                                     }
@@ -3883,6 +4097,7 @@ class PurchaseScreen extends React.Component {
                                                 </Text>{' '}
                                                 Ay
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.yourPremiumCounterNumbersText
                                                     }
@@ -3897,8 +4112,13 @@ class PurchaseScreen extends React.Component {
                                                 {this.state
                                                     .remainingExamMonths <
                                                     10 && (
-                                                    <Text>
+                                                    <Text
+                                                        allowFontScaling={false}
+                                                    >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.yourPremiumCounterNumbersText
                                                             }
@@ -3910,6 +4130,9 @@ class PurchaseScreen extends React.Component {
                                                             }
                                                         </Text>
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.yourPremiumCounterText
                                                             }
@@ -3927,11 +4150,13 @@ class PurchaseScreen extends React.Component {
                                             style={styles.yourPremiumTextView}
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={styles.yourPremiumText}
                                             >
                                                 Elit Öğrenci Paketi
                                             </Text>
                                             <Text
+                                                allowFontScaling={false}
                                                 style={styles.yourPremiumText}
                                             >
                                                 Kalan Süre
@@ -3943,11 +4168,13 @@ class PurchaseScreen extends React.Component {
                                             }
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={
                                                     styles.yourPremiumCounterText
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.yourPremiumCounterNumbersText
                                                     }
@@ -3959,6 +4186,7 @@ class PurchaseScreen extends React.Component {
                                                 </Text>{' '}
                                                 Ay
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.yourPremiumCounterNumbersText
                                                     }
@@ -3973,8 +4201,13 @@ class PurchaseScreen extends React.Component {
                                                 {this.state
                                                     .remainingPremiumMonths <
                                                     10 && (
-                                                    <Text>
+                                                    <Text
+                                                        allowFontScaling={false}
+                                                    >
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.yourPremiumCounterNumbersText
                                                             }
@@ -3986,6 +4219,9 @@ class PurchaseScreen extends React.Component {
                                                             }
                                                         </Text>
                                                         <Text
+                                                            allowFontScaling={
+                                                                false
+                                                            }
                                                             style={
                                                                 styles.yourPremiumCounterText
                                                             }
@@ -4021,6 +4257,7 @@ class PurchaseScreen extends React.Component {
                                                 ]}
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.jokerCounterText
                                                     }
@@ -4041,7 +4278,10 @@ class PurchaseScreen extends React.Component {
                                         </View>
                                     </View>
                                     <View style={styles.jokerNameContainer}>
-                                        <Text style={styles.jokerNameText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.jokerNameText}
+                                        >
                                             {this.state.firstJoker.joker.name}
                                         </Text>
                                     </View>
@@ -4066,6 +4306,7 @@ class PurchaseScreen extends React.Component {
                                                 ]}
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.jokerCounterText
                                                     }
@@ -4086,7 +4327,10 @@ class PurchaseScreen extends React.Component {
                                         </View>
                                     </View>
                                     <View style={styles.jokerNameContainer}>
-                                        <Text style={styles.jokerNameText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.jokerNameText}
+                                        >
                                             {this.state.secondJoker.joker.name}
                                         </Text>
                                     </View>
@@ -4111,6 +4355,7 @@ class PurchaseScreen extends React.Component {
                                                 ]}
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.jokerCounterText
                                                     }
@@ -4131,7 +4376,10 @@ class PurchaseScreen extends React.Component {
                                         </View>
                                     </View>
                                     <View style={styles.jokerNameContainer}>
-                                        <Text style={styles.jokerNameText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.jokerNameText}
+                                        >
                                             {this.state.thirdJoker.joker.name}
                                         </Text>
                                     </View>

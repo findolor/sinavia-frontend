@@ -504,6 +504,7 @@ class Leaderboard extends React.Component {
                                         ]}
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={[
                                                 styles.tabbarGlobalText,
                                                 {
@@ -533,6 +534,7 @@ class Leaderboard extends React.Component {
                                         ]}
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={[
                                                 styles.tabbarFriendsText,
                                                 {
@@ -639,6 +641,7 @@ class Leaderboard extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.topTenOrderNumber
                                                     }
@@ -655,15 +658,28 @@ class Leaderboard extends React.Component {
                                         { justifyContent: 'flex-end' }
                                     ]}
                                 >
-                                    <View style={styles.lastUpdateView}>
-                                        <Text style={styles.lastUpdateText}>
-                                            Son Güncelleme Tarihi
-                                        </Text>
-                                        <Text style={styles.lastUpdateTimeText}>
-                                            {this.state.hoursPassedSinceUpdate}{' '}
-                                            saat önce
-                                        </Text>
-                                    </View>
+                                    {this.state.rankingMode === 'global' && (
+                                        <View style={styles.lastUpdateView}>
+                                            <Text
+                                                allowFontScaling={false}
+                                                style={styles.lastUpdateText}
+                                            >
+                                                Son Güncelleme Tarihi
+                                            </Text>
+                                            <Text
+                                                allowFontScaling={false}
+                                                style={
+                                                    styles.lastUpdateTimeText
+                                                }
+                                            >
+                                                {
+                                                    this.state
+                                                        .hoursPassedSinceUpdate
+                                                }{' '}
+                                                saat önce
+                                            </Text>
+                                        </View>
+                                    )}
                                 </View>
                             </View>
                             <Animatable.View
@@ -672,14 +688,20 @@ class Leaderboard extends React.Component {
                                 animation="fadeIn"
                                 duration={600}
                             >
-                                <Text style={styles.nameText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.nameText}
+                                >
                                     {this.state.topTenUsernames[0] !==
                                         undefined &&
                                         this.state.topTenUsernames[0]}
                                     {this.state.topTenUsernames[0] ===
                                         undefined && ''}
                                 </Text>
-                                <Text style={styles.scoreText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.scoreText}
+                                >
                                     {this.state.topTenPoints[0] !== undefined &&
                                         this.state.topTenPoints[0]}
                                     {this.state.topTenPoints[0] === undefined &&
@@ -740,6 +762,7 @@ class Leaderboard extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.topTenOrderNumber
                                                     }
@@ -752,7 +775,10 @@ class Leaderboard extends React.Component {
                                     <View
                                         style={styles.topTenUserNameContainer}
                                     >
-                                        <Text style={styles.topTenUserNameText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.topTenUserNameText}
+                                        >
                                             {this.state.topTenUsernames[1] !==
                                                 undefined &&
                                                 this.state.topTenUsernames[1]}
@@ -764,6 +790,7 @@ class Leaderboard extends React.Component {
                                         style={styles.topTenUserScoreContainer}
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={styles.topTenUserScoreText}
                                         >
                                             {this.state.topTenPoints[1] !==
@@ -825,6 +852,7 @@ class Leaderboard extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.topTenOrderNumber
                                                     }
@@ -837,7 +865,10 @@ class Leaderboard extends React.Component {
                                     <View
                                         style={styles.topTenUserNameContainer}
                                     >
-                                        <Text style={styles.topTenUserNameText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.topTenUserNameText}
+                                        >
                                             {this.state.topTenUsernames[2] !==
                                                 undefined &&
                                                 this.state.topTenUsernames[2]}
@@ -849,6 +880,7 @@ class Leaderboard extends React.Component {
                                         style={styles.topTenUserScoreContainer}
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={styles.topTenUserScoreText}
                                         >
                                             {this.state.topTenPoints[2] !==
@@ -904,6 +936,7 @@ class Leaderboard extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.topTenOrderNumber
                                                     }
@@ -916,7 +949,10 @@ class Leaderboard extends React.Component {
                                     <View
                                         style={styles.topTenUserNameContainer}
                                     >
-                                        <Text style={styles.topTenUserNameText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.topTenUserNameText}
+                                        >
                                             {this.state.topTenUsernames[3] !==
                                                 undefined &&
                                                 this.state.topTenUsernames[3]}
@@ -928,6 +964,7 @@ class Leaderboard extends React.Component {
                                         style={styles.topTenUserScoreContainer}
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={styles.topTenUserScoreText}
                                         >
                                             {this.state.topTenPoints[3] !==
@@ -985,6 +1022,7 @@ class Leaderboard extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.topTenOrderNumber
                                                     }
@@ -997,7 +1035,10 @@ class Leaderboard extends React.Component {
                                     <View
                                         style={styles.topTenUserNameContainer}
                                     >
-                                        <Text style={styles.topTenUserNameText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.topTenUserNameText}
+                                        >
                                             {this.state.topTenUsernames[4] !==
                                                 undefined &&
                                                 this.state.topTenUsernames[4]}
@@ -1009,6 +1050,7 @@ class Leaderboard extends React.Component {
                                         style={styles.topTenUserScoreContainer}
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={styles.topTenUserScoreText}
                                         >
                                             {this.state.topTenPoints[4] !==
@@ -1064,6 +1106,7 @@ class Leaderboard extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.topTenOrderNumber
                                                     }
@@ -1076,7 +1119,10 @@ class Leaderboard extends React.Component {
                                     <View
                                         style={styles.topTenUserNameContainer}
                                     >
-                                        <Text style={styles.topTenUserNameText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.topTenUserNameText}
+                                        >
                                             {this.state.topTenUsernames[5] !==
                                                 undefined &&
                                                 this.state.topTenUsernames[5]}
@@ -1088,6 +1134,7 @@ class Leaderboard extends React.Component {
                                         style={styles.topTenUserScoreContainer}
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={styles.topTenUserScoreText}
                                         >
                                             {this.state.topTenPoints[5] !==
@@ -1143,6 +1190,7 @@ class Leaderboard extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.topTenOrderNumber
                                                     }
@@ -1155,7 +1203,10 @@ class Leaderboard extends React.Component {
                                     <View
                                         style={styles.topTenUserNameContainer}
                                     >
-                                        <Text style={styles.topTenUserNameText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.topTenUserNameText}
+                                        >
                                             {this.state.topTenUsernames[6] !==
                                                 undefined &&
                                                 this.state.topTenUsernames[6]}
@@ -1167,6 +1218,7 @@ class Leaderboard extends React.Component {
                                         style={styles.topTenUserScoreContainer}
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={styles.topTenUserScoreText}
                                         >
                                             {this.state.topTenPoints[6] !==
@@ -1224,6 +1276,7 @@ class Leaderboard extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.topTenOrderNumber
                                                     }
@@ -1236,7 +1289,10 @@ class Leaderboard extends React.Component {
                                     <View
                                         style={styles.topTenUserNameContainer}
                                     >
-                                        <Text style={styles.topTenUserNameText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.topTenUserNameText}
+                                        >
                                             {this.state.topTenUsernames[7] !==
                                                 undefined &&
                                                 this.state.topTenUsernames[7]}
@@ -1248,6 +1304,7 @@ class Leaderboard extends React.Component {
                                         style={styles.topTenUserScoreContainer}
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={styles.topTenUserScoreText}
                                         >
                                             {this.state.topTenPoints[7] !==
@@ -1303,6 +1360,7 @@ class Leaderboard extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.topTenOrderNumber
                                                     }
@@ -1315,7 +1373,10 @@ class Leaderboard extends React.Component {
                                     <View
                                         style={styles.topTenUserNameContainer}
                                     >
-                                        <Text style={styles.topTenUserNameText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.topTenUserNameText}
+                                        >
                                             {this.state.topTenUsernames[8] !==
                                                 undefined &&
                                                 this.state.topTenUsernames[8]}
@@ -1327,6 +1388,7 @@ class Leaderboard extends React.Component {
                                         style={styles.topTenUserScoreContainer}
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={styles.topTenUserScoreText}
                                         >
                                             {this.state.topTenPoints[8] !==
@@ -1382,6 +1444,7 @@ class Leaderboard extends React.Component {
                                                 }
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.topTenOrderNumber
                                                     }
@@ -1394,7 +1457,10 @@ class Leaderboard extends React.Component {
                                     <View
                                         style={styles.topTenUserNameContainer}
                                     >
-                                        <Text style={styles.topTenUserNameText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.topTenUserNameText}
+                                        >
                                             {this.state.topTenUsernames[9] !==
                                                 undefined &&
                                                 this.state.topTenUsernames[9]}
@@ -1406,6 +1472,7 @@ class Leaderboard extends React.Component {
                                         style={styles.topTenUserScoreContainer}
                                     >
                                         <Text
+                                            allowFontScaling={false}
                                             style={styles.topTenUserScoreText}
                                         >
                                             {this.state.topTenPoints[9] !==
@@ -1423,7 +1490,10 @@ class Leaderboard extends React.Component {
                                 source={SLIDE_DOWN}
                                 style={styles.slideDownLeftImg}
                             />
-                            <Text style={styles.continueOrderText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.continueOrderText}
+                            >
                                 Sıralamanın devamı için kaydır
                             </Text>
                             <Image
@@ -1443,6 +1513,7 @@ class Leaderboard extends React.Component {
                                             }
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={
                                                     styles.tenToHundredUserOrderText
                                                 }
@@ -1456,6 +1527,7 @@ class Leaderboard extends React.Component {
                                             }
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={
                                                     styles.tenToHundredUserNameText
                                                 }
@@ -1471,6 +1543,7 @@ class Leaderboard extends React.Component {
                                             }
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={
                                                     styles.tenToHundredUserScoreText
                                                 }
@@ -1488,7 +1561,7 @@ class Leaderboard extends React.Component {
                     </ScrollView>
                 </View>
                 <View style={styles.yourOrderTextContainer}>
-                    <Text style={styles.yourOrderText}>
+                    <Text allowFontScaling={false} style={styles.yourOrderText}>
                         Senin Sıralaman: {this.state.clientRanking}
                     </Text>
                 </View>

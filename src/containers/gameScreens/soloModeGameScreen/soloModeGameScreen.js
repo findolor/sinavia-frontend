@@ -229,8 +229,7 @@ class SoloModeGameScreen extends React.Component {
             case 'remove-options-joker':
                 this.setState({
                     isRemoveOptionJokerDisabled: true,
-                    secondJokerAmount: this.state.secondJokerAmount - 1,
-                    isRemoveOptionJokerUsed: true
+                    secondJokerAmount: this.state.secondJokerAmount - 1
                 })
                 this.props.subtractJoker(2)
 
@@ -241,8 +240,7 @@ class SoloModeGameScreen extends React.Component {
                 this.setState({
                     isSecondChanceJokerDisabled: true,
                     isSecondChanceJokerActive: true,
-                    thirdJokerAmount: this.state.thirdJokerAmount - 1,
-                    isSecondChanceJokerUsed: true
+                    thirdJokerAmount: this.state.thirdJokerAmount - 1
                 })
                 this.props.subtractJoker(3)
 
@@ -552,12 +550,12 @@ class SoloModeGameScreen extends React.Component {
         })
         if (
             !this.state.isRemoveOptionJokerFinished &&
-            !this.state.isRemoveOptionJokerUsed
+            this.state.secondJokerAmount != 0
         )
             this.setState({ isRemoveOptionJokerDisabled: false })
         if (
             !this.state.isSecondChanceJokerFinished &&
-            !this.state.isSecondChanceJokerUsed
+            this.state.thirdJokerAmount != 0
         )
             this.setState({ isSecondChanceJokerDisabled: false })
     }
@@ -661,11 +659,17 @@ class SoloModeGameScreen extends React.Component {
             >
                 <View style={styles.quitModalContainer}>
                     <View style={styles.quitView}>
-                        <Text style={styles.areYouSureText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.areYouSureText}
+                        >
                             Bağlantı hatası
                         </Text>
-                        <Text style={styles.areYouSureText}>
-                            Sonuç sayfasına yönlendirileceksin
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.areYouSureText}
+                        >
+                            Ana sayfaya yönlendirileceksin
                         </Text>
                     </View>
                 </View>
@@ -684,10 +688,18 @@ class SoloModeGameScreen extends React.Component {
             >
                 <View style={styles.quitModalContainer}>
                     <View style={styles.quitView}>
-                        <Text style={styles.areYouSureText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.areYouSureText}
+                        >
                             Oyundan çıkmak istediğine
                         </Text>
-                        <Text style={styles.areYouSureText}>emin misin?</Text>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.areYouSureText}
+                        >
+                            emin misin?
+                        </Text>
                     </View>
                     <View style={styles.yesOrNoButtonsContainer}>
                         <AuthButton
@@ -720,27 +732,6 @@ class SoloModeGameScreen extends React.Component {
         )
     }
 
-    serverError() {
-        return (
-            <View
-                style={{
-                    height: hp(120),
-                    width: wp(100),
-                    backgroundColor: '#000000DE'
-                }}
-            >
-                <View style={styles.modalContainer}>
-                    <View style={styles.quitView}>
-                        <Text style={styles.areYouSureText}>Sunucu hatası</Text>
-                        <Text style={styles.areYouSureText}>
-                            Sonuç sayfasına yönlendirileceksin
-                        </Text>
-                    </View>
-                </View>
-            </View>
-        )
-    }
-
     render() {
         return (
             <View style={styles.container}>
@@ -760,7 +751,10 @@ class SoloModeGameScreen extends React.Component {
                                 style={styles.userProfilePicture}
                             />
                             <View style={styles.usernameContainer}>
-                                <Text style={styles.usernameText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.usernameText}
+                                >
                                     {this.props.playerUsername}
                                 </Text>
                             </View>
@@ -775,7 +769,10 @@ class SoloModeGameScreen extends React.Component {
                                         }
                                     ]}
                                 >
-                                    <Text style={styles.answersText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.answersText}
+                                    >
                                         {this.state.playerCorrect}
                                     </Text>
                                 </View>
@@ -789,7 +786,10 @@ class SoloModeGameScreen extends React.Component {
                                         }
                                     ]}
                                 >
-                                    <Text style={styles.answersText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.answersText}
+                                    >
                                         {this.state.playerIncorrect}
                                     </Text>
                                 </View>
@@ -803,7 +803,10 @@ class SoloModeGameScreen extends React.Component {
                                         }
                                     ]}
                                 >
-                                    <Text style={styles.answersText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.answersText}
+                                    >
                                         {this.state.playerUnanswered}
                                     </Text>
                                 </View>
@@ -891,6 +894,7 @@ class SoloModeGameScreen extends React.Component {
                                             ]}
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
@@ -913,6 +917,7 @@ class SoloModeGameScreen extends React.Component {
                                             ]}
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
@@ -935,6 +940,7 @@ class SoloModeGameScreen extends React.Component {
                                             ]}
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
@@ -957,6 +963,7 @@ class SoloModeGameScreen extends React.Component {
                                             ]}
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
@@ -1026,7 +1033,10 @@ class SoloModeGameScreen extends React.Component {
                     <View style={styles.questionAndZoomButtonContainer}>
                         <View style={styles.spaceContainer} />
                         <View style={styles.questionInformation}>
-                            <Text style={styles.questionInformationText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.questionInformationText}
+                            >
                                 Soru {this.state.questionNumber + 1} /{' '}
                                 {Object.keys(this.state.questionList).length}
                             </Text>
@@ -1098,7 +1108,10 @@ class SoloModeGameScreen extends React.Component {
                                         }
                                         useNativeDriver={true}
                                     >
-                                        <Text style={styles.buttonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.buttonText}
+                                        >
                                             {this.state.buttonOneName}
                                         </Text>
                                     </Animatable.View>
@@ -1132,7 +1145,10 @@ class SoloModeGameScreen extends React.Component {
                                         delay={200}
                                         useNativeDriver={true}
                                     >
-                                        <Text style={styles.buttonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.buttonText}
+                                        >
                                             {this.state.buttonTwoName}
                                         </Text>
                                     </Animatable.View>
@@ -1167,7 +1183,10 @@ class SoloModeGameScreen extends React.Component {
                                         delay={100}
                                         useNativeDriver={true}
                                     >
-                                        <Text style={styles.buttonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.buttonText}
+                                        >
                                             {this.state.buttonThreeName}
                                         </Text>
                                     </Animatable.View>
@@ -1203,7 +1222,10 @@ class SoloModeGameScreen extends React.Component {
                                         delay={150}
                                         useNativeDriver={true}
                                     >
-                                        <Text style={styles.buttonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.buttonText}
+                                        >
                                             {this.state.buttonFourName}
                                         </Text>
                                     </Animatable.View>
@@ -1237,7 +1259,10 @@ class SoloModeGameScreen extends React.Component {
                                         delay={50}
                                         useNativeDriver={true}
                                     >
-                                        <Text style={styles.buttonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.buttonText}
+                                        >
                                             {this.state.buttonFiveName}
                                         </Text>
                                     </Animatable.View>
@@ -1258,7 +1283,10 @@ class SoloModeGameScreen extends React.Component {
                                         delay={250}
                                         useNativeDriver={true}
                                     >
-                                        <Text style={styles.buttonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.buttonText}
+                                        >
                                             {this.state.buttonSixName}
                                         </Text>
                                     </Animatable.View>
@@ -1312,7 +1340,10 @@ class SoloModeGameScreen extends React.Component {
                                         }
                                     ]}
                                 >
-                                    <Text style={styles.jokerCounterText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.jokerCounterText}
+                                    >
                                         {this.state.secondJokerAmount}
                                     </Text>
                                 </View>
@@ -1341,6 +1372,7 @@ class SoloModeGameScreen extends React.Component {
                                 }
                             >
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.jokerNameText,
                                         {
@@ -1356,6 +1388,7 @@ class SoloModeGameScreen extends React.Component {
                                     {this.state.secondJokerNameFirstWord}
                                 </Text>
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.jokerNameText,
                                         {
@@ -1412,7 +1445,10 @@ class SoloModeGameScreen extends React.Component {
                                         }
                                     ]}
                                 >
-                                    <Text style={styles.jokerCounterText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.jokerCounterText}
+                                    >
                                         {this.state.thirdJokerAmount}
                                     </Text>
                                 </View>
@@ -1441,6 +1477,7 @@ class SoloModeGameScreen extends React.Component {
                                 }
                             >
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.jokerNameText,
                                         {
@@ -1456,6 +1493,7 @@ class SoloModeGameScreen extends React.Component {
                                     {this.state.thirdJokerNameFirstWord}
                                 </Text>
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.jokerNameText,
                                         {

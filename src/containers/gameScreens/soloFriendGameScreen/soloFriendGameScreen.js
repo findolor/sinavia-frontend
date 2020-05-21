@@ -742,11 +742,17 @@ class SoloFriendGameScreen extends React.Component {
             >
                 <View style={styles.quitModalContainer}>
                     <View style={styles.quitView}>
-                        <Text style={styles.areYouSureText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.areYouSureText}
+                        >
                             Bağlantı hatası
                         </Text>
-                        <Text style={styles.areYouSureText}>
-                            Sonuç sayfasına yönlendirileceksin
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.areYouSureText}
+                        >
+                            Ana sayfaya yönlendirileceksin
                         </Text>
                     </View>
                 </View>
@@ -765,10 +771,18 @@ class SoloFriendGameScreen extends React.Component {
             >
                 <View style={styles.quitModalContainer}>
                     <View style={styles.quitView}>
-                        <Text style={styles.areYouSureText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.areYouSureText}
+                        >
                             Oyundan çıkmak istediğine
                         </Text>
-                        <Text style={styles.areYouSureText}>emin misin?</Text>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.areYouSureText}
+                        >
+                            emin misin?
+                        </Text>
                     </View>
                     <View style={styles.yesOrNoButtonsContainer}>
                         <AuthButton
@@ -808,8 +822,16 @@ class SoloFriendGameScreen extends React.Component {
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.quitView}>
-                        <Text style={styles.areYouSureText}>Sunucu hatası</Text>
-                        <Text style={styles.areYouSureText}>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.areYouSureText}
+                        >
+                            Sunucu hatası
+                        </Text>
+                        <Text
+                            allowFontScaling={false}
+                            style={styles.areYouSureText}
+                        >
                             Sonuç sayfasına yönlendirileceksin
                         </Text>
                     </View>
@@ -837,7 +859,10 @@ class SoloFriendGameScreen extends React.Component {
                                 style={styles.userProfilePicture}
                             />
                             <View style={styles.usernameContainer}>
-                                <Text style={styles.usernameText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.usernameText}
+                                >
                                     {this.props.playerUsername}
                                 </Text>
                             </View>
@@ -852,7 +877,10 @@ class SoloFriendGameScreen extends React.Component {
                                         }
                                     ]}
                                 >
-                                    <Text style={styles.answersText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.answersText}
+                                    >
                                         {this.state.playerCorrect}
                                     </Text>
                                 </View>
@@ -866,7 +894,10 @@ class SoloFriendGameScreen extends React.Component {
                                         }
                                     ]}
                                 >
-                                    <Text style={styles.answersText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.answersText}
+                                    >
                                         {this.state.playerIncorrect}
                                     </Text>
                                 </View>
@@ -880,7 +911,10 @@ class SoloFriendGameScreen extends React.Component {
                                         }
                                     ]}
                                 >
-                                    <Text style={styles.answersText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.answersText}
+                                    >
                                         {this.state.playerUnanswered}
                                     </Text>
                                 </View>
@@ -968,6 +1002,7 @@ class SoloFriendGameScreen extends React.Component {
                                             ]}
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
@@ -990,6 +1025,7 @@ class SoloFriendGameScreen extends React.Component {
                                             ]}
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
@@ -1012,6 +1048,7 @@ class SoloFriendGameScreen extends React.Component {
                                             ]}
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
@@ -1034,6 +1071,7 @@ class SoloFriendGameScreen extends React.Component {
                                             ]}
                                         >
                                             <Text
+                                                allowFontScaling={false}
                                                 style={{
                                                     fontFamily: 'Averta-Bold',
                                                     color: 'white',
@@ -1103,7 +1141,10 @@ class SoloFriendGameScreen extends React.Component {
                     <View style={styles.questionAndZoomButtonContainer}>
                         <View style={styles.spaceContainer} />
                         <View style={styles.questionInformation}>
-                            <Text style={styles.questionInformationText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.questionInformationText}
+                            >
                                 Soru {this.state.questionNumber + 1} /{' '}
                                 {Object.keys(this.state.questionList).length}
                             </Text>
@@ -1175,7 +1216,10 @@ class SoloFriendGameScreen extends React.Component {
                                         }
                                         useNativeDriver={true}
                                     >
-                                        <Text style={styles.buttonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.buttonText}
+                                        >
                                             {this.state.buttonOneName}
                                         </Text>
                                     </Animatable.View>
@@ -1209,7 +1253,10 @@ class SoloFriendGameScreen extends React.Component {
                                         delay={200}
                                         useNativeDriver={true}
                                     >
-                                        <Text style={styles.buttonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.buttonText}
+                                        >
                                             {this.state.buttonTwoName}
                                         </Text>
                                     </Animatable.View>
@@ -1244,7 +1291,10 @@ class SoloFriendGameScreen extends React.Component {
                                         delay={100}
                                         useNativeDriver={true}
                                     >
-                                        <Text style={styles.buttonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.buttonText}
+                                        >
                                             {this.state.buttonThreeName}
                                         </Text>
                                     </Animatable.View>
@@ -1280,7 +1330,10 @@ class SoloFriendGameScreen extends React.Component {
                                         delay={150}
                                         useNativeDriver={true}
                                     >
-                                        <Text style={styles.buttonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.buttonText}
+                                        >
                                             {this.state.buttonFourName}
                                         </Text>
                                     </Animatable.View>
@@ -1314,7 +1367,10 @@ class SoloFriendGameScreen extends React.Component {
                                         delay={50}
                                         useNativeDriver={true}
                                     >
-                                        <Text style={styles.buttonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.buttonText}
+                                        >
                                             {this.state.buttonFiveName}
                                         </Text>
                                     </Animatable.View>
@@ -1335,7 +1391,10 @@ class SoloFriendGameScreen extends React.Component {
                                         delay={250}
                                         useNativeDriver={true}
                                     >
-                                        <Text style={styles.buttonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.buttonText}
+                                        >
                                             {this.state.buttonSixName}
                                         </Text>
                                     </Animatable.View>
@@ -1389,7 +1448,10 @@ class SoloFriendGameScreen extends React.Component {
                                         }
                                     ]}
                                 >
-                                    <Text style={styles.jokerCounterText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.jokerCounterText}
+                                    >
                                         {this.state.secondJokerAmount}
                                     </Text>
                                 </View>
@@ -1418,6 +1480,7 @@ class SoloFriendGameScreen extends React.Component {
                                 }
                             >
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.jokerNameText,
                                         {
@@ -1433,6 +1496,7 @@ class SoloFriendGameScreen extends React.Component {
                                     {this.state.secondJokerNameFirstWord}
                                 </Text>
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.jokerNameText,
                                         {
@@ -1489,7 +1553,10 @@ class SoloFriendGameScreen extends React.Component {
                                         }
                                     ]}
                                 >
-                                    <Text style={styles.jokerCounterText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.jokerCounterText}
+                                    >
                                         {this.state.thirdJokerAmount}
                                     </Text>
                                 </View>
@@ -1518,6 +1585,7 @@ class SoloFriendGameScreen extends React.Component {
                                 }
                             >
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.jokerNameText,
                                         {
@@ -1533,6 +1601,7 @@ class SoloFriendGameScreen extends React.Component {
                                     {this.state.thirdJokerNameFirstWord}
                                 </Text>
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.jokerNameText,
                                         {

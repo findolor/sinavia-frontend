@@ -54,13 +54,22 @@ export default class GroupLoading extends React.Component {
                             </View>
                         </View>
                         <View style={styles.textsView}>
-                            <Text style={styles.courseText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.courseText}
+                            >
                                 {this.props.courseName}
                             </Text>
-                            <Text style={styles.subjectText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.subjectText}
+                            >
                                 {this.props.subjectName}
                             </Text>
-                            <Text style={styles.questionCounterText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.questionCounterText}
+                            >
                                 Soru Sayısı: {this.props.choosenQuestionAmount}
                             </Text>
                         </View>
@@ -69,7 +78,10 @@ export default class GroupLoading extends React.Component {
                                 source={GROUP_PEOPLE}
                                 style={styles.groupPeopleImg}
                             />
-                            <Text style={styles.peopleCounterText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.peopleCounterText}
+                            >
                                 {this.props.groupRoomPlayerList.length}
                             </Text>
                         </View>

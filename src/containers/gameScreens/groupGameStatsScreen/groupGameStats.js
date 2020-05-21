@@ -388,7 +388,10 @@ class GroupGameStatsScreen extends React.Component {
                         ]}
                     >
                         <View style={premiumStyles.premiumModalHeaderView}>
-                            <Text style={premiumStyles.premiumModalHeaderText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={premiumStyles.premiumModalHeaderText}
+                            >
                                 ELİT ÖĞRENCİ PAKETİ
                             </Text>
                         </View>
@@ -411,6 +414,7 @@ class GroupGameStatsScreen extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={
                                             premiumStyles.premiumModalHeaderText
                                         }
@@ -428,6 +432,7 @@ class GroupGameStatsScreen extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             premiumStyles.premiumModalInfoText,
                                             { marginTop: hp(1.5) }
@@ -463,7 +468,10 @@ class GroupGameStatsScreen extends React.Component {
                         ]}
                     >
                         <View style={premiumStyles.premiumModalHeaderView}>
-                            <Text style={premiumStyles.premiumModalHeaderText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={premiumStyles.premiumModalHeaderText}
+                            >
                                 ELİT ÖĞRENCİ PAKETİ
                             </Text>
                         </View>
@@ -486,6 +494,7 @@ class GroupGameStatsScreen extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={
                                             premiumStyles.premiumModalHeaderText
                                         }
@@ -503,6 +512,7 @@ class GroupGameStatsScreen extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             premiumStyles.premiumModalInfoText,
                                             { marginTop: hp(1.5) }
@@ -538,7 +548,10 @@ class GroupGameStatsScreen extends React.Component {
                         ]}
                     >
                         <View style={premiumStyles.premiumModalHeaderView}>
-                            <Text style={premiumStyles.premiumModalHeaderText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={premiumStyles.premiumModalHeaderText}
+                            >
                                 ELİT ÖĞRENCİ PAKETİ
                             </Text>
                         </View>
@@ -561,6 +574,7 @@ class GroupGameStatsScreen extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={
                                             premiumStyles.premiumModalHeaderText
                                         }
@@ -578,6 +592,7 @@ class GroupGameStatsScreen extends React.Component {
                                     ]}
                                 >
                                     <Text
+                                        allowFontScaling={false}
                                         style={[
                                             premiumStyles.premiumModalInfoText,
                                             { marginTop: hp(1.5) }
@@ -640,10 +655,18 @@ class GroupGameStatsScreen extends React.Component {
                     <View style={styles.resultsContainer}>
                         <View style={styles.resultsContainerHeader}>
                             <View style={styles.orderContainer}>
-                                <Text style={styles.orderHeaderText}>No</Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.orderHeaderText}
+                                >
+                                    No
+                                </Text>
                             </View>
                             <View style={styles.nameContainer}>
-                                <Text style={styles.nameHeaderText}>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.nameHeaderText}
+                                >
                                     Ad Soyad
                                 </Text>
                             </View>
@@ -678,13 +701,17 @@ class GroupGameStatsScreen extends React.Component {
                                     <View style={styles.userRow}>
                                         <View style={styles.orderContainer}>
                                             <Text
+                                                allowFontScaling={false}
                                                 style={styles.orderNumberText}
                                             >
                                                 {index + 1}
                                             </Text>
                                         </View>
                                         <View style={styles.nameContainer}>
-                                            <Text style={styles.nameText}>
+                                            <Text
+                                                allowFontScaling={false}
+                                                style={styles.nameText}
+                                            >
                                                 {item.username}
                                             </Text>
                                         </View>
@@ -693,6 +720,7 @@ class GroupGameStatsScreen extends React.Component {
                                                 style={styles.optionContainer}
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.optionCounterText
                                                     }
@@ -704,6 +732,7 @@ class GroupGameStatsScreen extends React.Component {
                                                 style={styles.optionContainer}
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.optionCounterText
                                                     }
@@ -715,6 +744,7 @@ class GroupGameStatsScreen extends React.Component {
                                                 style={styles.optionContainer}
                                             >
                                                 <Text
+                                                    allowFontScaling={false}
                                                     style={
                                                         styles.optionCounterText
                                                     }
@@ -734,8 +764,18 @@ class GroupGameStatsScreen extends React.Component {
                             onPress={this.mainScreenButtonOnPress}
                         >
                             <View style={styles.mainScreenButton}>
-                                <Text style={styles.buttonText}>Ana</Text>
-                                <Text style={styles.buttonText}>Menü</Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.buttonText}
+                                >
+                                    Ana
+                                </Text>
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.buttonText}
+                                >
+                                    Menü
+                                </Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -749,7 +789,10 @@ class GroupGameStatsScreen extends React.Component {
                                 }
                                 style={styles.slideUpImg}
                             />
-                            <Text style={styles.slideViewText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.slideViewText}
+                            >
                                 {' '}
                                 {this.state.screenPosition === 1
                                     ? 'SORULARI GÖRMEK İÇİN KAYDIR'
@@ -800,7 +843,10 @@ class GroupGameStatsScreen extends React.Component {
                                             source={SOLVING_LOGO}
                                             style={styles.solvingLogo}
                                         />
-                                        <Text style={styles.videoButtonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.videoButtonText}
+                                        >
                                             Çözüme bak
                                         </Text>
                                     </TouchableOpacity>
@@ -813,7 +859,10 @@ class GroupGameStatsScreen extends React.Component {
                                             source={SOLVING_LOGO}
                                             style={styles.solvingLogo}
                                         />
-                                        <Text style={styles.videoButtonText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.videoButtonText}
+                                        >
                                             Soruya Dön
                                         </Text>
                                     </TouchableOpacity>
@@ -832,7 +881,10 @@ class GroupGameStatsScreen extends React.Component {
                                 marginLeft: wp(34)
                             }}
                         >
-                            <Text style={styles.questionNumberText}>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.questionNumberText}
+                            >
                                 {this.state.questionPosition}/
                                 {
                                     Object.keys(this.state.allQuestionsList)
@@ -858,7 +910,10 @@ class GroupGameStatsScreen extends React.Component {
                                         source={VIDEO_LOGO}
                                         style={styles.videoLogo}
                                     />
-                                    <Text style={styles.videoButtonText}>
+                                    <Text
+                                        allowFontScaling={false}
+                                        style={styles.videoButtonText}
+                                    >
                                         Çözümü izle
                                     </Text>
                                 </TouchableOpacity>
@@ -919,6 +974,7 @@ class GroupGameStatsScreen extends React.Component {
                                 ]}
                             >
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.optionText,
                                         { color: '#00D9EF' }
@@ -933,7 +989,12 @@ class GroupGameStatsScreen extends React.Component {
                                     )}
                                 </Text>
                             </View>
-                            <Text style={styles.answerText}>Doğru Cevap</Text>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.answerText}
+                            >
+                                Doğru Cevap
+                            </Text>
                         </View>
                         <View style={styles.favIconContainer}>
                             <TouchableOpacity onPress={this.favouriteOnPress}>
@@ -953,6 +1014,7 @@ class GroupGameStatsScreen extends React.Component {
                                 ]}
                             >
                                 <Text
+                                    allowFontScaling={false}
                                     style={[
                                         styles.optionText,
                                         { color: '#00D9EF' }
@@ -967,7 +1029,12 @@ class GroupGameStatsScreen extends React.Component {
                                     )}
                                 </Text>
                             </View>
-                            <Text style={styles.answerText}>Senin Cevabın</Text>
+                            <Text
+                                allowFontScaling={false}
+                                style={styles.answerText}
+                            >
+                                Senin Cevabın
+                            </Text>
                         </View>
                     </View>
                 </View>

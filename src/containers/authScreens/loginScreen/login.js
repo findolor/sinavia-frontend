@@ -144,6 +144,7 @@ class Login extends React.Component {
                         />
                         <View style={styles.textInputContainer}>
                             <TextInput
+                                allowFontScaling={false}
                                 style={styles.textInput}
                                 secureTextEntry={this.state.hidePassword}
                                 placeholder="Şifre"
@@ -169,7 +170,10 @@ class Login extends React.Component {
                                     <TouchableOpacity
                                         onPress={this.forgotPasswordOnPress}
                                     >
-                                        <Text style={styles.forgetPasswordText}>
+                                        <Text
+                                            allowFontScaling={false}
+                                            style={styles.forgetPasswordText}
+                                        >
                                             Şifremi Unuttum
                                         </Text>
                                     </TouchableOpacity>
