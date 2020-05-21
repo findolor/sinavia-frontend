@@ -44,9 +44,7 @@ class ResetPassword extends React.Component {
             .then(data => {
                 this.props.lockUnlockButton()
 
-                flashMessages.generalMessage(
-                    'Yeni şifren e-postana gönderildi!'
-                )
+                flashMessages.generalMessage('Yeni şifren e-postana gönderildi')
                 navigationReset('auth')
             })
             .catch(error => {
