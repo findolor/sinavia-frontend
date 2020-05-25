@@ -425,42 +425,44 @@ class SoloFriendGameScreen extends React.Component {
     }
 
     updateAnswers = answers => {
-        switch (answers[this.state.questionNumber].result) {
-            // If the answer is unanswered
-            case null:
-                this.setState({
-                    playerUnanswered: this.state.playerUnanswered + 1
-                })
-                this.updateButtons(
-                    answers[this.state.questionNumber].correctAnswer,
-                    true
-                )
-                break
-            // If the answer is correct
-            case true:
-                this.setState({
-                    playerCorrect: this.state.playerCorrect + 1
-                })
-                this.updateButtons(
-                    answers[this.state.questionNumber].answer,
-                    true
-                )
-                break
-            // If the answer is incorrect
-            case false:
-                this.setState({
-                    playerIncorrect: this.state.playerIncorrect + 1
-                })
-                this.updateButtons(
-                    answers[this.state.questionNumber].answer,
-                    false
-                )
-                this.updateButtons(
-                    answers[this.state.questionNumber].correctAnswer,
-                    true
-                )
-                break
-        }
+        try {
+            switch (answers[this.state.questionNumber].result) {
+                // If the answer is unanswered
+                case null:
+                    this.setState({
+                        playerUnanswered: this.state.playerUnanswered + 1
+                    })
+                    this.updateButtons(
+                        answers[this.state.questionNumber].correctAnswer,
+                        true
+                    )
+                    break
+                // If the answer is correct
+                case true:
+                    this.setState({
+                        playerCorrect: this.state.playerCorrect + 1
+                    })
+                    this.updateButtons(
+                        answers[this.state.questionNumber].answer,
+                        true
+                    )
+                    break
+                // If the answer is incorrect
+                case false:
+                    this.setState({
+                        playerIncorrect: this.state.playerIncorrect + 1
+                    })
+                    this.updateButtons(
+                        answers[this.state.questionNumber].answer,
+                        false
+                    )
+                    this.updateButtons(
+                        answers[this.state.questionNumber].correctAnswer,
+                        true
+                    )
+                    break
+            }
+        } catch (error) {}
     }
 
     updateButtons = (buttonNumber, isCorrect) => {

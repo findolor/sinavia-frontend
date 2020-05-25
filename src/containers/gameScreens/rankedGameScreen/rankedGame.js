@@ -501,57 +501,63 @@ class RankedGame extends React.Component {
     }
 
     updateAnswers = (answers, isClient) => {
-        switch (answers[this.state.questionNumber].result) {
-            // If the answer is unanswered
-            case null:
-                if (isClient) {
-                    this.setState({
-                        playerOneUnanswered: this.state.playerOneUnanswered + 1
-                    })
-                    this.updateButtons(
-                        answers[this.state.questionNumber].correctAnswer,
-                        true
-                    )
-                } else
-                    this.setState({
-                        playerTwoUnanswered: this.state.playerTwoUnanswered + 1
-                    })
-                return
-            // If the answer is correct
-            case true:
-                if (isClient) {
-                    this.setState({
-                        playerOneCorrect: this.state.playerOneCorrect + 1
-                    })
-                    this.updateButtons(
-                        answers[this.state.questionNumber].answer,
-                        true
-                    )
-                } else
-                    this.setState({
-                        playerTwoCorrect: this.state.playerTwoCorrect + 1
-                    })
-                return
-            // If the answer is incorrect
-            case false:
-                if (isClient) {
-                    this.setState({
-                        playerOneIncorrect: this.state.playerOneIncorrect + 1
-                    })
-                    this.updateButtons(
-                        answers[this.state.questionNumber].answer,
-                        false
-                    )
-                    this.updateButtons(
-                        answers[this.state.questionNumber].correctAnswer,
-                        true
-                    )
-                } else
-                    this.setState({
-                        playerTwoIncorrect: this.state.playerTwoIncorrect + 1
-                    })
-                return
-        }
+        try {
+            switch (answers[this.state.questionNumber].result) {
+                // If the answer is unanswered
+                case null:
+                    if (isClient) {
+                        this.setState({
+                            playerOneUnanswered:
+                                this.state.playerOneUnanswered + 1
+                        })
+                        this.updateButtons(
+                            answers[this.state.questionNumber].correctAnswer,
+                            true
+                        )
+                    } else
+                        this.setState({
+                            playerTwoUnanswered:
+                                this.state.playerTwoUnanswered + 1
+                        })
+                    return
+                // If the answer is correct
+                case true:
+                    if (isClient) {
+                        this.setState({
+                            playerOneCorrect: this.state.playerOneCorrect + 1
+                        })
+                        this.updateButtons(
+                            answers[this.state.questionNumber].answer,
+                            true
+                        )
+                    } else
+                        this.setState({
+                            playerTwoCorrect: this.state.playerTwoCorrect + 1
+                        })
+                    return
+                // If the answer is incorrect
+                case false:
+                    if (isClient) {
+                        this.setState({
+                            playerOneIncorrect:
+                                this.state.playerOneIncorrect + 1
+                        })
+                        this.updateButtons(
+                            answers[this.state.questionNumber].answer,
+                            false
+                        )
+                        this.updateButtons(
+                            answers[this.state.questionNumber].correctAnswer,
+                            true
+                        )
+                    } else
+                        this.setState({
+                            playerTwoIncorrect:
+                                this.state.playerTwoIncorrect + 1
+                        })
+                    return
+            }
+        } catch (error) {}
     }
 
     updateButtons = (buttonNumber, isCorrect) => {
