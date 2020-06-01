@@ -33,6 +33,8 @@ import YOU_LOSE_LOGO from '../../../assets/gameScreens/lose.png'
 import DRAW_LOGO from '../../../assets/gameScreens/draw.png'
 import VIDEO_LOGO from '../../../assets/mainScreens/blueVideoLogo.png'
 import SOLVING_LOGO from '../../../assets/mainScreens/blueSolvingLogo.png'
+import REPORT_ICON from '../.././../assets/mainScreens/reportIcon.png'
+import CHECK_ICON from '../../../assets/mainScreens/checkIcon.png'
 import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp
@@ -101,7 +103,10 @@ class FriendGameStatsScreen extends React.Component {
             //these states will be updated for every questions
             solvedQuestionImage: null,
             solvedQuestionVideo: null,
-            isSolvedQuestionVisible: false
+            isSolvedQuestionVisible: false,
+            reportQuestion: false,
+            reportSolving: false,
+            reportAnswer: false
         }
     }
 
@@ -740,6 +745,144 @@ class FriendGameStatsScreen extends React.Component {
         }
     }
 
+    reportOnPress = () => {
+        this.setState({
+            visibleView: 'QUESTION_REPORT',
+            isModalVisible: true
+        })
+    }
+
+    reportQuestionOnPress = () => {
+        this.setState({ reportQuestion: !this.state.reportQuestion })
+    }
+
+    reportSolvingOnPress = () => {
+        this.setState({ reportSolving: !this.state.reportSolving })
+    }
+
+    reportAnswerOnPress = () => {
+        this.setState({ reportAnswer: !this.state.reportAnswer })
+    }
+
+    questionReportModal() {
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    backgroundColor: '#000000DE',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}
+            >
+                <View
+                    style={{
+                        modalContainer: {
+                            flex: 1,
+                            alignItems: 'center'
+                        }
+                    }}
+                >
+                    <View style={styles.reportView}>
+                        <View style={styles.reportOptionView}>
+                            <TouchableOpacity
+                                onPress={this.reportQuestionOnPress}
+                                style={styles.checkBox}
+                            >
+                                {this.state.reportQuestion === true && (
+                                    <View>
+                                        <Image
+                                            source={CHECK_ICON}
+                                            style={styles.checkIcon}
+                                        />
+                                    </View>
+                                )}
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={this.reportQuestionOnPress}
+                            >
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.reportOptionText}
+                                >
+                                    Soru hatalı/eksik
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.reportOptionView}>
+                            <TouchableOpacity
+                                onPress={this.reportSolvingOnPress}
+                                style={styles.checkBox}
+                            >
+                                {this.state.reportSolving === true && (
+                                    <View>
+                                        <Image
+                                            source={CHECK_ICON}
+                                            style={styles.checkIcon}
+                                        />
+                                    </View>
+                                )}
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={this.reportSolvingOnPress}
+                            >
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.reportOptionText}
+                                >
+                                    Soru çözümü hatalı/eksik
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.reportOptionView}>
+                            <TouchableOpacity
+                                onPress={this.reportAnswerOnPress}
+                                style={styles.checkBox}
+                            >
+                                {this.state.reportAnswer === true && (
+                                    <View>
+                                        <Image
+                                            source={CHECK_ICON}
+                                            style={styles.checkIcon}
+                                        />
+                                    </View>
+                                )}
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={this.reportAnswerOnPress}
+                            >
+                                <Text
+                                    allowFontScaling={false}
+                                    style={styles.reportOptionText}
+                                >
+                                    Doğru cevap hatalı
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={styles.yesOrNoButtonsContainer}>
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#00D9EF"
+                            buttonText="Vazgeç"
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
+                            onPress={this.closeModalButtonOnPress}
+                        />
+                        <AuthButton
+                            height={hp(7)}
+                            width={wp(42)}
+                            color="#00D9EF"
+                            buttonText="Bildir"
+                            fontSize={hp(3)}
+                            borderRadius={hp(1.5)}
+                        />
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     render() {
         return (
             <ScrollView
@@ -1208,6 +1351,8 @@ class FriendGameStatsScreen extends React.Component {
                             this.premiumForSolvingImgPage()}
                         {this.state.visibleView === 'PREMIUM_SOLVING_VIDEO' &&
                             this.premiumForSolvingVideoPage()}
+                        {this.state.visibleView === 'QUESTION_REPORT' &&
+                            this.questionReportModal()}
                     </Modal>
                     <View style={styles.questionNumberContainer}>
                         {this.state.solvedQuestionImage !== null ? (
@@ -1353,6 +1498,14 @@ class FriendGameStatsScreen extends React.Component {
                         keyExtractor={(item, index) => index.toString()}
                     ></FlatList>
                     <View style={styles.favAndAnswerContainer}>
+                        <View style={styles.reportContainer}>
+                            <TouchableOpacity onPress={this.reportOnPress}>
+                                <Image
+                                    source={REPORT_ICON}
+                                    style={styles.reportIcon}
+                                />
+                            </TouchableOpacity>
+                        </View>
                         <View style={styles.answerContainer}>
                             <View
                                 style={[
