@@ -335,7 +335,7 @@ class SoloModeGameStats extends React.Component {
             this.state.reportSolving === true ||
             this.state.reportAnswer === true
         ) {
-            reportUserServices.reportUser(
+            reportQuestionServices.reportQuestion(
                 this.props.clientToken,
                 this.props.clientDBId,
                 this.props.fullQuestionList[this.state.questionPosition - 1].id,
