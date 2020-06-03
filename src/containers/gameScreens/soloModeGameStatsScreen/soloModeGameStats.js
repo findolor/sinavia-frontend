@@ -33,6 +33,7 @@ import VIDEO_LOGO from '../../../assets/mainScreens/blueVideoLogo.png'
 import SOLVING_LOGO from '../../../assets/mainScreens/blueSolvingLogo.png'
 import REPORT_ICON from '../.././../assets/mainScreens/reportIcon.png'
 import CHECK_ICON from '../../../assets/mainScreens/checkIcon.png'
+import { reportQuestionServices } from '../../../sagas/questionReporting'
 
 import {
     heightPercentageToDP as hp,
@@ -326,6 +327,31 @@ class SoloModeGameStats extends React.Component {
 
     reportAnswerOnPress = () => {
         this.setState({ reportAnswer: !this.state.reportAnswer })
+    }
+
+    reportButtonOnPress = () => {
+        if (
+            this.state.reportQuestion === true ||
+            this.state.reportSolving === true ||
+            this.state.reportAnswer === true
+        ) {
+            reportUserServices.reportUser(
+                this.props.clientToken,
+                this.props.clientDBId,
+                this.props.fullQuestionList[this.state.questionPosition - 1].id,
+                {
+                    question: this.state.reportQuestion,
+                    solving: this.state.reportSolving,
+                    answer: this.state.reportAnswer
+                }
+            )
+            this.setState({
+                isModalVisible: false,
+                reportQuestion: false,
+                reportSolving: false,
+                reportAnswer: false
+            })
+        }
     }
 
     questionReportModal() {
