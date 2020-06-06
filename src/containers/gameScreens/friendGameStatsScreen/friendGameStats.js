@@ -764,6 +764,31 @@ class FriendGameStatsScreen extends React.Component {
         this.setState({ reportAnswer: !this.state.reportAnswer })
     }
 
+    reportButtonOnPress = () => {
+        if (
+            this.state.reportQuestion === true ||
+            this.state.reportSolving === true ||
+            this.state.reportAnswer === true
+        ) {
+            reportQuestionServices.reportQuestion(
+                this.props.clientToken,
+                this.props.clientDBId,
+                this.props.fullQuestionList[this.state.questionPosition - 1].id,
+                {
+                    question: this.state.reportQuestion,
+                    solution: this.state.reportSolving,
+                    answer: this.state.reportAnswer
+                }
+            )
+            this.setState({
+                isModalVisible: false,
+                reportQuestion: false,
+                reportSolving: false,
+                reportAnswer: false
+            })
+        }
+    }
+
     questionReportModal() {
         return (
             <View
@@ -876,6 +901,7 @@ class FriendGameStatsScreen extends React.Component {
                             buttonText="Bildir"
                             fontSize={hp(3)}
                             borderRadius={hp(1.5)}
+                            onPress={this.reportButtonOnPress}
                         />
                     </View>
                 </View>

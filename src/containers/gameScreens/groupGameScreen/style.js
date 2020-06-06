@@ -218,7 +218,7 @@ export default StyleSheet.create({
     },
     countdownText: {
         fontFamily: 'Averta-Bold',
-        fontSize: wp(3.5),
+        fontSize: wp(4.2),
         color: '#fff',
         fontWeight: '800'
     },

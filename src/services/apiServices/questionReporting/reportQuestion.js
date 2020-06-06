@@ -6,7 +6,7 @@ import { flashMessages } from '../../flashMessageBuilder'
 export const reportQuestion = async (headers, params) => {
     try {
         let response = await axios.post(
-            API_ENDPOINT + APP_VERSION + '/report/',
+            API_ENDPOINT + APP_VERSION + '/reportQuestion/',
             params,
             {
                 headers: headers
@@ -22,7 +22,7 @@ export const reportQuestion = async (headers, params) => {
             let res = await renewToken()
             headers.Authorization = 'Bearer ' + res.token
             response = await axios.post(
-                API_ENDPOINT + APP_VERSION + '/report/',
+                API_ENDPOINT + APP_VERSION + '/reportQuestion/',
                 params,
                 {
                     headers: headers

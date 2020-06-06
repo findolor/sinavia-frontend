@@ -341,7 +341,7 @@ class SoloModeGameStats extends React.Component {
                 this.props.fullQuestionList[this.state.questionPosition - 1].id,
                 {
                     question: this.state.reportQuestion,
-                    solving: this.state.reportSolving,
+                    solution: this.state.reportSolving,
                     answer: this.state.reportAnswer
                 }
             )
@@ -466,6 +466,7 @@ class SoloModeGameStats extends React.Component {
                             buttonText="Bildir"
                             fontSize={hp(3)}
                             borderRadius={hp(1.5)}
+                            onPress={this.reportButtonOnPress}
                         />
                     </View>
                 </View>

@@ -37,10 +37,6 @@ class FriendsList extends React.Component {
     }
 
     async componentDidMount() {
-        if (Object.keys(this.props.friendIds).length === 0) {
-            this.setState({ isFetching: false })
-            return
-        }
         let friends
         if (!this.props.isOpponentFriends) {
             friends = await userServices.getUsers(
