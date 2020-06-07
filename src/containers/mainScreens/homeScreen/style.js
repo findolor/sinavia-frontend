@@ -541,5 +541,13 @@ export default StyleSheet.create({
         color: '#FFFFFF',
         letterSpacing: wp(0.1),
         fontSize: hp(2)
+    },
+    rewardAdModalText: {
+        fontFamily: 'Averta-SemiboldItalic',
+        color: '#2E313C',
+        fontSize: hp(3),
+        textAlign: 'center',
+        marginRight: wp(2),
+        marginLeft: wp(2)
     }
 })

@@ -398,5 +398,66 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Bold',
         fontSize: hp(2),
         color: '#00D9EF'
+    },
+    reportContainer: {
+        position: 'absolute',
+        height: hp(4.5),
+        width: wp(90),
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end'
+    },
+    reportIcon: {
+        height: hp(3.5),
+        width: hp(4.12)
+    },
+    reportView: {
+        backgroundColor: '#ffffff',
+        height: hp(30),
+        width: wp(90),
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        borderColor: '#00D9EF',
+        borderWidth: wp(0.75),
+        borderRadius: 10
+    },
+    areYouSureText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: wp(4.5),
+        color: '#5C5C5C',
+        textAlign: 'center'
+    },
+    yesOrNoButtonsContainer: {
+        height: hp(9),
+        width: wp(90),
+        marginTop: hp(2),
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start'
+    },
+    reportOptionView: {
+        height: hp(5),
+        width: wp(90),
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    checkBox: {
+        height: hp(4),
+        width: hp(4),
+        borderRadius: hp(0.5),
+        borderWidth: hp(0.3),
+        borderColor: '#FF9900',
+        marginLeft: wp(3),
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    checkIcon: {
+        height: hp(2.5),
+        width: hp(2.5)
+    },
+    reportOptionText: {
+        fontFamily: 'Averta-Regular',
+        fontSize: hp(2.3),
+        color: '#000000',
+        marginLeft: wp(2)
     }
 })
