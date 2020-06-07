@@ -10,7 +10,8 @@ import {
     AsyncStorage,
     FlatList,
     AppState,
-    Animated
+    Animated,
+    ActivityIndicator
 } from 'react-native'
 import { connect } from 'react-redux'
 import { gameContentActions } from '../../../redux/gameContent/actions'
@@ -143,7 +144,8 @@ class Home extends React.Component {
             // Notification related
             isNotificationReceived: false,
             // Solo choosen question amount
-            choosenQuestionAmountSolo: 5
+            choosenQuestionAmountSolo: 5,
+            isActivityIndicatorOn: false
         }
     }
 
@@ -658,6 +660,62 @@ class Home extends React.Component {
             .catch(error => {})
     }
 
+    rewardAdModalView() {
+        return (
+            <View style={styles.modal}>
+                {!this.props.clientInformation.isPremium && <BannerAd />}
+                <TouchableOpacity
+                    onPress={this.closeModalButtonOnPress}
+                    style={{
+                        height: hp(120),
+                        width: wp(100)
+                    }}
+                />
+                <View style={styles.backAndCloseButtonsContainer}>
+                    <TouchableOpacity
+                        onPress={this.friendRoomAndGameModesBackButtonOnPress}
+                    >
+                        <Image source={BACK_BUTTON} style={styles.backLogo} />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.modalView}>
+                    <Text style={styles.rewardAdModalText}>
+                        <Text style={{ color: '#FF9900' }}>
+                            ELİT ÖĞRENCİ PAKETİ
+                        </Text>
+                        'n sona erdi. Sınavia'yı reklamsız ve bütün
+                        ayrıcalıklarıyla kullanmaya devam etmek için ELİT
+                        ÖĞRENCİ PAKETİ satın alabilir
+                    </Text>
+                    <Text
+                        style={[
+                            styles.rewardAdModalText,
+                            { marginTop: hp(2), marginBottom: hp(2) }
+                        ]}
+                    >
+                        <Text style={{ color: '#FF9900' }}>veya</Text>
+                    </Text>
+                    <Text style={styles.rewardAdModalText}>
+                        Reklam izleyerek devam etmeyi tercih ediyorsan{' '}
+                        <Text style={{ color: '#FF9900' }}>İzle & Oyna</Text>{' '}
+                        butonuna tıklayabilirsin
+                    </Text>
+                </View>
+                <View style={styles.modalButtonsContainer}>
+                    <AuthButton
+                        height={hp(7)}
+                        width={wp(87.5)}
+                        color="#00D9EF"
+                        buttonText="İzle & Oyna"
+                        fontSize={hp(3)}
+                        borderRadius={hp(1.5)}
+                        onPress={this.watchButtonOnPress}
+                    />
+                </View>
+            </View>
+        )
+    }
+
     gameModesView() {
         return (
             <View style={styles.modal}>
@@ -1102,14 +1160,17 @@ class Home extends React.Component {
     }
 
     friendRoomAndGameModesBackButtonOnPress = () => {
+        this.soloModeQuestionAmountPicker(5)
         this.setState({
+            rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
+            soloModeButtonBorderColor: EMPTY_MODE_COLOR,
+            unsolvedQuestionsModeBorderColor: EMPTY_MODE_COLOR,
             visibleView: 'GAME_MODES',
             friendSelected: false,
             opponentUserPic: null,
             opponentName: '',
             opponentUsername: '',
             opponentInformation: {},
-            rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
             selectedGameMode: 'ranked'
         })
     }
@@ -2124,7 +2185,13 @@ class Home extends React.Component {
             .then(() => {
                 switch (this.state.selectedGameMode) {
                     case 'ranked':
-                        navigationReset('game', this.calculateContentIds())
+                        if (this.props.clientInformation.isPremium) {
+                            navigationReset('game', this.calculateContentIds())
+                        } else {
+                            this.setState({
+                                visibleView: 'REWARD_AD_MODAL'
+                            })
+                        }
                         break
                     case 'solo':
                         if (this.props.clientInformation.isPremium) {
@@ -2140,12 +2207,7 @@ class Home extends React.Component {
                             break
                         } else {
                             this.setState({
-                                visibleRankedGameStartPress: false,
-                                soloModeButtonBorderColor: EMPTY_MODE_COLOR,
-                                rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
-                                selectedGameMode: 'ranked',
-                                isModalVisible: true,
-                                visibleView: 'PREMIUM_MODAL_FOR_SOLO'
+                                visibleView: 'REWARD_AD_MODAL'
                             })
                         }
                         break
@@ -2162,18 +2224,86 @@ class Home extends React.Component {
                             break
                         } else {
                             this.setState({
-                                visibleRankedGameStartPress: false,
-                                soloModeButtonBorderColor: EMPTY_MODE_COLOR,
-                                rankedModeButtonBorderColor: SELECTED_MODE_COLOR,
-                                selectedGameMode: 'ranked',
-                                isModalVisible: true,
-                                visibleView: 'PREMIUM_MODAL_FOR_UNSOLVED'
+                                visibleView: 'REWARD_AD_MODAL'
                             })
                         }
                         break
                 }
             })
             .catch(error => {})
+    }
+
+    watchButtonOnPress = () => {
+        if (!this.props.isNetworkConnected) {
+            showMessage({
+                message: 'Lütfen internet bağlantınızı kontrol ediniz',
+                type: 'danger',
+                duration: 2000,
+                titleStyle: styles.networkErrorStyle,
+                icon: 'auto'
+            })
+            return
+        }
+
+        this.setState({ isActivityIndicatorOn: true })
+
+        let isAdWatched = false
+        const advert = firebase
+            .admob()
+            .rewarded('ca-app-pub-3940256099942544/1712485313')
+
+        const AdRequest = firebase.admob.AdRequest
+        const request = new AdRequest()
+        advert.loadAd(request.build())
+
+        advert.on('onAdLoaded', () => {
+            this.setState({ isActivityIndicatorOn: false }, () => {
+                advert.show()
+            })
+        })
+
+        advert.on('onRewarded', event => {
+            isAdWatched = true
+            apiServices
+                .checkOnline()
+                .then(() => {
+                    switch (this.state.selectedGameMode) {
+                        case 'ranked':
+                            navigationReset('game', this.calculateContentIds())
+                            break
+                        case 'solo':
+                            navigationReset('game', { isHardReset: true })
+                            navigationReplace(
+                                SCENE_KEYS.gameScreens.soloModeLoadingScreen,
+                                {
+                                    contentIds: this.calculateContentIds(),
+                                    choosenQuestionAmount: this.state
+                                        .choosenQuestionAmountSolo
+                                }
+                            )
+                            break
+                        case 'unsolved':
+                            navigationReset('game', { isHardReset: true })
+                            navigationReplace(
+                                SCENE_KEYS.gameScreens
+                                    .unsolvedModeLoadingScreen,
+                                {
+                                    contentIds: this.calculateContentIds()
+                                }
+                            )
+                            break
+                    }
+                })
+                .catch(error => {})
+        })
+
+        advert.on('onAdFailedToLoad', event => {
+            this.setState({ isActivityIndicatorOn: false })
+        })
+
+        advert.on('onAdClosed', event => {
+            if (!isAdWatched) navigationReset('main')
+        })
     }
 
     /*goToVideo = () => {
@@ -2280,6 +2410,13 @@ class Home extends React.Component {
             this.state.defaultExam,
             this.state.carouselActiveSlide
         )
+        if (this.state.isActivityIndicatorOn) {
+            return (
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+                    <ActivityIndicator />
+                </View>
+            )
+        }
         return (
             <View style={styles.container}>
                 <Modal
@@ -2305,6 +2442,8 @@ class Home extends React.Component {
                             joinGameParams={this.joinGameParams()}
                         />
                     )}
+                    {this.state.visibleView === 'REWARD_AD_MODAL' &&
+                        this.rewardAdModalView()}
                     {this.state.visibleView === 'PREMIUM_MODAL_FOR_SOLO' &&
                         this.premiumForSoloView()}
                     {this.state.visibleView === 'PREMIUM_MODAL_FOR_UNSOLVED' &&
