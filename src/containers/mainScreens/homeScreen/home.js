@@ -1469,7 +1469,7 @@ class Home extends React.Component {
                         height={hp(7)}
                         width={wp(87.5)}
                         color="#00D9EF"
-                        buttonText="Başla"
+                        buttonText="Başlat"
                         fontSize={hp(3)}
                         borderRadius={hp(1.5)}
                         position={'absolute'}
