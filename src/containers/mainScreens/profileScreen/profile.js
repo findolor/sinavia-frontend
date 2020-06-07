@@ -41,14 +41,7 @@ class Profile extends React.Component {
         this.state = {
             // Search text variable
             searchText: '',
-            isModalVisible: false,
-            friendsListButtonDisable: false
-        }
-    }
-
-    componentDidMount() {
-        if (this.props.friendIds.length === 0) {
-            this.setState({ friendsListButtonDisable: true })
+            isModalVisible: false
         }
     }
 
@@ -331,10 +324,7 @@ class Profile extends React.Component {
                                 </View>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={this.friendsLogoOnPress}
-                            disabled={this.state.friendsListButtonDisable}
-                        >
+                        <TouchableOpacity onPress={this.friendsLogoOnPress}>
                             <View style={styles.friendsBox}>
                                 <View style={styles.boxTextContainer}>
                                     <Text
