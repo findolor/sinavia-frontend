@@ -17,6 +17,7 @@ import {
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
+import { reportQuestionServices } from '../../../sagas/questionReporting'
 
 import styles from './style'
 import background from '../../../assets/gameScreens/gameStatsBackground.jpg'
@@ -278,7 +279,10 @@ class UnsolvedModeGameStats extends React.Component {
 
     closeModalButtonOnPress = () => {
         this.setState({
-            isModalVisible: false
+            isModalVisible: false,
+            reportQuestion: false,
+            reportSolving: false,
+            reportAnswer: false
         })
     }
 

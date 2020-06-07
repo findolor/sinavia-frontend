@@ -19,6 +19,7 @@ import {
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
 import { chooseImage } from '../../../services/courseAssetChooser'
+import { reportQuestionServices } from '../../../sagas/questionReporting'
 
 import styles from './style'
 import slideUp from '../../../assets/gameScreens/slideUp.png'
@@ -33,7 +34,6 @@ import VIDEO_LOGO from '../../../assets/mainScreens/blueVideoLogo.png'
 import SOLVING_LOGO from '../../../assets/mainScreens/blueSolvingLogo.png'
 import REPORT_ICON from '../.././../assets/mainScreens/reportIcon.png'
 import CHECK_ICON from '../../../assets/mainScreens/checkIcon.png'
-import { reportQuestionServices } from '../../../sagas/questionReporting'
 
 import {
     heightPercentageToDP as hp,
@@ -306,7 +306,10 @@ class SoloModeGameStats extends React.Component {
 
     closeModalButtonOnPress = () => {
         this.setState({
-            isModalVisible: false
+            isModalVisible: false,
+            reportQuestion: false,
+            reportSolving: false,
+            reportAnswer: false
         })
     }
 

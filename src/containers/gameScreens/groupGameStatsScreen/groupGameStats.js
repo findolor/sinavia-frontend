@@ -17,6 +17,7 @@ import {
     navigationReset,
     navigationPush
 } from '../../../services/navigationService'
+import { reportQuestionServices } from '../../../sagas/questionReporting'
 
 import background from '../../../assets/gameScreens/gameStatsBackground.jpg'
 import slideUp from '../../../assets/gameScreens/slideUp.png'
@@ -371,7 +372,10 @@ class GroupGameStatsScreen extends React.Component {
 
     closeModalButtonOnPress = () => {
         this.setState({
-            isModalVisible: false
+            isModalVisible: false,
+            reportQuestion: false,
+            reportSolving: false,
+            reportAnswer: false
         })
     }
 

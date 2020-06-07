@@ -18,6 +18,7 @@ import { SCENE_KEYS } from '../../../config/'
 import styles from './style'
 import { connect } from 'react-redux'
 import { clientActions } from '../../../redux/client/actions'
+import { reportQuestionServices } from '../../../sagas/questionReporting'
 
 import background from '../../../assets/gameScreens/gameStatsBackground.jpg'
 import slideUp from '../../../assets/gameScreens/slideUp.png'
@@ -476,7 +477,10 @@ class FriendGameStatsScreen extends React.Component {
 
     closeModalButtonOnPress = () => {
         this.setState({
-            isModalVisible: false
+            isModalVisible: false,
+            reportQuestion: false,
+            reportSolving: false,
+            reportAnswer: false
         })
     }
 
