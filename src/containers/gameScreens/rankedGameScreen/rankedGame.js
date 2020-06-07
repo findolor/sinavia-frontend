@@ -332,8 +332,6 @@ class RankedGame extends React.Component {
                 })
                 setTimeout(function() {
                     that.shutdownGame()
-                    if (!that.props.clientInformation.isPremium)
-                        interstitialAd()
                     navigationReplace(SCENE_KEYS.gameScreens.gameStats, {
                         playerProps: message.playerProps,
                         room: that.props.room,
@@ -377,7 +375,6 @@ class RankedGame extends React.Component {
                 // Do a shutdown routine
                 this.shutdownGame()
                 this.props.room.leave()
-                if (!this.props.clientInformation.isPremium) interstitialAd()
                 navigationReplace(SCENE_KEYS.gameScreens.gameStats, {
                     playerProps: message.playerProps,
                     room: this.props.room,
@@ -466,7 +463,6 @@ class RankedGame extends React.Component {
                 break
             case 'match-finished':
                 this.shutdownGame()
-                if (!this.props.clientInformation.isPremium) interstitialAd()
                 navigationReplace(SCENE_KEYS.gameScreens.gameStats, {
                     playerProps: this.state.playerProps,
                     room: this.props.room,
