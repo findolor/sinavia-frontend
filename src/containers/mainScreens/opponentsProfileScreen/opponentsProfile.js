@@ -15,6 +15,7 @@ import {
     navigationPush
 } from '../../../services/navigationService'
 import { connect } from 'react-redux'
+
 import Swiper from 'react-native-swiper'
 import styles from './style'
 import NotchView from '../../../components/notchView'
